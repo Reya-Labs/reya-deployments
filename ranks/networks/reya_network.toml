@@ -1,0 +1,19 @@
+include = [
+  "../commons.toml",
+  "../../utils/upgrade_proxy.toml",
+]
+
+# Same as current package. Duplication is needed because
+# we cannot provide settings into name/preset above in
+# the current version of cannon.
+[setting.provision_name]
+defaultValue = "reya-ranks"
+[setting.provision_preset]
+defaultValue = "main"
+
+[setting.salt]
+defaultValue = "test"
+[setting.owner]
+defaultValue = "0x4BC8b3084B4188F76D4B66dC07f07618938eDf94"
+[setting.proxy]
+defaultValue = ""
