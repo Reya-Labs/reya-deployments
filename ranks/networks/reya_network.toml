@@ -7,7 +7,7 @@ include = [
 # we cannot provide settings into name/preset above in
 # the current version of cannon.
 [setting.provision_name]
-defaultValue = "reya-ranks"
+defaultValue = "test-reya-ranks"
 [setting.provision_preset]
 defaultValue = "main"
 
