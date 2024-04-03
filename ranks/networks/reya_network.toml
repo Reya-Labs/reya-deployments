@@ -16,4 +16,4 @@ defaultValue = "test"
 [setting.owner]
 defaultValue = "0x4BC8b3084B4188F76D4B66dC07f07618938eDf94"
 [setting.proxy]
-defaultValue = ""
+defaultValue = "0xdf608555dEF0626539582A0f890587d8A3E60Ae9"
