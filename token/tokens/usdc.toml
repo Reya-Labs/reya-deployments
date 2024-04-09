@@ -1,0 +1,23 @@
+[provision.usdc]
+source = "reya-tokens:1.0.0@proxy"
+targetPreset = "usdc"
+options.owner = "<%= settings.owner %>"
+depends = ["provision.reyaTokenRouter"]
+
+[setting.usdcTokenName]
+defaultValue = "USD Coin"
+[setting.usdcTokenSymbol]
+defaultValue = "USDC"
+[setting.usdcTokenDecimals]
+defaultValue = "6"
+
+[invoke.usdc_initialize]
+target = ["usdc.Proxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [ 
+  "<%= settings.usdcTokenName %>",
+  "<%= settings.usdcTokenSymbol %>",
+  "<%= settings.usdcTokenDecimals %>",
+]
+depends = ["provision.usdc"]
