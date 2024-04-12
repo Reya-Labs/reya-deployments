@@ -1,4 +1,4 @@
-name = "reya-tokens"
+name = "test-reya-tokens"
 preset = "main"
 version = "1.0.0"
 description = "Reya Ranks"

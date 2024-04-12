@@ -12,7 +12,7 @@ defaultValue = "USDC"
 defaultValue = "6"
 
 [invoke.usdc_initialize]
-target = ["usdc.Proxy"]
+target = ["usdc.InitialProxy"]
 fromCall.func = "owner"
 func = "initialize"
 args = [ 
