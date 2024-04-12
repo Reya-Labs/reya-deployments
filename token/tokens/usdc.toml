@@ -12,9 +12,8 @@ defaultValue = "USDC"
 defaultValue = "6"
 
 [invoke.usdc_initialize]
-target = ["usdc.InitialProxy"]
+target = ["usdc.Proxy"]
 fromCall.func = "owner"
-abiOf = ["reyaTokenRouter.TokenRouter"]
 func = "initialize"
 args = [ 
   "<%= settings.usdcTokenName %>",
