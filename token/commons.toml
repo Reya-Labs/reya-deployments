@@ -1,4 +1,4 @@
-name = "test2-reya-tokens"
+name = "reya-tokens"
 preset = "main"
 version = "1.0.0"
 description = "Reya Tokens"

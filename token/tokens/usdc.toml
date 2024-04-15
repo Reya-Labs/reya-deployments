@@ -1,5 +1,5 @@
 [provision.usdc]
-source = "test2-reya-tokens:1.0.0@proxy"
+source = "reya-tokens:1.0.0@proxy"
 targetPreset = "usdc"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.salt %>"

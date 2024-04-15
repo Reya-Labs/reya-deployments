@@ -1,5 +1,0 @@
-name = "test-reya-ranks"
-preset = "main"
-version = "1.0.0"
-description = "Reya Ranks"
-privateSourceCode = true
