@@ -2,7 +2,25 @@
 source = "reya-tokens:1.0.0@proxy"
 targetPreset = "usdc"
 options.owner = "<%= settings.owner %>"
-depends = ["provision.reyaTokenRouter"]
+options.salt = "<%= settings.salt %>"
+depends = [
+  "setting.owner",
+  "setting.salt"
+]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_proxy]
+target = ["usdc.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.USDCProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.USDCProxy.event = "Upgraded"
+factory.USDCProxy.arg = 0
+depends = [
+  "provision.usdc",
+]
 
 [setting.usdcTokenName]
 defaultValue = "USD Coin"
@@ -12,7 +30,7 @@ defaultValue = "USDC"
 defaultValue = "6"
 
 [invoke.usdc_initialize]
-target = ["usdc.Proxy"]
+target = ["USDCProxy"]
 fromCall.func = "owner"
 func = "initialize"
 args = [ 
@@ -20,4 +38,4 @@ args = [
   "<%= settings.usdcTokenSymbol %>",
   "<%= settings.usdcTokenDecimals %>",
 ]
-depends = ["provision.usdc"]
+depends = ["invoke.upgrade_proxy"]
