@@ -1,9 +1,0 @@
-[setting.provision_name]
-[setting.provision_preset]
-
-[provision.upgradeProxy]
-source = "<%= settings.provision_name %>"
-targetPreset = "<%= settings.provision_preset %>"
-options.salt = "<%= settings.salt %>"
-options.owner = "<%= settings.owner %>"
-options.proxy = "<%= settings.proxy %>"
