@@ -6,7 +6,9 @@ include = [
 [setting.owner]
 defaultValue = "0x4BC8b3084B4188F76D4B66dC07f07618938eDf94"
 
+[setting.salt]
+defaultValue = "main"
+
 [provision.reyaTokenRouter]
-source = "test-reya-tokens:1.0.0@router"
+source = "test2-reya-tokens:1.0.0@router"
 targetPreset = "router"
-options.salt = "main"
