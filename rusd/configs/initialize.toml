@@ -1,0 +1,10 @@
+[invoke.initialize]
+target = ["RUSDProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [ 
+  "<%= settings.tokenName %>",
+  "<%= settings.tokenSymbol %>",
+  "<%= settings.underlyingAsset %>",
+]
+depends = ["invoke.upgrade_rUSD_proxy"]

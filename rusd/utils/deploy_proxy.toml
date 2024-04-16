@@ -1,0 +1,5 @@
+[clone.rusd]
+source = "reya-rusd:1.0.0@proxy"
+targetPreset = "proxy"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.salt %>"

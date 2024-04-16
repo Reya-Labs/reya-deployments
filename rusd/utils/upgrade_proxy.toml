@@ -1,0 +1,16 @@
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_rUSD_proxy]
+target = ["<%= settings.rUSDProxy %>"]
+abi = "<%= JSON.stringify(reyaRUSDRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaRUSDRouter.contracts.RUSDRouter.address %>"]
+factory.RUSDProxy.abiOf = ["reyaRUSDRouter.RUSDRouter"]
+factory.RUSDProxy.event = "Upgraded"
+factory.RUSDProxy.arg = 0
+depends = [
+  "var.upgrade_proxy_vars",
+  "clone.rusd",
+  "clone.reyaRUSDRouter"
+]

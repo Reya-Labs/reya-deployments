@@ -1,10 +1,10 @@
 include = [
-  "../commons.toml",
-  "../tokens/usdc.toml",
+  "./utils/commons.toml",
+  "./tokens/usdc.toml",
 ]
 
 [setting.owner]
-defaultValue = "0x4BC8b3084B4188F76D4B66dC07f07618938eDf94"
+defaultValue = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 
 [setting.salt]
 defaultValue = "main"

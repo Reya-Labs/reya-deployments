@@ -10,7 +10,7 @@ depends = [
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.
-[invoke.upgrade_proxy]
+[invoke.upgrade_usdc_proxy]
 target = ["usdc.InitialProxy"]
 fromCall.func = "owner"
 func = "upgradeTo"
@@ -38,4 +38,4 @@ args = [
   "<%= settings.usdcTokenSymbol %>",
   "<%= settings.usdcTokenDecimals %>",
 ]
-depends = ["invoke.upgrade_proxy"]
+depends = ["invoke.upgrade_usdc_proxy"]

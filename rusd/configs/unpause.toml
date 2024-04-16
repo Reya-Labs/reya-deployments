@@ -1,0 +1,9 @@
+[invoke.unpause]
+target = ["RUSDProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "0xb72bd9169e5731cecf365f3aced3ec60a622c3d382d245b60556ef9bd2e43583",
+    true
+]
+depends = ["invoke.upgrade_rUSD_proxy"]

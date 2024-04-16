@@ -1,0 +1,14 @@
+include = [
+  "./utils/commons.toml",
+  "./tokens/usdc.toml",
+]
+
+[setting.owner]
+defaultValue = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+[setting.salt]
+defaultValue = "main"
+
+[provision.reyaTokenRouter]
+source = "reya-tokens:1.0.0@router"
+
