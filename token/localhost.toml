@@ -1,14 +1,28 @@
 include = [
   "./utils/commons.toml",
   "./tokens/usdc.toml",
+  "./tokens/usdt.toml",
+  "./tokens/dai.toml",
+  "./tokens/weth.toml",
+  "./tokens/wbtc.toml",
 ]
 
-[setting.owner]
-defaultValue = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+[var.initial_proxy_vars]
+owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+usdc_salt = "usdc-main"
+usdt_salt = "usdt-main"
+dai_salt = "dai-main"
+weth_salt = "weth-main"
+wbtc_salt = "wbtc-main"
 
-[setting.salt]
-defaultValue = "main"
+# owner can mint and burn
+[var.socket_controllers]
+usdc_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+usdt_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+dai_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+weth_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+wbtc_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
-[provision.reyaTokenRouter]
+[clone.reyaTokenRouter]
 source = "reya-tokens:1.0.0@router"
 

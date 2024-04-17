@@ -1,0 +1,68 @@
+[var.weth_vars]
+wethTokenName = "Wrapped Ether"
+wethTokenSymbol = "WETH"
+wethTokenDecimals = "18"
+
+[clone.weth]
+source = "reya-tokens:1.0.0@proxy"
+targetPreset = "weth"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.weth_salt %>"
+depends = [
+  "var.initial_proxy_vars",
+]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_weth_proxy]
+target = ["weth.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.WETHProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.WETHProxy.event = "Upgraded"
+factory.WETHProxy.arg = 0
+depends = [
+  "clone.weth",
+]
+
+[invoke.weth_initialize]
+target = ["WETHProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [ 
+  "<%= settings.wethTokenName %>",
+  "<%= settings.wethTokenSymbol %>",
+  "<%= settings.wethTokenDecimals %>",
+]
+depends = ["invoke.upgrade_weth_proxy"]
+
+[invoke.weth_unpause]
+target = ["WETHProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "0xb72bd9169e5731cecf365f3aced3ec60a622c3d382d245b60556ef9bd2e43583",
+    true
+]
+depends = ["invoke.upgrade_weth_proxy"]
+
+# [invoke.weth_mint_permission]
+# target = ["WETHProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = [
+#     "0xdaf0b3c5710379609eb5495f1ecd348cb28167711b73609fe565a72734550354",
+#     "<%= settings.weth_controller %>"
+# ]
+# depends = ["invoke.upgrade_weth_proxy"]
+
+# [invoke.weth_burn_permission]
+# target = ["WETHProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = [
+#     "0xf43e8cfd4725c1e28fa4a6e3e468b4fcf75367166b850ac5f04e33ec843e82c1",
+#     "<%= settings.weth_controller %>"
+# ]
+# depends = ["invoke.upgrade_weth_proxy"]

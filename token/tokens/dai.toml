@@ -1,0 +1,68 @@
+[var.dai_vars]
+daiTokenName = "Dai Stablecoin"
+daiTokenSymbol = "DAI"
+daiTokenDecimals = "18"
+
+[clone.dai]
+source = "reya-tokens:1.0.0@proxy"
+targetPreset = "dai"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.dai_salt %>"
+depends = [
+  "var.initial_proxy_vars",
+]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_dai_proxy]
+target = ["dai.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.DAIProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.DAIProxy.event = "Upgraded"
+factory.DAIProxy.arg = 0
+depends = [
+  "clone.dai",
+]
+
+[invoke.dai_initialize]
+target = ["DAIProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [ 
+  "<%= settings.daiTokenName %>",
+  "<%= settings.daiTokenSymbol %>",
+  "<%= settings.daiTokenDecimals %>",
+]
+depends = ["invoke.upgrade_dai_proxy"]
+
+[invoke.dai_unpause]
+target = ["DAIProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "0xb72bd9169e5731cecf365f3aced3ec60a622c3d382d245b60556ef9bd2e43583",
+    true
+]
+depends = ["invoke.upgrade_dai_proxy"]
+
+# [invoke.dai_mint_permission]
+# target = ["DAIProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = [
+#     "0xdaf0b3c5710379609eb5495f1ecd348cb28167711b73609fe565a72734550354",
+#     "<%= settings.dai_controller %>"
+# ]
+# depends = ["invoke.upgrade_dai_proxy"]
+
+# [invoke.dai_burn_permission]
+# target = ["DAIProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = [
+#     "0xf43e8cfd4725c1e28fa4a6e3e468b4fcf75367166b850ac5f04e33ec843e82c1",
+#     "<%= settings.dai_controller %>"
+# ]
+# depends = ["invoke.upgrade_dai_proxy"]

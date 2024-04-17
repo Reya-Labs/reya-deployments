@@ -1,21 +1,28 @@
+# This cannonfile has been adjusted for usdc because cannonfiles
+# were refactored after the usdc deployment on reya network
+
 [var.usdc_vars]
 usdcTokenName = "USD Coin"
 usdcTokenSymbol = "USDC"
 usdcTokenDecimals = "6"
 
-[clone.usdc]
-source = "reya-tokens:1.0.0@proxy"
-targetPreset = "usdc"
-options.owner = "<%= settings.owner %>"
-options.salt = "<%= settings.usdc_salt %>"
-depends = [
-  "var.initial_proxy_vars",
-]
+# [clone.usdc]
+# source = "reya-tokens:1.0.0@proxy"
+# targetPreset = "usdc"
+# options.owner = "<%= settings.owner %>"
+# options.salt = "<%= settings.usdc_salt %>"
+# depends = [
+#   "vars.initial_proxy_vars",
+# ]
+
+[var.usdc_extra_vars]
+usdcProxyAddress = "0x3B860c0b53f2e8bd5264AA7c3451d41263C933F2"
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.
 [invoke.upgrade_usdc_proxy]
-target = ["usdc.InitialProxy"]
+target = ["<%= settings.usdcProxyAddress %>"]
+abi = "<%= JSON.stringify(reyaTokenRouter.contracts.OwnerUpgradeModule.abi) %>"
 fromCall.func = "owner"
 func = "upgradeTo"
 args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
@@ -23,7 +30,8 @@ factory.USDCProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
 factory.USDCProxy.event = "Upgraded"
 factory.USDCProxy.arg = 0
 depends = [
-  "clone.usdc",
+  "var.usdc_extra_vars",
+  "clone.reyaTokenRouter",
 ]
 
 [invoke.usdc_initialize]
