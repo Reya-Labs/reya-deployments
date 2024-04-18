@@ -15,6 +15,12 @@ dai_salt = "dai-main"
 weth_salt = "weth-main"
 wbtc_salt = "wbtc-main"
 
+[var.deniers]
+denier1 = "<%= settings.owner %>"
+denier2 = "<%= AddressZero %>"        # not used
+denier3 = "<%= AddressZero %>"        # not used
+denier4 = "<%= AddressZero %>"        # not used
+
 # owner can mint and burn
 [var.socket_controllers]
 usdc_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
