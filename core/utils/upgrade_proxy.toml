@@ -1,0 +1,15 @@
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_core_proxy]
+target = ["<%= settings.coreProxy %>"]
+abi = "<%= JSON.stringify(reyaCoreRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaCoreRouter.contracts.CoreRouter.address %>"]
+factory.CoreProxy.abiOf = ["reyaCoreRouter.CoreRouter"]
+factory.CoreProxy.event = "Upgraded"
+factory.CoreProxy.arg = 0
+depends = [
+  "var.upgrade_proxy_vars",
+  "clone.reyaCoreRouter"
+]
