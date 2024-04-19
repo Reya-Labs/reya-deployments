@@ -54,10 +54,10 @@ func = "setDeniers"
 args = [
   "<%= keccak256(hexlify('global')) %>",
   [
-    "<%= settings.denier1 %>",
-    "<%= settings.denier2 %>",
-    "<%= settings.denier3 %>",
-    "<%= settings.denier4 %>",
+    "<%= settings.pauser1 %>",
+    "<%= settings.pauser2 %>",
+    "<%= settings.pauser3 %>",
+    "<%= settings.pauser4 %>",
   ],
 ]
 depends = ["invoke.upgrade_weth_proxy"]

@@ -1,5 +1,0 @@
-name = "reya-tokens"
-preset = "main"
-version = "1.0.0"
-description = "Reya Tokens"
-privateSourceCode = false

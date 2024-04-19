@@ -1,0 +1,35 @@
+include = [
+  "utils/commons.toml",
+  "../token/mainnet_reya_network.toml",
+  "../rusd/mainnet.toml",
+  "../core/mainnet.toml",
+]
+
+[var.initial_proxy_vars]
+owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
+usdt_salt = "usdt-main"
+dai_salt = "dai-main"
+weth_salt = "weth-main"
+wbtc_salt = "wbtc-main"
+
+[var.upgrade_proxy_vars]
+coreProxy = "0xA763B6a5E09378434406C003daE6487FbbDc1a80"
+rUSDProxy = "0xa9F32a851B1800742e47725DA54a09A7Ef2556A3"
+
+[var.pausers]
+pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
+pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
+pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
+pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
+
+[var.socket_controllers]
+usdc_controller = "0x1d43076909Ca139BFaC4EbB7194518bE3638fc76"
+# usdt_controller = ""
+# dai_controller = ""
+# weth_controller = ""
+# wbtc_controller = ""
+
+[var.rusd_configs]
+tokenName = "Reya USD"
+tokenSymbol = "rUSD"
+underlyingAsset = "<%= contracts.USDCProxy.address %>"

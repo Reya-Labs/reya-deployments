@@ -1,11 +1,6 @@
 # This cannonfile has been adjusted for usdc because cannonfiles
 # were refactored after the usdc deployment on reya network
 
-[var.usdc_vars]
-usdcTokenName = "USD Coin"
-usdcTokenSymbol = "USDC"
-usdcTokenDecimals = "6"
-
 [var.usdc_extra_vars]
 usdcProxyAddress = "0x3B860c0b53f2e8bd5264AA7c3451d41263C933F2"
 
@@ -25,17 +20,6 @@ depends = [
   "clone.reyaTokenRouter",
 ]
 
-[invoke.usdc_initialize]
-target = ["USDCProxy"]
-fromCall.func = "owner"
-func = "initialize"
-args = [ 
-  "<%= settings.usdcTokenName %>",
-  "<%= settings.usdcTokenSymbol %>",
-  "<%= settings.usdcTokenDecimals %>",
-]
-depends = ["invoke.upgrade_usdc_proxy"]
-
 [invoke.usdc_unpause]
 target = ["USDCProxy"]
 fromCall.func = "owner"
@@ -53,10 +37,10 @@ func = "setDeniers"
 args = [
   "<%= keccak256(hexlify('global')) %>",
   [
-    "<%= settings.denier1 %>",
-    "<%= settings.denier2 %>",
-    "<%= settings.denier3 %>",
-    "<%= settings.denier4 %>",
+    "<%= settings.pauser1 %>",
+    "<%= settings.pauser2 %>",
+    "<%= settings.pauser3 %>",
+    "<%= settings.pauser4 %>",
   ],
 ]
 depends = ["invoke.upgrade_usdc_proxy"]
