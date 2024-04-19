@@ -1,5 +1,0 @@
-name = "reya-core"
-preset = "main"
-version = "1.0.0"
-description = "Reya Core"
-privateSourceCode = true

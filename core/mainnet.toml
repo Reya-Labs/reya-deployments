@@ -1,0 +1,9 @@
+include = [
+  "utils/upgrade_proxy.toml",
+  "configs/feature_flags.toml",
+  # "configs/protocol_config.toml",
+]
+
+[clone.reyaCoreRouter]
+source = "reya-core:1.0.0@router"
+targetPreset = "router"

@@ -1,20 +1,6 @@
 # This cannonfile has been adjusted for usdc because cannonfiles
 # were refactored after the usdc deployment on reya network
 
-[var.usdc_vars]
-usdcTokenName = "USD Coin"
-usdcTokenSymbol = "USDC"
-usdcTokenDecimals = "6"
-
-# [clone.usdc]
-# source = "reya-tokens:1.0.0@proxy"
-# targetPreset = "usdc"
-# options.owner = "<%= settings.owner %>"
-# options.salt = "<%= settings.usdc_salt %>"
-# depends = [
-#   "vars.initial_proxy_vars",
-# ]
-
 [var.usdc_extra_vars]
 usdcProxyAddress = "0x3B860c0b53f2e8bd5264AA7c3451d41263C933F2"
 
@@ -34,24 +20,28 @@ depends = [
   "clone.reyaTokenRouter",
 ]
 
-[invoke.usdc_initialize]
-target = ["USDCProxy"]
-fromCall.func = "owner"
-func = "initialize"
-args = [ 
-  "<%= settings.usdcTokenName %>",
-  "<%= settings.usdcTokenSymbol %>",
-  "<%= settings.usdcTokenDecimals %>",
-]
-depends = ["invoke.upgrade_usdc_proxy"]
-
 [invoke.usdc_unpause]
 target = ["USDCProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
 args = [
-    "0xb72bd9169e5731cecf365f3aced3ec60a622c3d382d245b60556ef9bd2e43583",
+    "<%= keccak256(hexlify('global')) %>",
     true
+]
+depends = ["invoke.upgrade_usdc_proxy"]
+
+[invoke.usdc_set_deniers]
+target = ["USDCProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+  "<%= keccak256(hexlify('global')) %>",
+  [
+    "<%= settings.pauser1 %>",
+    "<%= settings.pauser2 %>",
+    "<%= settings.pauser3 %>",
+    "<%= settings.pauser4 %>",
+  ],
 ]
 depends = ["invoke.upgrade_usdc_proxy"]
 
@@ -60,7 +50,7 @@ target = ["USDCProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
-    "0xdaf0b3c5710379609eb5495f1ecd348cb28167711b73609fe565a72734550354",
+    "<%= keccak256(hexlify('mint')) %>",
     "<%= settings.usdc_controller %>"
 ]
 depends = ["invoke.upgrade_usdc_proxy"]
@@ -70,7 +60,7 @@ target = ["USDCProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
-    "0xf43e8cfd4725c1e28fa4a6e3e468b4fcf75367166b850ac5f04e33ec843e82c1",
+    "<%= keccak256(hexlify('burn')) %>",
     "<%= settings.usdc_controller %>"
 ]
 depends = ["invoke.upgrade_usdc_proxy"]

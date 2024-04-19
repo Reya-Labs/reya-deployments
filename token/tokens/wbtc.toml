@@ -42,8 +42,23 @@ target = ["WBTCProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
 args = [
-    "0xb72bd9169e5731cecf365f3aced3ec60a622c3d382d245b60556ef9bd2e43583",
+    "<%= keccak256(hexlify('global')) %>",
     true
+]
+depends = ["invoke.upgrade_wbtc_proxy"]
+
+[invoke.wbtc_set_deniers]
+target = ["WBTCProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+  "<%= keccak256(hexlify('global')) %>",
+  [
+    "<%= settings.pauser1 %>",
+    "<%= settings.pauser2 %>",
+    "<%= settings.pauser3 %>",
+    "<%= settings.pauser4 %>",
+  ],
 ]
 depends = ["invoke.upgrade_wbtc_proxy"]
 
@@ -52,7 +67,7 @@ depends = ["invoke.upgrade_wbtc_proxy"]
 # fromCall.func = "owner"
 # func = "addToFeatureFlagAllowlist"
 # args = [
-#     "0xdaf0b3c5710379609eb5495f1ecd348cb28167711b73609fe565a72734550354",
+#     "<%= keccak256(hexlify('mint')) %>",
 #     "<%= settings.wbtc_controller %>"
 # ]
 # depends = ["invoke.upgrade_wbtc_proxy"]
@@ -62,7 +77,7 @@ depends = ["invoke.upgrade_wbtc_proxy"]
 # fromCall.func = "owner"
 # func = "addToFeatureFlagAllowlist"
 # args = [
-#     "0xf43e8cfd4725c1e28fa4a6e3e468b4fcf75367166b850ac5f04e33ec843e82c1",
+#     "<%= keccak256(hexlify('burn')) %>",
 #     "<%= settings.wbtc_controller %>"
 # ]
 # depends = ["invoke.upgrade_wbtc_proxy"]

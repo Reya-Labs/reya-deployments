@@ -1,4 +1,4 @@
-[clone.core]
+[clone.reyaCoreProxy]
 source = "reya-core:1.0.0@proxy"
 targetPreset = "proxy"
 options.owner = "<%= settings.owner %>"

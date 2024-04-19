@@ -1,0 +1,22 @@
+[invoke.create_fee_collector_account]
+target = ["CoreProxy"]
+from = "<%= settings.owner %>"
+func = "createAccount"
+args = ["<%= settings.owner %>"]
+extra.feeCollectorAccountId.event = "AccountCreated"
+extra.feeCollectorAccountId.arg = 0
+depends = [
+  "invoke.unpause",
+  "invoke.enable_account_creation",
+]
+
+[invoke.configure_protocol]
+target = ["CoreProxy"]
+formCall.func = "owner"
+func = "configureProtocol"
+args = [
+  { oracleManagerAddress = "<%= imports.reyaOracleManager.contracts.OracleManagerProxy.address %>", exchangePassNFTAddress = "<%= imports.reyaExchangePasNft.contracts.ExchangePassNFTProxy.address %>", feeCollectorAccountId = "<%= extras.feeCollectorAccountId %>"}
+]
+depends = [
+  "invoke.create_fee_collector_account"
+]
