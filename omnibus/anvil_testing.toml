@@ -37,3 +37,8 @@ tokenName = "Reya USD"
 tokenSymbol = "rUSD"
 underlyingAsset = "<%= contracts.USDCProxy.address %>"
 
+[var.global_collateral_configs]
+rusdCollateralAdapter = "<%= AddressZero %>"
+rusdWithdrawalWindowSize = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
+rusdWithdrawalTvlPercentageLimitD18 = "0"
+

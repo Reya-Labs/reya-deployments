@@ -1,5 +1,6 @@
 include = [
   "utils/commons.toml",
+  "utils/constants.toml",
   "../token/mainnet_reya_network.toml",
   "../rusd/mainnet.toml",
   "../core/mainnet.toml",
@@ -33,3 +34,8 @@ usdc_controller = "0x1d43076909Ca139BFaC4EbB7194518bE3638fc76"
 tokenName = "Reya USD"
 tokenSymbol = "rUSD"
 underlyingAsset = "<%= contracts.USDCProxy.address %>"
+
+[var.global_collateral_configs]
+rusdCollateralAdapter = "<%= AddressZero %>"
+rusdWithdrawalWindowSize = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
+rusdWithdrawalTvlPercentageLimitD18 = "0"
