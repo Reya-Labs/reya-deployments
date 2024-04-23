@@ -1,9 +1,0 @@
-[invoke.unpause]
-target = ["RUSDProxy"]
-fromCall.func = "owner"
-func = "setFeatureFlagAllowAll"
-args = [
-    "<%= keccak256(hexlify('global')) %>",
-    true
-]
-depends = ["invoke.upgrade_rUSD_proxy"]

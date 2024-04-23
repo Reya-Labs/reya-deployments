@@ -1,0 +1,8 @@
+name = "reya-tmf"
+preset = "main"
+version = "1.0.0"
+description = "Reya TMF"
+
+[clone.tmf]
+source = "trusted-multicall-forwarder"
+targetPreset = "main"

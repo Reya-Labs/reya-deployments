@@ -1,4 +1,4 @@
-[invoke.initialize]
+[invoke.rusd_initialize]
 target = ["RUSDProxy"]
 fromCall.func = "owner"
 func = "initialize"

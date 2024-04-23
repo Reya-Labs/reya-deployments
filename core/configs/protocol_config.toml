@@ -15,7 +15,7 @@ target = ["CoreProxy"]
 formCall.func = "owner"
 func = "configureProtocol"
 args = [
-  { oracleManagerAddress = "<%= imports.reyaOracleManager.contracts.OracleManagerProxy.address %>", exchangePassNFTAddress = "<%= imports.reyaExchangePasNft.contracts.ExchangePassNFTProxy.address %>", feeCollectorAccountId = "<%= extras.feeCollectorAccountId %>"}
+  { oracleManagerAddress = "<%= contracts.OracleManagerProxy.address %>", exchangePassNFTAddress = "<%= contracts.ExchangePassNFTProxy.address %>", feeCollectorAccountId = "<%= extras.feeCollectorAccountId %>"}
 ]
 depends = [
   "invoke.create_fee_collector_account"

@@ -47,7 +47,7 @@ args = [
 ]
 depends = ["invoke.upgrade_wbtc_proxy"]
 
-[invoke.wbtc_set_deniers]
+[invoke.wbtc_set_pausers]
 target = ["WBTCProxy"]
 fromCall.func = "owner"
 func = "setDeniers"

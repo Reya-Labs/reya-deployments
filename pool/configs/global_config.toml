@@ -1,0 +1,11 @@
+[invoke.pool_global_config]
+target = ["PoolProxy"]
+formCall.func = "owner"
+func = "setGlobalConfiguration"
+args = [
+  { coreProxy = "<%= contracts.CoreProxy.address %>" }
+]
+depends = [
+  "invoke.upgrade_pool_proxy",
+  "invoke.upgrade_core_proxy",
+]

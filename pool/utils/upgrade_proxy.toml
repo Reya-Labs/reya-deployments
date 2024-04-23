@@ -1,0 +1,19 @@
+[clone.reyaPoolRouter]
+source = "reya-exchange-passive-pool:1.0.0@router"
+targetPreset = "router"
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_pool_proxy]
+target = ["<%= settings.poolProxy %>"]
+abi = "<%= JSON.stringify(reyaPoolRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaPoolRouter.contracts.PoolRouter.address %>"]
+factory.PoolProxy.abiOf = ["reyaPoolRouter.PoolRouter"]
+factory.PoolProxy.event = "Upgraded"
+factory.PoolProxy.arg = 0
+depends = [
+  "var.upgrade_proxy_vars",
+  "clone.reyaPoolRouter"
+]
