@@ -9,8 +9,8 @@ target = ["<%= settings.poolProxy %>"]
 abi = "<%= JSON.stringify(reyaPoolRouter.contracts.OwnerUpgradeModule.abi) %>"
 fromCall.func = "owner"
 func = "upgradeTo"
-args = ["<%= imports.reyaPoolRouter.contracts.PoolRouter.address %>"]
-factory.PoolProxy.abiOf = ["reyaPoolRouter.PoolRouter"]
+args = ["<%= imports.reyaPoolRouter.contracts.PassivePoolRouter.address %>"]
+factory.PoolProxy.abiOf = ["reyaPoolRouter.PassivePoolRouter"]
 factory.PoolProxy.event = "Upgraded"
 factory.PoolProxy.arg = 0
 depends = [
