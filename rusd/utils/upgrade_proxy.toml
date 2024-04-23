@@ -1,3 +1,7 @@
+[clone.reyaRUSDRouter]
+source = "reya-rusd:1.0.0@router"
+targetPreset = "router"
+
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.
 [invoke.upgrade_rUSD_proxy]

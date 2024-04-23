@@ -1,1 +1,11 @@
-include = ["./testnet.toml"]
+include = [
+  "./tokens/usdc.toml",
+  "./tokens/usdt.toml",
+  "./tokens/dai.toml",
+  "./tokens/weth.toml",
+  "./tokens/wbtc.toml",
+]
+
+[clone.reyaTokenRouter]
+source = "reya-tokens:1.0.0@router"
+targetPreset = "router"

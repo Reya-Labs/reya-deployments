@@ -1,4 +1,14 @@
-[invoke.set_deniers]
+[invoke.rusd_unpause]
+target = ["RUSDProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    true
+]
+depends = ["invoke.upgrade_rUSD_proxy"]
+
+[invoke.rusd_set_pausers]
 target = ["RUSDProxy"]
 fromCall.func = "owner"
 func = "setDeniers"

@@ -1,4 +1,4 @@
-[invoke.unpause]
+[invoke.core_unpause]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
@@ -8,7 +8,7 @@ args = [
 ]
 depends = ["invoke.upgrade_core_proxy"]
 
-[invoke.set_deniers]
+[invoke.core_set_pausers]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setDeniers"
@@ -23,7 +23,7 @@ args = [
 ]
 depends = ["invoke.upgrade_core_proxy"]
 
-[invoke.enable_account_creation]
+[invoke.core_enable_account_creation]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
@@ -33,7 +33,7 @@ args = [
 ]
 depends = ["invoke.upgrade_core_proxy"]
 
-[invoke.enable_account_transfer]
+[invoke.core_enable_account_transfer]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"

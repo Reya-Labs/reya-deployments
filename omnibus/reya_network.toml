@@ -1,9 +1,17 @@
 include = [
   "utils/commons.toml",
+  "utils/constants.toml",
   "../token/mainnet_reya_network.toml",
   "../rusd/mainnet.toml",
   "../core/mainnet.toml",
+  "../pool/mainnet.toml",
 ]
+
+[var.account_nft_vars]
+accountNftId = "<%= formatBytes32String('accountNFT') %>"
+accountNftName = "Reya Account NFT"
+accountNftSymbol =  "REYA"
+accountNftUri = "https://reya.xyz/"
 
 [var.initial_proxy_vars]
 owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
@@ -15,6 +23,7 @@ wbtc_salt = "wbtc-main"
 [var.upgrade_proxy_vars]
 coreProxy = "0xA763B6a5E09378434406C003daE6487FbbDc1a80"
 rUSDProxy = "0xa9F32a851B1800742e47725DA54a09A7Ef2556A3"
+poolProxy = "0xB4B77d6180cc14472A9a7BDFF01cc2459368D413"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
@@ -33,3 +42,8 @@ usdc_controller = "0x1d43076909Ca139BFaC4EbB7194518bE3638fc76"
 tokenName = "Reya USD"
 tokenSymbol = "rUSD"
 underlyingAsset = "<%= contracts.USDCProxy.address %>"
+
+[var.global_collateral_configs]
+rusdCollateralAdapter = "<%= AddressZero %>"
+rusdWithdrawalWindowSize = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
+rusdWithdrawalTvlPercentageLimitD18 = "0"

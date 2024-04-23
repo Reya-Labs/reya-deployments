@@ -1,10 +1,6 @@
 include = [
   "./utils/upgrade_proxy.toml",
   # "./configs/initialize.toml",
-  "./configs/unpause.toml",
-  "./configs/setPausers.toml",
+  "./configs/feature_flags.toml",
 ]
 
-[clone.reyaRUSDRouter]
-source = "reya-rusd:1.0.0@router"
-targetPreset = "router"

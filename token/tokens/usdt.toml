@@ -47,7 +47,7 @@ args = [
 ]
 depends = ["invoke.upgrade_usdt_proxy"]
 
-[invoke.usdt_set_deniers]
+[invoke.usdt_set_pausers]
 target = ["USDTProxy"]
 fromCall.func = "owner"
 func = "setDeniers"
