@@ -1,0 +1,25 @@
+[invoke.periphery_set_usdc_controller]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenController"
+args = [ 
+  "<%= contracts.USDCProxy.address %>",
+  "<%= settings.usdc_controller %>"
+]
+depends = [
+  "invoke.upgrade_periphery_proxy",
+  "invoke.upgrade_usdc_proxy",
+]
+
+[invoke.periphery_set_usdc_execution_helper]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenExecutionHelper"
+args = [ 
+  "<%= contracts.USDCProxy.address %>",
+  "<%= settings.usdc_execution_helper %>"
+]
+depends = [
+  "invoke.upgrade_periphery_proxy",
+  "invoke.upgrade_usdc_proxy",
+]

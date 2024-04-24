@@ -4,6 +4,7 @@ include = [
   "../rusd/testnet.toml",
   "../core/testnet.toml",
   "../pool/testnet.toml",
+  "../periphery/testnet.toml",
 ]
 
 [var.account_nft_vars]
@@ -25,6 +26,7 @@ wbtc_salt = "wbtc-main"
 coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
 rUSDProxy = "<%= imports.reyaRusdProxy.contracts.InitialProxy.address %>"
 poolProxy = "<%= imports.reyaPoolProxy.contracts.InitialProxy.address %>"
+peripheryProxy = "<%= imports.reyaPeripheryProxy.contracts.InitialProxy.address %>"
 
 [var.deniers]
 pauser1 = "<%= settings.owner %>"
@@ -32,13 +34,13 @@ pauser2 = "<%= AddressZero %>"        # not used
 pauser3 = "<%= AddressZero %>"        # not used
 pauser4 = "<%= AddressZero %>"        # not used
 
-# owner can mint and burn
-[var.socket_controllers]
+[var.socket_contracts]
 usdc_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 usdt_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 dai_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 weth_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 wbtc_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+usdc_execution_helper = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.rusd_configs]
 tokenName = "Reya USD"

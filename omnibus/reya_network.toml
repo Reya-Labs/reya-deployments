@@ -5,6 +5,7 @@ include = [
   "../rusd/mainnet.toml",
   "../core/mainnet.toml",
   "../pool/mainnet.toml",
+  "../periphery/mainnet.toml",
 ]
 
 [var.account_nft_vars]
@@ -24,6 +25,7 @@ wbtc_salt = "wbtc-main"
 coreProxy = "0xA763B6a5E09378434406C003daE6487FbbDc1a80"
 rUSDProxy = "0xa9F32a851B1800742e47725DA54a09A7Ef2556A3"
 poolProxy = "0xB4B77d6180cc14472A9a7BDFF01cc2459368D413"
+peripheryProxy = "0xCd2869d1eb1BC8991Bc55de9E9B779e912faF736"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
@@ -31,12 +33,13 @@ pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
 pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
-[var.socket_controllers]
+[var.socket_contracts]
 usdc_controller = "0x1d43076909Ca139BFaC4EbB7194518bE3638fc76"
 # usdt_controller = ""
 # dai_controller = ""
 # weth_controller = ""
 # wbtc_controller = ""
+usdc_execution_helper = "0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa"
 
 [var.rusd_configs]
 tokenName = "Reya USD"
