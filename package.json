@@ -1,0 +1,27 @@
+{
+  "name": "reya-deployments",
+  "version": "1.0.0",
+  "description": "Reya Cannon Deployments",
+  "main": "index.js",
+  "repository": "git@github.com:Reya-Labs/reya-deployments.git",
+  "author": "Reya",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "tests"
+  ],
+  "scripts": {
+    "pretty": "prettier . '**/*.toml' --write",
+    "pretty:check": "prettier . '**/*.toml' --check",
+    "lint:check": "yarn workspaces foreach --parallel --verbose run lint:check",
+    "lint:write": "yarn workspaces foreach --parallel --verbose run lint:write",
+    "cannon": "cannon"
+  },
+  "devDependencies": {
+    "@usecannon/builder": "2.12.3",
+    "@usecannon/cli": "2.12.3",
+    "prettier": "3.2.5",
+    "prettier-plugin-toml": "2.0.1",
+    "solc": "0.8.21"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@reya-deployments/test",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lint:check": "yarn lint:sol:check && yarn prettier:check",
+    "lint:write": "yarn lint:sol:write && yarn prettier:write",
+    "lint:sol:check": "forge fmt --check && yarn solhint \"{src,test}/**/*.sol\"",
+    "lint:sol:write": "forge fmt && yarn solhint --fix \"{src,test}/**/*.sol\"",
+    "prettier:check": "prettier --check \"**/*.{json,md,yml}\"",
+    "prettier:write": "prettier --write \"**/*.{json,md,yml}\"",
+    "test:reya_network": "yarn cannon test ../omnibus/reya_network.toml -- "
+  },
+  "devDependencies": {
+    "forge-std": "github:foundry-rs/forge-std#v1.5.6",
+    "@usecannon/builder": "2.12.3",
+    "@usecannon/cli": "2.12.3",
+    "prettier": "3.2.5",
+    "solhint": "3.4.1",
+    "solc": "0.8.21"
+  }
+}
