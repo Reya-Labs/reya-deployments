@@ -5,8 +5,8 @@ func = "createAccount"
 args = ["<%= settings.owner %>"]
 # forge does not include events in the abi, and hence
 # cannon cannot parse the AccountCreated event
-# extra._internal_core_fee_collector_account_id.event = "AccountCreated"
-# extra._internal_core_fee_collector_account_id.arg = 0
+# extra.internalCoreFeeCollectorAccountId.event = "AccountCreated"
+# extra.internalCoreFeeCollectorAccountId.arg = 0
 depends = [
   "invoke.core_unpause",
   "invoke.core_enable_account_creation",
@@ -16,22 +16,22 @@ depends = [
 # and we would like to keep using account id 1.
 # We are basically not using the account created
 # above if on Reya Network.
-# [var.coreFeeCollectorAccountId]
-# core_fee_collector_account_id = "<%= chainId === 1729 ? 1 : settings._internal_core_fee_collector_account_id %>"
+# [var.core_fee_collector_account_id]
+# coreFeeCollectorAccountId = "<%= chainId === 1729 ? 1 : settings.internalCoreFeeCollectorAccountId %>"
 # depends = [
 #   "invoke.core_create_fee_collector_account",
 # ]
 # See comment on lines 6-7.
-[var.coreFeeCollectorAccountId]
-core_fee_collector_account_id = "1"
+[var.core_fee_collector_account_id]
+coreFeeCollectorAccountId = "1"
 
 [invoke.core_configure_protocol]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "configureProtocol"
 args = [
-  { oracleManagerAddress = "<%= contracts.OracleManagerProxy.address %>", exchangePassNFTAddress = "<%= contracts.ExchangePassProxy.address %>", feeCollectorAccountId = "<%= settings.core_fee_collector_account_id %>"}
+  { oracleManagerAddress = "<%= contracts.OracleManagerProxy.address %>", exchangePassNFTAddress = "<%= contracts.ExchangePassProxy.address %>", feeCollectorAccountId = "<%= settings.coreFeeCollectorAccountId %>"}
 ]
 depends = [
-  "var.coreFeeCollectorAccountId"
+  "var.core_fee_collector_account_id"
 ]

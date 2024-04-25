@@ -24,10 +24,10 @@ exchangePassUri = "https://reya.xyz/"
 
 [var.initial_proxy_vars]
 owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
-usdt_salt = "usdt-main"
-dai_salt = "dai-main"
-weth_salt = "weth-main"
-wbtc_salt = "wbtc-main"
+usdtSalt = "usdt-main"
+daiSalt = "dai-main"
+wethSalt = "weth-main"
+wbtcSalt = "wbtc-main"
 
 [var.upgrade_proxy_vars]
 coreProxy = "0xA763B6a5E09378434406C003daE6487FbbDc1a80"
@@ -45,12 +45,23 @@ pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
 [var.socket_contracts]
-usdc_controller = "0x1d43076909Ca139BFaC4EbB7194518bE3638fc76"
-# usdt_controller = ""
-# dai_controller = ""
-# weth_controller = ""
-# wbtc_controller = ""
-usdc_execution_helper = "0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa"
+usdcController = "0x1d43076909Ca139BFaC4EbB7194518bE3638fc76"
+# usdtController = ""
+# daiController = ""
+# wethController = ""
+# wbtcController = ""
+usdcExecutionHelper = "0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa"
+usdcEthereumConnector = "0x807B2e8724cDf346c87EEFF4E309bbFCb8681eC1"
+usdcArbitrumConnector = "0x663dc7E91157c58079f55C1BF5ee1BdB6401Ca7a"
+usdcOptimismConnector = "0xe48AE3B68f0560d4aaA312E12fD687630C948561"
+usdcPolygonConnector = "0x54CAA0946dA179425e1abB169C020004284d64D3"
+
+# TODO
+[var.periphery_socket_withdraw_fees]
+usdcEthereumWithdrawFeeUnscaled = "0"
+usdcArbitrumWithdrawFeeUnscaled = "0"
+usdcOptimismWithdrawFeeUnscaled = "0"
+usdcPolygonWithdrawFeeUnscaled = "0"
 
 [var.rusd_configs]
 tokenName = "Reya USD"
@@ -60,4 +71,4 @@ underlyingAsset = "<%= contracts.USDCProxy.address %>"
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
-rusdWithdrawalTvlPercentageLimitD18 = "0"
+rusdWithdrawalTvlPercentageLimitUnscaled = "0"

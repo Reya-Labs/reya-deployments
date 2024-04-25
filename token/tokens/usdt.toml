@@ -7,7 +7,7 @@ usdtTokenDecimals = "6"
 source = "reya-tokens:1.0.0@proxy"
 targetPreset = "usdt"
 options.owner = "<%= settings.owner %>"
-options.salt = "<%= settings.usdt_salt %>"
+options.salt = "<%= settings.usdtSalt %>"
 depends = [
   "var.initial_proxy_vars",
 ]
@@ -68,7 +68,7 @@ depends = ["invoke.upgrade_usdt_proxy"]
 # func = "addToFeatureFlagAllowlist"
 # args = [
 #     "<%= keccak256(hexlify('mint')) %>",
-#     "<%= settings.usdt_controller %>"
+#     "<%= settings.usdtController %>"
 # ]
 # depends = ["invoke.upgrade_usdt_proxy"]
 
@@ -78,6 +78,6 @@ depends = ["invoke.upgrade_usdt_proxy"]
 # func = "addToFeatureFlagAllowlist"
 # args = [
 #     "<%= keccak256(hexlify('burn')) %>",
-#     "<%= settings.usdt_controller %>"
+#     "<%= settings.usdtController %>"
 # ]
 # depends = ["invoke.upgrade_usdt_proxy"]

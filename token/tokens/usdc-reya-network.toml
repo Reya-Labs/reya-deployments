@@ -1,7 +1,10 @@
 # This cannonfile has been adjusted for usdc because cannonfiles
 # were refactored after the usdc deployment on reya network
 
-[var.usdc_extra_vars]
+[var.usdc_vars]
+usdcTokenName = "USD Coin"
+usdcTokenSymbol = "USDC"
+usdcTokenDecimals = "6"
 usdcProxyAddress = "0x3B860c0b53f2e8bd5264AA7c3451d41263C933F2"
 
 # Upgrades implementation of InitialProxy to point to the new
@@ -16,7 +19,7 @@ factory.USDCProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
 factory.USDCProxy.event = "Upgraded"
 factory.USDCProxy.arg = 0
 depends = [
-  "var.usdc_extra_vars",
+  "var.usdc_vars",
   "clone.reyaTokenRouter",
 ]
 
@@ -51,7 +54,7 @@ fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('mint')) %>",
-    "<%= settings.usdc_controller %>"
+    "<%= settings.usdcController %>"
 ]
 depends = ["invoke.upgrade_usdc_proxy"]
 
@@ -61,6 +64,6 @@ fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('burn')) %>",
-    "<%= settings.usdc_controller %>"
+    "<%= settings.usdcController %>"
 ]
 depends = ["invoke.upgrade_usdc_proxy"]
