@@ -4,8 +4,11 @@ include = [
   "../token/mainnet_reya_network.toml",
   "../rusd/mainnet.toml",
   "../core/mainnet.toml",
-  "../pool/mainnet.toml",
+  "../passive_pool/mainnet.toml",
+  "../passive_perp/mainnet.toml",
   "../periphery/mainnet.toml",
+  "../oracle_manager/mainnet.toml",
+  "../exchange_pass_nft/mainnet_reya_network.toml",
 ]
 
 [var.account_nft_vars]
@@ -13,6 +16,11 @@ accountNftId = "<%= formatBytes32String('accountNFT') %>"
 accountNftName = "Reya Account NFT"
 accountNftSymbol =  "REYA"
 accountNftUri = "https://reya.xyz/"
+
+[var.exchange_pass_vars]
+exchangePassName = "Reya Exchange Pass"
+exchangePassSymbol = "ReyaEPass"
+exchangePassUri = "https://reya.xyz/"
 
 [var.initial_proxy_vars]
 owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
@@ -24,8 +32,11 @@ wbtc_salt = "wbtc-main"
 [var.upgrade_proxy_vars]
 coreProxy = "0xA763B6a5E09378434406C003daE6487FbbDc1a80"
 rUSDProxy = "0xa9F32a851B1800742e47725DA54a09A7Ef2556A3"
-poolProxy = "0xB4B77d6180cc14472A9a7BDFF01cc2459368D413"
+passivePoolProxy = "0xB4B77d6180cc14472A9a7BDFF01cc2459368D413"
+passivePerpProxy = "0x27E5cb712334e101B3c232eB0Be198baaa595F5F"
 peripheryProxy = "0xCd2869d1eb1BC8991Bc55de9E9B779e912faF736"
+oracleManagerProxy = "0xC67316Ed17E0C793041CFE12F674af250a294aab"
+exchangePassProxy = "0x76e3f2667aC55d502e26e59C5A6B46e7079217c7"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
