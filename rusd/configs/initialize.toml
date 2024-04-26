@@ -3,8 +3,8 @@ target = ["RUSDProxy"]
 fromCall.func = "owner"
 func = "initialize"
 args = [ 
-  "<%= settings.tokenName %>",
-  "<%= settings.tokenSymbol %>",
-  "<%= settings.underlyingAsset %>",
+  "<%= settings.rusdTokenName %>",
+  "<%= settings.rusdTokenSymbol %>",
+  "<%= settings.rusdUnderlyingAsset %>",
 ]
 depends = ["invoke.upgrade_rUSD_proxy"]

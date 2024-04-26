@@ -9,6 +9,7 @@ include = [
   "../periphery/mainnet.toml",
   "../oracle_manager/mainnet.toml",
   "../exchange_pass_nft/mainnet_reya_network.toml",
+  "../collateral_pools/collateral_pool_1/mainnet.toml",
 ]
 
 [var.account_nft_vars]
@@ -64,11 +65,83 @@ usdcOptimismWithdrawFeeUnscaled = "0"
 usdcPolygonWithdrawFeeUnscaled = "0"
 
 [var.rusd_configs]
-tokenName = "Reya USD"
-tokenSymbol = "rUSD"
-underlyingAsset = "<%= contracts.USDCProxy.address %>"
+rusdTokenName = "Reya USD"
+rusdTokenSymbol = "rUSD"
+rusdUnderlyingAsset = "<%= contracts.USDCProxy.address %>"
+rusdTokenDecimals = "<%= settings.usdcTokenDecimals %>"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
 rusdWithdrawalTvlPercentageLimitUnscaled = "0"
+
+[var.market_1eth]
+market1Eth_riskMatrixIndex = "0"
+market1Eth_maxOpenBaseUnscaled = "10000"
+market1Eth_velocityMultiplierUnscaled = "1"
+market1Eth_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
+market1Eth_dutchConfig_lambdaUnscaled = "1"
+market1Eth_dutchConfig_minBaseUnscaled = "0"
+market1Eth_slippageParams_phiUnscaled = "0"
+market1Eth_slippageParams_betaUnscaled = "0"
+market1Eth_minimumOrderBaseUnscaled = "0.01"
+market1Eth_baseSpacingUnscaled = "0.005"
+market1Eth_priceSpacingUnscaled = "0.01"
+
+[var.market_2btc]
+market2Btc_riskMatrixIndex = "1"
+market2Btc_maxOpenBaseUnscaled = "600"
+market2Btc_velocityMultiplierUnscaled = "1"
+market2Btc_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
+market2Btc_dutchConfig_lambdaUnscaled = "1"
+market2Btc_dutchConfig_minBaseUnscaled = "0"
+market2Btc_slippageParams_phiUnscaled = "0"
+market2Btc_slippageParams_betaUnscaled = "0"
+market2Btc_minimumOrderBaseUnscaled = "0.001"
+market2Btc_baseSpacingUnscaled = "0.0005"
+market2Btc_priceSpacingUnscaled = "0.01"
+
+[var.cp_1rusd]
+cp1Rusd_maxMarkets = "2"
+cp1Rusd_maxCollaterals = "5"
+cp1Rusd_liquidationFeeUnscaled = "0.4"
+# -----------------------------------------------
+cp1Rusd_riskMatrix00Unscaled = "0.000529"
+cp1Rusd_riskMatrix01Unscaled = "0.0002415"
+cp1Rusd_riskMatrix10Unscaled = "0.0002415"
+cp1Rusd_riskMatrix11Unscaled = "0.000441"
+# -----------------------------------------------
+cp1Rusd_imMultiplierUnscaled = "1.6"
+cp1Rusd_mmrMultiplierUnscaled = "1.14"
+cp1Rusd_dutchMultiplierUnscaled = "0.95"
+cp1Rusd_adlMultiplierUnscaled = "0.5"
+cp1Rusd_imBufferMultiplierUnscaled = "1.7"
+# -----------------------------------------------
+cp1Rusd_backstopLp_liquidationFeeUnscaled = "0.02"
+cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled = "0"
+cp1Rusd_backstopLp_withdrawCooldownDurationInSeconds = "0"
+cp1Rusd_backstopLp_withdrawDurationInSeconds = "0"
+# -----------------------------------------------
+cp1Rusd_bidKeeperFeeUnscaled = "0"
+cp1Rusd_queueDurationInSeconds = "0"
+cp1Rusd_maxOrdersInBid = "0"
+cp1Rusd_maxBidsInQueue = "0"
+cp1Rusd_bidScoreWeightUnscaled = "0"
+cp1Rusd_backstopKeeperFeeUnscaled = "0"
+cp1Rusd_adlExecutionKeeperFeeUnscaled = "0"
+cp1Rusd_dDutchMinUnscaled = "0.00001"
+cp1Rusd_dMaxUnscaled = "0.05"
+# -----------------------------------------------
+# TODO: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_rusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_rusd_withdrawalWindowSize = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
+cp1Rusd_rusd_withdrawalTvlPercentageLimitUnscaled = "1"
+cp1Rusd_rusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_rusd_autoExchangeInsuranceFeeUnscaled = "0.01"
+cp1Rusd_rusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_rusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_rusdParentConfig_collateralAddress = "<%= AddressZero %>"
+cp1Rusd_rusdParentConfig_priceHaircutUnscaled = "0"
+cp1Rusd_rusdParentConfig_autoExchangeDiscountUnscaled = "0"
+cp1Rusd_rusdParentConfig_oracleNodeId = "<%= keccak256(hexlify('TODO')) %>"

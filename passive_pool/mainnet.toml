@@ -2,4 +2,5 @@ include = [
   "utils/upgrade_proxy.toml",
   "configs/global_config.toml",
   "configs/feature_flags.toml",
+  "configs/pools/pool_1rusd.toml",
 ]

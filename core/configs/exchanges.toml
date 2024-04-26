@@ -1,0 +1,27 @@
+[invoke.core_create_exchange_fee_collector_account]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'AccountCreated','inputs':[{'name':'accountId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'owner','type':'address','indexed':true,'internalType':'address'},{'name':'trigger','type':'address','indexed':true,'internalType':'address'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "owner"
+func = "createAccount"
+# TODO: different owner
+args = ["<%= settings.owner %>"]
+var.exchangeFeeCollectorAccountId.event = "AccountCreated"
+var.exchangeFeeCollectorAccountId.arg = 0
+depends = [
+  "invoke.core_unpause",
+  "invoke.core_enable_account_creation",
+]
+
+[invoke.core_register_exchange_passive_pool]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'ExchangeRegistered','inputs':[{'name':'exchangeId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "owner"
+func = "registerExchange"
+args = [
+  "<%= settings.exchangeFeeCollectorAccountId %>"
+]
+var.passivePoolExchangeId.event = "ExchangeRegistered"
+var.passivePoolExchangeId.arg = 0
+depends = [
+  "invoke.exchange_pass_mint_owner",
+]

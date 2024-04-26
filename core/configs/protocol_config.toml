@@ -1,16 +1,15 @@
-[invoke.core_create_fee_collector_account]
-target = ["CoreProxy"]
-from = "<%= settings.owner %>"
-func = "createAccount"
-args = ["<%= settings.owner %>"]
-# forge does not include events in the abi, and hence
-# cannon cannot parse the AccountCreated event
+# TODO later
+# [invoke.core_create_fee_collector_account]
+# target = ["CoreProxy"]
+# from = "<%= settings.owner %>"
+# func = "createAccount"
+# args = ["<%= settings.owner %>"]
 # extra.internalCoreFeeCollectorAccountId.event = "AccountCreated"
 # extra.internalCoreFeeCollectorAccountId.arg = 0
-depends = [
-  "invoke.core_unpause",
-  "invoke.core_enable_account_creation",
-]
+# depends = [
+#   "invoke.core_unpause",
+#   "invoke.core_enable_account_creation",
+# ]
 
 # This was previously configured on Reya Network, 
 # and we would like to keep using account id 1.

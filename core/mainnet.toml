@@ -2,6 +2,7 @@ include = [
   "utils/upgrade_proxy.toml",
   "configs/feature_flags.toml",
   "configs/protocol_config.toml",
+  "configs/instruments.toml",
+  "configs/exchanges.toml",
   "configs/tokens/rusd.toml",
 ]
-

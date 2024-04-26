@@ -8,6 +8,7 @@ include = [
   "../periphery/testnet.toml",
   "../oracle_manager/testnet.toml",
   "../exchange_pass_nft/testnet.toml",
+  "../collateral_pools/collateral_pool_1/testnet.toml",
 ]
 
 [var.account_nft_vars]
@@ -74,3 +75,4 @@ rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
 rusdWithdrawalTvlPercentageLimitUnscaled = "0"
 
+# TODO: add configs

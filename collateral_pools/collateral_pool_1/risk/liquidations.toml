@@ -1,0 +1,52 @@
+[invoke.cp_1rusd_create_backstop_lp_account]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'AccountCreated','inputs':[{'name':'accountId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'owner','type':'address','indexed':true,'internalType':'address'},{'name':'trigger','type':'address','indexed':true,'internalType':'address'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+# todo later: use getCollateralPoolOwner
+fromCall.func = "owner"
+func = "createAccount"
+args = ["<%= settings.owner %>"]
+var.cp1Rusd_backstopLpAccountId.event = "AccountCreated"
+var.cp1Rusd_backstopLpAccountId.arg = 0
+depends = [
+  "invoke.core_unpause",
+  "invoke.core_enable_account_creation",
+]
+
+[invoke.cp_1rusd_backstop_lp_account_activate_market]
+target = ["CoreProxy"]
+# todo later: use getCollateralPoolOwner
+fromCall.func = "owner"
+func = "activateFirstMarketForAccount"
+args = [
+  "<%= settings.cp1Rusd_backstopLpAccountId %>",
+  "<%= settings.market1EthId %>",
+]
+depends = [
+  "var.cp_1rusd_vars",
+]
+
+[invoke.cp_1rusd_set_backstop_lp_config]
+target = ["CoreProxy"]
+# todo later: use getCollateralPoolOwner
+fromCall.func = "owner"
+func = "setBackstopLPConfig"
+args = [
+  "<%= settings.cp1RusdId %>",
+  { accountId = "<%= settings.cp1Rusd_backstopLpAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_backstopLp_liquidationFeeUnscaled) %>", minFreeCollateralThresholdInUSD = "<%= parseEther(settings.cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled) %>", withdrawCooldownDurationInSeconds = "<%= settings.cp1Rusd_backstopLp_withdrawCooldownDurationInSeconds %>", withdrawDurationInSeconds = "<%= settings.cp1Rusd_backstopLp_withdrawDurationInSeconds %>"}
+]
+depends = [
+  "invoke.cp_1rusd_backstop_lp_account_activate_market",
+]
+
+[invoke.cp_1rusd_configure_liquidation]
+target = ["CoreProxy"]
+# todo later: use getCollateralPoolOwner
+fromCall.func = "owner"
+func = "configureLiquidation"
+args = [
+  "<%= settings.cp1RusdId %>",
+  { bidKeeperFee = "<%= parseEther(settings.cp1Rusd_bidKeeperFeeUnscaled) %>", queueDurationInSeconds = "<%= settings.cp1Rusd_queueDurationInSeconds %>", maxOrdersInBid = "<%= settings.cp1Rusd_maxOrdersInBid %>", maxBidsInQueue = "<%= settings.cp1Rusd_maxBidsInQueue %>", bidScoreWeight = "<%= parseEther(settings.cp1Rusd_bidScoreWeightUnscaled) %>", backstopKeeperFee = "<%= parseEther(settings.cp1Rusd_backstopKeeperFeeUnscaled) %>", adlExecutionKeeperFee = "<%= parseEther(settings.cp1Rusd_adlExecutionKeeperFeeUnscaled) %>", dDutchMin = "<%= parseEther(settings.cp1Rusd_dDutchMinUnscaled) %>", dMax = "<%= parseEther(settings.cp1Rusd_dMaxUnscaled) %>" }
+]
+depends = [
+  "var.cp_1rusd_vars",
+]
