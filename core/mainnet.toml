@@ -5,4 +5,8 @@ include = [
   "configs/instruments.toml",
   "configs/exchanges.toml",
   "configs/tokens/rusd.toml",
+  "configs/tokens/usdt.toml",
+  "configs/tokens/dai.toml",
+  "configs/tokens/weth.toml",
+  "configs/tokens/wbtc.toml",
 ]

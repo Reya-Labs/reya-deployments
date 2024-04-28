@@ -1,3 +1,6 @@
 include = [
   "utils/upgrade_proxy.toml",
+  "configs/rusd_usd.toml",
+  # "configs/eth_usd.toml",
+  # "configs/btc_usd.toml",
 ]

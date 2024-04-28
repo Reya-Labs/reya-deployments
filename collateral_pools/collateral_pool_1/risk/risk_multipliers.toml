@@ -10,3 +10,15 @@ args = [
 depends = [
   "var.cp_1rusd_vars"
 ]
+
+[invoke.cp_1rusd_set_pool_custom_im_multiplier]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "sendCallToCore"
+args = [
+  "<%= '0xe3a76ab5'.concat(defaultAbiCoder.encode(['uint128','uint256'],[settings.pool1RusdAccountId, parseEther(settings.cp1Rusd_poolImMultiplierUnscaled)]).substring(2)) %>"
+]
+depends = [
+  "var.cp_1rusd_vars",
+  "var.passive_pool_1rusd",
+]

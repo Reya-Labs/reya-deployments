@@ -1,28 +1,28 @@
-[invoke.cp_1rusd_create_backstop_lp_account]
-target = ["CoreProxy"]
-abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'AccountCreated','inputs':[{'name':'accountId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'owner','type':'address','indexed':true,'internalType':'address'},{'name':'trigger','type':'address','indexed':true,'internalType':'address'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
-# todo later: use getCollateralPoolOwner
-fromCall.func = "owner"
-func = "createAccount"
-args = ["<%= settings.owner %>"]
-var.cp1Rusd_backstopLpAccountId.event = "AccountCreated"
-var.cp1Rusd_backstopLpAccountId.arg = 0
-depends = [
-  "invoke.core_unpause",
-  "invoke.core_enable_account_creation",
-]
+# [invoke.cp_1rusd_create_backstop_lp_account]
+# target = ["CoreProxy"]
+# abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'AccountCreated','inputs':[{'name':'accountId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'owner','type':'address','indexed':true,'internalType':'address'},{'name':'trigger','type':'address','indexed':true,'internalType':'address'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+# # todo later: use getCollateralPoolOwner
+# fromCall.func = "owner"
+# func = "createAccount"
+# args = ["<%= settings.owner %>"]
+# var.cp1Rusd_backstopLpAccountId.event = "AccountCreated"
+# var.cp1Rusd_backstopLpAccountId.arg = 0
+# depends = [
+#   "invoke.core_unpause",
+#   "invoke.core_enable_account_creation",
+# ]
 
-[invoke.cp_1rusd_backstop_lp_account_activate_market]
-target = ["CoreProxy"]
-# todo later: use getCollateralPoolOwner
+[invoke.cp_1rusd_pool_account_activate_market]
+target = ["PassivePoolProxy"]
 fromCall.func = "owner"
-func = "activateFirstMarketForAccount"
+func = "sendCallToCore"
 args = [
-  "<%= settings.cp1Rusd_backstopLpAccountId %>",
-  "<%= settings.market1EthId %>",
+  # TODO later: encode part of this using defaultAbiCoder
+  "0xed5c71a000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001",
 ]
 depends = [
-  "var.cp_1rusd_vars",
+  "var.passive_pool_1rusd",
+  "invoke.cp_1rusd_set_rusd_config"
 ]
 
 [invoke.cp_1rusd_set_backstop_lp_config]
@@ -32,10 +32,11 @@ fromCall.func = "owner"
 func = "setBackstopLPConfig"
 args = [
   "<%= settings.cp1RusdId %>",
-  { accountId = "<%= settings.cp1Rusd_backstopLpAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_backstopLp_liquidationFeeUnscaled) %>", minFreeCollateralThresholdInUSD = "<%= parseEther(settings.cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled) %>", withdrawCooldownDurationInSeconds = "<%= settings.cp1Rusd_backstopLp_withdrawCooldownDurationInSeconds %>", withdrawDurationInSeconds = "<%= settings.cp1Rusd_backstopLp_withdrawDurationInSeconds %>"}
+  { accountId = "<%= settings.pool1RusdAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_backstopLp_liquidationFeeUnscaled) %>", minFreeCollateralThresholdInUSD = "<%= parseEther(settings.cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled) %>", withdrawCooldownDurationInSeconds = "<%= settings.cp1Rusd_backstopLp_withdrawCooldownDurationInSeconds %>", withdrawDurationInSeconds = "<%= settings.cp1Rusd_backstopLp_withdrawDurationInSeconds %>"}
 ]
 depends = [
-  "invoke.cp_1rusd_backstop_lp_account_activate_market",
+  "invoke.cp_1rusd_pool_account_activate_market",
+  "var.cp_1rusd",
 ]
 
 [invoke.cp_1rusd_configure_liquidation]
