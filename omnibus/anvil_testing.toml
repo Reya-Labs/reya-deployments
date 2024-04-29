@@ -65,11 +65,6 @@ usdcArbitrumWithdrawFeeUnscaled = "0"
 usdcOptimismWithdrawFeeUnscaled = "0"
 usdcPolygonWithdrawFeeUnscaled = "0"
 
-[var.rusd_configs]
-tokenName = "Reya USD"
-tokenSymbol = "rUSD"
-underlyingAsset = "<%= contracts.USDCProxy.address %>"
-
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"

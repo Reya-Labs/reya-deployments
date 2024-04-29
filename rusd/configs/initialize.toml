@@ -1,3 +1,9 @@
+[var.rusd_configs]
+rusdTokenName = "Reya USD"
+rusdTokenSymbol = "rUSD"
+rusdUnderlyingAsset = "<%= contracts.USDCProxy.address %>"
+rusdTokenDecimals = "<%= settings.usdcTokenDecimals %>"
+
 [invoke.rusd_initialize]
 target = ["RUSDProxy"]
 fromCall.func = "owner"
