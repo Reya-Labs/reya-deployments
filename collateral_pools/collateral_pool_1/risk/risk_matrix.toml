@@ -1,8 +1,8 @@
 # [invoke.cp_1rusd_create_risk_matrix]
 # target = ["CoreProxy"]
 # abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint256','indexed':true,'internalType':'uint256'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
-# # todo later: use getCollateralPoolOwner
-# fromCall.func = "owner"
+# fromCall.func = "getCollateralPoolOwner"
+# fromCall.args = ["<%= settings.cp1RusdId %>"]
 # func = "createRiskMatrix"
 # var.cp1RusdRiskBlockId.event = "RiskMatrixCreation"
 # var.cp1RusdRiskBlockId.arg = 1
@@ -20,8 +20,8 @@
 [invoke.cp_1rusd_create_risk_matrix_market_1eth]
 target = ["CoreProxy"]
 abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint256','indexed':true,'internalType':'uint256'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
-# todo later: use getCollateralPoolOwner
-fromCall.func = "owner"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "createRiskMatrix"
 var.cp1RusdMarket1EthRiskBlockId.event = "RiskMatrixCreation"
 var.cp1RusdMarket1EthRiskBlockId.arg = 1
@@ -36,8 +36,8 @@ depends = [
 [invoke.cp_1rusd_create_risk_matrix_market_2btc]
 target = ["CoreProxy"]
 abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint256','indexed':true,'internalType':'uint256'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
-# todo later: use getCollateralPoolOwner
-fromCall.func = "owner"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "createRiskMatrix"
 var.cp1RusdMarket2BtcRiskBlockId.event = "RiskMatrixCreation"
 var.cp1RusdMarket2BtcRiskBlockId.arg = 1

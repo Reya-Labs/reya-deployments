@@ -1,7 +1,7 @@
 [invoke.cp_1rusd_set_risk_multipliers]
 target = ["CoreProxy"]
-# todo later: use getCollateralPoolOwner
-fromCall.func = "owner"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "configureRiskMultipliers"
 args = [
   "<%= settings.cp1RusdId %>",
@@ -16,6 +16,7 @@ target = ["PassivePoolProxy"]
 fromCall.func = "owner"
 func = "sendCallToCore"
 args = [
+  # TODO later: replace this once cannon will expose viem.encodeFunctionData in CannonHelperContext
   "<%= '0xe3a76ab5'.concat(defaultAbiCoder.encode(['uint128','uint256'],[settings.pool1RusdAccountId, parseEther(settings.cp1Rusd_poolImMultiplierUnscaled)]).substring(2)) %>"
 ]
 depends = [

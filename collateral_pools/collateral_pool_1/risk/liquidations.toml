@@ -1,8 +1,8 @@
 # [invoke.cp_1rusd_create_backstop_lp_account]
 # target = ["CoreProxy"]
 # abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'AccountCreated','inputs':[{'name':'accountId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'owner','type':'address','indexed':true,'internalType':'address'},{'name':'trigger','type':'address','indexed':true,'internalType':'address'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
-# # todo later: use getCollateralPoolOwner
-# fromCall.func = "owner"
+# fromCall.func = "getCollateralPoolOwner"
+# fromCall.args = ["<%= settings.cp1RusdId %>"]
 # func = "createAccount"
 # args = ["<%= settings.owner %>"]
 # var.cp1Rusd_backstopLpAccountId.event = "AccountCreated"
@@ -17,8 +17,8 @@ target = ["PassivePoolProxy"]
 fromCall.func = "owner"
 func = "sendCallToCore"
 args = [
-  # TODO later: encode part of this using defaultAbiCoder
-  "0xed5c71a000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001",
+  # TODO later: replace this once cannon will expose viem.encodeFunctionData in CannonHelperContext
+  "<%= '0xed5c71a0'.concat(defaultAbiCoder.encode(['uint128','uint128'],[settings.pool1RusdAccountId, settings.cp1RusdId]).substring(2)) %>",
 ]
 depends = [
   "var.passive_pool_1rusd",
@@ -27,8 +27,8 @@ depends = [
 
 [invoke.cp_1rusd_set_backstop_lp_config]
 target = ["CoreProxy"]
-# todo later: use getCollateralPoolOwner
-fromCall.func = "owner"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "setBackstopLPConfig"
 args = [
   "<%= settings.cp1RusdId %>",
@@ -41,8 +41,8 @@ depends = [
 
 [invoke.cp_1rusd_configure_liquidation]
 target = ["CoreProxy"]
-# todo later: use getCollateralPoolOwner
-fromCall.func = "owner"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "configureLiquidation"
 args = [
   "<%= settings.cp1RusdId %>",

@@ -3,8 +3,8 @@ target = ["ExchangePassProxy"]
 fromCall.func = "owner"
 func = "mint"
 args = [
-  "<%= settings.owner %>",
-  "<%= solidityKeccak256(['address','uint256'],[settings.owner, 1]) %>"
+  "<%= settings.passivePoolExchangeFeeCollectorOwner %>",
+  "<%= solidityKeccak256(['address','uint256'],[settings.passivePoolExchangeFeeCollectorOwner, 1]) %>"
 ]
 depends = [
   "invoke.upgrade_exchange_pass_proxy",

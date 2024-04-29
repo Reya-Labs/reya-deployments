@@ -28,8 +28,8 @@ depends = [
 ##################################################
 [invoke.market_1eth_unpause_cp]
 target = ["CoreProxy"]
-# todo later: use getCollateralPoolOwner
-fromCall.func = "owner"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market1EthId %>"]
 func = "setFeatureFlagAllowAll"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market1EthId])) %>",
@@ -42,8 +42,8 @@ depends = [
 
 [invoke.market_1eth_set_pausers_cp]
 target = ["CoreProxy"]
-# todo later: use getCollateralPoolOwner
-fromCall.func = "owner"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market1EthId %>"]
 func = "setDeniers"
 args = [
   "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market1EthId])) %>",
@@ -102,10 +102,11 @@ fromCall.func = "owner"
 func = "setMarketConfiguration"
 args = [
   "<%= settings.market1EthId %>",
-  { riskMatrixIndex = "<%= settings.market1Eth_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market1Eth_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market1Eth_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= keccak256(hexlify('TODO')) %>", mtmWindow = "<%= settings.market1Eth_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market1Eth_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market1Eth_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market1Eth_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market1Eth_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market1Eth_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market1Eth_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market1Eth_priceSpacingUnscaled) %>"}
+  { riskMatrixIndex = "<%= settings.market1Eth_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market1Eth_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market1Eth_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.ethUsdNodeId %>", mtmWindow = "<%= settings.market1Eth_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market1Eth_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market1Eth_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market1Eth_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market1Eth_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market1Eth_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market1Eth_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market1Eth_priceSpacingUnscaled) %>"}
 ]
 depends = [
   "invoke.create_market_1eth",
+  "invoke.oracle_manager_register_node_eth_usd"
 ]
 
 #####################################
@@ -113,8 +114,8 @@ depends = [
 #####################################
 [invoke.market_1eth_set_cp_limits]
 target = ["CoreProxy"]
-# todo later: use getCollateralPoolOwner
-fromCall.func = "owner"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market1EthId %>"]
 func = "setCollateralPoolLimits"
 args = [
   "<%= settings.market1EthId %>",
@@ -142,8 +143,8 @@ depends = [
 
 [invoke.market_1eth_insurance_fund_config]
 target = ["CoreProxy"]
-# todo later: use getCollateralPoolOwner
-fromCall.func = "owner"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market1EthId %>"]
 func = "configureCollateralPoolInsuranceFund"
 args = [
   "<%= settings.market1EthId %>",

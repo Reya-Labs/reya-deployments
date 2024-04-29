@@ -12,6 +12,10 @@ include = [
   "../collateral_pools/collateral_pool_1/mainnet.toml",
 ]
 
+[var.owners]
+owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
+passivePoolExchangeFeeCollectorOwner = "0x93701b8f4e212B4eC058AF375894DB4B64b4f708"
+
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
 accountNftName = "Reya Account NFT"
@@ -24,7 +28,6 @@ exchangePassSymbol = "ReyaEPass"
 exchangePassUri = "https://reya.xyz/"
 
 [var.initial_proxy_vars]
-owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 usdtSalt = "usdt-main"
 daiSalt = "dai-main"
 wethSalt = "weth-main"
@@ -46,8 +49,8 @@ pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
 [var.redstone_oracles]
-redstonePriceFeedETH = "0x9EF1363f109e1e4D5cC3894357f144406f1804D5"
-redstonePriceFeedBTC = "0x852096024A7d400aB0119ef73AAE02aDAeC5E564"
+redstonePriceFeedETH = "0xa7fca6F37eCA129409af5d9d88e015De51C4aff3"
+redstonePriceFeedBTC = "0xc7021763f59F1E3081a36589b701e6928F119961"
 
 [var.socket_contracts]
 usdcController = "0x1d43076909Ca139BFaC4EbB7194518bE3638fc76"
@@ -157,7 +160,7 @@ cp1Rusd_adlExecutionKeeperFeeUnscaled = "0"
 cp1Rusd_dDutchMinUnscaled = "0.00001"
 cp1Rusd_dMaxUnscaled = "0.05"
 # -----------------------------------------------
-# TODO: pass depositingEnabled through var (but there's no parseBool)
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
 cp1Rusd_rusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
 cp1Rusd_rusd_withdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
@@ -171,7 +174,7 @@ cp1Rusd_rusdParentConfig_priceHaircutUnscaled = "0"
 cp1Rusd_rusdParentConfig_autoExchangeDiscountUnscaled = "0"
 cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # -----------------------------------------------
-# TODO: pass depositingEnabled through var (but there's no parseBool)
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
 # cp1Rusd_usdt_capUnscaled = "<%= formatEther(MaxUint256) %>"
 # cp1Rusd_usdt_withdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
@@ -185,7 +188,7 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # cp1Rusd_usdtParentConfig_autoExchangeDiscountUnscaled = "0.001"
 # cp1Rusd_usdtParentConfig_oracleNodeId = "<%= keccak256(hexlify('TODO')) %>"
 # -----------------------------------------------
-# TODO: pass depositingEnabled through var (but there's no parseBool)
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
 # cp1Rusd_dai_capUnscaled = "<%= formatEther(MaxUint256) %>"
 # cp1Rusd_dai_withdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
@@ -199,7 +202,7 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # cp1Rusd_daiParentConfig_autoExchangeDiscountUnscaled = "0.001"
 # cp1Rusd_daiParentConfig_oracleNodeId = "<%= keccak256(hexlify('TODO')) %>"
 # -----------------------------------------------
-# TODO: pass depositingEnabled through var (but there's no parseBool)
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
 # cp1Rusd_weth_capUnscaled = "<%= formatEther(MaxUint256) %>"
 # cp1Rusd_weth_withdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
@@ -213,7 +216,7 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.01"
 # cp1Rusd_wethParentConfig_oracleNodeId = "<%= keccak256(hexlify('TODO')) %>"
 # -----------------------------------------------
-# TODO: pass depositingEnabled through var (but there's no parseBool)
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
 # cp1Rusd_wbtc_capUnscaled = "<%= formatEther(MaxUint256) %>"
 # cp1Rusd_wbtc_withdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
