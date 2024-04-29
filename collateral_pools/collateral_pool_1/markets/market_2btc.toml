@@ -103,11 +103,11 @@ fromCall.func = "owner"
 func = "setMarketConfiguration"
 args = [
   "<%= settings.market2BtcId %>",
-  { riskMatrixIndex = "<%= settings.market2Btc_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market2Btc_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market2Btc_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.btcUsdNodeId %>", mtmWindow = "<%= settings.market2Btc_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market2Btc_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market2Btc_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market2Btc_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market2Btc_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market2Btc_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market2Btc_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market2Btc_priceSpacingUnscaled) %>"}
+  { riskMatrixIndex = "<%= settings.market2Btc_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market2Btc_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market2Btc_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.btcUsdcNodeId %>", mtmWindow = "<%= settings.market2Btc_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market2Btc_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market2Btc_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market2Btc_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market2Btc_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market2Btc_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market2Btc_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market2Btc_priceSpacingUnscaled) %>"}
 ]
 depends = [
   "invoke.create_market_2btc",
-  "invoke.oracle_manager_register_node_btc_usd",
+  "invoke.oracle_manager_register_node_btc_usdc",
 ]
 
 #####################################

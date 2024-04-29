@@ -49,6 +49,7 @@ pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
 [var.redstone_oracles]
+redstonePriceFeedUSDC = "0xCe05AcdD57f1f2e8666386ea7Ed20504a63D0700"
 redstonePriceFeedETH = "0xa7fca6F37eCA129409af5d9d88e015De51C4aff3"
 redstonePriceFeedBTC = "0xc7021763f59F1E3081a36589b701e6928F119961"
 
@@ -126,7 +127,7 @@ market2Btc_priceSpacingUnscaled = "0.01"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "2"
-cp1Rusd_maxCollaterals = "5"
+cp1Rusd_maxCollaterals = "1"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
 # -----------------------------------------------
