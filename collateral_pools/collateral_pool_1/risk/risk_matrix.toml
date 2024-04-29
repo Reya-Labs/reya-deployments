@@ -1,0 +1,77 @@
+# [invoke.cp_1rusd_create_risk_matrix]
+# target = ["CoreProxy"]
+# abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint256','indexed':true,'internalType':'uint256'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+# fromCall.func = "getCollateralPoolOwner"
+# fromCall.args = ["<%= settings.cp1RusdId %>"]
+# func = "createRiskMatrix"
+# var.cp1RusdRiskBlockId.event = "RiskMatrixCreation"
+# var.cp1RusdRiskBlockId.arg = 1
+# args = [
+#   "<%= settings.cp1RusdId %>",
+#   [
+#     ["<%= parseEther(settings.cp1Rusd_riskMatrix00Unscaled) %>", "<%= parseEther(settings.cp1Rusd_riskMatrix01Unscaled) %>"],
+#     ["<%= parseEther(settings.cp1Rusd_riskMatrix10Unscaled) %>", "<%= parseEther(settings.cp1Rusd_riskMatrix11Unscaled) %>"],
+#   ]
+# ]
+# depends = [
+#   "var.cp_1rusd_vars"
+# ]
+
+[invoke.cp_1rusd_create_risk_matrix_market_1eth]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint256','indexed':true,'internalType':'uint256'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
+func = "createRiskMatrix"
+var.cp1RusdMarket1EthRiskBlockId.event = "RiskMatrixCreation"
+var.cp1RusdMarket1EthRiskBlockId.arg = 1
+args = [
+  "<%= settings.cp1RusdId %>",
+  [["<%= parseEther(settings.cp1Rusd_market1Eth_riskMatrix00Unscaled) %>"]]
+]
+depends = [
+  "var.cp_1rusd_vars"
+]
+
+[invoke.cp_1rusd_create_risk_matrix_market_2btc]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint256','indexed':true,'internalType':'uint256'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
+func = "createRiskMatrix"
+var.cp1RusdMarket2BtcRiskBlockId.event = "RiskMatrixCreation"
+var.cp1RusdMarket2BtcRiskBlockId.arg = 1
+args = [
+  "<%= settings.cp1RusdId %>",
+  [["<%= parseEther(settings.cp1Rusd_market2Btc_riskMatrix00Unscaled) %>"]]
+]
+depends = [
+  "var.cp_1rusd_vars"
+]
+
+[invoke.cp_1rusd_set_risk_block_id_market_1eth]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setRiskBlockId"
+args = [
+  "<%= settings.market1EthId %>",
+  "<%= settings.cp1RusdMarket1EthRiskBlockId %>",
+  "<%= settings.market1Eth_riskMatrixIndex %>"
+]
+depends = [
+  "invoke.cp_1rusd_create_risk_matrix_market_1eth"
+]
+
+[invoke.cp_1rusd_set_risk_block_id_market_2btc]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setRiskBlockId"
+args = [
+  "<%= settings.market2BtcId %>",
+  "<%= settings.cp1RusdMarket2BtcRiskBlockId %>",
+  "<%= settings.market2Btc_riskMatrixIndex %>"
+]
+depends = [
+  "invoke.cp_1rusd_create_risk_matrix_market_2btc"
+]
+

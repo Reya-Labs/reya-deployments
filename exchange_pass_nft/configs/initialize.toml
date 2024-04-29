@@ -1,0 +1,12 @@
+[invoke.exchange_pass_initialize]
+target = ["ExchangePassProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+  "<%= settings.exchangePassName %>",
+  "<%= settings.exchangePassSymbol %>",
+  "<%= settings.exchangePassUri %>",
+]
+depends = [
+  "invoke.upgrade_exchange_pass_proxy",
+]

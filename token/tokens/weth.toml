@@ -7,7 +7,7 @@ wethTokenDecimals = "18"
 source = "reya-tokens:1.0.0@proxy"
 targetPreset = "weth"
 options.owner = "<%= settings.owner %>"
-options.salt = "<%= settings.weth_salt %>"
+options.salt = "<%= settings.wethSalt %>"
 depends = [
   "var.initial_proxy_vars",
 ]
@@ -68,7 +68,7 @@ depends = ["invoke.upgrade_weth_proxy"]
 # func = "addToFeatureFlagAllowlist"
 # args = [
 #     "<%= keccak256(hexlify('mint')) %>",
-#     "<%= settings.weth_controller %>"
+#     "<%= settings.wethController %>"
 # ]
 # depends = ["invoke.upgrade_weth_proxy"]
 
@@ -78,6 +78,6 @@ depends = ["invoke.upgrade_weth_proxy"]
 # func = "addToFeatureFlagAllowlist"
 # args = [
 #     "<%= keccak256(hexlify('burn')) %>",
-#     "<%= settings.weth_controller %>"
+#     "<%= settings.wethController %>"
 # ]
 # depends = ["invoke.upgrade_weth_proxy"]

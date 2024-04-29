@@ -1,0 +1,19 @@
+[clone.reyaPeripheryRouter]
+source = "reya-periphery:1.0.0@router"
+targetPreset = "router"
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_periphery_proxy]
+target = ["<%= settings.peripheryProxy %>"]
+abi = "<%= JSON.stringify(reyaPeripheryRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaPeripheryRouter.contracts.PeripheryRouter.address %>"]
+factory.PeripheryProxy.abiOf = ["reyaPeripheryRouter.PeripheryRouter"]
+factory.PeripheryProxy.event = "Upgraded"
+factory.PeripheryProxy.arg = 0
+depends = [
+  "var.upgrade_proxy_vars",
+  "clone.reyaPeripheryRouter"
+]

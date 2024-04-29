@@ -1,0 +1,21 @@
+include = [
+  "markets/market_1eth.toml",
+  "markets/market_2btc.toml",
+  "risk/risk_matrix.toml",
+  "risk/risk_multipliers.toml",
+  "risk/liquidations.toml",
+  "tokens/rusd.toml",
+  # "tokens/usdt.toml",
+  # "tokens/dai.toml",
+  # "tokens/weth.toml",
+  # "tokens/wbtc.toml",
+]
+
+# This var acts as an anchor point in dependencies.
+# The collateral pool configs depend on it.
+[var.cp_1rusd_vars]
+cp1RusdId = "<%= settings.market1EthId %>"
+depends = [
+  "var.market_1eth_vars",
+  "invoke.market_2btc_merge_collateral_pool"
+]

@@ -1,0 +1,12 @@
+[invoke.core_register_instrument_passive_perp]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setInstrumentRegistrationFlag"
+args = [
+  "<%= contracts.PassivePerpProxy.address %>",
+  true
+]
+depends = [
+  "invoke.upgrade_core_proxy",
+  "invoke.upgrade_passive_perp_proxy",
+]

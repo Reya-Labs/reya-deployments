@@ -1,15 +1,15 @@
-[invoke.pool_unpause]
-target = ["PoolProxy"]
+[invoke.passive_pool_unpause]
+target = ["PassivePoolProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
 args = [
     "<%= keccak256(hexlify('global')) %>",
     true
 ]
-depends = ["invoke.upgrade_pool_proxy"]
+depends = ["invoke.upgrade_passive_pool_proxy"]
 
-[invoke.pool_set_pausers]
-target = ["PoolProxy"]
+[invoke.passive_pool_set_pausers]
+target = ["PassivePoolProxy"]
 fromCall.func = "owner"
 func = "setDeniers"
 args = [
@@ -21,4 +21,4 @@ args = [
     "<%= settings.pauser4 %>",
   ],
 ]
-depends = ["invoke.upgrade_pool_proxy"]
+depends = ["invoke.upgrade_passive_pool_proxy"]

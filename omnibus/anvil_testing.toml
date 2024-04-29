@@ -3,7 +3,12 @@ include = [
   "../token/testnet.toml",
   "../rusd/testnet.toml",
   "../core/testnet.toml",
-  "../pool/testnet.toml",
+  "../passive_pool/testnet.toml",
+  "../passive_perp/testnet.toml",
+  "../periphery/testnet.toml",
+  "../oracle_manager/testnet.toml",
+  "../exchange_pass_nft/testnet.toml",
+  "../collateral_pools/collateral_pool_1/testnet.toml",
 ]
 
 [var.account_nft_vars]
@@ -12,19 +17,28 @@ accountNftName = "Reya Account NFT"
 accountNftSymbol =  "REYA"
 accountNftUri = "https://reya.xyz/"
 
+[var.exchange_pass_vars]
+exchangePassName = "Reya Exchange Pass"
+exchangePassSymbol = "ReyaEPass"
+exchangePassUri = "https://reya.xyz/"
+
 [var.initial_proxy_vars]
 owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 salt = "main"
 usdc_salt = "usdc-main"
-usdt_salt = "usdt-main"
-dai_salt = "dai-main"
-weth_salt = "weth-main"
-wbtc_salt = "wbtc-main"
+usdtSalt = "usdt-main"
+daiSalt = "dai-main"
+wethSalt = "weth-main"
+wbtcSalt = "wbtc-main"
 
 [var.upgrade_proxy_vars]
 coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
 rUSDProxy = "<%= imports.reyaRusdProxy.contracts.InitialProxy.address %>"
-poolProxy = "<%= imports.reyaPoolProxy.contracts.InitialProxy.address %>"
+passivePoolProxy = "<%= imports.reyaPassivePoolProxy.contracts.InitialProxy.address %>"
+passivePerpProxy = "<%= imports.reyaPassivePerpProxy.contracts.InitialProxy.address %>"
+peripheryProxy = "<%= imports.reyaPeripheryProxy.contracts.InitialProxy.address %>"
+oracleManagerProxy = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>"
+exchangePassProxy = "<%= imports.reyaExchangePassProxy.contracts.InitialProxy.address %>"
 
 [var.deniers]
 pauser1 = "<%= settings.owner %>"
@@ -32,21 +46,28 @@ pauser2 = "<%= AddressZero %>"        # not used
 pauser3 = "<%= AddressZero %>"        # not used
 pauser4 = "<%= AddressZero %>"        # not used
 
-# owner can mint and burn
-[var.socket_controllers]
-usdc_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-usdt_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-dai_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-weth_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-wbtc_controller = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+# TODO
+[var.socket_contracts]
+usdcController = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+usdtController = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+daiController = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+wethController = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+wbtcController = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+usdcExecutionHelper = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+usdcEthereumConnector = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+usdcArbitrumConnector = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+usdcOptimismConnector = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+usdcPolygonConnector = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
-[var.rusd_configs]
-tokenName = "Reya USD"
-tokenSymbol = "rUSD"
-underlyingAsset = "<%= contracts.USDCProxy.address %>"
+[var.periphery_socket_withdraw_fees]
+usdcEthereumWithdrawFeeUnscaled = "0"
+usdcArbitrumWithdrawFeeUnscaled = "0"
+usdcOptimismWithdrawFeeUnscaled = "0"
+usdcPolygonWithdrawFeeUnscaled = "0"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
-rusdWithdrawalTvlPercentageLimitD18 = "0"
+rusdWithdrawalTvlPercentageLimitUnscaled = "0"
 
+# TODO: add configs

@@ -68,7 +68,7 @@ fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('mint')) %>",
-    "<%= settings.usdc_controller %>"
+    "<%= settings.usdcController %>"
 ]
 depends = ["invoke.upgrade_usdc_proxy"]
 
@@ -78,6 +78,6 @@ fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('burn')) %>",
-    "<%= settings.usdc_controller %>"
+    "<%= settings.usdcController %>"
 ]
 depends = ["invoke.upgrade_usdc_proxy"]

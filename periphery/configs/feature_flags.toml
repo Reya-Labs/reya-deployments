@@ -1,0 +1,24 @@
+[invoke.periphery_unpause]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    true
+]
+depends = ["invoke.upgrade_periphery_proxy"]
+
+[invoke.periphery_set_pausers]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+  "<%= keccak256(hexlify('global')) %>",
+  [
+    "<%= settings.pauser1 %>",
+    "<%= settings.pauser2 %>",
+    "<%= settings.pauser3 %>",
+    "<%= settings.pauser4 %>",
+  ],
+]
+depends = ["invoke.upgrade_periphery_proxy"]
