@@ -9,6 +9,7 @@ include = [
   "../periphery/mainnet.toml",
   "../oracle_manager/mainnet.toml",
   "../exchange_pass_nft/mainnet_reya_network.toml",
+  "../ranks/mainnet.toml",
   "../collateral_pools/collateral_pool_1/mainnet.toml",
 ]
 
@@ -18,9 +19,10 @@ arbitrumChainId = "42161"
 optimismChainId = "10"
 polygonChainId = "137"
 
-[var.owners]
+[var.wallet_addresses]
 owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 passivePoolExchangeFeeCollectorOwner = "0x93701b8f4e212B4eC058AF375894DB4B64b4f708"
+ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
@@ -47,6 +49,7 @@ passivePerpProxy = "0x27E5cb712334e101B3c232eB0Be198baaa595F5F"
 peripheryProxy = "0xCd2869d1eb1BC8991Bc55de9E9B779e912faF736"
 oracleManagerProxy = "0xC67316Ed17E0C793041CFE12F674af250a294aab"
 exchangePassProxy = "0x76e3f2667aC55d502e26e59C5A6B46e7079217c7"
+ranksProxy = "0x4Ab90747A2E8dEC7C378D591b80B9f2f8f78351F"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
