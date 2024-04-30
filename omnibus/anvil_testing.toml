@@ -8,6 +8,7 @@ include = [
   "../periphery/testnet.toml",
   "../oracle_manager/testnet.toml",
   "../exchange_pass_nft/testnet.toml",
+  "../ranks/testnet.toml",
   "../collateral_pools/collateral_pool_1/testnet.toml",
 ]
 
@@ -39,6 +40,7 @@ passivePerpProxy = "<%= imports.reyaPassivePerpProxy.contracts.InitialProxy.addr
 peripheryProxy = "<%= imports.reyaPeripheryProxy.contracts.InitialProxy.address %>"
 oracleManagerProxy = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>"
 exchangePassProxy = "<%= imports.reyaExchangePassProxy.contracts.InitialProxy.address %>"
+ranksProxy = "<%= imports.ranksProxy.contracts.InitialProxy.address %>"
 
 [var.deniers]
 pauser1 = "<%= settings.owner %>"
