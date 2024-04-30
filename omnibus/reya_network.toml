@@ -12,6 +12,12 @@ include = [
   "../collateral_pools/collateral_pool_1/mainnet.toml",
 ]
 
+[var.chain_ids]
+ethereumChainId = "1"
+arbitrumChainId = "42161"
+optimismChainId = "10"
+polygonChainId = "137"
+
 [var.owners]
 owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 passivePoolExchangeFeeCollectorOwner = "0x93701b8f4e212B4eC058AF375894DB4B64b4f708"
@@ -114,7 +120,7 @@ market1Eth_priceSpacingUnscaled = "0.01"
 
 [var.market_2btc]
 market2Btc_riskMatrixIndex = "0"
-market2Btc_maxOpenBaseUnscaled = "0.0016"
+market2Btc_maxOpenBaseUnscaled = "0.002"
 market2Btc_velocityMultiplierUnscaled = "0.00034246"
 market2Btc_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
 market2Btc_dutchConfig_lambdaUnscaled = "1"
