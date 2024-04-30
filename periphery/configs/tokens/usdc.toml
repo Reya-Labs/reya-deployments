@@ -39,7 +39,7 @@ fromCall.func = "owner"
 func = "setTokenChainConnector"
 args = [
   "<%= contracts.USDCProxy.address %>",
-  "<%= settings.ethereum_chain_id %>",
+  "<%= settings.ethereumChainId %>",
   "<%= settings.usdcEthereumConnector %>"
 ]
 depends = [
@@ -53,7 +53,7 @@ fromCall.func = "owner"
 func = "setTokenChainConnector"
 args = [
   "<%= contracts.USDCProxy.address %>",
-  "<%= settings.arbitrum_chain_id %>",
+  "<%= settings.arbitrumChainId %>",
   "<%= settings.usdcArbitrumConnector %>"
 ]
 depends = [
@@ -67,7 +67,7 @@ fromCall.func = "owner"
 func = "setTokenChainConnector"
 args = [
   "<%= contracts.USDCProxy.address %>",
-  "<%= settings.optimism_chain_id %>",
+  "<%= settings.optimismChainId %>",
   "<%= settings.usdcOptimismConnector %>"
 ]
 depends = [
@@ -81,7 +81,7 @@ fromCall.func = "owner"
 func = "setTokenChainConnector"
 args = [
   "<%= contracts.USDCProxy.address %>",
-  "<%= settings.polygon_chain_id %>",
+  "<%= settings.polygonChainId %>",
   "<%= settings.usdcPolygonConnector %>"
 ]
 depends = [
