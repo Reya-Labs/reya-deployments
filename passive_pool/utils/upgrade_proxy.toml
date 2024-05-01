@@ -6,7 +6,7 @@ targetPreset = "router"
 # router implementation.
 [invoke.upgrade_passive_pool_proxy]
 target = ["<%= settings.passivePoolProxy %>"]
-abi = "<%= JSON.stringify(reyaPassivePoolRouter.contracts.OwnerUpgradeModule.abi) %>"
+abi = "<%= JSON.stringify(imports.reyaPassivePoolRouter.contracts.OwnerUpgradeModule.abi) %>"
 fromCall.func = "owner"
 func = "upgradeTo"
 args = ["<%= imports.reyaPassivePoolRouter.contracts.PassivePoolRouter.address %>"]

@@ -11,7 +11,7 @@ usdcProxyAddress = "0x3B860c0b53f2e8bd5264AA7c3451d41263C933F2"
 # router implementation.
 [invoke.upgrade_usdc_proxy]
 target = ["<%= settings.usdcProxyAddress %>"]
-abi = "<%= JSON.stringify(reyaTokenRouter.contracts.OwnerUpgradeModule.abi) %>"
+abi = "<%= JSON.stringify(imports.reyaTokenRouter.contracts.OwnerUpgradeModule.abi) %>"
 fromCall.func = "owner"
 func = "upgradeTo"
 args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]

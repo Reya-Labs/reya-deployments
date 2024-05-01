@@ -6,7 +6,7 @@ targetPreset = "router"
 # router implementation.
 [invoke.upgrade_oracle_manager_proxy]
 target = ["<%= settings.oracleManagerProxy %>"]
-abi = "<%= JSON.stringify(reyaOracleManagerRouter.contracts.OwnerUpgradeModule.abi) %>"
+abi = "<%= JSON.stringify(imports.reyaOracleManagerRouter.contracts.OwnerUpgradeModule.abi) %>"
 fromCall.func = "owner"
 func = "upgradeTo"
 args = ["<%= imports.reyaOracleManagerRouter.contracts.OracleManagerRouter.address %>"]

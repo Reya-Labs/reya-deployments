@@ -6,7 +6,7 @@ targetPreset = "router"
 # router implementation.
 [invoke.upgrade_core_proxy]
 target = ["<%= settings.coreProxy %>"]
-abi = "<%= JSON.stringify(reyaCoreRouter.contracts.OwnerUpgradeModule.abi) %>"
+abi = "<%= JSON.stringify(imports.reyaCoreRouter.contracts.OwnerUpgradeModule.abi) %>"
 fromCall.func = "owner"
 func = "upgradeTo"
 args = ["<%= imports.reyaCoreRouter.contracts.CoreRouter.address %>"]

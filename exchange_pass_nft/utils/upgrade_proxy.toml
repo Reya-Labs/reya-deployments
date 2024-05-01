@@ -6,7 +6,7 @@ targetPreset = "router"
 # router implementation.
 [invoke.upgrade_exchange_pass_proxy]
 target = ["<%= settings.exchangePassProxy %>"]
-abi = "<%= JSON.stringify(reyaExchangePassRouter.contracts.OwnerUpgradeModule.abi) %>"
+abi = "<%= JSON.stringify(imports.reyaExchangePassRouter.contracts.OwnerUpgradeModule.abi) %>"
 fromCall.func = "owner"
 func = "upgradeTo"
 args = ["<%= imports.reyaExchangePassRouter.contracts.ExchangePassRouter.address %>"]
