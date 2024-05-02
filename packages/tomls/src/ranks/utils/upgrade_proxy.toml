@@ -13,7 +13,4 @@ args = ["<%= imports.reyaRanksRouter.contracts.RanksRouter.address %>"]
 factory.RanksProxy.abiOf = ["reyaRanksRouter.RanksRouter"]
 factory.RanksProxy.event = "Upgraded"
 factory.RanksProxy.arg = 0
-depends = [
-  "var.upgrade_proxy_vars",
-  "clone.reyaRanksRouter"
-]
+depends = ["var.upgrade_proxy_vars", "clone.reyaRanksRouter"]

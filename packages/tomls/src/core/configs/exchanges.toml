@@ -6,22 +6,17 @@ func = "createAccount"
 args = ["<%= settings.passivePoolExchangeFeeCollectorOwner %>"]
 var.passivePoolExchangeFeeCollectorAccountId.event = "AccountCreated"
 var.passivePoolExchangeFeeCollectorAccountId.arg = 0
-depends = [
-  "invoke.core_unpause",
-  "invoke.core_enable_account_creation",
-]
+depends = ["invoke.core_unpause", "invoke.core_enable_account_creation"]
 
 [invoke.core_register_exchange_passive_pool]
 target = ["CoreProxy"]
 abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'ExchangeRegistered','inputs':[{'name':'exchangeId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
 fromCall.func = "owner"
 func = "registerExchange"
-args = [
-  "<%= settings.passivePoolExchangeFeeCollectorAccountId %>"
-]
+args = ["<%= settings.passivePoolExchangeFeeCollectorAccountId %>"]
 var.passivePoolExchangeId.event = "ExchangeRegistered"
 var.passivePoolExchangeId.arg = 0
 depends = [
-  "invoke.exchange_pass_mint_owner",
-  "invoke.core_create_passive_pool_exchange_fee_collector_account",
+    "invoke.exchange_pass_mint_owner",
+    "invoke.core_create_passive_pool_exchange_fee_collector_account",
 ]

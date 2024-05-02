@@ -1,5 +1,5 @@
 include = [
-  "utils/upgrade_proxy.toml",
-  "configs/initialize.toml",
-  "configs/mint.toml",
+    "utils/upgrade_proxy.toml",
+    "configs/initialize.toml",
+    "configs/mint.toml",
 ]

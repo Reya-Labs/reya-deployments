@@ -8,9 +8,9 @@ rusdTokenDecimals = "<%= settings.usdcTokenDecimals %>"
 target = ["RUSDProxy"]
 fromCall.func = "owner"
 func = "initialize"
-args = [ 
-  "<%= settings.rusdTokenName %>",
-  "<%= settings.rusdTokenSymbol %>",
-  "<%= settings.rusdUnderlyingAsset %>",
+args = [
+    "<%= settings.rusdTokenName %>",
+    "<%= settings.rusdTokenSymbol %>",
+    "<%= settings.rusdUnderlyingAsset %>",
 ]
 depends = ["invoke.upgrade_rUSD_proxy"]

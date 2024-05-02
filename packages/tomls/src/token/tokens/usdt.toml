@@ -8,9 +8,7 @@ source = "reya-tokens:1.0.0@proxy"
 targetPreset = "usdt"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.usdtSalt %>"
-depends = [
-  "var.initial_proxy_vars",
-]
+depends = ["var.initial_proxy_vars"]
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.
@@ -22,18 +20,16 @@ args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
 factory.USDTProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
 factory.USDTProxy.event = "Upgraded"
 factory.USDTProxy.arg = 0
-depends = [
-  "clone.usdt",
-]
+depends = ["clone.usdt"]
 
 [invoke.usdt_initialize]
 target = ["USDTProxy"]
 fromCall.func = "owner"
 func = "initialize"
-args = [ 
-  "<%= settings.usdtTokenName %>",
-  "<%= settings.usdtTokenSymbol %>",
-  "<%= settings.usdtTokenDecimals %>",
+args = [
+    "<%= settings.usdtTokenName %>",
+    "<%= settings.usdtTokenSymbol %>",
+    "<%= settings.usdtTokenDecimals %>",
 ]
 depends = ["invoke.upgrade_usdt_proxy"]
 
@@ -41,10 +37,7 @@ depends = ["invoke.upgrade_usdt_proxy"]
 target = ["USDTProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
-args = [
-    "<%= keccak256(hexlify('global')) %>",
-    true
-]
+args = ["<%= keccak256(hexlify('global')) %>", true]
 depends = ["invoke.upgrade_usdt_proxy"]
 
 [invoke.usdt_set_pausers]
@@ -52,13 +45,13 @@ target = ["USDTProxy"]
 fromCall.func = "owner"
 func = "setDeniers"
 args = [
-  "<%= keccak256(hexlify('global')) %>",
-  [
-    "<%= settings.pauser1 %>",
-    "<%= settings.pauser2 %>",
-    "<%= settings.pauser3 %>",
-    "<%= settings.pauser4 %>",
-  ],
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
 ]
 depends = ["invoke.upgrade_usdt_proxy"]
 

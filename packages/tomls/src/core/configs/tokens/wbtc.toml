@@ -3,7 +3,11 @@ target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setGlobalCollateralConfig"
 args = [
-  "<%= contracts.WBTCProxy.address %>",
-  { collateralAdapter = "<%= settings.wbtcCollateralAdapter %>", withdrawalWindowSize = "<%= settings.wbtcWithdrawalWindowSize %>",  withdrawalTvlPercentageLimit = "<%= parseEther(settings.wbtcWithdrawalTvlPercentageLimitUnscaled)  %>"}
+    "<%= contracts.WBTCProxy.address %>",
+    { collateralAdapter = "<%= settings.wbtcCollateralAdapter %>", withdrawalWindowSize = "<%= settings.wbtcWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.wbtcWithdrawalTvlPercentageLimitUnscaled)  %>" },
 ]
-depends = ['invoke.upgrade_core_proxy', 'invoke.upgrade_wbtc_proxy', 'var.global_collateral_configs']
+depends = [
+    'invoke.upgrade_core_proxy',
+    'invoke.upgrade_wbtc_proxy',
+    'var.global_collateral_configs',
+]

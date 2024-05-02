@@ -1,21 +1,21 @@
 include = [
-  "utils/commons.toml",
-  "../token/testnet.toml",
-  "../rusd/testnet.toml",
-  "../core/testnet.toml",
-  "../passive_pool/testnet.toml",
-  "../passive_perp/testnet.toml",
-  "../periphery/testnet.toml",
-  "../oracle_manager/testnet.toml",
-  "../exchange_pass_nft/testnet.toml",
-  "../ranks/testnet.toml",
-  "../collateral_pools/collateral_pool_1/testnet.toml",
+    "utils/commons.toml",
+    "../token/testnet.toml",
+    "../rusd/testnet.toml",
+    "../core/testnet.toml",
+    "../passive_pool/testnet.toml",
+    "../passive_perp/testnet.toml",
+    "../periphery/testnet.toml",
+    "../oracle_manager/testnet.toml",
+    "../exchange_pass_nft/testnet.toml",
+    "../ranks/testnet.toml",
+    "../collateral_pools/collateral_pool_1/testnet.toml",
 ]
 
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
 accountNftName = "Reya Account NFT"
-accountNftSymbol =  "REYA"
+accountNftSymbol = "REYA"
 accountNftUri = "https://reya.xyz/"
 
 [var.exchange_pass_vars]
@@ -44,9 +44,9 @@ ranksProxy = "<%= imports.ranksProxy.contracts.InitialProxy.address %>"
 
 [var.deniers]
 pauser1 = "<%= settings.owner %>"
-pauser2 = "<%= AddressZero %>"        # not used
-pauser3 = "<%= AddressZero %>"        # not used
-pauser4 = "<%= AddressZero %>"        # not used
+pauser2 = "<%= AddressZero %>"    # not used
+pauser3 = "<%= AddressZero %>"    # not used
+pauser4 = "<%= AddressZero %>"    # not used
 
 # TODO
 [var.socket_contracts]

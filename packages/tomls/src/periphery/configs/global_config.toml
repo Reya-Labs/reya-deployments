@@ -3,10 +3,10 @@ target = ["PeripheryProxy"]
 fromCall.func = "owner"
 func = "setGlobalConfiguration"
 args = [
-  { coreProxy = "<%= contracts.CoreProxy.address %>", rUSDProxy = "<%= contracts.RUSDProxy.address %>", passivePoolProxy = "<%= contracts.PassivePoolProxy.address %>" }
+    { coreProxy = "<%= contracts.CoreProxy.address %>", rUSDProxy = "<%= contracts.RUSDProxy.address %>", passivePoolProxy = "<%= contracts.PassivePoolProxy.address %>" },
 ]
 depends = [
-  "invoke.upgrade_periphery_proxy",
-  "invoke.upgrade_core_proxy",
-  "invoke.upgrade_rUSD_proxy",
+    "invoke.upgrade_periphery_proxy",
+    "invoke.upgrade_core_proxy",
+    "invoke.upgrade_rUSD_proxy",
 ]

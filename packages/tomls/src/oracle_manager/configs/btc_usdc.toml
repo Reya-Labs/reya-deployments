@@ -3,15 +3,13 @@ target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
 args = [
-  "<%= settings.ORACLE_MANAGER_NODE_TYPE_DIV_REDUCER %>",
-  "0x",
-  [
-    "<%= settings.btcUsdNodeId %>",
-    "<%= settings.usdcUsdNodeId %>",
-  ]
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_DIV_REDUCER %>",
+    "0x",
+    [
+        "<%= settings.btcUsdNodeId %>",
+        "<%= settings.usdcUsdNodeId %>",
+    ],
 ]
 var.btcUsdcNodeId.event = "NodeRegistered"
-var.btcUsdcNodeId.arg = 0 
-depends = [
-  "invoke.upgrade_oracle_manager_proxy",
-]
+var.btcUsdcNodeId.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]

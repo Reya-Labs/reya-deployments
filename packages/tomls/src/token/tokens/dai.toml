@@ -8,9 +8,7 @@ source = "reya-tokens:1.0.0@proxy"
 targetPreset = "dai"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.daiSalt %>"
-depends = [
-  "var.initial_proxy_vars",
-]
+depends = ["var.initial_proxy_vars"]
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.
@@ -22,18 +20,16 @@ args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
 factory.DAIProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
 factory.DAIProxy.event = "Upgraded"
 factory.DAIProxy.arg = 0
-depends = [
-  "clone.dai",
-]
+depends = ["clone.dai"]
 
 [invoke.dai_initialize]
 target = ["DAIProxy"]
 fromCall.func = "owner"
 func = "initialize"
-args = [ 
-  "<%= settings.daiTokenName %>",
-  "<%= settings.daiTokenSymbol %>",
-  "<%= settings.daiTokenDecimals %>",
+args = [
+    "<%= settings.daiTokenName %>",
+    "<%= settings.daiTokenSymbol %>",
+    "<%= settings.daiTokenDecimals %>",
 ]
 depends = ["invoke.upgrade_dai_proxy"]
 
@@ -41,10 +37,7 @@ depends = ["invoke.upgrade_dai_proxy"]
 target = ["DAIProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
-args = [
-    "<%= keccak256(hexlify('global')) %>",
-    true
-]
+args = ["<%= keccak256(hexlify('global')) %>", true]
 depends = ["invoke.upgrade_dai_proxy"]
 
 # [invoke.dai_set_pausers]

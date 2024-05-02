@@ -16,9 +16,7 @@
 [var.passive_pool_1rusd]
 pool1RusdId = "1"
 pool1RusdAccountId = "2"
-depends = [
-  "invoke.upgrade_passive_pool_proxy"
-]
+depends = ["invoke.upgrade_passive_pool_proxy"]
 
 [invoke.passive_pool_unpause_pool_1rusd]
 target = ["PassivePoolProxy"]
@@ -26,8 +24,6 @@ fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('poolEnabled')),settings.pool1RusdId])) %>",
-    true
+    true,
 ]
-depends = [
-  "var.passive_pool_1rusd",
-]
+depends = ["var.passive_pool_1rusd"]

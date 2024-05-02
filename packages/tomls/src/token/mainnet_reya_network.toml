@@ -1,9 +1,9 @@
 include = [
-  "./tokens/usdc-reya-network.toml",
-  "./tokens/usdt.toml",
-  "./tokens/dai.toml",
-  "./tokens/weth.toml",
-  "./tokens/wbtc.toml",
+    "./tokens/usdc-reya-network.toml",
+    "./tokens/usdt.toml",
+    "./tokens/dai.toml",
+    "./tokens/weth.toml",
+    "./tokens/wbtc.toml",
 ]
 
 [clone.reyaTokenRouter]

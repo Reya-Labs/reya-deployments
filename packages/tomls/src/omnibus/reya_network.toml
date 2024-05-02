@@ -1,16 +1,16 @@
 include = [
-  "utils/commons.toml",
-  "utils/constants.toml",
-  "../token/mainnet_reya_network.toml",
-  "../rusd/mainnet.toml",
-  "../core/mainnet.toml",
-  "../passive_pool/mainnet.toml",
-  "../passive_perp/mainnet.toml",
-  "../periphery/mainnet.toml",
-  "../oracle_manager/mainnet.toml",
-  "../exchange_pass_nft/mainnet_reya_network.toml",
-  "../ranks/mainnet.toml",
-  "../collateral_pools/collateral_pool_1/mainnet.toml",
+    "utils/commons.toml",
+    "utils/constants.toml",
+    "../token/mainnet_reya_network.toml",
+    "../rusd/mainnet.toml",
+    "../core/mainnet.toml",
+    "../passive_pool/mainnet.toml",
+    "../passive_perp/mainnet.toml",
+    "../periphery/mainnet.toml",
+    "../oracle_manager/mainnet.toml",
+    "../exchange_pass_nft/mainnet_reya_network.toml",
+    "../ranks/mainnet.toml",
+    "../collateral_pools/collateral_pool_1/mainnet.toml",
 ]
 
 [var.chain_ids]
@@ -27,7 +27,7 @@ ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
 accountNftName = "Reya Account NFT"
-accountNftSymbol =  "REYA"
+accountNftSymbol = "REYA"
 accountNftUri = "https://reya.xyz/"
 
 [var.exchange_pass_vars]

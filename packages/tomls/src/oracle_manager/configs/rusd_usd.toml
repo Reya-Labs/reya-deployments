@@ -3,12 +3,11 @@ target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
 args = [
-  "<%= settings.ORACLE_MANAGER_NODE_TYPE_CONSTANT %>",
-  "<%= defaultAbiCoder.encode(['uint256'], [parseEther('1')]) %>",
-  []
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_CONSTANT %>",
+    "<%= defaultAbiCoder.encode(['uint256'], [parseEther('1')]) %>",
+    [
+    ],
 ]
 var.rusdUsdNodeId.event = "NodeRegistered"
-var.rusdUsdNodeId.arg = 0 
-depends = [
-  "invoke.upgrade_oracle_manager_proxy",
-]
+var.rusdUsdNodeId.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]

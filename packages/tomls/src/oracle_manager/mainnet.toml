@@ -1,9 +1,9 @@
 include = [
-  "utils/upgrade_proxy.toml",
-  "configs/rusd_usd.toml",
-  "configs/usdc_usd.toml",
-  "configs/eth_usd.toml",
-  "configs/btc_usd.toml",
-  "configs/eth_usdc.toml",
-  "configs/btc_usdc.toml",
+    "utils/upgrade_proxy.toml",
+    "configs/rusd_usd.toml",
+    "configs/usdc_usd.toml",
+    "configs/eth_usd.toml",
+    "configs/btc_usd.toml",
+    "configs/eth_usdc.toml",
+    "configs/btc_usdc.toml",
 ]

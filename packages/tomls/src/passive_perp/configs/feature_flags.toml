@@ -2,10 +2,7 @@
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
-args = [
-    "<%= keccak256(hexlify('global')) %>",
-    true
-]
+args = ["<%= keccak256(hexlify('global')) %>", true]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
 [invoke.passive_perp_set_pausers]
@@ -13,12 +10,12 @@ target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setDeniers"
 args = [
-  "<%= keccak256(hexlify('global')) %>",
-  [
-    "<%= settings.pauser1 %>",
-    "<%= settings.pauser2 %>",
-    "<%= settings.pauser3 %>",
-    "<%= settings.pauser4 %>",
-  ],
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]

@@ -29,8 +29,6 @@ target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "configureProtocol"
 args = [
-  { oracleManagerAddress = "<%= contracts.OracleManagerProxy.address %>", exchangePassNFTAddress = "<%= contracts.ExchangePassProxy.address %>", feeCollectorAccountId = "<%= settings.coreFeeCollectorAccountId %>"}
+    { oracleManagerAddress = "<%= contracts.OracleManagerProxy.address %>", exchangePassNFTAddress = "<%= contracts.ExchangePassProxy.address %>", feeCollectorAccountId = "<%= settings.coreFeeCollectorAccountId %>" },
 ]
-depends = [
-  "var.core_fee_collector_account_id"
-]
+depends = ["var.core_fee_collector_account_id"]

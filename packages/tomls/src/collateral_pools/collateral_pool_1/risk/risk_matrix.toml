@@ -26,12 +26,14 @@ func = "createRiskMatrix"
 var.cp1RusdMarket1EthRiskBlockId.event = "RiskMatrixCreation"
 var.cp1RusdMarket1EthRiskBlockId.arg = 1
 args = [
-  "<%= settings.cp1RusdId %>",
-  [["<%= parseEther(settings.cp1Rusd_market1Eth_riskMatrix00Unscaled) %>"]]
+    "<%= settings.cp1RusdId %>",
+    [
+        [
+            "<%= parseEther(settings.cp1Rusd_market1Eth_riskMatrix00Unscaled) %>",
+        ],
+    ],
 ]
-depends = [
-  "var.cp_1rusd_vars"
-]
+depends = ["var.cp_1rusd_vars"]
 
 [invoke.cp_1rusd_create_risk_matrix_market_2btc]
 target = ["CoreProxy"]
@@ -42,36 +44,33 @@ func = "createRiskMatrix"
 var.cp1RusdMarket2BtcRiskBlockId.event = "RiskMatrixCreation"
 var.cp1RusdMarket2BtcRiskBlockId.arg = 1
 args = [
-  "<%= settings.cp1RusdId %>",
-  [["<%= parseEther(settings.cp1Rusd_market2Btc_riskMatrix00Unscaled) %>"]]
+    "<%= settings.cp1RusdId %>",
+    [
+        [
+            "<%= parseEther(settings.cp1Rusd_market2Btc_riskMatrix00Unscaled) %>",
+        ],
+    ],
 ]
-depends = [
-  "var.cp_1rusd_vars"
-]
+depends = ["var.cp_1rusd_vars"]
 
 [invoke.cp_1rusd_set_risk_block_id_market_1eth]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setRiskBlockId"
 args = [
-  "<%= settings.market1EthId %>",
-  "<%= settings.cp1RusdMarket1EthRiskBlockId %>",
-  "<%= settings.market1Eth_riskMatrixIndex %>"
+    "<%= settings.market1EthId %>",
+    "<%= settings.cp1RusdMarket1EthRiskBlockId %>",
+    "<%= settings.market1Eth_riskMatrixIndex %>",
 ]
-depends = [
-  "invoke.cp_1rusd_create_risk_matrix_market_1eth"
-]
+depends = ["invoke.cp_1rusd_create_risk_matrix_market_1eth"]
 
 [invoke.cp_1rusd_set_risk_block_id_market_2btc]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setRiskBlockId"
 args = [
-  "<%= settings.market2BtcId %>",
-  "<%= settings.cp1RusdMarket2BtcRiskBlockId %>",
-  "<%= settings.market2Btc_riskMatrixIndex %>"
+    "<%= settings.market2BtcId %>",
+    "<%= settings.cp1RusdMarket2BtcRiskBlockId %>",
+    "<%= settings.market2Btc_riskMatrixIndex %>",
 ]
-depends = [
-  "invoke.cp_1rusd_create_risk_matrix_market_2btc"
-]
-
+depends = ["invoke.cp_1rusd_create_risk_matrix_market_2btc"]

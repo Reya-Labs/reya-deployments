@@ -18,19 +18,13 @@ args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
 factory.USDCProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
 factory.USDCProxy.event = "Upgraded"
 factory.USDCProxy.arg = 0
-depends = [
-  "var.usdc_vars",
-  "clone.reyaTokenRouter",
-]
+depends = ["var.usdc_vars", "clone.reyaTokenRouter"]
 
 [invoke.usdc_unpause]
 target = ["USDCProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
-args = [
-    "<%= keccak256(hexlify('global')) %>",
-    true
-]
+args = ["<%= keccak256(hexlify('global')) %>", true]
 depends = ["invoke.upgrade_usdc_proxy"]
 
 [invoke.usdc_set_pausers]
@@ -38,13 +32,13 @@ target = ["USDCProxy"]
 fromCall.func = "owner"
 func = "setDeniers"
 args = [
-  "<%= keccak256(hexlify('global')) %>",
-  [
-    "<%= settings.pauser1 %>",
-    "<%= settings.pauser2 %>",
-    "<%= settings.pauser3 %>",
-    "<%= settings.pauser4 %>",
-  ],
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
 ]
 depends = ["invoke.upgrade_usdc_proxy"]
 
@@ -52,18 +46,12 @@ depends = ["invoke.upgrade_usdc_proxy"]
 target = ["USDCProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('mint')) %>",
-    "<%= settings.usdcController %>"
-]
+args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.usdcController %>"]
 depends = ["invoke.upgrade_usdc_proxy"]
 
 [invoke.usdc_burn_permission]
 target = ["USDCProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('burn')) %>",
-    "<%= settings.usdcController %>"
-]
+args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.usdcController %>"]
 depends = ["invoke.upgrade_usdc_proxy"]

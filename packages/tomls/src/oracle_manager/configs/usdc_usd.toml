@@ -3,12 +3,11 @@ target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
 args = [
-  "<%= settings.ORACLE_MANAGER_NODE_TYPE_REDSTONE %>",
-  "<%= defaultAbiCoder.encode(['address','uint256'], [settings.redstonePriceFeedUSDC,0]) %>",
-  []
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_REDSTONE %>",
+    "<%= defaultAbiCoder.encode(['address','uint256'], [settings.redstonePriceFeedUSDC,0]) %>",
+    [
+    ],
 ]
 var.usdcUsdNodeId.event = "NodeRegistered"
-var.usdcUsdNodeId.arg = 0 
-depends = [
-  "invoke.upgrade_oracle_manager_proxy",
-]
+var.usdcUsdNodeId.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]

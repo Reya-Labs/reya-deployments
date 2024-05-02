@@ -5,14 +5,8 @@
 target = ["PeripheryProxy"]
 fromCall.func = "owner"
 func = "setTokenController"
-args = [ 
-  "<%= contracts.USDCProxy.address %>",
-  "<%= settings.usdcController %>"
-]
-depends = [
-  "invoke.upgrade_periphery_proxy",
-  "invoke.upgrade_usdc_proxy",
-]
+args = ["<%= contracts.USDCProxy.address %>", "<%= settings.usdcController %>"]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
 
 #####################################
 # Execution Helper
@@ -21,14 +15,11 @@ depends = [
 target = ["PeripheryProxy"]
 fromCall.func = "owner"
 func = "setTokenExecutionHelper"
-args = [ 
-  "<%= contracts.USDCProxy.address %>",
-  "<%= settings.usdcExecutionHelper %>"
+args = [
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.usdcExecutionHelper %>",
 ]
-depends = [
-  "invoke.upgrade_periphery_proxy",
-  "invoke.upgrade_usdc_proxy",
-]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
 
 #####################################
 # Connectors
@@ -38,56 +29,44 @@ target = ["PeripheryProxy"]
 fromCall.func = "owner"
 func = "setTokenChainConnector"
 args = [
-  "<%= contracts.USDCProxy.address %>",
-  "<%= settings.ethereumChainId %>",
-  "<%= settings.usdcEthereumConnector %>"
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.ethereumChainId %>",
+    "<%= settings.usdcEthereumConnector %>",
 ]
-depends = [
-  "invoke.upgrade_periphery_proxy",
-  "invoke.upgrade_usdc_proxy",
-]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
 
 [invoke.periphery_set_usdcArbitrumConnector]
 target = ["PeripheryProxy"]
 fromCall.func = "owner"
 func = "setTokenChainConnector"
 args = [
-  "<%= contracts.USDCProxy.address %>",
-  "<%= settings.arbitrumChainId %>",
-  "<%= settings.usdcArbitrumConnector %>"
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.arbitrumChainId %>",
+    "<%= settings.usdcArbitrumConnector %>",
 ]
-depends = [
-  "invoke.upgrade_periphery_proxy",
-  "invoke.upgrade_usdc_proxy",
-]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
 
 [invoke.periphery_set_usdcOptimismConnector]
 target = ["PeripheryProxy"]
 fromCall.func = "owner"
 func = "setTokenChainConnector"
 args = [
-  "<%= contracts.USDCProxy.address %>",
-  "<%= settings.optimismChainId %>",
-  "<%= settings.usdcOptimismConnector %>"
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.optimismChainId %>",
+    "<%= settings.usdcOptimismConnector %>",
 ]
-depends = [
-  "invoke.upgrade_periphery_proxy",
-  "invoke.upgrade_usdc_proxy",
-]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
 
 [invoke.periphery_set_usdcPolygonConnector]
 target = ["PeripheryProxy"]
 fromCall.func = "owner"
 func = "setTokenChainConnector"
 args = [
-  "<%= contracts.USDCProxy.address %>",
-  "<%= settings.polygonChainId %>",
-  "<%= settings.usdcPolygonConnector %>"
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.polygonChainId %>",
+    "<%= settings.usdcPolygonConnector %>",
 ]
-depends = [
-  "invoke.upgrade_periphery_proxy",
-  "invoke.upgrade_usdc_proxy",
-]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
 
 #####################################
 # Static Withdraw Fees
@@ -97,14 +76,14 @@ target = ["PeripheryProxy"]
 fromCall.func = "owner"
 func = "setTokenStaticWithdrawFee"
 args = [
-  "<%= contracts.USDCProxy.address %>",
-  "<%= settings.usdcEthereumConnector %>",
-  "<%= parseUnits(settings.usdcEthereumWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.usdcEthereumConnector %>",
+    "<%= parseUnits(settings.usdcEthereumWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
 ]
 depends = [
-  "invoke.upgrade_periphery_proxy",
-  "invoke.upgrade_usdc_proxy",
-  "var.usdc_vars"
+    "invoke.upgrade_periphery_proxy",
+    "invoke.upgrade_usdc_proxy",
+    "var.usdc_vars",
 ]
 
 [invoke.periphery_set_usdc_arbitrum_withdraw_fee]
@@ -112,39 +91,30 @@ target = ["PeripheryProxy"]
 fromCall.func = "owner"
 func = "setTokenStaticWithdrawFee"
 args = [
-  "<%= contracts.USDCProxy.address %>",
-  "<%= settings.usdcArbitrumConnector %>",
-  "<%= parseUnits(settings.usdcArbitrumWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.usdcArbitrumConnector %>",
+    "<%= parseUnits(settings.usdcArbitrumWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
 ]
-depends = [
-  "invoke.upgrade_periphery_proxy",
-  "invoke.upgrade_usdc_proxy",
-]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
 
 [invoke.periphery_set_usdc_optimism_withdraw_fee]
 target = ["PeripheryProxy"]
 fromCall.func = "owner"
 func = "setTokenStaticWithdrawFee"
 args = [
-  "<%= contracts.USDCProxy.address %>",
-  "<%= settings.usdcOptimismConnector %>",
-  "<%= parseUnits(settings.usdcOptimismWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.usdcOptimismConnector %>",
+    "<%= parseUnits(settings.usdcOptimismWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
 ]
-depends = [
-  "invoke.upgrade_periphery_proxy",
-  "invoke.upgrade_usdc_proxy",
-]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
 
 [invoke.periphery_set_usdc_polygon_withdraw_fee]
 target = ["PeripheryProxy"]
 fromCall.func = "owner"
 func = "setTokenStaticWithdrawFee"
 args = [
-  "<%= contracts.USDCProxy.address %>",
-  "<%= settings.usdcPolygonConnector %>",
-  "<%= parseUnits(settings.usdcPolygonWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.usdcPolygonConnector %>",
+    "<%= parseUnits(settings.usdcPolygonWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
 ]
-depends = [
-  "invoke.upgrade_periphery_proxy",
-  "invoke.upgrade_usdc_proxy",
-]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]

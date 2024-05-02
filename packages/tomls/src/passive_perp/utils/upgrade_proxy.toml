@@ -9,11 +9,10 @@ target = ["<%= settings.passivePerpProxy %>"]
 abi = "<%= JSON.stringify(imports.reyaPassivePerpRouter.contracts.OwnerUpgradeModule.abi) %>"
 fromCall.func = "owner"
 func = "upgradeTo"
-args = ["<%= imports.reyaPassivePerpRouter.contracts.PassivePerpRouter.address %>"]
+args = [
+    "<%= imports.reyaPassivePerpRouter.contracts.PassivePerpRouter.address %>",
+]
 factory.PassivePerpProxy.abiOf = ["reyaPassivePerpRouter.PassivePerpRouter"]
 factory.PassivePerpProxy.event = "Upgraded"
 factory.PassivePerpProxy.arg = 0
-depends = [
-  "var.upgrade_proxy_vars",
-  "clone.reyaPassivePerpRouter"
-]
+depends = ["var.upgrade_proxy_vars", "clone.reyaPassivePerpRouter"]

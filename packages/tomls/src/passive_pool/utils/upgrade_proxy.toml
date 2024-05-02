@@ -9,11 +9,10 @@ target = ["<%= settings.passivePoolProxy %>"]
 abi = "<%= JSON.stringify(imports.reyaPassivePoolRouter.contracts.OwnerUpgradeModule.abi) %>"
 fromCall.func = "owner"
 func = "upgradeTo"
-args = ["<%= imports.reyaPassivePoolRouter.contracts.PassivePoolRouter.address %>"]
+args = [
+    "<%= imports.reyaPassivePoolRouter.contracts.PassivePoolRouter.address %>",
+]
 factory.PassivePoolProxy.abiOf = ["reyaPassivePoolRouter.PassivePoolRouter"]
 factory.PassivePoolProxy.event = "Upgraded"
 factory.PassivePoolProxy.arg = 0
-depends = [
-  "var.upgrade_proxy_vars",
-  "clone.reyaPassivePoolRouter"
-]
+depends = ["var.upgrade_proxy_vars", "clone.reyaPassivePoolRouter"]

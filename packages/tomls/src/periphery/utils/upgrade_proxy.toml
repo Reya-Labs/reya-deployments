@@ -13,7 +13,4 @@ args = ["<%= imports.reyaPeripheryRouter.contracts.PeripheryRouter.address %>"]
 factory.PeripheryProxy.abiOf = ["reyaPeripheryRouter.PeripheryRouter"]
 factory.PeripheryProxy.event = "Upgraded"
 factory.PeripheryProxy.arg = 0
-depends = [
-  "var.upgrade_proxy_vars",
-  "clone.reyaPeripheryRouter"
-]
+depends = ["var.upgrade_proxy_vars", "clone.reyaPeripheryRouter"]

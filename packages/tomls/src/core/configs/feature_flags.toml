@@ -2,10 +2,7 @@
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
-args = [
-    "<%= keccak256(hexlify('global')) %>",
-    true
-]
+args = ["<%= keccak256(hexlify('global')) %>", true]
 depends = ["invoke.upgrade_core_proxy"]
 
 [invoke.core_set_pausers]
@@ -13,13 +10,13 @@ target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setDeniers"
 args = [
-  "<%= keccak256(hexlify('global')) %>",
-  [
-    "<%= settings.pauser1 %>",
-    "<%= settings.pauser2 %>",
-    "<%= settings.pauser3 %>",
-    "<%= settings.pauser4 %>",
-  ],
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
 ]
 depends = ["invoke.upgrade_core_proxy"]
 
@@ -27,18 +24,12 @@ depends = ["invoke.upgrade_core_proxy"]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
-args = [
-    "<%= keccak256(hexlify('createAccount')) %>",
-    true
-]
+args = ["<%= keccak256(hexlify('createAccount')) %>", true]
 depends = ["invoke.upgrade_core_proxy"]
 
 [invoke.core_enable_account_transfer]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
-args = [
-    "<%= keccak256(hexlify('notifyAccountTransfer')) %>",
-    true
-]
+args = ["<%= keccak256(hexlify('notifyAccountTransfer')) %>", true]
 depends = ["invoke.upgrade_core_proxy"]

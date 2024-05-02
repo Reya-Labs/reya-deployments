@@ -3,13 +3,10 @@ target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setCollateralConfig"
 args = [
-  "<%= settings.cp1RusdId %>",
-  "<%= contracts.DAIProxy.address %>",
-  # TODO later: pass depositingEnabled through var (but there's no parseBool)
-  { depositingEnabled = true, cap = "<%= parseUnits(settings.cp1Rusd_dai_capUnscaled, parseInt(settings.daiTokenDecimals)) %>", withdrawalWindowSize = "<%= settings.cp1Rusd_dai_withdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.cp1Rusd_dai_withdrawalTvlPercentageLimitUnscaled) %>", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_dai_autoExchangeThresholdUnscaled, parseInt(settings.daiTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_dai_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_dai_autoExchangeDustThresholdUnscaled, parseInt(settings.daiTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_dai_bidSubmissionFeeUnscaled, parseInt(settings.daiTokenDecimals)) %>" },
-  { collateralAddress = "<%= settings.cp1Rusd_daiParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_daiParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_daiParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.cp1Rusd_daiParentConfig_oracleNodeId %>" }
+    "<%= settings.cp1RusdId %>",
+    "<%= contracts.DAIProxy.address %>",
+    # TODO later: pass depositingEnabled through var (but there's no parseBool)
+    { depositingEnabled = true, cap = "<%= parseUnits(settings.cp1Rusd_dai_capUnscaled, parseInt(settings.daiTokenDecimals)) %>", withdrawalWindowSize = "<%= settings.cp1Rusd_dai_withdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.cp1Rusd_dai_withdrawalTvlPercentageLimitUnscaled) %>", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_dai_autoExchangeThresholdUnscaled, parseInt(settings.daiTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_dai_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_dai_autoExchangeDustThresholdUnscaled, parseInt(settings.daiTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_dai_bidSubmissionFeeUnscaled, parseInt(settings.daiTokenDecimals)) %>" },
+    { collateralAddress = "<%= settings.cp1Rusd_daiParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_daiParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_daiParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.cp1Rusd_daiParentConfig_oracleNodeId %>" },
 ]
-depends = [
-  "var.cp_1rusd_vars",
-  "invoke.cp_1rusd_set_rusd_config",
-]
+depends = ["var.cp_1rusd_vars", "invoke.cp_1rusd_set_rusd_config"]

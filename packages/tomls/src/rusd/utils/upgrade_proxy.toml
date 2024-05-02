@@ -13,7 +13,4 @@ args = ["<%= imports.reyaRUSDRouter.contracts.RUSDRouter.address %>"]
 factory.RUSDProxy.abiOf = ["reyaRUSDRouter.RUSDRouter"]
 factory.RUSDProxy.event = "Upgraded"
 factory.RUSDProxy.arg = 0
-depends = [
-  "var.upgrade_proxy_vars",
-  "clone.reyaRUSDRouter"
-]
+depends = ["var.upgrade_proxy_vars", "clone.reyaRUSDRouter"]
