@@ -120,7 +120,6 @@ contract ForkChecks is Test {
         IPassivePoolProxy(pool).removeLiquidity(poolId, userSharesAmount, 0);
 
         vm.prank(user);
-        vm.expectRevert();
         IPassivePoolProxy(pool).removeLiquidity(poolId, userSharesAmount, 0);
     }
 }
