@@ -17,8 +17,8 @@
     "reya_network:test": "lerna run reya_network:test --scope=@reya-deployments/tests"
   },
   "devDependencies": {
-    "@usecannon/builder": "2.13.0",
-    "@usecannon/cli": "2.13.0",
+    "@usecannon/builder": "^2.13.0",
+    "@usecannon/cli": "^2.13.0",
     "forge-std": "github:foundry-rs/forge-std#v1.8.0",
     "lerna": "^8.1.2",
     "prettier": "3.2.5",

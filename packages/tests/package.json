@@ -10,7 +10,7 @@
     "lint:write": "yarn lint:sol:write",
     "lint:sol:check": "forge fmt --check && yarn solhint \"{src,test}/**/*.sol\"",
     "lint:sol:write": "forge fmt && yarn solhint --fix \"{src,test}/**/*.sol\"",
-    "reya_network:test": "cannon test --provider-url https://rpc.reya.network ../tomls/src/omnibus/reya_network.toml"
+    "reya_network:test": "(( $(cannon test --provider-url https://rpc.reya.network ../tomls/src/omnibus/reya_network.toml | tail -n 1 | grep -c 'forge exited with code 1') > 0 )) && until-cannon-exposes-forge-test-exit-code"
   },
   "devDependencies": {
     "solhint": "3.4.1"
