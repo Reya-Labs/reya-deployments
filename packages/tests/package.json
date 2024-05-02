@@ -1,0 +1,18 @@
+{
+  "name": "@reya-deployments/tests",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test",
+    "lint:check": "yarn lint:sol:check",
+    "lint:write": "yarn lint:sol:write",
+    "lint:sol:check": "forge fmt --check && yarn solhint \"{src,test}/**/*.sol\"",
+    "lint:sol:write": "forge fmt && yarn solhint --fix \"{src,test}/**/*.sol\"",
+    "reya_network:test": "cannon test --provider-url https://rpc.reya.network ../tomls/src/omnibus/reya_network.toml"
+  },
+  "devDependencies": {
+    "solhint": "3.4.1"
+  }
+}

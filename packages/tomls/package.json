@@ -1,0 +1,13 @@
+{
+  "name": "@reya-deployments/tomls",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "reya_network:simulate": "cannon build src/omnibus/reya_network.toml --provider-url https://rpc.reya.network --chain-id 1729 --dry-run",
+    "lint:check": "yarn prettier:check",
+    "lint:write": "yarn prettier:write",
+    "prettier:write": "prettier . '**/*.toml' --write",
+    "prettier:check": "prettier . '**/*.toml' --check"
+  }
+}

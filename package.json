@@ -8,20 +8,25 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "tests"
+    "packages/*"
   ],
   "scripts": {
-    "pretty": "prettier . '**/*.toml' --write",
-    "pretty:check": "prettier . '**/*.toml' --check",
-    "lint:check": "yarn workspaces foreach --parallel --verbose run lint:check",
-    "lint:write": "yarn workspaces foreach --parallel --verbose run lint:write",
-    "cannon": "cannon"
+    "lint:check": "lerna run lint:check",
+    "lint:write": "lerna run lint:write",
+    "reya_network:simulate": "lerna run reya_network:simulate --scope=@reya-deployments/tomls",
+    "reya_network:test": "lerna run reya_network:test --scope=@reya-deployments/tests"
   },
   "devDependencies": {
-    "@usecannon/builder": "2.12.3",
-    "@usecannon/cli": "2.12.3",
+    "@usecannon/builder": "2.13.0",
+    "@usecannon/cli": "2.13.0",
+    "forge-std": "github:foundry-rs/forge-std#v1.8.0",
+    "lerna": "^8.1.2",
     "prettier": "3.2.5",
     "prettier-plugin-toml": "2.0.1",
     "solc": "0.8.21"
+  },
+  "packageManager": "yarn@3.5.0",
+  "engines": {
+    "node": ">= 18.14.0"
   }
 }
