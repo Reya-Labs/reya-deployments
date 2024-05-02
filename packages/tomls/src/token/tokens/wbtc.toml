@@ -1,0 +1,76 @@
+[var.wbtc_vars]
+wbtcTokenName = "Wrapped BTC"
+wbtcTokenSymbol = "WBTC"
+wbtcTokenDecimals = "8"
+
+[clone.wbtc]
+source = "reya-tokens:1.0.0@proxy"
+targetPreset = "wbtc"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.wbtcSalt %>"
+depends = ["var.initial_proxy_vars"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_wbtc_proxy]
+target = ["wbtc.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.WBTCProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.WBTCProxy.event = "Upgraded"
+factory.WBTCProxy.arg = 0
+depends = ["clone.wbtc"]
+
+[invoke.wbtc_initialize]
+target = ["WBTCProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.wbtcTokenName %>",
+    "<%= settings.wbtcTokenSymbol %>",
+    "<%= settings.wbtcTokenDecimals %>",
+]
+depends = ["invoke.upgrade_wbtc_proxy"]
+
+[invoke.wbtc_unpause]
+target = ["WBTCProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_wbtc_proxy"]
+
+[invoke.wbtc_set_pausers]
+target = ["WBTCProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_wbtc_proxy"]
+
+# [invoke.wbtc_mint_permission]
+# target = ["WBTCProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = [
+#     "<%= keccak256(hexlify('mint')) %>",
+#     "<%= settings.wbtcController %>"
+# ]
+# depends = ["invoke.upgrade_wbtc_proxy"]
+
+# [invoke.wbtc_burn_permission]
+# target = ["WBTCProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = [
+#     "<%= keccak256(hexlify('burn')) %>",
+#     "<%= settings.wbtcController %>"
+# ]
+# depends = ["invoke.upgrade_wbtc_proxy"]

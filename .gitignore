@@ -1,0 +1,41 @@
+node_modules
+
+# Compiler files
+cache/
+out/
+
+# Ignores development broadcast logs
+broadcast/
+
+# Docs
+docs/
+
+# Dotenv file
+.env
+
+
+# Coverage Files
+lcov.info
+
+bin/
+yarn-error.log
+
+.vscode/
+
+.DS_Store
+.vscode
+.idea
+*.log
+
+/tmp
+
+# Yarn v3
+.yarn/*
+.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+.yarn/versions
+
+deployments/

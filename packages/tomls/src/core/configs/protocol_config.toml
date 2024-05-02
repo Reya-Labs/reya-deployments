@@ -1,0 +1,34 @@
+# TODO later
+# [invoke.core_create_fee_collector_account]
+# target = ["CoreProxy"]
+# from = "<%= settings.owner %>"
+# func = "createAccount"
+# args = ["<%= settings.owner %>"]
+# extra.internalCoreFeeCollectorAccountId.event = "AccountCreated"
+# extra.internalCoreFeeCollectorAccountId.arg = 0
+# depends = [
+#   "invoke.core_unpause",
+#   "invoke.core_enable_account_creation",
+# ]
+
+# This was previously configured on Reya Network, 
+# and we would like to keep using account id 1.
+# We are basically not using the account created
+# above if on Reya Network.
+# [var.core_fee_collector_account_id]
+# coreFeeCollectorAccountId = "<%= chainId === 1729 ? 1 : settings.internalCoreFeeCollectorAccountId %>"
+# depends = [
+#   "invoke.core_create_fee_collector_account",
+# ]
+# See comment on lines 6-7.
+[var.core_fee_collector_account_id]
+coreFeeCollectorAccountId = "1"
+
+[invoke.core_configure_protocol]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "configureProtocol"
+args = [
+    { oracleManagerAddress = "<%= contracts.OracleManagerProxy.address %>", exchangePassNFTAddress = "<%= contracts.ExchangePassProxy.address %>", feeCollectorAccountId = "<%= settings.coreFeeCollectorAccountId %>" },
+]
+depends = ["var.core_fee_collector_account_id"]

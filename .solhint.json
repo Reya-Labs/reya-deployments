@@ -1,0 +1,17 @@
+{
+  "extends": "solhint:recommended",
+  "rules": {
+    "avoid-low-level-calls": "off",
+    "code-complexity": "off",
+    "compiler-version": ["error", ">=0.8.13"],
+    "const-name-snakecase": "off",
+    "contract-name-camelcase": "off",
+    "func-name-mixedcase": "off",
+    "func-visibility": "off",
+    "max-line-length": ["error", 134],
+    "no-inline-assembly": "off",
+    "not-rely-on-time": "off",
+    "var-name-mixedcase": "off",
+    "no-global-import": "off"
+  }
+}

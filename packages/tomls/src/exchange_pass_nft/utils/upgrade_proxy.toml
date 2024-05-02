@@ -1,0 +1,18 @@
+[clone.reyaExchangePassRouter]
+source = "reya-exchange-pass-nft:1.0.0@router"
+targetPreset = "router"
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_exchange_pass_proxy]
+target = ["<%= settings.exchangePassProxy %>"]
+abi = "<%= JSON.stringify(imports.reyaExchangePassRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = [
+    "<%= imports.reyaExchangePassRouter.contracts.ExchangePassRouter.address %>",
+]
+factory.ExchangePassProxy.abiOf = ["reyaExchangePassRouter.ExchangePassRouter"]
+factory.ExchangePassProxy.event = "Upgraded"
+factory.ExchangePassProxy.arg = 0
+depends = ["var.upgrade_proxy_vars", "clone.reyaExchangePassRouter"]

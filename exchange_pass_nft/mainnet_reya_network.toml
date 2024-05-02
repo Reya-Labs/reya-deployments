@@ -1,4 +1,0 @@
-include = [
-  "utils/upgrade_proxy.toml",
-  "configs/mint.toml",
-]

@@ -1,0 +1,18 @@
+[invoke.ranks_update_feature_flag_add_bot]
+target = ["RanksProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('update')) %>", "<%= settings.ranksBot %>"]
+depends = ["invoke.upgrade_ranks_proxy"]
+
+# [invoke.ranks_update_feature_flag_remove_bot]
+# target = ["RanksProxy"]
+# fromCall.func = "owner"
+# func = "removeFromFeatureFlagAllowlist"
+# args = [
+#   "<%= keccak256(hexlify('update')) %>",
+#   "<%= settings.ranksBot %>"
+# ]
+# depends = [
+#   "invoke.ranks_update_feature_flag_add_bot"
+# ]

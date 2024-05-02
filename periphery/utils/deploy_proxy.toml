@@ -1,5 +1,0 @@
-[clone.reyaPeripheryProxy]
-source = "reya-periphery:1.0.0@proxy"
-targetPreset = "proxy"
-options.owner = "<%= settings.owner %>"
-options.salt = "<%= settings.salt %>"

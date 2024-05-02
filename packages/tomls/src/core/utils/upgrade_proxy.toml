@@ -1,0 +1,38 @@
+[clone.reyaCoreRouter]
+source = "reya-core:1.0.0@router"
+targetPreset = "router"
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_core_proxy]
+target = ["<%= settings.coreProxy %>"]
+abi = "<%= JSON.stringify(imports.reyaCoreRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaCoreRouter.contracts.CoreRouter.address %>"]
+factory.CoreProxy.abiOf = ["reyaCoreRouter.CoreRouter"]
+factory.CoreProxy.event = "Upgraded"
+factory.CoreProxy.arg = 0
+depends = ["var.upgrade_proxy_vars", "clone.reyaCoreRouter"]
+
+[clone.reyaAccountNFTRouter]
+source = "reya-core:1.0.0@account-nft-router"
+targetPreset = "account-nft-router"
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_account_nft_proxy]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "initOrUpgradeNft"
+args = [
+    "<%= settings.accountNftId %>",
+    "<%= settings.accountNftName %>",
+    "<%= settings.accountNftSymbol %>",
+    "<%= settings.accountNftUri %>",
+    "<%= imports.reyaAccountNFTRouter.contracts.AccountNFTRouter.address %>",
+]
+factory.AccountNFTProxy.abiOf = ["reyaAccountNFTRouter.AccountNFTRouter"]
+factory.AccountNFTProxy.event = "AssociatedSystemSet"
+factory.AccountNFTProxy.arg = 2
+depends = ["invoke.upgrade_core_proxy", "clone.reyaAccountNFTRouter"]

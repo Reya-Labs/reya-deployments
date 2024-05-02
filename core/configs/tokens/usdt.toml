@@ -1,9 +1,0 @@
-[invoke.usdt_global_collateral_config]
-target = ["CoreProxy"]
-fromCall.func = "owner"
-func = "setGlobalCollateralConfig"
-args = [
-  "<%= contracts.USDTProxy.address %>",
-  { collateralAdapter = "<%= settings.usdtCollateralAdapter %>", withdrawalWindowSize = "<%= settings.usdtWithdrawalWindowSize %>",  withdrawalTvlPercentageLimit = "<%= parseEther(settings.usdtWithdrawalTvlPercentageLimitUnscaled)  %>"}
-]
-depends = ['invoke.upgrade_core_proxy', 'invoke.upgrade_usdt_proxy', 'var.global_collateral_configs']

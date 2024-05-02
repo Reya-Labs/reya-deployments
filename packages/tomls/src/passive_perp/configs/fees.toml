@@ -1,0 +1,19 @@
+[invoke.passive_perp_set_exchange_passive_pool_rebate]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setExchangeRebate"
+args = [
+    "<%= settings.passivePoolExchangeId %>",
+    "<%= parseEther(settings.passivePoolExchangeRebateUnscaled) %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_pool_1rusd_rebate]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setPoolRebate"
+args = [
+    "<%= settings.pool1RusdId %>",
+    "<%= parseEther(settings.pool1RusdRebateUnscaled) %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]

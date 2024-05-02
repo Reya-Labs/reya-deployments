@@ -1,0 +1,13 @@
+[invoke.dai_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= contracts.DAIProxy.address %>",
+    { collateralAdapter = "<%= settings.daiCollateralAdapter %>", withdrawalWindowSize = "<%= settings.daiWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.daiWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = [
+    'invoke.upgrade_core_proxy',
+    'invoke.upgrade_dai_proxy',
+    'var.global_collateral_configs',
+]

@@ -1,0 +1,20 @@
+[clone.reyaOracleManagerRouter]
+source = "reya-oracle-manager:1.0.0@router"
+targetPreset = "router"
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_oracle_manager_proxy]
+target = ["<%= settings.oracleManagerProxy %>"]
+abi = "<%= JSON.stringify(imports.reyaOracleManagerRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = [
+    "<%= imports.reyaOracleManagerRouter.contracts.OracleManagerRouter.address %>",
+]
+factory.OracleManagerProxy.abiOf = [
+    "reyaOracleManagerRouter.OracleManagerRouter",
+]
+factory.OracleManagerProxy.event = "Upgraded"
+factory.OracleManagerProxy.arg = 0
+depends = ["var.upgrade_proxy_vars", "clone.reyaOracleManagerRouter"]

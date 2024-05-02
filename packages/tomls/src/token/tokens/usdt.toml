@@ -1,0 +1,76 @@
+[var.usdt_vars]
+usdtTokenName = "Tether USD"
+usdtTokenSymbol = "USDT"
+usdtTokenDecimals = "6"
+
+[clone.usdt]
+source = "reya-tokens:1.0.0@proxy"
+targetPreset = "usdt"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.usdtSalt %>"
+depends = ["var.initial_proxy_vars"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_usdt_proxy]
+target = ["usdt.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.USDTProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.USDTProxy.event = "Upgraded"
+factory.USDTProxy.arg = 0
+depends = ["clone.usdt"]
+
+[invoke.usdt_initialize]
+target = ["USDTProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.usdtTokenName %>",
+    "<%= settings.usdtTokenSymbol %>",
+    "<%= settings.usdtTokenDecimals %>",
+]
+depends = ["invoke.upgrade_usdt_proxy"]
+
+[invoke.usdt_unpause]
+target = ["USDTProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_usdt_proxy"]
+
+[invoke.usdt_set_pausers]
+target = ["USDTProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_usdt_proxy"]
+
+# [invoke.usdt_mint_permission]
+# target = ["USDTProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = [
+#     "<%= keccak256(hexlify('mint')) %>",
+#     "<%= settings.usdtController %>"
+# ]
+# depends = ["invoke.upgrade_usdt_proxy"]
+
+# [invoke.usdt_burn_permission]
+# target = ["USDTProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = [
+#     "<%= keccak256(hexlify('burn')) %>",
+#     "<%= settings.usdtController %>"
+# ]
+# depends = ["invoke.upgrade_usdt_proxy"]

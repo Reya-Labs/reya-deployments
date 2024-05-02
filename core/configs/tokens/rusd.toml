@@ -1,9 +1,0 @@
-[invoke.rusd_global_collateral_config]
-target = ["CoreProxy"]
-fromCall.func = "owner"
-func = "setGlobalCollateralConfig"
-args = [
-  "<%= contracts.RUSDProxy.address %>",
-  { collateralAdapter = "<%= settings.rusdCollateralAdapter %>", withdrawalWindowSize = "<%= settings.rusdWithdrawalWindowSize %>",  withdrawalTvlPercentageLimit = "<%= parseEther(settings.rusdWithdrawalTvlPercentageLimitUnscaled)  %>"}
-]
-depends = ['invoke.upgrade_core_proxy', 'invoke.upgrade_rUSD_proxy', 'var.global_collateral_configs']

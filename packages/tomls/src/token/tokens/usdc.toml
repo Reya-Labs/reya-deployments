@@ -1,0 +1,70 @@
+[var.usdc_vars]
+usdcTokenName = "USD Coin"
+usdcTokenSymbol = "USDC"
+usdcTokenDecimals = "6"
+
+[clone.usdc]
+source = "reya-tokens:1.0.0@proxy"
+targetPreset = "usdc"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.usdc_salt %>"
+depends = ["var.initial_proxy_vars"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_usdc_proxy]
+target = ["usdc.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.USDCProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.USDCProxy.event = "Upgraded"
+factory.USDCProxy.arg = 0
+depends = ["clone.usdc"]
+
+[invoke.usdc_initialize]
+target = ["USDCProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.usdcTokenName %>",
+    "<%= settings.usdcTokenSymbol %>",
+    "<%= settings.usdcTokenDecimals %>",
+]
+depends = ["invoke.upgrade_usdc_proxy"]
+
+[invoke.usdc_unpause]
+target = ["USDCProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_usdc_proxy"]
+
+[invoke.usdc_set_pausers]
+target = ["USDCProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_usdc_proxy"]
+
+[invoke.usdc_mint_permission]
+target = ["USDCProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.usdcController %>"]
+depends = ["invoke.upgrade_usdc_proxy"]
+
+[invoke.usdc_burn_permission]
+target = ["USDCProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.usdcController %>"]
+depends = ["invoke.upgrade_usdc_proxy"]

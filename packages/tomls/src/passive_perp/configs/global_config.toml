@@ -1,0 +1,8 @@
+[invoke.passive_perp_global_config]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setGlobalConfiguration"
+args = [
+    { coreProxy = "<%= contracts.CoreProxy.address %>", exchangeProxy = "<%= contracts.PassivePoolProxy.address %>" },
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]

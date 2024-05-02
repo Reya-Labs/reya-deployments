@@ -1,0 +1,32 @@
+{
+  "name": "reya-deployments",
+  "version": "1.0.0",
+  "description": "Reya Cannon Deployments",
+  "main": "index.js",
+  "repository": "git@github.com:Reya-Labs/reya-deployments.git",
+  "author": "Reya",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "lint:check": "lerna run lint:check",
+    "lint:write": "lerna run lint:write",
+    "reya_network:simulate": "lerna run reya_network:simulate --scope=@reya-deployments/tomls",
+    "reya_network:test": "lerna run reya_network:test --scope=@reya-deployments/tests"
+  },
+  "devDependencies": {
+    "@usecannon/builder": "2.13.0",
+    "@usecannon/cli": "2.13.0",
+    "forge-std": "github:foundry-rs/forge-std#v1.8.0",
+    "lerna": "^8.1.2",
+    "prettier": "3.2.5",
+    "prettier-plugin-toml": "2.0.1",
+    "solc": "0.8.21"
+  },
+  "packageManager": "yarn@3.5.0",
+  "engines": {
+    "node": ">= 18.14.0"
+  }
+}

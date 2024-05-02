@@ -1,9 +1,0 @@
-[invoke.weth_global_collateral_config]
-target = ["CoreProxy"]
-fromCall.func = "owner"
-func = "setGlobalCollateralConfig"
-args = [
-  "<%= contracts.WETHProxy.address %>",
-  { collateralAdapter = "<%= settings.wethCollateralAdapter %>", withdrawalWindowSize = "<%= settings.wethWithdrawalWindowSize %>",  withdrawalTvlPercentageLimit = "<%= parseEther(settings.wethWithdrawalTvlPercentageLimitUnscaled)  %>"}
-]
-depends = ['invoke.upgrade_core_proxy', 'invoke.upgrade_weth_proxy', 'var.global_collateral_configs']

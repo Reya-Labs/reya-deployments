@@ -1,4 +1,0 @@
-include = [
-  "./mainnet.toml",
-  "utils/deploy_proxy.toml",
-]

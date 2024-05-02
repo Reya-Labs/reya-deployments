@@ -1,0 +1,76 @@
+[var.weth_vars]
+wethTokenName = "Wrapped Ether"
+wethTokenSymbol = "WETH"
+wethTokenDecimals = "18"
+
+[clone.weth]
+source = "reya-tokens:1.0.0@proxy"
+targetPreset = "weth"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.wethSalt %>"
+depends = ["var.initial_proxy_vars"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_weth_proxy]
+target = ["weth.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.WETHProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.WETHProxy.event = "Upgraded"
+factory.WETHProxy.arg = 0
+depends = ["clone.weth"]
+
+[invoke.weth_initialize]
+target = ["WETHProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.wethTokenName %>",
+    "<%= settings.wethTokenSymbol %>",
+    "<%= settings.wethTokenDecimals %>",
+]
+depends = ["invoke.upgrade_weth_proxy"]
+
+[invoke.weth_unpause]
+target = ["WETHProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_weth_proxy"]
+
+[invoke.weth_set_pausers]
+target = ["WETHProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_weth_proxy"]
+
+# [invoke.weth_mint_permission]
+# target = ["WETHProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = [
+#     "<%= keccak256(hexlify('mint')) %>",
+#     "<%= settings.wethController %>"
+# ]
+# depends = ["invoke.upgrade_weth_proxy"]
+
+# [invoke.weth_burn_permission]
+# target = ["WETHProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = [
+#     "<%= keccak256(hexlify('burn')) %>",
+#     "<%= settings.wethController %>"
+# ]
+# depends = ["invoke.upgrade_weth_proxy"]
