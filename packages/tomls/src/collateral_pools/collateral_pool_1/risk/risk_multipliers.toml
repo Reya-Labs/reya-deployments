@@ -17,4 +17,4 @@ args = [
     # TODO later: replace this once cannon will expose viem.encodeFunctionData in CannonHelperContext
     "<%= '0xe3a76ab5'.concat(defaultAbiCoder.encode(['uint128','uint256'],[settings.pool1RusdAccountId, parseEther(settings.cp1Rusd_poolImMultiplierUnscaled)]).substring(2)) %>",
 ]
-depends = ["var.cp_1rusd_vars", "var.passive_pool_1rusd"]
+depends = ["var.cp_1rusd_vars", "invoke.passive_pool_create_pool_1rusd"]
