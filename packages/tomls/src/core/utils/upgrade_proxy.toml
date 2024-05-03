@@ -1,6 +1,6 @@
 [clone.reyaCoreRouter]
 source = "reya-core:1.0.0@router"
-targetPreset = "router"
+target = "reya-core:1.0.0@router"
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.
@@ -17,7 +17,7 @@ depends = ["var.upgrade_proxy_vars", "clone.reyaCoreRouter"]
 
 [clone.reyaAccountNFTRouter]
 source = "reya-core:1.0.0@account-nft-router"
-targetPreset = "account-nft-router"
+target = "reya-core:1.0.0@account-nft-router"
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.

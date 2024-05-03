@@ -1,5 +1,5 @@
 [clone.reyaExchangePassProxy]
 source = "reya-exchange-pass-nft:1.0.0@proxy"
-targetPreset = "proxy"
+target = "reya-exchange-pass-nft:1.0.0@proxy"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.salt %>"

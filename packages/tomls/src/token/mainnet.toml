@@ -8,4 +8,4 @@ include = [
 
 [clone.reyaTokenRouter]
 source = "reya-tokens:1.0.0@router"
-targetPreset = "router"
+target = "reya-tokens:1.0.0@router"

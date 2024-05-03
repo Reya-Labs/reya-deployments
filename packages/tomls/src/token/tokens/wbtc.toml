@@ -5,7 +5,7 @@ wbtcTokenDecimals = "8"
 
 [clone.wbtc]
 source = "reya-tokens:1.0.0@proxy"
-targetPreset = "wbtc"
+target = "reya-tokens:1.0.0@wbtc"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.wbtcSalt %>"
 depends = ["var.initial_proxy_vars"]

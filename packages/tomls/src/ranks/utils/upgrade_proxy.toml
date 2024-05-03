@@ -1,6 +1,6 @@
 [clone.reyaRanksRouter]
 source = "reya-ranks:1.0.0@router"
-targetPreset = "router"
+target = "reya-ranks:1.0.0@router"
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.

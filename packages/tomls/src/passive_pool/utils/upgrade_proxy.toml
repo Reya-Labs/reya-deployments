@@ -1,6 +1,6 @@
 [clone.reyaPassivePoolRouter]
 source = "reya-exchange-passive-pool:1.0.0@router"
-targetPreset = "router"
+target = "reya-exchange-passive-pool:1.0.0@router"
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.

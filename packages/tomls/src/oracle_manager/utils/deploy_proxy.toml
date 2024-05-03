@@ -1,5 +1,5 @@
 [clone.reyaOracleManagerProxy]
 source = "reya-oracle-manager:1.0.0@proxy"
-targetPreset = "proxy"
+target = "reya-oracle-manager:1.0.0@proxy"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.salt %>"
