@@ -11,7 +11,7 @@ var.market_1eth.event = "MarketDataUpdated"
 var.market_1eth.arg = 0
 depends = [
     "invoke.core_register_instrument_passive_perp",
-    "var.passive_pool_1rusd",
+    "invoke.passive_pool_create_pool_1rusd",
 ]
 
 [var.market_1eth_vars]

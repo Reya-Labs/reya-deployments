@@ -1,22 +1,14 @@
-# [invoke.passive_pool_create_pool_1rusd]
-# target = ["PassivePoolProxy"]
-# abi = "<%= JSON.stringify(contracts.PassivePoolProxy.abi.concat([{'type':'event','name':'PoolCreated','inputs':[{'name':'poolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'quoteToken','type':'address','indexed':true,'internalType':'address'},{'name':'accountId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false}])) %>"
-# fromCall.func = "owner"
-# func = "createPool"
-# args = [
-#   "<%= contracts.RUSDProxy.address %>",
-# ]
-# extra.pool1RusdId.event = "PoolCreated"
-# extra.pool1RusdId.arg = 0
-# depends = [
-#   "invoke.upgrade_rUSD_proxy",
-#   "invoke.upgrade_passive_pool_proxy",
-# ]
-
-[var.passive_pool_1rusd]
-pool1RusdId = "1"
-pool1RusdAccountId = "2"
-depends = ["invoke.upgrade_passive_pool_proxy"]
+[invoke.passive_pool_create_pool_1rusd]
+target = ["PassivePoolProxy"]
+abi = "<%= JSON.stringify(contracts.PassivePoolProxy.abi.concat([{'type':'event','name':'PoolCreated','inputs':[{'name':'poolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'quoteToken','type':'address','indexed':true,'internalType':'address'},{'name':'accountId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false}])) %>"
+fromCall.func = "owner"
+func = "createPool"
+args = ["<%= contracts.RUSDProxy.address %>"]
+var.pool1RusdId.event = "PoolCreated"
+var.pool1RusdId.arg = 0
+var.pool1RusdAccountId.event = "PoolCreated"
+var.pool1RusdAccountId.arg = 2
+depends = ["invoke.upgrade_rUSD_proxy", "invoke.upgrade_passive_pool_proxy"]
 
 [invoke.passive_pool_unpause_pool_1rusd]
 target = ["PassivePoolProxy"]
@@ -26,4 +18,4 @@ args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('poolEnabled')),settings.pool1RusdId])) %>",
     true,
 ]
-depends = ["var.passive_pool_1rusd"]
+depends = ["invoke.passive_pool_create_pool_1rusd"]

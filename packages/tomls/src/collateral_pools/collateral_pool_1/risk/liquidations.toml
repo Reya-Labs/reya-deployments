@@ -28,7 +28,7 @@ depends = ["invoke.cp_1rusd_create_backstop_lp_account"]
 #   "<%= '0xed5c71a0'.concat(defaultAbiCoder.encode(['uint128','uint128'],[settings.pool1RusdAccountId, settings.cp1RusdId]).substring(2)) %>",
 # ]
 # depends = [
-#   "var.passive_pool_1rusd",
+#   "invoke.passive_pool_create_pool_1rusd",
 #   "invoke.cp_1rusd_set_rusd_config"
 # ]
 
