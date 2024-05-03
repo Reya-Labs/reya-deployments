@@ -4,5 +4,5 @@ version = "1.0.0"
 description = "Reya TMF"
 
 [clone.tmf]
-source = "trusted-multicall-forwarder"
-targetPreset = "main"
+source = "trusted-multicall-forwarder@main"
+target = "reya-tmf@tmf"

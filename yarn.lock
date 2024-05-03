@@ -48,18 +48,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/bignumber@npm:^5.6.2":
-  version: 5.7.0
-  resolution: "@ethersproject/bignumber@npm:5.7.0"
-  dependencies:
-    "@ethersproject/bytes": ^5.7.0
-    "@ethersproject/logger": ^5.7.0
-    bn.js: ^5.2.1
-  checksum: 8c9a134b76f3feb4ec26a5a27379efb4e156b8fb2de0678a67788a91c7f4e30abe9d948638458e4b20f2e42380da0adacc7c9389d05fce070692edc6ae9b4904
-  languageName: node
-  linkType: hard
-
-"@ethersproject/bytes@npm:^5.6.1, @ethersproject/bytes@npm:^5.7.0":
+"@ethersproject/bytes@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/bytes@npm:5.7.0"
   dependencies:
@@ -871,17 +860,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@synthetixio/wei@npm:^2.74.1":
-  version: 2.74.4
-  resolution: "@synthetixio/wei@npm:2.74.4"
-  dependencies:
-    "@ethersproject/bignumber": ^5.6.2
-    "@ethersproject/bytes": ^5.6.1
-    big.js: ^6.1.1
-  checksum: 03ff0a17cc5e1cdc8fc67d8240a705dab85da4676c05a92718c6a443bb41b526d7d608a5bb00e27847c0762e3e17ca30bf29ddbb1f70e000671972dada2e29dc
-  languageName: node
-  linkType: hard
-
 "@taplo/core@npm:^0.1.0":
   version: 0.1.1
   resolution: "@taplo/core@npm:0.1.1"
@@ -976,9 +954,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usecannon/builder@npm:2.13.0":
-  version: 2.13.0
-  resolution: "@usecannon/builder@npm:2.13.0"
+"@usecannon/builder@npm:2.13.2, @usecannon/builder@npm:^2.13.2":
+  version: 2.13.2
+  resolution: "@usecannon/builder@npm:2.13.2"
   dependencies:
     "@synthetixio/router": ^3.3.7
     axios: ^1.6.7
@@ -993,17 +971,16 @@ __metadata:
     typestub-ipfs-only-hash: ^4.0.0
     viem: ^2.9.26
     zod: ^3.22.4
-  checksum: f8b357435ec6f5b02c6736d033a21582c49195f8aec1a8bc24e3bf79fe2393e43364c60158581af1647957a63b549c7e6fb1af1525b24bff9f51ca0962b3adad
+  checksum: 35d61227a5e25ce9b668574a42f3313adfd584a7b280c6985e013ee742375c6d6f018b34cec1974ded032d4d1ef948e1acda8b0c5e1ad9057190fc58e7de8ed0
   languageName: node
   linkType: hard
 
-"@usecannon/cli@npm:2.13.0":
-  version: 2.13.0
-  resolution: "@usecannon/cli@npm:2.13.0"
+"@usecannon/cli@npm:^2.13.2":
+  version: 2.13.2
+  resolution: "@usecannon/cli@npm:2.13.2"
   dependencies:
     "@iarna/toml": ^3.0.0
-    "@synthetixio/wei": ^2.74.1
-    "@usecannon/builder": 2.13.0
+    "@usecannon/builder": 2.13.2
     abitype: ^1.0.0
     chalk: ^4.1.2
     commander: ^9.5.0
@@ -1022,7 +999,7 @@ __metadata:
     zod: ^3.22.4
   bin:
     cannon: bin/cannon.js
-  checksum: 826f3059cdf0c015e3c0ba162687a5cde72bc746741d645ab1a029248c268f75be81fa8b15aee089029bbe87e573427d107351e3dc6b1d89c8ac67d4f9675812
+  checksum: c7e1f5c7ae9239173426ec70666172a71ea63b63b35cbbe1f4aec4a48388d271a80a33e6aeb67c902b219766750216242eddb92000ba134eb9999c580c00574d
   languageName: node
   linkType: hard
 
@@ -1388,13 +1365,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"big.js@npm:^6.1.1":
-  version: 6.2.1
-  resolution: "big.js@npm:6.2.1"
-  checksum: 0b234a2fd56c52bed2798ed2020bcab6fef5e9523b99a05406ad071d1aed6ee97ada9fb8de9576092da74c68825c276e19015743b8d1baea269b60a5c666b0cd
-  languageName: node
-  linkType: hard
-
 "bl@npm:^4.0.3, bl@npm:^4.1.0":
   version: 4.1.0
   resolution: "bl@npm:4.1.0"
@@ -1421,13 +1391,6 @@ __metadata:
   version: 1.2.1
   resolution: "blakejs@npm:1.2.1"
   checksum: d699ba116cfa21d0b01d12014a03e484dd76d483133e6dc9eb415aa70a119f08beb3bcefb8c71840106a00b542cba77383f8be60cd1f0d4589cb8afb922eefbe
-  languageName: node
-  linkType: hard
-
-"bn.js@npm:^5.2.1":
-  version: 5.2.1
-  resolution: "bn.js@npm:5.2.1"
-  checksum: 3dd8c8d38055fedfa95c1d5fc3c99f8dd547b36287b37768db0abab3c239711f88ff58d18d155dd8ad902b0b0cee973747b7ae20ea12a09473272b0201c9edd3
   languageName: node
   linkType: hard
 
@@ -5437,8 +5400,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "reya-deployments@workspace:."
   dependencies:
-    "@usecannon/builder": 2.13.0
-    "@usecannon/cli": 2.13.0
+    "@usecannon/builder": ^2.13.2
+    "@usecannon/cli": ^2.13.2
     forge-std: "github:foundry-rs/forge-std#v1.8.0"
     lerna: ^8.1.2
     prettier: 3.2.5

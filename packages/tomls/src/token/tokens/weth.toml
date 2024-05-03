@@ -5,7 +5,7 @@ wethTokenDecimals = "18"
 
 [clone.weth]
 source = "reya-tokens:1.0.0@proxy"
-targetPreset = "weth"
+target = "reya-tokens:1.0.0@weth"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.wethSalt %>"
 depends = ["var.initial_proxy_vars"]

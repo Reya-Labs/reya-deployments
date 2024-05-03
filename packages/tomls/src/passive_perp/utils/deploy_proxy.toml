@@ -1,5 +1,5 @@
 [clone.reyaPassivePerpProxy]
 source = "reya-instrument-passive-perp:1.0.0@proxy"
-targetPreset = "proxy"
+target = "reya-instrument-passive-perp:1.0.0@proxy"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.salt %>"

@@ -5,7 +5,7 @@ usdcTokenDecimals = "6"
 
 [clone.usdc]
 source = "reya-tokens:1.0.0@proxy"
-targetPreset = "usdc"
+target = "reya-tokens:1.0.0@usdc"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.usdc_salt %>"
 depends = ["var.initial_proxy_vars"]

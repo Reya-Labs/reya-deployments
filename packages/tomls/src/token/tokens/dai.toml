@@ -5,7 +5,7 @@ daiTokenDecimals = "18"
 
 [clone.dai]
 source = "reya-tokens:1.0.0@proxy"
-targetPreset = "dai"
+target = "reya-tokens:1.0.0@dai"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.daiSalt %>"
 depends = ["var.initial_proxy_vars"]
