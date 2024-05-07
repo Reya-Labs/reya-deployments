@@ -18,6 +18,7 @@ ethereumChainId = "1"
 arbitrumChainId = "42161"
 optimismChainId = "10"
 polygonChainId = "137"
+baseChainId = "8453"
 
 [var.wallet_addresses]
 owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
@@ -69,17 +70,19 @@ usdcController = "0x1d43076909Ca139BFaC4EbB7194518bE3638fc76"
 # wethController = ""
 # wbtcController = ""
 usdcExecutionHelper = "0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa"
+# -------------------------------------------------------------------
 usdcEthereumConnector = "0x807B2e8724cDf346c87EEFF4E309bbFCb8681eC1"
 usdcArbitrumConnector = "0x663dc7E91157c58079f55C1BF5ee1BdB6401Ca7a"
 usdcOptimismConnector = "0xe48AE3B68f0560d4aaA312E12fD687630C948561"
 usdcPolygonConnector = "0x54CAA0946dA179425e1abB169C020004284d64D3"
+usdcBaseConnector = "0x3694Ab37011764fA64A648C2d5d6aC0E9cD5F98e"
 
-# TODO
 [var.periphery_socket_withdraw_fees]
-usdcEthereumWithdrawFeeUnscaled = "0"
-usdcArbitrumWithdrawFeeUnscaled = "0"
-usdcOptimismWithdrawFeeUnscaled = "0"
-usdcPolygonWithdrawFeeUnscaled = "0"
+usdcEthereumWithdrawFeeUnscaled = "52.6"
+usdcArbitrumWithdrawFeeUnscaled = "6.9"
+usdcOptimismWithdrawFeeUnscaled = "6.74"
+usdcPolygonWithdrawFeeUnscaled = "3.06"
+usdcBaseWithdrawFeeUnscaled = "6.74"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
