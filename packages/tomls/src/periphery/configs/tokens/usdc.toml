@@ -68,6 +68,17 @@ args = [
 ]
 depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
 
+[invoke.periphery_set_usdcBaseConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.baseChainId %>",
+    "<%= settings.usdcBaseConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
+
 #####################################
 # Static Withdraw Fees
 #####################################
@@ -116,5 +127,16 @@ args = [
     "<%= contracts.USDCProxy.address %>",
     "<%= settings.usdcPolygonConnector %>",
     "<%= parseUnits(settings.usdcPolygonWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
+
+[invoke.periphery_set_usdc_base_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.usdcBaseConnector %>",
+    "<%= parseUnits(settings.usdcBaseWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
 ]
 depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
