@@ -13,6 +13,12 @@ include = [
     "../collateral_pools/collateral_pool_1/testnet.toml",
 ]
 
+# configs needed because we cannot deploy oracles
+[var.oracle_helper_vars]
+ethUsdcNodeId = "<%= keccak256(hexlify('ETH-USDC-NODE-ID')) %>"
+btcUsdcNodeId = "<%= keccak256(hexlify('BTC-USDC-NODE-ID')) %>"
+rusdUsdNodeId = "<%= keccak256(hexlify('RUSD-USD-NODE-ID'))%>"
+
 [var.chain_ids]
 ethereumChainId = "1"
 arbitrumChainId = "42161"
@@ -108,6 +114,7 @@ market2Btc_tier0FeeUnscaled = "0.0005"
 market1Eth_riskMatrixIndex = "0"
 market1Eth_maxOpenBaseUnscaled = "0.031"
 market1Eth_velocityMultiplierUnscaled = "0.00034246"
+market1Eth_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
 market1Eth_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
 market1Eth_dutchConfig_lambdaUnscaled = "1"
 market1Eth_dutchConfig_minBaseUnscaled = "0"
@@ -121,6 +128,7 @@ market1Eth_priceSpacingUnscaled = "0.01"
 market2Btc_riskMatrixIndex = "0"
 market2Btc_maxOpenBaseUnscaled = "0.002"
 market2Btc_velocityMultiplierUnscaled = "0.00034246"
+market2Btc_oracleNodeId = "<%= settings.btcUsdcNodeId %>"
 market2Btc_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
 market2Btc_dutchConfig_lambdaUnscaled = "1"
 market2Btc_dutchConfig_minBaseUnscaled = "0"
