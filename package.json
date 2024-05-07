@@ -14,9 +14,12 @@
     "lint:check": "lerna run lint:check",
     "lint:write": "lerna run lint:write",
     "reya_network:simulate": "lerna run reya_network:simulate --scope=@reya-deployments/tomls",
+    "fuzzing:simulate": "lerna run fuzzing:simulate --scope=@reya-deployments/tomls",
+    "fuzzing:execute": "lerna run fuzzing:execute --scope=@reya-deployments/tomls",
     "reya_network:test": "lerna run reya_network:test --scope=@reya-deployments/tests"
   },
   "devDependencies": {
+    "@ethersproject/abi": "5.7.0",
     "@usecannon/builder": "^2.13.2",
     "@usecannon/cli": "^2.13.2",
     "forge-std": "github:foundry-rs/forge-std#v1.8.0",
