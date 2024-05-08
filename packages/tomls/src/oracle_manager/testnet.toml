@@ -1,2 +1,1 @@
-# include = ["./mainnet.toml", "utils/deploy_proxy.toml"]
-include = ["utils/deploy_proxy.toml", "utils/upgrade_proxy.toml"]
+include = ["./mainnet.toml", "utils/deploy_proxy.toml"]

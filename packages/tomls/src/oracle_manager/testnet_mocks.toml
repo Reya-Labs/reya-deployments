@@ -1,0 +1,39 @@
+[clone.reyaMockOracleManager]
+source = "<%= settings.mockOracleManagerPackage.concat('@main') %>"
+target = "<%= settings.mockOracleManagerPackage.concat('@main') %>"
+depends = ["var.cannonClonePackages"]
+
+[var.oracle_helper_vars]
+ethUsdcNodeId = "<%= keccak256(hexlify('ETH-USDC-NODE-ID')) %>"
+btcUsdcNodeId = "<%= keccak256(hexlify('BTC-USDC-NODE-ID')) %>"
+rusdUsdNodeId = "<%= keccak256(hexlify('RUSD-USD-NODE-ID')) %>"
+
+[invoke.mock_oracle_manager_eth_usdc_price]
+target = ["reyaMockOracleManager.MockOracleManager"]
+from = "<%= settings.owner %>"
+func = "mockNode"
+args = [
+    "<%= settings.ethUsdcNodeId %>",
+    { price = "<%= parseEther('3000') %>", timestamp = "<%= timestamp %>" },
+]
+depends = ["clone.reyaMockOracleManager"]
+
+[invoke.mock_oracle_manager_btc_usdc_price]
+target = ["reyaMockOracleManager.MockOracleManager"]
+from = "<%= settings.owner %>"
+func = "mockNode"
+args = [
+    "<%= settings.btcUsdcNodeId %>",
+    { price = "<%= parseEther('60000') %>", timestamp = "<%= timestamp %>" },
+]
+depends = ["clone.reyaMockOracleManager"]
+
+[invoke.mock_oracle_manager_rusd_usd_price]
+target = ["reyaMockOracleManager.MockOracleManager"]
+from = "<%= settings.owner %>"
+func = "mockNode"
+args = [
+    "<%= settings.rusdUsdNodeId %>",
+    { price = "<%= parseEther('1') %>", timestamp = "<%= timestamp %>" },
+]
+depends = ["clone.reyaMockOracleManager"]

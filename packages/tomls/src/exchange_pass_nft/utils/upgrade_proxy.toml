@@ -1,6 +1,7 @@
 [clone.reyaExchangePassRouter]
-source = "reya-exchange-pass-nft:1.0.0@router"
-target = "reya-exchange-pass-nft:1.0.0@router"
+source = "<%= settings.exchangePassPackage.concat('@router') %>"
+target = "<%= settings.exchangePassPackage.concat('@router') %>"
+depends = ["var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.

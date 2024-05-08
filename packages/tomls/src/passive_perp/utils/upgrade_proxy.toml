@@ -1,6 +1,7 @@
 [clone.reyaPassivePerpRouter]
-source = "reya-instrument-passive-perp:1.0.0@router"
-target = "reya-instrument-passive-perp:1.0.0@router"
+source = "<%= settings.passivePerpPackage.concat('@router') %>"
+target = "<%= settings.passivePerpPackage.concat('@router') %>"
+depends = ["var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.

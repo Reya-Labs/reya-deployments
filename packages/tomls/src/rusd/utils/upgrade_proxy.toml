@@ -1,6 +1,7 @@
 [clone.reyaRUSDRouter]
-source = "reya-rusd:1.0.0@router"
-target = "reya-rusd:1.0.0@router"
+source = "<%= settings.rUSDPackage.concat('@router') %>"
+target = "<%= settings.rUSDPackage.concat('@router') %>"
+depends = ["var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.

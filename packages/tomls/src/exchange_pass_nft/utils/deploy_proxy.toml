@@ -1,5 +1,6 @@
 [clone.reyaExchangePassProxy]
-source = "reya-exchange-pass-nft:1.0.0@proxy"
-target = "reya-exchange-pass-nft:1.0.0@proxy"
+source = "<%= settings.exchangePassPackage.concat('@proxy') %>"
+target = "<%= settings.exchangePassPackage.concat('@proxy') %>"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.salt %>"
+depends = ["var.cannonClonePackages"]
