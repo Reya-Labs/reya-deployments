@@ -25,6 +25,17 @@ owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 passivePoolExchangeFeeCollectorOwner = "0x93701b8f4e212B4eC058AF375894DB4B64b4f708"
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
+[var.cannonClonePackages]
+corePackage = "reya-core:1.0.0"
+rUSDPackage = "reya-rusd:1.0.0"
+tokensPackage = "reya-tokens:1.0.0"
+passivePoolPackage = "reya-exchange-passive-pool:1.0.0"
+passivePerpPackage = "reya-instrument-passive-perp:1.0.0"
+peripheryPackage = "reya-periphery:1.0.0"
+oracleManagerPackage = "reya-oracle-manager:1.0.0"
+exchangePassPackage = "reya-exchange-pass-nft:1.0.0"
+ranksPackage = "reya-ranks:1.0.0"
+
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
 accountNftName = "Reya Account NFT"

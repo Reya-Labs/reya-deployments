@@ -7,5 +7,6 @@ include = [
 ]
 
 [clone.reyaTokenRouter]
-source = "reya-tokens:1.0.0@router"
-target = "reya-tokens:1.0.0@router"
+source = "<%= settings.tokensPackage.concat('@router') %>"
+target = "<%= settings.tokensPackage.concat('@router') %>"
+depends = ["var.cannonClonePackages"]

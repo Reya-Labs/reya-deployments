@@ -1,5 +1,6 @@
 [clone.reyaPassivePoolProxy]
-source = "reya-exchange-passive-pool:1.0.0@proxy"
-target = "reya-exchange-passive-pool:1.0.0@proxy"
+source = "<%= settings.passivePoolPackage.concat('@proxy') %>"
+target = "<%= settings.passivePoolPackage.concat('@proxy') %>"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.salt %>"
+depends = ["var.cannonClonePackages"]

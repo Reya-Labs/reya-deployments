@@ -4,11 +4,11 @@ wethTokenSymbol = "WETH"
 wethTokenDecimals = "18"
 
 [clone.weth]
-source = "reya-tokens:1.0.0@proxy"
+source = "<%= settings.tokensPackage.concat('@proxy') %>"
 target = "reya-tokens:1.0.0@weth"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.wethSalt %>"
-depends = ["var.initial_proxy_vars"]
+depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.

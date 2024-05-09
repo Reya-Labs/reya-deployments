@@ -1,5 +1,6 @@
 [clone.reyaRanksProxy]
-source = "reya-ranks:1.0.0@proxy"
-target = "reya-ranks:1.0.0@proxy"
+source = "<%= settings.ranksPackage.concat('@proxy') %>"
+target = "<%= settings.ranksPackage.concat('@proxy') %>"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.salt %>"
+depends = ["var.cannonClonePackages"]

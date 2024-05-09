@@ -4,11 +4,11 @@ usdtTokenSymbol = "USDT"
 usdtTokenDecimals = "6"
 
 [clone.usdt]
-source = "reya-tokens:1.0.0@proxy"
+source = "<%= settings.tokensPackage.concat('@proxy') %>"
 target = "reya-tokens:1.0.0@usdt"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.usdtSalt %>"
-depends = ["var.initial_proxy_vars"]
+depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new
 # router implementation.
