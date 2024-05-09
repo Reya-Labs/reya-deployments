@@ -13,6 +13,7 @@
     "reya_network:test": "cannon test --provider-url https://rpc.reya.network ../tomls/src/omnibus/reya_network.toml"
   },
   "devDependencies": {
+    "@prb/math": "3.3.0",
     "solhint": "3.4.1"
   }
 }
