@@ -4,7 +4,7 @@ usdtTokenSymbol = "USDT"
 usdtTokenDecimals = "6"
 
 [clone.usdt]
-source = "<%= settings.tokensPackage.concat('@proxy') %>"
+source = "<%= settings.tokensProxyPackage %>"
 target = "reya-tokens:1.0.0@usdt"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.usdtSalt %>"

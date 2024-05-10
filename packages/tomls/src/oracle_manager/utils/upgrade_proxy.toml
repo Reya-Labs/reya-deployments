@@ -1,6 +1,6 @@
 [clone.reyaOracleManagerRouter]
-source = "<%= settings.oracleManagerPackage.concat('@router') %>"
-target = "<%= settings.oracleManagerPackage.concat('@router') %>"
+source = "<%= settings.oracleManagerRouterPackage %>"
+target = "<%= settings.oracleManagerRouterPackage %>"
 depends = ["var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new

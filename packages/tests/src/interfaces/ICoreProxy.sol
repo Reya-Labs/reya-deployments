@@ -682,6 +682,14 @@ interface ProtocolConfiguration {
     }
 }
 
+enum CommandType {
+    Deposit, // (core command) deposit collaterals
+    Withdraw, // (core command) withdraw collaterals
+    DutchLiquidation, // (core command) dutch liquidation of an account
+    MatchOrder, // (market command) propagation of matched orders
+    TransferBetweenMarginAccounts // (core command) transfer between two margin accounts
+}
+
 struct AccountPermissions {
     address user;
     bytes32[] permissions;

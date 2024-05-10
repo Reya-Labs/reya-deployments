@@ -1,6 +1,6 @@
 [clone.reyaCoreRouter]
-source = "<%= settings.corePackage.concat('@router') %>"
-target = "<%= settings.corePackage.concat('@router') %>"
+source = "<%= settings.coreRouterPackage %>"
+target = "<%= settings.coreRouterPackage %>"
 depends = ["var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new
@@ -17,8 +17,8 @@ factory.CoreProxy.arg = 0
 depends = ["var.upgrade_proxy_vars", "clone.reyaCoreRouter"]
 
 [clone.reyaAccountNFTRouter]
-source = "<%= settings.corePackage.concat('@account-nft-router') %>"
-target = "<%= settings.corePackage.concat('@account-nft-router') %>"
+source = "<%= settings.coreAccountNftRouterPackage %>"
+target = "<%= settings.coreAccountNftRouterPackage %>"
 depends = ["var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new

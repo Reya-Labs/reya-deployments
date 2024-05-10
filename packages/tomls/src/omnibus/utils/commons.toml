@@ -1,5 +1,4 @@
 name = "reya-omnibus"
 preset = "main"
-version = "1.0.0"
 description = "Reya Omnibus"
 privateSourceCode = true

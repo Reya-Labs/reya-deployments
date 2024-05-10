@@ -4,7 +4,7 @@ daiTokenSymbol = "DAI"
 daiTokenDecimals = "18"
 
 [clone.dai]
-source = "<%= settings.tokensPackage.concat('@proxy') %>"
+source = "<%= settings.tokensProxyPackage %>"
 target = "reya-tokens:1.0.0@dai"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.daiSalt %>"

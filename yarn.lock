@@ -809,6 +809,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prb/math@npm:3.3.0":
+  version: 3.3.0
+  resolution: "@prb/math@npm:3.3.0"
+  checksum: 9a6fe6c2783e6be3ed0e932ef019ac13a8e5f645e5c2e38e4126c136ff1396f7e2f445ac249d316a331e117a9383bf104a2698519446b0520936ef437abc27a5
+  languageName: node
+  linkType: hard
+
 "@protobufjs/aspromise@npm:^1.1.1, @protobufjs/aspromise@npm:^1.1.2":
   version: 1.1.2
   resolution: "@protobufjs/aspromise@npm:1.1.2"
@@ -886,6 +893,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@reya-deployments/tests@workspace:packages/tests"
   dependencies:
+    "@prb/math": 3.3.0
     solhint: 3.4.1
   languageName: unknown
   linkType: soft

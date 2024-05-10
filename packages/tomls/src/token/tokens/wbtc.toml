@@ -4,7 +4,7 @@ wbtcTokenSymbol = "WBTC"
 wbtcTokenDecimals = "8"
 
 [clone.wbtc]
-source = "<%= settings.tokensPackage.concat('@proxy') %>"
+source = "<%= settings.tokensProxyPackage %>"
 target = "reya-tokens:1.0.0@wbtc"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.wbtcSalt %>"

@@ -1,6 +1,6 @@
 [clone.reyaRusdProxy]
-source = "<%= settings.rUSDPackage.concat('@proxy') %>"
-target = "<%= settings.rUSDPackage.concat('@proxy') %>"
+source = "<%= settings.rUSDProxyPackage %>"
+target = "<%= settings.rUSDProxyPackage %>"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.salt %>"
 depends = ["var.cannonClonePackages"]
