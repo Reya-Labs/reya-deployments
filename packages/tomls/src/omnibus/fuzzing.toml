@@ -129,12 +129,12 @@ market1Eth_tier0FeeUnscaled = "0.0005"
 market2Btc_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
-btcUsdMaxStaleDuration = "0"
-btcUsdcMaxStaleDuration = "0"
-ethUsdMaxStaleDuration = "0"
-ethUsdcMaxStaleDuration = "0"
-rusdUsdMaxStaleDuration = "0"
-usdcUsdMaxStaleDuration = "0"
+btcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+btcUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ethUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ethUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -149,8 +149,8 @@ market1Eth_slippageParams_betaUnscaled = "0"
 market1Eth_minimumOrderBaseUnscaled = "0.16"
 market1Eth_baseSpacingUnscaled = "0.005"
 market1Eth_priceSpacingUnscaled = "0.01"
-market1Eth_depthFactorUnscaled = "15"
-market1Eth_maxExposureFactorUnscaled = "1"
+market1Eth_depthFactorUnscaled = "20"
+market1Eth_maxExposureFactorUnscaled = "0.999"
 market1Eth_maxPSlippageUnscaled = "0.05"
 
 [var.market_2btc]
@@ -166,8 +166,8 @@ market2Btc_slippageParams_betaUnscaled = "0"
 market2Btc_minimumOrderBaseUnscaled = "0.008"
 market2Btc_baseSpacingUnscaled = "0.0005"
 market2Btc_priceSpacingUnscaled = "0.01"
-market2Btc_depthFactorUnscaled = "15"
-market2Btc_maxExposureFactorUnscaled = "1"
+market2Btc_depthFactorUnscaled = "20"
+market2Btc_maxExposureFactorUnscaled = "0.999"
 market2Btc_maxPSlippageUnscaled = "0.05"
 
 [var.cp_1rusd]
