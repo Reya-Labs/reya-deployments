@@ -126,12 +126,12 @@ market1Eth_tier0FeeUnscaled = "0.0005"
 market2Btc_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
-btcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-btcUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-ethUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-ethUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-usdcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+btcUsdMaxStaleDuration = "<%= 2 * settings.ONE_MINUTE_IN_SECONDS %>"
+btcUsdcMaxStaleDuration = "<%= 2 * settings.ONE_MINUTE_IN_SECONDS %>"
+ethUsdMaxStaleDuration = "<%= 2 * settings.ONE_MINUTE_IN_SECONDS %>"
+ethUsdcMaxStaleDuration = "<%= 2 * settings.ONE_MINUTE_IN_SECONDS %>"
+rusdUsdMaxStaleDuration = "<%= 2 * settings.ONE_MINUTE_IN_SECONDS %>"
+usdcUsdMaxStaleDuration = "<%= 2 * settings.ONE_MINUTE_IN_SECONDS %>"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
