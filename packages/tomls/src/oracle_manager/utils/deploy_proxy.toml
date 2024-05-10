@@ -1,6 +1,6 @@
 [clone.reyaOracleManagerProxy]
-source = "<%= settings.oracleManagerPackage.concat('@proxy') %>"
-target = "<%= settings.oracleManagerPackage.concat('@proxy') %>"
+source = "<%= settings.oracleManagerProxyPackage %>"
+target = "<%= settings.oracleManagerProxyPackage %>"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.salt %>"
 depends = ["var.cannonClonePackages"]

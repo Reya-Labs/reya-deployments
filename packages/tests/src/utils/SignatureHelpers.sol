@@ -52,7 +52,7 @@ function hashExecuteBySigExtended(
     );
 }
 
-function mockCoreCalculateDigest(address core, bytes32 hashedMessage) returns (bytes32) {
+function mockCoreCalculateDigest(address core, bytes32 hashedMessage) pure returns (bytes32) {
     bytes32 EIP712_REVISION_HASH = keccak256("1");
     bytes32 EIP712_DOMAIN_TYPEHASH = keccak256("EIP712Domain(string name,string version,address verifyingContract)");
 

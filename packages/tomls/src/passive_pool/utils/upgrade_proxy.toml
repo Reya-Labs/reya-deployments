@@ -1,6 +1,6 @@
 [clone.reyaPassivePoolRouter]
-source = "<%= settings.passivePoolPackage.concat('@router') %>"
-target = "<%= settings.passivePoolPackage.concat('@router') %>"
+source = "<%= settings.passivePoolRouterPackage %>"
+target = "<%= settings.passivePoolRouterPackage %>"
 depends = ["var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new

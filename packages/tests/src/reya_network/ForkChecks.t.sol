@@ -8,7 +8,7 @@ import { ISocketExecutionHelper } from "../interfaces/ISocketExecutionHelper.sol
 import {
     IPeripheryProxy,
     DepositPassivePoolInputs,
-    PeripheryMatchOrderInputs,
+    PeripheryExecutionInputs,
     DepositNewMAInputs,
     Command,
     EIP712Signature
@@ -154,13 +154,11 @@ contract ForkChecks is Test {
     function test_trade() public {
         // general info
         (user, userPk) = makeAddrAndKey("user");
-        uint256 amount = 100e6; // denominated in rusd/usdc
+        uint256 amount = 1000e6; // denominated in rusd/usdc
         marketId = 1; // eth
         exchangeId = 1; // passive pool
-        // SD59x18 base = sd(0.01e18);
-        // UD60x18 priceLimit = ud(10_000e18);
-        SD59x18 base = sd(-0.01e18);
-        UD60x18 priceLimit = ud(0);
+        SD59x18 base = sd(1e18);
+        UD60x18 priceLimit = ud(10_000e18);
 
         // deposit new margin account
         deal(usdc, address(periphery), amount);
@@ -188,8 +186,8 @@ contract ForkChecks is Test {
             )
         );
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPk, digest);
-        IPeripheryProxy(periphery).executeMatchOrders(
-            PeripheryMatchOrderInputs({
+        IPeripheryProxy(periphery).execute(
+            PeripheryExecutionInputs({
                 accountId: accountId,
                 commands: commands,
                 sig: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })

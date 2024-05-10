@@ -1,6 +1,6 @@
 [clone.reyaExchangePassProxy]
-source = "<%= settings.exchangePassPackage.concat('@proxy') %>"
-target = "<%= settings.exchangePassPackage.concat('@proxy') %>"
+source = "<%= settings.exchangePassProxyPackage %>"
+target = "<%= settings.exchangePassProxyPackage %>"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.salt %>"
 depends = ["var.cannonClonePackages"]

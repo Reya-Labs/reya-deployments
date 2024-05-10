@@ -1,6 +1,6 @@
 [clone.reyaCoreProxy]
-source = "<%= settings.corePackage.concat('@proxy') %>"
-target = "<%= settings.corePackage.concat('@proxy') %>"
+source = "<%= settings.coreProxyPackage %>"
+target = "<%= settings.coreProxyPackage %>"
 options.owner = "<%= settings.owner %>"
 options.salt = "<%= settings.salt %>"
 depends = ["var.cannonClonePackages"]

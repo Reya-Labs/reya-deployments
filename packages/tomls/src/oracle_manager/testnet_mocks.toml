@@ -1,6 +1,6 @@
 [clone.reyaMockOracleManager]
-source = "<%= settings.mockOracleManagerPackage.concat('@main') %>"
-target = "<%= settings.mockOracleManagerPackage.concat('@main') %>"
+source = "<%= settings.mockOracleManagerPackage %>"
+target = "<%= settings.mockOracleManagerPackage %>"
 depends = ["var.cannonClonePackages"]
 
 [var.oracle_helper_vars]

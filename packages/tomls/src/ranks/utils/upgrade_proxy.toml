@@ -1,6 +1,6 @@
 [clone.reyaRanksRouter]
-source = "<%= settings.ranksPackage.concat('@router') %>"
-target = "<%= settings.ranksPackage.concat('@router') %>"
+source = "<%= settings.ranksRouterPackage %>"
+target = "<%= settings.ranksRouterPackage %>"
 depends = ["var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new

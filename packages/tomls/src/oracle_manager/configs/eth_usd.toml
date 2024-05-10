@@ -11,3 +11,13 @@ args = [
 var.ethUsdNodeId.event = "NodeRegistered"
 var.ethUsdNodeId.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
+
+[invoke.oracle_manager_eth_usd_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.ethUsdNodeId %>",
+    "<%= settings.ethUsdMaxStaleDuration %>",
+]
+depends = ["invoke.oracle_manager_register_node_eth_usd"]

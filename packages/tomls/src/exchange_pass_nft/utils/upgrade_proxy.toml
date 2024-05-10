@@ -1,6 +1,6 @@
 [clone.reyaExchangePassRouter]
-source = "<%= settings.exchangePassPackage.concat('@router') %>"
-target = "<%= settings.exchangePassPackage.concat('@router') %>"
+source = "<%= settings.exchangePassRouterPackage %>"
+target = "<%= settings.exchangePassRouterPackage %>"
 depends = ["var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new

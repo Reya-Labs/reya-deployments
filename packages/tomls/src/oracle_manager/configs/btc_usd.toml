@@ -11,3 +11,13 @@ args = [
 var.btcUsdNodeId.event = "NodeRegistered"
 var.btcUsdNodeId.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
+
+[invoke.oracle_manager_btc_usd_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.btcUsdNodeId %>",
+    "<%= settings.btcUsdMaxStaleDuration %>",
+]
+depends = ["invoke.oracle_manager_register_node_btc_usd"]

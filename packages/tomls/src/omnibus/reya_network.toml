@@ -12,6 +12,7 @@ include = [
     "../ranks/mainnet.toml",
     "../collateral_pools/collateral_pool_1/mainnet.toml",
 ]
+version = "1.0.1"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -26,15 +27,17 @@ passivePoolExchangeFeeCollectorOwner = "0x93701b8f4e212B4eC058AF375894DB4B64b4f7
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.cannonClonePackages]
-corePackage = "reya-core:1.0.0"
-rUSDPackage = "reya-rusd:1.0.0"
-tokensPackage = "reya-tokens:1.0.0"
-passivePoolPackage = "reya-exchange-passive-pool:1.0.0"
-passivePerpPackage = "reya-instrument-passive-perp:1.0.0"
-peripheryPackage = "reya-periphery:1.0.0"
-oracleManagerPackage = "reya-oracle-manager:1.0.0"
-exchangePassPackage = "reya-exchange-pass-nft:1.0.0"
-ranksPackage = "reya-ranks:1.0.0"
+coreRouterPackage = "reya-core:1.0.1@router"
+coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
+rUSDRouterPackage = "reya-rusd:1.0.0@router"
+tokensProxyPackage = "reya-tokens:1.0.0@proxy"
+tokensRouterPackage = "reya-tokens:1.0.0@router"
+passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.1@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.1@router"
+peripheryRouterPackage = "reya-periphery:1.0.1@router"
+oracleManagerRouterPackage = "reya-oracle-manager:1.0.1@router"
+exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
+ranksRouterPackage = "reya-ranks:1.0.0@router"
 
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
@@ -122,9 +125,17 @@ pool1RusdRebateUnscaled = "0.6"
 market1Eth_tier0FeeUnscaled = "0.0005"
 market2Btc_tier0FeeUnscaled = "0.0005"
 
+[var.oracleNodeMaxStaleDuration]
+btcUsdMaxStaleDuration = "0"
+btcUsdcMaxStaleDuration = "0"
+ethUsdMaxStaleDuration = "0"
+ethUsdcMaxStaleDuration = "0"
+rusdUsdMaxStaleDuration = "0"
+usdcUsdMaxStaleDuration = "0"
+
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
-market1Eth_maxOpenBaseUnscaled = "0.031"
+market1Eth_maxOpenBaseUnscaled = "37500"
 market1Eth_velocityMultiplierUnscaled = "0.00034246"
 market1Eth_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
 market1Eth_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -132,13 +143,16 @@ market1Eth_dutchConfig_lambdaUnscaled = "1"
 market1Eth_dutchConfig_minBaseUnscaled = "0"
 market1Eth_slippageParams_phiUnscaled = "0"
 market1Eth_slippageParams_betaUnscaled = "0"
-market1Eth_minimumOrderBaseUnscaled = "0.01"
+market1Eth_minimumOrderBaseUnscaled = "0.16"
 market1Eth_baseSpacingUnscaled = "0.005"
 market1Eth_priceSpacingUnscaled = "0.01"
+market1Eth_depthFactorUnscaled = "15"
+market1Eth_maxExposureFactorUnscaled = "1"
+market1Eth_maxPSlippageUnscaled = "0.05"
 
 [var.market_2btc]
 market2Btc_riskMatrixIndex = "0"
-market2Btc_maxOpenBaseUnscaled = "0.002"
+market2Btc_maxOpenBaseUnscaled = "1730"
 market2Btc_velocityMultiplierUnscaled = "0.00034246"
 market2Btc_oracleNodeId = "<%= settings.btcUsdcNodeId %>"
 market2Btc_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -146,9 +160,12 @@ market2Btc_dutchConfig_lambdaUnscaled = "1"
 market2Btc_dutchConfig_minBaseUnscaled = "0"
 market2Btc_slippageParams_phiUnscaled = "0"
 market2Btc_slippageParams_betaUnscaled = "0"
-market2Btc_minimumOrderBaseUnscaled = "0.001"
+market2Btc_minimumOrderBaseUnscaled = "0.008"
 market2Btc_baseSpacingUnscaled = "0.0005"
 market2Btc_priceSpacingUnscaled = "0.01"
+market2Btc_depthFactorUnscaled = "15"
+market2Btc_maxExposureFactorUnscaled = "1"
+market2Btc_maxPSlippageUnscaled = "0.05"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "2"
@@ -189,8 +206,8 @@ cp1Rusd_dMaxUnscaled = "0.05"
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
 cp1Rusd_rusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
-cp1Rusd_rusd_withdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-cp1Rusd_rusd_withdrawalTvlPercentageLimitUnscaled = "0.15"
+cp1Rusd_rusd_withdrawalWindowSize_DEPRECATED = "0"
+cp1Rusd_rusd_withdrawalTvlPercentageLimitUnscaled_DEPRECATED = "0"
 cp1Rusd_rusd_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_rusd_autoExchangeInsuranceFeeUnscaled = "0.01"
 cp1Rusd_rusd_autoExchangeDustThresholdUnscaled = "0"
