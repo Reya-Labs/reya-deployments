@@ -3,7 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import "forge-std/Test.sol";
 import { IERC20TokenModule } from "../interfaces/IERC20TokenModule.sol";
 import { IOwnerUpgradeModule } from "../interfaces/IOwnerUpgradeModule.sol";
-import { CommandType } from "../interfaces/ICoreProxy.sol";
+import { ICoreProxy, CommandType, RiskMultipliers } from "../interfaces/ICoreProxy.sol";
 import { ISocketExecutionHelper } from "../interfaces/ISocketExecutionHelper.sol";
 import {
     IPeripheryProxy,
@@ -11,10 +11,13 @@ import {
     PeripheryExecutionInputs,
     DepositNewMAInputs,
     Command,
-    EIP712Signature
+    EIP712Signature,
+    GlobalConfiguration
 } from "../interfaces/IPeripheryProxy.sol";
 import { IPassivePoolProxy } from "../interfaces/IPassivePoolProxy.sol";
 import { IPassivePerpProxy } from "../interfaces/IPassivePerpProxy.sol";
+import { IRUSDProxy } from "../interfaces/IRUSDProxy.sol";
+import { IOracleManagerProxy, NodeOutput } from "../interfaces/IOracleManagerProxy.sol";
 
 import { mockCoreCalculateDigest, hashExecuteBySigExtended, EIP712Signature } from "./../utils/SignatureHelpers.sol";
 
@@ -39,8 +42,28 @@ contract ForkChecks is Test {
 
     address socketUsdcExecutionHelper = 0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa;
     address socketUsdcController = 0x1d43076909Ca139BFaC4EbB7194518bE3638fc76;
+    address socketUsdcEthereumConnector = 0x807B2e8724cDf346c87EEFF4E309bbFCb8681eC1;
+    address socketUsdcArbitrumConnector = 0x663dc7E91157c58079f55C1BF5ee1BdB6401Ca7a;
+    address socketUsdcOptimismConnector = 0xe48AE3B68f0560d4aaA312E12fD687630C948561;
+    address socketUsdcPolygonConnector = 0x54CAA0946dA179425e1abB169C020004284d64D3;
+    address socketUsdcBaseConnector = 0x3694Ab37011764fA64A648C2d5d6aC0E9cD5F98e;
+
+    uint256 ethereumChainId = 1;
+    uint256 arbitrumChainId = 42_161;
+    uint256 optimismChainId = 10;
+    uint256 polygonChainId = 137;
+    uint256 baseChainId = 8453;
+
+    bytes32 ethUsdNodeId = 0x7bb5195bd6b7c7bd928da2b52cae900a5f6262eb32b992ac4d97b4f2c322422c;
+    bytes32 btcUsdNodeId = 0x2973a5fc60ce7fd59c68e20eade5cbb56d3f22516f5dbd78d09654de5070df8e;
+    bytes32 ethUsdcNodeId = 0xd47353c2b593083048dc9eb3f58c89553c5cafc5065d65774e5614daa8f37b47;
+    bytes32 btcUsdcNodeId = 0x9a2f8b104c6d9f675d4f756a6d54c4cb9fbbfdb999c77cc6e69003bcbc561476;
+    bytes32 rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
+    bytes32 usdcUsdNodeId = 0x7c1a73684de34b95f492a9ee72c0d8e1589714eeba4a457f766b84bd1c2f240f;
 
     uint128 passivePoolAccountId = 2;
+
+    uint256 ONE_MINUTE_IN_SECONDS = 60;
 
     constructor() {
         try vm.activeFork() { }
@@ -54,6 +77,8 @@ contract ForkChecks is Test {
 
         (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 10e6;
+
+        uint256 totalSupplyBefore = IERC20TokenModule(usdc).totalSupply();
 
         // mint
         vm.prank(socketUsdcController);
@@ -78,6 +103,60 @@ contract ForkChecks is Test {
         vm.prank(user);
         vm.expectRevert();
         IERC20TokenModule(usdc).burn(user, amount);
+
+        uint256 totalSupplyAfter = IERC20TokenModule(usdc).totalSupply();
+        assertEq(totalSupplyAfter, totalSupplyBefore);
+    }
+
+    function testFuzz_rUSD() public {
+        assertEq(IRUSDProxy(rusd).getUnderlyingAsset(), usdc);
+
+        uint256 rusdTotalSupply = IRUSDProxy(rusd).totalSupply();
+        uint256 usdcTotalSupply = IERC20TokenModule(rusd).totalSupply();
+        assert(rusdTotalSupply <= usdcTotalSupply);
+
+        (user, userPk) = makeAddrAndKey("user");
+        uint256 amount = 10e6;
+
+        deal(usdc, user, amount);
+        vm.prank(user);
+        IERC20TokenModule(usdc).approve(rusd, amount);
+        vm.prank(user);
+        IRUSDProxy(rusd).deposit(amount);
+        assertEq(IRUSDProxy(rusd).totalSupply(), rusdTotalSupply + amount);
+        assertEq(IRUSDProxy(rusd).balanceOf(user), amount);
+        assertEq(IRUSDProxy(usdc).balanceOf(user), 0);
+        rusdTotalSupply += amount;
+
+        deal(usdc, periphery, amount);
+        vm.prank(periphery);
+        IERC20TokenModule(usdc).approve(rusd, amount);
+        vm.prank(periphery);
+        IRUSDProxy(rusd).depositTo(amount, user);
+        assertEq(IRUSDProxy(rusd).totalSupply(), rusdTotalSupply + amount);
+        assertEq(IRUSDProxy(rusd).balanceOf(user), 2 * amount);
+        assertEq(IRUSDProxy(usdc).balanceOf(user), 0);
+        assertEq(IRUSDProxy(rusd).balanceOf(periphery), 0);
+        assertEq(IRUSDProxy(usdc).balanceOf(periphery), 0);
+        rusdTotalSupply += amount;
+
+        vm.prank(user);
+        IRUSDProxy(rusd).withdraw(amount);
+        assertEq(IRUSDProxy(rusd).totalSupply(), rusdTotalSupply - amount);
+        assertEq(IRUSDProxy(rusd).balanceOf(user), amount);
+        assertEq(IRUSDProxy(usdc).balanceOf(user), amount);
+        assertEq(IRUSDProxy(rusd).balanceOf(periphery), 0);
+        assertEq(IRUSDProxy(usdc).balanceOf(periphery), 0);
+        rusdTotalSupply -= amount;
+
+        vm.prank(user);
+        IRUSDProxy(rusd).withdrawTo(amount, periphery);
+        assertEq(IRUSDProxy(rusd).totalSupply(), rusdTotalSupply - amount);
+        assertEq(IRUSDProxy(rusd).balanceOf(user), 0);
+        assertEq(IRUSDProxy(usdc).balanceOf(user), amount);
+        assertEq(IRUSDProxy(rusd).balanceOf(periphery), 0);
+        assertEq(IRUSDProxy(usdc).balanceOf(periphery), amount);
+        rusdTotalSupply -= amount;
     }
 
     function testFuzz_ProxiesOwnerAndUpgrades(address attacker) public {
@@ -107,6 +186,54 @@ contract ForkChecks is Test {
         }
 
         assertEq(IOwnerUpgradeModule(accountNft).owner(), core);
+    }
+
+    function test_Periphery() public view {
+        GlobalConfiguration.Data memory globalConfig = IPeripheryProxy(periphery).getGlobalConfiguration();
+        assertEq(globalConfig.coreProxy, core);
+        assertEq(globalConfig.rUSDProxy, rusd);
+        assertEq(globalConfig.passivePoolProxy, pool);
+
+        assertEq(IPeripheryProxy(periphery).getTokenController(usdc), socketUsdcController);
+        assertEq(IPeripheryProxy(periphery).getTokenExecutionHelper(usdc), socketUsdcExecutionHelper);
+        assertEq(IPeripheryProxy(periphery).getTokenChainConnector(usdc, ethereumChainId), socketUsdcEthereumConnector);
+        assertEq(IPeripheryProxy(periphery).getTokenChainConnector(usdc, arbitrumChainId), socketUsdcArbitrumConnector);
+        assertEq(IPeripheryProxy(periphery).getTokenChainConnector(usdc, optimismChainId), socketUsdcOptimismConnector);
+        assertEq(IPeripheryProxy(periphery).getTokenChainConnector(usdc, polygonChainId), socketUsdcPolygonConnector);
+        assertEq(IPeripheryProxy(periphery).getTokenChainConnector(usdc, baseChainId), socketUsdcBaseConnector);
+    }
+
+    function test_OracleManager() public view {
+        NodeOutput.Data memory ethUsdNodeOutput = IOracleManagerProxy(oracleManager).process(ethUsdNodeId);
+        NodeOutput.Data memory btcUsdNodeOutput = IOracleManagerProxy(oracleManager).process(btcUsdNodeId);
+        NodeOutput.Data memory ethUsdcNodeOutput = IOracleManagerProxy(oracleManager).process(ethUsdcNodeId);
+        NodeOutput.Data memory btcUsdcNodeOutput = IOracleManagerProxy(oracleManager).process(btcUsdcNodeId);
+        NodeOutput.Data memory rusdUsdNodeOutput = IOracleManagerProxy(oracleManager).process(rusdUsdNodeId);
+        NodeOutput.Data memory usdcUsdNodeOutput = IOracleManagerProxy(oracleManager).process(usdcUsdNodeId);
+
+        assertLe(block.timestamp - 2 * ONE_MINUTE_IN_SECONDS, ethUsdNodeOutput.timestamp);
+        assertLe(ethUsdNodeOutput.timestamp, block.timestamp);
+        assertApproxEqAbsDecimal(ethUsdNodeOutput.price, 3000e18, 1000e18, 18);
+
+        assertLe(block.timestamp - 2 * ONE_MINUTE_IN_SECONDS, btcUsdNodeOutput.timestamp);
+        assertLe(btcUsdNodeOutput.timestamp, block.timestamp);
+        assertApproxEqAbsDecimal(btcUsdNodeOutput.price, 60_000e18, 10_000e18, 18);
+
+        assertLe(block.timestamp - 2 * ONE_MINUTE_IN_SECONDS, ethUsdcNodeOutput.timestamp);
+        assertLe(ethUsdcNodeOutput.timestamp, block.timestamp);
+        assertApproxEqAbsDecimal(ethUsdcNodeOutput.price, 3000e18, 1000e18, 18);
+
+        assertLe(block.timestamp - 2 * ONE_MINUTE_IN_SECONDS, btcUsdcNodeOutput.timestamp);
+        assertLe(btcUsdcNodeOutput.timestamp, block.timestamp);
+        assertApproxEqAbsDecimal(btcUsdcNodeOutput.price, 60_000e18, 10_000e18, 18);
+
+        assertLe(block.timestamp - 2 * ONE_MINUTE_IN_SECONDS, rusdUsdNodeOutput.timestamp);
+        assertLe(rusdUsdNodeOutput.timestamp, block.timestamp);
+        assertApproxEqAbsDecimal(rusdUsdNodeOutput.price, 1e18, 0, 18);
+
+        assertLe(block.timestamp - 2 * ONE_MINUTE_IN_SECONDS, usdcUsdNodeOutput.timestamp);
+        assertLe(usdcUsdNodeOutput.timestamp, block.timestamp);
+        assertApproxEqAbsDecimal(usdcUsdNodeOutput.price, 1e18, 0.01e18, 18);
     }
 
     function testFuzz_PoolDepositWithdraw(address attacker) public {
@@ -150,11 +277,19 @@ contract ForkChecks is Test {
     uint256 userPk;
     uint128 marketId;
     uint128 exchangeId;
+    RiskMultipliers riskMultipliers;
+    UD60x18 liquidationMarginRequirement;
+    UD60x18 imr;
+    UD60x18 leverage;
+    NodeOutput.Data nodeOutput;
+    UD60x18 price;
+    UD60x18 absBase;
 
-    function test_trade() public {
+    function test_trade_eth() public {
         // general info
+        // this tests 20x leverage is successful
         (user, userPk) = makeAddrAndKey("user");
-        uint256 amount = 1000e6; // denominated in rusd/usdc
+        uint256 amount = 3000e6; // denominated in rusd/usdc
         marketId = 1; // eth
         exchangeId = 1; // passive pool
         SD59x18 base = sd(1e18);
@@ -194,5 +329,69 @@ contract ForkChecks is Test {
             })
         );
         assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base, base.unwrap());
+
+        riskMultipliers = ICoreProxy(core).getRiskMultipliers(1);
+        liquidationMarginRequirement = ud(ICoreProxy(core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
+        imr = liquidationMarginRequirement.mul(ud(riskMultipliers.imMultiplier));
+        NodeOutput.Data memory nodeOutput = IOracleManagerProxy(oracleManager).process(ethUsdNodeId);
+        price = ud(nodeOutput.price);
+        absBase = base.abs().intoUD60x18();
+        leverage = absBase.mul(price).div(imr);
+        // assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 0, 18);
+    }
+
+    function test_trade_btc() public {
+        // general info
+        // this tests 20x leverage is successful
+        (user, userPk) = makeAddrAndKey("user");
+        uint256 amount = 60_000e6; // denominated in rusd/usdc
+        marketId = 2; // eth
+        exchangeId = 1; // passive pool
+        SD59x18 base = sd(1e18);
+        UD60x18 priceLimit = ud(100_000e18);
+
+        // deposit new margin account
+        deal(usdc, address(periphery), amount);
+        mockBridgedAmount(socketUsdcExecutionHelper, amount);
+        vm.prank(socketUsdcExecutionHelper);
+        uint128 accountId =
+            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
+
+        // match order
+        uint128[] memory counterpartyAccountIds = new uint128[](1);
+        counterpartyAccountIds[0] = passivePoolAccountId;
+        uint256 deadline = block.timestamp + 3600; // one hour
+        uint256 incrementedNonce = 1;
+        Command[] memory commands = new Command[](1);
+        commands[0] = Command({
+            commandType: uint8(CommandType.MatchOrder),
+            inputs: abi.encode(counterpartyAccountIds, abi.encode(base, priceLimit)),
+            marketId: marketId,
+            exchangeId: exchangeId
+        });
+        bytes32 digest = mockCoreCalculateDigest(
+            core,
+            hashExecuteBySigExtended(
+                address(periphery), accountId, commands, incrementedNonce, deadline, keccak256(abi.encode())
+            )
+        );
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPk, digest);
+        IPeripheryProxy(periphery).execute(
+            PeripheryExecutionInputs({
+                accountId: accountId,
+                commands: commands,
+                sig: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })
+            })
+        );
+        assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base, base.unwrap());
+
+        riskMultipliers = ICoreProxy(core).getRiskMultipliers(1);
+        liquidationMarginRequirement = ud(ICoreProxy(core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
+        imr = liquidationMarginRequirement.mul(ud(riskMultipliers.imMultiplier));
+        nodeOutput = IOracleManagerProxy(oracleManager).process(btcUsdNodeId);
+        price = ud(nodeOutput.price);
+        absBase = base.abs().intoUD60x18();
+        leverage = absBase.mul(price).div(imr);
+        // assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 0, 18);
     }
 }
