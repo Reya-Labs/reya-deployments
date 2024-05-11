@@ -92,11 +92,11 @@ usdcPolygonConnector = "0x54CAA0946dA179425e1abB169C020004284d64D3"
 usdcBaseConnector = "0x3694Ab37011764fA64A648C2d5d6aC0E9cD5F98e"
 
 [var.periphery_socket_withdraw_fees]
-usdcEthereumWithdrawFeeUnscaled = "52.6"
-usdcArbitrumWithdrawFeeUnscaled = "6.9"
-usdcOptimismWithdrawFeeUnscaled = "6.74"
-usdcPolygonWithdrawFeeUnscaled = "3.06"
-usdcBaseWithdrawFeeUnscaled = "6.74"
+usdcEthereumWithdrawFeeUnscaled = "27.888"
+usdcArbitrumWithdrawFeeUnscaled = "0.114"
+usdcOptimismWithdrawFeeUnscaled = "0.102"
+usdcPolygonWithdrawFeeUnscaled = "0.0492"
+usdcBaseWithdrawFeeUnscaled = "0.708"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
