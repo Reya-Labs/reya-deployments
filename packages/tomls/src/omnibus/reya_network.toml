@@ -173,8 +173,8 @@ cp1Rusd_maxCollaterals = "1"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
 # -----------------------------------------------
-cp1Rusd_market1Eth_riskMatrix00Unscaled = "0.0416"
-cp1Rusd_market2Btc_riskMatrix00Unscaled = "0.0386"
+cp1Rusd_market1Eth_riskMatrix00Unscaled = "0.000416"
+cp1Rusd_market2Btc_riskMatrix00Unscaled = "0.000386"
 # cp1Rusd_riskMatrix00Unscaled = "0.002401"
 # cp1Rusd_riskMatrix01Unscaled = "0.00111475"
 # cp1Rusd_riskMatrix10Unscaled = "0.00111475"
