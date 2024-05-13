@@ -463,11 +463,34 @@ contract ForkChecks is Test {
         test_PoolHealth();
     }
 
+    function wadToString(UD60x18 x) private returns (string memory) {
+        return vm.toString(x.unwrap());
+        // string[] memory pythonCommand = new string[](3);
+        // pythonCommand[0] = 'python3';
+        // pythonCommand[1] = '-c';
+        // pythonCommand[2] = string.concat('print("""{:.18f}""".format(', string.concat(vm.toString(x.unwrap()), '/1e18))'));
+        // return string(vm.ffi(pythonCommand));
+    } 
+
+    function wadToString(SD59x18 x) private returns (string memory) {
+        return vm.toString(x.unwrap());
+        // string[] memory pythonCommand = new string[](3);
+        // pythonCommand[0] = 'python3';
+        // pythonCommand[1] = '-c';
+        // pythonCommand[2] = string.concat('print("""{:.18f}""".format(', string.concat(vm.toString(x.unwrap()), '/1e18))'));
+        // return string(vm.ffi(pythonCommand));
+    } 
+
     function test_trade_slippage_eth() public {
         (user, userPk) = makeAddrAndKey("user");
         marketId = 1; // eth
         exchangeId = 1; // passive pool
         baseSpacing = ud(0.005e18);
+
+        MarketConfigurationData memory marketConfig = IPassivePerpProxy(perp).getMarketConfiguration(marketId);
+        marketConfig.maxOpenBase = 1000000e18;
+        vm.prank(multisig);
+        IPassivePerpProxy(perp).setMarketConfiguration(marketId, marketConfig);
 
         // deposit new margin account
         uint256 depositAmount = 100_000_000e18;
@@ -491,27 +514,43 @@ contract ForkChecks is Test {
 
             assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base, 0);
 
-            // solhint-disable-next-line no-console
-            console2.log(
-                "trader base exposure post off-setting",
-                IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base
-            );
+            console2.log(string.concat("trader base post off-set trade (pool base is now 0) ", wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base))));
         }
 
-        SD59x18[] memory notionalStepArray = new SD59x18[](1);
-        notionalStepArray[0] = sd(8_267_326.73e18);
+        SD59x18[] memory notionalArray = new SD59x18[](10);
+        notionalArray[0] = sd(24662424.05e18);
+        notionalArray[1] = sd(48841271.16e18);
+        notionalArray[2] = sd(72550626.09e18);
+        notionalArray[3] = sd(95804031.88e18);
+        notionalArray[4] = sd(118614515.66e18);
+        notionalArray[5] = sd(140994612.96e18);
+        notionalArray[6] = sd(162956390.68e18);
+        notionalArray[7] = sd(184511468.81e18);
+        notionalArray[8] = sd(205671040.92e18);
+        notionalArray[9] = sd(226240014.92e18);
 
-        SD59x18[] memory pSlippageArray = new SD59x18[](1);
+        SD59x18[] memory pSlippageArray = new SD59x18[](10);
         pSlippageArray[0] = sd(0.01e18);
+        pSlippageArray[1] = sd(0.02e18);
+        pSlippageArray[2] = sd(0.03e18);
+        pSlippageArray[3] = sd(0.04e18);
+        pSlippageArray[4] = sd(0.05e18);
+        pSlippageArray[5] = sd(0.06e18);
+        pSlippageArray[6] = sd(0.07e18);
+        pSlippageArray[7] = sd(0.08e18);
+        pSlippageArray[8] = sd(0.09e18);
+        pSlippageArray[9] = sd(0.0999e18);
 
-        assertEq(notionalStepArray.length, pSlippageArray.length);
+        assertEq(notionalArray.length, pSlippageArray.length);
 
-        for (uint256 i = 0; i < notionalStepArray.length; i += 1) {
-            SD59x18 baseStep = notionalStepArray[i].div(getMarketSpotPrice(marketId).intoSD59x18());
+        for (uint256 i = 0; i < notionalArray.length; i += 1) {
+            SD59x18 baseStep;
+            if (i > 0) {
+                baseStep = notionalArray[i].sub(notionalArray[i-1]).div(getMarketSpotPrice(marketId).intoSD59x18());
+            } else {
+                baseStep = notionalArray[i].div(getMarketSpotPrice(marketId).intoSD59x18());
+            }
             baseStep = baseStep.sub(baseStep.mod(baseSpacing.intoSD59x18()));
-
-            // solhint-disable-next-line no-console
-            console2.log("base step", baseStep.unwrap());
 
             UD60x18 orderPrice;
             SD59x18 pSlippage;
@@ -522,24 +561,40 @@ contract ForkChecks is Test {
                 accountId: accountId
             });
 
-            // solhint-disable-next-line no-console
-            console2.log("order price", orderPrice.unwrap());
-            // solhint-disable-next-line no-console
-            console2.log("market spot price", getMarketSpotPrice(marketId).unwrap());
-            // solhint-disable-next-line no-console
-            console2.log("p slippage", pSlippage.unwrap());
-            // solhint-disable-next-line no-console
-            console2.log(
-                "pool base exposure",
-                IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base
-            );
-            // solhint-disable-next-line no-console
-            console2.log(
-                "trader base exposure", IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base
-            );
+            string memory stepString = string.concat("step ", string.concat(vm.toString(i), " "));
+            console2.log(string.concat(string.concat(stepString, "order price "), wadToString(orderPrice)));
+            console2.log(string.concat(string.concat(stepString, "market spot price "), wadToString(getMarketSpotPrice(marketId))));
+            console2.log(string.concat(string.concat(stepString, "p slippage "), wadToString(pSlippage)));
+            console2.log(string.concat(string.concat(stepString, "base step "), wadToString(baseStep)));
+            console2.log(string.concat(string.concat(stepString, "pool base exposure "), wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base))));
+            console2.log(string.concat(string.concat(stepString, "trader base exposure "), wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base))));
+            console2.log("");
 
-            // assertApproxEqAbsDecimal(pSlippage.unwrap(), pSlippageArray[i].unwrap(), 0.0001e18, 18);
+            // executeCoreMatchOrder({
+            //     sender: user,
+            //     base: baseStep.mul(sd(-1e18)),
+            //     priceLimit: getPriceLimit(baseStep.mul(sd(-1e18))),
+            //     accountId: accountId
+            // });
+            
+            // assertApproxEqAbsDecimal(pSlippage.unwrap(), pSlippageArray[i].unwrap(), 0.0005e18, 18);
         }
+
+        // SD59x18 baseStep = sd(22408439.25e18).div(getMarketSpotPrice(marketId).intoSD59x18());
+        // baseStep = baseStep.sub(baseStep.mod(baseSpacing.intoSD59x18()));
+
+        // // solhint-disable-next-line no-console
+        // console2.log("base step", baseStep.unwrap());
+
+        // UD60x18 orderPrice;
+        // SD59x18 pSlippage;
+        // vm.expectRevert();
+        // (orderPrice, pSlippage) = executeCoreMatchOrder({
+        //     sender: user,
+        //     base: baseStep,
+        //     priceLimit: getPriceLimit(baseStep),
+        //     accountId: accountId
+        // });
     }
 
     function test_trade_slippage_btc() public { }
