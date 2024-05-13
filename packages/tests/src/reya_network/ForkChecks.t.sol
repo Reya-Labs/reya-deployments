@@ -490,6 +490,12 @@ contract ForkChecks is Test {
             });
 
             assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base, 0);
+
+            // solhint-disable-next-line no-console
+            console2.log(
+                "trader base exposure post off-setting",
+                IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base
+            );
         }
 
         SD59x18[] memory notionalStepArray = new SD59x18[](1);
@@ -522,8 +528,17 @@ contract ForkChecks is Test {
             console2.log("market spot price", getMarketSpotPrice(marketId).unwrap());
             // solhint-disable-next-line no-console
             console2.log("p slippage", pSlippage.unwrap());
+            // solhint-disable-next-line no-console
+            console2.log(
+                "pool base exposure",
+                IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base
+            );
+            // solhint-disable-next-line no-console
+            console2.log(
+                "trader base exposure", IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base
+            );
 
-            // assertApproxEqAbsDecimal(pSlippage.unwrap(), pSlippageArray[i].unwrap(), 0.001e18, 18);
+            // assertApproxEqAbsDecimal(pSlippage.unwrap(), pSlippageArray[i].unwrap(), 0.0001e18, 18);
         }
     }
 
