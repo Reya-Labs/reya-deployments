@@ -26,6 +26,8 @@ import { mockCoreCalculateDigest, hashExecuteBySigExtended, EIP712Signature } fr
 import { sd, SD59x18, UNIT as UNIT_sd, ZERO as ZERO_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
+import { console2 } from "forge-std/Test.sol";
+
 contract ForkChecks is Test {
     string REYA_RPC = "https://rpc.reya.network";
 
@@ -310,6 +312,7 @@ contract ForkChecks is Test {
     NodeOutput.Data nodeOutput;
     UD60x18 price;
     UD60x18 absBase;
+    UD60x18 baseSpacing;
 
     function getMarketSpotPrice(uint128 marketId) private returns (UD60x18 marketSpotPrice) {
         MarketConfigurationData memory marketConfig = IPassivePerpProxy(perp).getMarketConfiguration(marketId);
@@ -372,7 +375,7 @@ contract ForkChecks is Test {
         uint128 accountId
     )
         private
-        returns (UD60x18 orderPrice, SD59x18 pSlippage, SD59x18 priceDeviation)
+        returns (UD60x18 orderPrice, SD59x18 pSlippage)
     {
         uint128[] memory counterpartyAccountIds = new uint128[](1);
         counterpartyAccountIds[0] = passivePoolAccountId;
@@ -464,6 +467,7 @@ contract ForkChecks is Test {
         (user, userPk) = makeAddrAndKey("user");
         marketId = 1; // eth
         exchangeId = 1; // passive pool
+        baseSpacing = ud(0.005e18);
 
         // deposit new margin account
         uint256 depositAmount = 100_000_000e18;
@@ -488,25 +492,39 @@ contract ForkChecks is Test {
             assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base, 0);
         }
 
-        // SD59x18[] baseArray = new SD59x18[]();
-        // baseArray[0] = ;
+        SD59x18[] memory notionalStepArray = new SD59x18[](1);
+        notionalStepArray[0] = sd(8_267_326.73e18);
 
-        // UD60x18[] pSlippageArray = new UD60x18[]();
-        // pSlippageArray[0] = ;
+        SD59x18[] memory pSlippageArray = new SD59x18[](1);
+        pSlippageArray[0] = sd(0.01e18);
 
-        // assertEq(baseArray.length, pSlippageArray.length);
+        assertEq(notionalStepArray.length, pSlippageArray.length);
 
-        // for (uint i = 0; i < baseArray.length; i += 1) {
-        //     UD60x18 pSlippage;
-        //     (, pSlippage) = executeCoreMatchOrder({
-        //         sender: user,
-        //         base: baseArray[i],
-        //         priceLimit: getPriceLimit(baseArray[i]),
-        //         accountId: accountId
-        //     });
+        for (uint256 i = 0; i < notionalStepArray.length; i += 1) {
+            SD59x18 baseStep = notionalStepArray[i].div(getMarketSpotPrice(marketId).intoSD59x18());
+            baseStep = baseStep.sub(baseStep.mod(baseSpacing.intoSD59x18()));
 
-        //     assertApproxEqAbsDecimal(pSlippage.unwrap(), pSlippageArray[i].unwrap(), , 18);
-        // }
+            // solhint-disable-next-line no-console
+            console2.log("base step", baseStep.unwrap());
+
+            UD60x18 orderPrice;
+            SD59x18 pSlippage;
+            (orderPrice, pSlippage) = executeCoreMatchOrder({
+                sender: user,
+                base: baseStep,
+                priceLimit: getPriceLimit(baseStep),
+                accountId: accountId
+            });
+
+            // solhint-disable-next-line no-console
+            console2.log("order price", orderPrice.unwrap());
+            // solhint-disable-next-line no-console
+            console2.log("market spot price", getMarketSpotPrice(marketId).unwrap());
+            // solhint-disable-next-line no-console
+            console2.log("p slippage", pSlippage.unwrap());
+
+            // assertApproxEqAbsDecimal(pSlippage.unwrap(), pSlippageArray[i].unwrap(), 0.001e18, 18);
+        }
     }
 
     function test_trade_slippage_btc() public { }
