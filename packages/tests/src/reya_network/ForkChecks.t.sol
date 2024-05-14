@@ -481,121 +481,144 @@ contract ForkChecks is Test {
         // return string(vm.ffi(pythonCommand));
     } 
 
-    function test_trade_slippage_eth() public {
-        (user, userPk) = makeAddrAndKey("user");
-        marketId = 1; // eth
-        exchangeId = 1; // passive pool
-        baseSpacing = ud(0.005e18);
-
-        MarketConfigurationData memory marketConfig = IPassivePerpProxy(perp).getMarketConfiguration(marketId);
-        marketConfig.maxOpenBase = 1000000e18;
-        vm.prank(multisig);
-        IPassivePerpProxy(perp).setMarketConfiguration(marketId, marketConfig);
-
-        // deposit new margin account
-        uint256 depositAmount = 100_000_000e18;
-        deal(usdc, address(periphery), depositAmount);
-        mockBridgedAmount(socketUsdcExecutionHelper, depositAmount);
-        vm.prank(socketUsdcExecutionHelper);
-        uint128 accountId =
-            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
-
-        // offset pool exposure
-        {
-            SD59x18 poolBase =
-                SD59x18.wrap(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base);
-
-            executeCoreMatchOrder({
-                sender: user,
-                base: poolBase,
-                priceLimit: getPriceLimit(poolBase),
-                accountId: accountId
-            });
-
-            assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base, 0);
-
-            console2.log(string.concat("trader base post off-set trade (pool base is now 0) ", wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base))));
-        }
-
-        SD59x18[] memory notionalArray = new SD59x18[](10);
-        notionalArray[0] = sd(24662424.05e18);
-        notionalArray[1] = sd(48841271.16e18);
-        notionalArray[2] = sd(72550626.09e18);
-        notionalArray[3] = sd(95804031.88e18);
-        notionalArray[4] = sd(118614515.66e18);
-        notionalArray[5] = sd(140994612.96e18);
-        notionalArray[6] = sd(162956390.68e18);
-        notionalArray[7] = sd(184511468.81e18);
-        notionalArray[8] = sd(205671040.92e18);
-        notionalArray[9] = sd(226240014.92e18);
-
-        SD59x18[] memory pSlippageArray = new SD59x18[](10);
-        pSlippageArray[0] = sd(0.01e18);
-        pSlippageArray[1] = sd(0.02e18);
-        pSlippageArray[2] = sd(0.03e18);
-        pSlippageArray[3] = sd(0.04e18);
-        pSlippageArray[4] = sd(0.05e18);
-        pSlippageArray[5] = sd(0.06e18);
-        pSlippageArray[6] = sd(0.07e18);
-        pSlippageArray[7] = sd(0.08e18);
-        pSlippageArray[8] = sd(0.09e18);
-        pSlippageArray[9] = sd(0.0999e18);
-
-        assertEq(notionalArray.length, pSlippageArray.length);
-
-        for (uint256 i = 0; i < notionalArray.length; i += 1) {
-            SD59x18 baseStep;
-            if (i > 0) {
-                baseStep = notionalArray[i].sub(notionalArray[i-1]).div(getMarketSpotPrice(marketId).intoSD59x18());
-            } else {
-                baseStep = notionalArray[i].div(getMarketSpotPrice(marketId).intoSD59x18());
-            }
-            baseStep = baseStep.sub(baseStep.mod(baseSpacing.intoSD59x18()));
-
-            UD60x18 orderPrice;
-            SD59x18 pSlippage;
-            (orderPrice, pSlippage) = executeCoreMatchOrder({
-                sender: user,
-                base: baseStep,
-                priceLimit: getPriceLimit(baseStep),
-                accountId: accountId
-            });
-
-            string memory stepString = string.concat("step ", string.concat(vm.toString(i), " "));
-            console2.log(string.concat(string.concat(stepString, "order price "), wadToString(orderPrice)));
-            console2.log(string.concat(string.concat(stepString, "market spot price "), wadToString(getMarketSpotPrice(marketId))));
-            console2.log(string.concat(string.concat(stepString, "p slippage "), wadToString(pSlippage)));
-            console2.log(string.concat(string.concat(stepString, "base step "), wadToString(baseStep)));
-            console2.log(string.concat(string.concat(stepString, "pool base exposure "), wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base))));
-            console2.log(string.concat(string.concat(stepString, "trader base exposure "), wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base))));
-            console2.log("");
-
-            // executeCoreMatchOrder({
-            //     sender: user,
-            //     base: baseStep.mul(sd(-1e18)),
-            //     priceLimit: getPriceLimit(baseStep.mul(sd(-1e18))),
-            //     accountId: accountId
-            // });
-            
-            // assertApproxEqAbsDecimal(pSlippage.unwrap(), pSlippageArray[i].unwrap(), 0.0005e18, 18);
-        }
-
-        // SD59x18 baseStep = sd(22408439.25e18).div(getMarketSpotPrice(marketId).intoSD59x18());
-        // baseStep = baseStep.sub(baseStep.mod(baseSpacing.intoSD59x18()));
-
-        // // solhint-disable-next-line no-console
-        // console2.log("base step", baseStep.unwrap());
-
-        // UD60x18 orderPrice;
-        // SD59x18 pSlippage;
-        // vm.expectRevert();
-        // (orderPrice, pSlippage) = executeCoreMatchOrder({
-        //     sender: user,
-        //     base: baseStep,
-        //     priceLimit: getPriceLimit(baseStep),
-        //     accountId: accountId
-        // });
+    function notionalToBase(uint128 marketId, SD59x18 notional) private returns (SD59x18 base) {
+        base = notional.div(getMarketSpotPrice(marketId).intoSD59x18());
     }
 
-    function test_trade_slippage_btc() public { }
+    // function test_trade_slippage_eth() public {
+    //     (user, userPk) = makeAddrAndKey("user");
+    //     marketId = 1; // eth
+    //     exchangeId = 1; // passive pool
+    //     baseSpacing = ud(0.005e18);
+
+    //     RiskMultipliers memory riskMultipliers = ICoreProxy(core).getRiskMultipliers();
+    //     int64[][] memory marketRiskMatrix = IPassivePerpProxy(perp).getRiskBlockMatrixByMarket(marketId);
+
+    //     // increase max open base
+    //     MarketConfigurationData memory marketConfig = IPassivePerpProxy(perp).getMarketConfiguration(marketId);
+    //     marketConfig.maxOpenBase = 1000000e18;
+    //     vm.prank(multisig);
+    //     IPassivePerpProxy(perp).setMarketConfiguration(marketId, marketConfig);
+
+    //     // deposit new margin account
+    //     uint256 depositAmount = 100_000_000e18;
+    //     deal(usdc, address(periphery), depositAmount);
+    //     mockBridgedAmount(socketUsdcExecutionHelper, depositAmount);
+    //     vm.prank(socketUsdcExecutionHelper);
+    //     uint128 accountId =
+    //         IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
+
+    //     // step 1: Unwind any exposure of the pool
+    //     {
+    //         SD59x18 poolBase =
+    //             SD59x18.wrap(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base);
+
+    //         executeCoreMatchOrder({
+    //             sender: user,
+    //             base: poolBase,
+    //             priceLimit: getPriceLimit(poolBase),
+    //             accountId: accountId
+    //         });
+
+    //         assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base, 0);
+
+    //         console2.log(string.concat("trader base post off-set trade (pool base is now 0) ", wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base))));
+    //     }
+
+    //     // step 2: Get pool's TVL
+    //     MarginInfo memory poolMarginInfo = ICoreProxy(core).getUsdNodeMarginInfo(passivePoolAccountId);
+    //     SD59x18 passivePoolTVL = sd(poolMarginInfo.marginBalance);
+
+    //     // Step 3: Compute the grid
+    //     SD59x18 prevNotionalsSum = sd(0);
+    //     for (uint i = 1; i < 10; i += 1) {
+    //         SD59x18 notional = s[i].div(UNIT_sd.add(s[i])).mul(
+    //             ud(marketConfig.depthFactor).mul(passivePoolTVL).div(sd(riskMultipliers.imMultiplier).mul(sd(marketRiskMatrix[marketConfig.riskMatrixIndex][marketConfig.riskMatrixIndex])))
+    //         ).sub(prevNotionalsSum);
+    //         SD59x18 base = notionalToBase(marketId, notional);
+
+    //         UD60x18 orderPrice;
+    //         SD59x18 pSlippage;
+    //         (orderPrice, pSlippage) = executeCoreMatchOrder({
+    //             sender: user,
+    //             base: base,
+    //             priceLimit: getPriceLimit(base),
+    //             accountId: accountId
+    //         });
+
+    //         console2.log(string.concat("step ", vm.toString(i)), pSlippage);
+            
+    //         prevNotionalsSum = prevNotionalsSum.add(notional);
+    //     }
+
+    //     passivePoolTVL = sd(0.01e18).div(UNIT_sd.add(sd(0.01e18))).mul(UNIT_sd.add(initialPSlippage).div(initialPSlippage));
+
+    //     SD59x18[] memory s = new SD59x18[](11);
+    //     s[0] = sd(e18);
+    //     s[1] = sd(e18);
+    //     s[2] = sd(e18);
+    //     s[3] = sd(e18);
+    //     s[4] = sd(e18);
+    //     s[5] = sd(e18);
+    //     s[6] = sd(e18);
+    //     s[7] = sd(e18);
+    //     s[8] = sd(e18);
+    //     s[9] = sd(e18);
+    //     s[10] = sd(e18);
+
+    //     assertEq(notionalArray.length, pSlippageArray.length);
+
+    //     for (uint256 i = 0; i < notionalArray.length; i += 1) {
+    //         SD59x18 baseStep;
+    //         if (i > 0) {
+    //             baseStep = notionalArray[i].sub(notionalArray[i-1]).div(getMarketSpotPrice(marketId).intoSD59x18());
+    //         } else {
+    //             baseStep = notionalArray[i].div(getMarketSpotPrice(marketId).intoSD59x18());
+    //         }
+    //         baseStep = baseStep.sub(baseStep.mod(baseSpacing.intoSD59x18()));
+
+    //         UD60x18 orderPrice;
+    //         SD59x18 pSlippage;
+    //         (orderPrice, pSlippage) = executeCoreMatchOrder({
+    //             sender: user,
+    //             base: baseStep,
+    //             priceLimit: getPriceLimit(baseStep),
+    //             accountId: accountId
+    //         });
+
+    //         string memory stepString = string.concat("step ", string.concat(vm.toString(i), " "));
+    //         // console2.log(string.concat(string.concat(stepString, "order price "), wadToString(orderPrice)));
+    //         // console2.log(string.concat(string.concat(stepString, "market spot price "), wadToString(getMarketSpotPrice(marketId))));
+    //         console2.log(string.concat(string.concat(stepString, "p slippage "), wadToString(pSlippage)));
+    //         // console2.log(string.concat(string.concat(stepString, "base step "), wadToString(baseStep)));
+    //         // console2.log(string.concat(string.concat(stepString, "pool base exposure "), wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base))));
+    //         // console2.log(string.concat(string.concat(stepString, "trader base exposure "), wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base))));
+    //         console2.log("");
+
+    //         // executeCoreMatchOrder({
+    //         //     sender: user,
+    //         //     base: baseStep.mul(sd(-1e18)),
+    //         //     priceLimit: getPriceLimit(baseStep.mul(sd(-1e18))),
+    //         //     accountId: accountId
+    //         // });
+            
+    //         assertApproxEqAbsDecimal(pSlippage.unwrap(), pSlippageArray[i].unwrap(), 0.0002e18, 18);
+    //     }
+
+    //     // SD59x18 baseStep = sd(22408439.25e18).div(getMarketSpotPrice(marketId).intoSD59x18());
+    //     // baseStep = baseStep.sub(baseStep.mod(baseSpacing.intoSD59x18()));
+
+    //     // // solhint-disable-next-line no-console
+    //     // console2.log("base step", baseStep.unwrap());
+
+    //     // UD60x18 orderPrice;
+    //     // SD59x18 pSlippage;
+    //     // vm.expectRevert();
+    //     // (orderPrice, pSlippage) = executeCoreMatchOrder({
+    //     //     sender: user,
+    //     //     base: baseStep,
+    //     //     priceLimit: getPriceLimit(baseStep),
+    //     //     accountId: accountId
+    //     // });
+    // }
 }
