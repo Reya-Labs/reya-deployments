@@ -468,18 +468,20 @@ contract ForkChecks is Test {
         // string[] memory pythonCommand = new string[](3);
         // pythonCommand[0] = 'python3';
         // pythonCommand[1] = '-c';
-        // pythonCommand[2] = string.concat('print("""{:.18f}""".format(', string.concat(vm.toString(x.unwrap()), '/1e18))'));
+        // pythonCommand[2] = string.concat('print("""{:.18f}""".format(', string.concat(vm.toString(x.unwrap()),
+        // '/1e18))'));
         // return string(vm.ffi(pythonCommand));
-    } 
+    }
 
     function wadToString(SD59x18 x) private returns (string memory) {
         return vm.toString(x.unwrap());
         // string[] memory pythonCommand = new string[](3);
         // pythonCommand[0] = 'python3';
         // pythonCommand[1] = '-c';
-        // pythonCommand[2] = string.concat('print("""{:.18f}""".format(', string.concat(vm.toString(x.unwrap()), '/1e18))'));
+        // pythonCommand[2] = string.concat('print("""{:.18f}""".format(', string.concat(vm.toString(x.unwrap()),
+        // '/1e18))'));
         // return string(vm.ffi(pythonCommand));
-    } 
+    }
 
     function notionalToBase(uint128 marketId, SD59x18 notional) private returns (SD59x18 base) {
         base = notional.div(getMarketSpotPrice(marketId).intoSD59x18());
@@ -506,7 +508,8 @@ contract ForkChecks is Test {
     //     mockBridgedAmount(socketUsdcExecutionHelper, depositAmount);
     //     vm.prank(socketUsdcExecutionHelper);
     //     uint128 accountId =
-    //         IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
+    //         IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc)
+    // }));
 
     //     // step 1: Unwind any exposure of the pool
     //     {
@@ -522,7 +525,8 @@ contract ForkChecks is Test {
 
     //         assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base, 0);
 
-    //         console2.log(string.concat("trader base post off-set trade (pool base is now 0) ", wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base))));
+    //         console2.log(string.concat("trader base post off-set trade (pool base is now 0) ",
+    // wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base))));
     //     }
 
     //     // step 2: Get pool's TVL
@@ -547,11 +551,12 @@ contract ForkChecks is Test {
     //         });
 
     //         console2.log(string.concat("step ", vm.toString(i)), pSlippage);
-            
+
     //         prevNotionalsSum = prevNotionalsSum.add(notional);
     //     }
 
-    //     passivePoolTVL = sd(0.01e18).div(UNIT_sd.add(sd(0.01e18))).mul(UNIT_sd.add(initialPSlippage).div(initialPSlippage));
+    //     passivePoolTVL =
+    // sd(0.01e18).div(UNIT_sd.add(sd(0.01e18))).mul(UNIT_sd.add(initialPSlippage).div(initialPSlippage));
 
     //     SD59x18[] memory s = new SD59x18[](11);
     //     s[0] = sd(e18);
@@ -588,11 +593,14 @@ contract ForkChecks is Test {
 
     //         string memory stepString = string.concat("step ", string.concat(vm.toString(i), " "));
     //         // console2.log(string.concat(string.concat(stepString, "order price "), wadToString(orderPrice)));
-    //         // console2.log(string.concat(string.concat(stepString, "market spot price "), wadToString(getMarketSpotPrice(marketId))));
+    //         // console2.log(string.concat(string.concat(stepString, "market spot price "),
+    // wadToString(getMarketSpotPrice(marketId))));
     //         console2.log(string.concat(string.concat(stepString, "p slippage "), wadToString(pSlippage)));
     //         // console2.log(string.concat(string.concat(stepString, "base step "), wadToString(baseStep)));
-    //         // console2.log(string.concat(string.concat(stepString, "pool base exposure "), wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base))));
-    //         // console2.log(string.concat(string.concat(stepString, "trader base exposure "), wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base))));
+    //         // console2.log(string.concat(string.concat(stepString, "pool base exposure "),
+    // wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base))));
+    //         // console2.log(string.concat(string.concat(stepString, "trader base exposure "),
+    // wadToString(sd(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base))));
     //         console2.log("");
 
     //         // executeCoreMatchOrder({
@@ -601,7 +609,7 @@ contract ForkChecks is Test {
     //         //     priceLimit: getPriceLimit(baseStep.mul(sd(-1e18))),
     //         //     accountId: accountId
     //         // });
-            
+
     //         assertApproxEqAbsDecimal(pSlippage.unwrap(), pSlippageArray[i].unwrap(), 0.0002e18, 18);
     //     }
 
