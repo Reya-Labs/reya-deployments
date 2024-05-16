@@ -26,8 +26,6 @@ import { mockCoreCalculateDigest, hashExecuteBySigExtended, EIP712Signature } fr
 import { sd, SD59x18, UNIT as UNIT_sd, ZERO as ZERO_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
-import { console2 } from "forge-std/Test.sol";
-
 contract ForkChecks is Test {
     string REYA_RPC = "https://rpc.reya.network";
 
@@ -303,7 +301,7 @@ contract ForkChecks is Test {
     // stack too deep
     address user;
     uint256 userPk;
-    uint128 marketId;
+    uint128 collateralPoolId;
     uint128 exchangeId;
     RiskMultipliers riskMultipliers;
     UD60x18 liquidationMarginRequirement;
@@ -313,6 +311,9 @@ contract ForkChecks is Test {
     UD60x18 price;
     UD60x18 absBase;
     UD60x18 baseSpacing;
+    MarketConfigurationData marketConfig;
+    int64[][] marketRiskMatrix;
+    uint256 passivePoolImMultiplier;
 
     function getMarketSpotPrice(uint128 marketId) private returns (UD60x18 marketSpotPrice) {
         MarketConfigurationData memory marketConfig = IPassivePerpProxy(perp).getMarketConfiguration(marketId);
@@ -369,6 +370,7 @@ contract ForkChecks is Test {
     }
 
     function executeCoreMatchOrder(
+        uint128 marketId,
         address sender,
         SD59x18 base,
         UD60x18 priceLimit,
@@ -400,12 +402,16 @@ contract ForkChecks is Test {
         pSlippage = orderPrice.div(getMarketSpotPrice(marketId)).intoSD59x18().sub(UNIT_sd);
     }
 
-    function test_trade_eth() public {
+    function notionalToBase(uint128 marketId, SD59x18 notional) private returns (SD59x18 base) {
+        base = notional.div(getMarketSpotPrice(marketId).intoSD59x18());
+    }
+
+    function test_trade_leverage_eth() public {
         // general info
         // this tests 20x leverage is successful
         (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 3000e6; // denominated in rusd/usdc
-        marketId = 1; // eth
+        uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(10_000e18);
 
@@ -432,12 +438,12 @@ contract ForkChecks is Test {
         test_PoolHealth();
     }
 
-    function test_trade_btc() public {
+    function test_trade_leverage_btc() public {
         // general info
         // this tests 20x leverage is successful
         (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 60_000e6; // denominated in rusd/usdc
-        marketId = 2; // btc
+        uint128 marketId = 2; // btc
         exchangeId = 1; // passive pool
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(100_000e18);
@@ -463,9 +469,18 @@ contract ForkChecks is Test {
         test_PoolHealth();
     }
 
-    function test_trade_slippage_eth() public {
+    function trade_slippage_helper(
+        uint128 marketId,
+        SD59x18[] memory s,
+        SD59x18[] memory sPrime,
+        UD60x18 eps
+    )
+        private
+    {
+        assertEq(s.length, sPrime.length);
+
         (user, userPk) = makeAddrAndKey("user");
-        marketId = 1; // eth
+        collateralPoolId = 1;
         exchangeId = 1; // passive pool
         baseSpacing = ud(0.005e18);
 
@@ -477,70 +492,177 @@ contract ForkChecks is Test {
         uint128 accountId =
             IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
 
-        // offset pool exposure
-        {
+        for (uint128 _marketId = 1; _marketId <= 2; _marketId += 1) {
+            marketConfig = IPassivePerpProxy(perp).getMarketConfiguration(_marketId);
+
+            // Step 1: Unwind any exposure of the pool
             SD59x18 poolBase =
-                SD59x18.wrap(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base);
+                SD59x18.wrap(IPassivePerpProxy(perp).getUpdatedPositionInfo(_marketId, passivePoolAccountId).base);
 
-            executeCoreMatchOrder({
-                sender: user,
-                base: poolBase,
-                priceLimit: getPriceLimit(poolBase),
-                accountId: accountId
-            });
+            if (poolBase.abs().lt(sd(int256(marketConfig.minimumOrderBase)))) {
+                executeCoreMatchOrder({
+                    marketId: marketId,
+                    sender: user,
+                    base: poolBase,
+                    priceLimit: getPriceLimit(poolBase),
+                    accountId: accountId
+                });
 
-            assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base, 0);
-
-            // solhint-disable-next-line no-console
-            console2.log(
-                "trader base exposure post off-setting",
-                IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base
-            );
+                assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(_marketId, passivePoolAccountId).base, 0);
+            }
         }
 
-        SD59x18[] memory notionalStepArray = new SD59x18[](1);
-        notionalStepArray[0] = sd(8_267_326.73e18);
+        passivePoolImMultiplier = ICoreProxy(core).getAccountImMultiplier(passivePoolAccountId);
+        marketRiskMatrix = ICoreProxy(core).getRiskBlockMatrixByMarket(marketId);
 
-        SD59x18[] memory pSlippageArray = new SD59x18[](1);
-        pSlippageArray[0] = sd(0.01e18);
+        // increase max open base
+        marketConfig = IPassivePerpProxy(perp).getMarketConfiguration(marketId);
+        marketConfig.maxOpenBase = 100_000_000e18;
+        vm.prank(multisig);
+        IPassivePerpProxy(perp).setMarketConfiguration(marketId, marketConfig);
 
-        assertEq(notionalStepArray.length, pSlippageArray.length);
+        // Step 2: Get pool's TVL
+        MarginInfo memory poolMarginInfo = ICoreProxy(core).getUsdNodeMarginInfo(passivePoolAccountId);
+        SD59x18 passivePoolTVL = sd(poolMarginInfo.marginBalance);
 
-        for (uint256 i = 0; i < notionalStepArray.length; i += 1) {
-            SD59x18 baseStep = notionalStepArray[i].div(getMarketSpotPrice(marketId).intoSD59x18());
-            baseStep = baseStep.sub(baseStep.mod(baseSpacing.intoSD59x18()));
-
-            // solhint-disable-next-line no-console
-            console2.log("base step", baseStep.unwrap());
+        // Step 3: Compute the grid
+        SD59x18 prevNotionalsSum = sd(0);
+        for (uint256 i = 1; i < s.length; i += 1) {
+            SD59x18 notional = s[i].div(UNIT_sd.add(s[i])).mul(
+                sd(int256(marketConfig.depthFactor)).mul(passivePoolTVL).div(
+                    sd(int256(passivePoolImMultiplier)).mul(
+                        sd(marketRiskMatrix[marketConfig.riskMatrixIndex][marketConfig.riskMatrixIndex]).sqrt()
+                    )
+                )
+            ).sub(prevNotionalsSum);
+            SD59x18 base = notionalToBase(marketId, notional);
+            base = base.sub(base.mod(baseSpacing.intoSD59x18()));
 
             UD60x18 orderPrice;
             SD59x18 pSlippage;
             (orderPrice, pSlippage) = executeCoreMatchOrder({
+                marketId: marketId,
                 sender: user,
-                base: baseStep,
-                priceLimit: getPriceLimit(baseStep),
+                base: base,
+                priceLimit: getPriceLimit(base),
                 accountId: accountId
             });
 
-            // solhint-disable-next-line no-console
-            console2.log("order price", orderPrice.unwrap());
-            // solhint-disable-next-line no-console
-            console2.log("market spot price", getMarketSpotPrice(marketId).unwrap());
-            // solhint-disable-next-line no-console
-            console2.log("p slippage", pSlippage.unwrap());
-            // solhint-disable-next-line no-console
-            console2.log(
-                "pool base exposure",
-                IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base
-            );
-            // solhint-disable-next-line no-console
-            console2.log(
-                "trader base exposure", IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base
-            );
+            assertApproxEqAbsDecimal(pSlippage.unwrap(), sPrime[i].unwrap(), eps.unwrap(), 18);
 
-            // assertApproxEqAbsDecimal(pSlippage.unwrap(), pSlippageArray[i].unwrap(), 0.0001e18, 18);
+            prevNotionalsSum = prevNotionalsSum.add(notional);
         }
     }
 
-    function test_trade_slippage_btc() public { }
+    function test_trade_slippage_eth_long() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(0.01e18);
+        s[2] = sd(0.02e18);
+        s[3] = sd(0.03e18);
+        s[4] = sd(0.04e18);
+        s[5] = sd(0.05e18);
+        s[6] = sd(0.06e18);
+        s[7] = sd(0.07e18);
+        s[8] = sd(0.08e18);
+        s[9] = sd(0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(0.01e18);
+        sPrime[2] = sd(0.019938e18);
+        sPrime[3] = sd(0.029726e18);
+        sPrime[4] = sd(0.039287e18);
+        sPrime[5] = sd(0.04855e18);
+        sPrime[6] = sd(0.057455e18);
+        sPrime[7] = sd(0.065957e18);
+        sPrime[8] = sd(0.074025e18);
+        sPrime[9] = sd(0.081639e18);
+        // sPrime[10] = sd(0.088702e18);
+
+        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.00005e18) });
+    }
+
+    function test_trade_slippage_btc_long() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(0.01e18);
+        s[2] = sd(0.02e18);
+        s[3] = sd(0.03e18);
+        s[4] = sd(0.04e18);
+        s[5] = sd(0.05e18);
+        s[6] = sd(0.06e18);
+        s[7] = sd(0.07e18);
+        s[8] = sd(0.08e18);
+        s[9] = sd(0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(0.01e18);
+        sPrime[2] = sd(0.019938e18);
+        sPrime[3] = sd(0.029726e18);
+        sPrime[4] = sd(0.039287e18);
+        sPrime[5] = sd(0.04855e18);
+        sPrime[6] = sd(0.057455e18);
+        sPrime[7] = sd(0.065957e18);
+        sPrime[8] = sd(0.074025e18);
+        sPrime[9] = sd(0.081639e18);
+        // sPrime[10] = sd(0.088702e18);
+
+        trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.0007e18) });
+    }
+
+    function test_trade_slippage_eth_short() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(-0.01e18);
+        s[2] = sd(-0.02e18);
+        s[3] = sd(-0.03e18);
+        s[4] = sd(-0.04e18);
+        s[5] = sd(-0.05e18);
+        s[6] = sd(-0.06e18);
+        s[7] = sd(-0.07e18);
+        s[8] = sd(-0.08e18);
+        s[9] = sd(-0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(-0.01e18);
+        sPrime[2] = sd(-0.019939e18);
+        sPrime[3] = sd(-0.029729e18);
+        sPrime[4] = sd(-0.039289e18);
+        sPrime[5] = sd(-0.048542e18);
+        sPrime[6] = sd(-0.057426e18);
+        sPrime[7] = sd(-0.065889e18);
+        sPrime[8] = sd(-0.073894e18);
+        sPrime[9] = sd(-0.081417e18);
+        // sPrime[10] = sd(0.088702e18);
+
+        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.00005e18) });
+    }
+
+    function test_trade_slippage_btc_short() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(-0.01e18);
+        s[2] = sd(-0.02e18);
+        s[3] = sd(-0.03e18);
+        s[4] = sd(-0.04e18);
+        s[5] = sd(-0.05e18);
+        s[6] = sd(-0.06e18);
+        s[7] = sd(-0.07e18);
+        s[8] = sd(-0.08e18);
+        s[9] = sd(-0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(-0.01e18);
+        sPrime[2] = sd(-0.019939e18);
+        sPrime[3] = sd(-0.029729e18);
+        sPrime[4] = sd(-0.039289e18);
+        sPrime[5] = sd(-0.048542e18);
+        sPrime[6] = sd(-0.057426e18);
+        sPrime[7] = sd(-0.065889e18);
+        sPrime[8] = sd(-0.073894e18);
+        sPrime[9] = sd(-0.081417e18);
+        // sPrime[10] = sd(0.088702e18);
+
+        trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.0007e18) });
+    }
 }
