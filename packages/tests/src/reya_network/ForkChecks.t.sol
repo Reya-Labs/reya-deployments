@@ -301,7 +301,6 @@ contract ForkChecks is Test {
     // stack too deep
     address user;
     uint256 userPk;
-    uint128 marketId;
     uint128 collateralPoolId;
     uint128 exchangeId;
     RiskMultipliers riskMultipliers;
@@ -371,6 +370,7 @@ contract ForkChecks is Test {
     }
 
     function executeCoreMatchOrder(
+        uint128 marketId,
         address sender,
         SD59x18 base,
         UD60x18 priceLimit,
@@ -402,12 +402,16 @@ contract ForkChecks is Test {
         pSlippage = orderPrice.div(getMarketSpotPrice(marketId)).intoSD59x18().sub(UNIT_sd);
     }
 
-    function test_trade_eth() public {
+    function notionalToBase(uint128 marketId, SD59x18 notional) private returns (SD59x18 base) {
+        base = notional.div(getMarketSpotPrice(marketId).intoSD59x18());
+    }
+
+    function test_trade_leverage_eth() public {
         // general info
         // this tests 20x leverage is successful
         (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 3000e6; // denominated in rusd/usdc
-        marketId = 1; // eth
+        uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(10_000e18);
 
@@ -434,12 +438,12 @@ contract ForkChecks is Test {
         test_PoolHealth();
     }
 
-    function test_trade_btc() public {
+    function test_trade_leverage_btc() public {
         // general info
         // this tests 20x leverage is successful
         (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 60_000e6; // denominated in rusd/usdc
-        marketId = 2; // btc
+        uint128 marketId = 2; // btc
         exchangeId = 1; // passive pool
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(100_000e18);
@@ -465,16 +469,48 @@ contract ForkChecks is Test {
         test_PoolHealth();
     }
 
-    function notionalToBase(uint128 marketId, SD59x18 notional) private returns (SD59x18 base) {
-        base = notional.div(getMarketSpotPrice(marketId).intoSD59x18());
-    }
+    function trade_slippage_helper(
+        uint128 marketId,
+        SD59x18[] memory s,
+        SD59x18[] memory sPrime,
+        UD60x18 eps
+    )
+        private
+    {
+        assertEq(s.length, sPrime.length);
 
-    function test_trade_slippage_eth() public {
         (user, userPk) = makeAddrAndKey("user");
         collateralPoolId = 1;
-        marketId = 1; // eth
         exchangeId = 1; // passive pool
         baseSpacing = ud(0.005e18);
+
+        // deposit new margin account
+        uint256 depositAmount = 100_000_000e18;
+        deal(usdc, address(periphery), depositAmount);
+        mockBridgedAmount(socketUsdcExecutionHelper, depositAmount);
+        vm.prank(socketUsdcExecutionHelper);
+        uint128 accountId =
+            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
+
+        for (uint128 _marketId = 1; _marketId <= 2; _marketId += 1) {
+            marketConfig = IPassivePerpProxy(perp).getMarketConfiguration(_marketId);
+
+            // Step 1: Unwind any exposure of the pool
+            SD59x18 poolBase =
+                SD59x18.wrap(IPassivePerpProxy(perp).getUpdatedPositionInfo(_marketId, passivePoolAccountId).base);
+
+            if (poolBase.abs().lt(sd(int256(marketConfig.minimumOrderBase)))) {
+                executeCoreMatchOrder({
+                    marketId: marketId,
+                    sender: user,
+                    base: poolBase,
+                    priceLimit: getPriceLimit(poolBase),
+                    accountId: accountId
+                });
+
+                assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(_marketId, passivePoolAccountId).base, 0);
+            }
+        }
 
         passivePoolImMultiplier = ICoreProxy(core).getAccountImMultiplier(passivePoolAccountId);
         marketRiskMatrix = ICoreProxy(core).getRiskBlockMatrixByMarket(marketId);
@@ -485,60 +521,13 @@ contract ForkChecks is Test {
         vm.prank(multisig);
         IPassivePerpProxy(perp).setMarketConfiguration(marketId, marketConfig);
 
-        // deposit new margin account
-        uint256 depositAmount = 100_000_000e18;
-        deal(usdc, address(periphery), depositAmount);
-        mockBridgedAmount(socketUsdcExecutionHelper, depositAmount);
-        vm.prank(socketUsdcExecutionHelper);
-        uint128 accountId =
-            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
-
-        // Step 1: Unwind any exposure of the pool
-        {
-            SD59x18 poolBase =
-                SD59x18.wrap(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base);
-
-            executeCoreMatchOrder({
-                sender: user,
-                base: poolBase,
-                priceLimit: getPriceLimit(poolBase),
-                accountId: accountId
-            });
-
-            assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, passivePoolAccountId).base, 0);
-        }
-
         // Step 2: Get pool's TVL
         MarginInfo memory poolMarginInfo = ICoreProxy(core).getUsdNodeMarginInfo(passivePoolAccountId);
         SD59x18 passivePoolTVL = sd(poolMarginInfo.marginBalance);
 
         // Step 3: Compute the grid
-        SD59x18[] memory s = new SD59x18[](11);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-        s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](11);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019938e18);
-        sPrime[3] = sd(0.029726e18);
-        sPrime[4] = sd(0.039287e18);
-        sPrime[5] = sd(0.04855e18);
-        sPrime[6] = sd(0.057455e18);
-        sPrime[7] = sd(0.065957e18);
-        sPrime[8] = sd(0.074025e18);
-        sPrime[9] = sd(0.081639e18);
-        sPrime[10] = sd(0.088702e18);
-
         SD59x18 prevNotionalsSum = sd(0);
-        for (uint256 i = 1; i < 10; i += 1) {
+        for (uint256 i = 1; i < s.length; i += 1) {
             SD59x18 notional = s[i].div(UNIT_sd.add(s[i])).mul(
                 sd(int256(marketConfig.depthFactor)).mul(passivePoolTVL).div(
                     sd(int256(passivePoolImMultiplier)).mul(
@@ -552,15 +541,128 @@ contract ForkChecks is Test {
             UD60x18 orderPrice;
             SD59x18 pSlippage;
             (orderPrice, pSlippage) = executeCoreMatchOrder({
+                marketId: marketId,
                 sender: user,
                 base: base,
                 priceLimit: getPriceLimit(base),
                 accountId: accountId
             });
 
-            assertApproxEqAbsDecimal(pSlippage.unwrap(), sPrime[i].unwrap(), 0.00005e18, 18);
+            assertApproxEqAbsDecimal(pSlippage.unwrap(), sPrime[i].unwrap(), eps.unwrap(), 18);
 
             prevNotionalsSum = prevNotionalsSum.add(notional);
         }
+    }
+
+    function test_trade_slippage_eth_long() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(0.01e18);
+        s[2] = sd(0.02e18);
+        s[3] = sd(0.03e18);
+        s[4] = sd(0.04e18);
+        s[5] = sd(0.05e18);
+        s[6] = sd(0.06e18);
+        s[7] = sd(0.07e18);
+        s[8] = sd(0.08e18);
+        s[9] = sd(0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(0.01e18);
+        sPrime[2] = sd(0.019938e18);
+        sPrime[3] = sd(0.029726e18);
+        sPrime[4] = sd(0.039287e18);
+        sPrime[5] = sd(0.04855e18);
+        sPrime[6] = sd(0.057455e18);
+        sPrime[7] = sd(0.065957e18);
+        sPrime[8] = sd(0.074025e18);
+        sPrime[9] = sd(0.081639e18);
+        // sPrime[10] = sd(0.088702e18);
+
+        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.00005e18) });
+    }
+
+    function test_trade_slippage_btc_long() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(0.01e18);
+        s[2] = sd(0.02e18);
+        s[3] = sd(0.03e18);
+        s[4] = sd(0.04e18);
+        s[5] = sd(0.05e18);
+        s[6] = sd(0.06e18);
+        s[7] = sd(0.07e18);
+        s[8] = sd(0.08e18);
+        s[9] = sd(0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(0.01e18);
+        sPrime[2] = sd(0.019938e18);
+        sPrime[3] = sd(0.029726e18);
+        sPrime[4] = sd(0.039287e18);
+        sPrime[5] = sd(0.04855e18);
+        sPrime[6] = sd(0.057455e18);
+        sPrime[7] = sd(0.065957e18);
+        sPrime[8] = sd(0.074025e18);
+        sPrime[9] = sd(0.081639e18);
+        // sPrime[10] = sd(0.088702e18);
+
+        trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.0007e18) });
+    }
+
+    function test_trade_slippage_eth_short() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(-0.01e18);
+        s[2] = sd(-0.02e18);
+        s[3] = sd(-0.03e18);
+        s[4] = sd(-0.04e18);
+        s[5] = sd(-0.05e18);
+        s[6] = sd(-0.06e18);
+        s[7] = sd(-0.07e18);
+        s[8] = sd(-0.08e18);
+        s[9] = sd(-0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(-0.01e18);
+        sPrime[2] = sd(-0.019939e18);
+        sPrime[3] = sd(-0.029729e18);
+        sPrime[4] = sd(-0.039289e18);
+        sPrime[5] = sd(-0.048542e18);
+        sPrime[6] = sd(-0.057426e18);
+        sPrime[7] = sd(-0.065889e18);
+        sPrime[8] = sd(-0.073894e18);
+        sPrime[9] = sd(-0.081417e18);
+        // sPrime[10] = sd(0.088702e18);
+
+        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.00005e18) });
+    }
+
+    function test_trade_slippage_btc_short() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(-0.01e18);
+        s[2] = sd(-0.02e18);
+        s[3] = sd(-0.03e18);
+        s[4] = sd(-0.04e18);
+        s[5] = sd(-0.05e18);
+        s[6] = sd(-0.06e18);
+        s[7] = sd(-0.07e18);
+        s[8] = sd(-0.08e18);
+        s[9] = sd(-0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(-0.01e18);
+        sPrime[2] = sd(-0.019939e18);
+        sPrime[3] = sd(-0.029729e18);
+        sPrime[4] = sd(-0.039289e18);
+        sPrime[5] = sd(-0.048542e18);
+        sPrime[6] = sd(-0.057426e18);
+        sPrime[7] = sd(-0.065889e18);
+        sPrime[8] = sd(-0.073894e18);
+        sPrime[9] = sd(-0.081417e18);
+        // sPrime[10] = sd(0.088702e18);
+
+        trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.0007e18) });
     }
 }
