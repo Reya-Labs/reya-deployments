@@ -1,0 +1,142 @@
+#####################################
+# Controller
+#####################################
+[invoke.periphery_set_wethController]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenController"
+args = ["<%= contracts.WETHProxy.address %>", "<%= settings.wethController %>"]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+#####################################
+# Execution Helper
+#####################################
+[invoke.periphery_set_wethExecutionHelper]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenExecutionHelper"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.wethExecutionHelper %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+#####################################
+# Connectors
+#####################################
+[invoke.periphery_set_wethEthereumConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.ethereumChainId %>",
+    "<%= settings.wethEthereumConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+[invoke.periphery_set_wethArbitrumConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.arbitrumChainId %>",
+    "<%= settings.wethArbitrumConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+[invoke.periphery_set_wethOptimismConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.optimismChainId %>",
+    "<%= settings.wethOptimismConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+[invoke.periphery_set_wethPolygonConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.polygonChainId %>",
+    "<%= settings.wethPolygonConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+[invoke.periphery_set_wethBaseConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.baseChainId %>",
+    "<%= settings.wethBaseConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+#####################################
+# Static Withdraw Fees
+#####################################
+[invoke.periphery_set_weth_ethereum_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.wethEthereumConnector %>",
+    "<%= parseUnits(settings.wethEthereumWithdrawFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>",
+]
+depends = [
+    "invoke.upgrade_periphery_proxy",
+    "invoke.upgrade_weth_proxy",
+    "var.weth_vars",
+]
+
+[invoke.periphery_set_weth_arbitrum_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.wethArbitrumConnector %>",
+    "<%= parseUnits(settings.wethArbitrumWithdrawFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+[invoke.periphery_set_weth_optimism_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.wethOptimismConnector %>",
+    "<%= parseUnits(settings.wethOptimismWithdrawFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+[invoke.periphery_set_weth_polygon_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.wethPolygonConnector %>",
+    "<%= parseUnits(settings.wethPolygonWithdrawFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+[invoke.periphery_set_weth_base_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.wethBaseConnector %>",
+    "<%= parseUnits(settings.wethBaseWithdrawFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]

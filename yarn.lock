@@ -1041,9 +1041,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@synthetixio/router@npm:^3.3.7":
-  version: 3.3.8
-  resolution: "@synthetixio/router@npm:3.3.8"
+"@synthetixio/router@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "@synthetixio/router@npm:3.4.0"
   dependencies:
     "@ethersproject/keccak256": ^5.7.0
     debug: ^4.3.4
@@ -1051,7 +1051,7 @@ __metadata:
   peerDependencies:
     hardhat: ^2.0.0
     solc: ^0.8.17
-  checksum: a996b1c8e728d73716948e7db4d73482fde5115c017163a7f6e27f5c61fb1b62c828a9b85bd652514c7673944b95cfa83ae1b07a6f7cc33e3f103bf962c3cded
+  checksum: 236a3c79004d40e7b66f3e60dbe4af8a19d05225f7a184e3e7ecad60bd98ded4ca5f2dad3866e1ef6f93b061e019b5b92ffcab30f936fed1c0c533c88137d044
   languageName: node
   linkType: hard
 
@@ -1149,14 +1149,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usecannon/builder@npm:2.13.2, @usecannon/builder@npm:^2.13.2":
-  version: 2.13.2
-  resolution: "@usecannon/builder@npm:2.13.2"
+"@usecannon/builder@npm:2.14.2, @usecannon/builder@npm:^2.14.1":
+  version: 2.14.2
+  resolution: "@usecannon/builder@npm:2.14.2"
   dependencies:
-    "@synthetixio/router": ^3.3.7
-    axios: ^1.6.7
-    axios-retry: ^4.0.0
+    "@synthetixio/router": ^3.4.0
+    axios: ^1.6.8
+    axios-retry: ^4.1.0
     buffer: ^6.0.3
+    chalk: ^4.1.2
     debug: ^4.3.4
     form-data: ^4.0.0
     lodash: ^4.17.21
@@ -1164,37 +1165,37 @@ __metadata:
     promise-events: ^0.2.4
     typedoc-plugin-markdown: ^3.17.1
     typestub-ipfs-only-hash: ^4.0.0
-    viem: ^2.9.26
-    zod: ^3.22.4
-  checksum: 35d61227a5e25ce9b668574a42f3313adfd584a7b280c6985e013ee742375c6d6f018b34cec1974ded032d4d1ef948e1acda8b0c5e1ad9057190fc58e7de8ed0
+    viem: ^2.9.31
+    zod: ^3.23.6
+  checksum: 29ea4eb291c7a2853a0e70d13394393cda255b317b18b69f0c564ba65a914a105336a1ac52f3d53e23fec56b07a11cf0c45fc4f25f32e8c375552cd472bd8875
   languageName: node
   linkType: hard
 
-"@usecannon/cli@npm:^2.13.2":
-  version: 2.13.2
-  resolution: "@usecannon/cli@npm:2.13.2"
+"@usecannon/cli@npm:^2.14.1":
+  version: 2.14.2
+  resolution: "@usecannon/cli@npm:2.14.2"
   dependencies:
     "@iarna/toml": ^3.0.0
-    "@usecannon/builder": 2.13.2
-    abitype: ^1.0.0
+    "@usecannon/builder": 2.14.2
+    abitype: ^1.0.2
     chalk: ^4.1.2
     commander: ^9.5.0
     debug: ^4.3.4
     eth-provider: ^0.13.6
-    fastq: ^1.15.0
-    fs-extra: ^10.1.0
+    fastq: ^1.17.1
+    fs-extra: ^11.2.0
     lodash: ^4.17.21
     prompts: ^2.4.2
-    semver: ^7.3.7
-    table: ^6.8.0
-    tildify: 2.0.0
+    semver: ^7.6.0
+    table: ^6.8.2
+    tildify: 3.0.0
     untildify: ^4.0.0
-    viem: ^2.9.26
+    viem: ^2.9.31
     znv: ^0.4.0
-    zod: ^3.22.4
+    zod: ^3.23.6
   bin:
     cannon: bin/cannon.js
-  checksum: c7e1f5c7ae9239173426ec70666172a71ea63b63b35cbbe1f4aec4a48388d271a80a33e6aeb67c902b219766750216242eddb92000ba134eb9999c580c00574d
+  checksum: 3b704f2aa5cc0b3f1f4f7f1652a86529ac7cb502f2313c08a38352b9b7f5f3f54a7cbfc363544b941d26879fc1363b89e9fbf517c766953ea17e86cd41a387f9
   languageName: node
   linkType: hard
 
@@ -1260,7 +1261,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"abitype@npm:^1.0.0":
+"abitype@npm:^1.0.2":
   version: 1.0.2
   resolution: "abitype@npm:1.0.2"
   peerDependencies:
@@ -1517,18 +1518,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios-retry@npm:^4.0.0":
-  version: 4.1.0
-  resolution: "axios-retry@npm:4.1.0"
+"axios-retry@npm:^4.1.0":
+  version: 4.3.0
+  resolution: "axios-retry@npm:4.3.0"
   dependencies:
     is-retry-allowed: ^2.2.0
   peerDependencies:
     axios: 0.x || 1.x
-  checksum: e1e07f710d12e3367bc1e934b49f3056bc6a1d8c4b1c5cc69afb89841c5ee360fe36565894d53c043c7ea43bc7ac353b87573c8d6d721b12ac4d567be38cc117
+  checksum: 7007b71c257bde2a3e63f41e9a5ef6a2a1bd2277b7cb1ee74bf5f2fa1c6f9cd99af75d739538977e5b0bec94cb27c4883c2e5fd5b919de75bb8ba571f42b5e77
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.0, axios@npm:^1.6.7":
+"axios@npm:^1.6.0":
   version: 1.6.8
   resolution: "axios@npm:1.6.8"
   dependencies:
@@ -1536,6 +1537,17 @@ __metadata:
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
   checksum: bf007fa4b207d102459300698620b3b0873503c6d47bf5a8f6e43c0c64c90035a4f698b55027ca1958f61ab43723df2781c38a99711848d232cad7accbcdfcdd
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.6.8":
+  version: 1.7.1
+  resolution: "axios@npm:1.7.1"
+  dependencies:
+    follow-redirects: ^1.15.6
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: 77760d94b3812e07d4a5b02468a55eed5c8435ef4d605d159f2808775bdd15da60ab5b15b665a6f72800b5d261875d808b410cd3cb1d7571cdc6ec5e0108025a
   languageName: node
   linkType: hard
 
@@ -2550,7 +2562,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastq@npm:^1.15.0, fastq@npm:^1.6.0":
+"fastq@npm:^1.17.1, fastq@npm:^1.6.0":
   version: 1.17.1
   resolution: "fastq@npm:1.17.1"
   dependencies:
@@ -2659,18 +2671,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:^10.1.0":
-  version: 10.1.0
-  resolution: "fs-extra@npm:10.1.0"
-  dependencies:
-    graceful-fs: ^4.2.0
-    jsonfile: ^6.0.1
-    universalify: ^2.0.0
-  checksum: dc94ab37096f813cc3ca12f0f1b5ad6744dfed9ed21e953d72530d103cea193c2f81584a39e9dee1bea36de5ee66805678c0dddc048e8af1427ac19c00fffc50
-  languageName: node
-  linkType: hard
-
-"fs-extra@npm:^11.1.0, fs-extra@npm:^11.1.1":
+"fs-extra@npm:^11.1.0, fs-extra@npm:^11.1.1, fs-extra@npm:^11.2.0":
   version: 11.2.0
   resolution: "fs-extra@npm:11.2.0"
   dependencies:
@@ -3532,12 +3533,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isows@npm:1.0.3":
-  version: 1.0.3
-  resolution: "isows@npm:1.0.3"
+"isows@npm:1.0.4":
+  version: 1.0.4
+  resolution: "isows@npm:1.0.4"
   peerDependencies:
     ws: "*"
-  checksum: 9cacd5cf59f67deb51e825580cd445ab1725ecb05a67c704050383fb772856f3cd5e7da8ad08f5a3bd2823680d77d099459d0c6a7037972a74d6429af61af440
+  checksum: a3ee62e3d6216abb3adeeb2a551fe2e7835eac87b05a6ecc3e7739259bf5f8e83290501f49e26137390c8093f207fc3378d4a7653aab76ad7bbab4b2dba9c5b9
   languageName: node
   linkType: hard
 
@@ -5667,8 +5668,8 @@ __metadata:
   resolution: "reya-deployments@workspace:."
   dependencies:
     "@ethersproject/abi": 5.7.0
-    "@usecannon/builder": ^2.13.2
-    "@usecannon/cli": ^2.13.2
+    "@usecannon/builder": ^2.14.1
+    "@usecannon/cli": ^2.14.1
     forge-std: "github:foundry-rs/forge-std#v1.8.0"
     lerna: ^8.1.2
     prettier: 3.2.5
@@ -5760,6 +5761,15 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: 7427f05b70786c696640edc29fdd4bc33b2acf3bbe1740b955029044f80575fc664e1a512e4113c3af21e767154a94b4aa214bf6cd6e42a1f6dba5914e0b208c
+  languageName: node
+  linkType: hard
+
+"semver@npm:^7.6.0":
+  version: 7.6.2
+  resolution: "semver@npm:7.6.2"
+  bin:
+    semver: bin/semver.js
+  checksum: 40f6a95101e8d854357a644da1b8dd9d93ce786d5c6a77227bc69dbb17bea83d0d1d1d7c4cd5920a6df909f48e8bd8a5909869535007f90278289f2451d0292d
   languageName: node
   linkType: hard
 
@@ -6200,7 +6210,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"table@npm:^6.8.0, table@npm:^6.8.1":
+"table@npm:^6.8.1, table@npm:^6.8.2":
   version: 6.8.2
   resolution: "table@npm:6.8.2"
   dependencies:
@@ -6292,10 +6302,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tildify@npm:2.0.0":
-  version: 2.0.0
-  resolution: "tildify@npm:2.0.0"
-  checksum: 0f5fee93624c4afdf75ee224c3b65aece4817ba5317fd70f49eaf084ea720d73556a6ef3f50079425a773ba3b93805b4524d14057841d4e4336516fdbe80635b
+"tildify@npm:3.0.0":
+  version: 3.0.0
+  resolution: "tildify@npm:3.0.0"
+  checksum: 4d55c391f892bf10ebbcb867b876bc87912b9d4f54b0f60aae1c7924468943d61e15d8d246ac241d58d08c75621a0d585d0b3fc9cc2059534ac88807cb91d309
   languageName: node
   linkType: hard
 
@@ -6616,9 +6626,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^2.9.26":
-  version: 2.9.31
-  resolution: "viem@npm:2.9.31"
+"viem@npm:^2.9.31":
+  version: 2.11.1
+  resolution: "viem@npm:2.11.1"
   dependencies:
     "@adraffy/ens-normalize": 1.10.0
     "@noble/curves": 1.2.0
@@ -6626,14 +6636,14 @@ __metadata:
     "@scure/bip32": 1.3.2
     "@scure/bip39": 1.2.1
     abitype: 1.0.0
-    isows: 1.0.3
+    isows: 1.0.4
     ws: 8.13.0
   peerDependencies:
     typescript: ">=5.0.4"
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 2fe4b7509a339edece3d38962c8192e44a6b4b5481fb72e26c0f0770f880dc6ed8eeec34036d4bba6e011cc94fe2fc76c6d3047d5bab93d84618b28f95f83bc0
+  checksum: 860c23a004e43cacdfb755fc453ddf0fa5027223cbeb344b93e2d7a7910d5fa1bd8c54cf52c433207d6c0daefe54a5d432af158bda44db45ae33a1e76365a2b0
   languageName: node
   linkType: hard
 
@@ -6902,9 +6912,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.22.4":
-  version: 3.23.5
-  resolution: "zod@npm:3.23.5"
-  checksum: 4b83c93c4d43640b31eb4289efedb23f303a272c39f8b492ee4b2fec1a1da0de078db3786a2e6cc08d6803f03e842af2ae16b430c7f2e0fea3eba16b72a9db36
+"zod@npm:^3.23.6":
+  version: 3.23.8
+  resolution: "zod@npm:3.23.8"
+  checksum: 15949ff82118f59c893dacd9d3c766d02b6fa2e71cf474d5aa888570c469dbf5446ac5ad562bb035bf7ac9650da94f290655c194f4a6de3e766f43febd432c5c
   languageName: node
   linkType: hard
