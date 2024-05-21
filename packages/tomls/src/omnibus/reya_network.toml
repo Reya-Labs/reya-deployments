@@ -86,13 +86,14 @@ usdcOptimismConnector = "0xe48AE3B68f0560d4aaA312E12fD687630C948561"
 usdcPolygonConnector = "0x54CAA0946dA179425e1abB169C020004284d64D3"
 usdcBaseConnector = "0x3694Ab37011764fA64A648C2d5d6aC0E9cD5F98e"
 # -------------------------------------------------------------------
-wethController = "TBC"
-wethExecutionHelper = "TBC"
-wethEthereumConnector = "TBC"
-wethArbitrumConnector = "TBC"
-wethOptimismConnector = "TBC"
-wethPolygonConnector = "TBC"
-wethBaseConnector = "TBC"
+# TODO
+wethController = "0x0000000000000000000000000000000000000001"
+wethExecutionHelper = "0x0000000000000000000000000000000000000002"
+wethEthereumConnector = "0x0000000000000000000000000000000000000003"
+wethArbitrumConnector = "0x0000000000000000000000000000000000000004"
+wethOptimismConnector = "0x0000000000000000000000000000000000000005"
+wethPolygonConnector = "0x0000000000000000000000000000000000000006"
+wethBaseConnector = "0x0000000000000000000000000000000000000007"
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumWithdrawFeeUnscaled = "27.888"
@@ -256,7 +257,7 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_weth_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_weth_capUnscaled = "100"
 cp1Rusd_weth_withdrawalWindowSize_DEPRECATED = "0"
 cp1Rusd_weth_withdrawalTvlPercentageLimitUnscaled_DEPRECATED = "0"
 cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
