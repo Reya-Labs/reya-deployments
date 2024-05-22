@@ -366,7 +366,7 @@ contract ForkChecks is Test {
         IPassivePoolProxy(pool).removeLiquidity(poolId, userSharesAmount, 0);
     }
 
-    function mockBridgedAmount(address executionHelper, uint256 amount) private {
+    function mockBridgedAmount(address executionHelper, uint256 amount) internal {
         vm.mockCall(
             executionHelper, abi.encodeWithSelector(ISocketExecutionHelper.bridgeAmount.selector), abi.encode(amount)
         );
@@ -393,13 +393,13 @@ contract ForkChecks is Test {
     bytes32 digest;
     uint256 socketMsgGasLimit;
 
-    function getMarketSpotPrice(uint128 marketId) private returns (UD60x18 marketSpotPrice) {
-        MarketConfigurationData memory marketConfig = IPassivePerpProxy(perp).getMarketConfiguration(marketId);
+    function getMarketSpotPrice(uint128 marketId) internal returns (UD60x18 marketSpotPrice) {
+        marketConfig = IPassivePerpProxy(perp).getMarketConfiguration(marketId);
         NodeOutput.Data memory marketNodeOutput = IOracleManagerProxy(oracleManager).process(marketConfig.oracleNodeId);
         return ud(marketNodeOutput.price);
     }
 
-    function getPriceLimit(SD59x18 base) private returns (UD60x18 priceLimit) {
+    function getPriceLimit(SD59x18 base) internal pure returns (UD60x18 priceLimit) {
         if (base.gt(ZERO_sd)) {
             return ud(type(uint256).max);
         }
@@ -415,7 +415,7 @@ contract ForkChecks is Test {
         UD60x18 priceLimit,
         uint128 accountId
     )
-        private
+        internal
     {
         uint128[] memory counterpartyAccountIds = new uint128[](1);
         counterpartyAccountIds[0] = passivePoolAccountId;
@@ -455,13 +455,11 @@ contract ForkChecks is Test {
         UD60x18 priceLimit,
         uint128 accountId
     )
-        private
+        internal
         returns (UD60x18 orderPrice, SD59x18 pSlippage)
     {
         uint128[] memory counterpartyAccountIds = new uint128[](1);
         counterpartyAccountIds[0] = passivePoolAccountId;
-        uint256 deadline = block.timestamp + 3600; // one hour
-
         exchangeId = 1; // passive pool
 
         Command_Core[] memory commands = new Command_Core[](1);
@@ -481,7 +479,7 @@ contract ForkChecks is Test {
         pSlippage = orderPrice.div(getMarketSpotPrice(marketId)).intoSD59x18().sub(UNIT_sd);
     }
 
-    function notionalToBase(uint128 marketId, SD59x18 notional) private returns (SD59x18 base) {
+    function notionalToBase(uint128 marketId, SD59x18 notional) internal returns (SD59x18 base) {
         base = notional.div(getMarketSpotPrice(marketId).intoSD59x18());
     }
 
@@ -558,7 +556,7 @@ contract ForkChecks is Test {
         SD59x18[] memory sPrime,
         UD60x18 eps
     )
-        private
+        internal
     {
         assertEq(s.length, sPrime.length);
 
