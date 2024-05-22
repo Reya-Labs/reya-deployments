@@ -7,6 +7,7 @@ import {
     ICoreProxy, CommandType, Command as Command_Core, RiskMultipliers, MarginInfo
 } from "../interfaces/ICoreProxy.sol";
 import { ISocketExecutionHelper } from "../interfaces/ISocketExecutionHelper.sol";
+import { ISocketControllerWithPayload } from "../interfaces/ISocketControllerWithPayload.sol";
 import {
     IPeripheryProxy,
     DepositPassivePoolInputs,
@@ -14,7 +15,8 @@ import {
     DepositNewMAInputs,
     Command as Command_Periphery,
     EIP712Signature,
-    GlobalConfiguration
+    GlobalConfiguration,
+    WithdrawMAInputs
 } from "../interfaces/IPeripheryProxy.sol";
 import { IPassivePoolProxy } from "../interfaces/IPassivePoolProxy.sol";
 import { IPassivePerpProxy, MarketConfigurationData } from "../interfaces/IPassivePerpProxy.sol";
@@ -43,21 +45,9 @@ contract ForkChecks is Test {
     address usdc = 0x3B860c0b53f2e8bd5264AA7c3451d41263C933F2;
     address weth = 0x6B48C2e6A32077ec17e8Ba0d98fFc676dfab1A30;
 
-    address socketUsdcExecutionHelper = 0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa;
-    address socketUsdcController = 0x1d43076909Ca139BFaC4EbB7194518bE3638fc76;
-    address socketUsdcEthereumConnector = 0x807B2e8724cDf346c87EEFF4E309bbFCb8681eC1;
-    address socketUsdcArbitrumConnector = 0x663dc7E91157c58079f55C1BF5ee1BdB6401Ca7a;
-    address socketUsdcOptimismConnector = 0xe48AE3B68f0560d4aaA312E12fD687630C948561;
-    address socketUsdcPolygonConnector = 0x54CAA0946dA179425e1abB169C020004284d64D3;
-    address socketUsdcBaseConnector = 0x3694Ab37011764fA64A648C2d5d6aC0E9cD5F98e;
-
-    address socketWethExecutionHelper = 0xBE35E24dde70aFc6e07DF7e7BD8Ce723e1712771;
-    address socketWethController = 0xF0E49Dafc687b5ccc8B31b67d97B5985D1cAC4CB;
-    address socketWethEthereumConnector = 0x7dE4937420935c7C8767b06eCd7F7dC54e2D7C9b;
-    address socketWethArbitrumConnector = 0xd95c5254Df051f378696100a7D7f29505e5cF5c9;
-    address socketWethOptimismConnector = 0xDee306Cf6C908d5F4f2c4A92d6Dc19035fE552EC;
-    address socketWethPolygonConnector = 0x530654F6e96198bC269074156b321d8B91d10366;
-    address socketWethBaseConnector = 0x2b3A8ABa1E055e879594cB2767259e80441E0497;
+    mapping(address token => address controller) socketController;
+    mapping(address token => address executionHelper) socketExecutionHelper;
+    mapping(address token => mapping(uint256 chainId => address connector)) socketConnector;
 
     uint256 ethereumChainId = 1;
     uint256 arbitrumChainId = 42_161;
@@ -82,10 +72,26 @@ contract ForkChecks is Test {
         catch {
             vm.createSelectFork(REYA_RPC);
         }
+
+        socketController[usdc] = 0x1d43076909Ca139BFaC4EbB7194518bE3638fc76;
+        socketExecutionHelper[usdc] = 0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa;
+        socketConnector[usdc][ethereumChainId] = 0x807B2e8724cDf346c87EEFF4E309bbFCb8681eC1;
+        socketConnector[usdc][arbitrumChainId] = 0x663dc7E91157c58079f55C1BF5ee1BdB6401Ca7a;
+        socketConnector[usdc][optimismChainId] = 0xe48AE3B68f0560d4aaA312E12fD687630C948561;
+        socketConnector[usdc][polygonChainId] = 0x54CAA0946dA179425e1abB169C020004284d64D3;
+        socketConnector[usdc][baseChainId] = 0x3694Ab37011764fA64A648C2d5d6aC0E9cD5F98e;
+
+        socketController[weth] = 0xF0E49Dafc687b5ccc8B31b67d97B5985D1cAC4CB;
+        socketExecutionHelper[weth] = 0xBE35E24dde70aFc6e07DF7e7BD8Ce723e1712771;
+        socketConnector[weth][ethereumChainId] = 0x7dE4937420935c7C8767b06eCd7F7dC54e2D7C9b;
+        socketConnector[weth][arbitrumChainId] = 0xd95c5254Df051f378696100a7D7f29505e5cF5c9;
+        socketConnector[weth][optimismChainId] = 0xDee306Cf6C908d5F4f2c4A92d6Dc19035fE552EC;
+        socketConnector[weth][polygonChainId] = 0x530654F6e96198bC269074156b321d8B91d10366;
+        socketConnector[weth][baseChainId] = 0x2b3A8ABa1E055e879594cB2767259e80441E0497;
     }
 
     function testFuzz_USDCMintBurn(address attacker) public {
-        vm.assume(attacker != socketUsdcController);
+        vm.assume(attacker != socketController[usdc]);
 
         (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 10e6;
@@ -93,7 +99,7 @@ contract ForkChecks is Test {
         uint256 totalSupplyBefore = IERC20TokenModule(usdc).totalSupply();
 
         // mint
-        vm.prank(socketUsdcController);
+        vm.prank(socketController[usdc]);
         IERC20TokenModule(usdc).mint(user, amount);
 
         vm.prank(attacker);
@@ -105,7 +111,7 @@ contract ForkChecks is Test {
         IERC20TokenModule(usdc).mint(user, amount);
 
         // burn
-        vm.prank(socketUsdcController);
+        vm.prank(socketController[usdc]);
         IERC20TokenModule(usdc).burn(user, amount);
 
         vm.prank(attacker);
@@ -121,7 +127,7 @@ contract ForkChecks is Test {
     }
 
     function testFuzz_WETHMintBurn(address attacker) public {
-        vm.assume(attacker != socketWethController);
+        vm.assume(attacker != socketController[weth]);
 
         (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 10e18;
@@ -129,7 +135,7 @@ contract ForkChecks is Test {
         uint256 totalSupplyBefore = IERC20TokenModule(weth).totalSupply();
 
         // mint
-        vm.prank(socketWethController);
+        vm.prank(socketController[weth]);
         IERC20TokenModule(weth).mint(user, amount);
 
         vm.prank(attacker);
@@ -141,7 +147,7 @@ contract ForkChecks is Test {
         IERC20TokenModule(weth).mint(user, amount);
 
         // burn
-        vm.prank(socketWethController);
+        vm.prank(socketController[weth]);
         IERC20TokenModule(weth).burn(user, amount);
 
         vm.prank(attacker);
@@ -242,13 +248,27 @@ contract ForkChecks is Test {
         assertEq(globalConfig.rUSDProxy, rusd);
         assertEq(globalConfig.passivePoolProxy, pool);
 
-        assertEq(IPeripheryProxy(periphery).getTokenController(usdc), socketUsdcController);
-        assertEq(IPeripheryProxy(periphery).getTokenExecutionHelper(usdc), socketUsdcExecutionHelper);
-        assertEq(IPeripheryProxy(periphery).getTokenChainConnector(usdc, ethereumChainId), socketUsdcEthereumConnector);
-        assertEq(IPeripheryProxy(periphery).getTokenChainConnector(usdc, arbitrumChainId), socketUsdcArbitrumConnector);
-        assertEq(IPeripheryProxy(periphery).getTokenChainConnector(usdc, optimismChainId), socketUsdcOptimismConnector);
-        assertEq(IPeripheryProxy(periphery).getTokenChainConnector(usdc, polygonChainId), socketUsdcPolygonConnector);
-        assertEq(IPeripheryProxy(periphery).getTokenChainConnector(usdc, baseChainId), socketUsdcBaseConnector);
+        assertEq(IPeripheryProxy(periphery).getTokenController(usdc), socketController[usdc]);
+        assertEq(IPeripheryProxy(periphery).getTokenExecutionHelper(usdc), socketExecutionHelper[usdc]);
+        assertEq(
+            IPeripheryProxy(periphery).getTokenChainConnector(usdc, ethereumChainId),
+            socketConnector[usdc][ethereumChainId]
+        );
+        assertEq(
+            IPeripheryProxy(periphery).getTokenChainConnector(usdc, arbitrumChainId),
+            socketConnector[usdc][arbitrumChainId]
+        );
+        assertEq(
+            IPeripheryProxy(periphery).getTokenChainConnector(usdc, optimismChainId),
+            socketConnector[usdc][optimismChainId]
+        );
+        assertEq(
+            IPeripheryProxy(periphery).getTokenChainConnector(usdc, polygonChainId),
+            socketConnector[usdc][polygonChainId]
+        );
+        assertEq(
+            IPeripheryProxy(periphery).getTokenChainConnector(usdc, baseChainId), socketConnector[usdc][baseChainId]
+        );
     }
 
     function test_OracleManager() public view {
@@ -320,9 +340,9 @@ contract ForkChecks is Test {
         deal(usdc, periphery, amount);
 
         DepositPassivePoolInputs memory inputs = DepositPassivePoolInputs({ poolId: poolId, owner: user, minShares: 0 });
-        vm.prank(socketUsdcExecutionHelper);
+        vm.prank(socketExecutionHelper[usdc]);
         vm.mockCall(
-            socketUsdcExecutionHelper, abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()), abi.encode(amount)
+            socketExecutionHelper[usdc], abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()), abi.encode(amount)
         );
         IPeripheryProxy(periphery).depositPassivePool(inputs);
 
@@ -359,6 +379,11 @@ contract ForkChecks is Test {
     MarketConfigurationData marketConfig;
     int64[][] marketRiskMatrix;
     uint256 passivePoolImMultiplier;
+    uint8 v;
+    bytes32 r;
+    bytes32 s;
+    bytes32 digest;
+    uint256 socketMsgGasLimit;
 
     function getMarketSpotPrice(uint128 marketId) private returns (UD60x18 marketSpotPrice) {
         MarketConfigurationData memory marketConfig = IPassivePerpProxy(perp).getMarketConfiguration(marketId);
@@ -375,6 +400,7 @@ contract ForkChecks is Test {
     }
 
     function executePeripheryMatchOrder(
+        uint256 userPrivateKey,
         uint256 incrementedNonce,
         uint128 marketId,
         SD59x18 base,
@@ -397,13 +423,13 @@ contract ForkChecks is Test {
             exchangeId: exchangeId
         });
 
-        bytes32 digest = mockCoreCalculateDigest(
+        digest = mockCoreCalculateDigest(
             core,
             hashExecuteBySigExtended(
                 address(periphery), accountId, commands, incrementedNonce, deadline, keccak256(abi.encode())
             )
         );
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPk, digest);
+        (v, r, s) = vm.sign(userPrivateKey, digest);
 
         IPeripheryProxy(periphery).execute(
             PeripheryExecutionInputs({
@@ -462,12 +488,12 @@ contract ForkChecks is Test {
 
         // deposit new margin account
         deal(usdc, address(periphery), amount);
-        mockBridgedAmount(socketUsdcExecutionHelper, amount);
-        vm.prank(socketUsdcExecutionHelper);
+        mockBridgedAmount(socketExecutionHelper[usdc], amount);
+        vm.prank(socketExecutionHelper[usdc]);
         uint128 accountId =
             IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
 
-        executePeripheryMatchOrder(1, marketId, base, priceLimit, accountId);
+        executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
         assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base, base.unwrap());
 
@@ -495,12 +521,12 @@ contract ForkChecks is Test {
 
         // deposit new margin account
         deal(usdc, address(periphery), amount);
-        mockBridgedAmount(socketUsdcExecutionHelper, amount);
-        vm.prank(socketUsdcExecutionHelper);
+        mockBridgedAmount(socketExecutionHelper[usdc], amount);
+        vm.prank(socketExecutionHelper[usdc]);
         uint128 accountId =
             IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
 
-        executePeripheryMatchOrder(1, marketId, base, priceLimit, accountId);
+        executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
         riskMultipliers = ICoreProxy(core).getRiskMultipliers(1);
         liquidationMarginRequirement = ud(ICoreProxy(core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
@@ -532,8 +558,8 @@ contract ForkChecks is Test {
         // deposit new margin account
         uint256 depositAmount = 100_000_000e18;
         deal(usdc, address(periphery), depositAmount);
-        mockBridgedAmount(socketUsdcExecutionHelper, depositAmount);
-        vm.prank(socketUsdcExecutionHelper);
+        mockBridgedAmount(socketExecutionHelper[usdc], depositAmount);
+        vm.prank(socketExecutionHelper[usdc]);
         uint128 accountId =
             IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
 
@@ -720,12 +746,114 @@ contract ForkChecks is Test {
 
         // deposit new margin account
         deal(weth, address(periphery), amount);
-        mockBridgedAmount(socketWethExecutionHelper, amount);
-        vm.prank(socketWethExecutionHelper);
+        mockBridgedAmount(socketExecutionHelper[weth], amount);
+        vm.prank(socketExecutionHelper[weth]);
         uint128 accountId =
             IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(weth) }));
 
         vm.expectRevert(abi.encodeWithSelector(ICoreProxy.CollateralCapExceeded.selector, 1, weth, 100e18, amount));
-        executePeripheryMatchOrder(1, marketId, base, priceLimit, accountId);
+        executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
+    }
+
+    function executePeripheryWithdrawMA(
+        address userAddress,
+        uint256 userPrivateKey,
+        uint256 incrementedNonce,
+        uint128 accountId,
+        address token,
+        uint256 tokenAmount,
+        uint256 chainId
+    )
+        private
+    {
+        Command_Periphery[] memory commands = new Command_Periphery[](1);
+        commands[0] = Command_Periphery({
+            commandType: uint8(CommandType.Withdraw),
+            inputs: abi.encode(token, tokenAmount),
+            marketId: 0,
+            exchangeId: 0
+        });
+
+        socketMsgGasLimit = 10_000_000;
+
+        digest = mockCoreCalculateDigest(
+            core,
+            hashExecuteBySigExtended(
+                address(periphery),
+                accountId,
+                commands,
+                incrementedNonce,
+                block.timestamp + 3600,
+                keccak256(abi.encode(userAddress, chainId, socketMsgGasLimit))
+            )
+        );
+        (v, r, s) = vm.sign(userPrivateKey, digest);
+
+        // vm.mockCall(
+        //     periphery,
+        //     abi.encodeWithSelector(
+        //         ISocketControllerWithPayload.getMinFees.selector, socketConnector[token][chainId], socketMsgGasLimit,
+        // 0
+        //     ),
+        //     abi.encode(0)
+        // );
+
+        uint256 staticFees =
+            IPeripheryProxy(periphery).getTokenStaticWithdrawFee(token, socketConnector[token][chainId]);
+        vm.mockCall(
+            socketController[weth],
+            abi.encodeWithSelector(
+                ISocketControllerWithPayload.bridge.selector,
+                userAddress,
+                tokenAmount - staticFees,
+                socketMsgGasLimit,
+                socketConnector[token][chainId],
+                abi.encode(),
+                abi.encode()
+            ),
+            abi.encode()
+        );
+
+        IPeripheryProxy(periphery).withdrawMA(
+            WithdrawMAInputs({
+                accountId: accountId,
+                token: token,
+                tokenAmount: tokenAmount,
+                sig: EIP712Signature({ v: v, r: r, s: s, deadline: block.timestamp + 3600 }),
+                socketMsgGasLimit: socketMsgGasLimit,
+                chainId: chainId,
+                receiver: userAddress
+            })
+        );
+    }
+
+    function test_weth_deposit_withdraw() public {
+        (user, userPk) = makeAddrAndKey("user");
+        uint256 amount = 50e18; // denominated in weth
+
+        // deposit new margin account
+        deal(weth, address(periphery), amount);
+        mockBridgedAmount(socketExecutionHelper[weth], amount);
+        vm.prank(socketExecutionHelper[weth]);
+        uint128 accountId =
+            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(weth) }));
+
+        uint256 coreWethBalanceBefore = IERC20TokenModule(weth).balanceOf(core);
+        uint256 peripheryWethBalanceBefore = IERC20TokenModule(weth).balanceOf(periphery);
+        uint256 multisigWethBalanceBefore = IERC20TokenModule(weth).balanceOf(multisig);
+
+        amount = 5e18;
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, weth, amount, arbitrumChainId);
+
+        uint256 coreWethBalanceAfter = IERC20TokenModule(weth).balanceOf(core);
+        uint256 peripheryWethBalanceAfter = IERC20TokenModule(weth).balanceOf(periphery);
+        uint256 multisigWethBalanceAfter = IERC20TokenModule(weth).balanceOf(multisig);
+        uint256 withdrawStaticFees =
+            IPeripheryProxy(periphery).getTokenStaticWithdrawFee(weth, socketConnector[weth][arbitrumChainId]);
+
+        assertEq(coreWethBalanceBefore - coreWethBalanceAfter, amount);
+        assertEq(multisigWethBalanceAfter - multisigWethBalanceBefore, withdrawStaticFees);
+        // we mock call to socket so funds remain in periphery
+        assertEq(peripheryWethBalanceAfter - peripheryWethBalanceBefore, amount - withdrawStaticFees);
     }
 }
