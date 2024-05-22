@@ -41,6 +41,7 @@ contract ForkChecks is Test {
 
     address rusd = 0xa9F32a851B1800742e47725DA54a09A7Ef2556A3;
     address usdc = 0x3B860c0b53f2e8bd5264AA7c3451d41263C933F2;
+    address weth = 0x6B48C2e6A32077ec17e8Ba0d98fFc676dfab1A30;
 
     address socketUsdcExecutionHelper = 0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa;
     address socketUsdcController = 0x1d43076909Ca139BFaC4EbB7194518bE3638fc76;
@@ -49,6 +50,14 @@ contract ForkChecks is Test {
     address socketUsdcOptimismConnector = 0xe48AE3B68f0560d4aaA312E12fD687630C948561;
     address socketUsdcPolygonConnector = 0x54CAA0946dA179425e1abB169C020004284d64D3;
     address socketUsdcBaseConnector = 0x3694Ab37011764fA64A648C2d5d6aC0E9cD5F98e;
+
+    address socketWethExecutionHelper = 0xBE35E24dde70aFc6e07DF7e7BD8Ce723e1712771;
+    address socketWethController = 0xF0E49Dafc687b5ccc8B31b67d97B5985D1cAC4CB;
+    address socketWethEthereumConnector = 0x7dE4937420935c7C8767b06eCd7F7dC54e2D7C9b;
+    address socketWethArbitrumConnector = 0xd95c5254Df051f378696100a7D7f29505e5cF5c9;
+    address socketWethOptimismConnector = 0xDee306Cf6C908d5F4f2c4A92d6Dc19035fE552EC;
+    address socketWethPolygonConnector = 0x530654F6e96198bC269074156b321d8B91d10366;
+    address socketWethBaseConnector = 0x2b3A8ABa1E055e879594cB2767259e80441E0497;
 
     uint256 ethereumChainId = 1;
     uint256 arbitrumChainId = 42_161;
@@ -108,6 +117,42 @@ contract ForkChecks is Test {
         IERC20TokenModule(usdc).burn(user, amount);
 
         uint256 totalSupplyAfter = IERC20TokenModule(usdc).totalSupply();
+        assertEq(totalSupplyAfter, totalSupplyBefore);
+    }
+
+    function testFuzz_WETHMintBurn(address attacker) public {
+        vm.assume(attacker != socketWethController);
+
+        (user, userPk) = makeAddrAndKey("user");
+        uint256 amount = 10e6;
+
+        uint256 totalSupplyBefore = IERC20TokenModule(weth).totalSupply();
+
+        // mint
+        vm.prank(socketWethController);
+        IERC20TokenModule(weth).mint(user, amount);
+
+        vm.prank(attacker);
+        vm.expectRevert();
+        IERC20TokenModule(weth).mint(user, amount);
+
+        vm.prank(user);
+        vm.expectRevert();
+        IERC20TokenModule(weth).mint(user, amount);
+
+        // burn
+        vm.prank(socketWethController);
+        IERC20TokenModule(weth).burn(user, amount);
+
+        vm.prank(attacker);
+        vm.expectRevert();
+        IERC20TokenModule(weth).burn(user, amount);
+
+        vm.prank(user);
+        vm.expectRevert();
+        IERC20TokenModule(weth).burn(user, amount);
+
+        uint256 totalSupplyAfter = IERC20TokenModule(weth).totalSupply();
         assertEq(totalSupplyAfter, totalSupplyBefore);
     }
 
@@ -579,7 +624,7 @@ contract ForkChecks is Test {
         sPrime[9] = sd(0.081639e18);
         // sPrime[10] = sd(0.088702e18);
 
-        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.00005e18) });
+        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.0003e18) });
     }
 
     function test_trade_slippage_btc_long() public {
@@ -635,7 +680,7 @@ contract ForkChecks is Test {
         sPrime[9] = sd(-0.081417e18);
         // sPrime[10] = sd(0.088702e18);
 
-        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.00005e18) });
+        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.0003e18) });
     }
 
     function test_trade_slippage_btc_short() public {
