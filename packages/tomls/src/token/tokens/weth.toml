@@ -55,22 +55,16 @@ args = [
 ]
 depends = ["invoke.upgrade_weth_proxy"]
 
-# [invoke.weth_mint_permission]
-# target = ["WETHProxy"]
-# fromCall.func = "owner"
-# func = "addToFeatureFlagAllowlist"
-# args = [
-#     "<%= keccak256(hexlify('mint')) %>",
-#     "<%= settings.wethController %>"
-# ]
-# depends = ["invoke.upgrade_weth_proxy"]
+[invoke.weth_mint_permission]
+target = ["WETHProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.wethController %>"]
+depends = ["invoke.upgrade_weth_proxy"]
 
-# [invoke.weth_burn_permission]
-# target = ["WETHProxy"]
-# fromCall.func = "owner"
-# func = "addToFeatureFlagAllowlist"
-# args = [
-#     "<%= keccak256(hexlify('burn')) %>",
-#     "<%= settings.wethController %>"
-# ]
-# depends = ["invoke.upgrade_weth_proxy"]
+[invoke.weth_burn_permission]
+target = ["WETHProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.wethController %>"]
+depends = ["invoke.upgrade_weth_proxy"]

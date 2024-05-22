@@ -3,4 +3,5 @@ include = [
     "configs/feature_flags.toml",
     "configs/global_config.toml",
     "configs/tokens/usdc.toml",
+    "configs/tokens/weth.toml",
 ]
