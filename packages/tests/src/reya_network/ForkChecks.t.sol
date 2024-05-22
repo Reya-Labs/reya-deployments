@@ -479,6 +479,7 @@ contract ForkChecks is Test {
         pSlippage = orderPrice.div(getMarketSpotPrice(marketId)).intoSD59x18().sub(UNIT_sd);
     }
 
+    // TODO Alex: replace notional by base to be consistent with core
     function notionalToBase(uint128 marketId, SD59x18 notional) internal returns (SD59x18 base) {
         base = notional.div(getMarketSpotPrice(marketId).intoSD59x18());
     }
@@ -777,7 +778,7 @@ contract ForkChecks is Test {
         uint256 tokenAmount,
         uint256 chainId
     )
-        private
+        internal
     {
         Command_Periphery[] memory commands = new Command_Periphery[](1);
         commands[0] = Command_Periphery({

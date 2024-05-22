@@ -86,7 +86,9 @@ contract AutoExchangeFork is ForkChecks {
         if (userInitialRusdBalance > 0) {
             // attempt to auto-exchange but the tx reverts since account is not AE-able
             vm.prank(state.liquidator);
-            vm.expectRevert(abi.encodeWithSelector(ICoreProxy.AccountNotEligibleForAutoExchange.selector, state.userAccountId, rusd));
+            vm.expectRevert(
+                abi.encodeWithSelector(ICoreProxy.AccountNotEligibleForAutoExchange.selector, state.userAccountId, rusd)
+            );
             ICoreProxy(core).triggerAutoExchange(
                 TriggerAutoExchangeInput({
                     accountId: state.userAccountId,
@@ -220,4 +222,6 @@ contract AutoExchangeFork is ForkChecks {
     function test_AutoExchangeWeth_WhenUserHasBothWethAndRusd() public {
         check_AutoExchange_wEth(100e6);
     }
+
+    // TODO: add test when WETH does not cover auto-exchanged amount
 }
