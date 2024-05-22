@@ -4,7 +4,15 @@ import "forge-std/Test.sol";
 import { IERC20TokenModule } from "../interfaces/IERC20TokenModule.sol";
 import { IOwnerUpgradeModule } from "../interfaces/IOwnerUpgradeModule.sol";
 import {
-    ICoreProxy, CommandType, Command as Command_Core, RiskMultipliers, MarginInfo
+    ICoreProxy,
+    CommandType,
+    Command as Command_Core,
+    RiskMultipliers,
+    MarginInfo,
+    CollateralInfo,
+    CollateralConfig,
+    ParentCollateralConfig,
+    CachedCollateralConfig
 } from "../interfaces/ICoreProxy.sol";
 import { ISocketExecutionHelper } from "../interfaces/ISocketExecutionHelper.sol";
 import { ISocketControllerWithPayload } from "../interfaces/ISocketControllerWithPayload.sol";
@@ -16,7 +24,8 @@ import {
     Command as Command_Periphery,
     EIP712Signature,
     GlobalConfiguration,
-    WithdrawMAInputs
+    WithdrawMAInputs,
+    DepositExistingMAInputs
 } from "../interfaces/IPeripheryProxy.sol";
 import { IPassivePoolProxy } from "../interfaces/IPassivePoolProxy.sol";
 import { IPassivePerpProxy, MarketConfigurationData } from "../interfaces/IPassivePerpProxy.sol";
@@ -861,6 +870,58 @@ contract ForkChecks is Test {
         assertEq(multisigWethBalanceAfter - multisigWethBalanceBefore, withdrawStaticFees);
         // we mock call to socket so funds remain in periphery
         assertEq(peripheryWethBalanceAfter - peripheryWethBalanceBefore, amount - withdrawStaticFees);
+    }
+
+    function test_weth_view_functions() public {
+        (user, userPk) = makeAddrAndKey("user");
+
+        uint256 wethAmount = 1e18;
+
+        // deposit new margin account
+        deal(weth, address(periphery), wethAmount);
+        mockBridgedAmount(socketExecutionHelper[weth], wethAmount);
+        vm.prank(socketExecutionHelper[weth]);
+        uint128 accountId =
+            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: weth }));
+
+        vm.prank(user);
+        ICoreProxy(core).activateFirstMarketForAccount(accountId, 1);
+
+        NodeOutput.Data memory ethUsdcNodeOutput = IOracleManagerProxy(oracleManager).process(ethUsdcNodeId);
+
+        CollateralConfig memory collateralConfig;
+        ParentCollateralConfig memory parentCollateralConfig;
+        CachedCollateralConfig memory cacheCollateralConfig;
+
+        (collateralConfig, parentCollateralConfig, cacheCollateralConfig) =
+            ICoreProxy(core).getCollateralConfig(1, weth);
+        SD59x18 wethAmountInUSD = sd(int256(wethAmount)).mul(sd(int256(ethUsdcNodeOutput.price))).mul(
+            UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut)))
+        );
+
+        MarginInfo memory accountUsdNodeMarginInfo = ICoreProxy(core).getUsdNodeMarginInfo(accountId);
+        assertApproxEqAbsDecimal(accountUsdNodeMarginInfo.marginBalance, wethAmountInUSD.unwrap(), 0.000001e18, 18);
+
+        CollateralInfo memory accountWethCollateralInfo = ICoreProxy(core).getCollateralInfo(accountId, weth);
+        assertEq(accountWethCollateralInfo.netDeposits, int256(wethAmount));
+        assertEq(accountWethCollateralInfo.marginBalance, int256(wethAmount));
+        assertEq(accountWethCollateralInfo.realBalance, int256(wethAmount));
+
+        uint256 usdcAmount = 1000e6;
+        deal(usdc, address(periphery), usdcAmount);
+        mockBridgedAmount(socketExecutionHelper[usdc], usdcAmount);
+        vm.prank(socketExecutionHelper[usdc]);
+        IPeripheryProxy(periphery).depositExistingMA(DepositExistingMAInputs({ accountId: accountId, token: usdc }));
+
+        accountUsdNodeMarginInfo = ICoreProxy(core).getUsdNodeMarginInfo(accountId);
+        assertApproxEqAbsDecimal(
+            accountUsdNodeMarginInfo.marginBalance, wethAmountInUSD.unwrap() + 1000e18, 0.000001e18, 18
+        );
+
+        accountWethCollateralInfo = ICoreProxy(core).getCollateralInfo(accountId, weth);
+        assertEq(accountWethCollateralInfo.netDeposits, int256(wethAmount));
+        assertEq(accountWethCollateralInfo.marginBalance, int256(wethAmount));
+        assertEq(accountWethCollateralInfo.realBalance, int256(wethAmount));
     }
 
     function test_trade_wethCollateral_leverage_eth() public {
