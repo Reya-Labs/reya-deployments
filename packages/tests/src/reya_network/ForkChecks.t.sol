@@ -124,7 +124,7 @@ contract ForkChecks is Test {
         vm.assume(attacker != socketWethController);
 
         (user, userPk) = makeAddrAndKey("user");
-        uint256 amount = 10e6;
+        uint256 amount = 10e18;
 
         uint256 totalSupplyBefore = IERC20TokenModule(weth).totalSupply();
 
@@ -709,5 +709,23 @@ contract ForkChecks is Test {
         // sPrime[10] = sd(0.088702e18);
 
         trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.0007e18) });
+    }
+
+    function test_weth_cap_exceeded() public {
+        (user, userPk) = makeAddrAndKey("user");
+        uint256 amount = 101e18; // denominated in weth
+        uint128 marketId = 1; // eth
+        SD59x18 base = sd(1e18);
+        UD60x18 priceLimit = ud(10_000e18);
+
+        // deposit new margin account
+        deal(weth, address(periphery), amount);
+        mockBridgedAmount(socketWethExecutionHelper, amount);
+        vm.prank(socketWethExecutionHelper);
+        uint128 accountId =
+            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(weth) }));
+
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.CollateralCapExceeded.selector, 1, weth, 100e18, amount));
+        executePeripheryMatchOrder(1, marketId, base, priceLimit, accountId);
     }
 }
