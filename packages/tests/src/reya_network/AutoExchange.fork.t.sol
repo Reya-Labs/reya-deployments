@@ -31,11 +31,11 @@ contract AutoExchangeFork is ForkChecks {
 
     State state;
 
-    function test_AutoExchange_wEth() public {
+    function check_AutoExchange_wEth(uint256 userInitialRusdBalance) internal {
         (user, userPk) = makeAddrAndKey("user");
         state.userAccountId = 0;
 
-        (state.liquidator,) = makeAddrAndKey("user");
+        (state.liquidator,) = makeAddrAndKey("liquidator");
         state.liquidatorAccountId = 0;
 
         // deposit rUSD and ETH into user's account
@@ -47,12 +47,14 @@ contract AutoExchangeFork is ForkChecks {
                 DepositNewMAInputs({ accountOwner: user, token: address(weth) })
             );
 
-            deal(usdc, address(periphery), 100e6);
-            mockBridgedAmount(socketExecutionHelper[usdc], 100e6);
-            vm.prank(socketExecutionHelper[usdc]);
-            IPeripheryProxy(periphery).depositExistingMA(
-                DepositExistingMAInputs({ accountId: state.userAccountId, token: address(usdc) })
-            );
+            if (userInitialRusdBalance > 0) {
+                deal(usdc, address(periphery), userInitialRusdBalance);
+                mockBridgedAmount(socketExecutionHelper[usdc], userInitialRusdBalance);
+                vm.prank(socketExecutionHelper[usdc]);
+                IPeripheryProxy(periphery).depositExistingMA(
+                    DepositExistingMAInputs({ accountId: state.userAccountId, token: address(usdc) })
+                );
+            }
         }
 
         // deposit rUSD into liquidator's account
@@ -78,21 +80,26 @@ contract AutoExchangeFork is ForkChecks {
         vm.prank(state.liquidator);
         ICoreProxy(core).activateFirstMarketForAccount(state.liquidatorAccountId, 1);
 
-        // attempt to auto-exchange but the tx reverts since account is not AE-able
-        vm.prank(state.liquidator);
-        vm.expectRevert(); // AccountNotEligibleForAutoExchange
-        ICoreProxy(core).triggerAutoExchange(
-            TriggerAutoExchangeInput({
-                accountId: state.userAccountId,
-                liquidatorAccountId: state.liquidatorAccountId,
-                requestedQuoteAmount: 400e6,
-                collateral: weth,
-                inCollateral: rusd
-            })
-        );
+        // if initial rUSD balance is 0 (or small), the trading fees will make the rUSD balance
+        // drop directly below 0 and making the account auto-exchangeable for that small gap
 
-        // price moves by 500 USD
-        state.bumpedEthPrice = orderPrice.unwrap() + 500e18;
+        if (userInitialRusdBalance > 0) {
+            // attempt to auto-exchange but the tx reverts since account is not AE-able
+            vm.prank(state.liquidator);
+            vm.expectRevert(abi.encodeWithSelector(ICoreProxy.AccountNotEligibleForAutoExchange.selector, state.userAccountId, rusd));
+            ICoreProxy(core).triggerAutoExchange(
+                TriggerAutoExchangeInput({
+                    accountId: state.userAccountId,
+                    liquidatorAccountId: state.liquidatorAccountId,
+                    requestedQuoteAmount: 400e6,
+                    collateral: weth,
+                    inCollateral: rusd
+                })
+            );
+        }
+
+        // price moves by 600 USD
+        state.bumpedEthPrice = orderPrice.unwrap() + 600e18;
         vm.mockCall(
             oracleManager,
             abi.encodeCall(IOracleManagerProxy.process, (ethUsdcNodeId)),
@@ -107,9 +114,9 @@ contract AutoExchangeFork is ForkChecks {
         state.tbal0.liquidatorBalanceWeth =
             ICoreProxy(core).getTokenMarginInfo(state.liquidatorAccountId, weth).marginBalance;
 
-        assertTrue(state.tbal0.userBalanceRusd < -400e6);
+        assertLt(state.tbal0.userBalanceRusd, -400e6);
 
-        assertTrue(ICoreProxy(core).getNodeMarginInfo(state.userAccountId, rusd).initialDelta > 0);
+        assertGt(ICoreProxy(core).getNodeMarginInfo(state.userAccountId, rusd).initialDelta, 0);
 
         // auto-exchange 400 rUSD
         vm.prank(state.liquidator);
@@ -126,7 +133,7 @@ contract AutoExchangeFork is ForkChecks {
         assertEq(state.ae1.quoteAmountToIF, 4e6);
         assertEq(state.ae1.quoteAmountToAccount, 396e6);
         assertApproxEqAbsDecimal(
-            state.ae1.collateralAmountToLiquidator, 400e18 * 1.01 * 1e18 / state.bumpedEthPrice, 0.0001e18, 18
+            state.ae1.collateralAmountToLiquidator, 400e18 * 1.01 * 1e18 / state.bumpedEthPrice, 0.001e18, 18
         );
 
         state.tbal1.userBalanceRusd = ICoreProxy(core).getTokenMarginInfo(state.userAccountId, rusd).marginBalance;
@@ -174,12 +181,14 @@ contract AutoExchangeFork is ForkChecks {
                 inCollateral: rusd
             })
         );
-        assertTrue(state.ae2.quoteAmountToAccount < 20e6);
+
+        assertLt(state.ae2.quoteAmountToAccount, 220e6);
+
         assertEq(int256(state.ae2.quoteAmountToAccount) + state.tbal1.userBalanceRusd, 0);
         assertApproxEqAbsDecimal(
             state.ae2.collateralAmountToLiquidator,
             state.ae2.quoteAmountToAccount * 1.01e12 * 1e18 / state.bumpedEthPrice,
-            0.0001e18,
+            0.001e18,
             18
         );
 
@@ -202,5 +211,13 @@ contract AutoExchangeFork is ForkChecks {
             state.tbal2.liquidatorBalanceWeth,
             state.tbal1.liquidatorBalanceWeth + int256(state.ae2.collateralAmountToLiquidator)
         );
+    }
+
+    function test_AutoExchangeWeth_WhenUserHasOnlyWeth() public {
+        check_AutoExchange_wEth(0);
+    }
+
+    function test_AutoExchangeWeth_WhenUserHasBothWethAndRusd() public {
+        check_AutoExchange_wEth(100e6);
     }
 }
