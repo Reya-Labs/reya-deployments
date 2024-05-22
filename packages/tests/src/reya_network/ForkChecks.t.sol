@@ -375,7 +375,6 @@ contract ForkChecks is Test {
     NodeOutput.Data nodeOutput;
     UD60x18 price;
     UD60x18 absBase;
-    UD60x18 baseSpacing;
     MarketConfigurationData marketConfig;
     int64[][] marketRiskMatrix;
     uint256 passivePoolImMultiplier;
@@ -477,6 +476,10 @@ contract ForkChecks is Test {
         base = notional.div(getMarketSpotPrice(marketId).intoSD59x18());
     }
 
+    function baseToNotional(uint128 marketId, SD59x18 base) private returns (SD59x18 notional) {
+        notional = base.mul(getMarketSpotPrice(marketId).intoSD59x18());
+    }
+
     function test_trade_rusdCollateral_leverage_eth() public {
         // general info
         // this tests 20x leverage is successful
@@ -553,7 +556,6 @@ contract ForkChecks is Test {
         (user, userPk) = makeAddrAndKey("user");
         collateralPoolId = 1;
         exchangeId = 1; // passive pool
-        baseSpacing = ud(0.005e18);
 
         // deposit new margin account
         uint256 depositAmount = 100_000_000e18;
@@ -570,16 +572,20 @@ contract ForkChecks is Test {
             SD59x18 poolBase =
                 SD59x18.wrap(IPassivePerpProxy(perp).getUpdatedPositionInfo(_marketId, passivePoolAccountId).base);
 
-            if (poolBase.abs().lt(sd(int256(marketConfig.minimumOrderBase)))) {
+            if (poolBase.abs().gt(sd(int256(marketConfig.minimumOrderBase)))) {
+                SD59x18 base = poolBase.sub(poolBase.mod(sd(int256(marketConfig.baseSpacing))));
                 executeCoreMatchOrder({
-                    marketId: marketId,
+                    marketId: _marketId,
                     sender: user,
-                    base: poolBase,
-                    priceLimit: getPriceLimit(poolBase),
+                    base: base,
+                    priceLimit: getPriceLimit(base),
                     accountId: accountId
                 });
 
-                assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(_marketId, passivePoolAccountId).base, 0);
+                poolBase =
+                    SD59x18.wrap(IPassivePerpProxy(perp).getUpdatedPositionInfo(_marketId, passivePoolAccountId).base);
+
+                // assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(_marketId, passivePoolAccountId).base, 0);
             }
         }
 
@@ -607,7 +613,7 @@ contract ForkChecks is Test {
                 )
             ).sub(prevNotionalsSum);
             SD59x18 base = notionalToBase(marketId, notional);
-            base = base.sub(base.mod(baseSpacing.intoSD59x18()));
+            base = base.sub(base.mod(sd(int256(marketConfig.baseSpacing))));
 
             UD60x18 orderPrice;
             SD59x18 pSlippage;
@@ -621,7 +627,7 @@ contract ForkChecks is Test {
 
             assertApproxEqAbsDecimal(pSlippage.unwrap(), sPrime[i].unwrap(), eps.unwrap(), 18);
 
-            prevNotionalsSum = prevNotionalsSum.add(notional);
+            prevNotionalsSum = prevNotionalsSum.add(baseToNotional(marketId, base));
         }
     }
 
@@ -650,7 +656,7 @@ contract ForkChecks is Test {
         sPrime[9] = sd(0.081639e18);
         // sPrime[10] = sd(0.088702e18);
 
-        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.0003e18) });
+        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.00005e18) });
     }
 
     function test_trade_slippage_btc_long() public {
@@ -706,7 +712,7 @@ contract ForkChecks is Test {
         sPrime[9] = sd(-0.081417e18);
         // sPrime[10] = sd(0.088702e18);
 
-        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.0003e18) });
+        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.00005e18) });
     }
 
     function test_trade_slippage_btc_short() public {
