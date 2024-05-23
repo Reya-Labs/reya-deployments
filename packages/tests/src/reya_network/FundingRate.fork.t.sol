@@ -15,13 +15,13 @@ contract FundingRateFork is ForkChecks {
         (user, userPk) = makeAddrAndKey("user");
 
         // deposit new margin account to be able to trade little to get pSlippage
-        deal(usdc, address(periphery), 1000000e6);
-        mockBridgedAmount(socketExecutionHelper[usdc], 1000000e6);
+        deal(usdc, address(periphery), 1_000_000e6);
+        mockBridgedAmount(socketExecutionHelper[usdc], 1_000_000e6);
         vm.prank(socketExecutionHelper[usdc]);
         uint128 accountId =
             IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
 
-        (,SD59x18 ethPSlippage) = executeCoreMatchOrder({
+        (, SD59x18 ethPSlippage) = executeCoreMatchOrder({
             marketId: 1,
             sender: user,
             base: sd(-0.035e18),
@@ -29,7 +29,7 @@ contract FundingRateFork is ForkChecks {
             accountId: accountId
         });
 
-        (,SD59x18 btcPSlippage) = executeCoreMatchOrder({
+        (, SD59x18 btcPSlippage) = executeCoreMatchOrder({
             marketId: 2,
             sender: user,
             base: sd(-0.0015e18),
@@ -40,12 +40,16 @@ contract FundingRateFork is ForkChecks {
         int256 ethFundingRate1 = IPassivePerpProxy(perp).getLatestFundingRate(1);
         int256 btcFundingRate1 = IPassivePerpProxy(perp).getLatestFundingRate(2);
 
-        vm.warp(block.timestamp + 86400);
+        vm.warp(block.timestamp + 86_400);
 
         int256 ethFundingRate2 = IPassivePerpProxy(perp).getLatestFundingRate(1);
         int256 btcFundingRate2 = IPassivePerpProxy(perp).getLatestFundingRate(2);
 
-        assertApproxEqAbsDecimal(ethFundingRate2 - ethFundingRate1, ethPSlippage.unwrap() * 0.0034246e18 / 1e18, 1e9, 18);
-        assertApproxEqAbsDecimal(btcFundingRate2 - btcFundingRate1, btcPSlippage.unwrap() * 0.0034246e18 / 1e18, 1e9, 18);
+        assertApproxEqAbsDecimal(
+            ethFundingRate2 - ethFundingRate1, ethPSlippage.unwrap() * 0.0034246e18 / 1e18, 1e9, 18
+        );
+        assertApproxEqAbsDecimal(
+            btcFundingRate2 - btcFundingRate1, btcPSlippage.unwrap() * 0.0034246e18 / 1e18, 1e9, 18
+        );
     }
 }
