@@ -984,4 +984,34 @@ contract ForkChecks is Test {
 
         test_PoolHealth();
     }
+
+    function test_trade_wethCollateral_depositWithdraw() public {
+        (user, userPk) = makeAddrAndKey("user");
+        uint256 amount = 1e18; // denominated in weth
+        uint128 marketId = 1; // eth
+        SD59x18 base = sd(1e18);
+        UD60x18 priceLimit = ud(10_000e18);
+
+        // deposit new margin account
+        deal(weth, address(periphery), amount);
+        mockBridgedAmount(socketExecutionHelper[weth], amount);
+        vm.prank(socketExecutionHelper[weth]);
+        uint128 accountId =
+            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(weth) }));
+
+        executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
+
+        assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base, base.unwrap());
+
+        uint256 usdcAmount = 1000e6;
+        deal(usdc, address(periphery), usdcAmount);
+        mockBridgedAmount(socketExecutionHelper[usdc], usdcAmount);
+        vm.prank(socketExecutionHelper[usdc]);
+        IPeripheryProxy(periphery).depositExistingMA(DepositExistingMAInputs({ accountId: accountId, token: usdc }));
+
+        amount = 0.1e18;
+        executePeripheryWithdrawMA(user, userPk, 2, accountId, weth, amount, arbitrumChainId);
+
+        test_PoolHealth();
+    }
 }

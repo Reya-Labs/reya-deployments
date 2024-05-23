@@ -101,11 +101,11 @@ usdcOptimismWithdrawFeeUnscaled = "0.102"
 usdcPolygonWithdrawFeeUnscaled = "0.0492"
 usdcBaseWithdrawFeeUnscaled = "0.708"
 # -------------------------------------------------------------------
-wethEthereumWithdrawFeeUnscaled = "27.888"
-wethArbitrumWithdrawFeeUnscaled = "0.114"
-wethOptimismWithdrawFeeUnscaled = "0.102"
-wethPolygonWithdrawFeeUnscaled = "0.0492"
-wethBaseWithdrawFeeUnscaled = "0.708"
+wethEthereumWithdrawFeeUnscaled = "0.009533484442507446"
+wethArbitrumWithdrawFeeUnscaled = "0.000039000000751572"
+wethOptimismWithdrawFeeUnscaled = "0.000034923065158525"
+wethPolygonWithdrawFeeUnscaled = "0.000016854838823646"
+wethBaseWithdrawFeeUnscaled = "0.000243534209292459"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -122,7 +122,7 @@ rusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-wethWithdrawalTvlPercentageLimitUnscaled = "0.15"
+wethWithdrawalTvlPercentageLimitUnscaled = "0.5"
 # -------------------------------------------------------------------
 # wbtcCollateralAdapter = "<%= AddressZero %>"
 # wbtcWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
