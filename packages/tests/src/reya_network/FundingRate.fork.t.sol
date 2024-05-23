@@ -46,10 +46,10 @@ contract FundingRateFork is ForkChecks {
         int256 btcFundingRate2 = IPassivePerpProxy(perp).getLatestFundingRate(2);
 
         assertApproxEqAbsDecimal(
-            ethFundingRate2 - ethFundingRate1, ethPSlippage.unwrap() * 0.34246e18 / 1e18, 1e12, 18
+            ethFundingRate2 - ethFundingRate1, ethPSlippage.unwrap() * 0.0034246e18 / 1e18, 1e12, 18
         );
         assertApproxEqAbsDecimal(
-            btcFundingRate2 - btcFundingRate1, btcPSlippage.unwrap() * 0.34246e18 / 1e18, 1e12, 18
+            btcFundingRate2 - btcFundingRate1, btcPSlippage.unwrap() * 0.0034246e18 / 1e18, 1e12, 18
         );
     }
 }
