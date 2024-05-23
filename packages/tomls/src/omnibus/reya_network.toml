@@ -121,8 +121,8 @@ rusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # daiWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
-wethWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-wethWithdrawalTvlPercentageLimitUnscaled = "0.5"
+wethWithdrawalWindowSize = "1"
+wethWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 # wbtcCollateralAdapter = "<%= AddressZero %>"
 # wbtcWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
@@ -256,7 +256,7 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_weth_capUnscaled = "100"
+cp1Rusd_weth_capUnscaled = "500"
 cp1Rusd_weth_withdrawalWindowSize_DEPRECATED = "0"
 cp1Rusd_weth_withdrawalTvlPercentageLimitUnscaled_DEPRECATED = "0"
 cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
