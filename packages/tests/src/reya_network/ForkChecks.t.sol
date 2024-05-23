@@ -765,7 +765,7 @@ contract ForkChecks is Test {
         uint128 accountId =
             IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(weth) }));
 
-        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.CollateralCapExceeded.selector, 1, weth, 100e18, amount));
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.CollateralCapExceeded.selector, 1, weth, 500e18, amount));
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
     }
 
