@@ -753,7 +753,7 @@ contract ForkChecks is Test {
 
     function test_weth_cap_exceeded() public {
         (user, userPk) = makeAddrAndKey("user");
-        uint256 amount = 101e18; // denominated in weth
+        uint256 amount = 501e18; // denominated in weth
         uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(10_000e18);
