@@ -758,6 +758,8 @@ contract ForkChecks is Test {
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(10_000e18);
 
+        uint256 collateralPoolWethBalance = ICoreProxy(core).getCollateralPoolBalance(1, weth);
+
         // deposit new margin account
         deal(weth, address(periphery), amount);
         mockBridgedAmount(socketExecutionHelper[weth], amount);
@@ -765,7 +767,11 @@ contract ForkChecks is Test {
         uint128 accountId =
             IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(weth) }));
 
-        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.CollateralCapExceeded.selector, 1, weth, 500e18, amount));
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                ICoreProxy.CollateralCapExceeded.selector, 1, weth, 500e18, collateralPoolWethBalance + amount
+            )
+        );
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
     }
 
