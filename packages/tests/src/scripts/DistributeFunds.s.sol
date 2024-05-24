@@ -2,9 +2,9 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import "forge-std/Test.sol";
 import { Script } from "forge-std/Script.sol";
-import { IPassivePoolProxy } from "../interfaces/IPassivePoolProxy.sol";
-import { IERC20TokenModule } from "../interfaces/IERC20TokenModule.sol";
-import { IRUSDProxy } from "../interfaces/IRUSDProxy.sol";
+import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
+import { IERC20TokenModule } from "../../src/interfaces/IERC20TokenModule.sol";
+import { IRUSDProxy } from "../../src/interfaces/IRUSDProxy.sol";
 
 contract DistributeFunds is Script, Test {
     address private multisigEOA = 0x01A8e78B7ba1313A482630837c3978c6259aC1eA;

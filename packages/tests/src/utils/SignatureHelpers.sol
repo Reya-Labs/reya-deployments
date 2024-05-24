@@ -1,6 +1,6 @@
 pragma solidity >=0.8.19 <0.9.0;
 
-import { Command, EIP712Signature } from "../interfaces/IPeripheryProxy.sol";
+import { Command, EIP712Signature } from "../../src/interfaces/IPeripheryProxy.sol";
 
 bytes32 constant COMMAND_TYPEHASH =
     keccak256("Command(uint8 commandType,bytes inputs,uint128 marketId,uint128 exchangeId)");

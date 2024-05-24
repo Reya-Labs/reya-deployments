@@ -1,27 +1,55 @@
 pragma solidity >=0.8.19 <0.9.0;
 
-import "forge-std/Test.sol";
-import { ForkChecks } from "./ForkChecks.t.sol";
-import {
-    ICoreProxy,
-    TriggerAutoExchangeInput,
-    AutoExchangeAmounts,
-    ParentCollateralConfig
-} from "../interfaces/ICoreProxy.sol";
-import { IPassivePoolProxy } from "../interfaces/IPassivePoolProxy.sol";
+import { ReyaForkTest } from "../ReyaForkTest.sol";
+
+import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IPeripheryProxy,
     DepositNewMAInputs,
     DepositExistingMAInputs,
     DepositPassivePoolInputs
-} from "../interfaces/IPeripheryProxy.sol";
-import { IOracleManagerProxy, NodeOutput } from "../interfaces/IOracleManagerProxy.sol";
-import { ISocketExecutionHelper } from "../interfaces/ISocketExecutionHelper.sol";
+} from "../../../src/interfaces/IPeripheryProxy.sol";
+
+import { ISocketExecutionHelper } from "../../../src/interfaces/ISocketExecutionHelper.sol";
 
 import { sd } from "@prb/math/SD59x18.sol";
-import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
+import { ud } from "@prb/math/UD60x18.sol";
 
-contract PassivePoolWithWeth is ForkChecks {
+contract PassivePoolForkTest is ReyaForkTest {
+    function test_PoolHealth() public view {
+        checkPoolHealth();
+    }
+
+    function testFuzz_PoolDepositWithdraw(address attacker) public {
+        (user, userPk) = makeAddrAndKey("user");
+        vm.assume(attacker != user);
+
+        uint128 poolId = 1;
+        uint256 amount = 100e6;
+
+        uint256 attackerSharesAmount = IPassivePoolProxy(pool).getAccountBalance(poolId, attacker);
+        vm.assume(attackerSharesAmount == 0);
+
+        deal(usdc, periphery, amount);
+
+        DepositPassivePoolInputs memory inputs = DepositPassivePoolInputs({ poolId: poolId, owner: user, minShares: 0 });
+        vm.prank(socketExecutionHelper[usdc]);
+        vm.mockCall(
+            socketExecutionHelper[usdc], abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()), abi.encode(amount)
+        );
+        IPeripheryProxy(periphery).depositPassivePool(inputs);
+
+        uint256 userSharesAmount = IPassivePoolProxy(pool).getAccountBalance(poolId, user);
+        assert(userSharesAmount > 0);
+
+        vm.prank(attacker);
+        vm.expectRevert();
+        IPassivePoolProxy(pool).removeLiquidity(poolId, userSharesAmount, 0);
+
+        vm.prank(user);
+        IPassivePoolProxy(pool).removeLiquidity(poolId, userSharesAmount, 0);
+    }
+
     function test_PassivePoolWithWeth() public {
         (user, userPk) = makeAddrAndKey("user");
 

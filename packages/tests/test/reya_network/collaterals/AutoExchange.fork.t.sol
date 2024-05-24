@@ -1,15 +1,17 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import "forge-std/Test.sol";
-import { ForkChecks } from "./ForkChecks.t.sol";
-import { ICoreProxy, TriggerAutoExchangeInput, AutoExchangeAmounts } from "../interfaces/ICoreProxy.sol";
-import { IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs } from "../interfaces/IPeripheryProxy.sol";
-import { IOracleManagerProxy, NodeOutput } from "../interfaces/IOracleManagerProxy.sol";
+import { ReyaForkTest } from "../ReyaForkTest.sol";
+import { ICoreProxy, TriggerAutoExchangeInput, AutoExchangeAmounts } from "../../../src/interfaces/ICoreProxy.sol";
+import {
+    IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
+} from "../../../src/interfaces/IPeripheryProxy.sol";
+import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
 import { sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
-contract AutoExchangeFork is ForkChecks {
+contract AutoExchangeForkTest is ReyaForkTest {
     struct TokenBalances {
         int256 userBalanceWeth;
         int256 userBalanceRusd;

@@ -1,16 +1,15 @@
 pragma solidity >=0.8.19 <0.9.0;
 
-import "forge-std/Test.sol";
-import { ForkChecks } from "./ForkChecks.t.sol";
-import { ICoreProxy, TriggerAutoExchangeInput, AutoExchangeAmounts } from "../interfaces/ICoreProxy.sol";
-import { IPassivePerpProxy } from "../interfaces/IPassivePerpProxy.sol";
-import { IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs } from "../interfaces/IPeripheryProxy.sol";
-import { IOracleManagerProxy, NodeOutput } from "../interfaces/IOracleManagerProxy.sol";
+import { ReyaForkTest } from "../ReyaForkTest.sol";
+
+import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
+
+import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
 
 import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
-import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
+import { ud } from "@prb/math/UD60x18.sol";
 
-contract FundingRateFork is ForkChecks {
+contract FundingRateForkTest is ReyaForkTest {
     function test_FundingVelocity() public {
         (user, userPk) = makeAddrAndKey("user");
 
