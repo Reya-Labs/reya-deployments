@@ -117,8 +117,8 @@ contract PSlippageForkTest is ReyaForkTest {
 
         SD59x18[] memory sPrime = new SD59x18[](10);
         sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019980e18);
-        sPrime[3] = sd(0.029910e18);
+        sPrime[2] = sd(0.01998e18);
+        sPrime[3] = sd(0.02991e18);
         sPrime[4] = sd(0.039765e18);
         sPrime[5] = sd(0.049516e18);
         sPrime[6] = sd(0.059139e18);
@@ -144,8 +144,8 @@ contract PSlippageForkTest is ReyaForkTest {
 
         SD59x18[] memory sPrime = new SD59x18[](10);
         sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019980e18);
-        sPrime[3] = sd(0.029910e18);
+        sPrime[2] = sd(0.01998e18);
+        sPrime[3] = sd(0.02991e18);
         sPrime[4] = sd(0.039765e18);
         sPrime[5] = sd(0.049516e18);
         sPrime[6] = sd(0.059139e18);
@@ -171,7 +171,7 @@ contract PSlippageForkTest is ReyaForkTest {
 
         SD59x18[] memory sPrime = new SD59x18[](10);
         sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019980e18);
+        sPrime[2] = sd(-0.01998e18);
         sPrime[3] = sd(-0.029911e18);
         sPrime[4] = sd(-0.039765e18);
         sPrime[5] = sd(-0.049513e18);
@@ -198,7 +198,7 @@ contract PSlippageForkTest is ReyaForkTest {
 
         SD59x18[] memory sPrime = new SD59x18[](10);
         sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019980e18);
+        sPrime[2] = sd(-0.01998e18);
         sPrime[3] = sd(-0.029911e18);
         sPrime[4] = sd(-0.039765e18);
         sPrime[5] = sd(-0.049513e18);
