@@ -117,15 +117,14 @@ contract PSlippageForkTest is ReyaForkTest {
 
         SD59x18[] memory sPrime = new SD59x18[](10);
         sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019938e18);
-        sPrime[3] = sd(0.029726e18);
-        sPrime[4] = sd(0.039287e18);
-        sPrime[5] = sd(0.04855e18);
-        sPrime[6] = sd(0.057455e18);
-        sPrime[7] = sd(0.065957e18);
-        sPrime[8] = sd(0.074025e18);
-        sPrime[9] = sd(0.081639e18);
-        // sPrime[10] = sd(0.088702e18);
+        sPrime[2] = sd(0.019980e18);
+        sPrime[3] = sd(0.029910e18);
+        sPrime[4] = sd(0.039765e18);
+        sPrime[5] = sd(0.049516e18);
+        sPrime[6] = sd(0.059139e18);
+        sPrime[7] = sd(0.068611e18);
+        sPrime[8] = sd(0.077912e18);
+        sPrime[9] = sd(0.087022e18);
 
         trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
@@ -145,15 +144,14 @@ contract PSlippageForkTest is ReyaForkTest {
 
         SD59x18[] memory sPrime = new SD59x18[](10);
         sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019938e18);
-        sPrime[3] = sd(0.029726e18);
-        sPrime[4] = sd(0.039287e18);
-        sPrime[5] = sd(0.04855e18);
-        sPrime[6] = sd(0.057455e18);
-        sPrime[7] = sd(0.065957e18);
-        sPrime[8] = sd(0.074025e18);
-        sPrime[9] = sd(0.081639e18);
-        // sPrime[10] = sd(0.088702e18);
+        sPrime[2] = sd(0.019980e18);
+        sPrime[3] = sd(0.029910e18);
+        sPrime[4] = sd(0.039765e18);
+        sPrime[5] = sd(0.049516e18);
+        sPrime[6] = sd(0.059139e18);
+        sPrime[7] = sd(0.068611e18);
+        sPrime[8] = sd(0.077912e18);
+        sPrime[9] = sd(0.087022e18);
 
         trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
@@ -173,15 +171,14 @@ contract PSlippageForkTest is ReyaForkTest {
 
         SD59x18[] memory sPrime = new SD59x18[](10);
         sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019939e18);
-        sPrime[3] = sd(-0.029729e18);
-        sPrime[4] = sd(-0.039289e18);
-        sPrime[5] = sd(-0.048542e18);
-        sPrime[6] = sd(-0.057426e18);
-        sPrime[7] = sd(-0.065889e18);
-        sPrime[8] = sd(-0.073894e18);
-        sPrime[9] = sd(-0.081417e18);
-        // sPrime[10] = sd(0.088702e18);
+        sPrime[2] = sd(-0.019980e18);
+        sPrime[3] = sd(-0.029911e18);
+        sPrime[4] = sd(-0.039765e18);
+        sPrime[5] = sd(-0.049513e18);
+        sPrime[6] = sd(-0.059129e18);
+        sPrime[7] = sd(-0.068586e18);
+        sPrime[8] = sd(-0.077862e18);
+        sPrime[9] = sd(-0.086933e18);
 
         trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
@@ -201,15 +198,14 @@ contract PSlippageForkTest is ReyaForkTest {
 
         SD59x18[] memory sPrime = new SD59x18[](10);
         sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019939e18);
-        sPrime[3] = sd(-0.029729e18);
-        sPrime[4] = sd(-0.039289e18);
-        sPrime[5] = sd(-0.048542e18);
-        sPrime[6] = sd(-0.057426e18);
-        sPrime[7] = sd(-0.065889e18);
-        sPrime[8] = sd(-0.073894e18);
-        sPrime[9] = sd(-0.081417e18);
-        // sPrime[10] = sd(0.088702e18);
+        sPrime[2] = sd(-0.019980e18);
+        sPrime[3] = sd(-0.029911e18);
+        sPrime[4] = sd(-0.039765e18);
+        sPrime[5] = sd(-0.049513e18);
+        sPrime[6] = sd(-0.059129e18);
+        sPrime[7] = sd(-0.068586e18);
+        sPrime[8] = sd(-0.077862e18);
+        sPrime[9] = sd(-0.086933e18);
 
         trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
