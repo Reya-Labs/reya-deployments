@@ -45,7 +45,7 @@ contract FundingRateForkTest is ReyaForkTest {
         int256 btcFundingRate2 = IPassivePerpProxy(perp).getLatestFundingRate(2);
 
         // todo: p1: double check with 0.26
-        assertApproxEqAbsDecimal(ethFundingRate2 - ethFundingRate1, ethPSlippage.unwrap() * 1.0e18 / 1e18, 1e13, 18);
-        assertApproxEqAbsDecimal(btcFundingRate2 - btcFundingRate1, btcPSlippage.unwrap() * 1.0e18 / 1e18, 1e13, 18);
+        assertApproxEqAbsDecimal(ethFundingRate2 - ethFundingRate1, ethPSlippage.unwrap() * 0.26e18 / 1e18, 1e13, 18);
+        assertApproxEqAbsDecimal(btcFundingRate2 - btcFundingRate1, btcPSlippage.unwrap() * 0.26e18 / 1e18, 1e13, 18);
     }
 }

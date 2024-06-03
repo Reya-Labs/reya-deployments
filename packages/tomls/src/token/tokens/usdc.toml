@@ -7,7 +7,7 @@ usdcTokenDecimals = "6"
 source = "<%= settings.tokensProxyPackage %>"
 target = "reya-tokens:1.0.0@usdc"
 options.owner = "<%= settings.owner %>"
-options.salt = "<%= settings.usdc_salt %>"
+options.salt = "<%= settings.usdcSalt %>"
 depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new

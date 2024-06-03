@@ -31,4 +31,6 @@ jobs:
         run: "yarn reya_network:simulate"
       - name: Reya Network Cannon Test
         run: "yarn reya_network:test"
+      - name: Fuzzing Cannon Simulation
+        run: "yarn fuzzing:cicd"
   

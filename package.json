@@ -16,6 +16,7 @@
     "reya_network:simulate": "lerna run reya_network:simulate --scope=@reya-deployments/tomls",
     "fuzzing:simulate": "lerna run fuzzing:simulate --scope=@reya-deployments/tomls",
     "fuzzing:execute": "lerna run fuzzing:execute --scope=@reya-deployments/tomls",
+    "fuzzing:cicd": "lerna run fuzzing:cicd --scope=@reya-deployments/tomls",
     "reya_network:test": "lerna run reya_network:test --scope=@reya-deployments/tests"
   },
   "devDependencies": {
