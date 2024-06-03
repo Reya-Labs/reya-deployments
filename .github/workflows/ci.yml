@@ -32,5 +32,8 @@ jobs:
       - name: Reya Network Cannon Test
         run: "yarn reya_network:test"
       - name: Fuzzing Cannon Simulation
-        run: "anvil &; PID=$!; yarn fuzzing:simulate; kill -9 $PID"
+        run: "anvil &"
+        run: "PID=$!"
+        run: "yarn fuzzing:simulate"
+        run: "kill -9 $PID"
   
