@@ -1,0 +1,120 @@
+#####################################
+# Controller
+#####################################
+[invoke.periphery_set_wbtcController]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenController"
+args = ["<%= contracts.WBTCProxy.address %>", "<%= settings.wbtcController %>"]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+#####################################
+# Execution Helper
+#####################################
+[invoke.periphery_set_wbtcExecutionHelper]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenExecutionHelper"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.wbtcExecutionHelper %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+#####################################
+# Connectors
+#####################################
+[invoke.periphery_set_wbtcEthereumConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.ethereumChainId %>",
+    "<%= settings.wbtcEthereumConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+[invoke.periphery_set_wbtcArbitrumConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.arbitrumChainId %>",
+    "<%= settings.wbtcArbitrumConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+[invoke.periphery_set_wbtcOptimismConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.optimismChainId %>",
+    "<%= settings.wbtcOptimismConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+[invoke.periphery_set_wbtcPolygonConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.polygonChainId %>",
+    "<%= settings.wbtcPolygonConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+#####################################
+# Static Withdraw Fees
+#####################################
+[invoke.periphery_set_wbtc_ethereum_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.wbtcEthereumConnector %>",
+    "<%= parseUnits(settings.wbtcEthereumWithdrawFeeUnscaled, parseInt(settings.wbtcTokenDecimals)) %>",
+]
+depends = [
+    "invoke.upgrade_periphery_proxy",
+    "invoke.upgrade_wbtc_proxy",
+    "var.wbtc_vars",
+]
+
+[invoke.periphery_set_wbtc_arbitrum_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.wbtcArbitrumConnector %>",
+    "<%= parseUnits(settings.wbtcArbitrumWithdrawFeeUnscaled, parseInt(settings.wbtcTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+[invoke.periphery_set_wbtc_optimism_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.wbtcOptimismConnector %>",
+    "<%= parseUnits(settings.wbtcOptimismWithdrawFeeUnscaled, parseInt(settings.wbtcTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+[invoke.periphery_set_wbtc_polygon_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.wbtcPolygonConnector %>",
+    "<%= parseUnits(settings.wbtcPolygonWithdrawFeeUnscaled, parseInt(settings.wbtcTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]

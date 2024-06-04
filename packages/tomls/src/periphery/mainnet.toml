@@ -4,4 +4,5 @@ include = [
     "configs/global_config.toml",
     "configs/tokens/usdc.toml",
     "configs/tokens/weth.toml",
+    "configs/tokens/wbtc.toml",
 ]
