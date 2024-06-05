@@ -1149,9 +1149,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usecannon/builder@npm:2.14.2, @usecannon/builder@npm:^2.14.1":
-  version: 2.14.2
-  resolution: "@usecannon/builder@npm:2.14.2"
+"@usecannon/builder@npm:2.14.3, @usecannon/builder@npm:^2.14.3":
+  version: 2.14.3
+  resolution: "@usecannon/builder@npm:2.14.3"
   dependencies:
     "@synthetixio/router": ^3.4.0
     axios: ^1.6.8
@@ -1163,20 +1163,19 @@ __metadata:
     lodash: ^4.17.21
     pako: ^2.1.0
     promise-events: ^0.2.4
-    typedoc-plugin-markdown: ^3.17.1
     typestub-ipfs-only-hash: ^4.0.0
     viem: ^2.9.31
     zod: ^3.23.6
-  checksum: 29ea4eb291c7a2853a0e70d13394393cda255b317b18b69f0c564ba65a914a105336a1ac52f3d53e23fec56b07a11cf0c45fc4f25f32e8c375552cd472bd8875
+  checksum: 7fc4c955660ca68df9c6690402d55b2c32f7b629efe5d5579da2c80355b190c96282dcf321565077fa6da7410c04b0d418bb9f6c16efa1dfdff7bfc6d65670ef
   languageName: node
   linkType: hard
 
-"@usecannon/cli@npm:^2.14.1":
-  version: 2.14.2
-  resolution: "@usecannon/cli@npm:2.14.2"
+"@usecannon/cli@npm:^2.14.3":
+  version: 2.14.3
+  resolution: "@usecannon/cli@npm:2.14.3"
   dependencies:
     "@iarna/toml": ^3.0.0
-    "@usecannon/builder": 2.14.2
+    "@usecannon/builder": 2.14.3
     abitype: ^1.0.2
     chalk: ^4.1.2
     commander: ^9.5.0
@@ -1195,7 +1194,7 @@ __metadata:
     zod: ^3.23.6
   bin:
     cannon: bin/cannon.js
-  checksum: 3b704f2aa5cc0b3f1f4f7f1652a86529ac7cb502f2313c08a38352b9b7f5f3f54a7cbfc363544b941d26879fc1363b89e9fbf517c766953ea17e86cd41a387f9
+  checksum: 600d4efae2e9aa21b1db43b96c10a9fc84ab77556ca90c6bc4a2ab01c2680885e7f8f736cb846aebfd8a4dc4a1b80bedd9450a2b8cf9a542fe6c6ea896fd2bc7
   languageName: node
   linkType: hard
 
@@ -5668,8 +5667,8 @@ __metadata:
   resolution: "reya-deployments@workspace:."
   dependencies:
     "@ethersproject/abi": 5.7.0
-    "@usecannon/builder": ^2.14.1
-    "@usecannon/cli": ^2.14.1
+    "@usecannon/builder": ^2.14.3
+    "@usecannon/cli": ^2.14.3
     forge-std: "github:foundry-rs/forge-std#v1.8.0"
     lerna: ^8.1.2
     prettier: 3.2.5
@@ -6427,17 +6426,6 @@ __metadata:
   version: 0.0.6
   resolution: "typedarray@npm:0.0.6"
   checksum: 33b39f3d0e8463985eeaeeacc3cb2e28bc3dfaf2a5ed219628c0b629d5d7b810b0eb2165f9f607c34871d5daa92ba1dc69f49051cf7d578b4cbd26c340b9d1b1
-  languageName: node
-  linkType: hard
-
-"typedoc-plugin-markdown@npm:^3.17.1":
-  version: 3.17.1
-  resolution: "typedoc-plugin-markdown@npm:3.17.1"
-  dependencies:
-    handlebars: ^4.7.7
-  peerDependencies:
-    typedoc: ">=0.24.0"
-  checksum: f12494bfc98ef532be63fb5e7630ff0aa2de17bb22b1d0b6260c416fe8b62cb537ddd3576cadc90c57c4aae2371722994ed873dc3220b23660e149a3eb676c04
   languageName: node
   linkType: hard
 
