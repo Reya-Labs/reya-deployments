@@ -12,7 +12,7 @@ include = [
     "../ranks/mainnet.toml",
     "../collateral_pools/collateral_pool_1/mainnet.toml",
 ]
-version = "1.0.2"
+version = "1.0.3"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -34,7 +34,7 @@ tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.0@router"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.1@router"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.1@router"
-peripheryRouterPackage = "reya-periphery:1.0.1@router"
+peripheryRouterPackage = "reya-periphery:1.0.2@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.1@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
@@ -93,6 +93,13 @@ wethArbitrumConnector = "0xd95c5254Df051f378696100a7D7f29505e5cF5c9"
 wethOptimismConnector = "0xDee306Cf6C908d5F4f2c4A92d6Dc19035fE552EC"
 wethPolygonConnector = "0x530654F6e96198bC269074156b321d8B91d10366"
 wethBaseConnector = "0x2b3A8ABa1E055e879594cB2767259e80441E0497"
+# -------------------------------------------------------------------
+wbtcController = "0xBF839f4dfF854F7a363A033D57ec872dC8556693"
+wbtcExecutionHelper = "0xd947Dd2f18366F3FD1f2a707d3CA58F762D60519"
+wbtcEthereumConnector = "0xD71629697B71E2Df26B4194f43F6eaed3B367ac0"
+wbtcArbitrumConnector = "0x42229a5DDC5E32149311265F6F4BC016EaB778FC"
+wbtcOptimismConnector = "0xA6BFB87A0db4693a4145df4F627c8FEe30aC7eDF"
+wbtcPolygonConnector = "0xA30e479EbfD576EDd69afB636d16926a05214149"
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumWithdrawFeeUnscaled = "27.888"
@@ -106,6 +113,11 @@ wethArbitrumWithdrawFeeUnscaled = "0.000039000000751572"
 wethOptimismWithdrawFeeUnscaled = "0.000034923065158525"
 wethPolygonWithdrawFeeUnscaled = "0.000016854838823646"
 wethBaseWithdrawFeeUnscaled = "0.000243534209292459"
+# -------------------------------------------------------------------
+wbtcEthereumWithdrawFeeUnscaled = "0.0005"
+wbtcArbitrumWithdrawFeeUnscaled = "0.0000025"
+wbtcOptimismWithdrawFeeUnscaled = "0.0000022"
+wbtcPolygonWithdrawFeeUnscaled = "0.0000011"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
