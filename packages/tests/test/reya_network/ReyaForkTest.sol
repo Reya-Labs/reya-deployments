@@ -51,6 +51,7 @@ contract ReyaForkTest is Test {
     address rusd = 0xa9F32a851B1800742e47725DA54a09A7Ef2556A3;
     address usdc = 0x3B860c0b53f2e8bd5264AA7c3451d41263C933F2;
     address weth = 0x6B48C2e6A32077ec17e8Ba0d98fFc676dfab1A30;
+    address wbtc = 0xa6Cf523f856f4a0aaB78848e251C1b042E6406d5;
 
     mapping(address token => address controller) socketController;
     mapping(address token => address executionHelper) socketExecutionHelper;
@@ -95,6 +96,13 @@ contract ReyaForkTest is Test {
         socketConnector[weth][optimismChainId] = 0xDee306Cf6C908d5F4f2c4A92d6Dc19035fE552EC;
         socketConnector[weth][polygonChainId] = 0x530654F6e96198bC269074156b321d8B91d10366;
         socketConnector[weth][baseChainId] = 0x2b3A8ABa1E055e879594cB2767259e80441E0497;
+        
+        socketController[wbtc] = 0xBF839f4dfF854F7a363A033D57ec872dC8556693;
+        socketExecutionHelper[wbtc] = 0xd947Dd2f18366F3FD1f2a707d3CA58F762D60519;
+        socketConnector[wbtc][ethereumChainId] = 0xD71629697B71E2Df26B4194f43F6eaed3B367ac0;
+        socketConnector[wbtc][arbitrumChainId] = 0x42229a5DDC5E32149311265F6F4BC016EaB778FC;
+        socketConnector[wbtc][optimismChainId] = 0xA6BFB87A0db4693a4145df4F627c8FEe30aC7eDF;
+        socketConnector[wbtc][polygonChainId] = 0xA30e479EbfD576EDd69afB636d16926a05214149;
     }
 
     function mockBridgedAmount(address executionHelper, uint256 amount) internal {
