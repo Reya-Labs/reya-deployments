@@ -124,21 +124,9 @@ rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # -------------------------------------------------------------------
-# usdtCollateralAdapter = "<%= AddressZero %>"
-# usdtWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-# usdtWithdrawalTvlPercentageLimitUnscaled = "0.15"
-# -------------------------------------------------------------------
-# daiCollateralAdapter = "<%= AddressZero %>"
-# daiWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-# daiWithdrawalTvlPercentageLimitUnscaled = "0.15"
-# -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
 wethWithdrawalTvlPercentageLimitUnscaled = "1"
-# -------------------------------------------------------------------
-# wbtcCollateralAdapter = "<%= AddressZero %>"
-# wbtcWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-# wbtcWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.5"
@@ -196,10 +184,6 @@ cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
 # -----------------------------------------------
 cp1Rusd_market1Eth_riskMatrix00Unscaled = "0.00173056"
 cp1Rusd_market2Btc_riskMatrix00Unscaled = "0.00148996"
-# cp1Rusd_riskMatrix00Unscaled = "0.002401"
-# cp1Rusd_riskMatrix01Unscaled = "0.00111475"
-# cp1Rusd_riskMatrix10Unscaled = "0.00111475"
-# cp1Rusd_riskMatrix11Unscaled = "0.00207025"
 # -----------------------------------------------
 cp1Rusd_imMultiplierUnscaled = "1.3"
 cp1Rusd_mmrMultiplierUnscaled = "1"
@@ -240,34 +224,6 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-# cp1Rusd_usdt_capUnscaled = "<%= formatEther(MaxUint256) %>"
-# cp1Rusd_usdt_withdrawalWindowSize_DEPRECATED = "0"
-# cp1Rusd_usdt_withdrawalTvlPercentageLimitUnscaled_DEPRECATED = "0"
-# cp1Rusd_usdt_autoExchangeThresholdUnscaled = "0"
-# cp1Rusd_usdt_autoExchangeInsuranceFeeUnscaled = "0.01"
-# cp1Rusd_usdt_autoExchangeDustThresholdUnscaled = "0"
-# cp1Rusd_usdt_bidSubmissionFeeUnscaled = "0"
-# cp1Rusd_usdtParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
-# cp1Rusd_usdtParentConfig_priceHaircutUnscaled = "0.01"
-# cp1Rusd_usdtParentConfig_autoExchangeDiscountUnscaled = "0.001"
-# cp1Rusd_usdtParentConfig_oracleNodeId = "<%= keccak256(hexlify('TODO')) %>"
-# -----------------------------------------------
-# TODO later: pass depositingEnabled through var (but there's no parseBool)
-# cp1Rusd_rusd_depositingEnabled = "true"
-# cp1Rusd_dai_capUnscaled = "<%= formatEther(MaxUint256) %>"
-# cp1Rusd_dai_withdrawalWindowSize_DEPRECATED = "0"
-# cp1Rusd_dai_withdrawalTvlPercentageLimitUnscaled_DEPRECATED = "0"
-# cp1Rusd_dai_autoExchangeThresholdUnscaled = "0"
-# cp1Rusd_dai_autoExchangeInsuranceFeeUnscaled = "0.01"
-# cp1Rusd_dai_autoExchangeDustThresholdUnscaled = "0"
-# cp1Rusd_dai_bidSubmissionFeeUnscaled = "0"
-# cp1Rusd_daiParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
-# cp1Rusd_daiParentConfig_priceHaircutUnscaled = "0.01"
-# cp1Rusd_daiParentConfig_autoExchangeDiscountUnscaled = "0.001"
-# cp1Rusd_daiParentConfig_oracleNodeId = "<%= keccak256(hexlify('TODO')) %>"
-# -----------------------------------------------
-# TODO later: pass depositingEnabled through var (but there's no parseBool)
-# cp1Rusd_rusd_depositingEnabled = "true"
 cp1Rusd_weth_capUnscaled = "500"
 cp1Rusd_weth_withdrawalWindowSize_DEPRECATED = "0"
 cp1Rusd_weth_withdrawalTvlPercentageLimitUnscaled_DEPRECATED = "0"
@@ -279,17 +235,4 @@ cp1Rusd_wethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>
 cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.01"
 cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
-# -----------------------------------------------
-# TODO later: pass depositingEnabled through var (but there's no parseBool)
-# cp1Rusd_rusd_depositingEnabled = "true"
-# cp1Rusd_wbtc_capUnscaled = "<%= formatEther(MaxUint256) %>"
-# cp1Rusd_wbtc_withdrawalWindowSize_DEPRECATED = "0"
-# cp1Rusd_wbtc_withdrawalTvlPercentageLimitUnscaled_DEPRECATED = "0"
-# cp1Rusd_wbtc_autoExchangeThresholdUnscaled = "0"
-# cp1Rusd_wbtc_autoExchangeInsuranceFeeUnscaled = "0.01"
-# cp1Rusd_wbtc_autoExchangeDustThresholdUnscaled = "0"
-# cp1Rusd_wbtc_bidSubmissionFeeUnscaled = "0"
-# cp1Rusd_wbtcParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
-# cp1Rusd_wbtcParentConfig_priceHaircutUnscaled = "0.05"
-# cp1Rusd_wbtcParentConfig_autoExchangeDiscountUnscaled = "0.01"
-# cp1Rusd_wbtcParentConfig_oracleNodeId = "<%= keccak256(hexlify('TODO')) %>"
+

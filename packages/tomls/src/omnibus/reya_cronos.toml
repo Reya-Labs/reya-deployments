@@ -1,0 +1,237 @@
+include = [
+    "utils/commons.toml",
+    "utils/constants.toml",
+    "../token/testnet.toml",
+    "../rusd/testnet.toml",
+    "../core/testnet.toml",
+    "../passive_pool/testnet.toml",
+    "../passive_perp/testnet.toml",
+    "../periphery/testnet.toml",
+    "../oracle_manager/testnet.toml",
+    "../exchange_pass_nft/testnet.toml",
+    "../ranks/testnet.toml",
+    "../collateral_pools/collateral_pool_1/testnet.toml",
+]
+version = "1.0.0"
+
+[var.chain_ids]
+ethereumSepoliaChainId= "11155111"
+polygonMumbaiChainId = "80001"
+arbitrumSepoliaChainId = "421614"
+optimismSepoliaChainId = "11155420"
+
+[var.wallet_addresses]
+owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"                                
+passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+[var.cannonClonePackages]
+coreProxyPackage = "reya-core:1.0.0@proxy"
+coreRouterPackage = "reya-core:1.0.1@router"
+coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
+rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
+rUSDRouterPackage = "reya-rusd:1.0.0@router"
+tokensProxyPackage = "reya-tokens:1.0.0@proxy"
+tokensRouterPackage = "reya-tokens:1.0.0@router"
+passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
+passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.1@router"
+passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.1@router"
+peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
+peripheryRouterPackage = "reya-periphery:1.0.2@router"
+oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
+oracleManagerRouterPackage = "reya-oracle-manager:1.0.1@router"
+exchangePassProxyPackage = "reya-exchange-pass-nft:1.0.0@proxy"
+exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
+ranksProxyPackage = "reya-ranks:1.0.0@proxy"
+ranksRouterPackage = "reya-ranks:1.0.0@router"
+
+[var.account_nft_vars]
+accountNftId = "<%= formatBytes32String('accountNFT') %>"
+accountNftName = "Reya Account NFT"
+accountNftSymbol = "REYA"
+accountNftUri = "https://reya.xyz/"
+
+[var.exchange_pass_vars]
+exchangePassName = "Reya Exchange Pass"
+exchangePassSymbol = "ReyaEPass"
+exchangePassUri = "https://reya.xyz/"
+
+[var.initial_proxy_vars]
+usdcSalt = "usdc-main"
+usdtSalt = "usdt-main"
+daiSalt = "dai-main"
+wethSalt = "weth-main"
+wbtcSalt = "wbtc-main"
+
+[var.upgrade_proxy_vars]
+coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
+rUSDProxy = "<%= imports.reyaRusdProxy.contracts.InitialProxy.address %>"
+passivePoolProxy = "<%= imports.reyaPassivePoolProxy.contracts.InitialProxy.address %>"
+passivePerpProxy = "<%= imports.reyaPassivePerpProxy.contracts.InitialProxy.address %>"
+peripheryProxy = "<%= imports.reyaPeripheryProxy.contracts.InitialProxy.address %>"
+oracleManagerProxy = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>"
+exchangePassProxy = "<%= imports.reyaExchangePassProxy.contracts.InitialProxy.address %>"
+ranksProxy = "<%= imports.reyaRanksProxy.contracts.InitialProxy.address %>"
+
+[var.pausers]
+pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
+pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
+pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
+pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
+
+[var.socket_contracts]
+usdcController = "<%= AddressZero %>"
+usdcExecutionHelper = "<%= AddressZero %>"
+usdcEthereumSepoliaConnector = "<%= AddressZero %>"
+usdcPolygonMumbaiConnector = "<%= AddressZero %>"
+usdcArbitrumSepoliaConnector = "<%= AddressZero %>"
+usdcOptimismSepoliaConnector = "<%= AddressZero %>"
+# -------------------------------------------------------------------
+wethController = "<%= AddressZero %>"
+wethExecutionHelper = "<%= AddressZero %>"
+wethEthereumSepoliaConnector = "<%= AddressZero %>"
+wethPolygonMumbaiConnector = "<%= AddressZero %>"
+wethArbitrumSepoliaConnector = "<%= AddressZero %>"
+wethOptimismSepoliaConnector = "<%= AddressZero %>"
+# -------------------------------------------------------------------
+wbtcController = "<%= AddressZero %>"
+wbtcExecutionHelper = "<%= AddressZero %>"
+wbtcEthereumSepoliaConnector = "<%= AddressZero %>"
+wbtcPolygonMumbaiConnector = "<%= AddressZero %>"
+wbtcArbitrumSepoliaConnector = "<%= AddressZero %>"
+wbtcOptimismSepoliaConnector = "<%= AddressZero %>"
+
+[var.periphery_socket_withdraw_fees]
+usdcEthereumSepoliaWithdrawFeeUnscaled = "0"
+usdcPolygonMumbaiWithdrawFeeUnscaled= "0"
+usdcArbitrumSepoliaWithdrawFeeUnscaled= "0"
+usdcOptimismSepoliaWithdrawFeeUnscaled = "0"
+# -------------------------------------------------------------------
+wethEthereumSepoliaWithdrawFeeUnscaled = "0"
+wethPolygonMumbaiWithdrawFeeUnscaled= "0"
+wethArbitrumSepoliaWithdrawFeeUnscaled= "0"
+wethOptimismSepoliaWithdrawFeeUnscaled = "0"
+# -------------------------------------------------------------------
+wbtcEthereumSepoliaWithdrawFeeUnscaled = "0"
+wbtcPolygonMumbaiWithdrawFeeUnscaled= "0"
+wbtcArbitrumSepoliaWithdrawFeeUnscaled= "0"
+wbtcOptimismSepoliaWithdrawFeeUnscaled = "0"
+
+[var.global_collateral_configs]
+rusdCollateralAdapter = "<%= AddressZero %>"
+rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+rusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+wethCollateralAdapter = "<%= AddressZero %>"
+wethWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+wethWithdrawalTvlPercentageLimitUnscaled = "0.15"
+
+[var.fees]
+passivePoolExchangeRebateUnscaled = "0.5"
+pool1RusdRebateUnscaled = "0.6"
+market1Eth_tier0FeeUnscaled = "0.0005"
+market2Btc_tier0FeeUnscaled = "0.0005"
+
+[var.oracleNodeMaxStaleDuration]
+btcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+btcUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ethUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ethUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+
+[var.market_1eth]
+market1Eth_riskMatrixIndex = "0"
+market1Eth_maxOpenBaseUnscaled = "37500"
+market1Eth_velocityMultiplierUnscaled = "1.0"
+market1Eth_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
+market1Eth_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
+market1Eth_dutchConfig_lambdaUnscaled = "1"
+market1Eth_dutchConfig_minBaseUnscaled = "0"
+market1Eth_slippageParams_phiUnscaled = "0"
+market1Eth_slippageParams_betaUnscaled = "0"
+market1Eth_minimumOrderBaseUnscaled = "0.035"
+market1Eth_baseSpacingUnscaled = "0.005"
+market1Eth_priceSpacingUnscaled = "0.01"
+market1Eth_depthFactorUnscaled = "10"
+market1Eth_maxExposureFactorUnscaled = "0.999"
+market1Eth_maxPSlippageUnscaled = "0.1"
+
+[var.market_2btc]
+market2Btc_riskMatrixIndex = "0"
+market2Btc_maxOpenBaseUnscaled = "1730"
+market2Btc_velocityMultiplierUnscaled = "1.0"
+market2Btc_oracleNodeId = "<%= settings.btcUsdcNodeId %>"
+market2Btc_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
+market2Btc_dutchConfig_lambdaUnscaled = "1"
+market2Btc_dutchConfig_minBaseUnscaled = "0"
+market2Btc_slippageParams_phiUnscaled = "0"
+market2Btc_slippageParams_betaUnscaled = "0"
+market2Btc_minimumOrderBaseUnscaled = "0.0015"
+market2Btc_baseSpacingUnscaled = "0.0005"
+market2Btc_priceSpacingUnscaled = "0.01"
+market2Btc_depthFactorUnscaled = "10"
+market2Btc_maxExposureFactorUnscaled = "0.999"
+market2Btc_maxPSlippageUnscaled = "0.1"
+
+[var.cp_1rusd]
+cp1Rusd_maxMarkets = "2"
+cp1Rusd_maxCollaterals = "2"
+# -----------------------------------------------
+cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
+# -----------------------------------------------
+cp1Rusd_market1Eth_riskMatrix00Unscaled = "0.00173056"
+cp1Rusd_market2Btc_riskMatrix00Unscaled = "0.00148996"
+# -----------------------------------------------
+cp1Rusd_imMultiplierUnscaled = "1.3"
+cp1Rusd_mmrMultiplierUnscaled = "1"
+cp1Rusd_dutchMultiplierUnscaled = "1"
+cp1Rusd_adlMultiplierUnscaled = "0.5"
+cp1Rusd_imBufferMultiplierUnscaled = "8.06"
+cp1Rusd_poolImMultiplierUnscaled = "8.01"
+# -----------------------------------------------
+# TODO later: add backstop lp account id as config as well, must first activate first market
+cp1Rusd_backstopLp_liquidationFeeUnscaled = "0.05"
+cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled = "0"
+cp1Rusd_backstopLp_withdrawCooldownDurationInSeconds = "0"
+cp1Rusd_backstopLp_withdrawDurationInSeconds = "0"
+# -----------------------------------------------
+cp1Rusd_bidKeeperFeeUnscaled = "0"
+cp1Rusd_queueDurationInSeconds = "0"
+cp1Rusd_maxOrdersInBid = "0"
+cp1Rusd_maxBidsInQueue = "0"
+cp1Rusd_bidScoreWeightUnscaled = "0"
+cp1Rusd_backstopKeeperFeeUnscaled = "0"
+cp1Rusd_adlExecutionKeeperFeeUnscaled = "0"
+cp1Rusd_dDutchMinUnscaled = "0.01"
+cp1Rusd_dMaxUnscaled = "0.4"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_rusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_rusd_withdrawalWindowSize_DEPRECATED = "0"
+cp1Rusd_rusd_withdrawalTvlPercentageLimitUnscaled_DEPRECATED = "0"
+cp1Rusd_rusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_rusd_autoExchangeInsuranceFeeUnscaled = "0.01"
+cp1Rusd_rusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_rusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_rusdParentConfig_collateralAddress = "<%= AddressZero %>"
+cp1Rusd_rusdParentConfig_priceHaircutUnscaled = "0"
+cp1Rusd_rusdParentConfig_autoExchangeDiscountUnscaled = "0"
+cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_weth_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_weth_withdrawalWindowSize_DEPRECATED = "0"
+cp1Rusd_weth_withdrawalTvlPercentageLimitUnscaled_DEPRECATED = "0"
+cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_weth_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_weth_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_wethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.01"
+cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
+

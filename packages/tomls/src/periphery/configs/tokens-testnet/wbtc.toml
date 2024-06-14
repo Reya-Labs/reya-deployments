@@ -1,0 +1,120 @@
+#####################################
+# Controller
+#####################################
+[invoke.periphery_set_wbtcController]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenController"
+args = ["<%= contracts.WBTCProxy.address %>", "<%= settings.wbtcController %>"]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+#####################################
+# Execution Helper
+#####################################
+[invoke.periphery_set_wbtcExecutionHelper]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenExecutionHelper"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.wbtcExecutionHelper %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+#####################################
+# Connectors
+#####################################
+[invoke.periphery_set_wbtcEthereumSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.ethereumSepoliaChainId %>",
+    "<%= settings.wbtcEthereumSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+[invoke.periphery_set_wbtcArbitrumSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.arbitrumSepoliaChainId %>",
+    "<%= settings.wbtcArbitrumSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+[invoke.periphery_set_wbtcOptimismSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.optimismSepoliaChainId %>",
+    "<%= settings.wbtcOptimismSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+[invoke.periphery_set_wbtcPolygonMumbaiConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.polygonMumbaiChainId %>",
+    "<%= settings.wbtcPolygonMumbaiConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+#####################################
+# Static Withdraw Fees
+#####################################
+[invoke.periphery_set_wbtc_ethereum_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.wbtcEthereumSepoliaConnector %>",
+    "<%= parseUnits(settings.wbtcEthereumSepoliaWithdrawFeeUnscaled, parseInt(settings.wbtcTokenDecimals)) %>",
+]
+depends = [
+    "invoke.upgrade_periphery_proxy",
+    "invoke.upgrade_wbtc_proxy",
+    "var.wbtc_vars",
+]
+
+[invoke.periphery_set_wbtc_arbitrum_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.wbtcArbitrumSepoliaConnector %>",
+    "<%= parseUnits(settings.wbtcArbitrumSepoliaWithdrawFeeUnscaled, parseInt(settings.wbtcTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+[invoke.periphery_set_wbtc_optimism_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.wbtcOptimismSepoliaConnector %>",
+    "<%= parseUnits(settings.wbtcOptimismSepoliaWithdrawFeeUnscaled, parseInt(settings.wbtcTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
+
+[invoke.periphery_set_wbtc_polygon_mumbai_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= settings.wbtcPolygonMumbaiConnector %>",
+    "<%= parseUnits(settings.wbtcPolygonMumbaiWithdrawFeeUnscaled, parseInt(settings.wbtcTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
