@@ -46,8 +46,8 @@ struct State {
 }
 
 contract BaseReyaForkTest is Test {
-    StaticEcosystem public sec;
-    DynamicEcosystem public dec;
+    StaticEcosystem sec;
+    DynamicEcosystem dec;
     State private s;
 
     function mockBridgedAmount(address executionHelper, uint256 amount) internal {
