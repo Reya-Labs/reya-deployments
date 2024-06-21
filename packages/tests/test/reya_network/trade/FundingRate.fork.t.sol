@@ -17,8 +17,9 @@ contract FundingRateForkTest is ReyaForkTest {
         deal(sec.usdc, address(sec.periphery), 1_000_000e6);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], 1_000_000e6);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) })
+        );
 
         (, SD59x18 ethPSlippage) = executeCoreMatchOrder({
             marketId: 1,

@@ -27,8 +27,9 @@ contract LeverageForkTest is ReyaForkTest {
         deal(sec.usdc, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], amount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) })
+        );
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
@@ -58,8 +59,9 @@ contract LeverageForkTest is ReyaForkTest {
         deal(sec.usdc, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], amount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) })
+        );
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
@@ -87,8 +89,9 @@ contract LeverageForkTest is ReyaForkTest {
         deal(sec.weth, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
         vm.prank(dec.socketExecutionHelper[sec.weth]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
+        );
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
@@ -118,8 +121,9 @@ contract LeverageForkTest is ReyaForkTest {
         deal(sec.weth, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
         vm.prank(dec.socketExecutionHelper[sec.weth]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
+        );
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 

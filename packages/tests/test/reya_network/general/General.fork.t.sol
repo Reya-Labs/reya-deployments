@@ -64,7 +64,8 @@ contract GeneralForkTest is ReyaForkTest {
             dec.socketConnector[sec.usdc][polygonChainId]
         );
         assertEq(
-            IPeripheryProxy(sec.periphery).getTokenChainConnector(sec.usdc, baseChainId), dec.socketConnector[sec.usdc][baseChainId]
+            IPeripheryProxy(sec.periphery).getTokenChainConnector(sec.usdc, baseChainId),
+            dec.socketConnector[sec.usdc][baseChainId]
         );
     }
 
@@ -100,12 +101,18 @@ contract GeneralForkTest is ReyaForkTest {
         assertLe(usdcUsdNodeOutput.timestamp, block.timestamp);
         assertApproxEqAbsDecimal(usdcUsdNodeOutput.price, 1e18, 0.01e18, 18);
 
-        NodeDefinition.Data memory ethUsdNodeDefinition = IOracleManagerProxy(sec.oracleManager).getNode(sec.ethUsdNodeId);
-        NodeDefinition.Data memory btcUsdNodeDefinition = IOracleManagerProxy(sec.oracleManager).getNode(sec.btcUsdNodeId);
-        NodeDefinition.Data memory ethUsdcNodeDefinition = IOracleManagerProxy(sec.oracleManager).getNode(sec.ethUsdcNodeId);
-        NodeDefinition.Data memory btcUsdcNodeDefinition = IOracleManagerProxy(sec.oracleManager).getNode(sec.btcUsdcNodeId);
-        NodeDefinition.Data memory rusdUsdNodeDefinition = IOracleManagerProxy(sec.oracleManager).getNode(sec.rusdUsdNodeId);
-        NodeDefinition.Data memory usdcUsdNodeDefinition = IOracleManagerProxy(sec.oracleManager).getNode(sec.usdcUsdNodeId);
+        NodeDefinition.Data memory ethUsdNodeDefinition =
+            IOracleManagerProxy(sec.oracleManager).getNode(sec.ethUsdNodeId);
+        NodeDefinition.Data memory btcUsdNodeDefinition =
+            IOracleManagerProxy(sec.oracleManager).getNode(sec.btcUsdNodeId);
+        NodeDefinition.Data memory ethUsdcNodeDefinition =
+            IOracleManagerProxy(sec.oracleManager).getNode(sec.ethUsdcNodeId);
+        NodeDefinition.Data memory btcUsdcNodeDefinition =
+            IOracleManagerProxy(sec.oracleManager).getNode(sec.btcUsdcNodeId);
+        NodeDefinition.Data memory rusdUsdNodeDefinition =
+            IOracleManagerProxy(sec.oracleManager).getNode(sec.rusdUsdNodeId);
+        NodeDefinition.Data memory usdcUsdNodeDefinition =
+            IOracleManagerProxy(sec.oracleManager).getNode(sec.usdcUsdNodeId);
 
         assertEq(ethUsdNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
         assertEq(btcUsdNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);

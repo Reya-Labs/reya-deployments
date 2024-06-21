@@ -11,27 +11,27 @@ import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracle
 import { sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
+struct TokenBalances {
+    int256 userBalanceWeth;
+    int256 userBalanceRusd;
+    int256 liquidatorBalanceWeth;
+    int256 liquidatorBalanceRusd;
+}
+
+struct State {
+    uint128 userAccountId;
+    address liquidator;
+    uint128 liquidatorAccountId;
+    uint256 bumpedEthPrice;
+    AutoExchangeAmounts ae1;
+    AutoExchangeAmounts ae2;
+    TokenBalances tbal0;
+    TokenBalances tbal1;
+    TokenBalances tbal2;
+}
+
 contract AutoExchangeForkTest is ReyaForkTest {
-    struct TokenBalances {
-        int256 userBalanceWeth;
-        int256 userBalanceRusd;
-        int256 liquidatorBalanceWeth;
-        int256 liquidatorBalanceRusd;
-    }
-
-    struct State {
-        uint128 userAccountId;
-        address liquidator;
-        uint128 liquidatorAccountId;
-        uint256 bumpedEthPrice;
-        AutoExchangeAmounts ae1;
-        AutoExchangeAmounts ae2;
-        TokenBalances tbal0;
-        TokenBalances tbal1;
-        TokenBalances tbal2;
-    }
-
-    State state;
+    State private state;
 
     function check_AutoExchange_wEth(uint256 userInitialRusdBalance) internal {
         (address user,) = makeAddrAndKey("user");
@@ -89,7 +89,9 @@ contract AutoExchangeForkTest is ReyaForkTest {
             // attempt to auto-exchange but the tx reverts since account is not AE-able
             vm.prank(state.liquidator);
             vm.expectRevert(
-                abi.encodeWithSelector(ICoreProxy.AccountNotEligibleForAutoExchange.selector, state.userAccountId, sec.rusd)
+                abi.encodeWithSelector(
+                    ICoreProxy.AccountNotEligibleForAutoExchange.selector, state.userAccountId, sec.rusd
+                )
             );
             ICoreProxy(sec.core).triggerAutoExchange(
                 TriggerAutoExchangeInput({
@@ -111,8 +113,10 @@ contract AutoExchangeForkTest is ReyaForkTest {
         );
 
         // check that the account is AE-able but still healthy
-        state.tbal0.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.rusd).marginBalance;
-        state.tbal0.userBalanceWeth = ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.weth).marginBalance;
+        state.tbal0.userBalanceRusd =
+            ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.rusd).marginBalance;
+        state.tbal0.userBalanceWeth =
+            ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.weth).marginBalance;
         state.tbal0.liquidatorBalanceRusd =
             ICoreProxy(sec.core).getTokenMarginInfo(state.liquidatorAccountId, sec.rusd).marginBalance;
         state.tbal0.liquidatorBalanceWeth =
@@ -140,8 +144,10 @@ contract AutoExchangeForkTest is ReyaForkTest {
             state.ae1.collateralAmountToLiquidator, 400e18 * 1.01 * 1e18 / state.bumpedEthPrice, 0.001e18, 18
         );
 
-        state.tbal1.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.rusd).marginBalance;
-        state.tbal1.userBalanceWeth = ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.weth).marginBalance;
+        state.tbal1.userBalanceRusd =
+            ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.rusd).marginBalance;
+        state.tbal1.userBalanceWeth =
+            ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.weth).marginBalance;
         state.tbal1.liquidatorBalanceRusd =
             ICoreProxy(sec.core).getTokenMarginInfo(state.liquidatorAccountId, sec.rusd).marginBalance;
         state.tbal1.liquidatorBalanceWeth =
@@ -167,8 +173,10 @@ contract AutoExchangeForkTest is ReyaForkTest {
             accountId: state.userAccountId
         });
 
-        state.tbal1.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.rusd).marginBalance;
-        state.tbal1.userBalanceWeth = ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.weth).marginBalance;
+        state.tbal1.userBalanceRusd =
+            ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.rusd).marginBalance;
+        state.tbal1.userBalanceWeth =
+            ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.weth).marginBalance;
         state.tbal1.liquidatorBalanceRusd =
             ICoreProxy(sec.core).getTokenMarginInfo(state.liquidatorAccountId, sec.rusd).marginBalance;
         state.tbal1.liquidatorBalanceWeth =
@@ -196,8 +204,10 @@ contract AutoExchangeForkTest is ReyaForkTest {
             18
         );
 
-        state.tbal2.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.rusd).marginBalance;
-        state.tbal2.userBalanceWeth = ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.weth).marginBalance;
+        state.tbal2.userBalanceRusd =
+            ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.rusd).marginBalance;
+        state.tbal2.userBalanceWeth =
+            ICoreProxy(sec.core).getTokenMarginInfo(state.userAccountId, sec.weth).marginBalance;
         state.tbal2.liquidatorBalanceRusd =
             ICoreProxy(sec.core).getTokenMarginInfo(state.liquidatorAccountId, sec.rusd).marginBalance;
         state.tbal2.liquidatorBalanceWeth =

@@ -4,7 +4,7 @@ import { ReyaForkTest } from "../ReyaForkTest.sol";
 
 import { ICoreProxy, MarginInfo, RiskMultipliers } from "../../../src/interfaces/ICoreProxy.sol";
 
-import { IPassivePerpProxy, MarketConfigurationData} from "../../../src/interfaces/IPassivePerpProxy.sol";
+import { IPassivePerpProxy, MarketConfigurationData } from "../../../src/interfaces/IPassivePerpProxy.sol";
 
 import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
 
@@ -35,22 +35,24 @@ contract PSlippageForkTest is ReyaForkTest {
     {
         assertEq(s.length, sPrime.length);
 
-        (st.user, ) = makeAddrAndKey("user");
+        (st.user,) = makeAddrAndKey("user");
 
         // deposit new margin account
         uint256 depositAmount = 100_000_000e18;
         deal(sec.usdc, address(sec.periphery), depositAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], depositAmount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: st.user, token: address(sec.usdc) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: st.user, token: address(sec.usdc) })
+        );
 
         for (uint128 _marketId = 1; _marketId <= 2; _marketId += 1) {
             st.marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(_marketId);
 
             // Step 1: Unwind any exposure of the pool
-            st.poolBase =
-                SD59x18.wrap(IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(_marketId, sec.passivePoolAccountId).base);
+            st.poolBase = SD59x18.wrap(
+                IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(_marketId, sec.passivePoolAccountId).base
+            );
 
             if (st.poolBase.abs().gt(sd(int256(st.marketConfig.minimumOrderBase)))) {
                 SD59x18 base = st.poolBase.sub(st.poolBase.mod(sd(int256(st.marketConfig.baseSpacing))));
@@ -62,8 +64,9 @@ contract PSlippageForkTest is ReyaForkTest {
                     accountId: accountId
                 });
 
-                st.poolBase =
-                    SD59x18.wrap(IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(_marketId, sec.passivePoolAccountId).base);
+                st.poolBase = SD59x18.wrap(
+                    IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(_marketId, sec.passivePoolAccountId).base
+                );
 
                 // assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(_marketId, passivePoolAccountId).base, 0);
             }
@@ -230,8 +233,9 @@ contract PSlippageForkTest is ReyaForkTest {
         deal(sec.weth, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
         vm.prank(dec.socketExecutionHelper[sec.weth]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
+        );
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
@@ -261,8 +265,9 @@ contract PSlippageForkTest is ReyaForkTest {
         deal(sec.weth, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
         vm.prank(dec.socketExecutionHelper[sec.weth]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
+        );
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 

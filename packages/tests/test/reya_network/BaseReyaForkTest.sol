@@ -3,12 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import "forge-std/Test.sol";
 import "./DataTypes.sol";
 
-import {
-    ICoreProxy,
-    CommandType,
-    Command as Command_Core,
-    MarginInfo
-} from "../../src/interfaces/ICoreProxy.sol";
+import { ICoreProxy, CommandType, Command as Command_Core, MarginInfo } from "../../src/interfaces/ICoreProxy.sol";
 
 import {
     IPeripheryProxy,
@@ -51,8 +46,8 @@ struct State {
 }
 
 contract BaseReyaForkTest is Test {
-    StaticEcosystem sec;
-    DynamicEcosystem dec;
+    StaticEcosystem public sec;
+    DynamicEcosystem public dec;
     State private s;
 
     function mockBridgedAmount(address executionHelper, uint256 amount) internal {
@@ -63,7 +58,8 @@ contract BaseReyaForkTest is Test {
 
     function getMarketSpotPrice(uint128 marketId) internal view returns (UD60x18 marketSpotPrice) {
         MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
-        NodeOutput.Data memory marketNodeOutput = IOracleManagerProxy(sec.oracleManager).process(marketConfig.oracleNodeId);
+        NodeOutput.Data memory marketNodeOutput =
+            IOracleManagerProxy(sec.oracleManager).process(marketConfig.oracleNodeId);
         return ud(marketNodeOutput.price);
     }
 
@@ -188,12 +184,12 @@ contract BaseReyaForkTest is Test {
                 keccak256(abi.encode(userAddress, chainId, s.socketMsgGasLimit))
             )
         );
-    
+
         (s.v, s.r, s.s) = vm.sign(userPrivateKey, s.digest);
 
         s.staticFees =
             IPeripheryProxy(sec.periphery).getTokenStaticWithdrawFee(token, dec.socketConnector[token][chainId]);
-        
+
         vm.mockCall(
             dec.socketController[sec.weth],
             abi.encodeWithSelector(

@@ -1,7 +1,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 uint256 constant ethereumChainId = 1;
-uint256 constant arbitrumChainId = 42161;
+uint256 constant arbitrumChainId = 42_161;
 uint256 constant optimismChainId = 10;
 uint256 constant polygonChainId = 137;
 uint256 constant baseChainId = 8453;

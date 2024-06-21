@@ -36,7 +36,9 @@ contract PassivePoolForkTest is ReyaForkTest {
         DepositPassivePoolInputs memory inputs = DepositPassivePoolInputs({ poolId: poolId, owner: user, minShares: 0 });
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
         vm.mockCall(
-            dec.socketExecutionHelper[sec.usdc], abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()), abi.encode(amount)
+            dec.socketExecutionHelper[sec.usdc],
+            abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
+            abi.encode(amount)
         );
         IPeripheryProxy(sec.periphery).depositPassivePool(inputs);
 
@@ -72,7 +74,9 @@ contract PassivePoolForkTest is ReyaForkTest {
         deal(sec.usdc, sec.periphery, 10e6);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
         vm.mockCall(
-            dec.socketExecutionHelper[sec.usdc], abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()), abi.encode(10e6)
+            dec.socketExecutionHelper[sec.usdc],
+            abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
+            abi.encode(10e6)
         );
         IPeripheryProxy(sec.periphery).depositPassivePool(
             DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: 0 })
@@ -89,8 +93,9 @@ contract PassivePoolForkTest is ReyaForkTest {
         deal(sec.weth, address(sec.periphery), 11e18);
         mockBridgedAmount(dec.socketExecutionHelper[sec.weth], 11e18);
         vm.prank(dec.socketExecutionHelper[sec.weth]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
+        );
 
         // user executes short trade on ETH
         executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });

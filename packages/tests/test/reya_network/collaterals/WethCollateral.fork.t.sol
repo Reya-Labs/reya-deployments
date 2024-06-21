@@ -101,7 +101,9 @@ contract WethCollateralForkTest is ReyaForkTest {
         deal(sec.usdc, address(sec.periphery), usdcAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], usdcAmount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        IPeripheryProxy(sec.periphery).depositExistingMA(DepositExistingMAInputs({ accountId: accountId, token: sec.usdc }));
+        IPeripheryProxy(sec.periphery).depositExistingMA(
+            DepositExistingMAInputs({ accountId: accountId, token: sec.usdc })
+        );
 
         accountUsdNodeMarginInfo = ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId);
         assertApproxEqAbsDecimal(
@@ -127,8 +129,9 @@ contract WethCollateralForkTest is ReyaForkTest {
         deal(sec.weth, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
         vm.prank(dec.socketExecutionHelper[sec.weth]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
+        );
 
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -146,8 +149,9 @@ contract WethCollateralForkTest is ReyaForkTest {
         deal(sec.weth, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
         vm.prank(dec.socketExecutionHelper[sec.weth]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
+        );
 
         uint256 coreWethBalanceBefore = IERC20TokenModule(sec.weth).balanceOf(sec.core);
         uint256 peripheryWethBalanceBefore = IERC20TokenModule(sec.weth).balanceOf(sec.periphery);
@@ -159,8 +163,9 @@ contract WethCollateralForkTest is ReyaForkTest {
         uint256 coreWethBalanceAfter = IERC20TokenModule(sec.weth).balanceOf(sec.core);
         uint256 peripheryWethBalanceAfter = IERC20TokenModule(sec.weth).balanceOf(sec.periphery);
         uint256 multisigWethBalanceAfter = IERC20TokenModule(sec.weth).balanceOf(sec.multisig);
-        uint256 withdrawStaticFees =
-            IPeripheryProxy(sec.periphery).getTokenStaticWithdrawFee(sec.weth, dec.socketConnector[sec.weth][arbitrumChainId]);
+        uint256 withdrawStaticFees = IPeripheryProxy(sec.periphery).getTokenStaticWithdrawFee(
+            sec.weth, dec.socketConnector[sec.weth][arbitrumChainId]
+        );
 
         assertEq(coreWethBalanceBefore - coreWethBalanceAfter, amount);
         assertEq(multisigWethBalanceAfter - multisigWethBalanceBefore, withdrawStaticFees);
@@ -179,8 +184,9 @@ contract WethCollateralForkTest is ReyaForkTest {
         deal(sec.weth, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
         vm.prank(dec.socketExecutionHelper[sec.weth]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
+        );
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
@@ -190,7 +196,9 @@ contract WethCollateralForkTest is ReyaForkTest {
         deal(sec.usdc, address(sec.periphery), usdcAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], usdcAmount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        IPeripheryProxy(sec.periphery).depositExistingMA(DepositExistingMAInputs({ accountId: accountId, token: sec.usdc }));
+        IPeripheryProxy(sec.periphery).depositExistingMA(
+            DepositExistingMAInputs({ accountId: accountId, token: sec.usdc })
+        );
 
         amount = 0.1e18;
         executePeripheryWithdrawMA(user, userPk, 2, accountId, sec.weth, amount, arbitrumChainId);
@@ -201,7 +209,8 @@ contract WethCollateralForkTest is ReyaForkTest {
     function test_WethTradeWithWethCollateral() public {
         (address user, uint256 userPk) = makeAddrAndKey("user");
 
-        (, ParentCollateralConfig memory parentCollateralConfig,) = ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
+        (, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
         uint256 priceHaircut = parentCollateralConfig.priceHaircut;
 
         // deposit 1 + 10 / (1-haircut) wETH
@@ -209,8 +218,9 @@ contract WethCollateralForkTest is ReyaForkTest {
         deal(sec.weth, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
         vm.prank(dec.socketExecutionHelper[sec.weth]);
-        uint128 accountId =
-            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
+        );
 
         // user executes short trade on ETH
         (UD60x18 orderPrice,) = executeCoreMatchOrder({
