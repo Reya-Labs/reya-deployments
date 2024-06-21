@@ -14,6 +14,7 @@
     "lint:check": "lerna run lint:check",
     "lint:write": "lerna run lint:write",
     "reya_network:simulate": "lerna run reya_network:simulate --scope=@reya-deployments/tomls",
+    "reya_cronos:simulate": "lerna run reya_cronos:simulate --scope=@reya-deployments/tomls",
     "fuzzing:simulate": "lerna run fuzzing:simulate --scope=@reya-deployments/tomls",
     "fuzzing:execute": "lerna run fuzzing:execute --scope=@reya-deployments/tomls",
     "fuzzing:cicd": "lerna run fuzzing:cicd --scope=@reya-deployments/tomls",

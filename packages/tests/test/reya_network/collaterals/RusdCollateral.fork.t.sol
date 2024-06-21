@@ -8,89 +8,89 @@ import { IRUSDProxy } from "../../../src/interfaces/IRUSDProxy.sol";
 
 contract RusdCollateralForkTest is ReyaForkTest {
     function testFuzz_USDCMintBurn(address attacker) public {
-        vm.assume(attacker != socketController[usdc]);
+        vm.assume(attacker != dec.socketController[sec.usdc]);
 
-        (user, userPk) = makeAddrAndKey("user");
+        (address user,) = makeAddrAndKey("user");
         uint256 amount = 10e6;
 
-        uint256 totalSupplyBefore = IERC20TokenModule(usdc).totalSupply();
+        uint256 totalSupplyBefore = IERC20TokenModule(sec.usdc).totalSupply();
 
         // mint
-        vm.prank(socketController[usdc]);
-        IERC20TokenModule(usdc).mint(user, amount);
+        vm.prank(dec.socketController[sec.usdc]);
+        IERC20TokenModule(sec.usdc).mint(user, amount);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IERC20TokenModule(usdc).mint(user, amount);
+        IERC20TokenModule(sec.usdc).mint(user, amount);
 
         vm.prank(user);
         vm.expectRevert();
-        IERC20TokenModule(usdc).mint(user, amount);
+        IERC20TokenModule(sec.usdc).mint(user, amount);
 
         // burn
-        vm.prank(socketController[usdc]);
-        IERC20TokenModule(usdc).burn(user, amount);
+        vm.prank(dec.socketController[sec.usdc]);
+        IERC20TokenModule(sec.usdc).burn(user, amount);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IERC20TokenModule(usdc).burn(user, amount);
+        IERC20TokenModule(sec.usdc).burn(user, amount);
 
         vm.prank(user);
         vm.expectRevert();
-        IERC20TokenModule(usdc).burn(user, amount);
+        IERC20TokenModule(sec.usdc).burn(user, amount);
 
-        uint256 totalSupplyAfter = IERC20TokenModule(usdc).totalSupply();
+        uint256 totalSupplyAfter = IERC20TokenModule(sec.usdc).totalSupply();
         assertEq(totalSupplyAfter, totalSupplyBefore);
     }
 
     function testFuzz_rUSD() public {
-        assertEq(IRUSDProxy(rusd).getUnderlyingAsset(), usdc);
+        assertEq(IRUSDProxy(sec.rusd).getUnderlyingAsset(), sec.usdc);
 
-        uint256 rusdTotalSupply = IRUSDProxy(rusd).totalSupply();
-        uint256 usdcTotalSupply = IERC20TokenModule(rusd).totalSupply();
+        uint256 rusdTotalSupply = IRUSDProxy(sec.rusd).totalSupply();
+        uint256 usdcTotalSupply = IERC20TokenModule(sec.rusd).totalSupply();
         assert(rusdTotalSupply <= usdcTotalSupply);
 
-        (user, userPk) = makeAddrAndKey("user");
+        (address user,) = makeAddrAndKey("user");
         uint256 amount = 10e6;
 
-        deal(usdc, user, amount);
+        deal(sec.usdc, user, amount);
         vm.prank(user);
-        IERC20TokenModule(usdc).approve(rusd, amount);
+        IERC20TokenModule(sec.usdc).approve(sec.rusd, amount);
         vm.prank(user);
-        IRUSDProxy(rusd).deposit(amount);
-        assertEq(IRUSDProxy(rusd).totalSupply(), rusdTotalSupply + amount);
-        assertEq(IRUSDProxy(rusd).balanceOf(user), amount);
-        assertEq(IRUSDProxy(usdc).balanceOf(user), 0);
+        IRUSDProxy(sec.rusd).deposit(amount);
+        assertEq(IRUSDProxy(sec.rusd).totalSupply(), rusdTotalSupply + amount);
+        assertEq(IRUSDProxy(sec.rusd).balanceOf(user), amount);
+        assertEq(IRUSDProxy(sec.usdc).balanceOf(user), 0);
         rusdTotalSupply += amount;
 
-        deal(usdc, periphery, amount);
-        vm.prank(periphery);
-        IERC20TokenModule(usdc).approve(rusd, amount);
-        vm.prank(periphery);
-        IRUSDProxy(rusd).depositTo(amount, user);
-        assertEq(IRUSDProxy(rusd).totalSupply(), rusdTotalSupply + amount);
-        assertEq(IRUSDProxy(rusd).balanceOf(user), 2 * amount);
-        assertEq(IRUSDProxy(usdc).balanceOf(user), 0);
-        assertEq(IRUSDProxy(rusd).balanceOf(periphery), 0);
-        assertEq(IRUSDProxy(usdc).balanceOf(periphery), 0);
+        deal(sec.usdc, sec.periphery, amount);
+        vm.prank(sec.periphery);
+        IERC20TokenModule(sec.usdc).approve(sec.rusd, amount);
+        vm.prank(sec.periphery);
+        IRUSDProxy(sec.rusd).depositTo(amount, user);
+        assertEq(IRUSDProxy(sec.rusd).totalSupply(), rusdTotalSupply + amount);
+        assertEq(IRUSDProxy(sec.rusd).balanceOf(user), 2 * amount);
+        assertEq(IRUSDProxy(sec.usdc).balanceOf(user), 0);
+        assertEq(IRUSDProxy(sec.rusd).balanceOf(sec.periphery), 0);
+        assertEq(IRUSDProxy(sec.usdc).balanceOf(sec.periphery), 0);
         rusdTotalSupply += amount;
 
         vm.prank(user);
-        IRUSDProxy(rusd).withdraw(amount);
-        assertEq(IRUSDProxy(rusd).totalSupply(), rusdTotalSupply - amount);
-        assertEq(IRUSDProxy(rusd).balanceOf(user), amount);
-        assertEq(IRUSDProxy(usdc).balanceOf(user), amount);
-        assertEq(IRUSDProxy(rusd).balanceOf(periphery), 0);
-        assertEq(IRUSDProxy(usdc).balanceOf(periphery), 0);
+        IRUSDProxy(sec.rusd).withdraw(amount);
+        assertEq(IRUSDProxy(sec.rusd).totalSupply(), rusdTotalSupply - amount);
+        assertEq(IRUSDProxy(sec.rusd).balanceOf(user), amount);
+        assertEq(IRUSDProxy(sec.usdc).balanceOf(user), amount);
+        assertEq(IRUSDProxy(sec.rusd).balanceOf(sec.periphery), 0);
+        assertEq(IRUSDProxy(sec.usdc).balanceOf(sec.periphery), 0);
         rusdTotalSupply -= amount;
 
         vm.prank(user);
-        IRUSDProxy(rusd).withdrawTo(amount, periphery);
-        assertEq(IRUSDProxy(rusd).totalSupply(), rusdTotalSupply - amount);
-        assertEq(IRUSDProxy(rusd).balanceOf(user), 0);
-        assertEq(IRUSDProxy(usdc).balanceOf(user), amount);
-        assertEq(IRUSDProxy(rusd).balanceOf(periphery), 0);
-        assertEq(IRUSDProxy(usdc).balanceOf(periphery), amount);
+        IRUSDProxy(sec.rusd).withdrawTo(amount, sec.periphery);
+        assertEq(IRUSDProxy(sec.rusd).totalSupply(), rusdTotalSupply - amount);
+        assertEq(IRUSDProxy(sec.rusd).balanceOf(user), 0);
+        assertEq(IRUSDProxy(sec.usdc).balanceOf(user), amount);
+        assertEq(IRUSDProxy(sec.rusd).balanceOf(sec.periphery), 0);
+        assertEq(IRUSDProxy(sec.usdc).balanceOf(sec.periphery), amount);
         rusdTotalSupply -= amount;
     }
 }

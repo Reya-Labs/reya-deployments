@@ -26,38 +26,38 @@ import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
 contract WbtcCollateralForkTest is ReyaForkTest {
     function testFuzz_WBTCMintBurn(address attacker) public {
-        vm.assume(attacker != socketController[wbtc]);
+        vm.assume(attacker != dec.socketController[sec.wbtc]);
 
-        (user, userPk) = makeAddrAndKey("user");
+        (address user,) = makeAddrAndKey("user");
         uint256 amount = 10e18;
 
-        uint256 totalSupplyBefore = IERC20TokenModule(wbtc).totalSupply();
+        uint256 totalSupplyBefore = IERC20TokenModule(sec.wbtc).totalSupply();
 
         // mint
-        vm.prank(socketController[wbtc]);
-        IERC20TokenModule(wbtc).mint(user, amount);
+        vm.prank(dec.socketController[sec.wbtc]);
+        IERC20TokenModule(sec.wbtc).mint(user, amount);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IERC20TokenModule(wbtc).mint(user, amount);
+        IERC20TokenModule(sec.wbtc).mint(user, amount);
 
         vm.prank(user);
         vm.expectRevert();
-        IERC20TokenModule(wbtc).mint(user, amount);
+        IERC20TokenModule(sec.wbtc).mint(user, amount);
 
         // burn
-        vm.prank(socketController[wbtc]);
-        IERC20TokenModule(wbtc).burn(user, amount);
+        vm.prank(dec.socketController[sec.wbtc]);
+        IERC20TokenModule(sec.wbtc).burn(user, amount);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IERC20TokenModule(wbtc).burn(user, amount);
+        IERC20TokenModule(sec.wbtc).burn(user, amount);
 
         vm.prank(user);
         vm.expectRevert();
-        IERC20TokenModule(wbtc).burn(user, amount);
+        IERC20TokenModule(sec.wbtc).burn(user, amount);
 
-        uint256 totalSupplyAfter = IERC20TokenModule(wbtc).totalSupply();
+        uint256 totalSupplyAfter = IERC20TokenModule(sec.wbtc).totalSupply();
         assertEq(totalSupplyAfter, totalSupplyBefore);
     }
 }

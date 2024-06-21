@@ -2,7 +2,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
 
-import { ICoreProxy } from "../../../src/interfaces/ICoreProxy.sol";
+import { ICoreProxy, RiskMultipliers, MarginInfo } from "../../../src/interfaces/ICoreProxy.sol";
 
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
 
@@ -17,30 +17,29 @@ contract LeverageForkTest is ReyaForkTest {
     function test_trade_rusdCollateral_leverage_eth() public {
         // general info
         // this tests 20x leverage is successful
-        (user, userPk) = makeAddrAndKey("user");
+        (address user, uint256 userPk) = makeAddrAndKey("user");
         uint256 amount = 3000e6; // denominated in rusd/usdc
         uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(10_000e18);
 
         // deposit new margin account
-        deal(usdc, address(periphery), amount);
-        mockBridgedAmount(socketExecutionHelper[usdc], amount);
-        vm.prank(socketExecutionHelper[usdc]);
+        deal(sec.usdc, address(sec.periphery), amount);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], amount);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
         uint128 accountId =
-            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
+            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) }));
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
-        assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base, base.unwrap());
+        assertEq(IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, accountId).base, base.unwrap());
 
-        riskMultipliers = ICoreProxy(core).getRiskMultipliers(1);
-        liquidationMarginRequirement = ud(ICoreProxy(core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
-        imr = liquidationMarginRequirement.mul(ud(riskMultipliers.imMultiplier));
-        nodeOutput = IOracleManagerProxy(oracleManager).process(ethUsdNodeId);
-        price = ud(nodeOutput.price);
-        absBase = base.abs().intoUD60x18();
-        leverage = absBase.mul(price).div(imr);
+        RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
+        UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
+        UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId).price);
+        UD60x18 absBase = base.abs().intoUD60x18();
+        UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
 
         checkPoolHealth();
@@ -49,29 +48,27 @@ contract LeverageForkTest is ReyaForkTest {
     function test_trade_rusdCollateral_leverage_btc() public {
         // general info
         // this tests 20x leverage is successful
-        (user, userPk) = makeAddrAndKey("user");
+        (address user, uint256 userPk) = makeAddrAndKey("user");
         uint256 amount = 60_000e6; // denominated in rusd/usdc
         uint128 marketId = 2; // btc
-        exchangeId = 1; // passive pool
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(100_000e18);
 
         // deposit new margin account
-        deal(usdc, address(periphery), amount);
-        mockBridgedAmount(socketExecutionHelper[usdc], amount);
-        vm.prank(socketExecutionHelper[usdc]);
+        deal(sec.usdc, address(sec.periphery), amount);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], amount);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
         uint128 accountId =
-            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
+            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) }));
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
-        riskMultipliers = ICoreProxy(core).getRiskMultipliers(1);
-        liquidationMarginRequirement = ud(ICoreProxy(core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
-        imr = liquidationMarginRequirement.mul(ud(riskMultipliers.imMultiplier));
-        nodeOutput = IOracleManagerProxy(oracleManager).process(btcUsdNodeId);
-        price = ud(nodeOutput.price);
-        absBase = base.abs().intoUD60x18();
-        leverage = absBase.mul(price).div(imr);
+        RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
+        UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
+        UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId).price);
+        UD60x18 absBase = base.abs().intoUD60x18();
+        UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
 
         checkPoolHealth();
@@ -80,30 +77,29 @@ contract LeverageForkTest is ReyaForkTest {
     function test_trade_wethCollateral_leverage_eth() public {
         // general info
         // this tests 20x leverage is successful
-        (user, userPk) = makeAddrAndKey("user");
+        (address user, uint256 userPk) = makeAddrAndKey("user");
         uint256 amount = 1e18; // denominated in weth
         uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(10_000e18);
 
         // deposit new margin account
-        deal(weth, address(periphery), amount);
-        mockBridgedAmount(socketExecutionHelper[weth], amount);
-        vm.prank(socketExecutionHelper[weth]);
+        deal(sec.weth, address(sec.periphery), amount);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
+        vm.prank(dec.socketExecutionHelper[sec.weth]);
         uint128 accountId =
-            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(weth) }));
+            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) }));
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
-        assertEq(IPassivePerpProxy(perp).getUpdatedPositionInfo(marketId, accountId).base, base.unwrap());
+        assertEq(IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, accountId).base, base.unwrap());
 
-        riskMultipliers = ICoreProxy(core).getRiskMultipliers(1);
-        liquidationMarginRequirement = ud(ICoreProxy(core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
-        imr = liquidationMarginRequirement.mul(ud(riskMultipliers.imMultiplier));
-        nodeOutput = IOracleManagerProxy(oracleManager).process(ethUsdNodeId);
-        price = ud(nodeOutput.price);
-        absBase = base.abs().intoUD60x18();
-        leverage = absBase.mul(price).div(imr);
+        RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
+        UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
+        UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId).price);
+        UD60x18 absBase = base.abs().intoUD60x18();
+        UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
 
         checkPoolHealth();
@@ -112,29 +108,27 @@ contract LeverageForkTest is ReyaForkTest {
     function test_trade_wethCollateral_leverage_btc() public {
         // general info
         // this tests 20x leverage is successful
-        (user, userPk) = makeAddrAndKey("user");
+        (address user, uint256 userPk) = makeAddrAndKey("user");
         uint256 amount = 10e18; // denominated in weth
         uint128 marketId = 2; // btc
-        exchangeId = 1; // passive pool
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(100_000e18);
 
         // deposit new margin account
-        deal(weth, address(periphery), amount);
-        mockBridgedAmount(socketExecutionHelper[weth], amount);
-        vm.prank(socketExecutionHelper[weth]);
+        deal(sec.weth, address(sec.periphery), amount);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
+        vm.prank(dec.socketExecutionHelper[sec.weth]);
         uint128 accountId =
-            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(weth) }));
+            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) }));
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
-        riskMultipliers = ICoreProxy(core).getRiskMultipliers(1);
-        liquidationMarginRequirement = ud(ICoreProxy(core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
-        imr = liquidationMarginRequirement.mul(ud(riskMultipliers.imMultiplier));
-        nodeOutput = IOracleManagerProxy(oracleManager).process(btcUsdNodeId);
-        price = ud(nodeOutput.price);
-        absBase = base.abs().intoUD60x18();
-        leverage = absBase.mul(price).div(imr);
+        RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
+        UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
+        UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId).price);
+        UD60x18 absBase = base.abs().intoUD60x18();
+        UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
 
         checkPoolHealth();

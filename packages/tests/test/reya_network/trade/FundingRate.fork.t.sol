@@ -11,14 +11,14 @@ import { ud } from "@prb/math/UD60x18.sol";
 
 contract FundingRateForkTest is ReyaForkTest {
     function test_FundingVelocity() public {
-        (user, userPk) = makeAddrAndKey("user");
+        (address user,) = makeAddrAndKey("user");
 
         // deposit new margin account to be able to trade little to get pSlippage
-        deal(usdc, address(periphery), 1_000_000e6);
-        mockBridgedAmount(socketExecutionHelper[usdc], 1_000_000e6);
-        vm.prank(socketExecutionHelper[usdc]);
+        deal(sec.usdc, address(sec.periphery), 1_000_000e6);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], 1_000_000e6);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
         uint128 accountId =
-            IPeripheryProxy(periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(usdc) }));
+            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) }));
 
         (, SD59x18 ethPSlippage) = executeCoreMatchOrder({
             marketId: 1,
@@ -36,13 +36,13 @@ contract FundingRateForkTest is ReyaForkTest {
             accountId: accountId
         });
 
-        int256 ethFundingRate1 = IPassivePerpProxy(perp).getLatestFundingRate(1);
-        int256 btcFundingRate1 = IPassivePerpProxy(perp).getLatestFundingRate(2);
+        int256 ethFundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(1);
+        int256 btcFundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(2);
 
         vm.warp(block.timestamp + 86_400);
 
-        int256 ethFundingRate2 = IPassivePerpProxy(perp).getLatestFundingRate(1);
-        int256 btcFundingRate2 = IPassivePerpProxy(perp).getLatestFundingRate(2);
+        int256 ethFundingRate2 = IPassivePerpProxy(sec.perp).getLatestFundingRate(1);
+        int256 btcFundingRate2 = IPassivePerpProxy(sec.perp).getLatestFundingRate(2);
 
         // todo: p1: double check with 0.26
         assertApproxEqAbsDecimal(ethFundingRate2 - ethFundingRate1, ethPSlippage.unwrap() * 1e18 / 1e18, 1e13, 18);
