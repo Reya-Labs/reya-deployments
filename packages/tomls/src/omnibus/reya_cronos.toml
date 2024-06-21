@@ -80,6 +80,11 @@ pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
 pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
+[var.redstone_oracles]
+redstonePriceFeedUSDC = "0x31A43dB62eC5c07885A89d78551243FE8D2D44D5"
+redstonePriceFeedETH = "0xFBA40360559a1bcCC608d9cA07deDE8588460874"
+redstonePriceFeedBTC = "0xd03Dc3047a8FA1Bca82A8cCda7b389B851A87861"
+
 [var.socket_contracts]
 usdcController = "<%= AddressZero %>"
 usdcExecutionHelper = "<%= AddressZero %>"
@@ -134,12 +139,12 @@ market1Eth_tier0FeeUnscaled = "0.0005"
 market2Btc_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
-btcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-btcUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-ethUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-ethUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-usdcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+btcUsdMaxStaleDuration = "0"
+btcUsdcMaxStaleDuration = "0"
+ethUsdMaxStaleDuration = "0"
+ethUsdcMaxStaleDuration = "0"
+rusdUsdMaxStaleDuration = "0"
+usdcUsdMaxStaleDuration = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
