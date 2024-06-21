@@ -15,13 +15,13 @@ include = [
 version = "1.0.0"
 
 [var.chain_ids]
-ethereumSepoliaChainId= "11155111"
+ethereumSepoliaChainId = "11155111"
 polygonMumbaiChainId = "80001"
 arbitrumSepoliaChainId = "421614"
 optimismSepoliaChainId = "11155420"
 
 [var.wallet_addresses]
-owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"                                
+owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
@@ -86,41 +86,41 @@ redstonePriceFeedETH = "0xFBA40360559a1bcCC608d9cA07deDE8588460874"
 redstonePriceFeedBTC = "0xd03Dc3047a8FA1Bca82A8cCda7b389B851A87861"
 
 [var.socket_contracts]
-usdcController = "<%= AddressZero %>"
-usdcExecutionHelper = "<%= AddressZero %>"
-usdcEthereumSepoliaConnector = "<%= AddressZero %>"
-usdcPolygonMumbaiConnector = "<%= AddressZero %>"
-usdcArbitrumSepoliaConnector = "<%= AddressZero %>"
-usdcOptimismSepoliaConnector = "<%= AddressZero %>"
+usdcController = "0x0000000000000000000000000000000000000001"
+usdcExecutionHelper = "0x0000000000000000000000000000000000000001"
+usdcEthereumSepoliaConnector = "0x0000000000000000000000000000000000000001"
+usdcPolygonMumbaiConnector = "0x0000000000000000000000000000000000000001"
+usdcArbitrumSepoliaConnector = "0x0000000000000000000000000000000000000001"
+usdcOptimismSepoliaConnector = "0x0000000000000000000000000000000000000001"
 # -------------------------------------------------------------------
-wethController = "<%= AddressZero %>"
-wethExecutionHelper = "<%= AddressZero %>"
-wethEthereumSepoliaConnector = "<%= AddressZero %>"
-wethPolygonMumbaiConnector = "<%= AddressZero %>"
-wethArbitrumSepoliaConnector = "<%= AddressZero %>"
-wethOptimismSepoliaConnector = "<%= AddressZero %>"
+wethController = "0x0000000000000000000000000000000000000001"
+wethExecutionHelper = "0x0000000000000000000000000000000000000001"
+wethEthereumSepoliaConnector = "0x0000000000000000000000000000000000000001"
+wethPolygonMumbaiConnector = "0x0000000000000000000000000000000000000001"
+wethArbitrumSepoliaConnector = "0x0000000000000000000000000000000000000001"
+wethOptimismSepoliaConnector = "0x0000000000000000000000000000000000000001"
 # -------------------------------------------------------------------
-wbtcController = "<%= AddressZero %>"
-wbtcExecutionHelper = "<%= AddressZero %>"
-wbtcEthereumSepoliaConnector = "<%= AddressZero %>"
-wbtcPolygonMumbaiConnector = "<%= AddressZero %>"
-wbtcArbitrumSepoliaConnector = "<%= AddressZero %>"
-wbtcOptimismSepoliaConnector = "<%= AddressZero %>"
+wbtcController = "0x0000000000000000000000000000000000000001"
+wbtcExecutionHelper = "0x0000000000000000000000000000000000000001"
+wbtcEthereumSepoliaConnector = "0x0000000000000000000000000000000000000001"
+wbtcPolygonMumbaiConnector = "0x0000000000000000000000000000000000000001"
+wbtcArbitrumSepoliaConnector = "0x0000000000000000000000000000000000000001"
+wbtcOptimismSepoliaConnector = "0x0000000000000000000000000000000000000001"
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumSepoliaWithdrawFeeUnscaled = "0"
-usdcPolygonMumbaiWithdrawFeeUnscaled= "0"
-usdcArbitrumSepoliaWithdrawFeeUnscaled= "0"
+usdcPolygonMumbaiWithdrawFeeUnscaled = "0"
+usdcArbitrumSepoliaWithdrawFeeUnscaled = "0"
 usdcOptimismSepoliaWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
 wethEthereumSepoliaWithdrawFeeUnscaled = "0"
-wethPolygonMumbaiWithdrawFeeUnscaled= "0"
-wethArbitrumSepoliaWithdrawFeeUnscaled= "0"
+wethPolygonMumbaiWithdrawFeeUnscaled = "0"
+wethArbitrumSepoliaWithdrawFeeUnscaled = "0"
 wethOptimismSepoliaWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
 wbtcEthereumSepoliaWithdrawFeeUnscaled = "0"
-wbtcPolygonMumbaiWithdrawFeeUnscaled= "0"
-wbtcArbitrumSepoliaWithdrawFeeUnscaled= "0"
+wbtcPolygonMumbaiWithdrawFeeUnscaled = "0"
+wbtcArbitrumSepoliaWithdrawFeeUnscaled = "0"
 wbtcOptimismSepoliaWithdrawFeeUnscaled = "0"
 
 [var.global_collateral_configs]
@@ -239,4 +239,3 @@ cp1Rusd_wethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>
 cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.01"
 cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
-

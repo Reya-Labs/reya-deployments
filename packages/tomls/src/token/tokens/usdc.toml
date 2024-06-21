@@ -55,16 +55,16 @@ args = [
 ]
 depends = ["invoke.upgrade_usdc_proxy"]
 
-# [invoke.usdc_mint_permission]
-# target = ["USDCProxy"]
-# fromCall.func = "owner"
-# func = "addToFeatureFlagAllowlist"
-# args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.usdcController %>"]
-# depends = ["invoke.upgrade_usdc_proxy"]
+[invoke.usdc_mint_permission]
+target = ["USDCProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.usdcController %>"]
+depends = ["invoke.upgrade_usdc_proxy"]
 
-# [invoke.usdc_burn_permission]
-# target = ["USDCProxy"]
-# fromCall.func = "owner"
-# func = "addToFeatureFlagAllowlist"
-# args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.usdcController %>"]
-# depends = ["invoke.upgrade_usdc_proxy"]
+[invoke.usdc_burn_permission]
+target = ["USDCProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.usdcController %>"]
+depends = ["invoke.upgrade_usdc_proxy"]

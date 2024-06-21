@@ -235,4 +235,3 @@ cp1Rusd_wethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>
 cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.01"
 cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
-

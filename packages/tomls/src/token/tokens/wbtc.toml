@@ -55,16 +55,16 @@ args = [
 ]
 depends = ["invoke.upgrade_wbtc_proxy"]
 
-# [invoke.wbtc_mint_permission]
-# target = ["WBTCProxy"]
-# fromCall.func = "owner"
-# func = "addToFeatureFlagAllowlist"
-# args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.wbtcController %>"]
-# depends = ["invoke.upgrade_wbtc_proxy"]
+[invoke.wbtc_mint_permission]
+target = ["WBTCProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.wbtcController %>"]
+depends = ["invoke.upgrade_wbtc_proxy"]
 
-# [invoke.wbtc_burn_permission]
-# target = ["WBTCProxy"]
-# fromCall.func = "owner"
-# func = "addToFeatureFlagAllowlist"
-# args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.wbtcController %>"]
-# depends = ["invoke.upgrade_wbtc_proxy"]
+[invoke.wbtc_burn_permission]
+target = ["WBTCProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.wbtcController %>"]
+depends = ["invoke.upgrade_wbtc_proxy"]

@@ -23,7 +23,7 @@ baseChainId = "8453"
 
 [var.wallet_addresses]
 # private key: 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-owner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"                  
+owner = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
 passivePoolExchangeFeeCollectorOwner = "0x93701b8f4e212B4eC058AF375894DB4B64b4f708"
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
@@ -239,4 +239,3 @@ cp1Rusd_wethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>
 cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.01"
 cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
-
