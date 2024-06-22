@@ -3,7 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import "forge-std/Test.sol";
 
 import { BaseReyaForkTest } from "../reya_check/BaseReyaForkTest.sol";
-import "../reya_network/DataTypes.sol";
+import "../reya_check/DataTypes.sol";
 
 import { IPeripheryProxy, DepositPassivePoolInputs } from "../../src/interfaces/IPeripheryProxy.sol";
 

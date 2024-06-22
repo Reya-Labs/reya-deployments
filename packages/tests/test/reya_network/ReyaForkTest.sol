@@ -3,7 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import "forge-std/Test.sol";
 
 import { StorageReyaForkTest } from "../reya_check/StorageReyaForkTest.sol";
-import "./DataTypes.sol";
+import "../reya_check/DataTypes.sol";
 
 contract ReyaForkTest is StorageReyaForkTest {
     constructor() {

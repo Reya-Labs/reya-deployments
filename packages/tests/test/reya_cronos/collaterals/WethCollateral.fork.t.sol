@@ -1,7 +1,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
-import "../../reya_network/DataTypes.sol";
+import "../../reya_check/DataTypes.sol";
 
 import {
     ICoreProxy,
