@@ -2,6 +2,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import "forge-std/Test.sol";
 import "./DataTypes.sol";
+import { StorageReyaForkTest } from "./StorageReyaForkTest.sol";
 
 import { ICoreProxy, CommandType, Command as Command_Core, MarginInfo } from "../../src/interfaces/ICoreProxy.sol";
 
@@ -45,11 +46,7 @@ struct State {
     UD60x18 sharePrice;
 }
 
-contract BaseReyaForkTest is Test {
-    StaticEcosystem sec;
-    DynamicEcosystem dec;
-    State private s;
-
+contract BaseReyaForkTest is StorageReyaForkTest {
     function mockBridgedAmount(address executionHelper, uint256 amount) internal {
         vm.mockCall(
             executionHelper, abi.encodeWithSelector(ISocketExecutionHelper.bridgeAmount.selector), abi.encode(amount)

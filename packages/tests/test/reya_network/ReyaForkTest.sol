@@ -2,34 +2,32 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import "forge-std/Test.sol";
 
-import { BaseReyaForkTest } from "./BaseReyaForkTest.sol";
+import { StorageReyaForkTest } from "../reya_check/StorageReyaForkTest.sol";
 import "./DataTypes.sol";
 
-contract ReyaForkTest is BaseReyaForkTest {
+contract ReyaForkTest is StorageReyaForkTest {
     constructor() {
-        sec = StaticEcosystem({
-            REYA_RPC: "https://rpc.reya.network",
-            multisig: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9,
-            core: payable(0xA763B6a5E09378434406C003daE6487FbbDc1a80),
-            pool: payable(0xB4B77d6180cc14472A9a7BDFF01cc2459368D413),
-            perp: payable(0x27E5cb712334e101B3c232eB0Be198baaa595F5F),
-            oracleManager: 0xC67316Ed17E0C793041CFE12F674af250a294aab,
-            periphery: payable(0xCd2869d1eb1BC8991Bc55de9E9B779e912faF736),
-            exchangePass: 0x76e3f2667aC55d502e26e59C5A6B46e7079217c7,
-            accountNft: 0x0354e71e0444d08e0Ce5E49EB91531A1Cac61144,
-            rusd: 0xa9F32a851B1800742e47725DA54a09A7Ef2556A3,
-            usdc: 0x3B860c0b53f2e8bd5264AA7c3451d41263C933F2,
-            weth: 0x6B48C2e6A32077ec17e8Ba0d98fFc676dfab1A30,
-            wbtc: 0xa6Cf523f856f4a0aaB78848e251C1b042E6406d5,
-            ethUsdNodeId: 0x7bb5195bd6b7c7bd928da2b52cae900a5f6262eb32b992ac4d97b4f2c322422c,
-            btcUsdNodeId: 0x2973a5fc60ce7fd59c68e20eade5cbb56d3f22516f5dbd78d09654de5070df8e,
-            ethUsdcNodeId: 0xd47353c2b593083048dc9eb3f58c89553c5cafc5065d65774e5614daa8f37b47,
-            btcUsdcNodeId: 0x9a2f8b104c6d9f675d4f756a6d54c4cb9fbbfdb999c77cc6e69003bcbc561476,
-            rusdUsdNodeId: 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857,
-            usdcUsdNodeId: 0x7c1a73684de34b95f492a9ee72c0d8e1589714eeba4a457f766b84bd1c2f240f,
-            passivePoolId: 1,
-            passivePoolAccountId: 2
-        });
+        sec.REYA_RPC = "https://rpc.reya.network";
+        sec.multisig = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9;
+        sec.core = payable(0xA763B6a5E09378434406C003daE6487FbbDc1a80);
+        sec.pool = payable(0xB4B77d6180cc14472A9a7BDFF01cc2459368D413);
+        sec.perp = payable(0x27E5cb712334e101B3c232eB0Be198baaa595F5F);
+        sec.oracleManager = 0xC67316Ed17E0C793041CFE12F674af250a294aab;
+        sec.periphery = payable(0xCd2869d1eb1BC8991Bc55de9E9B779e912faF736);
+        sec.exchangePass = 0x76e3f2667aC55d502e26e59C5A6B46e7079217c7;
+        sec.accountNft = 0x0354e71e0444d08e0Ce5E49EB91531A1Cac61144;
+        sec.rusd = 0xa9F32a851B1800742e47725DA54a09A7Ef2556A3;
+        sec.usdc = 0x3B860c0b53f2e8bd5264AA7c3451d41263C933F2;
+        sec.weth = 0x6B48C2e6A32077ec17e8Ba0d98fFc676dfab1A30;
+        sec.wbtc = 0xa6Cf523f856f4a0aaB78848e251C1b042E6406d5;
+        sec.ethUsdNodeId = 0x7bb5195bd6b7c7bd928da2b52cae900a5f6262eb32b992ac4d97b4f2c322422c;
+        sec.btcUsdNodeId = 0x2973a5fc60ce7fd59c68e20eade5cbb56d3f22516f5dbd78d09654de5070df8e;
+        sec.ethUsdcNodeId = 0xd47353c2b593083048dc9eb3f58c89553c5cafc5065d65774e5614daa8f37b47;
+        sec.btcUsdcNodeId = 0x9a2f8b104c6d9f675d4f756a6d54c4cb9fbbfdb999c77cc6e69003bcbc561476;
+        sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
+        sec.usdcUsdNodeId = 0x7c1a73684de34b95f492a9ee72c0d8e1589714eeba4a457f766b84bd1c2f240f;
+        sec.passivePoolId = 1;
+        sec.passivePoolAccountId = 2;
 
         dec.socketController[sec.usdc] = 0x1d43076909Ca139BFaC4EbB7194518bE3638fc76;
         dec.socketExecutionHelper[sec.usdc] = 0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa;
