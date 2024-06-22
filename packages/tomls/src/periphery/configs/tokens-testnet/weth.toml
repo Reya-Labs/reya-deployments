@@ -1,0 +1,120 @@
+#####################################
+# Controller
+#####################################
+[invoke.periphery_set_wethController]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenController"
+args = ["<%= contracts.WETHProxy.address %>", "<%= settings.wethController %>"]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+#####################################
+# Execution Helper
+#####################################
+[invoke.periphery_set_wethExecutionHelper]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenExecutionHelper"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.wethExecutionHelper %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+#####################################
+# Connectors
+#####################################
+[invoke.periphery_set_wethEthereumSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.ethereumSepoliaChainId %>",
+    "<%= settings.wethEthereumSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+[invoke.periphery_set_wethArbitrumSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.arbitrumSepoliaChainId %>",
+    "<%= settings.wethArbitrumSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+[invoke.periphery_set_wethOptimismSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.optimismSepoliaChainId %>",
+    "<%= settings.wethOptimismSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+[invoke.periphery_set_wethPolygonMumbaiConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.polygonMumbaiChainId %>",
+    "<%= settings.wethPolygonMumbaiConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+#####################################
+# Static Withdraw Fees
+#####################################
+[invoke.periphery_set_weth_ethereum_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.wethEthereumSepoliaConnector %>",
+    "<%= parseUnits(settings.wethEthereumSepoliaWithdrawFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>",
+]
+depends = [
+    "invoke.upgrade_periphery_proxy",
+    "invoke.upgrade_weth_proxy",
+    "var.weth_vars",
+]
+
+[invoke.periphery_set_weth_arbitrum_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.wethArbitrumSepoliaConnector %>",
+    "<%= parseUnits(settings.wethArbitrumSepoliaWithdrawFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+[invoke.periphery_set_weth_optimism_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.wethOptimismSepoliaConnector %>",
+    "<%= parseUnits(settings.wethOptimismSepoliaWithdrawFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
+
+[invoke.periphery_set_weth_polygon_mumbai_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.WETHProxy.address %>",
+    "<%= settings.wethPolygonMumbaiConnector %>",
+    "<%= parseUnits(settings.wethPolygonMumbaiWithdrawFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]

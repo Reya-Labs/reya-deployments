@@ -1,0 +1,120 @@
+#####################################
+# Controller
+#####################################
+[invoke.periphery_set_usdcController]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenController"
+args = ["<%= contracts.USDCProxy.address %>", "<%= settings.usdcController %>"]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
+
+#####################################
+# Execution Helper
+#####################################
+[invoke.periphery_set_usdcExecutionHelper]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenExecutionHelper"
+args = [
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.usdcExecutionHelper %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
+
+#####################################
+# Connectors
+#####################################
+[invoke.periphery_set_usdcEthereumSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.ethereumSepoliaChainId %>",
+    "<%= settings.usdcEthereumSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
+
+[invoke.periphery_set_usdcArbitrumSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.arbitrumSepoliaChainId %>",
+    "<%= settings.usdcArbitrumSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
+
+[invoke.periphery_set_usdcOptimismSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.optimismSepoliaChainId %>",
+    "<%= settings.usdcOptimismSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
+
+[invoke.periphery_set_usdcPolygonMumbaiConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.polygonMumbaiChainId %>",
+    "<%= settings.usdcPolygonMumbaiConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
+
+#####################################
+# Static Withdraw Fees
+#####################################
+[invoke.periphery_set_usdc_ethereum_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.usdcEthereumSepoliaConnector %>",
+    "<%= parseUnits(settings.usdcEthereumSepoliaWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
+]
+depends = [
+    "invoke.upgrade_periphery_proxy",
+    "invoke.upgrade_usdc_proxy",
+    "var.usdc_vars",
+]
+
+[invoke.periphery_set_usdc_arbitrum_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.usdcArbitrumSepoliaConnector %>",
+    "<%= parseUnits(settings.usdcArbitrumSepoliaWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
+
+[invoke.periphery_set_usdc_optimism_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.usdcOptimismSepoliaConnector %>",
+    "<%= parseUnits(settings.usdcOptimismSepoliaWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]
+
+[invoke.periphery_set_usdc_polygon_mumbai_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.USDCProxy.address %>",
+    "<%= settings.usdcPolygonMumbaiConnector %>",
+    "<%= parseUnits(settings.usdcPolygonMumbaiWithdrawFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_usdc_proxy"]

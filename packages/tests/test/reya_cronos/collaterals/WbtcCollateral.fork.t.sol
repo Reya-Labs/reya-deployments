@@ -4,7 +4,7 @@ import { ReyaForkTest } from "../ReyaForkTest.sol";
 import { WbtcCollateralForkCheck } from "../../reya_common/collaterals/WbtcCollateral.fork.c.sol";
 
 contract WbtcCollateralForkTest is ReyaForkTest, WbtcCollateralForkCheck {
-    function testFuzz_WBTCMintBurn(address attacker) public {
+    function testFuzz_Cronos_WBTCMintBurn(address attacker) public {
         vm.assume(attacker != dec.socketController[sec.wbtc]);
         checkFuzz_WBTCMintBurn(attacker);
     }

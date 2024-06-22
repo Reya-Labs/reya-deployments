@@ -1,1 +1,8 @@
-include = ["./mainnet.toml", "utils/deploy_proxy.toml"]
+include = [
+    "./mainnet.toml",
+    "utils/deploy_proxy.toml",
+    "./configs/initialize.toml",
+]
+
+[var.rusd_complete]
+depends = ["invoke.rusd_initialize"]

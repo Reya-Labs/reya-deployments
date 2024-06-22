@@ -8,5 +8,5 @@ args = [
 depends = [
     "invoke.upgrade_periphery_proxy",
     "invoke.upgrade_core_proxy",
-    "invoke.upgrade_rUSD_proxy",
+    "var.rusd_complete",
 ]

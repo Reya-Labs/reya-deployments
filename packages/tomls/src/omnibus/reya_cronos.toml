@@ -1,42 +1,49 @@
 include = [
     "utils/commons.toml",
     "utils/constants.toml",
-    "../token/mainnet_reya_network.toml",
-    "../rusd/mainnet.toml",
-    "../core/mainnet.toml",
-    "../passive_pool/mainnet.toml",
-    "../passive_perp/mainnet.toml",
-    "../periphery/mainnet.toml",
-    "../oracle_manager/mainnet.toml",
-    "../exchange_pass_nft/mainnet_reya_network.toml",
-    "../ranks/mainnet.toml",
-    "../collateral_pools/collateral_pool_1/mainnet.toml",
+    "../token/testnet.toml",
+    "../rusd/testnet.toml",
+    "../core/testnet.toml",
+    "../passive_pool/testnet.toml",
+    "../passive_perp/testnet.toml",
+    "../periphery/testnet.toml",
+    "../oracle_manager/testnet.toml",
+    "../exchange_pass_nft/testnet.toml",
+    "../ranks/testnet.toml",
+    "../collateral_pools/collateral_pool_1/testnet.toml",
 ]
-version = "1.0.3"
+version = "1.0.0"
 
 [var.chain_ids]
-ethereumChainId = "1"
-arbitrumChainId = "42161"
-optimismChainId = "10"
-polygonChainId = "137"
-baseChainId = "8453"
+ethereumSepoliaChainId = "11155111"
+polygonMumbaiChainId = "80001"
+arbitrumSepoliaChainId = "421614"
+optimismSepoliaChainId = "11155420"
 
 [var.wallet_addresses]
-owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
-passivePoolExchangeFeeCollectorOwner = "0x93701b8f4e212B4eC058AF375894DB4B64b4f708"
+owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.cannonClonePackages]
+coreProxyPackage = "reya-core:1.0.0@proxy"
 coreRouterPackage = "reya-core:1.0.1@router"
 coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
+rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.0@router"
+passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.1@router"
+passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.1@router"
+peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.0.2@router"
+oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.1@router"
+exchangePassProxyPackage = "reya-exchange-pass-nft:1.0.0@proxy"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
+ranksProxyPackage = "reya-ranks:1.0.0@proxy"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
 
 [var.account_nft_vars]
@@ -51,20 +58,21 @@ exchangePassSymbol = "ReyaEPass"
 exchangePassUri = "https://reya.xyz/"
 
 [var.initial_proxy_vars]
+usdcSalt = "usdc-main"
 usdtSalt = "usdt-main"
 daiSalt = "dai-main"
 wethSalt = "weth-main"
 wbtcSalt = "wbtc-main"
 
 [var.upgrade_proxy_vars]
-coreProxy = "0xA763B6a5E09378434406C003daE6487FbbDc1a80"
-rUSDProxy = "0xa9F32a851B1800742e47725DA54a09A7Ef2556A3"
-passivePoolProxy = "0xB4B77d6180cc14472A9a7BDFF01cc2459368D413"
-passivePerpProxy = "0x27E5cb712334e101B3c232eB0Be198baaa595F5F"
-peripheryProxy = "0xCd2869d1eb1BC8991Bc55de9E9B779e912faF736"
-oracleManagerProxy = "0xC67316Ed17E0C793041CFE12F674af250a294aab"
-exchangePassProxy = "0x76e3f2667aC55d502e26e59C5A6B46e7079217c7"
-ranksProxy = "0x4Ab90747A2E8dEC7C378D591b80B9f2f8f78351F"
+coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
+rUSDProxy = "<%= imports.reyaRusdProxy.contracts.InitialProxy.address %>"
+passivePoolProxy = "<%= imports.reyaPassivePoolProxy.contracts.InitialProxy.address %>"
+passivePerpProxy = "<%= imports.reyaPassivePerpProxy.contracts.InitialProxy.address %>"
+peripheryProxy = "<%= imports.reyaPeripheryProxy.contracts.InitialProxy.address %>"
+oracleManagerProxy = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>"
+exchangePassProxy = "<%= imports.reyaExchangePassProxy.contracts.InitialProxy.address %>"
+ranksProxy = "<%= imports.reyaRanksProxy.contracts.InitialProxy.address %>"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
@@ -73,51 +81,47 @@ pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
 [var.redstone_oracles]
-redstonePriceFeedUSDC = "0x73ac348c40403ff1156a2f53BA57bcCbA2C63915"
-redstonePriceFeedETH = "0xD583E60FD28Bb19d0C03Fb37553B83C665cf082B"
-redstonePriceFeedBTC = "0xbF675f4AF4351ee79B95f24651f4E3741079af5E"
+redstonePriceFeedUSDC = "0x31A43dB62eC5c07885A89d78551243FE8D2D44D5"
+redstonePriceFeedETH = "0xFBA40360559a1bcCC608d9cA07deDE8588460874"
+redstonePriceFeedBTC = "0xd03Dc3047a8FA1Bca82A8cCda7b389B851A87861"
 
 [var.socket_contracts]
-usdcController = "0x1d43076909Ca139BFaC4EbB7194518bE3638fc76"
-usdcExecutionHelper = "0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa"
-usdcEthereumConnector = "0x807B2e8724cDf346c87EEFF4E309bbFCb8681eC1"
-usdcArbitrumConnector = "0x663dc7E91157c58079f55C1BF5ee1BdB6401Ca7a"
-usdcOptimismConnector = "0xe48AE3B68f0560d4aaA312E12fD687630C948561"
-usdcPolygonConnector = "0x54CAA0946dA179425e1abB169C020004284d64D3"
-usdcBaseConnector = "0x3694Ab37011764fA64A648C2d5d6aC0E9cD5F98e"
+usdcController = "0x0000000000000000000000000000000000000001"
+usdcExecutionHelper = "0x0000000000000000000000000000000000000001"
+usdcEthereumSepoliaConnector = "0x0000000000000000000000000000000000000001"
+usdcPolygonMumbaiConnector = "0x0000000000000000000000000000000000000001"
+usdcArbitrumSepoliaConnector = "0x0000000000000000000000000000000000000001"
+usdcOptimismSepoliaConnector = "0x0000000000000000000000000000000000000001"
 # -------------------------------------------------------------------
-wethController = "0xF0E49Dafc687b5ccc8B31b67d97B5985D1cAC4CB"
-wethExecutionHelper = "0xBE35E24dde70aFc6e07DF7e7BD8Ce723e1712771"
-wethEthereumConnector = "0x7dE4937420935c7C8767b06eCd7F7dC54e2D7C9b"
-wethArbitrumConnector = "0xd95c5254Df051f378696100a7D7f29505e5cF5c9"
-wethOptimismConnector = "0xDee306Cf6C908d5F4f2c4A92d6Dc19035fE552EC"
-wethPolygonConnector = "0x530654F6e96198bC269074156b321d8B91d10366"
-wethBaseConnector = "0x2b3A8ABa1E055e879594cB2767259e80441E0497"
+wethController = "0x0000000000000000000000000000000000000001"
+wethExecutionHelper = "0x0000000000000000000000000000000000000001"
+wethEthereumSepoliaConnector = "0x0000000000000000000000000000000000000001"
+wethPolygonMumbaiConnector = "0x0000000000000000000000000000000000000001"
+wethArbitrumSepoliaConnector = "0x0000000000000000000000000000000000000001"
+wethOptimismSepoliaConnector = "0x0000000000000000000000000000000000000001"
 # -------------------------------------------------------------------
-wbtcController = "0xBF839f4dfF854F7a363A033D57ec872dC8556693"
-wbtcExecutionHelper = "0xd947Dd2f18366F3FD1f2a707d3CA58F762D60519"
-wbtcEthereumConnector = "0xD71629697B71E2Df26B4194f43F6eaed3B367ac0"
-wbtcArbitrumConnector = "0x42229a5DDC5E32149311265F6F4BC016EaB778FC"
-wbtcOptimismConnector = "0xA6BFB87A0db4693a4145df4F627c8FEe30aC7eDF"
-wbtcPolygonConnector = "0xA30e479EbfD576EDd69afB636d16926a05214149"
+wbtcController = "0x0000000000000000000000000000000000000001"
+wbtcExecutionHelper = "0x0000000000000000000000000000000000000001"
+wbtcEthereumSepoliaConnector = "0x0000000000000000000000000000000000000001"
+wbtcPolygonMumbaiConnector = "0x0000000000000000000000000000000000000001"
+wbtcArbitrumSepoliaConnector = "0x0000000000000000000000000000000000000001"
+wbtcOptimismSepoliaConnector = "0x0000000000000000000000000000000000000001"
 
 [var.periphery_socket_withdraw_fees]
-usdcEthereumWithdrawFeeUnscaled = "27.888"
-usdcArbitrumWithdrawFeeUnscaled = "0.114"
-usdcOptimismWithdrawFeeUnscaled = "0.102"
-usdcPolygonWithdrawFeeUnscaled = "0.0492"
-usdcBaseWithdrawFeeUnscaled = "0.708"
+usdcEthereumSepoliaWithdrawFeeUnscaled = "0"
+usdcPolygonMumbaiWithdrawFeeUnscaled = "0"
+usdcArbitrumSepoliaWithdrawFeeUnscaled = "0"
+usdcOptimismSepoliaWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
-wethEthereumWithdrawFeeUnscaled = "0.009533484442507446"
-wethArbitrumWithdrawFeeUnscaled = "0.000039000000751572"
-wethOptimismWithdrawFeeUnscaled = "0.000034923065158525"
-wethPolygonWithdrawFeeUnscaled = "0.000016854838823646"
-wethBaseWithdrawFeeUnscaled = "0.000243534209292459"
+wethEthereumSepoliaWithdrawFeeUnscaled = "0"
+wethPolygonMumbaiWithdrawFeeUnscaled = "0"
+wethArbitrumSepoliaWithdrawFeeUnscaled = "0"
+wethOptimismSepoliaWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
-wbtcEthereumWithdrawFeeUnscaled = "0.0005"
-wbtcArbitrumWithdrawFeeUnscaled = "0.0000025"
-wbtcOptimismWithdrawFeeUnscaled = "0.0000022"
-wbtcPolygonWithdrawFeeUnscaled = "0.0000011"
+wbtcEthereumSepoliaWithdrawFeeUnscaled = "0"
+wbtcPolygonMumbaiWithdrawFeeUnscaled = "0"
+wbtcArbitrumSepoliaWithdrawFeeUnscaled = "0"
+wbtcOptimismSepoliaWithdrawFeeUnscaled = "0"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -125,8 +129,8 @@ rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
-wethWithdrawalWindowSize = "1"
-wethWithdrawalTvlPercentageLimitUnscaled = "1"
+wethWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+wethWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.5"
@@ -135,17 +139,17 @@ market1Eth_tier0FeeUnscaled = "0.0005"
 market2Btc_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
-btcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-btcUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-ethUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-ethUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-usdcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+btcUsdMaxStaleDuration = "0"
+btcUsdcMaxStaleDuration = "0"
+ethUsdMaxStaleDuration = "0"
+ethUsdcMaxStaleDuration = "0"
+rusdUsdMaxStaleDuration = "0"
+usdcUsdMaxStaleDuration = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
 market1Eth_maxOpenBaseUnscaled = "37500"
-market1Eth_velocityMultiplierUnscaled = "1"
+market1Eth_velocityMultiplierUnscaled = "1.0"
 market1Eth_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
 market1Eth_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
 market1Eth_dutchConfig_lambdaUnscaled = "1"
@@ -155,14 +159,14 @@ market1Eth_slippageParams_betaUnscaled = "0"
 market1Eth_minimumOrderBaseUnscaled = "0.035"
 market1Eth_baseSpacingUnscaled = "0.005"
 market1Eth_priceSpacingUnscaled = "0.01"
-market1Eth_depthFactorUnscaled = "3.25"
+market1Eth_depthFactorUnscaled = "10"
 market1Eth_maxExposureFactorUnscaled = "0.999"
 market1Eth_maxPSlippageUnscaled = "0.1"
 
 [var.market_2btc]
 market2Btc_riskMatrixIndex = "0"
 market2Btc_maxOpenBaseUnscaled = "1730"
-market2Btc_velocityMultiplierUnscaled = "1"
+market2Btc_velocityMultiplierUnscaled = "1.0"
 market2Btc_oracleNodeId = "<%= settings.btcUsdcNodeId %>"
 market2Btc_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
 market2Btc_dutchConfig_lambdaUnscaled = "1"
@@ -172,7 +176,7 @@ market2Btc_slippageParams_betaUnscaled = "0"
 market2Btc_minimumOrderBaseUnscaled = "0.0015"
 market2Btc_baseSpacingUnscaled = "0.0005"
 market2Btc_priceSpacingUnscaled = "0.01"
-market2Btc_depthFactorUnscaled = "3.25"
+market2Btc_depthFactorUnscaled = "10"
 market2Btc_maxExposureFactorUnscaled = "0.999"
 market2Btc_maxPSlippageUnscaled = "0.1"
 
@@ -224,7 +228,7 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_weth_capUnscaled = "500"
+cp1Rusd_weth_capUnscaled = "<%= formatEther(MaxUint256) %>"
 cp1Rusd_weth_withdrawalWindowSize_DEPRECATED = "0"
 cp1Rusd_weth_withdrawalTvlPercentageLimitUnscaled_DEPRECATED = "0"
 cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"

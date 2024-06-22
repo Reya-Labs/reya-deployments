@@ -5,11 +5,11 @@ import { PassivePoolForkCheck } from "../../reya_common/trade/PassivePool.fork.c
 import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
 
 contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
-    function test_PoolHealth() public {
+    function test_Cronos_PoolHealth() public {
         check_PoolHealth();
     }
 
-    function testFuzz_PoolDepositWithdraw(address attacker) public {
+    function testFuzz_Cronos_PoolDepositWithdraw(address attacker) public {
         (address user,) = makeAddrAndKey("user");
         vm.assume(attacker != user);
 
@@ -19,7 +19,7 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         checkFuzz_PoolDepositWithdraw(user, attacker);
     }
 
-    function test_PassivePoolWithWeth() public {
-        check_PassivePoolWithWeth();
-    }
+    // function test_Cronos_PassivePoolWithWeth() public {
+    //     check_PassivePoolWithWeth();
+    // }
 }

@@ -40,20 +40,20 @@ func = "setFeatureFlagAllowAll"
 args = ["<%= keccak256(hexlify('global')) %>", true]
 depends = ["invoke.upgrade_dai_proxy"]
 
-# [invoke.dai_set_pausers]
-# target = ["DAIProxy"]
-# fromCall.func = "owner"
-# func = "setDeniers"
-# args = [
-#   "<%= keccak256(hexlify('global')) %>",
-#   [
-#     "<%= settings.pauser1 %>",
-#     "<%= settings.pauser2 %>",
-#     "<%= settings.pauser3 %>",
-#     "<%= settings.pauser4 %>",
-#   ],
-# ]
-# depends = ["invoke.upgrade_dai_proxy"]
+[invoke.dai_set_pausers]
+target = ["DAIProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_dai_proxy"]
 
 # [invoke.dai_mint_permission]
 # target = ["DAIProxy"]
