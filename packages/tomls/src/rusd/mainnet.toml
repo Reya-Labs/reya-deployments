@@ -1,1 +1,4 @@
 include = ["./utils/upgrade_proxy.toml", "./configs/feature_flags.toml"]
+
+[var.rusd_complete]
+depends = ["invoke.upgrade_rUSD_proxy"]

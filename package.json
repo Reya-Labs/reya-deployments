@@ -18,7 +18,8 @@
     "fuzzing:simulate": "lerna run fuzzing:simulate --scope=@reya-deployments/tomls",
     "fuzzing:execute": "lerna run fuzzing:execute --scope=@reya-deployments/tomls",
     "fuzzing:cicd": "lerna run fuzzing:cicd --scope=@reya-deployments/tomls",
-    "reya_network:test": "lerna run reya_network:test --scope=@reya-deployments/tests"
+    "reya_network:test": "lerna run reya_network:test --scope=@reya-deployments/tests",
+    "reya_cronos:test": "lerna run reya_cronos:test --scope=@reya-deployments/tests"
   },
   "devDependencies": {
     "@ethersproject/abi": "5.7.0",
