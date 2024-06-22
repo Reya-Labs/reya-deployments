@@ -25,12 +25,14 @@ struct StaticEcosystem {
     address usdc;
     address weth;
     address wbtc;
+    address ownerUpgradeModule;
     bytes32 ethUsdNodeId;
     bytes32 btcUsdNodeId;
     bytes32 ethUsdcNodeId;
     bytes32 btcUsdcNodeId;
     bytes32 rusdUsdNodeId;
     bytes32 usdcUsdNodeId;
+    uint256 mainChainId;
     uint128 passivePoolId;
     uint128 passivePoolAccountId;
 }

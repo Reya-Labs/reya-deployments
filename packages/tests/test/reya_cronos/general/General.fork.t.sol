@@ -1,42 +1,15 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
+import { GeneralForkCheck } from "../../reya_check/general/General.fork.c.sol";
+
 import "../../reya_check/DataTypes.sol";
-
 import { IPeripheryProxy, GlobalConfiguration } from "../../../src/interfaces/IPeripheryProxy.sol";
-
 import { IOracleManagerProxy, NodeOutput, NodeDefinition } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
-import { IOwnerUpgradeModule } from "../../../src/interfaces/IOwnerUpgradeModule.sol";
-
-contract GeneralForkTest is ReyaForkTest {
+contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     function testFuzz_ProxiesOwnerAndUpgrades(address attacker) public {
-        vm.assume(attacker != sec.multisig);
-
-        address ownerUpgradeModule = 0x3fa74FfE7B278a25877E16f00e73d5F5FA499183;
-
-        address[] memory proxies = new address[](6);
-        proxies[0] = sec.core;
-        proxies[1] = sec.pool;
-        proxies[2] = sec.perp;
-        proxies[3] = sec.oracleManager;
-        proxies[4] = sec.periphery;
-        proxies[5] = sec.exchangePass;
-
-        for (uint256 i = 0; i < proxies.length; i += 1) {
-            address proxy = proxies[i];
-
-            assertEq(IOwnerUpgradeModule(proxy).owner(), sec.multisig);
-
-            vm.prank(attacker);
-            vm.expectRevert();
-            IOwnerUpgradeModule(proxy).upgradeTo(ownerUpgradeModule);
-
-            vm.prank(sec.multisig);
-            IOwnerUpgradeModule(proxy).upgradeTo(ownerUpgradeModule);
-        }
-
-        assertEq(IOwnerUpgradeModule(sec.accountNft).owner(), sec.core);
+        checkFuzz_ProxiesOwnerAndUpgrades(attacker);
     }
 
     function test_Periphery() public view {

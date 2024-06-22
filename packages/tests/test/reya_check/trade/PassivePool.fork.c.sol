@@ -110,6 +110,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         });
 
         // withdraw 1 wETH from account
-        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.weth, 1e18, arbitrumChainId);
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.weth, 1e18, sec.mainChainId);
     }
 }
