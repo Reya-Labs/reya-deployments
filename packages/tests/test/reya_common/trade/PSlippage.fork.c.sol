@@ -8,12 +8,12 @@ import { IPassivePerpProxy, MarketConfigurationData } from "../../../src/interfa
 
 import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
 
-import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
+import { IOracleManagerProxy } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
 import { sd, SD59x18, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
-struct State {
+struct LocalState {
     address user;
     MarketConfigurationData marketConfig;
     SD59x18 poolBase;
@@ -23,7 +23,7 @@ struct State {
 }
 
 contract PSlippageForkCheck is BaseReyaForkTest {
-    State private st;
+    LocalState private st;
 
     function trade_slippage_helper(
         uint128 marketId,
@@ -95,7 +95,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
                     )
                 )
             ).sub(prevNotionalsSum);
-            SD59x18 base = notionalToBase(marketId, notional);
+            SD59x18 base = exposureToBase(marketId, notional);
             base = base.sub(base.mod(sd(int256(st.marketConfig.baseSpacing))));
 
             (, st.pSlippage) = executeCoreMatchOrder({
@@ -108,7 +108,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
 
             assertApproxEqAbsDecimal(st.pSlippage.unwrap(), sPrime[i].unwrap(), eps.unwrap(), 18);
 
-            prevNotionalsSum = prevNotionalsSum.add(baseToNotional(marketId, base));
+            prevNotionalsSum = prevNotionalsSum.add(baseToExposure(marketId, base));
         }
     }
 

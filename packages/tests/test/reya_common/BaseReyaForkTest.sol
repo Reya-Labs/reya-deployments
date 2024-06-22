@@ -30,7 +30,7 @@ import { ISocketControllerWithPayload } from "../../src/interfaces/ISocketContro
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 import { SD59x18, ZERO as ZERO_sd, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 
-struct State {
+struct LocalState {
     MarketConfigurationData marketConfig;
     uint128[] counterpartyAccountIds;
     uint256 deadline;
@@ -47,6 +47,8 @@ struct State {
 }
 
 contract BaseReyaForkTest is StorageReyaForkTest {
+    LocalState private s;
+
     function mockBridgedAmount(address executionHelper, uint256 amount) internal {
         vm.mockCall(
             executionHelper, abi.encodeWithSelector(ISocketExecutionHelper.bridgeAmount.selector), abi.encode(amount)
@@ -140,12 +142,11 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         pSlippage = orderPrice.div(getMarketSpotPrice(marketId)).intoSD59x18().sub(UNIT_sd);
     }
 
-    // TODO Alex: replace notional by base to be consistent with core
-    function notionalToBase(uint128 marketId, SD59x18 notional) internal view returns (SD59x18) {
-        return notional.div(getMarketSpotPrice(marketId).intoSD59x18());
+    function exposureToBase(uint128 marketId, SD59x18 exposure) internal view returns (SD59x18) {
+        return exposure.div(getMarketSpotPrice(marketId).intoSD59x18());
     }
 
-    function baseToNotional(uint128 marketId, SD59x18 base) internal view returns (SD59x18) {
+    function baseToExposure(uint128 marketId, SD59x18 base) internal view returns (SD59x18) {
         return base.mul(getMarketSpotPrice(marketId).intoSD59x18());
     }
 

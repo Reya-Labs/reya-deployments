@@ -1,28 +1,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
-
-import {
-    ICoreProxy,
-    CollateralConfig,
-    ParentCollateralConfig,
-    CachedCollateralConfig,
-    MarginInfo,
-    CollateralInfo
-} from "../../../src/interfaces/ICoreProxy.sol";
-
-import {
-    IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
-} from "../../../src/interfaces/IPeripheryProxy.sol";
-
-import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
-
-import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
-
 import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol";
-
-import { sd, SD59x18, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
-import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
 contract WbtcCollateralForkCheck is BaseReyaForkTest {
     function checkFuzz_WBTCMintBurn(address attacker) public {

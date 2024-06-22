@@ -3,14 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import "../DataTypes.sol";
 
-import {
-    ICoreProxy,
-    CollateralConfig,
-    ParentCollateralConfig,
-    CachedCollateralConfig,
-    MarginInfo,
-    CollateralInfo
-} from "../../../src/interfaces/ICoreProxy.sol";
+import { ICoreProxy, ParentCollateralConfig, MarginInfo, CollateralInfo } from "../../../src/interfaces/ICoreProxy.sol";
 
 import {
     IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
@@ -77,11 +70,7 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
 
         NodeOutput.Data memory ethUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcNodeId);
 
-        CollateralConfig memory collateralConfig;
-        ParentCollateralConfig memory parentCollateralConfig;
-        CachedCollateralConfig memory cacheCollateralConfig;
-
-        (collateralConfig, parentCollateralConfig, cacheCollateralConfig) =
+        (, ParentCollateralConfig memory parentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
         SD59x18 wethAmountInUSD = sd(int256(wethAmount)).mul(sd(int256(ethUsdcNodeOutput.price))).mul(
             UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut)))
