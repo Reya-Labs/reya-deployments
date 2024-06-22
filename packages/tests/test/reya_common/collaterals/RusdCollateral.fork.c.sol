@@ -8,8 +8,6 @@ import { IRUSDProxy } from "../../../src/interfaces/IRUSDProxy.sol";
 
 contract RusdCollateralForkCheck is BaseReyaForkTest {
     function checkFuzz_USDCMintBurn(address attacker) public {
-        vm.assume(attacker != dec.socketController[sec.usdc]);
-
         (address user,) = makeAddrAndKey("user");
         uint256 amount = 10e6;
 

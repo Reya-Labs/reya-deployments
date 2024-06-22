@@ -1,18 +1,19 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
-import { GeneralForkCheck } from "../../reya_check/general/General.fork.c.sol";
+import { GeneralForkCheck } from "../../reya_common/general/General.fork.c.sol";
 
-import "../../reya_check/DataTypes.sol";
+import "../../reya_common/DataTypes.sol";
 import { IPeripheryProxy, GlobalConfiguration } from "../../../src/interfaces/IPeripheryProxy.sol";
 import { IOracleManagerProxy, NodeOutput, NodeDefinition } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
 contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
-    function testFuzz_ProxiesOwnerAndUpgrades(address attacker) public {
+    function testFuzz_Cronos_ProxiesOwnerAndUpgrades(address attacker) public {
+        vm.assume(attacker != sec.multisig);
         checkFuzz_ProxiesOwnerAndUpgrades(attacker);
     }
 
-    function test_Periphery() public view {
+    function test_Cronos_Periphery() public view {
         GlobalConfiguration.Data memory globalConfig = IPeripheryProxy(sec.periphery).getGlobalConfiguration();
         assertEq(globalConfig.coreProxy, sec.core);
         assertEq(globalConfig.rUSDProxy, sec.rusd);
@@ -38,7 +39,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         );
     }
 
-    function test_OracleManager() public view {
+    function test_Cronos_OracleManager() public view {
         NodeOutput.Data memory ethUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId);
         NodeOutput.Data memory btcUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId);
         NodeOutput.Data memory ethUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcNodeId);

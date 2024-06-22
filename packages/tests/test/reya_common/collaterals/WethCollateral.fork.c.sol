@@ -27,8 +27,6 @@ import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
 contract WethCollateralForkCheck is BaseReyaForkTest {
     function checkFuzz_WETHMintBurn(address attacker) public {
-        vm.assume(attacker != dec.socketController[sec.weth]);
-
         (address user,) = makeAddrAndKey("user");
         uint256 amount = 10e18;
 

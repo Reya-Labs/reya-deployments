@@ -1,14 +1,15 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
-import { GeneralForkCheck } from "../../reya_check/general/General.fork.c.sol";
+import { GeneralForkCheck } from "../../reya_common/general/General.fork.c.sol";
 
-import "../../reya_check/DataTypes.sol";
+import "../../reya_common/DataTypes.sol";
 import { IPeripheryProxy, GlobalConfiguration } from "../../../src/interfaces/IPeripheryProxy.sol";
 import { IOracleManagerProxy, NodeOutput, NodeDefinition } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
 contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     function testFuzz_ProxiesOwnerAndUpgrades(address attacker) public {
+        vm.assume(attacker != sec.multisig);
         checkFuzz_ProxiesOwnerAndUpgrades(attacker);
     }
 

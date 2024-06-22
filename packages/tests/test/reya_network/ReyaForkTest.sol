@@ -2,8 +2,8 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import "forge-std/Test.sol";
 
-import { StorageReyaForkTest } from "../reya_check/StorageReyaForkTest.sol";
-import "../reya_check/DataTypes.sol";
+import { StorageReyaForkTest } from "../reya_common/StorageReyaForkTest.sol";
+import "../reya_common/DataTypes.sol";
 
 contract ReyaForkTest is StorageReyaForkTest {
     constructor() {
@@ -28,7 +28,7 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.usdcUsdNodeId = 0x7c1a73684de34b95f492a9ee72c0d8e1589714eeba4a457f766b84bd1c2f240f;
         sec.passivePoolId = 1;
         sec.passivePoolAccountId = 2;
-        sec.ownerUpgradeModule = 0x70230eE0CcA326A559410DCEd74F2972306D1e1e; 
+        sec.ownerUpgradeModule = 0x70230eE0CcA326A559410DCEd74F2972306D1e1e;
         sec.mainChainId = ethereumChainId;
 
         dec.socketController[sec.usdc] = 0x1d43076909Ca139BFaC4EbB7194518bE3638fc76;

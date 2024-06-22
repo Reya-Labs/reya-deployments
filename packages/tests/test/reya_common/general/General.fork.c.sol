@@ -7,8 +7,6 @@ import { IOwnerUpgradeModule } from "../../../src/interfaces/IOwnerUpgradeModule
 
 contract GeneralForkCheck is BaseReyaForkTest {
     function checkFuzz_ProxiesOwnerAndUpgrades(address attacker) public {
-        vm.assume(attacker != sec.multisig);
-
         address[] memory proxies = new address[](6);
         proxies[0] = sec.core;
         proxies[1] = sec.pool;

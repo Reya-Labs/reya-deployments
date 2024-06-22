@@ -1,10 +1,11 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
-import { WethCollateralForkCheck } from "../../reya_check/collaterals/WethCollateral.fork.c.sol";
+import { WethCollateralForkCheck } from "../../reya_common/collaterals/WethCollateral.fork.c.sol";
 
 contract WethCollateralForkTest is ReyaForkTest, WethCollateralForkCheck {
     function testFuzz_WETHMintBurn(address attacker) public {
+        vm.assume(attacker != dec.socketController[sec.weth]);
         checkFuzz_WETHMintBurn(attacker);
     }
 
@@ -18,7 +19,7 @@ contract WethCollateralForkTest is ReyaForkTest, WethCollateralForkCheck {
 
     function test_weth_deposit_withdraw() public {
         check_weth_deposit_withdraw();
-     }
+    }
 
     function test_trade_wethCollateral_depositWithdraw() public {
         check_trade_wethCollateral_depositWithdraw();

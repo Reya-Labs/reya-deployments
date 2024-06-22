@@ -21,19 +21,11 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         checkPoolHealth();
     }
 
-    function checkFuzz_PoolDepositWithdraw(address attacker) public {
-        (address user,) = makeAddrAndKey("user");
-        vm.assume(attacker != user);
-
-        uint128 poolId = 1;
+    function checkFuzz_PoolDepositWithdraw(address user, address attacker) public {
         uint256 amount = 100e6;
-
-        uint256 attackerSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(poolId, attacker);
-        vm.assume(attackerSharesAmount == 0);
-
         deal(sec.usdc, sec.periphery, amount);
-
-        DepositPassivePoolInputs memory inputs = DepositPassivePoolInputs({ poolId: poolId, owner: user, minShares: 0 });
+        DepositPassivePoolInputs memory inputs =
+            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: 0 });
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
         vm.mockCall(
             dec.socketExecutionHelper[sec.usdc],
@@ -42,15 +34,15 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         );
         IPeripheryProxy(sec.periphery).depositPassivePool(inputs);
 
-        uint256 userSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(poolId, user);
+        uint256 userSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user);
         assert(userSharesAmount > 0);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IPassivePoolProxy(sec.pool).removeLiquidity(poolId, userSharesAmount, 0);
+        IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, userSharesAmount, 0);
 
         vm.prank(user);
-        IPassivePoolProxy(sec.pool).removeLiquidity(poolId, userSharesAmount, 0);
+        IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, userSharesAmount, 0);
     }
 
     function check_PassivePoolWithWeth() public {
