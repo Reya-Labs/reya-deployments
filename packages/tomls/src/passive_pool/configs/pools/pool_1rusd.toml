@@ -8,7 +8,7 @@ var.pool1RusdId.event = "PoolCreated"
 var.pool1RusdId.arg = 0
 var.pool1RusdAccountId.event = "PoolCreated"
 var.pool1RusdAccountId.arg = 2
-depends = ["invoke.upgrade_rUSD_proxy", "invoke.passive_pool_global_config"]
+depends = ["invoke.rusd_initialize", "invoke.passive_pool_global_config"]
 
 [invoke.passive_pool_unpause_pool_1rusd]
 target = ["PassivePoolProxy"]
