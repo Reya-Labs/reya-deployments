@@ -1,0 +1,18 @@
+[
+  {
+    "wallet_address": "0x08d952971751ebce4d0a2f7d9427b0d93d136322",
+    "amount": 12238000
+  },
+  {
+    "wallet_address": "0x4cc9b2e2879e7926b018d8d109692014295b51d1",
+    "amount": 537263000
+  },
+  {
+    "wallet_address": "0xfacf5c4e84872937e910c0885246aa9e3d706afd",
+    "amount": 100000000
+  },
+  {
+    "wallet_address": "0x76ec5398eb3b08f2b22b887b82578ec64fb7fcb0",
+    "amount": 1000000000
+  }
+]
