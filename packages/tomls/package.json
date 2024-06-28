@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "reya_network:simulate": "cannon build src/omnibus/reya_network.toml --provider-url https://rpc.reya.network --chain-id 1729 --upgrade-from reya-omnibus:latest@main --dry-run",
-    "reya_cronos:simulate": "cannon build src/omnibus/reya_cronos.toml --provider-url https://rpc.reya-cronos.gelato.digital --chain-id 89346161 --upgrade-from reya-omnibus:latest@main --dry-run",
+    "reya_cronos:simulate": "cannon build src/omnibus/reya_cronos.toml --provider-url https://rpc.reya-cronos.gelato.digital --chain-id 89346162 --dry-run",
     "fuzzing:simulate": "cannon build src/omnibus/fuzzing.toml --provider-url 127.0.0.1:8545 --chain-id 31337 --private-key 0xac0974bec39a17e36ba4a6b4sd238ff944bacb478cbed5efcae784d7bf4f2ff80 --wipe --dry-run",
     "fuzzing:execute": "cannon build src/omnibus/fuzzing.toml --provider-url 127.0.0.1:8545 --chain-id 31337 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --wipe",
     "fuzzing:cicd": "cannon build src/omnibus/fuzzing.toml --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --wipe",
