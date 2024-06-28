@@ -6,6 +6,7 @@ depends = ["var.cannonClonePackages"]
 [var.oracle_helper_vars]
 ethUsdcNodeId = "<%= keccak256(hexlify('ETH-USDC-NODE-ID')) %>"
 btcUsdcNodeId = "<%= keccak256(hexlify('BTC-USDC-NODE-ID')) %>"
+solUsdcNodeId = "<%= keccak256(hexlify('SOL-USDC-NODE-ID')) %>"
 rusdUsdNodeId = "<%= keccak256(hexlify('RUSD-USD-NODE-ID')) %>"
 
 [invoke.mock_oracle_manager_eth_usdc_price]
@@ -25,6 +26,16 @@ func = "mockNode"
 args = [
     "<%= settings.btcUsdcNodeId %>",
     { price = "<%= parseEther('60000') %>", timestamp = "<%= timestamp %>" },
+]
+depends = ["clone.reyaMockOracleManager"]
+
+[invoke.mock_oracle_manager_sol_usdc_price]
+target = ["reyaMockOracleManager.MockOracleManager"]
+from = "<%= settings.owner %>"
+func = "mockNode"
+args = [
+    "<%= settings.solUsdcNodeId %>",
+    { price = "<%= parseEther('150') %>", timestamp = "<%= timestamp %>" },
 ]
 depends = ["clone.reyaMockOracleManager"]
 
