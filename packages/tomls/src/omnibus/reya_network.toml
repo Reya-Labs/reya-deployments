@@ -178,7 +178,7 @@ market2Btc_depthFactorUnscaled = "3.25"
 market2Btc_maxExposureFactorUnscaled = "0.999"
 market2Btc_maxPSlippageUnscaled = "0.1"
 
-[var.market_3btc]
+[var.market_3sol]
 market3Sol_riskMatrixIndex = "0"
 market3Sol_maxOpenBaseUnscaled = "182000"
 market3Sol_velocityMultiplierUnscaled = "1"
