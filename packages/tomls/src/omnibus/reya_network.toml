@@ -12,7 +12,7 @@ include = [
     "../ranks/mainnet.toml",
     "../collateral_pools/collateral_pool_1/mainnet.toml",
 ]
-version = "1.0.3"
+version = "1.0.4"
 
 [var.chain_ids]
 ethereumChainId = "1"
