@@ -1149,9 +1149,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usecannon/builder@npm:2.14.3, @usecannon/builder@npm:^2.14.3":
-  version: 2.14.3
-  resolution: "@usecannon/builder@npm:2.14.3"
+"@usecannon/builder@npm:2.15.3, @usecannon/builder@npm:^2.15.3":
+  version: 2.15.3
+  resolution: "@usecannon/builder@npm:2.15.3"
   dependencies:
     "@synthetixio/router": ^3.4.0
     axios: ^1.6.8
@@ -1166,16 +1166,16 @@ __metadata:
     typestub-ipfs-only-hash: ^4.0.0
     viem: ^2.9.31
     zod: ^3.23.6
-  checksum: 7fc4c955660ca68df9c6690402d55b2c32f7b629efe5d5579da2c80355b190c96282dcf321565077fa6da7410c04b0d418bb9f6c16efa1dfdff7bfc6d65670ef
+  checksum: bf27156dd8e3043a16cae5b443f02313a2fe8cac411dc082fac00f205c41c728f875266aec28483af21695a63bc05620f7b4973e117ca16c87392bcd3987ecfe
   languageName: node
   linkType: hard
 
-"@usecannon/cli@npm:^2.14.3":
-  version: 2.14.3
-  resolution: "@usecannon/cli@npm:2.14.3"
+"@usecannon/cli@npm:^2.15.3":
+  version: 2.15.3
+  resolution: "@usecannon/cli@npm:2.15.3"
   dependencies:
     "@iarna/toml": ^3.0.0
-    "@usecannon/builder": 2.14.3
+    "@usecannon/builder": 2.15.3
     abitype: ^1.0.2
     chalk: ^4.1.2
     commander: ^9.5.0
@@ -1194,7 +1194,7 @@ __metadata:
     zod: ^3.23.6
   bin:
     cannon: bin/cannon.js
-  checksum: 600d4efae2e9aa21b1db43b96c10a9fc84ab77556ca90c6bc4a2ab01c2680885e7f8f736cb846aebfd8a4dc4a1b80bedd9450a2b8cf9a542fe6c6ea896fd2bc7
+  checksum: 2cc1f3daa7c9b8cfe534aed903dc48c862a8cabd3c01572d7e8233b01db523f9521fc468ce6601ebe1986f96a9e3c0bdc8bce55f79d25c99978b441b38c2c11f
   languageName: node
   linkType: hard
 
@@ -5667,8 +5667,8 @@ __metadata:
   resolution: "reya-deployments@workspace:."
   dependencies:
     "@ethersproject/abi": 5.7.0
-    "@usecannon/builder": ^2.14.3
-    "@usecannon/cli": ^2.14.3
+    "@usecannon/builder": ^2.15.3
+    "@usecannon/cli": ^2.15.3
     forge-std: "github:foundry-rs/forge-std#v1.8.0"
     lerna: ^8.1.2
     prettier: 3.2.5
