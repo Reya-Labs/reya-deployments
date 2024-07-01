@@ -81,12 +81,11 @@ pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
 [var.redstone_oracles]
-redstonePriceFeedUSDC = todo
-redstonePriceFeedETH = todo
-redstonePriceFeedBTC = todo
-redstonePriceFeedSOL = todo
+redstonePriceFeedUSDC = "0xDefB236eB69b7f94490786375B093C6c8271214A"
+redstonePriceFeedETH = "0x187078471869387119FB88E8F033412A0F0fdfcd"
+redstonePriceFeedBTC = "0x22Ef8eb05189cF39a347F93a33508D0ce9e37830"
+redstonePriceFeedSOL = "0x3e3762c10F018fE02701be651b5c0937C3a7d7e1"
 
-todooo
 [var.socket_contracts]
 usdcController = "0x0000000000000000000000000000000000000001"
 usdcExecutionHelper = "0x0000000000000000000000000000000000000001"
