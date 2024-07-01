@@ -11,6 +11,7 @@ include = [
     "../exchange_pass_nft/mainnet_reya_network.toml",
     "../ranks/mainnet.toml",
     "../collateral_pools/collateral_pool_1/mainnet.toml",
+    "../orders_gateway/mainnet.toml",
 ]
 version = "1.0.4"
 

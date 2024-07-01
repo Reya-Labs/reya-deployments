@@ -11,6 +11,7 @@ include = [
     "../exchange_pass_nft/testnet.toml",
     "../ranks/testnet.toml",
     "../collateral_pools/collateral_pool_1/testnet.toml",
+    "../orders_gateway/testnet.toml",
 ]
 version = "1.0.0"
 
@@ -45,6 +46,7 @@ exchangePassProxyPackage = "reya-exchange-pass-nft:1.0.0@proxy"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksProxyPackage = "reya-ranks:1.0.0@proxy"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.0@router"
 
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
