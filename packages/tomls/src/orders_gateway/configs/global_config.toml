@@ -1,7 +1,7 @@
 [invoke.orders_gateway_global_config]
 target = ["OrdersGatewayProxy"]
 fromCall.func = "owner"
-func = "setGlobalConfiguration"
+func = "setConfiguration"
 args = [
     { coreProxy = "<%= contracts.CoreProxy.address %>", passivePerpProxy = "<%= contracts.PassivePerpProxy.address %>" },
 ]
