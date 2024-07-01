@@ -1,0 +1,6 @@
+[clone.reyaOrdersGatewayProxy]
+source = "<%= settings.ordersGatewayProxyPackage %>"
+target = "<%= settings.ordersGatewayProxyPackage %>"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.salt %>"
+depends = ["var.cannonClonePackages"]
