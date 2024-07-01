@@ -10,8 +10,12 @@ target = ["<%= settings.ordersGatewayProxy %>"]
 abi = "<%= JSON.stringify(imports.reyaOrdersGatewayRouter.contracts.OwnerUpgradeModule.abi) %>"
 fromCall.func = "owner"
 func = "upgradeTo"
-args = ["<%= imports.reyaOrdersGatewayRouter.contracts.OrdersGatewayRouter.address %>"]
-factory.OrdersGatewayProxy.abiOf = ["reyaOrdersGatewayRouter.OrdersGatewayRouter"]
+args = [
+    "<%= imports.reyaOrdersGatewayRouter.contracts.OrdersGatewayRouter.address %>",
+]
+factory.OrdersGatewayProxy.abiOf = [
+    "reyaOrdersGatewayRouter.OrdersGatewayRouter",
+]
 factory.OrdersGatewayProxy.event = "Upgraded"
 factory.OrdersGatewayProxy.arg = 0
 depends = ["var.upgrade_proxy_vars", "clone.reyaOrdersGatewayRouter"]
