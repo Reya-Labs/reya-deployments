@@ -1,6 +1,6 @@
 [clone.reyaOrdersGatewayRouter]
 source = "<%= settings.ordersGatewayRouterPackage %>"
-target = "<%= settings.ordersGatewayProxyPackage %>"
+target = "<%= settings.ordersGatewayRouterPackage %>"
 depends = ["var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new
