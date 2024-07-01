@@ -6,7 +6,6 @@ uint256 constant optimismChainId = 10;
 uint256 constant polygonChainId = 137;
 uint256 constant baseChainId = 8453;
 uint256 constant ethereumSepoliaChainId = 11_155_111;
-uint256 constant polygonMumbaiChainId = 80_001;
 uint256 constant arbitrumSepoliaChainId = 421_614;
 uint256 constant optimismSepoliaChainId = 11_155_420;
 uint256 constant ONE_MINUTE_IN_SECONDS = 60;

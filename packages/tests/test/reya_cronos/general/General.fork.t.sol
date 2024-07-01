@@ -26,10 +26,6 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
             dec.socketConnector[sec.usdc][ethereumSepoliaChainId]
         );
         assertEq(
-            IPeripheryProxy(sec.periphery).getTokenChainConnector(sec.usdc, polygonMumbaiChainId),
-            dec.socketConnector[sec.usdc][polygonMumbaiChainId]
-        );
-        assertEq(
             IPeripheryProxy(sec.periphery).getTokenChainConnector(sec.usdc, arbitrumSepoliaChainId),
             dec.socketConnector[sec.usdc][arbitrumSepoliaChainId]
         );
