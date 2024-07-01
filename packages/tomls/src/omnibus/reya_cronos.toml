@@ -16,7 +16,6 @@ version = "1.0.0"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
-polygonMumbaiChainId = "80001"
 arbitrumSepoliaChainId = "421614"
 optimismSepoliaChainId = "11155420"
 
@@ -87,40 +86,34 @@ redstonePriceFeedBTC = "0x22Ef8eb05189cF39a347F93a33508D0ce9e37830"
 redstonePriceFeedSOL = "0x3e3762c10F018fE02701be651b5c0937C3a7d7e1"
 
 [var.socket_contracts]
-usdcController = "0x0000000000000000000000000000000000000001"
-usdcExecutionHelper = "0x0000000000000000000000000000000000000001"
-usdcEthereumSepoliaConnector = "0x0000000000000000000000000000000000000001"
-usdcPolygonMumbaiConnector = "0x0000000000000000000000000000000000000001"
-usdcArbitrumSepoliaConnector = "0x0000000000000000000000000000000000000001"
-usdcOptimismSepoliaConnector = "0x0000000000000000000000000000000000000001"
+usdcController = "0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e"
+usdcExecutionHelper = "0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE"
+usdcEthereumSepoliaConnector = "0x79B607E711853F83002d0649DcCeCA73Bef3F3A7"
+usdcArbitrumSepoliaConnector = "0x41CC670dae3f91160f6B64AF46e939223E5C99F9"
+usdcOptimismSepoliaConnector = "0xc18463EcAC98d34196E098cd2678E688Ef7dE759"
 # -------------------------------------------------------------------
-wethController = "0x0000000000000000000000000000000000000001"
-wethExecutionHelper = "0x0000000000000000000000000000000000000001"
-wethEthereumSepoliaConnector = "0x0000000000000000000000000000000000000001"
-wethPolygonMumbaiConnector = "0x0000000000000000000000000000000000000001"
-wethArbitrumSepoliaConnector = "0x0000000000000000000000000000000000000001"
-wethOptimismSepoliaConnector = "0x0000000000000000000000000000000000000001"
+wethController = "0x1529413F38b95cE156f54C34471528B6d0Daf2eb"
+wethExecutionHelper = "0xF1e0f8B07Eb4928922448CBD6f77ac5918f8e032"
+wethEthereumSepoliaConnector = "0xD69619c745aD7AaB060727bDC5D46b4E702dEc6F"
+wethArbitrumSepoliaConnector = "0xD927149f1fa5E8844464ab7F3C84c77F7ebD0aa8"
+wethOptimismSepoliaConnector = "0x3395f0c1546DC5eE16EC021523B3E8c0DB861E00"
 # -------------------------------------------------------------------
-wbtcController = "0x0000000000000000000000000000000000000001"
-wbtcExecutionHelper = "0x0000000000000000000000000000000000000001"
-wbtcEthereumSepoliaConnector = "0x0000000000000000000000000000000000000001"
-wbtcPolygonMumbaiConnector = "0x0000000000000000000000000000000000000001"
-wbtcArbitrumSepoliaConnector = "0x0000000000000000000000000000000000000001"
-wbtcOptimismSepoliaConnector = "0x0000000000000000000000000000000000000001"
+wbtcController = "0x48995c8Cd604B6d473fC094d9BFA936dA962E2Be"
+wbtcExecutionHelper = "0x38989141D21f6b607a0aE6b626b470d36AceFA84"
+wbtcEthereumSepoliaConnector = "0x45B8F521862433c67fEf5d684e259e02A805861F"
+wbtcArbitrumSepoliaConnector = "0x6Fa3fD6C9bc223F0E270B28169E3B70f046EcF6b"
+wbtcOptimismSepoliaConnector = "0x44064CEF6D51d8131dce3ce059844Eaa059d8773"
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumSepoliaWithdrawFeeUnscaled = "0"
-usdcPolygonMumbaiWithdrawFeeUnscaled = "0"
 usdcArbitrumSepoliaWithdrawFeeUnscaled = "0"
 usdcOptimismSepoliaWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
 wethEthereumSepoliaWithdrawFeeUnscaled = "0"
-wethPolygonMumbaiWithdrawFeeUnscaled = "0"
 wethArbitrumSepoliaWithdrawFeeUnscaled = "0"
 wethOptimismSepoliaWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
 wbtcEthereumSepoliaWithdrawFeeUnscaled = "0"
-wbtcPolygonMumbaiWithdrawFeeUnscaled = "0"
 wbtcArbitrumSepoliaWithdrawFeeUnscaled = "0"
 wbtcOptimismSepoliaWithdrawFeeUnscaled = "0"
 
