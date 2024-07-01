@@ -1,6 +1,7 @@
 include = [
     "markets/market_1eth.toml",
     "markets/market_2btc.toml",
+    "markets/market_3sol.toml",
     "risk/risk_matrix.toml",
     "risk/risk_multipliers.toml",
     "risk/liquidations.toml",

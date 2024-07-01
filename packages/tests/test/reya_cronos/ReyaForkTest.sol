@@ -24,12 +24,12 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.usdc = 0xfA27c7c6051344263533cc365274d9569b0272A8;
         sec.weth = 0x2CF56315ACC7E791B1A0135c09d8D5C8dBCD2F14;
         sec.wbtc = 0x459374F3f3E92728bCa838DfA8C95E706FE67E8a;
-        sec.ethUsdNodeId = 0xe535c0a694829043f5ceb1ae7ca31e59131c2baebcfed471948825fab5847908;
-        sec.btcUsdNodeId = 0xc3872a0f0ad19df9507958fc853aa2eeb8c310ebf41d8b896f8f04bef28b4a71;
-        sec.ethUsdcNodeId = 0xb923a96f82aa7d451bfd4535cc6d69d562ff14a9ca3313c0e1b0ce2a8d437e6e;
-        sec.btcUsdcNodeId = 0xb80df122e81265b25592e717208f7b581ba4c9d1283169118b0b7a0dbd71a432;
+        sec.ethUsdNodeId = 0x82eef5437e9009ecf7691ffdae182e5463438c99963d0da9ac8512d0a3679a95;
+        sec.btcUsdNodeId = 0x9b535a03d6bfaa6d85a3026580f42349e9e26a7067714732d977fc9c1b2c8668;
+        sec.ethUsdcNodeId = 0xd0eec92140b39ef035b9b88f0e9a63355f8d60246115a84c439179b46904e841;
+        sec.btcUsdcNodeId = 0x931f2bb3837fb35ca01ac69b2bdf9ebd60972dca7c1698d377ae243049a9f2c7;
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
-        sec.usdcUsdNodeId = 0x79f38fc54e618dd0f51d93019b49ac198fe3bcbe3242a3ab5c182e0f015fb2df;
+        sec.usdcUsdNodeId = 0x11aa53901ced174bb9f60b47d2c2c9a0ed7d51916caf0a072cf96842a800acc3;
         sec.passivePoolId = 1;
         sec.passivePoolAccountId = 4;
         sec.ownerUpgradeModule = 0x3fa74FfE7B278a25877E16f00e73d5F5FA499183;
