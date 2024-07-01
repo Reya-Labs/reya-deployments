@@ -4,6 +4,8 @@ include = [
     "configs/usdc_usd.toml",
     "configs/eth_usd.toml",
     "configs/btc_usd.toml",
+    "configs/sol_usd.toml",
     "configs/eth_usdc.toml",
     "configs/btc_usdc.toml",
+    "configs/sol_usdc.toml",
 ]
