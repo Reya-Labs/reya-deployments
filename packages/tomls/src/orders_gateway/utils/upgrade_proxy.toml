@@ -1,0 +1,17 @@
+[clone.reyaOrdersGatewayRouter]
+source = "<%= settings.ordersGatewayRouterPackage %>"
+target = "<%= settings.ordersGatewayProxyPackage %>"
+depends = ["var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_orders_gateway_proxy]
+target = ["<%= settings.ordersGatewayProxy %>"]
+abi = "<%= JSON.stringify(imports.reyaOrdersGatewayRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaOrdersGatewayRouter.contracts.OrdersGatewayRouter.address %>"]
+factory.OrdersGatewayProxy.abiOf = ["reyaOrdersGatewayRouter.OrdersGatewayRouter"]
+factory.OrdersGatewayProxy.event = "Upgraded"
+factory.OrdersGatewayProxy.arg = 0
+depends = ["var.upgrade_proxy_vars", "clone.reyaOrdersGatewayRouter"]
