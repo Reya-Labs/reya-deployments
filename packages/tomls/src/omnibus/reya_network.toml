@@ -28,13 +28,13 @@ passivePoolExchangeFeeCollectorOwner = "0x93701b8f4e212B4eC058AF375894DB4B64b4f7
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.cannonClonePackages]
-coreRouterPackage = "reya-core:1.0.1@router"
+coreRouterPackage = "reya-core:1.0.2@router"
 coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.0@router"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.1@router"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.2@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.3@router"
 peripheryRouterPackage = "reya-periphery:1.0.2@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.1@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
