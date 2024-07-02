@@ -13,7 +13,7 @@ include = [
     "../collateral_pools/collateral_pool_1/testnet.toml",
     "../orders_gateway/testnet.toml",
 ]
-version = "1.0.0"
+version = "1.0.1"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
