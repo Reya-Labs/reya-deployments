@@ -57,17 +57,6 @@ args = [
 ]
 depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
 
-[invoke.periphery_set_wbtcPolygonMumbaiConnector]
-target = ["PeripheryProxy"]
-fromCall.func = "owner"
-func = "setTokenChainConnector"
-args = [
-    "<%= contracts.WBTCProxy.address %>",
-    "<%= settings.polygonMumbaiChainId %>",
-    "<%= settings.wbtcPolygonMumbaiConnector %>",
-]
-depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
-
 #####################################
 # Static Withdraw Fees
 #####################################
@@ -105,16 +94,5 @@ args = [
     "<%= contracts.WBTCProxy.address %>",
     "<%= settings.wbtcOptimismSepoliaConnector %>",
     "<%= parseUnits(settings.wbtcOptimismSepoliaWithdrawFeeUnscaled, parseInt(settings.wbtcTokenDecimals)) %>",
-]
-depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]
-
-[invoke.periphery_set_wbtc_polygon_mumbai_withdraw_fee]
-target = ["PeripheryProxy"]
-fromCall.func = "owner"
-func = "setTokenStaticWithdrawFee"
-args = [
-    "<%= contracts.WBTCProxy.address %>",
-    "<%= settings.wbtcPolygonMumbaiConnector %>",
-    "<%= parseUnits(settings.wbtcPolygonMumbaiWithdrawFeeUnscaled, parseInt(settings.wbtcTokenDecimals)) %>",
 ]
 depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_wbtc_proxy"]

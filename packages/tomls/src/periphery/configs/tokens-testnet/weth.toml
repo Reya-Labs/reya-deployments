@@ -57,17 +57,6 @@ args = [
 ]
 depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
 
-[invoke.periphery_set_wethPolygonMumbaiConnector]
-target = ["PeripheryProxy"]
-fromCall.func = "owner"
-func = "setTokenChainConnector"
-args = [
-    "<%= contracts.WETHProxy.address %>",
-    "<%= settings.polygonMumbaiChainId %>",
-    "<%= settings.wethPolygonMumbaiConnector %>",
-]
-depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
-
 #####################################
 # Static Withdraw Fees
 #####################################
@@ -105,16 +94,5 @@ args = [
     "<%= contracts.WETHProxy.address %>",
     "<%= settings.wethOptimismSepoliaConnector %>",
     "<%= parseUnits(settings.wethOptimismSepoliaWithdrawFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>",
-]
-depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]
-
-[invoke.periphery_set_weth_polygon_mumbai_withdraw_fee]
-target = ["PeripheryProxy"]
-fromCall.func = "owner"
-func = "setTokenStaticWithdrawFee"
-args = [
-    "<%= contracts.WETHProxy.address %>",
-    "<%= settings.wethPolygonMumbaiConnector %>",
-    "<%= parseUnits(settings.wethPolygonMumbaiWithdrawFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>",
 ]
 depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_weth_proxy"]

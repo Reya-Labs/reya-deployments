@@ -35,26 +35,23 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.ownerUpgradeModule = 0x3fa74FfE7B278a25877E16f00e73d5F5FA499183;
         sec.mainChainId = ethereumSepoliaChainId;
 
-        dec.socketController[sec.usdc] = 0x0000000000000000000000000000000000000001;
-        dec.socketExecutionHelper[sec.usdc] = 0x0000000000000000000000000000000000000001;
-        dec.socketConnector[sec.usdc][ethereumSepoliaChainId] = 0x0000000000000000000000000000000000000001;
-        dec.socketConnector[sec.usdc][polygonMumbaiChainId] = 0x0000000000000000000000000000000000000001;
-        dec.socketConnector[sec.usdc][arbitrumSepoliaChainId] = 0x0000000000000000000000000000000000000001;
-        dec.socketConnector[sec.usdc][optimismSepoliaChainId] = 0x0000000000000000000000000000000000000001;
+        dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
+        dec.socketExecutionHelper[sec.usdc] = 0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE;
+        dec.socketConnector[sec.usdc][ethereumSepoliaChainId] = 0x79B607E711853F83002d0649DcCeCA73Bef3F3A7;
+        dec.socketConnector[sec.usdc][arbitrumSepoliaChainId] = 0x41CC670dae3f91160f6B64AF46e939223E5C99F9;
+        dec.socketConnector[sec.usdc][optimismSepoliaChainId] = 0xc18463EcAC98d34196E098cd2678E688Ef7dE759;
 
-        dec.socketController[sec.weth] = 0x0000000000000000000000000000000000000001;
-        dec.socketExecutionHelper[sec.weth] = 0x0000000000000000000000000000000000000001;
-        dec.socketConnector[sec.weth][ethereumSepoliaChainId] = 0x0000000000000000000000000000000000000001;
-        dec.socketConnector[sec.weth][polygonMumbaiChainId] = 0x0000000000000000000000000000000000000001;
-        dec.socketConnector[sec.weth][arbitrumSepoliaChainId] = 0x0000000000000000000000000000000000000001;
-        dec.socketConnector[sec.weth][optimismSepoliaChainId] = 0x0000000000000000000000000000000000000001;
+        dec.socketController[sec.weth] = 0x1529413F38b95cE156f54C34471528B6d0Daf2eb;
+        dec.socketExecutionHelper[sec.weth] = 0xF1e0f8B07Eb4928922448CBD6f77ac5918f8e032;
+        dec.socketConnector[sec.weth][ethereumSepoliaChainId] = 0xD69619c745aD7AaB060727bDC5D46b4E702dEc6F;
+        dec.socketConnector[sec.weth][arbitrumSepoliaChainId] = 0xD927149f1fa5E8844464ab7F3C84c77F7ebD0aa8;
+        dec.socketConnector[sec.weth][optimismSepoliaChainId] = 0x3395f0c1546DC5eE16EC021523B3E8c0DB861E00;
 
-        dec.socketController[sec.wbtc] = 0x0000000000000000000000000000000000000001;
-        dec.socketExecutionHelper[sec.wbtc] = 0x0000000000000000000000000000000000000001;
-        dec.socketConnector[sec.wbtc][ethereumSepoliaChainId] = 0x0000000000000000000000000000000000000001;
-        dec.socketConnector[sec.wbtc][polygonMumbaiChainId] = 0x0000000000000000000000000000000000000001;
-        dec.socketConnector[sec.wbtc][arbitrumSepoliaChainId] = 0x0000000000000000000000000000000000000001;
-        dec.socketConnector[sec.wbtc][optimismSepoliaChainId] = 0x0000000000000000000000000000000000000001;
+        dec.socketController[sec.wbtc] = 0x48995c8Cd604B6d473fC094d9BFA936dA962E2Be;
+        dec.socketExecutionHelper[sec.wbtc] = 0x38989141D21f6b607a0aE6b626b470d36AceFA84;
+        dec.socketConnector[sec.wbtc][ethereumSepoliaChainId] = 0x45B8F521862433c67fEf5d684e259e02A805861F;
+        dec.socketConnector[sec.wbtc][arbitrumSepoliaChainId] = 0x6Fa3fD6C9bc223F0E270B28169E3B70f046EcF6b;
+        dec.socketConnector[sec.wbtc][optimismSepoliaChainId] = 0x44064CEF6D51d8131dce3ce059844Eaa059d8773;
 
         try vm.activeFork() { }
         catch {
