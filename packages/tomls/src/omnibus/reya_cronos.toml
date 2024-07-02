@@ -13,7 +13,7 @@ include = [
     "../collateral_pools/collateral_pool_1/testnet.toml",
     "../orders_gateway/testnet.toml",
 ]
-version = "1.0.0"
+version = "1.0.1"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -27,7 +27,7 @@ ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.1@router"
+coreRouterPackage = "reya-core:1.0.2@router"
 coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
 rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
@@ -36,7 +36,7 @@ tokensRouterPackage = "reya-tokens:1.0.0@router"
 passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.1@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.2@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.3@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.0.2@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
