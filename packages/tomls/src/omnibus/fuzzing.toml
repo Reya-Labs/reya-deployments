@@ -148,6 +148,8 @@ btcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 btcUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 ethUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 ethUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+solUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+solUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 usdcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 

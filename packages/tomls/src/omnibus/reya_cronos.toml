@@ -142,6 +142,8 @@ btcUsdMaxStaleDuration = "0"
 btcUsdcMaxStaleDuration = "0"
 ethUsdMaxStaleDuration = "0"
 ethUsdcMaxStaleDuration = "0"
+solUsdMaxStaleDuration = "0"
+solUsdcMaxStaleDuration = "0"
 rusdUsdMaxStaleDuration = "0"
 usdcUsdMaxStaleDuration = "0"
 
