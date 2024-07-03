@@ -12,11 +12,19 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_rusdCollateral_leverage_btc();
     }
 
+    function test_Cronos_trade_rusdCollateral_leverage_sol() public {
+        check_trade_rusdCollateral_leverage_sol();
+    }
+
     function test_Cronos_trade_wethCollateral_leverage_eth() public {
         check_trade_wethCollateral_leverage_eth();
     }
 
     function test_Cronos_trade_wethCollateral_leverage_btc() public {
         check_trade_wethCollateral_leverage_btc();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_sol() public {
+        check_trade_wethCollateral_leverage_sol();
     }
 }

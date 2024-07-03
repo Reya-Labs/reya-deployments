@@ -37,16 +37,27 @@ contract FundingRateForkCheck is BaseReyaForkTest {
             accountId: accountId
         });
 
+        (, SD59x18 solPSlippage) = executeCoreMatchOrder({
+            marketId: 3,
+            sender: user,
+            base: sd(-0.7e18),
+            priceLimit: ud(0),
+            accountId: accountId
+        });
+
         int256 ethFundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(1);
         int256 btcFundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(2);
+        int256 solFundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(3);
 
         vm.warp(block.timestamp + 86_400);
 
         int256 ethFundingRate2 = IPassivePerpProxy(sec.perp).getLatestFundingRate(1);
         int256 btcFundingRate2 = IPassivePerpProxy(sec.perp).getLatestFundingRate(2);
+        int256 solFundingRate2 = IPassivePerpProxy(sec.perp).getLatestFundingRate(3);
 
         // todo: p1: double check with 0.26
         assertApproxEqAbsDecimal(ethFundingRate2 - ethFundingRate1, ethPSlippage.unwrap() * 1e18 / 1e18, 1e13, 18);
         assertApproxEqAbsDecimal(btcFundingRate2 - btcFundingRate1, btcPSlippage.unwrap() * 1e18 / 1e18, 1e13, 18);
+        assertApproxEqAbsDecimal(solFundingRate2 - solFundingRate1, solPSlippage.unwrap() * 1e18 / 1e18, 1e13, 18);
     }
 }
