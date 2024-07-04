@@ -24,7 +24,7 @@ contract FundingRateForkCheck is BaseReyaForkTest {
         (, SD59x18 ethPSlippage) = executeCoreMatchOrder({
             marketId: 1,
             sender: user,
-            base: sd(-0.035e18),
+            base: sd(-35e18),
             priceLimit: ud(0),
             accountId: accountId
         });
@@ -32,7 +32,7 @@ contract FundingRateForkCheck is BaseReyaForkTest {
         (, SD59x18 btcPSlippage) = executeCoreMatchOrder({
             marketId: 2,
             sender: user,
-            base: sd(-0.0015e18),
+            base: sd(-1.5e18),
             priceLimit: ud(0),
             accountId: accountId
         });
@@ -40,7 +40,7 @@ contract FundingRateForkCheck is BaseReyaForkTest {
         (, SD59x18 solPSlippage) = executeCoreMatchOrder({
             marketId: 3,
             sender: user,
-            base: sd(-0.7e18),
+            base: sd(-1000e18),
             priceLimit: ud(0),
             accountId: accountId
         });

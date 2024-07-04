@@ -27,7 +27,7 @@ import {
 import { ISocketExecutionHelper } from "../../src/interfaces/ISocketExecutionHelper.sol";
 import { ISocketControllerWithPayload } from "../../src/interfaces/ISocketControllerWithPayload.sol";
 
-import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
+import { ud, UD60x18, ZERO as ZERO_ud } from "@prb/math/UD60x18.sol";
 import { SD59x18, ZERO as ZERO_sd, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 
 struct LocalState {
@@ -55,11 +55,29 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         );
     }
 
+    function roundPrice(UD60x18 price, UD60x18 priceSpacing, bool roundUp) internal pure returns (UD60x18) {
+        UD60x18 reminder = price.mod(priceSpacing);
+        UD60x18 roundedDown = price.sub(reminder);
+
+        if (reminder.eq(ZERO_ud) || !roundUp) {
+            return roundedDown;
+        }
+
+        return roundedDown.add(priceSpacing);
+    }
+
     function getMarketSpotPrice(uint128 marketId) internal view returns (UD60x18 marketSpotPrice) {
         MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
         NodeOutput.Data memory marketNodeOutput =
             IOracleManagerProxy(sec.oracleManager).process(marketConfig.oracleNodeId);
         return ud(marketNodeOutput.price);
+    }
+
+    function getMarketSpotPrice(uint128 marketId, SD59x18 base) internal view returns (UD60x18 marketSpotPrice) {
+        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+        NodeOutput.Data memory marketNodeOutput =
+            IOracleManagerProxy(sec.oracleManager).process(marketConfig.oracleNodeId);
+        return roundPrice(ud(marketNodeOutput.price), ud(marketConfig.priceSpacing), base.gt(ZERO_sd));
     }
 
     function getPriceLimit(SD59x18 base) internal pure returns (UD60x18 priceLimit) {
@@ -139,7 +157,7 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         (s.outputs,) = ICoreProxy(sec.core).execute(accountId, commands);
 
         orderPrice = UD60x18.wrap(abi.decode(s.outputs[0], (uint256)));
-        pSlippage = orderPrice.div(getMarketSpotPrice(marketId)).intoSD59x18().sub(UNIT_sd);
+        pSlippage = orderPrice.div(getMarketSpotPrice(marketId, base)).intoSD59x18().sub(UNIT_sd);
     }
 
     function exposureToBase(uint128 marketId, SD59x18 exposure) internal view returns (SD59x18) {

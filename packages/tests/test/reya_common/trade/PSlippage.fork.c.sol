@@ -167,7 +167,30 @@ contract PSlippageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_slippage_sol_long() public {
-        // todo
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(0.01e18);
+        s[2] = sd(0.02e18);
+        s[3] = sd(0.03e18);
+        s[4] = sd(0.04e18);
+        s[5] = sd(0.05e18);
+        s[6] = sd(0.06e18);
+        s[7] = sd(0.07e18);
+        s[8] = sd(0.08e18);
+        s[9] = sd(0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(0.01e18);
+        sPrime[2] = sd(0.019985e18);
+        sPrime[3] = sd(0.029935e18);
+        sPrime[4] = sd(0.03983e18);
+        sPrime[5] = sd(0.04965e18);
+        sPrime[6] = sd(0.059377e18);
+        sPrime[7] = sd(0.068993e18);
+        sPrime[8] = sd(0.078482e18);
+        sPrime[9] = sd(0.087829e18);
+
+        trade_slippage_helper({ marketId: 3, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
 
     function check_trade_slippage_eth_short() public {
@@ -225,6 +248,29 @@ contract PSlippageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_slippage_sol_short() public {
-        // todo
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(-0.01e18);
+        s[2] = sd(-0.02e18);
+        s[3] = sd(-0.03e18);
+        s[4] = sd(-0.04e18);
+        s[5] = sd(-0.05e18);
+        s[6] = sd(-0.06e18);
+        s[7] = sd(-0.07e18);
+        s[8] = sd(-0.08e18);
+        s[9] = sd(-0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(-0.01e18);
+        sPrime[2] = sd(-0.019986e18);
+        sPrime[3] = sd(-0.029936e18);
+        sPrime[4] = sd(-0.039831e18);
+        sPrime[5] = sd(-0.049648e18);
+        sPrime[6] = sd(-0.059369e18);
+        sPrime[7] = sd(-0.068974e18);
+        sPrime[8] = sd(-0.078444e18);
+        sPrime[9] = sd(-0.087763e18);
+
+        trade_slippage_helper({ marketId: 3, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
 }
