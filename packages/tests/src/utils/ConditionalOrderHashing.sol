@@ -20,23 +20,23 @@ bytes32 constant _CONDITIONAL_ORDER_TYPEHASH = keccak256(
 );
 
 function mockCalculateDigest(bytes32 hashedMessage, address orderGateway) pure returns (bytes32) {
-        bytes32 EIP712_REVISION_HASH = keccak256("1");
-        bytes32 EIP712_DOMAIN_TYPEHASH = keccak256("EIP712Domain(string name,string version,address verifyingContract)");
+    bytes32 EIP712_REVISION_HASH = keccak256("1");
+    bytes32 EIP712_DOMAIN_TYPEHASH = keccak256("EIP712Domain(string name,string version,address verifyingContract)");
 
-        bytes32 digest;
-        unchecked {
-            digest = keccak256(
-                abi.encodePacked(
-                    "\x19\x01",
-                    keccak256(
-                        abi.encode(EIP712_DOMAIN_TYPEHASH, keccak256(bytes("Reya")), EIP712_REVISION_HASH, orderGateway)
-                    ),
-                    hashedMessage
-                )
-            );
-        }
-        return digest;
+    bytes32 digest;
+    unchecked {
+        digest = keccak256(
+            abi.encodePacked(
+                "\x19\x01",
+                keccak256(
+                    abi.encode(EIP712_DOMAIN_TYPEHASH, keccak256(bytes("Reya")), EIP712_REVISION_HASH, orderGateway)
+                ),
+                hashedMessage
+            )
+        );
     }
+    return digest;
+}
 
 function hashConditionalOrderDetails(ConditionalOrderDetails memory order) pure returns (bytes32) {
     return keccak256(
