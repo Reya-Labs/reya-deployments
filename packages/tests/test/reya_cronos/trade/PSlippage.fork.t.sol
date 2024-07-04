@@ -12,6 +12,10 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_btc_long();
     }
 
+    function test_Cronos_trade_slippage_sol_long() public {
+        check_trade_slippage_sol_long();
+    }
+
     function test_Cronos_trade_slippage_eth_short() public {
         check_trade_slippage_eth_short();
     }
@@ -20,11 +24,7 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_btc_short();
     }
 
-    function test_Cronos_trade_wethCollateral_leverage_eth() public {
-        check_trade_wethCollateral_leverage_eth();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_btc() public {
-        check_trade_wethCollateral_leverage_btc();
+    function test_Cronos_trade_slippage_sol_short() public {
+        check_trade_slippage_sol_short();
     }
 }

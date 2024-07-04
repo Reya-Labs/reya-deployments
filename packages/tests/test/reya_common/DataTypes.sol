@@ -28,8 +28,10 @@ struct StaticEcosystem {
     address ownerUpgradeModule;
     bytes32 ethUsdNodeId;
     bytes32 btcUsdNodeId;
+    bytes32 solUsdNodeId;
     bytes32 ethUsdcNodeId;
     bytes32 btcUsdcNodeId;
+    bytes32 solUsdcNodeId;
     bytes32 rusdUsdNodeId;
     bytes32 usdcUsdNodeId;
     uint256 mainChainId;
