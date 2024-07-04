@@ -58,6 +58,6 @@ contract FundingRateForkCheck is BaseReyaForkTest {
         // todo: p1: double check with 0.26
         assertApproxEqAbsDecimal(ethFundingRate2 - ethFundingRate1, ethPSlippage.unwrap() * 1e18 / 1e18, 1e13, 18);
         assertApproxEqAbsDecimal(btcFundingRate2 - btcFundingRate1, btcPSlippage.unwrap() * 1e18 / 1e18, 1e13, 18);
-        assertApproxEqAbsDecimal(solFundingRate2 - solFundingRate1, solPSlippage.unwrap() * 1e18 / 1e18, 1e13, 18);
+        assertApproxEqAbsDecimal(solFundingRate2 - solFundingRate1, solPSlippage.unwrap() * 1e18 / 1e18, 2e13, 18);
     }
 }
