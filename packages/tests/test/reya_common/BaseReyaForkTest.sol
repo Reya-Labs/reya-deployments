@@ -73,11 +73,11 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         return ud(marketNodeOutput.price);
     }
 
-    function getMarketSpotPrice(uint128 marketId, SD59x18 base) internal view returns (UD60x18 marketSpotPrice) {
+    function getMarketSpotPrice(uint128 marketId, bool roundUp) internal view returns (UD60x18 marketSpotPrice) {
         MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
         NodeOutput.Data memory marketNodeOutput =
             IOracleManagerProxy(sec.oracleManager).process(marketConfig.oracleNodeId);
-        return roundPrice(ud(marketNodeOutput.price), ud(marketConfig.priceSpacing), base.gt(ZERO_sd));
+        return roundPrice(ud(marketNodeOutput.price), ud(marketConfig.priceSpacing), roundUp);
     }
 
     function getPriceLimit(SD59x18 base) internal pure returns (UD60x18 priceLimit) {
@@ -157,7 +157,7 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         (s.outputs,) = ICoreProxy(sec.core).execute(accountId, commands);
 
         orderPrice = UD60x18.wrap(abi.decode(s.outputs[0], (uint256)));
-        pSlippage = orderPrice.div(getMarketSpotPrice(marketId, base)).intoSD59x18().sub(UNIT_sd);
+        pSlippage = orderPrice.div(getMarketSpotPrice(marketId, base.gt(ZERO_sd))).intoSD59x18().sub(UNIT_sd);
     }
 
     function exposureToBase(uint128 marketId, SD59x18 exposure) internal view returns (SD59x18) {
