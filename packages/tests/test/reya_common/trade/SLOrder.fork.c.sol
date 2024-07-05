@@ -9,7 +9,7 @@ import {
 import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
 import { ICoreProxy } from "../../../src/interfaces/ICoreProxy.sol";
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
-import { mockCalculateDigest, hashConditionalOrder } from "../../../src/utils/ConditionalOrderHashing.sol";
+import { ConditionalOrderHashing } from "../../../src/utils/ConditionalOrderHashing.sol";
 
 import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
@@ -84,8 +84,7 @@ contract SLOrderForkCheck is BaseReyaForkTest {
         // generate the EIP712 signature
         EIP712Signature memory sig;
         {
-            bytes32 hash = hashConditionalOrder(co, block.timestamp + 1);
-            bytes32 digest = mockCalculateDigest(hash, address(st.og));
+            bytes32 digest = ConditionalOrderHashing.mockCalculateDigest(co, block.timestamp + 1, address(st.og));
 
             (uint8 v, bytes32 r, bytes32 s) = vm.sign(st.userPrivateKey, digest);
 
