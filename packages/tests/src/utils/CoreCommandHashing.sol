@@ -28,32 +28,6 @@ library CoreCommandHashing {
         return keccak256(abi.encodePacked(hashedCommands));
     }
 
-    function hashExecuteBySigExtended(
-        address caller,
-        uint128 accountId,
-        Command[] memory commands,
-        uint256 nonce,
-        uint256 deadline,
-        bytes32 extraData
-    )
-        private
-        view
-        returns (bytes32)
-    {
-        return keccak256(
-            abi.encode(
-                EXECUTE_BY_SIG_TYPEHASH,
-                block.chainid,
-                caller,
-                accountId,
-                hashCommands(commands),
-                nonce,
-                deadline,
-                extraData
-            )
-        );
-    }
-
     function mockCalculateDigest(
         address caller,
         uint128 accountId,
@@ -70,7 +44,18 @@ library CoreCommandHashing {
         bytes32 EIP712_REVISION_HASH = keccak256("1");
         bytes32 EIP712_DOMAIN_TYPEHASH = keccak256("EIP712Domain(string name,string version,address verifyingContract)");
 
-        bytes32 hashedMessage = hashExecuteBySigExtended(caller, accountId, commands, nonce, deadline, extraData);
+        bytes32 hashedMessage = keccak256(
+            abi.encode(
+                EXECUTE_BY_SIG_TYPEHASH,
+                block.chainid,
+                caller,
+                accountId,
+                hashCommands(commands),
+                nonce,
+                deadline,
+                extraData
+            )
+        );
 
         bytes32 digest;
         unchecked {

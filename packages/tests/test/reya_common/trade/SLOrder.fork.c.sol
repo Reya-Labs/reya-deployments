@@ -4,12 +4,14 @@ import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import {
     IOrdersGatewayProxy,
     ConditionalOrderDetails,
-    EIP712Signature
+    EIP712Signature as OG_EIP712Signature
 } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
 import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
-import { ICoreProxy } from "../../../src/interfaces/ICoreProxy.sol";
+import { ICoreProxy, EIP712Signature as Core_EIP712Signature } from "../../../src/interfaces/ICoreProxy.sol";
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import { ConditionalOrderHashing } from "../../../src/utils/ConditionalOrderHashing.sol";
+import { GrantAccountPermissionHashing } from "../../../src/utils/GrantAccountPermissionHashing.sol";
+import { RevokeAccountPermissionHashing } from "../../../src/utils/RevokeAccountPermissionHashing.sol";
 
 import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
@@ -61,44 +63,80 @@ contract SLOrderForkCheck is BaseReyaForkTest {
             accountId: st.accountId
         });
 
-        // grant permission to the orders gateway for trades
-        vm.prank(st.user);
-        ICoreProxy(sec.core).grantAccountPermission(st.accountId, MATCH_ORDER, address(st.og));
-
-        // build the counterparty account ids
-        uint128[] memory counterpartyAccountIds = new uint128[](1);
-        counterpartyAccountIds[0] = sec.passivePoolAccountId;
-
-        // build the conditional order input
-        ConditionalOrderDetails memory co = ConditionalOrderDetails({
-            accountId: st.accountId,
-            marketId: st.orderMarketId1,
-            exchangeId: 0,
-            counterpartyAccountIds: counterpartyAccountIds,
-            orderType: 0,
-            inputs: abi.encode(st.slOrder1IsLongOrder, st.slOrder1TriggerPrice, st.slOrder1PriceLimit),
-            signer: st.user,
-            nonce: 1
-        });
-
-        // generate the EIP712 signature
-        EIP712Signature memory sig;
-        {
-            bytes32 digest = ConditionalOrderHashing.mockCalculateDigest(co, block.timestamp + 1, address(st.og));
-
-            (uint8 v, bytes32 r, bytes32 s) = vm.sign(st.userPrivateKey, digest);
-
-            sig = EIP712Signature({ v: v, r: r, s: s, deadline: block.timestamp + 1 });
-        }
-
         // check base before SL order
         assertNotEq(IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base, 0);
 
-        // execute the SL order
-        st.og.execute(co, sig);
+        // build the conditional order and its signature
+        ConditionalOrderDetails memory co;
+        OG_EIP712Signature memory coSig;
+        {
+            // build the counterparty account ids
+            uint128[] memory counterpartyAccountIds = new uint128[](1);
+            counterpartyAccountIds[0] = sec.passivePoolAccountId;
+
+            // build the conditional order input
+            co = ConditionalOrderDetails({
+                accountId: st.accountId,
+                marketId: st.orderMarketId1,
+                exchangeId: 0,
+                counterpartyAccountIds: counterpartyAccountIds,
+                orderType: 0,
+                inputs: abi.encode(st.slOrder1IsLongOrder, st.slOrder1TriggerPrice, st.slOrder1PriceLimit),
+                signer: st.user,
+                nonce: 1
+            });
+
+            bytes32 digest = ConditionalOrderHashing.mockCalculateDigest(co, block.timestamp + 1, sec.ordersGateway);
+
+            (uint8 v, bytes32 r, bytes32 s) = vm.sign(st.userPrivateKey, digest);
+
+            coSig = OG_EIP712Signature({ v: v, r: r, s: s, deadline: block.timestamp + 1 });
+        }
+
+        // assert that the OG contract does not have the permission
+        assertFalse(ICoreProxy(sec.core).isAuthorizedForAccount(st.accountId, MATCH_ORDER, address(st.og)));
+
+        // assert that the SL order is not executable without the permission
+        vm.expectRevert();
+        st.og.execute(co, coSig);
+
+        // grant permission to the orders gateway for trades
+        {
+            bytes32 digest = GrantAccountPermissionHashing.mockCalculateDigest(
+                st.accountId, MATCH_ORDER, sec.ordersGateway, 1, block.timestamp + 1, sec.core
+            );
+
+            (uint8 v, bytes32 r, bytes32 s) = vm.sign(st.userPrivateKey, digest);
+
+            Core_EIP712Signature memory sig = Core_EIP712Signature({ v: v, r: r, s: s, deadline: block.timestamp + 1 });
+
+            ICoreProxy(sec.core).grantAccountPermissionBySig(st.accountId, MATCH_ORDER, sec.ordersGateway, sig);
+        }
+
+        // assert that the OG contract does have the permission after granting it
+        assertTrue(ICoreProxy(sec.core).isAuthorizedForAccount(st.accountId, MATCH_ORDER, address(st.og)));
+
+        // generate the EIP712 signature and execute the SL order
+        st.og.execute(co, coSig);
 
         // check base after SL order
         assertEq(IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base, 0);
+
+        // revoke permission to the orders gateway for trades
+        {
+            bytes32 digest = RevokeAccountPermissionHashing.mockCalculateDigest(
+                st.accountId, MATCH_ORDER, sec.ordersGateway, 2, block.timestamp + 1, sec.core
+            );
+
+            (uint8 v, bytes32 r, bytes32 s) = vm.sign(st.userPrivateKey, digest);
+
+            Core_EIP712Signature memory sig = Core_EIP712Signature({ v: v, r: r, s: s, deadline: block.timestamp + 1 });
+
+            ICoreProxy(sec.core).revokeAccountPermissionBySig(st.accountId, MATCH_ORDER, sec.ordersGateway, sig);
+        }
+
+        // assert that the OG contract does not have the permission after revoking it
+        assertFalse(ICoreProxy(sec.core).isAuthorizedForAccount(st.accountId, MATCH_ORDER, address(st.og)));
     }
 
     function check_slOrderOnShortPosition_ETH() public {
