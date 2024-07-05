@@ -2,7 +2,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 
-import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
+import { IPassivePerpProxy, MarketConfigurationData } from "../../../src/interfaces/IPassivePerpProxy.sol";
 
 import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
 
@@ -10,7 +10,25 @@ import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
 import { ud } from "@prb/math/UD60x18.sol";
 
 contract FundingRateForkCheck is BaseReyaForkTest {
+    function setPriceSpacing(uint128 marketId, uint256 newPriceSpacing) private {
+        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+        marketConfig.priceSpacing = newPriceSpacing;
+
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setMarketConfiguration(marketId, marketConfig);
+    }
+
     function check_FundingVelocity() public {
+        uint128 fromMarketId = 1;
+        uint128 toMarketId = 3;
+
+        // lower price spacing such that order price is not significantly
+        // affected by price rounding. this was we can compute p slippage
+        // more accurately
+        for (uint128 marketId = fromMarketId; marketId <= toMarketId; marketId += 1) {
+            setPriceSpacing({ marketId: marketId, newPriceSpacing: 1 });
+        }
+
         (address user,) = makeAddrAndKey("user");
 
         // deposit new margin account to be able to trade little to get pSlippage
@@ -21,43 +39,37 @@ contract FundingRateForkCheck is BaseReyaForkTest {
             DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) })
         );
 
-        (, SD59x18 ethPSlippage) = executeCoreMatchOrder({
-            marketId: 1,
-            sender: user,
-            base: sd(-35e18),
-            priceLimit: ud(0),
-            accountId: accountId
-        });
+        SD59x18[] memory pSlippage = new SD59x18[](toMarketId - fromMarketId + 1);
+        for (uint128 marketId = fromMarketId; marketId <= toMarketId; marketId += 1) {
+            (, pSlippage[marketId - fromMarketId]) = executeCoreMatchOrder({
+                marketId: marketId,
+                sender: user,
+                base: sd(-1e18),
+                priceLimit: ud(0),
+                accountId: accountId
+            });
+        }
 
-        (, SD59x18 btcPSlippage) = executeCoreMatchOrder({
-            marketId: 2,
-            sender: user,
-            base: sd(-1.5e18),
-            priceLimit: ud(0),
-            accountId: accountId
-        });
-
-        (, SD59x18 solPSlippage) = executeCoreMatchOrder({
-            marketId: 3,
-            sender: user,
-            base: sd(-1000e18),
-            priceLimit: ud(0),
-            accountId: accountId
-        });
-
-        int256 ethFundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(1);
-        int256 btcFundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(2);
-        int256 solFundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(3);
+        int256[] memory fundingRate1 = new int256[](toMarketId - fromMarketId + 1);
+        for (uint128 marketId = fromMarketId; marketId <= toMarketId; marketId += 1) {
+            fundingRate1[marketId - fromMarketId] = IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId);
+        }
 
         vm.warp(block.timestamp + 86_400);
 
-        int256 ethFundingRate2 = IPassivePerpProxy(sec.perp).getLatestFundingRate(1);
-        int256 btcFundingRate2 = IPassivePerpProxy(sec.perp).getLatestFundingRate(2);
-        int256 solFundingRate2 = IPassivePerpProxy(sec.perp).getLatestFundingRate(3);
+        int256[] memory fundingRate2 = new int256[](toMarketId - fromMarketId + 1);
+        for (uint128 marketId = fromMarketId; marketId <= toMarketId; marketId += 1) {
+            fundingRate2[marketId - fromMarketId] = IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId);
+        }
 
-        // todo: p1: double check with 0.26
-        assertApproxEqAbsDecimal(ethFundingRate2 - ethFundingRate1, ethPSlippage.unwrap() * 1e18 / 1e18, 1e13, 18);
-        assertApproxEqAbsDecimal(btcFundingRate2 - btcFundingRate1, btcPSlippage.unwrap() * 1e18 / 1e18, 1e13, 18);
-        assertApproxEqAbsDecimal(solFundingRate2 - solFundingRate1, solPSlippage.unwrap() * 1e18 / 1e18, 3e13, 18);
+        for (uint128 marketId = fromMarketId; marketId <= toMarketId; marketId += 1) {
+            MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+            assertApproxEqAbsDecimal(
+                fundingRate2[marketId - fromMarketId] - fundingRate1[marketId - fromMarketId],
+                pSlippage[marketId - fromMarketId].mul(sd(int256(marketConfig.velocityMultiplier))).unwrap(),
+                1,
+                18
+            );
+        }
     }
 }
