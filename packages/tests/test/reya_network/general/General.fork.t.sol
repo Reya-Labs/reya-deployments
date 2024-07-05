@@ -46,8 +46,10 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     function test_OracleManager() public view {
         NodeOutput.Data memory ethUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId);
         NodeOutput.Data memory btcUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId);
+        NodeOutput.Data memory solUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.solUsdNodeId);
         NodeOutput.Data memory ethUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcNodeId);
         NodeOutput.Data memory btcUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdcNodeId);
+        NodeOutput.Data memory solUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcNodeId);
         NodeOutput.Data memory rusdUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.rusdUsdNodeId);
         NodeOutput.Data memory usdcUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.usdcUsdNodeId);
 
@@ -59,6 +61,10 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         assertLe(btcUsdNodeOutput.timestamp, block.timestamp);
         assertApproxEqAbsDecimal(btcUsdNodeOutput.price, 65_000e18, 10_000e18, 18);
 
+        assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, solUsdNodeOutput.timestamp);
+        assertLe(solUsdNodeOutput.timestamp, block.timestamp);
+        assertApproxEqAbsDecimal(solUsdNodeOutput.price, 150e18, 50e18, 18);
+
         assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, ethUsdcNodeOutput.timestamp);
         assertLe(ethUsdcNodeOutput.timestamp, block.timestamp);
         assertApproxEqAbsDecimal(ethUsdcNodeOutput.price, 3500e18, 1000e18, 18);
@@ -66,6 +72,10 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, btcUsdcNodeOutput.timestamp);
         assertLe(btcUsdcNodeOutput.timestamp, block.timestamp);
         assertApproxEqAbsDecimal(btcUsdcNodeOutput.price, 65_000e18, 10_000e18, 18);
+
+        assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, solUsdcNodeOutput.timestamp);
+        assertLe(solUsdcNodeOutput.timestamp, block.timestamp);
+        assertApproxEqAbsDecimal(solUsdcNodeOutput.price, 150e18, 50e18, 18);
 
         assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, rusdUsdNodeOutput.timestamp);
         assertLe(rusdUsdNodeOutput.timestamp, block.timestamp);
@@ -79,10 +89,14 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
             IOracleManagerProxy(sec.oracleManager).getNode(sec.ethUsdNodeId);
         NodeDefinition.Data memory btcUsdNodeDefinition =
             IOracleManagerProxy(sec.oracleManager).getNode(sec.btcUsdNodeId);
+        NodeDefinition.Data memory solUsdNodeDefinition =
+            IOracleManagerProxy(sec.oracleManager).getNode(sec.solUsdNodeId);
         NodeDefinition.Data memory ethUsdcNodeDefinition =
             IOracleManagerProxy(sec.oracleManager).getNode(sec.ethUsdcNodeId);
         NodeDefinition.Data memory btcUsdcNodeDefinition =
             IOracleManagerProxy(sec.oracleManager).getNode(sec.btcUsdcNodeId);
+        NodeDefinition.Data memory solUsdcNodeDefinition =
+            IOracleManagerProxy(sec.oracleManager).getNode(sec.solUsdcNodeId);
         NodeDefinition.Data memory rusdUsdNodeDefinition =
             IOracleManagerProxy(sec.oracleManager).getNode(sec.rusdUsdNodeId);
         NodeDefinition.Data memory usdcUsdNodeDefinition =
@@ -90,8 +104,10 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
 
         assertEq(ethUsdNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
         assertEq(btcUsdNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
+        assertEq(solUsdNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
         assertEq(ethUsdcNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
         assertEq(btcUsdcNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
+        assertEq(solUsdcNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
         assertEq(rusdUsdNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
         assertEq(usdcUsdNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
     }
