@@ -45,9 +45,9 @@ function hashConditionalOrderDetails(ConditionalOrderDetails memory order) pure 
             order.accountId,
             order.marketId,
             order.exchangeId,
-            order.counterpartyAccountIds,
+            keccak256(abi.encodePacked(order.counterpartyAccountIds)),
             order.orderType,
-            order.inputs,
+            keccak256(order.inputs),
             order.signer,
             order.nonce
         )

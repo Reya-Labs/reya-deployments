@@ -51,7 +51,7 @@ contract SLOrderForkTest is ReyaForkTest {
             exchangeId: 0,
             counterpartyAccountIds: counterpartyAccountIds,
             orderType: 0,
-            inputs: abi.encode(triggerPrice, priceLimit),
+            inputs: abi.encode(isLongOrder, triggerPrice, priceLimit),
             signer: user,
             nonce: 1
         });
