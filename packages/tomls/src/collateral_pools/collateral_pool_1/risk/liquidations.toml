@@ -39,7 +39,7 @@ fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "setBackstopLPConfig"
 args = [
     "<%= settings.cp1RusdId %>",
-    { accountId = "<%= settings.pool1RusdAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_backstopLp_liquidationFeeUnscaled) %>", minFreeCollateralThresholdInUSD = "<%= parseEther(settings.cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled) %>", withdrawCooldownDurationInSeconds = "<%= settings.cp1Rusd_backstopLp_withdrawCooldownDurationInSeconds %>", withdrawDurationInSeconds = "<%= settings.cp1Rusd_backstopLp_withdrawDurationInSeconds %>" },
+    { accountId = "<%= settings.pool1RusdAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_backstopLp_liquidationFeeUnscaled) %>", minFreeCollateralThresholdInUSD = "<%= parseEther(settings.cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled) %>", withdrawCooldownDurationInSeconds_DEPRECATED = "0", withdrawDurationInSeconds_DEPRECATED = "0" },
 ]
 depends = ["invoke.cp_1rusd_pool_account_activate_market", "var.cp_1rusd"]
 
