@@ -14,7 +14,7 @@ library GrantAccountPermissionHashing {
         uint256 deadline,
         address core
     )
-        public
+        internal
         view
         returns (bytes32)
     {

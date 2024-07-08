@@ -18,7 +18,7 @@ library ConditionalOrderHashing {
         uint256 deadline,
         address orderGateway
     )
-        public
+        internal
         view
         returns (bytes32)
     {

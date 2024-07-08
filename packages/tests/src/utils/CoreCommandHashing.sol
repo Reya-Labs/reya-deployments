@@ -37,7 +37,7 @@ library CoreCommandHashing {
         bytes32 extraData,
         address core
     )
-        public
+        internal
         view
         returns (bytes32)
     {

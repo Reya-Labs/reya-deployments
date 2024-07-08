@@ -14,7 +14,7 @@ library RevokeAccountPermissionHashing {
         uint256 deadline,
         address core
     )
-        public
+        internal
         view
         returns (bytes32)
     {
