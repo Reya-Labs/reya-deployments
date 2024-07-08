@@ -18,6 +18,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.perp = payable(0x9EC177fed042eF2307928BE2F5CDbf663B20244B);
         sec.oracleManager = 0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA;
         sec.periphery = payable(0x94ccAe812f1647696754412082dd6684C2366A7f);
+        sec.ordersGateway = payable(0x5A0aC2f89E0BDeaFC5C549e354842210A3e87CA5);
         sec.exchangePass = 0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB;
         sec.accountNft = 0xeA13E7dA71E018160019A296Eca4184Ddc53aeB1;
         sec.rusd = 0x9DE724e7b3facF87Ce39465D3D712717182e3e55;
@@ -26,8 +27,10 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.wbtc = 0x459374F3f3E92728bCa838DfA8C95E706FE67E8a;
         sec.ethUsdNodeId = 0x82eef5437e9009ecf7691ffdae182e5463438c99963d0da9ac8512d0a3679a95;
         sec.btcUsdNodeId = 0x9b535a03d6bfaa6d85a3026580f42349e9e26a7067714732d977fc9c1b2c8668;
+        sec.solUsdNodeId = 0x124ba4123aa9d8663863554253e5859480211d1a0160257ccf5d12315aaacce1;
         sec.ethUsdcNodeId = 0xd0eec92140b39ef035b9b88f0e9a63355f8d60246115a84c439179b46904e841;
         sec.btcUsdcNodeId = 0x931f2bb3837fb35ca01ac69b2bdf9ebd60972dca7c1698d377ae243049a9f2c7;
+        sec.solUsdcNodeId = 0x5f04732bb640020dd447ac06ef47eae461717fbc6b3ba2f71b3a95e00445a502;
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
         sec.usdcUsdNodeId = 0x11aa53901ced174bb9f60b47d2c2c9a0ed7d51916caf0a072cf96842a800acc3;
         sec.passivePoolId = 1;

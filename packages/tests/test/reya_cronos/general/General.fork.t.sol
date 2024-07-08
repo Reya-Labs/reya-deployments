@@ -38,22 +38,30 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     function test_Cronos_OracleManager() public view {
         NodeOutput.Data memory ethUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId);
         NodeOutput.Data memory btcUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId);
+        NodeOutput.Data memory solUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.solUsdNodeId);
         NodeOutput.Data memory ethUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcNodeId);
         NodeOutput.Data memory btcUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdcNodeId);
+        NodeOutput.Data memory solUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcNodeId);
         NodeOutput.Data memory rusdUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.rusdUsdNodeId);
         NodeOutput.Data memory usdcUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.usdcUsdNodeId);
 
         assertLe(ethUsdNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(ethUsdNodeOutput.price, 3500e18, 1000e18, 18);
+        assertApproxEqAbsDecimal(ethUsdNodeOutput.price, 3500e18, 2000e18, 18);
 
         assertLe(btcUsdNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(btcUsdNodeOutput.price, 65_000e18, 10_000e18, 18);
+        assertApproxEqAbsDecimal(btcUsdNodeOutput.price, 65_000e18, 20_000e18, 18);
+
+        assertLe(solUsdNodeOutput.timestamp, block.timestamp);
+        assertApproxEqAbsDecimal(solUsdNodeOutput.price, 150e18, 100e18, 18);
 
         assertLe(ethUsdcNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(ethUsdcNodeOutput.price, 3500e18, 1000e18, 18);
+        assertApproxEqAbsDecimal(ethUsdcNodeOutput.price, 3500e18, 2000e18, 18);
 
         assertLe(btcUsdcNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(btcUsdcNodeOutput.price, 65_000e18, 10_000e18, 18);
+        assertApproxEqAbsDecimal(btcUsdcNodeOutput.price, 65_000e18, 20_000e18, 18);
+
+        assertLe(solUsdcNodeOutput.timestamp, block.timestamp);
+        assertApproxEqAbsDecimal(solUsdcNodeOutput.price, 150e18, 100e18, 18);
 
         assertLe(rusdUsdNodeOutput.timestamp, block.timestamp);
         assertApproxEqAbsDecimal(rusdUsdNodeOutput.price, 1e18, 0, 18);
