@@ -13,7 +13,7 @@ include = [
     "../collateral_pools/collateral_pool_1/testnet.toml",
     "../orders_gateway/testnet.toml",
 ]
-version = "1.0.3"
+version = "1.0.4"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -27,7 +27,7 @@ ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.2@router"
+coreRouterPackage = "reya-core:1.0.3@router"
 coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
 rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
@@ -36,7 +36,7 @@ tokensRouterPackage = "reya-tokens:1.0.0@router"
 passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.1@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.3@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.4@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.0.2@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
@@ -141,6 +141,8 @@ market3Sol_tier0FeeUnscaled = "0.0005"
 btcUsdMaxStaleDuration = "0"
 btcUsdcMaxStaleDuration = "0"
 ethUsdMaxStaleDuration = "0"
+solUsdMaxStaleDuration = "0"
+solUsdcMaxStaleDuration = "0"
 ethUsdcMaxStaleDuration = "0"
 rusdUsdMaxStaleDuration = "0"
 usdcUsdMaxStaleDuration = "0"
@@ -216,8 +218,6 @@ cp1Rusd_poolImMultiplierUnscaled = "8.01"
 # TODO later: add backstop lp account id as config as well, must first activate first market
 cp1Rusd_backstopLp_liquidationFeeUnscaled = "0.05"
 cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled = "0"
-cp1Rusd_backstopLp_withdrawCooldownDurationInSeconds = "0"
-cp1Rusd_backstopLp_withdrawDurationInSeconds = "0"
 # -----------------------------------------------
 cp1Rusd_bidKeeperFeeUnscaled = "0"
 cp1Rusd_queueDurationInSeconds = "0"
@@ -232,8 +232,6 @@ cp1Rusd_dMaxUnscaled = "0.4"
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
 cp1Rusd_rusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
-cp1Rusd_rusd_withdrawalWindowSize_DEPRECATED = "0"
-cp1Rusd_rusd_withdrawalTvlPercentageLimitUnscaled_DEPRECATED = "0"
 cp1Rusd_rusd_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_rusd_autoExchangeInsuranceFeeUnscaled = "0.01"
 cp1Rusd_rusd_autoExchangeDustThresholdUnscaled = "0"
@@ -246,8 +244,6 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
 cp1Rusd_weth_capUnscaled = "<%= formatEther(MaxUint256) %>"
-cp1Rusd_weth_withdrawalWindowSize_DEPRECATED = "0"
-cp1Rusd_weth_withdrawalTvlPercentageLimitUnscaled_DEPRECATED = "0"
 cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0"
 cp1Rusd_weth_autoExchangeDustThresholdUnscaled = "0"
