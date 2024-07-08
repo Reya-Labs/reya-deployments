@@ -222,7 +222,7 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
         uint256 fees = 0;
         {
             uint256 currentPrice = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcNodeId).price;
-            fees = 10e6 * currentPrice / 1e18 * 0.0005e18 / 1e18;
+            fees = 10e6 * currentPrice / 1e18 * 0.001e18 / 1e18;
         }
 
         // withdraw 1 wETH
