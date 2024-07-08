@@ -13,7 +13,7 @@ include = [
     "../collateral_pools/collateral_pool_1/testnet.toml",
     "../orders_gateway/testnet.toml",
 ]
-version = "1.0.2"
+version = "1.0.3"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -46,7 +46,7 @@ exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksProxyPackage = "reya-ranks:1.0.0@proxy"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
-ordersGatewayRouterPackage = "reya-orders-gateway:1.0.2@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.3@router"
 
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
@@ -150,7 +150,7 @@ usdcUsdMaxStaleDuration = "0"
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
 market1Eth_maxOpenBaseUnscaled = "37500"
-market1Eth_velocityMultiplierUnscaled = "1"
+market1Eth_velocityMultiplierUnscaled = "12.5"
 market1Eth_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
 market1Eth_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
 market1Eth_dutchConfig_lambdaUnscaled = "1"
@@ -160,14 +160,14 @@ market1Eth_slippageParams_betaUnscaled = "0"
 market1Eth_minimumOrderBaseUnscaled = "0.011"
 market1Eth_baseSpacingUnscaled = "0.001"
 market1Eth_priceSpacingUnscaled = "0.01"
-market1Eth_depthFactorUnscaled = "3.25"
+market1Eth_depthFactorUnscaled = "7.5"
 market1Eth_maxExposureFactorUnscaled = "0.999"
 market1Eth_maxPSlippageUnscaled = "0.1"
 
 [var.market_2btc]
 market2Btc_riskMatrixIndex = "0"
 market2Btc_maxOpenBaseUnscaled = "1730"
-market2Btc_velocityMultiplierUnscaled = "1"
+market2Btc_velocityMultiplierUnscaled = "12.5"
 market2Btc_oracleNodeId = "<%= settings.btcUsdcNodeId %>"
 market2Btc_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
 market2Btc_dutchConfig_lambdaUnscaled = "1"
@@ -177,14 +177,14 @@ market2Btc_slippageParams_betaUnscaled = "0"
 market2Btc_minimumOrderBaseUnscaled = "0.0011"
 market2Btc_baseSpacingUnscaled = "0.0001"
 market2Btc_priceSpacingUnscaled = "0.001"
-market2Btc_depthFactorUnscaled = "3.25"
+market2Btc_depthFactorUnscaled = "7.5"
 market2Btc_maxExposureFactorUnscaled = "0.999"
 market2Btc_maxPSlippageUnscaled = "0.1"
 
 [var.market_3sol]
 market3Sol_riskMatrixIndex = "0"
 market3Sol_maxOpenBaseUnscaled = "182000"
-market3Sol_velocityMultiplierUnscaled = "1"
+market3Sol_velocityMultiplierUnscaled = "25"
 market3Sol_oracleNodeId = "<%= settings.solUsdcNodeId %>"
 market3Sol_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
 market3Sol_dutchConfig_lambdaUnscaled = "1"
