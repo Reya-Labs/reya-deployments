@@ -20,9 +20,7 @@ import { IPassivePerpProxy, MarketConfigurationData } from "../../src/interfaces
 
 import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
 
-import {
-    mockCoreCalculateDigest, hashExecuteBySigExtended, EIP712Signature
-} from "../../src/utils/SignatureHelpers.sol";
+import { CoreCommandHashing } from "../../src/utils/CoreCommandHashing.sol";
 
 import { ISocketExecutionHelper } from "../../src/interfaces/ISocketExecutionHelper.sol";
 import { ISocketControllerWithPayload } from "../../src/interfaces/ISocketControllerWithPayload.sol";
@@ -105,11 +103,8 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             exchangeId: s.exchangeId
         });
 
-        s.digest = mockCoreCalculateDigest(
-            sec.core,
-            hashExecuteBySigExtended(
-                address(sec.periphery), accountId, commands, incrementedNonce, s.deadline, keccak256(abi.encode())
-            )
+        s.digest = CoreCommandHashing.mockCalculateDigest(
+            address(sec.periphery), accountId, commands, incrementedNonce, s.deadline, keccak256(abi.encode()), sec.core
         );
 
         (s.v, s.r, s.s) = vm.sign(userPrivateKey, s.digest);
@@ -182,16 +177,14 @@ contract BaseReyaForkTest is StorageReyaForkTest {
 
         s.socketMsgGasLimit = 10_000_000;
 
-        s.digest = mockCoreCalculateDigest(
-            sec.core,
-            hashExecuteBySigExtended(
-                address(sec.periphery),
-                accountId,
-                commands,
-                incrementedNonce,
-                block.timestamp + 3600,
-                keccak256(abi.encode(userAddress, chainId, s.socketMsgGasLimit))
-            )
+        s.digest = CoreCommandHashing.mockCalculateDigest(
+            address(sec.periphery),
+            accountId,
+            commands,
+            incrementedNonce,
+            block.timestamp + 3600,
+            keccak256(abi.encode(userAddress, chainId, s.socketMsgGasLimit)),
+            sec.core
         );
 
         (s.v, s.r, s.s) = vm.sign(userPrivateKey, s.digest);

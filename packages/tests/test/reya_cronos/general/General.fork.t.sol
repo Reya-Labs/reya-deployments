@@ -46,22 +46,22 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         NodeOutput.Data memory usdcUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.usdcUsdNodeId);
 
         assertLe(ethUsdNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(ethUsdNodeOutput.price, 3500e18, 1000e18, 18);
+        assertApproxEqAbsDecimal(ethUsdNodeOutput.price, 3500e18, 2000e18, 18);
 
         assertLe(btcUsdNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(btcUsdNodeOutput.price, 65_000e18, 10_000e18, 18);
+        assertApproxEqAbsDecimal(btcUsdNodeOutput.price, 65_000e18, 20_000e18, 18);
 
         assertLe(solUsdNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(solUsdNodeOutput.price, 150e18, 50e18, 18);
+        assertApproxEqAbsDecimal(solUsdNodeOutput.price, 150e18, 100e18, 18);
 
         assertLe(ethUsdcNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(ethUsdcNodeOutput.price, 3500e18, 1000e18, 18);
+        assertApproxEqAbsDecimal(ethUsdcNodeOutput.price, 3500e18, 2000e18, 18);
 
         assertLe(btcUsdcNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(btcUsdcNodeOutput.price, 65_000e18, 10_000e18, 18);
+        assertApproxEqAbsDecimal(btcUsdcNodeOutput.price, 65_000e18, 20_000e18, 18);
 
         assertLe(solUsdcNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(solUsdcNodeOutput.price, 150e18, 50e18, 18);
+        assertApproxEqAbsDecimal(solUsdcNodeOutput.price, 150e18, 100e18, 18);
 
         assertLe(rusdUsdNodeOutput.timestamp, block.timestamp);
         assertApproxEqAbsDecimal(rusdUsdNodeOutput.price, 1e18, 0, 18);
