@@ -18,6 +18,7 @@ struct StaticEcosystem {
     address payable perp;
     address oracleManager;
     address payable periphery;
+    address payable ordersGateway;
     address exchangePass;
     address accountNft;
     address rusd;
@@ -27,8 +28,10 @@ struct StaticEcosystem {
     address ownerUpgradeModule;
     bytes32 ethUsdNodeId;
     bytes32 btcUsdNodeId;
+    bytes32 solUsdNodeId;
     bytes32 ethUsdcNodeId;
     bytes32 btcUsdcNodeId;
+    bytes32 solUsdcNodeId;
     bytes32 rusdUsdNodeId;
     bytes32 usdcUsdNodeId;
     uint256 mainChainId;

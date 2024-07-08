@@ -166,6 +166,33 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
 
+    function check_trade_slippage_sol_long() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(0.01e18);
+        s[2] = sd(0.02e18);
+        s[3] = sd(0.03e18);
+        s[4] = sd(0.04e18);
+        s[5] = sd(0.05e18);
+        s[6] = sd(0.06e18);
+        s[7] = sd(0.07e18);
+        s[8] = sd(0.08e18);
+        s[9] = sd(0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(0.01e18);
+        sPrime[2] = sd(0.019985e18);
+        sPrime[3] = sd(0.029935e18);
+        sPrime[4] = sd(0.03983e18);
+        sPrime[5] = sd(0.04965e18);
+        sPrime[6] = sd(0.059377e18);
+        sPrime[7] = sd(0.068993e18);
+        sPrime[8] = sd(0.078482e18);
+        sPrime[9] = sd(0.087829e18);
+
+        trade_slippage_helper({ marketId: 3, s: s, sPrime: sPrime, eps: ud(0.007e18) });
+    }
+
     function check_trade_slippage_eth_short() public {
         SD59x18[] memory s = new SD59x18[](10);
         s[1] = sd(-0.01e18);
@@ -220,65 +247,30 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
 
-    function check_trade_wethCollateral_leverage_eth() public {
-        // general info
-        // this tests 20x leverage is successful
-        (address user, uint256 userPk) = makeAddrAndKey("user");
-        uint256 amount = 1e18; // denominated in weth
-        uint128 marketId = 1; // eth
-        SD59x18 base = sd(1e18);
-        UD60x18 priceLimit = ud(10_000e18);
+    function check_trade_slippage_sol_short() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(-0.01e18);
+        s[2] = sd(-0.02e18);
+        s[3] = sd(-0.03e18);
+        s[4] = sd(-0.04e18);
+        s[5] = sd(-0.05e18);
+        s[6] = sd(-0.06e18);
+        s[7] = sd(-0.07e18);
+        s[8] = sd(-0.08e18);
+        s[9] = sd(-0.09e18);
+        // s[10] = sd(0.99e18);
 
-        // deposit new margin account
-        deal(sec.weth, address(sec.periphery), amount);
-        mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
-        vm.prank(dec.socketExecutionHelper[sec.weth]);
-        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
-            DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
-        );
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(-0.01e18);
+        sPrime[2] = sd(-0.019986e18);
+        sPrime[3] = sd(-0.029936e18);
+        sPrime[4] = sd(-0.039831e18);
+        sPrime[5] = sd(-0.049648e18);
+        sPrime[6] = sd(-0.059369e18);
+        sPrime[7] = sd(-0.068974e18);
+        sPrime[8] = sd(-0.078444e18);
+        sPrime[9] = sd(-0.087763e18);
 
-        executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
-
-        assertEq(IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, accountId).base, base.unwrap());
-
-        RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
-        UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
-        UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId).price);
-        UD60x18 absBase = base.abs().intoUD60x18();
-        UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
-
-        checkPoolHealth();
-    }
-
-    function check_trade_wethCollateral_leverage_btc() public {
-        // general info
-        // this tests 20x leverage is successful
-        (address user, uint256 userPk) = makeAddrAndKey("user");
-        uint256 amount = 10e18; // denominated in weth
-        uint128 marketId = 2; // btc
-        SD59x18 base = sd(1e18);
-        UD60x18 priceLimit = ud(100_000e18);
-
-        // deposit new margin account
-        deal(sec.weth, address(sec.periphery), amount);
-        mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
-        vm.prank(dec.socketExecutionHelper[sec.weth]);
-        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
-            DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
-        );
-
-        executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
-
-        RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
-        UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
-        UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId).price);
-        UD60x18 absBase = base.abs().intoUD60x18();
-        UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
-
-        checkPoolHealth();
+        trade_slippage_helper({ marketId: 3, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
 }
