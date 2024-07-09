@@ -14,6 +14,7 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.perp = payable(0x27E5cb712334e101B3c232eB0Be198baaa595F5F);
         sec.oracleManager = 0xC67316Ed17E0C793041CFE12F674af250a294aab;
         sec.periphery = payable(0xCd2869d1eb1BC8991Bc55de9E9B779e912faF736);
+        sec.ordersGateway = payable(0xfc8c96bE87Da63CeCddBf54abFA7B13ee8044739);
         sec.exchangePass = 0x76e3f2667aC55d502e26e59C5A6B46e7079217c7;
         sec.accountNft = 0x0354e71e0444d08e0Ce5E49EB91531A1Cac61144;
         sec.rusd = 0xa9F32a851B1800742e47725DA54a09A7Ef2556A3;
