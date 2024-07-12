@@ -12,7 +12,9 @@ include = [
     "../ranks/mainnet.toml",
     "../collateral_pools/collateral_pool_1/mainnet.toml",
     "../orders_gateway/mainnet.toml",
+    "../oracle_adapters/mainnet.toml",
 ]
+# TODO: bump version
 version = "1.0.8"
 
 [var.chain_ids]
@@ -41,6 +43,9 @@ exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
 ordersGatewayRouterPackage = "reya-orders-gateway:1.0.3@router"
+# TODO: set correct version
+# oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.x@proxy"
+# oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.x@router"
 
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
@@ -66,6 +71,7 @@ passivePoolProxy = "0xB4B77d6180cc14472A9a7BDFF01cc2459368D413"
 passivePerpProxy = "0x27E5cb712334e101B3c232eB0Be198baaa595F5F"
 peripheryProxy = "0xCd2869d1eb1BC8991Bc55de9E9B779e912faF736"
 ordersGatewayProxy = "<%= imports.reyaOrdersGatewayProxy.contracts.InitialProxy.address %>"
+oracleAdaptersProxy = "<%= imports.reyaOracleAdaptersProxy.contracts.InitialProxy.address %>"
 oracleManagerProxy = "0xC67316Ed17E0C793041CFE12F674af250a294aab"
 exchangePassProxy = "0x76e3f2667aC55d502e26e59C5A6B46e7079217c7"
 ranksProxy = "0x4Ab90747A2E8dEC7C378D591b80B9f2f8f78351F"
@@ -81,6 +87,13 @@ redstonePriceFeedUSDC = "0x73ac348c40403ff1156a2f53BA57bcCbA2C63915"
 redstonePriceFeedETH = "0xD583E60FD28Bb19d0C03Fb37553B83C665cf082B"
 redstonePriceFeedBTC = "0xbF675f4AF4351ee79B95f24651f4E3741079af5E"
 redstonePriceFeedSOL = "0x7D123d462268A46679dc4A1b89cFC8fBBab7388A"
+
+[var.stork_asset_pair_ids]
+storkAssetPairIdSOL = "SOLUSD"
+storkAssetPairIdUSDC = "USDCUSD"
+
+[var.stork_contracts]
+storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
 
 [var.socket_contracts]
 usdcController = "0x1d43076909Ca139BFaC4EbB7194518bE3638fc76"
