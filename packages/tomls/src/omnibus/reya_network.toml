@@ -87,7 +87,6 @@ redstonePriceFeedSOL = "0x7D123d462268A46679dc4A1b89cFC8fBBab7388A"
 # todo: p1: update once deployed on mainnet
 storkVerifyContract = "0x0000000000000000000000000000000000000000"
 
-
 [var.socket_contracts]
 usdcController = "0x1d43076909Ca139BFaC4EbB7194518bE3638fc76"
 usdcExecutionHelper = "0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa"
