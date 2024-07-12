@@ -42,6 +42,7 @@ exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
 ordersGatewayRouterPackage = "reya-orders-gateway:1.0.3@router"
+#oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.0@proxy"
 #oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.0@router"
 
 [var.account_nft_vars]
