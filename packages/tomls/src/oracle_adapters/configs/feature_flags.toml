@@ -1,0 +1,22 @@
+[invoke.oracle_adapters_unpause]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_pausers]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]

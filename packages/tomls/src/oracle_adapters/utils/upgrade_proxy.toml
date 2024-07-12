@@ -1,0 +1,21 @@
+[clone.reyaOracleAdaptersRouter]
+source = "<%= settings.oracleAdaptersRouterPackage %>"
+target = "<%= settings.oracleAdaptersRouterPackage %>"
+depends = ["var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_oracle_adapters_proxy]
+target = ["<%= settings.oracleAdaptersProxy %>"]
+abi = "<%= JSON.stringify(imports.reyaOracleAdaptersRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = [
+    "<%= imports.reyaOracleAdaptersRouter.contracts.OracleAdaptersRouter.address %>",
+]
+factory.OracleAdaptersProxy.abiOf = [
+    "reyaOracleAdaptersRouter.OracleAdaptersRouter",
+]
+factory.OracleAdaptersProxy.event = "Upgraded"
+factory.OracleAdaptersProxy.arg = 0
+depends = ["var.upgrade_proxy_vars", "clone.reyaOracleAdaptersRouter"]

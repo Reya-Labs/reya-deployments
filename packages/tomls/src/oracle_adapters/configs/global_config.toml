@@ -1,0 +1,9 @@
+[invoke.oracle_adapters_global_config]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "setConfiguration"
+args = [
+    # todo: p1: reference the stork verify contract
+    { storkVerifyContract = "0x"},
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
