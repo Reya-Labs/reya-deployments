@@ -7,7 +7,7 @@ args = [
     "0x",
     [
         "<%= settings.solUsdcNodeIdStork %>",
-        "<%= settings.solUsdcNodeId %>", # redstone
+        "<%= settings.solUsdcNodeId %>",      # redstone
     ],
 ]
 var.solUsdcNodeIdFallbackStorkRedstone.event = "NodeRegistered"
@@ -22,4 +22,6 @@ args = [
     "<%= settings.solUsdcNodeIdFallbackStorkRedstone %>",
     "<%= settings.solUsdcMaxStaleDurationFallbackStorkRedstone %>",
 ]
-depends = ["invoke.oracle_manager_register_node_sol_usdc_fallback_stork_redstone"]
+depends = [
+    "invoke.oracle_manager_register_node_sol_usdc_fallback_stork_redstone",
+]

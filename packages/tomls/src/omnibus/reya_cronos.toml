@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/testnet.toml",
     "../oracle_adapters/testnet.toml",
 ]
-version = "1.0.5"
+version = "1.0.6"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -41,7 +41,7 @@ passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.4@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.0.2@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
-oracleManagerRouterPackage = "reya-oracle-manager:1.0.1@router"
+oracleManagerRouterPackage = "reya-oracle-manager:1.0.2@router"
 exchangePassProxyPackage = "reya-exchange-pass-nft:1.0.0@proxy"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksProxyPackage = "reya-ranks:1.0.0@proxy"
@@ -80,7 +80,6 @@ oracleAdaptersProxy = "<%= imports.reyaOracleAdaptersProxy.contracts.InitialProx
 oracleManagerProxy = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>"
 exchangePassProxy = "<%= imports.reyaExchangePassProxy.contracts.InitialProxy.address %>"
 ranksProxy = "<%= imports.reyaRanksProxy.contracts.InitialProxy.address %>"
-oracleAdaptersProxy = "<%= imports.reyaOracleAdaptersProxy.contracts.InitialProxy.address %>"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
