@@ -9,8 +9,8 @@ args = [
     [
     ],
 ]
-var.solUsdNodeId.event = "NodeRegistered"
-var.solUsdNodeId.arg = 0
+var.solUsdNodeIdStork.event = "NodeRegistered"
+var.solUsdNodeIdStork.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
 [invoke.oracle_manager_sol_usd_stork_max_stale_duration]
