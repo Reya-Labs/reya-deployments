@@ -79,6 +79,7 @@ ordersGatewayProxy = "<%= imports.reyaOrdersGatewayProxy.contracts.InitialProxy.
 oracleManagerProxy = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>"
 exchangePassProxy = "<%= imports.reyaExchangePassProxy.contracts.InitialProxy.address %>"
 ranksProxy = "<%= imports.reyaRanksProxy.contracts.InitialProxy.address %>"
+oracleAdaptersProxy = "<%= imports.reyaOracleAdaptersProxy.contracts.InitialProxy.address %>"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
@@ -91,6 +92,10 @@ redstonePriceFeedUSDC = "0xDefB236eB69b7f94490786375B093C6c8271214A"
 redstonePriceFeedETH = "0x187078471869387119FB88E8F033412A0F0fdfcd"
 redstonePriceFeedBTC = "0x22Ef8eb05189cF39a347F93a33508D0ce9e37830"
 redstonePriceFeedSOL = "0x3e3762c10F018fE02701be651b5c0937C3a7d7e1"
+
+[var.stork_asset_pair_ids]
+storkAssetPairIdSOL = "SOLUSD"
+storkAssetPairIdUSDC = "USDCUSD"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
