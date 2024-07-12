@@ -12,7 +12,7 @@ include = [
     "../ranks/mainnet.toml",
     "../collateral_pools/collateral_pool_1/mainnet.toml",
     "../orders_gateway/mainnet.toml",
-#    "../oracle_adapters/mainnet.toml",
+    #    "../oracle_adapters/mainnet.toml",
 ]
 version = "1.0.8"
 
