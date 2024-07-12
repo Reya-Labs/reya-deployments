@@ -6,8 +6,6 @@ args = ["<%= keccak256(hexlify('global')) %>", true]
 depends = ["invoke.upgrade_oracle_adapters_proxy"]
 
 [invoke.oracle_adapters_set_pausers]
-
-]
 target = ["OracleAdaptersProxy"]
 fromCall.func = "owner"
 func = "setDeniers"
