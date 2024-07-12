@@ -12,6 +12,7 @@ include = [
     "../ranks/testnet.toml",
     "../collateral_pools/collateral_pool_1/testnet.toml",
     "../orders_gateway/testnet.toml",
+    "../oracle_adapters/testnet.toml",
 ]
 version = "1.0.4"
 
@@ -88,6 +89,9 @@ redstonePriceFeedUSDC = "0xDefB236eB69b7f94490786375B093C6c8271214A"
 redstonePriceFeedETH = "0x187078471869387119FB88E8F033412A0F0fdfcd"
 redstonePriceFeedBTC = "0x22Ef8eb05189cF39a347F93a33508D0ce9e37830"
 redstonePriceFeedSOL = "0x3e3762c10F018fE02701be651b5c0937C3a7d7e1"
+
+[var.stork_contracts]
+storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
 
 [var.socket_contracts]
 usdcController = "0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e"

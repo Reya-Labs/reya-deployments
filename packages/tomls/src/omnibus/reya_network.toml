@@ -12,6 +12,7 @@ include = [
     "../ranks/mainnet.toml",
     "../collateral_pools/collateral_pool_1/mainnet.toml",
     "../orders_gateway/mainnet.toml",
+    "../oracle_adapters/mainnet.toml",
 ]
 version = "1.0.8"
 
@@ -81,6 +82,11 @@ redstonePriceFeedUSDC = "0x73ac348c40403ff1156a2f53BA57bcCbA2C63915"
 redstonePriceFeedETH = "0xD583E60FD28Bb19d0C03Fb37553B83C665cf082B"
 redstonePriceFeedBTC = "0xbF675f4AF4351ee79B95f24651f4E3741079af5E"
 redstonePriceFeedSOL = "0x7D123d462268A46679dc4A1b89cFC8fBBab7388A"
+
+[var.stork_contracts]
+# todo: p1: update once deployed on mainnet
+storkVerifyContract = "0x0000000000000000000000000000000000000000"
+
 
 [var.socket_contracts]
 usdcController = "0x1d43076909Ca139BFaC4EbB7194518bE3638fc76"

@@ -12,6 +12,7 @@ include = [
     "../ranks/testnet.toml",
     "../collateral_pools/collateral_pool_1/testnet.toml",
     "../orders_gateway/fuzzing.toml",
+    "../oracle_adapters/fuzzing.toml",
 ]
 version = "1.0.0"
 
