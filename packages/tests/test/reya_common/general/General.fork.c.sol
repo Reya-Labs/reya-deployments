@@ -104,18 +104,16 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
     function check_OracleNodePrices(bool flagCheckStaleness) public {
         setupOracleNodePriceParams();
-    
+
         for (uint256 i = 0; i < ls.nodeIds.length; i++) {
-            NodeOutput.Data memory nodeOutput = IOracleManagerProxy(sec.oracleManager).process(
-                ls.nodeIds[i]
-            );
-            NodeDefinition.Data memory nodeDefinition = IOracleManagerProxy(sec.oracleManager)
-                .getNode(ls.nodeIds[i]);
+            NodeOutput.Data memory nodeOutput = IOracleManagerProxy(sec.oracleManager).process(ls.nodeIds[i]);
+            NodeDefinition.Data memory nodeDefinition = IOracleManagerProxy(sec.oracleManager).getNode(ls.nodeIds[i]);
 
             assertLe(nodeOutput.timestamp, block.timestamp);
             assertApproxEqAbsDecimal(nodeOutput.price, ls.meanPrices[i], ls.maxDeviations[i], 18);
 
-            // note: in the case of it is not one minute staleness for all oracle nodes, create individual values, similar to meanPrices
+            // note: in the case of it is not one minute staleness for all oracle nodes, create individual values,
+            // similar to meanPrices
             if (flagCheckStaleness) {
                 assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, nodeOutput.timestamp);
                 assertEq(nodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
