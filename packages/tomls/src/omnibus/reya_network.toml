@@ -166,6 +166,10 @@ solUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 solUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 usdcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+solUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+solUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+solUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdcUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"

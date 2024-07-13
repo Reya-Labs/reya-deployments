@@ -46,4 +46,23 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     function test_OracleManager() public {
         check_OracleNodePrices(true);
     }
+
+    function test_FallbackOracleNodes() public {
+        vm.mockCall(
+            sec.oracleManager,
+            abi.encodeCall(IOracleManagerProxy.process, (sec.solUsdcStorkNodeId)),
+            abi.encode(NodeOutput.Data(1000e18, block.timestamp - ONE_MINUTE_IN_SECONDS - 1))
+        );
+
+        NodeOutput.Data memory nodeOutput = IOracleManagerProxy(sec.oracleManager).process(
+            sec.solUsdcStorkFallbackNodeId
+        );
+
+        NodeOutput.Data memory nodeOutputRedstone = IOracleManagerProxy(sec.oracleManager).process(
+            sec.solUsdcNodeId
+        );
+
+        assertEq(nodeOutput.price, nodeOutputRedstone.price);
+        assertEq(nodeOutput.timestamp, nodeOutputRedstone.timestamp);
+    }
 }
