@@ -19,6 +19,7 @@ struct StaticEcosystem {
     address oracleManager;
     address payable periphery;
     address payable ordersGateway;
+    address payable oracleAdaptersProxy;
     address exchangePass;
     address accountNft;
     address rusd;
