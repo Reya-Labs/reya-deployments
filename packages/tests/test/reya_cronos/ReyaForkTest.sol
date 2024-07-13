@@ -17,6 +17,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.pool = payable(0x9A3A664987b88790A6FDC1632e3b607813fd94fF);
         sec.perp = payable(0x9EC177fed042eF2307928BE2F5CDbf663B20244B);
         sec.oracleManager = 0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA;
+        sec.oracleAdaptersProxy = payable(0xc501A2356703CD351703D68963c6F4136120f7CF);
         sec.periphery = payable(0x94ccAe812f1647696754412082dd6684C2366A7f);
         sec.ordersGateway = payable(0x5A0aC2f89E0BDeaFC5C549e354842210A3e87CA5);
         sec.exchangePass = 0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB;
