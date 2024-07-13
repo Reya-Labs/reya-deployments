@@ -1,0 +1,39 @@
+[invoke.oracle_adapters_set_publisher1]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('publishers')) %>",
+    "<%= settings.storkPublisher1 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_publisher2]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('publishers')) %>",
+    "<%= settings.storkPublisher2 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_publisher3]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('publishers')) %>",
+    "<%= settings.storkPublisher3 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_publisher4]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('publishers')) %>",
+    "<%= settings.storkPublisher4 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]

@@ -1,0 +1,6 @@
+[clone.reyaOracleAdaptersProxy]
+source = "<%= settings.oracleAdaptersProxyPackage %>"
+target = "<%= settings.oracleAdaptersProxyPackage %>"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.salt %>"
+depends = ["var.cannonClonePackages"]
