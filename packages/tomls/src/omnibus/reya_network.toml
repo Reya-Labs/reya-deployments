@@ -80,6 +80,12 @@ pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
 pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
+[var.stork_publishers]
+storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
+storkPublisher2 = "0xb91C675E0c0Ecfd4c16f97B110376C3C224061d8"
+storkPublisher3 = "0x51aa9e9c781f85a2c0636a835eb80114c4553098"
+storkPublisher4 = "0xf024a9aa110798e5cd0d698fba6523113eaa7fb2"
+
 [var.redstone_oracles]
 redstonePriceFeedUSDC = "0x73ac348c40403ff1156a2f53BA57bcCbA2C63915"
 redstonePriceFeedETH = "0xD583E60FD28Bb19d0C03Fb37553B83C665cf082B"

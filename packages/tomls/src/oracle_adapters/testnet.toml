@@ -1,1 +1,1 @@
-include = ["./mainnet.toml", "./configs/set_publishers.toml"]
+include = ["./mainnet.toml"]
