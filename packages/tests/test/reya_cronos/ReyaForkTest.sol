@@ -35,6 +35,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
         sec.usdcUsdNodeId = 0x11aa53901ced174bb9f60b47d2c2c9a0ed7d51916caf0a072cf96842a800acc3;
         sec.solUsdcStorkFallbackNodeId = 0xbc20afac3a933b7c7f814fc8fe08344d5dabe3d154b0584461b677b8568553c8;
+        sec.solUsdStorkNodeId = 0x556ff41dece77a2461e7dd72258a29e46ffc7ac5c6d0edf8001867d551ab21d2;
         sec.solUsdcStorkNodeId = 0xa456e0f61bd6068a3a73176ab1c58b840e57e0a272ca29974d3f0bd709fc96c4;
         sec.usdcUsdStorkNodeId = 0x28c79729ca502a5cd2565613c087a3bda098a1c78e3f3f45733d03c3482f099d;
         sec.passivePoolId = 1;

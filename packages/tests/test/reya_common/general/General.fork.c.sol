@@ -89,6 +89,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(meanPriceSOL);
         ls.maxDeviations.push(maxDeviationSOL);
 
+        ls.nodeIds.push(sec.solUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceSOL);
+        ls.maxDeviations.push(maxDeviationSOL);
+
         ls.nodeIds.push(sec.solUsdcStorkNodeId);
         ls.meanPrices.push(meanPriceSOL);
         ls.maxDeviations.push(maxDeviationSOL);
