@@ -35,6 +35,10 @@ struct StaticEcosystem {
     bytes32 solUsdcNodeId;
     bytes32 rusdUsdNodeId;
     bytes32 usdcUsdNodeId;
+    bytes32 solUsdcStorkFallbackNodeId;
+    bytes32 solUsdStorkNodeId;
+    bytes32 solUsdcStorkNodeId;
+    bytes32 usdcUsdStorkNodeId;
     uint256 mainChainId;
     uint128 passivePoolId;
     uint128 passivePoolAccountId;
