@@ -4,7 +4,6 @@ fromCall.func = "owner"
 func = "registerNode"
 args = [
     "<%= settings.ORACLE_MANAGER_NODE_TYPE_STORK_OFFCHAIN_LOOKUP %>",
-    # todo: p1: check if variables are properly set
     "<%= defaultAbiCoder.encode(['address','string'], [contracts.OracleAdaptersProxy.address,settings.storkAssetPairIdUSDC]) %>",
     [
     ],
