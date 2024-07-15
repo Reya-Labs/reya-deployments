@@ -1,0 +1,199 @@
+[invoke.oracle_adapters_set_executor1]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor1 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor2]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor2 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor3]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor3 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor4]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor4 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor5]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor5 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor6]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor6 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor7]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor7 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor8]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor8 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor9]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor9 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor10]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor10 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor11]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor11 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor12]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor12 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor13]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor13 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor14]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor14 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor15]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor15 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor16]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor16 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor17]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor17 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor18]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor18 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor19]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor19 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_executor20]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor20 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]

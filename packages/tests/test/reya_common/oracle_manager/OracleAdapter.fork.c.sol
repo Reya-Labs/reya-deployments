@@ -9,6 +9,7 @@ import {
 
 contract OracleAdapterForkCheck is BaseReyaForkTest {
     bytes32 internal constant _PUBLISHER_FEATURE_FLAG = keccak256(bytes("publishers"));
+    bytes32 internal constant _EXECUTOR_FEATURE_FLAG = keccak256(bytes("executors"));
     address internal futurePublisher;
     uint256 internal futurePublisherPK;
 
@@ -45,11 +46,24 @@ contract OracleAdapterForkCheck is BaseReyaForkTest {
     }
 
     function check_fulfillOracleQuery_StorkOracleAdapter() public {
+        (address futureExecutor,) = makeAddrAndKey("futureExecutor");
+
         // create a StorkPricePayload and sign it
         StorkSignedPayload memory storkSignedPayload = createSignedPricePayload(block.timestamp);
 
         // expect revert since the publisher is not authorized yet
-        vm.prank(futurePublisher);
+        vm.prank(futureExecutor);
+        vm.expectRevert(
+            abi.encodeWithSelector(IOracleAdaptersProxy.FeatureUnavailable.selector, _EXECUTOR_FEATURE_FLAG)
+        );
+        IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(abi.encode(storkSignedPayload));
+
+        // authorize the executor
+        vm.prank(sec.multisig);
+        IOracleAdaptersProxy(sec.oracleAdaptersProxy).addToFeatureFlagAllowlist(_EXECUTOR_FEATURE_FLAG, futureExecutor);
+
+        // expect revert since the publisher is not authorized yet
+        vm.prank(futureExecutor);
         vm.expectRevert(abi.encodeWithSelector(IOracleAdaptersProxy.UnauthorizedPublisher.selector, futurePublisher));
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(abi.encode(storkSignedPayload));
 
@@ -60,14 +74,14 @@ contract OracleAdapterForkCheck is BaseReyaForkTest {
         );
 
         // expect successful update
-        vm.prank(futurePublisher);
+        vm.prank(futureExecutor);
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(abi.encode(storkSignedPayload));
 
         // create an earlier StorkPricePayload and sign it
         StorkSignedPayload memory storkSignedPayload2 = createSignedPricePayload(block.timestamp - 1);
 
         // expect revert since we push an earlier price payload
-        vm.prank(futurePublisher);
+        vm.prank(futureExecutor);
         vm.expectRevert(
             abi.encodeWithSelector(
                 IOracleAdaptersProxy.StorkPayloadOlderThanLatest.selector,

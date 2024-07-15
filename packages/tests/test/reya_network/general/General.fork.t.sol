@@ -6,6 +6,8 @@ import { GeneralForkCheck } from "../../reya_common/general/General.fork.c.sol";
 import "../../reya_common/DataTypes.sol";
 import { IPeripheryProxy, GlobalConfiguration } from "../../../src/interfaces/IPeripheryProxy.sol";
 import { IOracleManagerProxy, NodeOutput, NodeDefinition } from "../../../src/interfaces/IOracleManagerProxy.sol";
+import { IOracleAdaptersProxy, StorkPricePayload } from "../../../src/interfaces/IOracleAdaptersProxy.sol";
+import { IAggregatorV3Interface } from "../../../src/interfaces/IAggregatorV3Interface.sol";
 
 contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     function testFuzz_ProxiesOwnerAndUpgrades(address attacker) public {
@@ -43,72 +45,71 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         );
     }
 
-    function test_OracleManager() public view {
-        NodeOutput.Data memory ethUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId);
-        NodeOutput.Data memory btcUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId);
-        NodeOutput.Data memory solUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.solUsdNodeId);
-        NodeOutput.Data memory ethUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcNodeId);
-        NodeOutput.Data memory btcUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdcNodeId);
-        NodeOutput.Data memory solUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcNodeId);
-        NodeOutput.Data memory rusdUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.rusdUsdNodeId);
-        NodeOutput.Data memory usdcUsdNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.usdcUsdNodeId);
+    function test_OracleManager() public {
+        check_OracleNodePrices(true);
+    }
 
-        assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, ethUsdNodeOutput.timestamp);
-        assertLe(ethUsdNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(ethUsdNodeOutput.price, 3500e18, 2000e18, 18);
+    function mockStaleStork() private {
+        vm.mockCall(
+            sec.oracleAdaptersProxy,
+            abi.encodeCall(IOracleAdaptersProxy.getLatestPricePayload, ("SOLUSD")),
+            abi.encode(
+                StorkPricePayload({
+                    assetPairId: "SOLUSD",
+                    timestamp: block.timestamp - ONE_MINUTE_IN_SECONDS - 1,
+                    price: 1000e18
+                })
+            )
+        );
 
-        assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, btcUsdNodeOutput.timestamp);
-        assertLe(btcUsdNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(btcUsdNodeOutput.price, 65_000e18, 20_000e18, 18);
+        vm.mockCall(
+            sec.oracleAdaptersProxy,
+            abi.encodeCall(IOracleAdaptersProxy.getLatestPricePayload, ("USDCUSD")),
+            abi.encode(StorkPricePayload({ assetPairId: "USDCUSD", timestamp: block.timestamp, price: 1e18 }))
+        );
+    }
 
-        assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, solUsdNodeOutput.timestamp);
-        assertLe(solUsdNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(solUsdNodeOutput.price, 150e18, 100e18, 18);
-
-        assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, ethUsdcNodeOutput.timestamp);
-        assertLe(ethUsdcNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(ethUsdcNodeOutput.price, 3500e18, 2000e18, 18);
-
-        assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, btcUsdcNodeOutput.timestamp);
-        assertLe(btcUsdcNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(btcUsdcNodeOutput.price, 65_000e18, 20_000e18, 18);
-
-        assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, solUsdcNodeOutput.timestamp);
-        assertLe(solUsdcNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(solUsdcNodeOutput.price, 150e18, 100e18, 18);
-
-        assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, rusdUsdNodeOutput.timestamp);
-        assertLe(rusdUsdNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(rusdUsdNodeOutput.price, 1e18, 0, 18);
-
-        assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, usdcUsdNodeOutput.timestamp);
-        assertLe(usdcUsdNodeOutput.timestamp, block.timestamp);
-        assertApproxEqAbsDecimal(usdcUsdNodeOutput.price, 1e18, 0.01e18, 18);
-
-        NodeDefinition.Data memory ethUsdNodeDefinition =
-            IOracleManagerProxy(sec.oracleManager).getNode(sec.ethUsdNodeId);
-        NodeDefinition.Data memory btcUsdNodeDefinition =
-            IOracleManagerProxy(sec.oracleManager).getNode(sec.btcUsdNodeId);
+    function mockStaleRedstone() private {
         NodeDefinition.Data memory solUsdNodeDefinition =
             IOracleManagerProxy(sec.oracleManager).getNode(sec.solUsdNodeId);
-        NodeDefinition.Data memory ethUsdcNodeDefinition =
-            IOracleManagerProxy(sec.oracleManager).getNode(sec.ethUsdcNodeId);
-        NodeDefinition.Data memory btcUsdcNodeDefinition =
-            IOracleManagerProxy(sec.oracleManager).getNode(sec.btcUsdcNodeId);
-        NodeDefinition.Data memory solUsdcNodeDefinition =
-            IOracleManagerProxy(sec.oracleManager).getNode(sec.solUsdcNodeId);
-        NodeDefinition.Data memory rusdUsdNodeDefinition =
-            IOracleManagerProxy(sec.oracleManager).getNode(sec.rusdUsdNodeId);
+        (address solUsdRedstone,) = abi.decode(solUsdNodeDefinition.parameters, (address, uint256));
+
+        vm.mockCall(
+            solUsdRedstone,
+            abi.encodeCall(IAggregatorV3Interface.latestRoundData, ()),
+            abi.encode(0, 1000e8, 0, block.timestamp - ONE_MINUTE_IN_SECONDS - 1, 0)
+        );
+
         NodeDefinition.Data memory usdcUsdNodeDefinition =
             IOracleManagerProxy(sec.oracleManager).getNode(sec.usdcUsdNodeId);
+        (address usdcUsdRedstone,) = abi.decode(usdcUsdNodeDefinition.parameters, (address, uint256));
 
-        assertEq(ethUsdNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
-        assertEq(btcUsdNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
-        assertEq(solUsdNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
-        assertEq(ethUsdcNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
-        assertEq(btcUsdcNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
-        assertEq(solUsdcNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
-        assertEq(rusdUsdNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
-        assertEq(usdcUsdNodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
+        vm.mockCall(
+            usdcUsdRedstone,
+            abi.encodeCall(IAggregatorV3Interface.latestRoundData, ()),
+            abi.encode(0, 1e8, 0, block.timestamp, 0)
+        );
+    }
+
+    function test_FallbackOracleNode_StaleStork() public {
+        mockStaleStork();
+
+        NodeOutput.Data memory nodeOutput =
+            IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcStorkFallbackNodeId);
+
+        NodeOutput.Data memory nodeOutputRedstone = IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcNodeId);
+
+        assertEq(nodeOutput.price, nodeOutputRedstone.price);
+        assertEq(nodeOutput.timestamp, nodeOutputRedstone.timestamp);
+    }
+
+    function test_FallbackOracleNode_StaleStorkAndRedstone() public {
+        mockStaleStork();
+        mockStaleRedstone();
+
+        vm.expectRevert(
+            abi.encodeWithSelector(IOracleManagerProxy.StalePriceDetected.selector, sec.solUsdcStorkFallbackNodeId)
+        );
+        IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcStorkFallbackNodeId);
     }
 }

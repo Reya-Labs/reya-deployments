@@ -4,4 +4,5 @@ include = [
     "configs/feature_flags.toml",
     "configs/global_config.toml",
     "configs/set_publishers.toml",
+    "configs/set_executors.toml",
 ]

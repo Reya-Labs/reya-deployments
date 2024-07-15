@@ -12,7 +12,7 @@ var.usdcUsdNodeIdStork.event = "NodeRegistered"
 var.usdcUsdNodeIdStork.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
-[invoke.oracle_manager_sol_usd_stork_max_stale_duration]
+[invoke.oracle_manager_usdc_usd_stork_max_stale_duration]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "setMaxStaleDuration"

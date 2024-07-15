@@ -30,6 +30,10 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.solUsdcNodeId = 0xd661618c38acddf411cf3795c026257232914b09245bc00ae23333667732e20c;
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
         sec.usdcUsdNodeId = 0x7c1a73684de34b95f492a9ee72c0d8e1589714eeba4a457f766b84bd1c2f240f;
+        sec.solUsdcStorkFallbackNodeId = 0x97c5aab791da0de5ccd0db4771c9179984569c4d303aa7d970888a3644276c63;
+        sec.solUsdStorkNodeId = 0xdee981b6607d86960d2e6086c1b1d8c78a4c6dbccf7ff02e22494c1980867687;
+        sec.solUsdcStorkNodeId = 0x223cb61408708c4a535649cab964e092739f340fc09b52c141ff4c2a353f1465;
+        sec.usdcUsdStorkNodeId = 0xc392c001dcf7749e4cdb7967e7ecac04628dea34555b1963bab626b9ef79d63f;
         sec.passivePoolId = 1;
         sec.passivePoolAccountId = 2;
         sec.ownerUpgradeModule = 0x70230eE0CcA326A559410DCEd74F2972306D1e1e;

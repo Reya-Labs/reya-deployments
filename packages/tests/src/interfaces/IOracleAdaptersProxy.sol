@@ -29,6 +29,8 @@ interface IOracleAdaptersProxy {
     );
 
     error UnauthorizedPublisher(address unathorizedPublisher);
+
+    error FeatureUnavailable(bytes32 which);
 }
 
 struct StorkSignedPayload {

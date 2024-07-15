@@ -1,8 +1,1 @@
-include = [
-    "./mainnet.toml",
-    "configs/stork/sol_usd.toml",
-    "configs/stork/sol_usdc.toml",
-    "configs/stork/usdc_usd.toml",
-    "configs/fallback_stork_redstone/sol_usdc.toml",
-    "utils/deploy_proxy.toml",
-]
+include = ["./mainnet.toml", "utils/deploy_proxy.toml"]
