@@ -252,7 +252,8 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
 
             int256 marginBalance1 = ICoreProxy(sec.core).getNodeMarginInfo(accountId, sec.rusd).marginBalance;
 
-            assertApproxEqAbsDecimal(marginBalance0, marginBalance1, 0.1e6, 6);
+            // TODO: when collateral WETH price points to Stork, lower the acceptance to 10 * 0.01e6
+            assertApproxEqAbsDecimal(marginBalance0, marginBalance1, 10 * 1e6, 6);
         }
     }
 }
