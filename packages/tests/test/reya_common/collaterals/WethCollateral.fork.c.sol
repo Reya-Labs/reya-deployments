@@ -244,6 +244,12 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
                 abi.encode(NodeOutput.Data({ price: randomPrices[i], timestamp: block.timestamp }))
             );
 
+            vm.mockCall(
+                sec.oracleManager,
+                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkFallbackNodeId)),
+                abi.encode(NodeOutput.Data({ price: randomPrices[i], timestamp: block.timestamp }))
+            );
+
             int256 marginBalance1 = ICoreProxy(sec.core).getNodeMarginInfo(accountId, sec.rusd).marginBalance;
 
             assertApproxEqAbsDecimal(marginBalance0, marginBalance1, 0.1e6, 6);

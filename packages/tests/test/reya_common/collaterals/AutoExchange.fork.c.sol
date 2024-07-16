@@ -109,6 +109,11 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcNodeId)),
             abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
         );
+        vm.mockCall(
+            sec.oracleManager,
+            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkFallbackNodeId)),
+            abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
+        );
 
         // check that the account is AE-able but still healthy
         s.tbal0.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.rusd).marginBalance;
