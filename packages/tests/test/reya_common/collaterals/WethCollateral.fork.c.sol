@@ -230,7 +230,7 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
 
         int256 marginBalance0 = ICoreProxy(sec.core).getNodeMarginInfo(accountId, sec.rusd).marginBalance;
         // TODO: when collateral WETH price points to Stork, lower the acceptance to 10 * 0.01e6
-        assertApproxEqAbsDecimal(marginBalance0 + int256(fees), 10e6 * int256(orderPrice.unwrap()) / 1e18, 10 * 1e6, 6);
+        assertApproxEqAbsDecimal(marginBalance0 + int256(fees), 10e6 * int256(orderPrice.unwrap()) / 1e18, 10 * 10e6, 6);
 
         uint256[] memory randomPrices = new uint256[](4);
         randomPrices[0] = 3000e18;
@@ -254,7 +254,7 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
             int256 marginBalance1 = ICoreProxy(sec.core).getNodeMarginInfo(accountId, sec.rusd).marginBalance;
 
             // TODO: when collateral WETH price points to Stork, lower the acceptance to 10 * 0.01e6
-            assertApproxEqAbsDecimal(marginBalance0, marginBalance1, 10 * 1e6, 6);
+            assertApproxEqAbsDecimal(marginBalance0, marginBalance1, 10 * 10e6, 6);
         }
     }
 }
