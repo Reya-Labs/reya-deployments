@@ -85,13 +85,37 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(meanPriceStableCoin);
         ls.maxDeviations.push(maxDeviationStableCoin);
 
+        ls.nodeIds.push(sec.ethUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceETH);
+        ls.maxDeviations.push(maxDeviationETH);
+
+        ls.nodeIds.push(sec.btcUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceBTC);
+        ls.maxDeviations.push(maxDeviationBTC);
+
         ls.nodeIds.push(sec.solUsdcStorkFallbackNodeId);
         ls.meanPrices.push(meanPriceSOL);
         ls.maxDeviations.push(maxDeviationSOL);
 
+        ls.nodeIds.push(sec.ethUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceETH);
+        ls.maxDeviations.push(maxDeviationETH);
+
+        ls.nodeIds.push(sec.btcUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceBTC);
+        ls.maxDeviations.push(maxDeviationBTC);
+
         ls.nodeIds.push(sec.solUsdStorkNodeId);
         ls.meanPrices.push(meanPriceSOL);
         ls.maxDeviations.push(maxDeviationSOL);
+
+        ls.nodeIds.push(sec.ethUsdcStorkNodeId);
+        ls.meanPrices.push(meanPriceETH);
+        ls.maxDeviations.push(maxDeviationETH);
+
+        ls.nodeIds.push(sec.btcUsdcStorkNodeId);
+        ls.meanPrices.push(meanPriceBTC);
+        ls.maxDeviations.push(maxDeviationBTC);
 
         ls.nodeIds.push(sec.solUsdcStorkNodeId);
         ls.meanPrices.push(meanPriceSOL);

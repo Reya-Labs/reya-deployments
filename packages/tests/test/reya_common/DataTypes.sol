@@ -35,8 +35,14 @@ struct StaticEcosystem {
     bytes32 solUsdcNodeId;
     bytes32 rusdUsdNodeId;
     bytes32 usdcUsdNodeId;
+    bytes32 ethUsdcStorkFallbackNodeId;
+    bytes32 btcUsdcStorkFallbackNodeId;
     bytes32 solUsdcStorkFallbackNodeId;
+    bytes32 ethUsdStorkNodeId;
+    bytes32 btcUsdStorkNodeId;
     bytes32 solUsdStorkNodeId;
+    bytes32 ethUsdcStorkNodeId;
+    bytes32 btcUsdcStorkNodeId;
     bytes32 solUsdcStorkNodeId;
     bytes32 usdcUsdStorkNodeId;
     uint256 mainChainId;

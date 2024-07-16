@@ -26,6 +26,11 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.usdc = 0xfA27c7c6051344263533cc365274d9569b0272A8;
         sec.weth = 0x2CF56315ACC7E791B1A0135c09d8D5C8dBCD2F14;
         sec.wbtc = 0x459374F3f3E92728bCa838DfA8C95E706FE67E8a;
+        sec.passivePoolId = 1;
+        sec.passivePoolAccountId = 4;
+        sec.ownerUpgradeModule = 0x3fa74FfE7B278a25877E16f00e73d5F5FA499183;
+        sec.mainChainId = ethereumSepoliaChainId;
+
         sec.ethUsdNodeId = 0x82eef5437e9009ecf7691ffdae182e5463438c99963d0da9ac8512d0a3679a95;
         sec.btcUsdNodeId = 0x9b535a03d6bfaa6d85a3026580f42349e9e26a7067714732d977fc9c1b2c8668;
         sec.solUsdNodeId = 0x124ba4123aa9d8663863554253e5859480211d1a0160257ccf5d12315aaacce1;
@@ -34,14 +39,16 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.solUsdcNodeId = 0x5f04732bb640020dd447ac06ef47eae461717fbc6b3ba2f71b3a95e00445a502;
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
         sec.usdcUsdNodeId = 0x11aa53901ced174bb9f60b47d2c2c9a0ed7d51916caf0a072cf96842a800acc3;
+        sec.ethUsdcStorkFallbackNodeId = 0x0f0a2e1036f9102c8ebad9d0c19e2dee774bcdefd459f5552058167e144ed3ca;
+        sec.btcUsdcStorkFallbackNodeId = 0xe83d3a85208a01a94fa56266b73f29ec4d897eb4477659aea702a477a97c7bf1;
         sec.solUsdcStorkFallbackNodeId = 0xbc20afac3a933b7c7f814fc8fe08344d5dabe3d154b0584461b677b8568553c8;
+        sec.ethUsdStorkNodeId = 0x6f1442b15af1cde852d45cdd67336b330257c9df23834909159097b25b57936c;
+        sec.btcUsdStorkNodeId = 0xc232870be8422ed7d9f74df9dd227b4f53b1f682e14b6b594a41893226a76e84;
         sec.solUsdStorkNodeId = 0x556ff41dece77a2461e7dd72258a29e46ffc7ac5c6d0edf8001867d551ab21d2;
+        sec.ethUsdcStorkNodeId = 0xb19e4d8ea5f0a3752fbd19515075063f7486e6954b8aa2b3d462c61726c46619;
+        sec.btcUsdcStorkNodeId = 0xc03b30c42ae5497a9b0062d503ae84cc83a9c282b92b0354dfcf80db949bc4dd;
         sec.solUsdcStorkNodeId = 0xa456e0f61bd6068a3a73176ab1c58b840e57e0a272ca29974d3f0bd709fc96c4;
         sec.usdcUsdStorkNodeId = 0x28c79729ca502a5cd2565613c087a3bda098a1c78e3f3f45733d03c3482f099d;
-        sec.passivePoolId = 1;
-        sec.passivePoolAccountId = 4;
-        sec.ownerUpgradeModule = 0x3fa74FfE7B278a25877E16f00e73d5F5FA499183;
-        sec.mainChainId = ethereumSepoliaChainId;
 
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
         dec.socketExecutionHelper[sec.usdc] = 0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE;
