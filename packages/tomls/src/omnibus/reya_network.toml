@@ -177,9 +177,9 @@ wethWithdrawalTvlPercentageLimitUnscaled = "1"
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.5"
 pool1RusdRebateUnscaled = "0.6"
-market1Eth_tier0FeeUnscaled = "0.0010"
+market1Eth_tier0FeeUnscaled = "0.0005"
 market2Btc_tier0FeeUnscaled = "0.0005"
-market3Sol_tier0FeeUnscaled = "0.0015"
+market3Sol_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 btcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
