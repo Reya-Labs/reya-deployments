@@ -35,6 +35,7 @@ jobs:
         run: "yarn reya_network:test"
       - name: Reya Cronos Cannon Test
         run: "yarn reya_cronos:test"
-      - name: Fuzzing Cannon Simulation
-        run: "yarn fuzzing:cicd"
+      # TODO: Bring it back once Cannon fixes the issue
+      # - name: Fuzzing Cannon Simulation
+      #   run: "yarn fuzzing:cicd"
   
