@@ -108,7 +108,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         mockStaleRedstone();
 
         vm.expectRevert(
-            abi.encodeWithSelector(IOracleManagerProxy.StalePriceDetected.selector, sec.solUsdcStorkFallbackNodeId)
+            abi.encodeWithSelector(IOracleManagerProxy.StalePriceDetected.selector, sec.solUsdcNodeId)
         );
         IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcStorkFallbackNodeId);
     }
