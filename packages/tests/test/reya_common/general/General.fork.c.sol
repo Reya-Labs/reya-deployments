@@ -6,6 +6,8 @@ import "../DataTypes.sol";
 import { IOwnerUpgradeModule } from "../../../src/interfaces/IOwnerUpgradeModule.sol";
 import { IOracleManagerProxy, NodeOutput, NodeDefinition } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
+import { console2 } from "forge-std/Test.sol";
+
 struct LocalState {
     bytes32[] nodeIds;
     uint256[] meanPrices;
@@ -141,6 +143,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
             if (flagCheckStaleness) {
                 assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, nodeOutput.timestamp);
                 assertEq(nodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
+            }
+
+            // if redstone node, check that the owner of the price feed is the multisig
+            if (nodeDefinition.nodeType == 2) {
+                (address priceFeed,) = abi.decode(nodeDefinition.parameters, (address, uint256));
+                address owner = IOwnerUpgradeModule(priceFeed).owner();
+                assertEq(owner, sec.multisig);
             }
         }
     }
