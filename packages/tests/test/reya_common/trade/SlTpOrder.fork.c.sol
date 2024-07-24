@@ -24,12 +24,13 @@ struct LocalState {
     uint128 orderMarketId1;
     SD59x18 orderBase1;
     UD60x18 orderPriceLimit1;
-    bool slOrder1IsLongOrder;
-    UD60x18 slOrder1TriggerPrice;
-    UD60x18 slOrder1PriceLimit;
+    bool slTpOrder1IsLongOrder;
+    UD60x18 slTpOrder1TriggerPrice;
+    UD60x18 slTpOrder1PriceLimit;
+    uint8 slTpOrder1Type;
 }
 
-contract SLOrderForkCheck is BaseReyaForkTest {
+contract SlTpOrderForkCheck is BaseReyaForkTest {
     bytes32 internal constant MATCH_ORDER = keccak256(bytes("MATCH_ORDER"));
     UD60x18 MIN_PRICE = ud(0);
     UD60x18 MAX_PRICE = ud(type(uint256).max);
@@ -47,7 +48,7 @@ contract SLOrderForkCheck is BaseReyaForkTest {
         );
     }
 
-    function executeOrderAndTriggerSLOrder() internal {
+    function executeOrderAndTriggerSlTpOrder() internal {
         st.og = IOrdersGatewayProxy(sec.ordersGateway);
         (st.user, st.userPrivateKey) = makeAddrAndKey("user");
 
@@ -80,8 +81,8 @@ contract SLOrderForkCheck is BaseReyaForkTest {
                 marketId: st.orderMarketId1,
                 exchangeId: 0,
                 counterpartyAccountIds: counterpartyAccountIds,
-                orderType: 0,
-                inputs: abi.encode(st.slOrder1IsLongOrder, st.slOrder1TriggerPrice, st.slOrder1PriceLimit),
+                orderType: st.slTpOrder1Type,
+                inputs: abi.encode(st.slTpOrder1IsLongOrder, st.slTpOrder1TriggerPrice, st.slTpOrder1PriceLimit),
                 signer: st.user,
                 nonce: 1
             });
@@ -140,23 +141,80 @@ contract SLOrderForkCheck is BaseReyaForkTest {
     }
 
     function check_slOrderOnShortPosition_ETH() public {
-        (st.orderMarketId1, st.orderBase1, st.orderPriceLimit1) = (1, sd(-1e18), MIN_PRICE);
-        (st.slOrder1IsLongOrder, st.slOrder1TriggerPrice, st.slOrder1PriceLimit) = (true, MIN_PRICE, MAX_PRICE);
+        st.orderMarketId1 = 1;
+        st.orderBase1 = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
 
-        executeOrderAndTriggerSLOrder();
+        st.slTpOrder1Type = 0;
+        st.slTpOrder1IsLongOrder = true;
+        st.slTpOrder1TriggerPrice = MIN_PRICE;
+        st.slTpOrder1PriceLimit = MAX_PRICE;
+
+        executeOrderAndTriggerSlTpOrder();
     }
 
     function check_slOrderOnLongPosition_BTC() public {
-        (st.orderMarketId1, st.orderBase1, st.orderPriceLimit1) = (2, sd(1e18), MAX_PRICE);
-        (st.slOrder1IsLongOrder, st.slOrder1TriggerPrice, st.slOrder1PriceLimit) = (false, MAX_PRICE, MIN_PRICE);
+        st.orderMarketId1 = 2;
+        st.orderBase1 = sd(1e18);
+        st.orderPriceLimit1 = MAX_PRICE;
 
-        executeOrderAndTriggerSLOrder();
+        st.slTpOrder1Type = 0;
+        st.slTpOrder1IsLongOrder = false;
+        st.slTpOrder1TriggerPrice = MAX_PRICE;
+        st.slTpOrder1PriceLimit = MIN_PRICE;
+
+        executeOrderAndTriggerSlTpOrder();
     }
 
     function check_slOrderOnShortPosition_SOL() public {
-        (st.orderMarketId1, st.orderBase1, st.orderPriceLimit1) = (3, sd(-1e18), MIN_PRICE);
-        (st.slOrder1IsLongOrder, st.slOrder1TriggerPrice, st.slOrder1PriceLimit) = (true, MIN_PRICE, MAX_PRICE);
+        st.orderMarketId1 = 3;
+        st.orderBase1 = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
 
-        executeOrderAndTriggerSLOrder();
+        st.slTpOrder1Type = 0;
+        st.slTpOrder1IsLongOrder = true;
+        st.slTpOrder1TriggerPrice = MIN_PRICE;
+        st.slTpOrder1PriceLimit = MAX_PRICE;
+
+        executeOrderAndTriggerSlTpOrder();
+    }
+
+    function check_tpOrderOnShortPosition_ETH() public {
+        st.orderMarketId1 = 1;
+        st.orderBase1 = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
+
+        st.slTpOrder1Type = 1;
+        st.slTpOrder1IsLongOrder = true;
+        st.slTpOrder1TriggerPrice = MAX_PRICE;
+        st.slTpOrder1PriceLimit = MAX_PRICE;
+
+        executeOrderAndTriggerSlTpOrder();
+    }
+
+    function check_tpOrderOnLongPosition_BTC() public {
+        st.orderMarketId1 = 2;
+        st.orderBase1 = sd(1e18);
+        st.orderPriceLimit1 = MAX_PRICE;
+
+        st.slTpOrder1Type = 1;
+        st.slTpOrder1IsLongOrder = false;
+        st.slTpOrder1TriggerPrice = MIN_PRICE;
+        st.slTpOrder1PriceLimit = MIN_PRICE;
+
+        executeOrderAndTriggerSlTpOrder();
+    }
+
+    function check_tpOrderOnShortPosition_SOL() public {
+        st.orderMarketId1 = 3;
+        st.orderBase1 = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
+
+        st.slTpOrder1Type = 1;
+        st.slTpOrder1IsLongOrder = true;
+        st.slTpOrder1TriggerPrice = MAX_PRICE;
+        st.slTpOrder1PriceLimit = MAX_PRICE;
+
+        executeOrderAndTriggerSlTpOrder();
     }
 }
