@@ -1,1 +1,1 @@
-include = ["./mainnet.toml"]
+include = ["./mainnet.toml", "./configs/allow_all_executors.toml"]

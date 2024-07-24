@@ -45,22 +45,26 @@ contract OracleAdapterForkCheck is BaseReyaForkTest {
         return storkSignedPayload;
     }
 
-    function check_fulfillOracleQuery_StorkOracleAdapter() public {
+    function check_fulfillOracleQuery_StorkOracleAdapter(bool isExecutionRestricted) public {
         (address futureExecutor,) = makeAddrAndKey("futureExecutor");
 
         // create a StorkPricePayload and sign it
         StorkSignedPayload memory storkSignedPayload = createSignedPricePayload(block.timestamp);
 
-        // expect revert since the publisher is not authorized yet
-        vm.prank(futureExecutor);
-        vm.expectRevert(
-            abi.encodeWithSelector(IOracleAdaptersProxy.FeatureUnavailable.selector, _EXECUTOR_FEATURE_FLAG)
-        );
-        IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(abi.encode(storkSignedPayload));
+        if (isExecutionRestricted) {
+            // expect revert since the publisher is not authorized yet
+            vm.prank(futureExecutor);
+            vm.expectRevert(
+                abi.encodeWithSelector(IOracleAdaptersProxy.FeatureUnavailable.selector, _EXECUTOR_FEATURE_FLAG)
+            );
+            IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(abi.encode(storkSignedPayload));
 
-        // authorize the executor
-        vm.prank(sec.multisig);
-        IOracleAdaptersProxy(sec.oracleAdaptersProxy).addToFeatureFlagAllowlist(_EXECUTOR_FEATURE_FLAG, futureExecutor);
+            // authorize the executor
+            vm.prank(sec.multisig);
+            IOracleAdaptersProxy(sec.oracleAdaptersProxy).addToFeatureFlagAllowlist(
+                _EXECUTOR_FEATURE_FLAG, futureExecutor
+            );
+        }
 
         // expect revert since the publisher is not authorized yet
         vm.prank(futureExecutor);
