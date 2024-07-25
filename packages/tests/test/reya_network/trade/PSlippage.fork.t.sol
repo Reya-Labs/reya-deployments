@@ -16,6 +16,10 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_sol_long();
     }
 
+    function test_trade_slippage_arb_long() public {
+        check_trade_slippage_arb_long();
+    }
+
     function test_trade_slippage_eth_short() public {
         check_trade_slippage_eth_short();
     }
@@ -26,5 +30,9 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
 
     function test_trade_slippage_sol_short() public {
         check_trade_slippage_sol_short();
+    }
+
+    function test_trade_slippage_arb_short() public {
+        check_trade_slippage_arb_short();
     }
 }

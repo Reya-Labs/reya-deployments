@@ -16,6 +16,10 @@ contract SlTpOrderForkTest is ReyaForkTest, SlTpOrderForkCheck {
         check_slOrderOnShortPosition_SOL();
     }
 
+    function test_slOrderOnShortPosition_ARB() public {
+        check_slOrderOnShortPosition_ARB();
+    }
+
     function test_tpOrderOnShortPosition_ETH() public {
         check_tpOrderOnShortPosition_ETH();
     }
@@ -26,5 +30,9 @@ contract SlTpOrderForkTest is ReyaForkTest, SlTpOrderForkCheck {
 
     function test_tpOrderOnShortPosition_SOL() public {
         check_tpOrderOnShortPosition_SOL();
+    }
+
+    function test_tpOrderOnShortPosition_ARB() public {
+        check_tpOrderOnShortPosition_ARB();
     }
 }

@@ -16,6 +16,10 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_rusdCollateral_leverage_sol();
     }
 
+    function test_trade_rusdCollateral_leverage_arb() public {
+        check_trade_rusdCollateral_leverage_arb();
+    }
+
     function test_trade_wethCollateral_leverage_eth() public {
         check_trade_wethCollateral_leverage_eth();
     }
@@ -26,5 +30,9 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
 
     function test_trade_wethCollateral_leverage_sol() public {
         check_trade_wethCollateral_leverage_sol();
+    }
+
+    function test_trade_wethCollateral_leverage_arb() public {
+        check_trade_wethCollateral_leverage_arb();
     }
 }

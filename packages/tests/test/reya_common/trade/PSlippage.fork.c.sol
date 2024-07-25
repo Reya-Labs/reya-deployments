@@ -193,6 +193,33 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         trade_slippage_helper({ marketId: 3, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
 
+    function check_trade_slippage_arb_long() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(0.01e18);
+        s[2] = sd(0.02e18);
+        s[3] = sd(0.03e18);
+        s[4] = sd(0.04e18);
+        s[5] = sd(0.05e18);
+        s[6] = sd(0.06e18);
+        s[7] = sd(0.07e18);
+        s[8] = sd(0.08e18);
+        s[9] = sd(0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(0.01e18);
+        sPrime[2] = sd(0.019985e18);
+        sPrime[3] = sd(0.029934e18);
+        sPrime[4] = sd(0.039827e18);
+        sPrime[5] = sd(0.049644e18);
+        sPrime[6] = sd(0.059366e18);
+        sPrime[7] = sd(0.068975e18);
+        sPrime[8] = sd(0.078455e18);
+        sPrime[9] = sd(0.087791e18);
+
+        trade_slippage_helper({ marketId: 4, s: s, sPrime: sPrime, eps: ud(0.007e18) });
+    }
+
     function check_trade_slippage_eth_short() public {
         SD59x18[] memory s = new SD59x18[](10);
         s[1] = sd(-0.01e18);
@@ -272,5 +299,32 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[9] = sd(-0.087763e18);
 
         trade_slippage_helper({ marketId: 3, s: s, sPrime: sPrime, eps: ud(0.007e18) });
+    }
+
+    function check_trade_slippage_arb_short() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(-0.01e18);
+        s[2] = sd(-0.02e18);
+        s[3] = sd(-0.03e18);
+        s[4] = sd(-0.04e18);
+        s[5] = sd(-0.05e18);
+        s[6] = sd(-0.06e18);
+        s[7] = sd(-0.07e18);
+        s[8] = sd(-0.08e18);
+        s[9] = sd(-0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(-0.01e18);
+        sPrime[2] = sd(-0.019985e18);
+        sPrime[3] = sd(-0.029935e18);
+        sPrime[4] = sd(-0.039828e18);
+        sPrime[5] = sd(-0.049642e18);
+        sPrime[6] = sd(-0.059358e18);
+        sPrime[7] = sd(-0.068956e18);
+        sPrime[8] = sd(-0.078418e18);
+        sPrime[9] = sd(-0.087724e18);
+
+        trade_slippage_helper({ marketId: 4, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
 }

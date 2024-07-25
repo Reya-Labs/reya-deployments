@@ -179,6 +179,19 @@ contract SlTpOrderForkCheck is BaseReyaForkTest {
         executeOrderAndTriggerSlTpOrder();
     }
 
+    function check_slOrderOnShortPosition_ARB() public {
+        st.orderMarketId1 = 4;
+        st.orderBase1 = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
+
+        st.slTpOrder1Type = 0;
+        st.slTpOrder1IsLongOrder = true;
+        st.slTpOrder1TriggerPrice = MIN_PRICE;
+        st.slTpOrder1PriceLimit = MAX_PRICE;
+
+        executeOrderAndTriggerSlTpOrder();
+    }
+
     function check_tpOrderOnShortPosition_ETH() public {
         st.orderMarketId1 = 1;
         st.orderBase1 = sd(-1e18);
@@ -207,6 +220,19 @@ contract SlTpOrderForkCheck is BaseReyaForkTest {
 
     function check_tpOrderOnShortPosition_SOL() public {
         st.orderMarketId1 = 3;
+        st.orderBase1 = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
+
+        st.slTpOrder1Type = 1;
+        st.slTpOrder1IsLongOrder = true;
+        st.slTpOrder1TriggerPrice = MAX_PRICE;
+        st.slTpOrder1PriceLimit = MAX_PRICE;
+
+        executeOrderAndTriggerSlTpOrder();
+    }
+
+    function check_tpOrderOnShortPosition_ARB() public {
+        st.orderMarketId1 = 4;
         st.orderBase1 = sd(-1e18);
         st.orderPriceLimit1 = MIN_PRICE;
 

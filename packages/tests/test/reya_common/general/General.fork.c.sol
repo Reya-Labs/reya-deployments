@@ -50,6 +50,9 @@ contract GeneralForkCheck is BaseReyaForkTest {
         uint256 meanPriceSOL = 150e18;
         uint256 maxDeviationSOL = 100e18;
 
+        uint256 meanPriceARB = 0.7e18;
+        uint256 maxDeviationARB = 0.3e18;
+
         uint256 meanPriceStableCoin = 1e18;
         uint256 maxDeviationStableCoin = 0.01e18;
 
@@ -65,6 +68,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(meanPriceSOL);
         ls.maxDeviations.push(maxDeviationSOL);
 
+        ls.nodeIds.push(sec.arbUsdNodeId);
+        ls.meanPrices.push(meanPriceARB);
+        ls.maxDeviations.push(maxDeviationARB);
+
         ls.nodeIds.push(sec.ethUsdcNodeId);
         ls.meanPrices.push(meanPriceETH);
         ls.maxDeviations.push(maxDeviationETH);
@@ -76,6 +83,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.nodeIds.push(sec.solUsdcNodeId);
         ls.meanPrices.push(meanPriceSOL);
         ls.maxDeviations.push(maxDeviationSOL);
+
+        ls.nodeIds.push(sec.arbUsdcNodeId);
+        ls.meanPrices.push(meanPriceARB);
+        ls.maxDeviations.push(maxDeviationARB);
 
         ls.nodeIds.push(sec.rusdUsdNodeId);
         ls.meanPrices.push(1e18);
@@ -97,6 +108,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(meanPriceSOL);
         ls.maxDeviations.push(maxDeviationSOL);
 
+        ls.nodeIds.push(sec.arbUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceARB);
+        ls.maxDeviations.push(maxDeviationARB);
+
         ls.nodeIds.push(sec.ethUsdStorkNodeId);
         ls.meanPrices.push(meanPriceETH);
         ls.maxDeviations.push(maxDeviationETH);
@@ -109,6 +124,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(meanPriceSOL);
         ls.maxDeviations.push(maxDeviationSOL);
 
+        ls.nodeIds.push(sec.arbUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceARB);
+        ls.maxDeviations.push(maxDeviationARB);
+
         ls.nodeIds.push(sec.ethUsdcStorkNodeId);
         ls.meanPrices.push(meanPriceETH);
         ls.maxDeviations.push(maxDeviationETH);
@@ -120,6 +139,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.nodeIds.push(sec.solUsdcStorkNodeId);
         ls.meanPrices.push(meanPriceSOL);
         ls.maxDeviations.push(maxDeviationSOL);
+
+        ls.nodeIds.push(sec.arbUsdcStorkNodeId);
+        ls.meanPrices.push(meanPriceARB);
+        ls.maxDeviations.push(maxDeviationARB);
 
         ls.nodeIds.push(sec.usdcUsdStorkNodeId);
         ls.meanPrices.push(meanPriceStableCoin);
