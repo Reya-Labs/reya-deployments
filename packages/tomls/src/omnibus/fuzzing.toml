@@ -143,16 +143,7 @@ pool1RusdRebateUnscaled = "0.6"
 market1Eth_tier0FeeUnscaled = "0.0005"
 market2Btc_tier0FeeUnscaled = "0.0005"
 market3Sol_tier0FeeUnscaled = "0.0005"
-
-[var.oracleNodeMaxStaleDuration]
-btcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-btcUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-ethUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-ethUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-solUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-solUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-usdcUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+market4Arb_tier0FeeUnscaled = "0.0005"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
