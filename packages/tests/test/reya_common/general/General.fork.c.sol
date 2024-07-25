@@ -6,8 +6,6 @@ import "../DataTypes.sol";
 import { IOwnerUpgradeModule } from "../../../src/interfaces/IOwnerUpgradeModule.sol";
 import { IOracleManagerProxy, NodeOutput, NodeDefinition } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
-import { console2 } from "forge-std/Test.sol";
-
 struct LocalState {
     bytes32[] nodeIds;
     uint256[] meanPrices;
