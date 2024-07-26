@@ -121,6 +121,8 @@ redstonePriceFeedETH = "0x187078471869387119FB88E8F033412A0F0fdfcd"
 redstonePriceFeedBTC = "0x22Ef8eb05189cF39a347F93a33508D0ce9e37830"
 redstonePriceFeedSOL = "0x3e3762c10F018fE02701be651b5c0937C3a7d7e1"
 redstonePriceFeedARB = "0x3A2Cb95DE3EBE02Fc713049F30B8952296D9600d"
+redstonePriceFeedOP = "0xD583E60FD28Bb19d0C03Fb37553B83C665cf082B"
+redstonePriceFeedAVAX = "0xD583E60FD28Bb19d0C03Fb37553B83C665cf082B"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -128,6 +130,8 @@ storkAssetPairIdETH = "ETHUSD"
 storkAssetPairIdBTC = "BTCUSD"
 storkAssetPairIdSOL = "SOLUSD"
 storkAssetPairIdARB = "ARBUSD"
+storkAssetPairIdOP = "OPUSD"
+storkAssetPairIdAVAX = "AVAXUSD"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -180,6 +184,8 @@ market1Eth_tier0FeeUnscaled = "0.0005"
 market2Btc_tier0FeeUnscaled = "0.0005"
 market3Sol_tier0FeeUnscaled = "0.0005"
 market4Arb_tier0FeeUnscaled = "0.0005"
+market5Op_tier0FeeUnscaled = "0.0005"
+market6Avax_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "0"
@@ -210,6 +216,18 @@ arbUsdcMaxStaleDuration = "0"
 arbUsdMaxStaleDurationStork = "0"
 arbUsdcMaxStaleDurationStork = "0"
 arbUsdcMaxStaleDurationFallbackStorkRedstone = "0"
+#------------------------------------------------------------------------------
+opUsdMaxStaleDuration = "0"
+opUsdcMaxStaleDuration = "0"
+opUsdMaxStaleDurationStork = "0"
+opUsdcMaxStaleDurationStork = "0"
+opUsdcMaxStaleDurationFallbackStorkRedstone = "0"
+#------------------------------------------------------------------------------
+avaxUsdMaxStaleDuration = "0"
+avaxUsdcMaxStaleDuration = "0"
+avaxUsdMaxStaleDurationStork = "0"
+avaxUsdcMaxStaleDurationStork = "0"
+avaxUsdcMaxStaleDurationFallbackStorkRedstone = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -280,7 +298,7 @@ market4Arb_maxExposureFactorUnscaled = "0.999"
 market4Arb_maxPSlippageUnscaled = "0.1"
 
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "4"
+cp1Rusd_maxMarkets = "6"
 cp1Rusd_maxCollaterals = "2"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"

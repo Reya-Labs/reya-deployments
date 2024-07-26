@@ -1,0 +1,27 @@
+[invoke.oracle_manager_register_node_op_usdc_fallback_stork_redstone]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_FALLBACK_REDUCER %>",
+    "0x",
+    [
+        "<%= settings.opUsdcNodeIdStork %>",
+        "<%= settings.opUsdcNodeId %>",      # redstone
+    ],
+]
+var.opUsdcNodeIdFallbackStorkRedstone.event = "NodeRegistered"
+var.opUsdcNodeIdFallbackStorkRedstone.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]
+
+[invoke.oracle_manager_op_usdc_fallback_stork_redstone_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.opUsdcNodeIdFallbackStorkRedstone %>",
+    "<%= settings.opUsdcMaxStaleDurationFallbackStorkRedstone %>",
+]
+depends = [
+    "invoke.oracle_manager_register_node_op_usdc_fallback_stork_redstone",
+]

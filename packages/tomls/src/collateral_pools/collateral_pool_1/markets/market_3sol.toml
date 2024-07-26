@@ -12,7 +12,7 @@ var.market_3sol.arg = 0
 depends = [
     "invoke.core_register_instrument_passive_perp",
     "invoke.passive_pool_create_pool_1rusd",
-    "invoke.create_market_1eth",
+    "invoke.create_market_2btc",
 ]
 
 [var.market_3sol_vars]

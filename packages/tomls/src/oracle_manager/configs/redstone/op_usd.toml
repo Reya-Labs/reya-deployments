@@ -1,0 +1,20 @@
+[invoke.oracle_manager_register_node_op_usd]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_REDSTONE %>",
+    "<%= defaultAbiCoder.encode(['address','uint256'], [settings.redstonePriceFeedOP,0]) %>",
+    [
+    ],
+]
+var.opUsdNodeId.event = "NodeRegistered"
+var.opUsdNodeId.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]
+
+[invoke.oracle_manager_op_usd_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = ["<%= settings.opUsdNodeId %>", "<%= settings.opUsdMaxStaleDuration %>"]
+depends = ["invoke.oracle_manager_register_node_op_usd"]
