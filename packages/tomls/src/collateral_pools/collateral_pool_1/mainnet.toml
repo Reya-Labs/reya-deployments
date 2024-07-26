@@ -3,6 +3,8 @@ include = [
     "markets/market_2btc.toml",
     "markets/market_3sol.toml",
     "markets/market_4arb.toml",
+    "markets/market_5op.toml",
+    "markets/market_6avax.toml",
     "risk/risk_matrix.toml",
     "risk/risk_multipliers.toml",
     "risk/liquidations.toml",

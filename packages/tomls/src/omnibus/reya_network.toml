@@ -114,6 +114,8 @@ redstonePriceFeedETH = "0xD583E60FD28Bb19d0C03Fb37553B83C665cf082B"
 redstonePriceFeedBTC = "0xbF675f4AF4351ee79B95f24651f4E3741079af5E"
 redstonePriceFeedSOL = "0x7D123d462268A46679dc4A1b89cFC8fBBab7388A"
 redstonePriceFeedARB = "0x7b9e8a8ace50786c9Ee4500d23fe72Ad65D992D0"
+redstonePriceFeedOP = "0x44b081A05bE646B058Ec326cC93683A926E0B70E"
+redstonePriceFeedAVAX = "0x7FB5df802F869b1E0588B31BA9D080EAEBFc75b1"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -121,6 +123,8 @@ storkAssetPairIdETH = "ETHUSD"
 storkAssetPairIdBTC = "BTCUSD"
 storkAssetPairIdSOL = "SOLUSD"
 storkAssetPairIdARB = "ARBUSD"
+storkAssetPairIdOP = "OPUSD"
+storkAssetPairIdAVAX = "AVAXUSD"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -183,6 +187,8 @@ market1Eth_tier0FeeUnscaled = "0.0005"
 market2Btc_tier0FeeUnscaled = "0.0005"
 market3Sol_tier0FeeUnscaled = "0.0005"
 market4Arb_tier0FeeUnscaled = "0.0005"
+market5Op_tier0FeeUnscaled = "0.0005"
+market6Avax_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -213,6 +219,18 @@ arbUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 arbUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 arbUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 arbUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+opUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+opUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+opUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+opUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+opUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+avaxUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+avaxUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+avaxUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+avaxUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+avaxUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -317,7 +335,7 @@ market6Avax_maxExposureFactorUnscaled = "0.999"
 market6Avax_maxPSlippageUnscaled = "0.1"
 
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "4"
+cp1Rusd_maxMarkets = "6"
 cp1Rusd_maxCollaterals = "2"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
