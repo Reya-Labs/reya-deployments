@@ -228,6 +228,23 @@ market5Op_depthFactorUnscaled = "0.45"
 market5Op_maxExposureFactorUnscaled = "0.999"
 market5Op_maxPSlippageUnscaled = "0.1"
 
+[var.market_6avax]
+market6Avax_riskMatrixIndex = "0"
+market6Avax_maxOpenBaseUnscaled = "12500000"
+market6Avax_velocityMultiplierUnscaled = "1"
+market6Avax_oracleNodeId = "<%= settings.arbUsdcNodeIdFallbackStorkRedstone %>"
+market6Avax_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
+market6Avax_dutchConfig_lambdaUnscaled = "1"
+market6Avax_dutchConfig_minBaseUnscaled = "0.11"
+market6Avax_slippageParams_phiUnscaled = "0"
+market6Avax_slippageParams_betaUnscaled = "0"
+market6Avax_minimumOrderBaseUnscaled = "1"
+market6Avax_baseSpacingUnscaled = "0.1"
+market6Avax_priceSpacingUnscaled = "0.001"
+market6Avax_depthFactorUnscaled = "0.45"
+market6Avax_maxExposureFactorUnscaled = "0.999"
+market6Avax_maxPSlippageUnscaled = "0.1"
+
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "4"
 cp1Rusd_maxCollaterals = "2"
@@ -239,6 +256,7 @@ cp1Rusd_market2Btc_riskMatrix00Unscaled = "0.00148996"
 cp1Rusd_market3Sol_riskMatrix00Unscaled = "0.0033403"
 cp1Rusd_market4Arb_riskMatrix00Unscaled = "0.0032251041"
 cp1Rusd_market5Op_riskMatrix00Unscaled = "0.012006242329"
+cp1Rusd_market6Avax_riskMatrix00Unscaled = "0.003248316036"
 
 # -----------------------------------------------
 cp1Rusd_imMultiplierUnscaled = "1.3"
