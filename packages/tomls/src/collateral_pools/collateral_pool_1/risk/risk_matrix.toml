@@ -96,7 +96,7 @@ fromCall.func = "getCollateralPoolOwner"
 fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "createRiskMatrix"
 var.cp1RusdMarket5OpRiskBlockId.event = "RiskMatrixCreation"
-var.cp1RusdMarket5OpRiskBlockId.arg = 0
+var.cp1RusdMarket5OpRiskBlockId.arg = 1
 args = [
     "<%= settings.cp1RusdId %>",
     [
@@ -114,7 +114,7 @@ fromCall.func = "getCollateralPoolOwner"
 fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "createRiskMatrix"
 var.cp1RusdMarket6AvaxRiskBlockId.event = "RiskMatrixCreation"
-var.cp1RusdMarket6AvaxRiskBlockId.arg = 0
+var.cp1RusdMarket6AvaxRiskBlockId.arg = 1
 args = [
     "<%= settings.cp1RusdId %>",
     [

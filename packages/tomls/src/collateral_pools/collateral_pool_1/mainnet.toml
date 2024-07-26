@@ -19,4 +19,11 @@ include = [
 # The collateral pool configs depend on it.
 [var.cp_1rusd_vars]
 cp1RusdId = "<%= settings.market1EthId %>"
-depends = ["var.market_1eth_vars", "invoke.market_2btc_merge_collateral_pool"]
+depends = [
+    "var.market_1eth_vars",
+    "invoke.market_2btc_merge_collateral_pool",
+    "invoke.market_3sol_merge_collateral_pool",
+    "invoke.market_4arb_merge_collateral_pool",
+    "invoke.market_5op_merge_collateral_pool",
+    "invoke.market_6avax_merge_collateral_pool",
+]

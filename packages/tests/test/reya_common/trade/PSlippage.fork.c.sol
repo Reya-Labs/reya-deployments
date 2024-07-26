@@ -220,6 +220,60 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         trade_slippage_helper({ marketId: 4, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
 
+    function check_trade_slippage_op_long() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(0.01e18);
+        s[2] = sd(0.02e18);
+        s[3] = sd(0.03e18);
+        s[4] = sd(0.04e18);
+        s[5] = sd(0.05e18);
+        s[6] = sd(0.06e18);
+        s[7] = sd(0.07e18);
+        s[8] = sd(0.08e18);
+        s[9] = sd(0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(0.01e18);
+        sPrime[2] = sd(0.01992e18);
+        sPrime[3] = sd(0.029966e18);
+        sPrime[4] = sd(0.03991e18);
+        sPrime[5] = sd(0.049815e18);
+        sPrime[6] = sd(0.059669e18);
+        sPrime[7] = sd(0.069464e18);
+        sPrime[8] = sd(0.079189e18);
+        sPrime[9] = sd(0.088836e18);
+
+        trade_slippage_helper({ marketId: 5, s: s, sPrime: sPrime, eps: ud(0.007e18) });
+    }
+
+    function check_trade_slippage_avax_long() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(0.01e18);
+        s[2] = sd(0.02e18);
+        s[3] = sd(0.03e18);
+        s[4] = sd(0.04e18);
+        s[5] = sd(0.05e18);
+        s[6] = sd(0.06e18);
+        s[7] = sd(0.07e18);
+        s[8] = sd(0.08e18);
+        s[9] = sd(0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(0.01e18);
+        sPrime[2] = sd(0.019985e18);
+        sPrime[3] = sd(0.029934e18);
+        sPrime[4] = sd(0.039828e18);
+        sPrime[5] = sd(0.049645e18);
+        sPrime[6] = sd(0.059368e18);
+        sPrime[7] = sd(0.068979e18);
+        sPrime[8] = sd(0.078461e18);
+        sPrime[9] = sd(0.087799e18);
+
+        trade_slippage_helper({ marketId: 6, s: s, sPrime: sPrime, eps: ud(0.007e18) });
+    }
+
     function check_trade_slippage_eth_short() public {
         SD59x18[] memory s = new SD59x18[](10);
         s[1] = sd(-0.01e18);
@@ -326,5 +380,59 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[9] = sd(-0.087724e18);
 
         trade_slippage_helper({ marketId: 4, s: s, sPrime: sPrime, eps: ud(0.007e18) });
+    }
+
+    function check_trade_slippage_op_short() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(-0.01e18);
+        s[2] = sd(-0.02e18);
+        s[3] = sd(-0.03e18);
+        s[4] = sd(-0.04e18);
+        s[5] = sd(-0.05e18);
+        s[6] = sd(-0.06e18);
+        s[7] = sd(-0.07e18);
+        s[8] = sd(-0.08e18);
+        s[9] = sd(-0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(-0.01e18);
+        sPrime[2] = sd(-0.01992e18);
+        sPrime[3] = sd(-0.029966e18);
+        sPrime[4] = sd(-0.03991e18);
+        sPrime[5] = sd(-0.049814e18);
+        sPrime[6] = sd(-0.059665e18);
+        sPrime[7] = sd(-0.069454e18);
+        sPrime[8] = sd(-0.079169e18);
+        sPrime[9] = sd(-0.0888e18);
+
+        trade_slippage_helper({ marketId: 5, s: s, sPrime: sPrime, eps: ud(0.007e18) });
+    }
+
+    function check_trade_slippage_avax_short() public {
+        SD59x18[] memory s = new SD59x18[](10);
+        s[1] = sd(-0.01e18);
+        s[2] = sd(-0.02e18);
+        s[3] = sd(-0.03e18);
+        s[4] = sd(-0.04e18);
+        s[5] = sd(-0.05e18);
+        s[6] = sd(-0.06e18);
+        s[7] = sd(-0.07e18);
+        s[8] = sd(-0.08e18);
+        s[9] = sd(-0.09e18);
+        // s[10] = sd(0.99e18);
+
+        SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(-0.01e18);
+        sPrime[2] = sd(-0.019985e18);
+        sPrime[3] = sd(-0.029935e18);
+        sPrime[4] = sd(-0.039828e18);
+        sPrime[5] = sd(-0.049643e18);
+        sPrime[6] = sd(-0.059361e18);
+        sPrime[7] = sd(-0.06896e18);
+        sPrime[8] = sd(-0.078423e18);
+        sPrime[9] = sd(-0.087732e18);
+
+        trade_slippage_helper({ marketId: 6, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
 }

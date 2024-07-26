@@ -1,0 +1,572 @@
+
+> @reya-deployments/tomls:"reya_network:simulate"
+
+[1mBuilding the foundry project...[22m
+[90mforge build succeeded[39m
+[90mInitiating connection attempt to: [1mhttps://rpc.reya.network[22m[39m
+[90mAnvil instance running on: http://127.0.0.1:65309 [39m
+[90m[39m
+[93m[1m⚠️  This is a simulation. No changes will be made to the chain. No package data will be saved.[22m[39m
+[93m[1m[22m[39m
+[1mChecking for existing package...[22m
+[90m    reya-omnibus:1.0.13@main (Chain ID: 1729) found[39m
+[1mInitializing new package...[22m
+Name: [96mreya-omnibus[39m
+Version: [96m1.0.13[39m
+Preset: [96mmain[39m[90m (default)[39m
+Chain ID: [96m1729[39m
+Upgrading from: [96mreya-omnibus:latest@main[39m
+[1mBuilding the chain (ID 1729) via http://127.0.0.1:65309...[22m
+Using 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+[96mExecuting [var.fees]...[39m
+[90m  Setting: passivePoolExchangeRebateUnscaled = 0.5[39m
+[90m  Setting: pool1RusdRebateUnscaled = 0.6[39m
+[90m  Setting: market1Eth_tier0FeeUnscaled = 0.0005[39m
+[90m  Setting: market2Btc_tier0FeeUnscaled = 0.0005[39m
+[90m  Setting: market3Sol_tier0FeeUnscaled = 0.0005[39m
+[90m  Setting: market4Arb_tier0FeeUnscaled = 0.0005[39m
+[90m  Setting: market5Op_tier0FeeUnscaled = 0.0005[39m
+[90m  Setting: market6Avax_tier0FeeUnscaled = 0.0005[39m
+[96mExecuting [var.redstone_oracles]...[39m
+[90m  Setting: redstonePriceFeedUSDC = 0x73ac348c40403ff1156a2f53BA57bcCbA2C63915[39m
+[90m  Setting: redstonePriceFeedETH = 0xD583E60FD28Bb19d0C03Fb37553B83C665cf082B[39m
+[90m  Setting: redstonePriceFeedBTC = 0xbF675f4AF4351ee79B95f24651f4E3741079af5E[39m
+[90m  Setting: redstonePriceFeedSOL = 0x7D123d462268A46679dc4A1b89cFC8fBBab7388A[39m
+[90m  Setting: redstonePriceFeedARB = 0x7b9e8a8ace50786c9Ee4500d23fe72Ad65D992D0[39m
+[90m  Setting: redstonePriceFeedOP = 0x44b081A05bE646B058Ec326cC93683A926E0B70E[39m
+[90m  Setting: redstonePriceFeedAVAX = 0x7FB5df802F869b1E0588B31BA9D080EAEBFc75b1[39m
+[96mExecuting [var.stork_asset_pair_ids]...[39m
+[90m  Setting: storkAssetPairIdUSDC = USDCUSD[39m
+[90m  Setting: storkAssetPairIdETH = ETHUSD[39m
+[90m  Setting: storkAssetPairIdBTC = BTCUSD[39m
+[90m  Setting: storkAssetPairIdSOL = SOLUSD[39m
+[90m  Setting: storkAssetPairIdARB = ARBUSD[39m
+[90m  Setting: storkAssetPairIdOP = OPUSD[39m
+[90m  Setting: storkAssetPairIdAVAX = AVAXUSD[39m
+[96mExecuting [clone.dai]...[39m
+[35m  Resolving reya-tokens:1.0.0@proxy (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmZnhXheh8SgkRSuNbkx4BNfKCYUXvpY5bXqPUTYbSCHLL via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmXFx9rRAJYiPxzssRspQtYZhsuZV1Q6YSVqsXEGrP2s3d via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmUaSh8u3hAkRujJMCK3LBDTRKgVNThQVYZTgiuHJKsYoF via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmUaSh8u3hAkRujJMCK3LBDTRKgVNThQVYZTgiuHJKsYoF via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaAccountNFTRouter]...[39m
+[35m  Resolving reya-core:1.0.1@account-nft-router (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmYPhmj4MhZ26hfNi7WhAvpiszPFBeFeAFZGCgbkxbgWdB via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmbZzGHZqjcMuGZVcSnYpSYNdHvgHihQnfXG7okUXh7uNt via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmXLNVPbpicqMwMquETfXyu8zV4qLdvY4a6g2fJJuNUGRp via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmTukeD1uzE729mz3kBvm5K3h24RLyQR5LHzw4xVUqm9au via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaCoreRouter]...[39m
+[35m  Resolving reya-core:1.0.3@router (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmPSe6ahcrfRF5URAKoGjaB2Lj1tao1LF6AQ5dNS8uSKM5 via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmQchKLpxyKWiQVCqk8ThufeyFR9ycDDJPq693aPuFxWWX via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmRkEQhLpT6oLhtTT51YuRfYmoBLGMsnfqJxANJU1bDYpY via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmNaLTdCfeUrqg95Xz4f8G1Ud2UixqAmx4LWRfgbESNA7C via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaExchangePassRouter]...[39m
+[35m  Resolving reya-exchange-pass-nft:1.0.0@router (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://Qmd11aPDZKX9sWGoDQtYXsQuyweeVDxvNVrbe6ZyvrqcM7 via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://Qmf5mKSS6zsThJAhgQPm3k1NFRXpKeQnjxoD6a2GRF37m8 via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmUUpJJtTE2esrvh1nKF9nT2tr4YkTbb6n8WjqyoWaknUJ via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmeVeUerRxKXc1gB7sAV3KLRajBQBY3NDG4jL9oCgbjsYX via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaOracleAdaptersProxy]...[39m
+[35m  Resolving reya-oracle-adapters:1.0.1@proxy (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmXAArcaete654YLRxH7e8eeE6bFt7L7L53KfmJwN98p6n via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmWATRTVayY5YceSHtUDRDVBLEHr5ZXry26vBCcYozYLrc via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmZ1j2Cez1kUMDfQ5Db7QvFodzTC611E6HAUqvBKku4eBL via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmZ1j2Cez1kUMDfQ5Db7QvFodzTC611E6HAUqvBKku4eBL via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaOracleAdaptersRouter]...[39m
+[35m  Resolving reya-oracle-adapters:1.0.4@router (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmPAo4e1ycrhpzSojZ24iPfmXTr2YtbBfrmErPZHXFfgnx via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmXDP7BMLbHyduBDNAu6RTVVtbSCDv8NgEWeYoEvKZ8KQB via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmeEbzgJHY9KY9HAbspHAFQUxH7K6B1Mpbo2auJcheeu4Y via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmNhiQ3yfNYfUG3TBtkFuutBehp53QvMFvaCciKgiRWBZ3 via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaOracleManagerRouter]...[39m
+[35m  Resolving reya-oracle-manager:1.0.5@router (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmW6yaCxnV2kMv5fPpp2K13WQJSgmq4DFef917pSMBGgZm via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmcJfjrc6hRLVhGtyf8otiNV8CZxwLFUaok321toGP6G8A via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmXqKzRTn9tMHWMRwu5HY9wsxSVqkvAZaS8jgpA8SUwumy via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmdJVfXprDiF9xAuvxZrbdCLZTainxiJkc1DJMXh9pH88U via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaOrdersGatewayProxy]...[39m
+[35m  Resolving reya-orders-gateway:1.0.1@proxy (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmVb9xdhsno4xsYQJDW7a3q2nkXyoPxwv8VSqYtctKJ1BP via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmZ5R4iVM8Dj4mAX5VYqcmHMVknFTt4qva9xzPYgmpeAhd via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmT21BWQ2heQ3qPXEoZDH6ZfxwHDwJgbR7MvcVL5Nr4JS7 via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmT21BWQ2heQ3qPXEoZDH6ZfxwHDwJgbR7MvcVL5Nr4JS7 via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaOrdersGatewayRouter]...[39m
+[35m  Resolving reya-orders-gateway:1.0.4@router (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmVD3A73c6m3kjCNcVob2bwjYNnmJxQvnTJQC4eMAF9DAG via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmWZY41UCVHgzY8pijKnMLV6pYPb8qSxcRGSgQqdCzAtwS via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmaDouEarYv6n5NppXwikREuiP7eMpntadhRcnHTbevfJi via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmSwSGJMRhGRgeqxygP1pqetBM9kgJhe8VnnxegucsgWRn via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaPassivePerpRouter]...[39m
+[35m  Resolving reya-instrument-passive-perp:1.0.4@router (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmWdMCpLR2BXLryDaCLBdyGLv9xfzwzGsbJp55MLomhoyA via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmTujgs4xpxLoBVHhYDyfR35WMKwEkYq3KiAmPYLSheXnz via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmZMFpuLramPJZDj33jYLcDLcfC7fyG4EvT6QTwZoJnyxu via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmS3b2nkhqFirPkE54buwVbAJHkyvvfNzASVFSfUf9GCjT via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaPassivePoolRouter]...[39m
+[35m  Resolving reya-exchange-passive-pool:1.0.1@router (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmXkhEAMVaGpUgP8bipdX7QHJCVrUugEpa3ZMMKffJuSiM via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmVYMJhzramwFbHyQgxPivVcYKk8bda45k7JDW17V4wZSh via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmbXXk62SkzNhrcAZhkL9SQynqBGqZ2qDpch3NYdZQTNCD via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmSZjR6WMeA6pgVkix1AzJr8Hq9iZQoE74qVYpRvMRQ2q2 via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaPeripheryRouter]...[39m
+[35m  Resolving reya-periphery:1.0.2@router (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmVYHQRbSm426byrx91RhXH9RJA9jm57J4xUUj9mgDG5oe via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmQL5ficFoFfuHRTuoZULzVVt4hk2XWPiDUAx71beFmdxj via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmXzxn9ZGrmuceckeB712w2bydGg8Ez5u6SfQTLTBL3Ust via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmRGubVNmkxZLK8JW9Dwt8XXoJ3H2jW9E4HZtLBN7MY1cu via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaRUSDRouter]...[39m
+[35m  Resolving reya-rusd:1.0.0@router (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmRpbeoo6Y2FEwP9pVecaQtkdMaULdwGH5cz2Mx1yCzcS7 via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://Qmc4X5Bao6f9UT1REoHDNAWDmUQFeZsZCh6ESsAntjtWiC via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmPZd2VELwnBM8h8AXqxanqkBynyfR8HUEKqf41bPnt9Lb via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmcDP9nucqpoJNA4x1qpBRdD4G17RTEjkoVQ3KkiwJWkAr via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaRanksRouter]...[39m
+[35m  Resolving reya-ranks:1.0.0@router (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmegyavEcDcQY5ekGjco8nDamwEmhjbSi4ug7rofByJ7oP via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmaMrFwuAF9yeYnuLURWYzSUHGSfvXVr5D8dhx3ue6o5B9 via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmdHXjZNyRdgD2JrUqY6y5NYYjRQPGE4cbP8zMhtgkfPqw via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://Qma2N3DGjWqir4HpXb9aTqqviSTAh6Ug5cTcoRHWrhUJ1S via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.reyaTokenRouter]...[39m
+[35m  Resolving reya-tokens:1.0.0@router (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmX2MUC75AHzeJ3Syt4EwbpnBusqSUgsPGdqdCsz5oBCvp via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmSSz47rm1WBR92JxLx6Efj2GGvuAhifmACEjKYyCJPN8H via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmTUDTv9XNvtBo2vBhbfBNZ6zS6gG2xha1iGxckvd94t5p via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmWqCJcAassUjpAzdT41dAETat2EsVKMGa3TycGmJRkCBW via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.usdt]...[39m
+[35m  Resolving reya-tokens:1.0.0@proxy (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmZnhXheh8SgkRSuNbkx4BNfKCYUXvpY5bXqPUTYbSCHLL via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmUemQ8hQHYxVxgzbFcNhaG52yaGX632est6qCBr7XEoLc via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmUaSh8u3hAkRujJMCK3LBDTRKgVNThQVYZTgiuHJKsYoF via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmUaSh8u3hAkRujJMCK3LBDTRKgVNThQVYZTgiuHJKsYoF via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.wbtc]...[39m
+[35m  Resolving reya-tokens:1.0.0@proxy (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmZnhXheh8SgkRSuNbkx4BNfKCYUXvpY5bXqPUTYbSCHLL via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmYryrhVjmsoMQzkEQTZERxkmMrWZVqvg68nLbQhQ2vbdL via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmUaSh8u3hAkRujJMCK3LBDTRKgVNThQVYZTgiuHJKsYoF via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmUaSh8u3hAkRujJMCK3LBDTRKgVNThQVYZTgiuHJKsYoF via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [clone.weth]...[39m
+[35m  Resolving reya-tokens:1.0.0@proxy (Chain ID: 13370) via memory, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, 0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba, local...[39m
+[90m    Downloading ipfs://QmZnhXheh8SgkRSuNbkx4BNfKCYUXvpY5bXqPUTYbSCHLL via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmTpkTShzyDPB6vaQqskfBRqczjXjnKZT33eAE6DxMXUc9 via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m    Downloading ipfs://QmUaSh8u3hAkRujJMCK3LBDTRKgVNThQVYZTgiuHJKsYoF via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[90m      Downloading ipfs://QmUaSh8u3hAkRujJMCK3LBDTRKgVNThQVYZTgiuHJKsYoF via cli READ http://127.0.0.1:5001 + REPO https://us-east.repo.usecannon.com[39m
+[96mExecuting [var.oracleNodeMaxStaleDuration]...[39m
+[90m  Setting: rusdUsdMaxStaleDuration = 60[39m
+[90m  Setting: usdcUsdMaxStaleDuration = 60[39m
+[90m  Setting: usdcUsdMaxStaleDurationStork = 60[39m
+[90m  Setting: btcUsdMaxStaleDuration = 60[39m
+[90m  Setting: btcUsdcMaxStaleDuration = 60[39m
+[90m  Setting: btcUsdMaxStaleDurationStork = 60[39m
+[90m  Setting: btcUsdcMaxStaleDurationStork = 60[39m
+[90m  Setting: btcUsdcMaxStaleDurationFallbackStorkRedstone = 60[39m
+[90m  Setting: ethUsdMaxStaleDuration = 60[39m
+[90m  Setting: ethUsdcMaxStaleDuration = 60[39m
+[90m  Setting: ethUsdMaxStaleDurationStork = 60[39m
+[90m  Setting: ethUsdcMaxStaleDurationFallbackStorkRedstone = 60[39m
+[90m  Setting: ethUsdcMaxStaleDurationStork = 60[39m
+[90m  Setting: solUsdMaxStaleDuration = 60[39m
+[90m  Setting: solUsdcMaxStaleDuration = 60[39m
+[90m  Setting: solUsdMaxStaleDurationStork = 60[39m
+[90m  Setting: solUsdcMaxStaleDurationStork = 60[39m
+[90m  Setting: solUsdcMaxStaleDurationFallbackStorkRedstone = 60[39m
+[90m  Setting: arbUsdMaxStaleDuration = 60[39m
+[90m  Setting: arbUsdcMaxStaleDuration = 60[39m
+[90m  Setting: arbUsdMaxStaleDurationStork = 60[39m
+[90m  Setting: arbUsdcMaxStaleDurationStork = 60[39m
+[90m  Setting: arbUsdcMaxStaleDurationFallbackStorkRedstone = 60[39m
+[90m  Setting: opUsdMaxStaleDuration = 60[39m
+[90m  Setting: opUsdcMaxStaleDuration = 60[39m
+[90m  Setting: opUsdMaxStaleDurationStork = 60[39m
+[90m  Setting: opUsdcMaxStaleDurationStork = 60[39m
+[90m  Setting: opUsdcMaxStaleDurationFallbackStorkRedstone = 60[39m
+[90m  Setting: avaxUsdMaxStaleDuration = 60[39m
+[90m  Setting: avaxUsdcMaxStaleDuration = 60[39m
+[90m  Setting: avaxUsdMaxStaleDurationStork = 60[39m
+[90m  Setting: avaxUsdcMaxStaleDurationStork = 60[39m
+[90m  Setting: avaxUsdcMaxStaleDurationFallbackStorkRedstone = 60[39m
+[96mExecuting [invoke.oracle_manager_register_node_avax_usd]...[39m
+  [32m✔[39m Successfully called registerNode(2, 0x0000000000000000000000007fb5df802f869b1e0588b31ba9d080eaebfc75b10000000000000000000000000000000000000000000000000000000000000000, [])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0xb1a6b9f3ce2af8b180a26884fd6ace91368870b0a7fe0e0ca11a1203d3757581[39m
+[90m  Transaction Cost: 0.000131685521606674 ETH (131,674 gas)[39m
+[90m  Setting: avaxUsdNodeId = 0x67807778d0d04792bb8d89b677e27752eba2c474fbd521ee80174a56ab02a65a[39m
+[96mExecuting [invoke.oracle_manager_register_node_avax_usd_stork]...[39m
+  [32m✔[39m Successfully called registerNode(4, 0x00000000000000000000000032edabc058c1207fe0ec5f8557643c28e4ff379e000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000074156415855534400000000000000000000000000000000000000000000000000, [])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0xb778fc142f3d5b4d7f43436570e340bc0b96e7000b028cb3a9edf64448b494f2[39m
+[90m  Transaction Cost: 0.000199432268163188 ETH (199,417 gas)[39m
+[90m  Setting: avaxUsdNodeIdStork = 0xa4e8be8233388eb3eb394e612a719cc92ab41901a242bf1a409407f3deb71357[39m
+[96mExecuting [invoke.oracle_manager_register_node_op_usd]...[39m
+  [32m✔[39m Successfully called registerNode(2, 0x00000000000000000000000044b081a05be646b058ec326cc93683a926e0b70e0000000000000000000000000000000000000000000000000000000000000000, [])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0x4b285b692b4d49c534e00dad54ddf7b2de397aafbccfb410acac3ea58e1867e3[39m
+[90m  Transaction Cost: 0.000131682821367956 ETH (131,674 gas)[39m
+[90m  Setting: opUsdNodeId = 0x5fc5346a561a540caf96e191e354318c3e8402ed9c53aa486125432ce9e688f5[39m
+[96mExecuting [invoke.oracle_manager_register_node_op_usd_stork]...[39m
+  [32m✔[39m Successfully called registerNode(4, 0x00000000000000000000000032edabc058c1207fe0ec5f8557643c28e4ff379e000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000054f50555344000000000000000000000000000000000000000000000000000000, [])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0x7ef4a258d72b8745ce886af6602a61a2ef95d7366ae39d96a356036c27c5b218[39m
+[90m  Transaction Cost: 0.00019940468841766 ETH (199,393 gas)[39m
+[90m  Setting: opUsdNodeIdStork = 0xeaeed5aaf31bdcaf14cb1c0b76c13c37ca2d8ebebbccfb9ff14fbb78d194a5ca[39m
+[96mExecuting [invoke.oracle_manager_avax_usd_max_stale_duration]...[39m
+  [32m✔[39m Successfully called setMaxStaleDuration(0x67807778d0d04792bb8d89b677e27752eba2c474fbd521ee80174a56ab02a65a, 60)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0x18517d320eac6cd95b1b7c42e207213e82146feab31096020d9eb98527c6b028[39m
+[90m  Transaction Cost: 0.000067995487513656 ETH (67,992 gas)[39m
+[96mExecuting [invoke.oracle_manager_avax_usd_stork_max_stale_duration]...[39m
+  [32m✔[39m Successfully called setMaxStaleDuration(0xa4e8be8233388eb3eb394e612a719cc92ab41901a242bf1a409407f3deb71357, 60)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0x2a25a9e6443141b6a7b19707e8470a6fbea9054c8597847c1f21df6c5c4d386f[39m
+[90m  Transaction Cost: 0.000072301244878836 ETH (72,298 gas)[39m
+[96mExecuting [invoke.oracle_manager_op_usd_max_stale_duration]...[39m
+  [32m✔[39m Successfully called setMaxStaleDuration(0x5fc5346a561a540caf96e191e354318c3e8402ed9c53aa486125432ce9e688f5, 60)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0xf0183711a36802dd147e691a4d1f6ab3e510168161441991d6bb91999421ab7b[39m
+[90m  Transaction Cost: 0.000067994670181824 ETH (67,992 gas)[39m
+[96mExecuting [invoke.oracle_manager_op_usd_stork_max_stale_duration]...[39m
+  [32m✔[39m Successfully called setMaxStaleDuration(0xeaeed5aaf31bdcaf14cb1c0b76c13c37ca2d8ebebbccfb9ff14fbb78d194a5ca, 60)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0x01f5cf50675a987f3e0988ea706faa0a2446c66334d73ebb20cfb904676c83e3[39m
+[90m  Transaction Cost: 0.000072300484448472 ETH (72,298 gas)[39m
+[96mExecuting [invoke.oracle_manager_register_node_avax_usdc]...[39m
+  [32m✔[39m Successfully called registerNode(1, 0x, ["0x67807778d0d04792bb8d89b677e27752eba2c474fbd521ee80174a56ab02a65a","0x7c1a73684de34b95f492a9ee72c0d8e1589714eeba4a457f766b84bd1c2f240f"])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0xef3fad76d0a5c7021c26fddbfd465122648461b5862e90e7f3295d62d031d954[39m
+[90m  Transaction Cost: 0.000204982163423344 ETH (204,976 gas)[39m
+[90m  Setting: avaxUsdcNodeId = 0x0b476cd1d4719245c4a80f469d510c4b3ee7647fee09ae3f3de05ab25de34c8f[39m
+[96mExecuting [invoke.oracle_manager_register_node_avax_usdc_stork]...[39m
+  [32m✔[39m Successfully called registerNode(1, 0x, ["0xa4e8be8233388eb3eb394e612a719cc92ab41901a242bf1a409407f3deb71357","0xc392c001dcf7749e4cdb7967e7ecac04628dea34555b1963bab626b9ef79d63f"])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0x0125d8d955abff5129b9743ba0016a5b06bbbb35edc465d0919cb5136f759df3[39m
+[90m  Transaction Cost: 0.000209268505918793 ETH (209,263 gas)[39m
+[90m  Setting: avaxUsdcNodeIdStork = 0x23d809b84561e4b046e5ccfc6769d23fbea8335fbfe3f5652f461cde297308fa[39m
+[96mExecuting [invoke.oracle_manager_register_node_op_usdc]...[39m
+  [32m✔[39m Successfully called registerNode(1, 0x, ["0x5fc5346a561a540caf96e191e354318c3e8402ed9c53aa486125432ce9e688f5","0x7c1a73684de34b95f492a9ee72c0d8e1589714eeba4a457f766b84bd1c2f240f"])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0x0054e245382c73a0efcdf8be60e726b06957015961814591cef0caf8ee6e4803[39m
+[90m  Transaction Cost: 0.000204980719162448 ETH (204,976 gas)[39m
+[90m  Setting: opUsdcNodeId = 0x088389bce6df469303cc410a355755589d6bdff5c8591ee741e608fb82d0283b[39m
+[96mExecuting [invoke.oracle_manager_register_node_op_usdc_stork]...[39m
+  [32m✔[39m Successfully called registerNode(1, 0x, ["0xeaeed5aaf31bdcaf14cb1c0b76c13c37ca2d8ebebbccfb9ff14fbb78d194a5ca","0xc392c001dcf7749e4cdb7967e7ecac04628dea34555b1963bab626b9ef79d63f"])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0x47e583d15a729640835bb78c89ec231478581cae3186137189a8c324725e78e7[39m
+[90m  Transaction Cost: 0.000209267215812398 ETH (209,263 gas)[39m
+[90m  Setting: opUsdcNodeIdStork = 0x9170ec8398399d25c597d445755f31ccb362ce4ea9aa8857db7fc44338ddeb82[39m
+[96mExecuting [invoke.oracle_manager_avax_usdc_max_stale_duration]...[39m
+  [32m✔[39m Successfully called setMaxStaleDuration(0x0b476cd1d4719245c4a80f469d510c4b3ee7647fee09ae3f3de05ab25de34c8f, 60)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0xdaaa6691763e2e08094dd7b243e2d2617b5c6f94919deb4f5a6245b090968e0b[39m
+[90m  Transaction Cost: 0.000067982198369068 ETH (67,981 gas)[39m
+[96mExecuting [invoke.oracle_manager_avax_usdc_stork_max_stale_duration]...[39m
+  [32m✔[39m Successfully called setMaxStaleDuration(0x23d809b84561e4b046e5ccfc6769d23fbea8335fbfe3f5652f461cde297308fa, 60)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0x60353441ca7806f1ac2eede15a3e2ee1bcc2ddd5a3e57d45f118cbb7b74a882f[39m
+[90m  Transaction Cost: 0.000067982048606925 ETH (67,981 gas)[39m
+[96mExecuting [invoke.oracle_manager_op_usdc_max_stale_duration]...[39m
+  [32m✔[39m Successfully called setMaxStaleDuration(0x088389bce6df469303cc410a355755589d6bdff5c8591ee741e608fb82d0283b, 60)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0xf17066322c1e5093fab86db0396d19886dcb8377b1e84bc2be8b4f98db067135[39m
+[90m  Transaction Cost: 0.000067981917539557 ETH (67,981 gas)[39m
+[96mExecuting [invoke.oracle_manager_op_usdc_stork_max_stale_duration]...[39m
+  [32m✔[39m Successfully called setMaxStaleDuration(0x9170ec8398399d25c597d445755f31ccb362ce4ea9aa8857db7fc44338ddeb82, 60)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0xed3a30c5a588d819e162a6f7347111fdc4e2bba257686a439d08074546b47df5[39m
+[90m  Transaction Cost: 0.00006798180285561 ETH (67,981 gas)[39m
+[96mExecuting [invoke.oracle_manager_register_node_avax_usdc_fallback_stork_redstone]...[39m
+  [32m✔[39m Successfully called registerNode(5, 0x, ["0x23d809b84561e4b046e5ccfc6769d23fbea8335fbfe3f5652f461cde297308fa","0x0b476cd1d4719245c4a80f469d510c4b3ee7647fee09ae3f3de05ab25de34c8f"])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0x4e777ad9114e700400dd9022abc5c0d63b8b583b88027d489afe59ac755787b0[39m
+[90m  Transaction Cost: 0.000305227154184816 ETH (305,224 gas)[39m
+[90m  Setting: avaxUsdcNodeIdFallbackStorkRedstone = 0x26a55771eb5f177ada6287e21726763856097495089e1e6c229098563585bfe9[39m
+[96mExecuting [invoke.oracle_manager_register_node_op_usdc_fallback_stork_redstone]...[39m
+  [32m✔[39m Successfully called registerNode(5, 0x, ["0x9170ec8398399d25c597d445755f31ccb362ce4ea9aa8857db7fc44338ddeb82","0x088389bce6df469303cc410a355755589d6bdff5c8591ee741e608fb82d0283b"])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0x90109b753d4faba02e2c1fe43962daf8b3eb4850ef0bc6c1ddb453e2cc812063[39m
+[90m  Transaction Cost: 0.000305226760140632 ETH (305,224 gas)[39m
+[90m  Setting: opUsdcNodeIdFallbackStorkRedstone = 0xf6a2fa7f2e9742e14f5e5f8b9e073119b21f3cafc913882b07cf3b0d73f6708a[39m
+[96mExecuting [var.cp_1rusd]...[39m
+[90m  Setting: cp1Rusd_maxMarkets = 6[39m
+[90m  Setting: cp1Rusd_maxCollaterals = 2[39m
+[90m  Setting: cp1Rusd_insuranceFund_liquidationFeeUnscaled = 0.35[39m
+[90m  Setting: cp1Rusd_market1Eth_riskMatrix00Unscaled = 0.00173056[39m
+[90m  Setting: cp1Rusd_market2Btc_riskMatrix00Unscaled = 0.00148996[39m
+[90m  Setting: cp1Rusd_market3Sol_riskMatrix00Unscaled = 0.0033403[39m
+[90m  Setting: cp1Rusd_market4Arb_riskMatrix00Unscaled = 0.0032251041[39m
+[90m  Setting: cp1Rusd_market5Op_riskMatrix00Unscaled = 0.012006242329[39m
+[90m  Setting: cp1Rusd_market6Avax_riskMatrix00Unscaled = 0.003248316036[39m
+[90m  Setting: cp1Rusd_imMultiplierUnscaled = 1.3[39m
+[90m  Setting: cp1Rusd_mmrMultiplierUnscaled = 1[39m
+[90m  Setting: cp1Rusd_dutchMultiplierUnscaled = 1[39m
+[90m  Setting: cp1Rusd_adlMultiplierUnscaled = 0.5[39m
+[90m  Setting: cp1Rusd_imBufferMultiplierUnscaled = 8.06[39m
+[90m  Setting: cp1Rusd_poolImMultiplierUnscaled = 8.01[39m
+[90m  Setting: cp1Rusd_backstopLp_liquidationFeeUnscaled = 0.05[39m
+[90m  Setting: cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled = 0[39m
+[90m  Setting: cp1Rusd_bidKeeperFeeUnscaled = 0[39m
+[90m  Setting: cp1Rusd_queueDurationInSeconds = 0[39m
+[90m  Setting: cp1Rusd_maxOrdersInBid = 0[39m
+[90m  Setting: cp1Rusd_maxBidsInQueue = 0[39m
+[90m  Setting: cp1Rusd_bidScoreWeightUnscaled = 0[39m
+[90m  Setting: cp1Rusd_backstopKeeperFeeUnscaled = 0[39m
+[90m  Setting: cp1Rusd_adlExecutionKeeperFeeUnscaled = 0[39m
+[90m  Setting: cp1Rusd_dDutchMinUnscaled = 0.01[39m
+[90m  Setting: cp1Rusd_dMaxUnscaled = 0.4[39m
+[90m  Setting: cp1Rusd_rusd_capUnscaled = 115792089237316195423570985008687907853269984665640564039457.584007913129639935[39m
+[90m  Setting: cp1Rusd_rusd_autoExchangeThresholdUnscaled = 0[39m
+[90m  Setting: cp1Rusd_rusd_autoExchangeInsuranceFeeUnscaled = 0.01[39m
+[90m  Setting: cp1Rusd_rusd_autoExchangeDustThresholdUnscaled = 0[39m
+[90m  Setting: cp1Rusd_rusd_bidSubmissionFeeUnscaled = 0[39m
+[90m  Setting: cp1Rusd_rusdParentConfig_collateralAddress = 0x0000000000000000000000000000000000000000[39m
+[90m  Setting: cp1Rusd_rusdParentConfig_priceHaircutUnscaled = 0[39m
+[90m  Setting: cp1Rusd_rusdParentConfig_autoExchangeDiscountUnscaled = 0[39m
+[90m  Setting: cp1Rusd_rusdParentConfig_oracleNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857[39m
+[90m  Setting: cp1Rusd_weth_capUnscaled = 500[39m
+[90m  Setting: cp1Rusd_weth_autoExchangeThresholdUnscaled = 0[39m
+[90m  Setting: cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = 0[39m
+[90m  Setting: cp1Rusd_weth_autoExchangeDustThresholdUnscaled = 0[39m
+[90m  Setting: cp1Rusd_weth_bidSubmissionFeeUnscaled = 0[39m
+[90m  Setting: cp1Rusd_wethParentConfig_collateralAddress = 0xa9F32a851B1800742e47725DA54a09A7Ef2556A3[39m
+[90m  Setting: cp1Rusd_wethParentConfig_priceHaircutUnscaled = 0.075[39m
+[90m  Setting: cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = 0.01[39m
+[90m  Setting: cp1Rusd_wethParentConfig_oracleNodeId = 0xd47353c2b593083048dc9eb3f58c89553c5cafc5065d65774e5614daa8f37b47[39m
+[96mExecuting [invoke.oracle_manager_avax_usdc_fallback_stork_redstone_max_stale_duration]...[39m
+  [32m✔[39m Successfully called setMaxStaleDuration(0x26a55771eb5f177ada6287e21726763856097495089e1e6c229098563585bfe9, 60)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0xbc78d7ff33759a76682b0e29c897b94364cd49ec2fd00907cbbc9ebae1638ed2[39m
+[90m  Transaction Cost: 0.000067981537933653 ETH (67,981 gas)[39m
+[96mExecuting [invoke.oracle_manager_op_usdc_fallback_stork_redstone_max_stale_duration]...[39m
+  [32m✔[39m Successfully called setMaxStaleDuration(0xf6a2fa7f2e9742e14f5e5f8b9e073119b21f3cafc913882b07cf3b0d73f6708a, 60)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xC67316Ed17E0C793041CFE12F674af250a294aab[39m
+[90m  Transaction Hash: 0x4ea8736f0b061fa1828dd24e6851f248a5848dc31e004a7833593d1d3e8cdcfd[39m
+[90m  Transaction Cost: 0.000067981470700444 ETH (67,981 gas)[39m
+[96mExecuting [var.market_5op]...[39m
+[90m  Setting: market5Op_riskMatrixIndex = 0[39m
+[90m  Setting: market5Op_maxOpenBaseUnscaled = 25000000[39m
+[90m  Setting: market5Op_velocityMultiplierUnscaled = 1.5[39m
+[90m  Setting: market5Op_oracleNodeId = 0xf6a2fa7f2e9742e14f5e5f8b9e073119b21f3cafc913882b07cf3b0d73f6708a[39m
+[90m  Setting: market5Op_mtmWindow = 604800[39m
+[90m  Setting: market5Op_dutchConfig_lambdaUnscaled = 1[39m
+[90m  Setting: market5Op_dutchConfig_minBaseUnscaled = 0.11[39m
+[90m  Setting: market5Op_slippageParams_phiUnscaled = 0[39m
+[90m  Setting: market5Op_slippageParams_betaUnscaled = 0[39m
+[90m  Setting: market5Op_minimumOrderBaseUnscaled = 1[39m
+[90m  Setting: market5Op_baseSpacingUnscaled = 0.1[39m
+[90m  Setting: market5Op_priceSpacingUnscaled = 0.001[39m
+[90m  Setting: market5Op_depthFactorUnscaled = 0.45[39m
+[90m  Setting: market5Op_maxExposureFactorUnscaled = 0.999[39m
+[90m  Setting: market5Op_maxPSlippageUnscaled = 0.1[39m
+[96mExecuting [var.market_6avax]...[39m
+[90m  Setting: market6Avax_riskMatrixIndex = 0[39m
+[90m  Setting: market6Avax_maxOpenBaseUnscaled = 12500000[39m
+[90m  Setting: market6Avax_velocityMultiplierUnscaled = 1[39m
+[90m  Setting: market6Avax_oracleNodeId = 0x26a55771eb5f177ada6287e21726763856097495089e1e6c229098563585bfe9[39m
+[90m  Setting: market6Avax_mtmWindow = 604800[39m
+[90m  Setting: market6Avax_dutchConfig_lambdaUnscaled = 1[39m
+[90m  Setting: market6Avax_dutchConfig_minBaseUnscaled = 0.11[39m
+[90m  Setting: market6Avax_slippageParams_phiUnscaled = 0[39m
+[90m  Setting: market6Avax_slippageParams_betaUnscaled = 0[39m
+[90m  Setting: market6Avax_minimumOrderBaseUnscaled = 1[39m
+[90m  Setting: market6Avax_baseSpacingUnscaled = 0.1[39m
+[90m  Setting: market6Avax_priceSpacingUnscaled = 0.001[39m
+[90m  Setting: market6Avax_depthFactorUnscaled = 0.45[39m
+[90m  Setting: market6Avax_maxExposureFactorUnscaled = 0.999[39m
+[90m  Setting: market6Avax_maxPSlippageUnscaled = 0.1[39m
+[96mExecuting [invoke.market_1eth_set_cp_limits]...[39m
+  [32m✔[39m Successfully called setCollateralPoolLimits(1, {"maxMarkets":"6","maxCollaterals":"2"})
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0xd7fc95e0fbfe2d8de2123dd978266939415e8e98f6a442a16399ba5fd17d74d3[39m
+[90m  Transaction Cost: 0.000045092273212428 ETH (45,092 gas)[39m
+[96mExecuting [invoke.create_market_5op]...[39m
+  [32m✔[39m Successfully called createMarket(Market OP, 1)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0x27E5cb712334e101B3c232eB0Be198baaa595F5F[39m
+[90m  Transaction Hash: 0x35758e070feef1cb36007adaa70f72d357aa0f031cdbec9f619f06d2c7e4dce9[39m
+[90m  Transaction Cost: 0.00061879328082458 ETH (618,790 gas)[39m
+[90m  Setting: market_5op = [object Object][39m
+[96mExecuting [invoke.create_market_6avax]...[39m
+  [32m✔[39m Successfully called createMarket(Market AVAX, 1)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0x27E5cb712334e101B3c232eB0Be198baaa595F5F[39m
+[90m  Transaction Hash: 0x49619329cbe350506dad6cdd396e95d703bc1d8342c70e7974eaed9d662349e3[39m
+[90m  Transaction Cost: 0.00061881687129696 ETH (618,814 gas)[39m
+[90m  Setting: market_6avax = [object Object][39m
+[96mExecuting [var.market_5op_vars]...[39m
+[90m  Setting: market5OpId = 5[39m
+[96mExecuting [invoke.market_5op_insurance_fund_config]...[39m
+  [32m✔[39m Successfully called configureCollateralPoolInsuranceFund(5, {"accountId":"4","liquidationFee":"350000000000000000"})
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0x8e20736242a7c674c33bcbf06a9b09391ee2bb04c93bb363e174c08058593f9a[39m
+[90m  Transaction Cost: 0.000089831364803691 ETH (89,831 gas)[39m
+[96mExecuting [invoke.market_5op_set_cp_limits]...[39m
+  [32m✔[39m Successfully called setCollateralPoolLimits(5, {"maxMarkets":"1","maxCollaterals":"1"})
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0x97d8ac12e7f7d32aa2bc96d338aa8708fc05004f5df855b35dbfdaadb61128e7[39m
+[90m  Transaction Cost: 0.000082092291754968 ETH (82,092 gas)[39m
+[96mExecuting [invoke.market_5op_set_market_config]...[39m
+  [32m✔[39m Successfully called setMarketConfiguration(5, {"riskMatrixIndex":"0","maxOpenBase":"25000000000000000000000000","velocityMultiplier":"1500000000000000000","oracleNodeId":"0xf6a2fa7f2e9742e14f5e5f8b9e073119b21f3cafc913882b07cf3b0d73f6708a","mtmWindow":"604800","dutchConfig":{"lambda":"1000000000000000000","minBase":"110000000000000000"},"slippageParams":{"phi":"0","beta":"0"},"minimumOrderBase":"1000000000000000000","baseSpacing":"100000000000000000","priceSpacing":"1000000000000000","depthFactor":"450000000000000000","maxExposureFactor":"999000000000000000","maxPSlippage":"100000000000000000"})
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0x27E5cb712334e101B3c232eB0Be198baaa595F5F[39m
+[90m  Transaction Hash: 0xb5ab2f340b6028dff701ce2cfee72bcc92f72d65d51afae24edbefeab1b39bfb[39m
+[90m  Transaction Cost: 0.00054088768215546 ETH (540,886 gas)[39m
+[96mExecuting [invoke.market_5op_set_pausers_cp]...[39m
+  [32m✔[39m Successfully called setDeniers(0xadd14a5191aae591d3b31d798e3148c70022e7f386447cca8952743d0b9e0c7b, ["0x140d001689979ee77C2FB4c8d4B5F3E209135776","0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d","0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d","0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0x0e27792666fc816d7fa08346257aa00a1b4c1178505504f3df9240e6de17839b[39m
+[90m  Transaction Cost: 0.000149491406914502 ETH (149,491 gas)[39m
+[96mExecuting [invoke.market_5op_set_pausers_market]...[39m
+  [32m✔[39m Successfully called setDeniers(0x4a21441237b1c02b03d9ac7d2da629afd4a809c6475de8e5e7dde4764fd74f4f, ["0x140d001689979ee77C2FB4c8d4B5F3E209135776","0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d","0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d","0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0x27E5cb712334e101B3c232eB0Be198baaa595F5F[39m
+[90m  Transaction Hash: 0x315f32e670ea5fa0d8c374625acaabd5b558f090297d3822c58e57c35543592b[39m
+[90m  Transaction Cost: 0.000151583361070706 ETH (151,583 gas)[39m
+[96mExecuting [invoke.market_5op_set_tier0_fee]...[39m
+  [32m✔[39m Successfully called setTierFee(5, 0, 500000000000000)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0x27E5cb712334e101B3c232eB0Be198baaa595F5F[39m
+[90m  Transaction Hash: 0x2104b7f35c3fbc04eb45fad001c7f98637801e060f2fe81adedeb0d9b1bcfa24[39m
+[90m  Transaction Cost: 0.00005951012407835 ETH (59,510 gas)[39m
+[96mExecuting [invoke.market_5op_unpause_cp]...[39m
+  [32m✔[39m Successfully called setFeatureFlagAllowAll(0xadd14a5191aae591d3b31d798e3148c70022e7f386447cca8952743d0b9e0c7b, true)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0xb617fa0564ac0377e26cd5b0f73288a121f2e3bcc148640ffcd59721c0848069[39m
+[90m  Transaction Cost: 0.00003735406817105 ETH (37,354 gas)[39m
+[96mExecuting [invoke.market_5op_unpause_market]...[39m
+  [32m✔[39m Successfully called setFeatureFlagAllowAll(0x4a21441237b1c02b03d9ac7d2da629afd4a809c6475de8e5e7dde4764fd74f4f, true)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0x27E5cb712334e101B3c232eB0Be198baaa595F5F[39m
+[90m  Transaction Hash: 0x100579111ec41620dbe691c01bd9d7d837dc4893b05fb1d20900a6ae71ea2d9f[39m
+[90m  Transaction Cost: 0.000056679090516363 ETH (56,679 gas)[39m
+[96mExecuting [var.market_6avax_vars]...[39m
+[90m  Setting: market6AvaxId = 6[39m
+[96mExecuting [invoke.market_5op_merge_collateral_pool]...[39m
+  [32m✔[39m Successfully called mergeCollateralPools(1, 5)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0xe7dedeebaad5fc21382c6e83c064b8cee18129d0706569f8994ee19bfac00427[39m
+[90m  Transaction Cost: 0.000150771210777858 ETH (150,771 gas)[39m
+[96mExecuting [invoke.market_6avax_insurance_fund_config]...[39m
+  [32m✔[39m Successfully called configureCollateralPoolInsuranceFund(6, {"accountId":"4","liquidationFee":"350000000000000000"})
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0xeff71fe8262835a7ec6a0b15dc8ac94f4ed3b17f3804db1b58141ee17ae9263b[39m
+[90m  Transaction Cost: 0.000089831109953144 ETH (89,831 gas)[39m
+[96mExecuting [invoke.market_6avax_set_cp_limits]...[39m
+  [32m✔[39m Successfully called setCollateralPoolLimits(6, {"maxMarkets":"1","maxCollaterals":"1"})
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0xccc251ee1330239a75e6c1ab88700d85a338d14826b3c43017c429320e923e4a[39m
+[90m  Transaction Cost: 0.000082092088002624 ETH (82,092 gas)[39m
+[96mExecuting [invoke.market_6avax_set_market_config]...[39m
+  [32m✔[39m Successfully called setMarketConfiguration(6, {"riskMatrixIndex":"0","maxOpenBase":"12500000000000000000000000","velocityMultiplier":"1000000000000000000","oracleNodeId":"0x26a55771eb5f177ada6287e21726763856097495089e1e6c229098563585bfe9","mtmWindow":"604800","dutchConfig":{"lambda":"1000000000000000000","minBase":"110000000000000000"},"slippageParams":{"phi":"0","beta":"0"},"minimumOrderBase":"1000000000000000000","baseSpacing":"100000000000000000","priceSpacing":"1000000000000000","depthFactor":"450000000000000000","maxExposureFactor":"999000000000000000","maxPSlippage":"100000000000000000"})
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0x27E5cb712334e101B3c232eB0Be198baaa595F5F[39m
+[90m  Transaction Hash: 0x1fd4040cb1cb0394ac9e3b3c94578832d64f5c06be7a3e3606e42dc7a16778de[39m
+[90m  Transaction Cost: 0.000540898507903222 ETH (540,898 gas)[39m
+[96mExecuting [invoke.market_6avax_set_pausers_cp]...[39m
+  [32m✔[39m Successfully called setDeniers(0x614580df1e912756244cab5422c7e24a65abe6b1991a3b6accf3207e1982c61e, ["0x140d001689979ee77C2FB4c8d4B5F3E209135776","0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d","0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d","0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0xa4526f672266e17173000a619c23d325b5891bb173bdf52ff03d231f21530632[39m
+[90m  Transaction Cost: 0.000149503122891466 ETH (149,503 gas)[39m
+[96mExecuting [invoke.market_6avax_set_pausers_market]...[39m
+  [32m✔[39m Successfully called setDeniers(0xa5587b98534ec97ec861e00a93cb58ff9e907f37c67f25b62079e1306087840a, ["0x140d001689979ee77C2FB4c8d4B5F3E209135776","0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d","0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d","0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0x27E5cb712334e101B3c232eB0Be198baaa595F5F[39m
+[90m  Transaction Hash: 0x1b647fa091d77966b5726f0783e62e4e3790d95ef1a947d66baf7a5c8702ae78[39m
+[90m  Transaction Cost: 0.00015158310913976 ETH (151,583 gas)[39m
+[96mExecuting [invoke.market_6avax_set_tier0_fee]...[39m
+  [32m✔[39m Successfully called setTierFee(6, 0, 500000000000000)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0x27E5cb712334e101B3c232eB0Be198baaa595F5F[39m
+[90m  Transaction Hash: 0xd1823608b0d588f9bd1e440e5f22ff7d748e44325a0417d3bc4ada8cf4a85bc4[39m
+[90m  Transaction Cost: 0.00005951003755081 ETH (59,510 gas)[39m
+[96mExecuting [invoke.market_6avax_unpause_cp]...[39m
+  [32m✔[39m Successfully called setFeatureFlagAllowAll(0x614580df1e912756244cab5422c7e24a65abe6b1991a3b6accf3207e1982c61e, true)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0xbe3cac72e3f77b18600bd8ca73e6b84d011a96c1e3e80e1b47551b89517e17ae[39m
+[90m  Transaction Cost: 0.000037366020663398 ETH (37,366 gas)[39m
+[96mExecuting [invoke.market_6avax_unpause_market]...[39m
+  [32m✔[39m Successfully called setFeatureFlagAllowAll(0xa5587b98534ec97ec861e00a93cb58ff9e907f37c67f25b62079e1306087840a, true)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0x27E5cb712334e101B3c232eB0Be198baaa595F5F[39m
+[90m  Transaction Hash: 0xde44dc9cd1e8972d794dc63535a8fefbc47bcfa81438b8ec1b31c551ea46c6cb[39m
+[90m  Transaction Cost: 0.000056679027432636 ETH (56,679 gas)[39m
+[96mExecuting [invoke.market_6avax_merge_collateral_pool]...[39m
+  [32m✔[39m Successfully called mergeCollateralPools(1, 6)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0xa706469b34a255a5858a28dc5517e6f09fab40ef04c723b62c7587bc1978e765[39m
+[90m  Transaction Cost: 0.000150771063926904 ETH (150,771 gas)[39m
+[96mExecuting [invoke.cp_1rusd_create_risk_matrix_market_5op]...[39m
+  [32m✔[39m Successfully called createRiskMatrix(1, [["12006242329000000"]])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0x164a42daf247b90f8368a79f0952d86e9d06f14b0c2a691ce5cd4ea703b7ddde[39m
+[90m  Transaction Cost: 0.0001226000456072 ETH (122,600 gas)[39m
+[90m  Setting: cp1RusdMarket5OpRiskBlockId = 7[39m
+[96mExecuting [invoke.cp_1rusd_create_risk_matrix_market_6avax]...[39m
+  [32m✔[39m Successfully called createRiskMatrix(1, [["3248316036000000"]])
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0xA763B6a5E09378434406C003daE6487FbbDc1a80[39m
+[90m  Transaction Hash: 0x8c135464d3b999fcd676aa773dc152f963eb9468342e2b188653546a11052549[39m
+[90m  Transaction Cost: 0.000122588039963688 ETH (122,588 gas)[39m
+[90m  Setting: cp1RusdMarket6AvaxRiskBlockId = 8[39m
+[96mExecuting [invoke.cp_1rusd_set_risk_block_id_market_5op]...[39m
+  [32m✔[39m Successfully called setRiskBlockId(5, 7, 0)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0x27E5cb712334e101B3c232eB0Be198baaa595F5F[39m
+[90m  Transaction Hash: 0xd0f077c9f1d7929a417e529ad795bb08548a06663d3f2dc34ba7a862fbfd1a82[39m
+[90m  Transaction Cost: 0.000243741069709926 ETH (243,741 gas)[39m
+[96mExecuting [invoke.cp_1rusd_set_risk_block_id_market_6avax]...[39m
+  [32m✔[39m Successfully called setRiskBlockId(6, 8, 0)
+[90m  Signer: 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9[39m
+[90m  Contract Address: 0x27E5cb712334e101B3c232eB0Be198baaa595F5F[39m
+[90m  Transaction Hash: 0xcaeb623a700422d526f42297e7d7d32540de7dca6247b7459c02462012dc37a7[39m
+[90m  Transaction Cost: 0.000246232061804232 ETH (246,232 gas)[39m
+[1m💥 reya-omnibus:1.0.13@main built on Reya Network (Chain ID: 1729)[22m
+[90mTotal Cost: 0.00744393901135188 ETH[39m
+The following package data has been stored locally
+╔═════════════════╤═══════════════════════════════════════════════════════╗
+║ Deployment Data │ ipfs://QmVUWv8XdWoHXQEBcKTySJSPjBsCD3CHzL8dcxPHm5nc4S ║
+╟─────────────────┼───────────────────────────────────────────────────────╢
+║ Package Code    │ ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k ║
+╟─────────────────┼───────────────────────────────────────────────────────╢
+║ Metadata        │ ipfs://QmNg2R3moWLsMLAVKYYzzoHUHjjmXBDnYqphvSCBSBXWsm ║
+╚═════════════════╧═══════════════════════════════════════════════════════╝
+[1mPublish [1mreya-omnibus:1.0.13@main[22m[1m to the registry and pin the IPFS data to http://127.0.0.1:5001[22m
+> cannon publish reya-omnibus:1.0.13@main --chain-id 1729
+[1mVerify contracts on Etherscan[22m
+> cannon verify reya-omnibus:1.0.13@main --chain-id 1729
+
+
+
+ Lerna (powered by Nx)   Successfully ran target reya_network:simulate for project @reya-deployments/tomls
+
+
