@@ -3,6 +3,11 @@
 pragma solidity ^0.8.4;
 
 interface IPassivePerpProxy {
+    function getInstantaneousPoolPrice(uint128 marketId) external view returns (
+        /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
+        uint256
+    );
+
     function createMarket(string memory name, uint128 passivePoolId)
         external
         returns (uint128 id);
