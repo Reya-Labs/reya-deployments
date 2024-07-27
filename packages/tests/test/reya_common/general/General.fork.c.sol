@@ -153,6 +153,46 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.nodeIds.push(sec.arbUsdcStorkFallbackNodeId);
         ls.meanPrices.push(meanPriceARB);
         ls.maxDeviations.push(maxDeviationARB);
+
+        ls.nodeIds.push(sec.opUsdNodeId);
+        ls.meanPrices.push(meanPriceOP);
+        ls.maxDeviations.push(maxDeviationOP);
+
+        ls.nodeIds.push(sec.opUsdcNodeId);
+        ls.meanPrices.push(meanPriceOP);
+        ls.maxDeviations.push(maxDeviationOP);
+
+        ls.nodeIds.push(sec.opUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceOP);
+        ls.maxDeviations.push(maxDeviationOP);
+
+        ls.nodeIds.push(sec.opUsdcStorkNodeId);
+        ls.meanPrices.push(meanPriceOP);
+        ls.maxDeviations.push(maxDeviationOP);
+
+        ls.nodeIds.push(sec.opUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceOP);
+        ls.maxDeviations.push(maxDeviationOP);
+
+        ls.nodeIds.push(sec.avaxUsdNodeId);
+        ls.meanPrices.push(meanPriceAVAX);
+        ls.maxDeviations.push(maxDeviationAVAX);
+
+        ls.nodeIds.push(sec.avaxUsdcNodeId);
+        ls.meanPrices.push(meanPriceAVAX);
+        ls.maxDeviations.push(maxDeviationAVAX);
+
+        ls.nodeIds.push(sec.avaxUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceAVAX);
+        ls.maxDeviations.push(maxDeviationAVAX);
+
+        ls.nodeIds.push(sec.avaxUsdcStorkNodeId);
+        ls.meanPrices.push(meanPriceAVAX);
+        ls.maxDeviations.push(maxDeviationAVAX);
+
+        ls.nodeIds.push(sec.avaxUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceAVAX);
+        ls.maxDeviations.push(maxDeviationAVAX);
     }
 
     function check_OracleNodePrices(bool flagCheckStaleness) public {
