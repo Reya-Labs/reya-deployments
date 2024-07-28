@@ -53,40 +53,14 @@ contract GeneralForkCheck is BaseReyaForkTest {
         uint256 meanPriceARB = 0.7e18;
         uint256 maxDeviationARB = 0.3e18;
 
+        uint256 meanPriceOP = 1.7e18;
+        uint256 maxDeviationOP = 1e18;
+
+        uint256 meanPriceAVAX = 28e18;
+        uint256 maxDeviationAVAX = 14e18;
+
         uint256 meanPriceStableCoin = 1e18;
         uint256 maxDeviationStableCoin = 0.01e18;
-
-        ls.nodeIds.push(sec.ethUsdNodeId);
-        ls.meanPrices.push(meanPriceETH);
-        ls.maxDeviations.push(maxDeviationETH);
-
-        ls.nodeIds.push(sec.btcUsdNodeId);
-        ls.meanPrices.push(meanPriceBTC);
-        ls.maxDeviations.push(maxDeviationBTC);
-
-        ls.nodeIds.push(sec.solUsdNodeId);
-        ls.meanPrices.push(meanPriceSOL);
-        ls.maxDeviations.push(maxDeviationSOL);
-
-        ls.nodeIds.push(sec.arbUsdNodeId);
-        ls.meanPrices.push(meanPriceARB);
-        ls.maxDeviations.push(maxDeviationARB);
-
-        ls.nodeIds.push(sec.ethUsdcNodeId);
-        ls.meanPrices.push(meanPriceETH);
-        ls.maxDeviations.push(maxDeviationETH);
-
-        ls.nodeIds.push(sec.btcUsdcNodeId);
-        ls.meanPrices.push(meanPriceBTC);
-        ls.maxDeviations.push(maxDeviationBTC);
-
-        ls.nodeIds.push(sec.solUsdcNodeId);
-        ls.meanPrices.push(meanPriceSOL);
-        ls.maxDeviations.push(maxDeviationSOL);
-
-        ls.nodeIds.push(sec.arbUsdcNodeId);
-        ls.meanPrices.push(meanPriceARB);
-        ls.maxDeviations.push(maxDeviationARB);
 
         ls.nodeIds.push(sec.rusdUsdNodeId);
         ls.meanPrices.push(1e18);
@@ -96,57 +70,129 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(meanPriceStableCoin);
         ls.maxDeviations.push(maxDeviationStableCoin);
 
-        ls.nodeIds.push(sec.ethUsdcStorkFallbackNodeId);
+        ls.nodeIds.push(sec.usdcUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceStableCoin);
+        ls.maxDeviations.push(maxDeviationStableCoin);
+
+        ls.nodeIds.push(sec.ethUsdNodeId);
         ls.meanPrices.push(meanPriceETH);
         ls.maxDeviations.push(maxDeviationETH);
 
-        ls.nodeIds.push(sec.btcUsdcStorkFallbackNodeId);
-        ls.meanPrices.push(meanPriceBTC);
-        ls.maxDeviations.push(maxDeviationBTC);
-
-        ls.nodeIds.push(sec.solUsdcStorkFallbackNodeId);
-        ls.meanPrices.push(meanPriceSOL);
-        ls.maxDeviations.push(maxDeviationSOL);
-
-        ls.nodeIds.push(sec.arbUsdcStorkFallbackNodeId);
-        ls.meanPrices.push(meanPriceARB);
-        ls.maxDeviations.push(maxDeviationARB);
+        ls.nodeIds.push(sec.ethUsdcNodeId);
+        ls.meanPrices.push(meanPriceETH);
+        ls.maxDeviations.push(maxDeviationETH);
 
         ls.nodeIds.push(sec.ethUsdStorkNodeId);
         ls.meanPrices.push(meanPriceETH);
         ls.maxDeviations.push(maxDeviationETH);
 
-        ls.nodeIds.push(sec.btcUsdStorkNodeId);
-        ls.meanPrices.push(meanPriceBTC);
-        ls.maxDeviations.push(maxDeviationBTC);
-
-        ls.nodeIds.push(sec.solUsdStorkNodeId);
-        ls.meanPrices.push(meanPriceSOL);
-        ls.maxDeviations.push(maxDeviationSOL);
-
-        ls.nodeIds.push(sec.arbUsdStorkNodeId);
-        ls.meanPrices.push(meanPriceARB);
-        ls.maxDeviations.push(maxDeviationARB);
-
         ls.nodeIds.push(sec.ethUsdcStorkNodeId);
         ls.meanPrices.push(meanPriceETH);
         ls.maxDeviations.push(maxDeviationETH);
+
+        ls.nodeIds.push(sec.ethUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceETH);
+        ls.maxDeviations.push(maxDeviationETH);
+
+        ls.nodeIds.push(sec.btcUsdNodeId);
+        ls.meanPrices.push(meanPriceBTC);
+        ls.maxDeviations.push(maxDeviationBTC);
+
+        ls.nodeIds.push(sec.btcUsdcNodeId);
+        ls.meanPrices.push(meanPriceBTC);
+        ls.maxDeviations.push(maxDeviationBTC);
+
+        ls.nodeIds.push(sec.btcUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceBTC);
+        ls.maxDeviations.push(maxDeviationBTC);
 
         ls.nodeIds.push(sec.btcUsdcStorkNodeId);
         ls.meanPrices.push(meanPriceBTC);
         ls.maxDeviations.push(maxDeviationBTC);
 
+        ls.nodeIds.push(sec.btcUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceBTC);
+        ls.maxDeviations.push(maxDeviationBTC);
+
+        ls.nodeIds.push(sec.solUsdNodeId);
+        ls.meanPrices.push(meanPriceSOL);
+        ls.maxDeviations.push(maxDeviationSOL);
+
+        ls.nodeIds.push(sec.solUsdcNodeId);
+        ls.meanPrices.push(meanPriceSOL);
+        ls.maxDeviations.push(maxDeviationSOL);
+
+        ls.nodeIds.push(sec.solUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceSOL);
+        ls.maxDeviations.push(maxDeviationSOL);
+
         ls.nodeIds.push(sec.solUsdcStorkNodeId);
         ls.meanPrices.push(meanPriceSOL);
         ls.maxDeviations.push(maxDeviationSOL);
+
+        ls.nodeIds.push(sec.solUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceSOL);
+        ls.maxDeviations.push(maxDeviationSOL);
+
+        ls.nodeIds.push(sec.arbUsdNodeId);
+        ls.meanPrices.push(meanPriceARB);
+        ls.maxDeviations.push(maxDeviationARB);
+
+        ls.nodeIds.push(sec.arbUsdcNodeId);
+        ls.meanPrices.push(meanPriceARB);
+        ls.maxDeviations.push(maxDeviationARB);
+
+        ls.nodeIds.push(sec.arbUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceARB);
+        ls.maxDeviations.push(maxDeviationARB);
 
         ls.nodeIds.push(sec.arbUsdcStorkNodeId);
         ls.meanPrices.push(meanPriceARB);
         ls.maxDeviations.push(maxDeviationARB);
 
-        ls.nodeIds.push(sec.usdcUsdStorkNodeId);
-        ls.meanPrices.push(meanPriceStableCoin);
-        ls.maxDeviations.push(maxDeviationStableCoin);
+        ls.nodeIds.push(sec.arbUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceARB);
+        ls.maxDeviations.push(maxDeviationARB);
+
+        ls.nodeIds.push(sec.opUsdNodeId);
+        ls.meanPrices.push(meanPriceOP);
+        ls.maxDeviations.push(maxDeviationOP);
+
+        ls.nodeIds.push(sec.opUsdcNodeId);
+        ls.meanPrices.push(meanPriceOP);
+        ls.maxDeviations.push(maxDeviationOP);
+
+        ls.nodeIds.push(sec.opUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceOP);
+        ls.maxDeviations.push(maxDeviationOP);
+
+        ls.nodeIds.push(sec.opUsdcStorkNodeId);
+        ls.meanPrices.push(meanPriceOP);
+        ls.maxDeviations.push(maxDeviationOP);
+
+        ls.nodeIds.push(sec.opUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceOP);
+        ls.maxDeviations.push(maxDeviationOP);
+
+        ls.nodeIds.push(sec.avaxUsdNodeId);
+        ls.meanPrices.push(meanPriceAVAX);
+        ls.maxDeviations.push(maxDeviationAVAX);
+
+        ls.nodeIds.push(sec.avaxUsdcNodeId);
+        ls.meanPrices.push(meanPriceAVAX);
+        ls.maxDeviations.push(maxDeviationAVAX);
+
+        ls.nodeIds.push(sec.avaxUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceAVAX);
+        ls.maxDeviations.push(maxDeviationAVAX);
+
+        ls.nodeIds.push(sec.avaxUsdcStorkNodeId);
+        ls.meanPrices.push(meanPriceAVAX);
+        ls.maxDeviations.push(maxDeviationAVAX);
+
+        ls.nodeIds.push(sec.avaxUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceAVAX);
+        ls.maxDeviations.push(maxDeviationAVAX);
     }
 
     function check_OracleNodePrices(bool flagCheckStaleness) public {
