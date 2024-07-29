@@ -67,6 +67,7 @@ usdtSalt = "usdt-main"
 daiSalt = "dai-main"
 wethSalt = "weth-main"
 wbtcSalt = "wbtc-main"
+wstethSalt = "wsteth-main"
 
 [var.upgrade_proxy_vars]
 coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"

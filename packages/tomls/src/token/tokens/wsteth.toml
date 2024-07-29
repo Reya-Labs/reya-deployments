@@ -1,0 +1,70 @@
+[var.wsteth_vars]
+wstethTokenName = "Lido wstETH"
+wstethTokenSymbol = "WSTETH"
+wstethTokenDecimals = "18"
+
+[clone.wsteth]
+source = "<%= settings.tokensProxyPackage %>"
+target = "reya-tokens:1.0.0@wsteth"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.wstethSalt %>"
+depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_wsteth_proxy]
+target = ["wsteth.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.WSTETHProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.WSTETHProxy.event = "Upgraded"
+factory.WSTETHProxy.arg = 0
+depends = ["clone.wsteth"]
+
+[invoke.wsteth_initialize]
+target = ["WSTETHProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.wstethTokenName %>",
+    "<%= settings.wstethTokenSymbol %>",
+    "<%= settings.wstethTokenDecimals %>",
+]
+depends = ["invoke.upgrade_wsteth_proxy"]
+
+[invoke.wsteth_unpause]
+target = ["WSTETHProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_wsteth_proxy"]
+
+[invoke.wsteth_set_pausers]
+target = ["WSTETHProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_wsteth_proxy"]
+
+# [invoke.wsteth_mint_permission]
+# target = ["WSTETHProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.wstethController %>"]
+# depends = ["invoke.upgrade_wsteth_proxy"]
+
+# [invoke.wsteth_burn_permission]
+# target = ["WSTETHProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.wstethController %>"]
+# depends = ["invoke.upgrade_wsteth_proxy"]
