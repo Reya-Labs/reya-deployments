@@ -4,7 +4,7 @@ description = "Reya Testnet Source Chains"
 privateSourceCode = true
 version = "1.0.0"
 
-include = ["../token/tokens/wsteth.toml"]
+include = ["../token/tokens/wsteth.toml", "../token/tokens/usde.toml"]
 
 [var.wallet_addresses]
 owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
@@ -15,6 +15,7 @@ tokensRouterPackage = "reya-tokens:1.0.0@router"
 
 [var.initial_proxy_vars]
 wstethSalt = "wsteth-main"
+usdeSalt = "usde-main"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
@@ -25,6 +26,7 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 # use owner as socket controller for mint/burn permissions
 [var.socket_contracts]
 wstethController = "<%= settings.owner %>"
+usdeController = "<%= settings.owner %>"
 
 [clone.reyaTokenRouter]
 source = "<%= settings.tokensRouterPackage %>"

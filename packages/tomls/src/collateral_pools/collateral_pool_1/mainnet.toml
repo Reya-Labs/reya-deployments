@@ -14,6 +14,7 @@ include = [
     "tokens/weth.toml",
     # "tokens/wbtc.toml",
     "tokens/wsteth.toml",
+    "tokens/usde.toml",
 ]
 
 # This var acts as an anchor point in dependencies.

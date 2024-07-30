@@ -10,4 +10,5 @@ include = [
     "configs/tokens/weth.toml",
     # "configs/tokens/wbtc.toml",
     "configs/tokens/wsteth.toml",
+    "configs/tokens/usde.toml",
 ]

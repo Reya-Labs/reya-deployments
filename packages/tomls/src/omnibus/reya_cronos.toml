@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/testnet.toml",
     "../oracle_adapters/testnet.toml",
 ]
-version = "1.0.12"
+version = "1.0.13"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -69,6 +69,7 @@ daiSalt = "dai-main"
 wethSalt = "weth-main"
 wbtcSalt = "wbtc-main"
 wstethSalt = "wsteth-main"
+usdeSalt = "usde-main"
 
 [var.upgrade_proxy_vars]
 coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
@@ -134,6 +135,7 @@ storkAssetPairIdARB = "ARBUSD"
 storkAssetPairIdOP = "OPUSD"
 storkAssetPairIdAVAX = "AVAXUSD"
 storkAssetPairIdWSTETH = "WSTETHUSD"
+storkAssetPairIdUSDE = "USDEUSD"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -162,6 +164,13 @@ wstethExecutionHelper = "0xA2687d5ff962eF398965680D0200831c484d2C3C"
 wstethEthereumSepoliaConnector = "0x767f02881891453218f4144EbFd2F39b5C8d3B59"
 wstethArbitrumSepoliaConnector = "0x424a422558986C95a8E0E578e4443Afe5358c238"
 wstethOptimismSepoliaConnector = "0x5BD8C70073575F30E060c4751672A3d462CdAc8a"
+# -------------------------------------------------------------------
+# todo-usde
+usdeController = ""
+usdeExecutionHelper = ""
+usdeEthereumSepoliaConnector = ""
+usdeArbitrumSepoliaConnector = ""
+usdeOptimismSepoliaConnector = ""
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumSepoliaWithdrawFeeUnscaled = "0"
@@ -179,6 +188,10 @@ wbtcOptimismSepoliaWithdrawFeeUnscaled = "0"
 wstethEthereumSepoliaWithdrawFeeUnscaled = "0"
 wstethArbitrumSepoliaWithdrawFeeUnscaled = "0"
 wstethOptimismSepoliaWithdrawFeeUnscaled = "0"
+# -------------------------------------------------------------------
+usdeEthereumSepoliaWithdrawFeeUnscaled = "0"
+usdeArbitrumSepoliaWithdrawFeeUnscaled = "0"
+usdeOptimismSepoliaWithdrawFeeUnscaled = "0"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -192,6 +205,10 @@ wethWithdrawalTvlPercentageLimitUnscaled = "0.15"
 wstethCollateralAdapter = "<%= AddressZero %>"
 wstethWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 wstethWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+usdeCollateralAdapter = "<%= AddressZero %>"
+usdeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+usdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.5"
@@ -247,6 +264,9 @@ avaxUsdcMaxStaleDurationFallbackStorkRedstone = "0"
 #------------------------------------------------------------------------------
 wstethUsdMaxStaleDurationStork = "0"
 wstethUsdcMaxStaleDurationStork = "0"
+#------------------------------------------------------------------------------
+usdeUsdMaxStaleDurationStork = "0"
+usdeUsdcMaxStaleDurationStork = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -419,3 +439,15 @@ cp1Rusd_wstethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address 
 cp1Rusd_wstethParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_wstethParentConfig_autoExchangeDiscountUnscaled = "0.01"
 cp1Rusd_wstethParentConfig_oracleNodeId = "<%= settings.wstethUsdcNodeIdStork %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_usde_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_usde_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_usde_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_usde_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_usde_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_usdeParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_usdeParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_usdeParentConfig_autoExchangeDiscountUnscaled = "0.01"
+cp1Rusd_usdeParentConfig_oracleNodeId = "<%= settings.usdeUsdcNodeIdStork %>"

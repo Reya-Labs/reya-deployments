@@ -5,6 +5,7 @@ include = [
     "./tokens/weth.toml",
     "./tokens/wbtc.toml",
     "./tokens/wsteth.toml",
+    "./tokens/usde.toml",
 ]
 
 [clone.reyaTokenRouter]

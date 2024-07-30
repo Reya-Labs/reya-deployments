@@ -7,4 +7,5 @@ include = [
     "configs/tokens-testnet/weth.toml",
     "configs/tokens-testnet/wbtc.toml",
     "configs/tokens-testnet/wsteth.toml",
+    "configs/tokens-testnet/usde.toml",
 ]
