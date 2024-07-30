@@ -4,9 +4,7 @@ description = "Reya Testnet Source Chains"
 privateSourceCode = true
 version = "1.0.0"
 
-include = [
-    "../token/tokens/wsteth.toml",
-]
+include = ["../token/tokens/wsteth.toml"]
 
 [var.wallet_addresses]
 owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
