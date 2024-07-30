@@ -55,16 +55,16 @@ args = [
 ]
 depends = ["invoke.upgrade_wsteth_proxy"]
 
-# [invoke.wsteth_mint_permission]
-# target = ["WSTETHProxy"]
-# fromCall.func = "owner"
-# func = "addToFeatureFlagAllowlist"
-# args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.wstethController %>"]
-# depends = ["invoke.upgrade_wsteth_proxy"]
+[invoke.wsteth_mint_permission]
+target = ["WSTETHProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.wstethController %>"]
+depends = ["invoke.upgrade_wsteth_proxy"]
 
-# [invoke.wsteth_burn_permission]
-# target = ["WSTETHProxy"]
-# fromCall.func = "owner"
-# func = "addToFeatureFlagAllowlist"
-# args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.wstethController %>"]
-# depends = ["invoke.upgrade_wsteth_proxy"]
+[invoke.wsteth_burn_permission]
+target = ["WSTETHProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.wstethController %>"]
+depends = ["invoke.upgrade_wsteth_proxy"]
