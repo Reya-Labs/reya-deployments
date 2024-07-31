@@ -1,0 +1,70 @@
+[var.usde_vars]
+usdeTokenName = "Ethena USDe"
+usdeTokenSymbol = "USDE"
+usdeTokenDecimals = "18"
+
+[clone.usde]
+source = "<%= settings.tokensProxyPackage %>"
+target = "reya-tokens:1.0.0@usde"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.usdeSalt %>"
+depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_usde_proxy]
+target = ["usde.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.USDEProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.USDEProxy.event = "Upgraded"
+factory.USDEProxy.arg = 0
+depends = ["clone.usde"]
+
+[invoke.usde_initialize]
+target = ["USDEProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.usdeTokenName %>",
+    "<%= settings.usdeTokenSymbol %>",
+    "<%= settings.usdeTokenDecimals %>",
+]
+depends = ["invoke.upgrade_usde_proxy"]
+
+[invoke.usde_unpause]
+target = ["USDEProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_usde_proxy"]
+
+[invoke.usde_set_pausers]
+target = ["USDEProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_usde_proxy"]
+
+# [invoke.usde_mint_permission]
+# target = ["USDEProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.usdeController %>"]
+# depends = ["invoke.upgrade_usde_proxy"]
+
+# [invoke.usde_burn_permission]
+# target = ["USDEProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.usdeController %>"]
+# depends = ["invoke.upgrade_usde_proxy"]

@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/testnet.toml",
     "../oracle_adapters/testnet.toml",
 ]
-version = "1.0.11"
+version = "1.0.13"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -68,6 +68,8 @@ usdtSalt = "usdt-main"
 daiSalt = "dai-main"
 wethSalt = "weth-main"
 wbtcSalt = "wbtc-main"
+wstethSalt = "wsteth-main"
+usdeSalt = "usde-main"
 
 [var.upgrade_proxy_vars]
 coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
@@ -132,6 +134,8 @@ storkAssetPairIdSOL = "SOLUSD"
 storkAssetPairIdARB = "ARBUSD"
 storkAssetPairIdOP = "OPUSD"
 storkAssetPairIdAVAX = "AVAXUSD"
+storkAssetPairIdWSTETH = "WSTETHUSD"
+storkAssetPairIdUSDE = "USDEUSD"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -154,6 +158,19 @@ wbtcExecutionHelper = "0x38989141D21f6b607a0aE6b626b470d36AceFA84"
 wbtcEthereumSepoliaConnector = "0x45B8F521862433c67fEf5d684e259e02A805861F"
 wbtcArbitrumSepoliaConnector = "0x6Fa3fD6C9bc223F0E270B28169E3B70f046EcF6b"
 wbtcOptimismSepoliaConnector = "0x44064CEF6D51d8131dce3ce059844Eaa059d8773"
+# -------------------------------------------------------------------
+wstethController = "0x7C43B88F6AefFD221816436357FB1510c62EF513"
+wstethExecutionHelper = "0xA2687d5ff962eF398965680D0200831c484d2C3C"
+wstethEthereumSepoliaConnector = "0x767f02881891453218f4144EbFd2F39b5C8d3B59"
+wstethArbitrumSepoliaConnector = "0x424a422558986C95a8E0E578e4443Afe5358c238"
+wstethOptimismSepoliaConnector = "0x5BD8C70073575F30E060c4751672A3d462CdAc8a"
+# -------------------------------------------------------------------
+# todo-usde
+usdeController = "0x9f1f05Be3A595C93B604a8d5582B6ba8ED057b74"
+usdeExecutionHelper = "0xFEe7b6deAF61D2b04F6e05c80c2593BF29706410"
+usdeEthereumSepoliaConnector = "0x6c28616D6bBF8aa79b87C97509f97Af3F362f329"
+usdeArbitrumSepoliaConnector = "0x4F0A10029d1A7b2266773F598C26E67792320c94"
+usdeOptimismSepoliaConnector = "0x0B5e406e7F6BaB8Cf205bC583a0504135b11D6bB"
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumSepoliaWithdrawFeeUnscaled = "0"
@@ -167,6 +184,14 @@ wethOptimismSepoliaWithdrawFeeUnscaled = "0"
 wbtcEthereumSepoliaWithdrawFeeUnscaled = "0"
 wbtcArbitrumSepoliaWithdrawFeeUnscaled = "0"
 wbtcOptimismSepoliaWithdrawFeeUnscaled = "0"
+# -------------------------------------------------------------------
+wstethEthereumSepoliaWithdrawFeeUnscaled = "0"
+wstethArbitrumSepoliaWithdrawFeeUnscaled = "0"
+wstethOptimismSepoliaWithdrawFeeUnscaled = "0"
+# -------------------------------------------------------------------
+usdeEthereumSepoliaWithdrawFeeUnscaled = "0"
+usdeArbitrumSepoliaWithdrawFeeUnscaled = "0"
+usdeOptimismSepoliaWithdrawFeeUnscaled = "0"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -176,6 +201,14 @@ rusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 wethWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+wstethCollateralAdapter = "<%= AddressZero %>"
+wstethWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+wstethWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+usdeCollateralAdapter = "<%= AddressZero %>"
+usdeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+usdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.5"
@@ -228,6 +261,12 @@ avaxUsdcMaxStaleDuration = "0"
 avaxUsdMaxStaleDurationStork = "0"
 avaxUsdcMaxStaleDurationStork = "0"
 avaxUsdcMaxStaleDurationFallbackStorkRedstone = "0"
+#------------------------------------------------------------------------------
+wstethUsdMaxStaleDurationStork = "0"
+wstethUsdcMaxStaleDurationStork = "0"
+#------------------------------------------------------------------------------
+usdeUsdMaxStaleDurationStork = "0"
+usdeUsdcMaxStaleDurationStork = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -333,7 +372,7 @@ market6Avax_maxPSlippageUnscaled = "0.1"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "6"
-cp1Rusd_maxCollaterals = "2"
+cp1Rusd_maxCollaterals = "4"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
 # -----------------------------------------------
@@ -388,3 +427,27 @@ cp1Rusd_wethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>
 cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.01"
 cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_wsteth_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_wsteth_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_wsteth_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_wsteth_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_wsteth_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_wstethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_wstethParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_wstethParentConfig_autoExchangeDiscountUnscaled = "0.01"
+cp1Rusd_wstethParentConfig_oracleNodeId = "<%= settings.wstethUsdcNodeIdStork %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_usde_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_usde_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_usde_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_usde_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_usde_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_usdeParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_usdeParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_usdeParentConfig_autoExchangeDiscountUnscaled = "0.01"
+cp1Rusd_usdeParentConfig_oracleNodeId = "<%= settings.usdeUsdcNodeIdStork %>"
