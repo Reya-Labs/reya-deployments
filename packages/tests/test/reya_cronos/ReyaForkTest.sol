@@ -25,6 +25,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.rusd = 0x9DE724e7b3facF87Ce39465D3D712717182e3e55;
         sec.usdc = 0xfA27c7c6051344263533cc365274d9569b0272A8;
         sec.weth = 0x2CF56315ACC7E791B1A0135c09d8D5C8dBCD2F14;
+        sec.usde = 0xDca6971c26fDEE0536Fdff076D063643f7810621;
         sec.wbtc = 0x459374F3f3E92728bCa838DfA8C95E706FE67E8a;
         sec.passivePoolId = 1;
         sec.passivePoolAccountId = 4;
@@ -88,6 +89,12 @@ contract ReyaForkTest is BaseReyaForkTest {
         dec.socketConnector[sec.wbtc][ethereumSepoliaChainId] = 0x45B8F521862433c67fEf5d684e259e02A805861F;
         dec.socketConnector[sec.wbtc][arbitrumSepoliaChainId] = 0x6Fa3fD6C9bc223F0E270B28169E3B70f046EcF6b;
         dec.socketConnector[sec.wbtc][optimismSepoliaChainId] = 0x44064CEF6D51d8131dce3ce059844Eaa059d8773;
+
+        dec.socketController[sec.usde] = 0x9f1f05Be3A595C93B604a8d5582B6ba8ED057b74;
+        dec.socketExecutionHelper[sec.usde] = 0xFEe7b6deAF61D2b04F6e05c80c2593BF29706410;
+        dec.socketConnector[sec.usde][ethereumSepoliaChainId] = 0x6c28616D6bBF8aa79b87C97509f97Af3F362f329;
+        dec.socketConnector[sec.usde][arbitrumSepoliaChainId] = 0x4F0A10029d1A7b2266773F598C26E67792320c94;
+        dec.socketConnector[sec.usde][optimismSepoliaChainId] = 0x0B5e406e7F6BaB8Cf205bC583a0504135b11D6bB;
 
         try vm.activeFork() { }
         catch {
