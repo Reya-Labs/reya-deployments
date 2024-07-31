@@ -4,7 +4,6 @@ include = [
     "./tokens/dai.toml",
     "./tokens/weth.toml",
     "./tokens/wbtc.toml",
-    "./tokens/wsteth.toml",
     "./tokens/usde.toml",
 ]
 
