@@ -14,8 +14,10 @@ import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 struct TokenBalances {
     int256 userBalanceWeth;
     int256 userBalanceRusd;
+    int256 userBalanceUsde;
     int256 liquidatorBalanceWeth;
     int256 liquidatorBalanceRusd;
+    int256 liquidatorBalanceUsde;
 }
 
 struct LocalState {
