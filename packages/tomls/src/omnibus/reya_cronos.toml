@@ -403,6 +403,10 @@ cp1Rusd_backstopKeeperFeeUnscaled = "0"
 cp1Rusd_adlExecutionKeeperFeeUnscaled = "0"
 cp1Rusd_dDutchMinUnscaled = "0.01"
 cp1Rusd_dMaxUnscaled = "0.4"
+#------------------------------------------------
+cp1Rusd_autoExchangeConfig_totalAutoExchangeThresholdInUSDUnscaled = "todo"
+cp1Rusd_autoExchangeConfig_negativeCollateralBalancesMultiplierUnscaled = "todo"
+cp1Rusd_autoExchangeConfig_quoteBufferPercentageUnscaled = "todo"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"

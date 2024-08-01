@@ -273,6 +273,10 @@ cp1Rusd_poolImMultiplierUnscaled = "8.01"
 # TODO later: add backstop lp account id as config as well, must first activate first market
 cp1Rusd_backstopLp_liquidationFeeUnscaled = "0.05"
 cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled = "0"
+#------------------------------------------------
+cp1Rusd_autoExchangeConfig_totalAutoExchangeThresholdInUSDUnscaled = "todo"
+cp1Rusd_autoExchangeConfig_negativeCollateralBalancesMultiplierUnscaled = "todo"
+cp1Rusd_autoExchangeConfig_quoteBufferPercentageUnscaled = "todo"
 # -----------------------------------------------
 cp1Rusd_bidKeeperFeeUnscaled = "0"
 cp1Rusd_queueDurationInSeconds = "0"
