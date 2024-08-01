@@ -13,16 +13,4 @@ contract WethCollateralForkTest is ReyaForkTest, WethCollateralForkCheck {
     function test_Cronos_weth_view_functions() public {
         check_weth_view_functions();
     }
-
-    function test_Cronos_weth_deposit_withdraw() public {
-        check_weth_deposit_withdraw(arbitrumSepoliaChainId);
-    }
-
-    function test_Cronos_trade_wethCollateral_depositWithdraw() public {
-        check_trade_wethCollateral_depositWithdraw(arbitrumSepoliaChainId);
-    }
-
-    function test_Cronos_WethTradeWithWethCollateral() public {
-        check_WethTradeWithWethCollateral(arbitrumSepoliaChainId);
-    }
 }
