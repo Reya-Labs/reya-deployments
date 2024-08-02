@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "@ethersproject/abi": "5.7.0",
-    "@usecannon/builder": "^2.15.3",
-    "@usecannon/cli": "^2.15.3",
+    "@usecannon/builder": "2.16.0",
+    "@usecannon/cli": "2.16.0",
     "forge-std": "github:foundry-rs/forge-std#v1.8.0",
     "lerna": "^8.1.2",
     "prettier": "3.2.5",
@@ -33,6 +33,6 @@
   },
   "packageManager": "yarn@3.5.0",
   "engines": {
-    "node": ">= 18.14.0"
+    "node": ">= 20.5.1"
   }
 }
