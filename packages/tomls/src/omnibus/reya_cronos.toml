@@ -428,8 +428,8 @@ cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0"
 cp1Rusd_weth_autoExchangeDustThresholdUnscaled = "0"
 cp1Rusd_weth_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_wethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
-cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.075"
-cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.01"
+cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.10"
+cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.02"
 cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
@@ -440,8 +440,8 @@ cp1Rusd_wsteth_autoExchangeInsuranceFeeUnscaled = "0"
 cp1Rusd_wsteth_autoExchangeDustThresholdUnscaled = "0"
 cp1Rusd_wsteth_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_wstethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
-cp1Rusd_wstethParentConfig_priceHaircutUnscaled = "0.10"
-cp1Rusd_wstethParentConfig_autoExchangeDiscountUnscaled = "0.02"
+cp1Rusd_wstethParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_wstethParentConfig_autoExchangeDiscountUnscaled = "0.01"
 cp1Rusd_wstethParentConfig_oracleNodeId = "<%= settings.wstethUsdcNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
