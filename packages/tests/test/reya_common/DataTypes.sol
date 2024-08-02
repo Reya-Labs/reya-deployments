@@ -26,6 +26,7 @@ struct StaticEcosystem {
     address usdc;
     address weth;
     address wbtc;
+    address usde;
     address ownerUpgradeModule;
     bytes32 rusdUsdNodeId;
     bytes32 usdcUsdNodeId;

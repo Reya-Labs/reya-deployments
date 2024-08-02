@@ -19,7 +19,11 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         checkFuzz_PoolDepositWithdraw(user, attacker);
     }
 
-    // function test_Cronos_PassivePoolWithWeth() public {
-    //     check_PassivePoolWithWeth();
-    // }
+    function test_Cronos_PassivePoolWithWeth() public {
+        check_PassivePoolWithWeth();
+    }
+
+    function test_Cronos_PassivePoolWithUsde() public {
+        check_PassivePoolWithUsde();
+    }
 }
