@@ -2,7 +2,13 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 
-import { ICoreProxy, RiskMultipliers, MarginInfo, CollateralConfig, ParentCollateralConfig } from "../../../src/interfaces/ICoreProxy.sol";
+import {
+    ICoreProxy,
+    RiskMultipliers,
+    MarginInfo,
+    CollateralConfig,
+    ParentCollateralConfig
+} from "../../../src/interfaces/ICoreProxy.sol";
 
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
 
@@ -237,7 +243,6 @@ contract LeverageForkCheck is BaseReyaForkTest {
         vm.prank(sec.multisig);
         collateralConfig.cap = type(uint256).max;
         ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
-
 
         // general info
         // this tests 20x leverage is successful

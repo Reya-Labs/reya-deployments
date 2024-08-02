@@ -55,7 +55,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         collateralConfig.cap = type(uint256).max;
         ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
 
-        
         (address user, uint256 userPk) = makeAddrAndKey("user");
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);

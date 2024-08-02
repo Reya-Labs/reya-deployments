@@ -3,7 +3,13 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import "../DataTypes.sol";
 
-import { ICoreProxy, CollateralConfig, ParentCollateralConfig, MarginInfo, CollateralInfo } from "../../../src/interfaces/ICoreProxy.sol";
+import {
+    ICoreProxy,
+    CollateralConfig,
+    ParentCollateralConfig,
+    MarginInfo,
+    CollateralInfo
+} from "../../../src/interfaces/ICoreProxy.sol";
 
 import {
     IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
