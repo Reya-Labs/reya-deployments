@@ -3,6 +3,8 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import "../DataTypes.sol";
 
+import { CollateralConfig, ParentCollateralConfig, ICoreProxy } from "../../../src/interfaces/ICoreProxy.sol";
+
 import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IPeripheryProxy,
@@ -46,6 +48,14 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_PassivePoolWithWeth() public {
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
+
+        
         (address user, uint256 userPk) = makeAddrAndKey("user");
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
@@ -106,16 +116,23 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_PassivePoolWithUsde() public {
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.usde);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.usde, collateralConfig, parentCollateralConfig);
+
         (address user, uint256 userPk) = makeAddrAndKey("user");
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
         // add 3000 USDe to the passive pool directly
-        deal(sec.weth, address(sec.periphery), 3000e18);
-        mockBridgedAmount(dec.socketExecutionHelper[sec.weth], 3000e18);
-        vm.prank(dec.socketExecutionHelper[sec.weth]);
+        deal(sec.usde, address(sec.periphery), 3000e18);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.usde], 3000e18);
+        vm.prank(dec.socketExecutionHelper[sec.usde]);
         IPeripheryProxy(sec.periphery).depositExistingMA(
-            DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.weth) })
+            DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.usde) })
         );
 
         // check that the new 3000 USDe does not influence the share price
@@ -142,7 +159,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 USDe in it
-        deal(sec.usde, address(sec.periphery), 11e18);
+        deal(sec.usde, address(sec.periphery), 33_000e18);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usde], 33_000e18);
         vm.prank(dec.socketExecutionHelper[sec.usde]);
         uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
@@ -161,7 +178,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             accountId: accountId
         });
 
-        // withdraw 1 USDe from account
-        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.usde, 1e18, sec.mainChainId);
+        // withdraw 100 USDe from account
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.usde, 100e18, sec.mainChainId);
     }
 }

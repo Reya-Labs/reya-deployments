@@ -193,7 +193,7 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             IPeripheryProxy(sec.periphery).getTokenStaticWithdrawFee(token, dec.socketConnector[token][chainId]);
 
         vm.mockCall(
-            dec.socketController[sec.weth],
+            dec.socketController[token],
             abi.encodeWithSelector(
                 ISocketControllerWithPayload.bridge.selector,
                 userAddress,

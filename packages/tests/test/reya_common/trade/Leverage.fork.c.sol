@@ -2,7 +2,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 
-import { ICoreProxy, RiskMultipliers, MarginInfo } from "../../../src/interfaces/ICoreProxy.sol";
+import { ICoreProxy, RiskMultipliers, MarginInfo, CollateralConfig, ParentCollateralConfig } from "../../../src/interfaces/ICoreProxy.sol";
 
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
 
@@ -231,6 +231,14 @@ contract LeverageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_wethCollateral_leverage_btc() public {
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
+
+
         // general info
         // this tests 20x leverage is successful
         (address user, uint256 userPk) = makeAddrAndKey("user");
@@ -415,6 +423,13 @@ contract LeverageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_usdeCollateral_leverage_btc() public {
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.usde);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.usde, collateralConfig, parentCollateralConfig);
+
         // general info
         // this tests 20x leverage is successful
         (address user, uint256 userPk) = makeAddrAndKey("user");

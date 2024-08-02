@@ -3,7 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import "../DataTypes.sol";
 
-import { ICoreProxy, ParentCollateralConfig, MarginInfo, CollateralInfo } from "../../../src/interfaces/ICoreProxy.sol";
+import { ICoreProxy, CollateralConfig, ParentCollateralConfig, MarginInfo, CollateralInfo } from "../../../src/interfaces/ICoreProxy.sol";
 
 import {
     IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
@@ -125,7 +125,7 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector, 1, sec.weth, 500e18, collateralPoolWethBalance + amount
+                ICoreProxy.CollateralCapExceeded.selector, 1, sec.weth, 10e18, collateralPoolWethBalance + amount
             )
         );
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
@@ -199,8 +199,13 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
     function check_WethTradeWithWethCollateral(uint256 sourceChainId) public {
         (user, userPk) = makeAddrAndKey("user");
 
-        (, ParentCollateralConfig memory parentCollateralConfig,) =
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
+
         uint256 priceHaircut = parentCollateralConfig.priceHaircut;
 
         // deposit 1 + 10 / (1-haircut) wETH
