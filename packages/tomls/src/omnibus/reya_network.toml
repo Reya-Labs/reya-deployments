@@ -245,8 +245,8 @@ avaxUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 avaxUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 avaxUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
-usdeUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-usdeUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdeUsdMaxStaleDurationStork = "0"
+usdeUsdcMaxStaleDurationStork = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
