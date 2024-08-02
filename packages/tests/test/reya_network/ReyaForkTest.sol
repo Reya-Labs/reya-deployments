@@ -91,13 +91,9 @@ contract ReyaForkTest is StorageReyaForkTest {
         dec.socketConnector[sec.wbtc][optimismChainId] = 0xA6BFB87A0db4693a4145df4F627c8FEe30aC7eDF;
         dec.socketConnector[sec.wbtc][polygonChainId] = 0xA30e479EbfD576EDd69afB636d16926a05214149;
 
-        // todo-usde
-        dec.socketController[sec.usde] = 0x0000000000000000000000000000000000000000;
-        dec.socketExecutionHelper[sec.usde] = 0x0000000000000000000000000000000000000000;
-        dec.socketConnector[sec.usde][ethereumChainId] = 0x0000000000000000000000000000000000000000;
-        dec.socketConnector[sec.usde][arbitrumChainId] = 0x0000000000000000000000000000000000000000;
-        dec.socketConnector[sec.usde][optimismChainId] = 0x0000000000000000000000000000000000000000;
-        dec.socketConnector[sec.usde][polygonChainId] = 0x0000000000000000000000000000000000000000;
+        dec.socketController[sec.usde] = 0xF5D4ea96d2efbdAB9C63fA85d2c45e8B75dF640c;
+        dec.socketExecutionHelper[sec.usde] = 0xC53D91C6D595b4259fa5649d77e1e31E648202A3;
+        dec.socketConnector[sec.usde][ethereumChainId] = 0xc2dE372337308cEd2754d8d9bC0AB1A1B004C3be;
 
         try vm.activeFork() { }
         catch {

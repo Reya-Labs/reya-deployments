@@ -165,7 +165,6 @@ wstethEthereumSepoliaConnector = "0x767f02881891453218f4144EbFd2F39b5C8d3B59"
 wstethArbitrumSepoliaConnector = "0x424a422558986C95a8E0E578e4443Afe5358c238"
 wstethOptimismSepoliaConnector = "0x5BD8C70073575F30E060c4751672A3d462CdAc8a"
 # -------------------------------------------------------------------
-# todo-usde
 usdeController = "0x9f1f05Be3A595C93B604a8d5582B6ba8ED057b74"
 usdeExecutionHelper = "0xFEe7b6deAF61D2b04F6e05c80c2593BF29706410"
 usdeEthereumSepoliaConnector = "0x6c28616D6bBF8aa79b87C97509f97Af3F362f329"
