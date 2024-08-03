@@ -3,7 +3,13 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import "../DataTypes.sol";
 
-import { ICoreProxy, ParentCollateralConfig, MarginInfo, CollateralInfo } from "../../../src/interfaces/ICoreProxy.sol";
+import {
+    ICoreProxy,
+    CollateralConfig,
+    ParentCollateralConfig,
+    MarginInfo,
+    CollateralInfo
+} from "../../../src/interfaces/ICoreProxy.sol";
 
 import {
     IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
@@ -19,8 +25,11 @@ import { sd, SD59x18, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
 contract WethCollateralForkCheck is BaseReyaForkTest {
+    address user;
+    uint256 userPk;
+
     function checkFuzz_WETHMintBurn(address attacker) public {
-        (address user,) = makeAddrAndKey("user");
+        (user,) = makeAddrAndKey("user");
         uint256 amount = 10e18;
 
         uint256 totalSupplyBefore = IERC20TokenModule(sec.weth).totalSupply();
@@ -54,7 +63,7 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_weth_view_functions() public {
-        (address user,) = makeAddrAndKey("user");
+        (user,) = makeAddrAndKey("user");
 
         uint256 wethAmount = 1e18;
 
@@ -104,7 +113,7 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_weth_cap_exceeded() public {
-        (address user, uint256 userPk) = makeAddrAndKey("user");
+        (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 501e18; // denominated in weth
         uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
@@ -122,14 +131,14 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector, 1, sec.weth, 500e18, collateralPoolWethBalance + amount
+                ICoreProxy.CollateralCapExceeded.selector, 1, sec.weth, 10e18, collateralPoolWethBalance + amount
             )
         );
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
     }
 
-    function check_weth_deposit_withdraw() public {
-        (address user, uint256 userPk) = makeAddrAndKey("user");
+    function check_weth_deposit_withdraw(uint256 sourceChainId) public {
+        (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 50e18; // denominated in weth
 
         // deposit new margin account
@@ -145,13 +154,13 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
         uint256 multisigWethBalanceBefore = IERC20TokenModule(sec.weth).balanceOf(sec.multisig);
 
         amount = 5e18;
-        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.weth, amount, arbitrumChainId);
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.weth, amount, sourceChainId);
 
         uint256 coreWethBalanceAfter = IERC20TokenModule(sec.weth).balanceOf(sec.core);
         uint256 peripheryWethBalanceAfter = IERC20TokenModule(sec.weth).balanceOf(sec.periphery);
         uint256 multisigWethBalanceAfter = IERC20TokenModule(sec.weth).balanceOf(sec.multisig);
         uint256 withdrawStaticFees = IPeripheryProxy(sec.periphery).getTokenStaticWithdrawFee(
-            sec.weth, dec.socketConnector[sec.weth][arbitrumChainId]
+            sec.weth, dec.socketConnector[sec.weth][sourceChainId]
         );
 
         assertEq(coreWethBalanceBefore - coreWethBalanceAfter, amount);
@@ -160,8 +169,8 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
         assertEq(peripheryWethBalanceAfter - peripheryWethBalanceBefore, amount - withdrawStaticFees);
     }
 
-    function check_trade_wethCollateral_depositWithdraw() public {
-        (address user, uint256 userPk) = makeAddrAndKey("user");
+    function check_trade_wethCollateral_depositWithdraw(uint256 sourceChainId) public {
+        (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 1e18; // denominated in weth
         uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
@@ -188,16 +197,21 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
         );
 
         amount = 0.1e18;
-        executePeripheryWithdrawMA(user, userPk, 2, accountId, sec.weth, amount, arbitrumChainId);
+        executePeripheryWithdrawMA(user, userPk, 2, accountId, sec.weth, amount, sourceChainId);
 
         checkPoolHealth();
     }
 
-    function check_WethTradeWithWethCollateral() public {
-        (address user, uint256 userPk) = makeAddrAndKey("user");
+    function check_WethTradeWithWethCollateral(uint256 sourceChainId) public {
+        (user, userPk) = makeAddrAndKey("user");
 
-        (, ParentCollateralConfig memory parentCollateralConfig,) =
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
+
         uint256 priceHaircut = parentCollateralConfig.priceHaircut;
 
         // deposit 1 + 10 / (1-haircut) wETH
@@ -226,7 +240,7 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
         }
 
         // withdraw 1 wETH
-        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.weth, 1e18, arbitrumChainId);
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.weth, 1e18, sourceChainId);
 
         int256 marginBalance0 = ICoreProxy(sec.core).getNodeMarginInfo(accountId, sec.rusd).marginBalance;
         // TODO: when collateral WETH price points to Stork, lower the acceptance to 10 * 0.01e6

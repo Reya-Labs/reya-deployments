@@ -165,7 +165,6 @@ wstethEthereumSepoliaConnector = "0x767f02881891453218f4144EbFd2F39b5C8d3B59"
 wstethArbitrumSepoliaConnector = "0x424a422558986C95a8E0E578e4443Afe5358c238"
 wstethOptimismSepoliaConnector = "0x5BD8C70073575F30E060c4751672A3d462CdAc8a"
 # -------------------------------------------------------------------
-# todo-usde
 usdeController = "0x9f1f05Be3A595C93B604a8d5582B6ba8ED057b74"
 usdeExecutionHelper = "0xFEe7b6deAF61D2b04F6e05c80c2593BF29706410"
 usdeEthereumSepoliaConnector = "0x6c28616D6bBF8aa79b87C97509f97Af3F362f329"
@@ -173,25 +172,25 @@ usdeArbitrumSepoliaConnector = "0x4F0A10029d1A7b2266773F598C26E67792320c94"
 usdeOptimismSepoliaConnector = "0x0B5e406e7F6BaB8Cf205bC583a0504135b11D6bB"
 
 [var.periphery_socket_withdraw_fees]
-usdcEthereumSepoliaWithdrawFeeUnscaled = "0"
-usdcArbitrumSepoliaWithdrawFeeUnscaled = "0"
-usdcOptimismSepoliaWithdrawFeeUnscaled = "0"
+usdcEthereumSepoliaWithdrawFeeUnscaled = "27.888"
+usdcArbitrumSepoliaWithdrawFeeUnscaled = "0.114"
+usdcOptimismSepoliaWithdrawFeeUnscaled = "0.102"
 # -------------------------------------------------------------------
-wethEthereumSepoliaWithdrawFeeUnscaled = "0"
-wethArbitrumSepoliaWithdrawFeeUnscaled = "0"
-wethOptimismSepoliaWithdrawFeeUnscaled = "0"
+wethEthereumSepoliaWithdrawFeeUnscaled = "0.009533484442507446"
+wethArbitrumSepoliaWithdrawFeeUnscaled = "0.000039000000751572"
+wethOptimismSepoliaWithdrawFeeUnscaled = "0.000034923065158525"
 # -------------------------------------------------------------------
-wbtcEthereumSepoliaWithdrawFeeUnscaled = "0"
-wbtcArbitrumSepoliaWithdrawFeeUnscaled = "0"
-wbtcOptimismSepoliaWithdrawFeeUnscaled = "0"
+wbtcEthereumSepoliaWithdrawFeeUnscaled = "0.0005"
+wbtcArbitrumSepoliaWithdrawFeeUnscaled = "0.0000025"
+wbtcOptimismSepoliaWithdrawFeeUnscaled = "0.0000022"
 # -------------------------------------------------------------------
-wstethEthereumSepoliaWithdrawFeeUnscaled = "0"
-wstethArbitrumSepoliaWithdrawFeeUnscaled = "0"
-wstethOptimismSepoliaWithdrawFeeUnscaled = "0"
+wstethEthereumSepoliaWithdrawFeeUnscaled = "0.009533484442507446"
+wstethArbitrumSepoliaWithdrawFeeUnscaled = "0.000039000000751572"
+wstethOptimismSepoliaWithdrawFeeUnscaled = "0.000034923065158525"
 # -------------------------------------------------------------------
-usdeEthereumSepoliaWithdrawFeeUnscaled = "0"
-usdeArbitrumSepoliaWithdrawFeeUnscaled = "0"
-usdeOptimismSepoliaWithdrawFeeUnscaled = "0"
+usdeEthereumSepoliaWithdrawFeeUnscaled = "27.888"
+usdeArbitrumSepoliaWithdrawFeeUnscaled = "0.114"
+usdeOptimismSepoliaWithdrawFeeUnscaled = "0.102"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -428,8 +427,8 @@ cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0"
 cp1Rusd_weth_autoExchangeDustThresholdUnscaled = "0"
 cp1Rusd_weth_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_wethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
-cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.075"
-cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.01"
+cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.10"
+cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.02"
 cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
