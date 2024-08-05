@@ -3,6 +3,4 @@ include = [
     "utils/deploy_proxy.toml",
     "configs/stork/wsteth_usd.toml",
     "configs/stork/wsteth_usdc.toml",
-    "configs/stork/usde_usdc.toml",
-    "configs/stork/usde_usd.toml",
 ]
