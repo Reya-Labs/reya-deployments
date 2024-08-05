@@ -137,6 +137,7 @@ redstonePriceFeedSOL = "0x3e3762c10F018fE02701be651b5c0937C3a7d7e1"
 redstonePriceFeedARB = "0x3A2Cb95DE3EBE02Fc713049F30B8952296D9600d"
 redstonePriceFeedOP = "0xD583E60FD28Bb19d0C03Fb37553B83C665cf082B"
 redstonePriceFeedAVAX = "0xbF675f4AF4351ee79B95f24651f4E3741079af5E"
+redstonePriceFeedUSDE = "0xC70E99813ee971CD5703581fe016dF256427fCce"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -276,8 +277,11 @@ avaxUsdcMaxStaleDurationFallbackStorkRedstone = "0"
 wstethUsdMaxStaleDurationStork = "0"
 wstethUsdcMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
+usdeUsdMaxStaleDuration = "0"
+usdeUsdcMaxStaleDuration = "0"
 usdeUsdMaxStaleDurationStork = "0"
 usdeUsdcMaxStaleDurationStork = "0"
+usdeUsdcMaxStaleDurationFallbackStorkRedstone = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"

@@ -130,6 +130,7 @@ redstonePriceFeedSOL = "0x7D123d462268A46679dc4A1b89cFC8fBBab7388A"
 redstonePriceFeedARB = "0x7b9e8a8ace50786c9Ee4500d23fe72Ad65D992D0"
 redstonePriceFeedOP = "0x44b081A05bE646B058Ec326cC93683A926E0B70E"
 redstonePriceFeedAVAX = "0x7FB5df802F869b1E0588B31BA9D080EAEBFc75b1"
+redstonePriceFeedUSDE = "0x039d91224f5e093C603b30709C8fD13fb14f4103"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -257,8 +258,11 @@ avaxUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 avaxUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 avaxUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
-usdeUsdMaxStaleDurationStork = "0"
-usdeUsdcMaxStaleDurationStork = "0"
+usdeUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdeUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdeUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdeUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdeUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
