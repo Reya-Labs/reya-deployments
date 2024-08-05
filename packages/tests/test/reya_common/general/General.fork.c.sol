@@ -193,6 +193,14 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.nodeIds.push(sec.avaxUsdcStorkFallbackNodeId);
         ls.meanPrices.push(meanPriceAVAX);
         ls.maxDeviations.push(maxDeviationAVAX);
+
+        ls.nodeIds.push(sec.usdeUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceStableCoin);
+        ls.maxDeviations.push(maxDeviationStableCoin * 2);
+
+        ls.nodeIds.push(sec.usdeUsdcStorkNodeId);
+        ls.meanPrices.push(meanPriceStableCoin);
+        ls.maxDeviations.push(maxDeviationStableCoin * 2);
     }
 
     function check_OracleNodePrices(bool flagCheckStaleness) public {
