@@ -19,14 +19,14 @@ contract WethCollateralForkTest is ReyaForkTest, WethCollateralForkCheck {
     }
 
     function test_weth_deposit_withdraw() public {
-        check_weth_deposit_withdraw(arbitrumChainId);
+        check_weth_deposit_withdraw();
     }
 
     function test_trade_wethCollateral_depositWithdraw() public {
-        check_trade_wethCollateral_depositWithdraw(arbitrumChainId);
+        check_trade_wethCollateral_depositWithdraw();
     }
 
     function test_WethTradeWithWethCollateral() public {
-        check_WethTradeWithWethCollateral(arbitrumChainId);
+        check_WethTradeWithWethCollateral();
     }
 }

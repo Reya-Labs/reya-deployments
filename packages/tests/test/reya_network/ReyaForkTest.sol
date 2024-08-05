@@ -68,6 +68,9 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.avaxUsdcStorkNodeId = 0x23d809b84561e4b046e5ccfc6769d23fbea8335fbfe3f5652f461cde297308fa;
         sec.avaxUsdcStorkFallbackNodeId = 0x26a55771eb5f177ada6287e21726763856097495089e1e6c229098563585bfe9;
 
+        sec.usdeUsdStorkNodeId = 0xd9769cc38a8c1db7761cbb398785c85a4db42608b8ff2273b4146ccd73178851;
+        sec.usdeUsdcStorkNodeId = 0xa17767ed077b64b1099fe31491143f856b9ebf5249c9fe23dab93b21a1689663;
+
         dec.socketController[sec.usdc] = 0x1d43076909Ca139BFaC4EbB7194518bE3638fc76;
         dec.socketExecutionHelper[sec.usdc] = 0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa;
         dec.socketConnector[sec.usdc][ethereumChainId] = 0x807B2e8724cDf346c87EEFF4E309bbFCb8681eC1;
