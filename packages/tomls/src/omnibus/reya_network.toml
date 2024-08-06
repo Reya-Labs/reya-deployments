@@ -199,12 +199,12 @@ rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
-wethWithdrawalWindowSize = "1"
-wethWithdrawalTvlPercentageLimitUnscaled = "1"
+wethWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+wethWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # -------------------------------------------------------------------
 usdeCollateralAdapter = "<%= AddressZero %>"
-usdeWithdrawalWindowSize = "1"
-usdeWithdrawalTvlPercentageLimitUnscaled = "1"
+usdeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+usdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.5"
@@ -231,8 +231,8 @@ btcUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECON
 ethUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 ethUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 ethUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-ethUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 ethUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ethUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 solUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 solUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
