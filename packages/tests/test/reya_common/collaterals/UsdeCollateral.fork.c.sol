@@ -68,12 +68,11 @@ contract UsdeCollateralForkCheck is BaseReyaForkTest {
         vm.prank(user);
         ICoreProxy(sec.core).activateFirstMarketForAccount(accountId, 1);
 
-        NodeOutput.Data memory usdeUsdcStorkNodeOutput =
-            IOracleManagerProxy(sec.oracleManager).process(sec.usdeUsdcStorkNodeId);
+        NodeOutput.Data memory usdeUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.usdeUsdcNodeId);
 
         (, ParentCollateralConfig memory parentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.usde);
-        SD59x18 usdeAmountInUSD = sd(int256(usdeAmount)).mul(sd(int256(usdeUsdcStorkNodeOutput.price))).mul(
+        SD59x18 usdeAmountInUSD = sd(int256(usdeAmount)).mul(sd(int256(usdeUsdcNodeOutput.price))).mul(
             UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut)))
         );
 
