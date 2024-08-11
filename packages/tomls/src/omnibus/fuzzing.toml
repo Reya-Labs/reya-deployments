@@ -148,7 +148,6 @@ market4Arb_tier0FeeUnscaled = "0.0005"
 market5Op_tier0FeeUnscaled = "0.0005"
 market6Avax_tier0FeeUnscaled = "0.0005"
 
-
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
 market1Eth_maxOpenBaseUnscaled = "37500"
