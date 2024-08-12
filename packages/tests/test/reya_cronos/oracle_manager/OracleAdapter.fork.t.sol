@@ -5,6 +5,6 @@ import { OracleAdapterForkCheck } from "../../reya_common/oracle_manager/OracleA
 
 contract OracleAdapterForkTest is ReyaForkTest, OracleAdapterForkCheck {
     function test_Cronos_fulfillOracleQuery_StorkOracleAdapter() public {
-        check_fulfillOracleQuery_StorkOracleAdapter({ isExecutionRestricted: false });
+        check_fulfillOracleQuery_StorkOracleAdapter();
     }
 }
