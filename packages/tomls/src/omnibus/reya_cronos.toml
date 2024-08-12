@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/testnet.toml",
     "../oracle_adapters/testnet.toml",
 ]
-version = "1.0.16"
+version = "1.0.17"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -88,6 +88,18 @@ pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
 pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
 pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
+
+[var.liquidators]
+liquidator1 = "0x6f7Fa28A4C6457F0dcCcD95360dd072155aA1439"
+liquidator2 = "0x23755428879B97a841B62d3f070a72C0f4200C03"
+liquidator3 = "0xB89FD195db616B6219204737EB5ED6392bA6D7CA"
+liquidator4 = "0xb82C7E50401256212fce61bD2019E5c5eb7EB560"
+liquidator5 = "0x1Fffe863dF721B2E187e8276fC7C03B9292A6E58"
+liquidator6 = "0x84f831f7ae18cB45eaD410956C96376E6DC6daBf"
+liquidator7 = "0xE29f7306FaC92468C98Be2BE066B93673D53EA45"
+liquidator8 = "0xf60804035E979A0F2476f7De849ED1A2a314A3E3"
+liquidator9 = "0x4876E6b1B07B96B58B777E07B83482e060D7f757"
+liquidator10 = "0x45556408e543158f74403e882E3C8c23eCD9f732"
 
 [var.stork_publishers]
 storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"

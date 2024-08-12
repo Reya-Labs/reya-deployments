@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/mainnet.toml",
     "../oracle_adapters/mainnet.toml",
 ]
-version = "1.0.15"
+version = "1.0.16"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -81,6 +81,18 @@ pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
 pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
 pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
+
+[var.liquidators]
+liquidator1 = "0x7Cef71c72d97Ac8CbE4bB9aB091C3bCDB7c1CB56"
+liquidator2 = "0xb7335ad22b33afF74F07cA77b0945A3A242A7956"
+liquidator3 = "0x64b8466c45436DCd2Bd7A43c580DEFe33AAB4D6C"
+liquidator4 = "0x0328d0806c3e64a86Fe405b1368A631A58E63977"
+liquidator5 = "0xD86709CF8ed53FBBD6e844cf5A4CB9b0E7592b71"
+liquidator6 = "0xb0aB30aa804595835765c50114e4831b474Bd3Ac"
+liquidator7 = "0xd956277f454951F95244b55a47e8ed9159CAed85"
+liquidator8 = "0x8DA6DD4675e96F706F45BB9566Be31eB050ED652"
+liquidator9 = "0xffA24D284111E58E2142dc74e4FB08a398D97c45"
+liquidator10 = "0x4d0AfCA2357F1797CF18c579171b71B427604933"
 
 [var.stork_publishers]
 storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
