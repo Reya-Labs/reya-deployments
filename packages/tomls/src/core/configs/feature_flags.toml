@@ -73,7 +73,7 @@ depends = ["invoke.upgrade_core_proxy"]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
-args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator5 %>"]
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator6 %>"]
 depends = ["invoke.upgrade_core_proxy"]
 
 [invoke.core_enable_liquidator7_multicall]
@@ -101,5 +101,8 @@ depends = ["invoke.upgrade_core_proxy"]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
-args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator10 %>"]
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.liquidator10 %>",
+]
 depends = ["invoke.upgrade_core_proxy"]
