@@ -84,7 +84,8 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
         vm.prank(user);
         ICoreProxy(sec.core).activateFirstMarketForAccount(accountId, 1);
 
-        NodeOutput.Data memory ethUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcNodeId);
+        NodeOutput.Data memory ethUsdcNodeOutput =
+            IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcStorkNodeId);
 
         SD59x18 wethAmountInUSD = sd(int256(wethAmount)).mul(sd(int256(ethUsdcNodeOutput.price))).mul(
             UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut)))
@@ -251,7 +252,7 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
         // compute fees paid in rUSD
         uint256 fees = 0;
         {
-            uint256 currentPrice = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcNodeId).price;
+            uint256 currentPrice = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcStorkNodeId).price;
             fees = 10e6 * currentPrice / 1e18 * 0.001e18 / 1e18;
         }
 
@@ -271,13 +272,13 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
         for (uint256 i = 0; i < 4; i++) {
             vm.mockCall(
                 sec.oracleManager,
-                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcNodeId)),
+                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
                 abi.encode(NodeOutput.Data({ price: randomPrices[i], timestamp: block.timestamp }))
             );
 
             vm.mockCall(
                 sec.oracleManager,
-                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkFallbackNodeId)),
+                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
                 abi.encode(NodeOutput.Data({ price: randomPrices[i], timestamp: block.timestamp }))
             );
 

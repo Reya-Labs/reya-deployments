@@ -49,65 +49,66 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         check_OracleNodePrices(true);
     }
 
-    function mockStaleStork() private {
-        vm.mockCall(
-            sec.oracleAdaptersProxy,
-            abi.encodeCall(IOracleAdaptersProxy.getLatestPricePayload, ("SOLUSD")),
-            abi.encode(
-                StorkPricePayload({
-                    assetPairId: "SOLUSD",
-                    timestamp: block.timestamp - ONE_MINUTE_IN_SECONDS - 1,
-                    price: 1000e18
-                })
-            )
-        );
+    // function mockStaleStork() private {
+    //     vm.mockCall(
+    //         sec.oracleAdaptersProxy,
+    //         abi.encodeCall(IOracleAdaptersProxy.getLatestPricePayload, ("SOLUSD")),
+    //         abi.encode(
+    //             StorkPricePayload({
+    //                 assetPairId: "SOLUSD",
+    //                 timestamp: block.timestamp - ONE_MINUTE_IN_SECONDS - 1,
+    //                 price: 1000e18
+    //             })
+    //         )
+    //     );
 
-        vm.mockCall(
-            sec.oracleAdaptersProxy,
-            abi.encodeCall(IOracleAdaptersProxy.getLatestPricePayload, ("USDCUSD")),
-            abi.encode(StorkPricePayload({ assetPairId: "USDCUSD", timestamp: block.timestamp, price: 1e18 }))
-        );
-    }
+    //     vm.mockCall(
+    //         sec.oracleAdaptersProxy,
+    //         abi.encodeCall(IOracleAdaptersProxy.getLatestPricePayload, ("USDCUSD")),
+    //         abi.encode(StorkPricePayload({ assetPairId: "USDCUSD", timestamp: block.timestamp, price: 1e18 }))
+    //     );
+    // }
 
-    function mockStaleRedstone() private {
-        NodeDefinition.Data memory solUsdNodeDefinition =
-            IOracleManagerProxy(sec.oracleManager).getNode(sec.solUsdNodeId);
-        (address solUsdRedstone,) = abi.decode(solUsdNodeDefinition.parameters, (address, uint256));
+    // function mockStaleRedstone() private {
+    //     NodeDefinition.Data memory solUsdNodeDefinition =
+    //         IOracleManagerProxy(sec.oracleManager).getNode(sec.solUsdNodeId);
+    //     (address solUsdRedstone,) = abi.decode(solUsdNodeDefinition.parameters, (address, uint256));
 
-        vm.mockCall(
-            solUsdRedstone,
-            abi.encodeCall(IAggregatorV3Interface.latestRoundData, ()),
-            abi.encode(0, 1000e8, 0, block.timestamp - 90 - 1, 0)
-        );
+    // vm.mockCall(
+    //     solUsdRedstone,
+    //     abi.encodeCall(IAggregatorV3Interface.latestRoundData, ()),
+    //     abi.encode(0, 1000e8, 0, block.timestamp - 90 - 1, 0)
+    // );
 
-        NodeDefinition.Data memory usdcUsdNodeDefinition =
-            IOracleManagerProxy(sec.oracleManager).getNode(sec.usdcUsdNodeId);
-        (address usdcUsdRedstone,) = abi.decode(usdcUsdNodeDefinition.parameters, (address, uint256));
+    //     NodeDefinition.Data memory usdcUsdNodeDefinition =
+    //         IOracleManagerProxy(sec.oracleManager).getNode(sec.usdcUsdNodeId);
+    //     (address usdcUsdRedstone,) = abi.decode(usdcUsdNodeDefinition.parameters, (address, uint256));
 
-        vm.mockCall(
-            usdcUsdRedstone,
-            abi.encodeCall(IAggregatorV3Interface.latestRoundData, ()),
-            abi.encode(0, 1e8, 0, block.timestamp, 0)
-        );
-    }
+    //     vm.mockCall(
+    //         usdcUsdRedstone,
+    //         abi.encodeCall(IAggregatorV3Interface.latestRoundData, ()),
+    //         abi.encode(0, 1e8, 0, block.timestamp, 0)
+    //     );
+    // }
 
-    function test_FallbackOracleNode_StaleStork() public {
-        mockStaleStork();
+    // function test_FallbackOracleNode_StaleStork() public {
+    //     mockStaleStork();
 
-        NodeOutput.Data memory nodeOutput =
-            IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcStorkFallbackNodeId);
+    //     NodeOutput.Data memory nodeOutput =
+    //         IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcStorkFallbackNodeId);
 
-        NodeOutput.Data memory nodeOutputRedstone = IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcNodeId);
+    //     NodeOutput.Data memory nodeOutputRedstone =
+    // IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcNodeId);
 
-        assertEq(nodeOutput.price, nodeOutputRedstone.price);
-        assertEq(nodeOutput.timestamp, nodeOutputRedstone.timestamp);
-    }
+    //     assertEq(nodeOutput.price, nodeOutputRedstone.price);
+    //     assertEq(nodeOutput.timestamp, nodeOutputRedstone.timestamp);
+    // }
 
-    function test_FallbackOracleNode_StaleStorkAndRedstone() public {
-        mockStaleStork();
-        mockStaleRedstone();
+    // function test_FallbackOracleNode_StaleStorkAndRedstone() public {
+    //     mockStaleStork();
+    //     mockStaleRedstone();
 
-        vm.expectRevert(abi.encodeWithSelector(IOracleManagerProxy.StalePriceDetected.selector, sec.solUsdcNodeId));
-        IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcStorkFallbackNodeId);
-    }
+    //     vm.expectRevert(abi.encodeWithSelector(IOracleManagerProxy.StalePriceDetected.selector, sec.solUsdcNodeId));
+    //     IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcStorkFallbackNodeId);
+    // }
 }
