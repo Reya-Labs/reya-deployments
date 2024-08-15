@@ -63,6 +63,13 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_weth_view_functions() public {
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
+
         (user,) = makeAddrAndKey("user");
 
         uint256 wethAmount = 1e18;
@@ -79,8 +86,6 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
 
         NodeOutput.Data memory ethUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcNodeId);
 
-        (, ParentCollateralConfig memory parentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
         SD59x18 wethAmountInUSD = sd(int256(wethAmount)).mul(sd(int256(ethUsdcNodeOutput.price))).mul(
             UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut)))
         );
@@ -170,6 +175,13 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_wethCollateral_depositWithdraw() public {
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
+
         (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 1e18; // denominated in weth
         uint128 marketId = 1; // eth

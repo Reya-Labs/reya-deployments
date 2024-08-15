@@ -2,7 +2,13 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import "forge-std/Test.sol";
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
-import { ICoreProxy, TriggerAutoExchangeInput, AutoExchangeAmounts } from "../../../src/interfaces/ICoreProxy.sol";
+import {
+    ICoreProxy,
+    TriggerAutoExchangeInput,
+    AutoExchangeAmounts,
+    CollateralConfig,
+    ParentCollateralConfig
+} from "../../../src/interfaces/ICoreProxy.sol";
 import {
     IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
 } from "../../../src/interfaces/IPeripheryProxy.sol";
@@ -36,6 +42,13 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     LocalState private s;
 
     function check_AutoExchange_wEth(uint256 userInitialRusdBalance) private {
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
+
         (address user,) = makeAddrAndKey("user");
         s.userAccountId = 0;
 
