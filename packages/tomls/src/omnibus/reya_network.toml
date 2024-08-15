@@ -262,7 +262,7 @@ usdeUsdMaxStaleDuration = "0"
 usdeUsdcMaxStaleDuration = "0"
 usdeUsdMaxStaleDurationStork = "0"
 usdeUsdcMaxStaleDurationStork = "0"
-usdeUsdcMaxStaleDurationFallbackStorkRedstone = "0>"
+usdeUsdcMaxStaleDurationFallbackStorkRedstone = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
