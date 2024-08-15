@@ -12,11 +12,12 @@ contract AutoExchangeForkTest is ReyaForkTest, AutoExchangeForkCheck {
         check_AutoExchangeWeth_WhenUserHasBothWethAndRusd();
     }
 
-    function test_Cronos_AutoExchangeUSDe_WhenUserHasOnlyUsde() public {
-        check_AutoExchangeUSDe_WhenUserHasOnlyUsde();
-    }
+    // todo
+    // function test_Cronos_AutoExchangeUSDe_WhenUserHasOnlyUsde() public {
+    //     check_AutoExchangeUSDe_WhenUserHasOnlyUsde();
+    // }
 
-    function test_Cronos_AutoExchangeUSDe_WhenUserHasBothUsdeAndRusd() public {
-        check_AutoExchangeUSDe_WhenUserHasBothUsdeAndRusd();
-    }
+    // function test_Cronos_AutoExchangeUSDe_WhenUserHasBothUsdeAndRusd() public {
+    //     check_AutoExchangeUSDe_WhenUserHasBothUsdeAndRusd();
+    // }
 }

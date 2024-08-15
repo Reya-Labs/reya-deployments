@@ -194,11 +194,23 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(meanPriceAVAX);
         ls.maxDeviations.push(maxDeviationAVAX);
 
+        ls.nodeIds.push(sec.usdeUsdNodeId);
+        ls.meanPrices.push(meanPriceStableCoin);
+        ls.maxDeviations.push(maxDeviationStableCoin * 2);
+
+        ls.nodeIds.push(sec.usdeUsdcNodeId);
+        ls.meanPrices.push(meanPriceStableCoin);
+        ls.maxDeviations.push(maxDeviationStableCoin * 2);
+
         ls.nodeIds.push(sec.usdeUsdStorkNodeId);
         ls.meanPrices.push(meanPriceStableCoin);
         ls.maxDeviations.push(maxDeviationStableCoin * 2);
 
         ls.nodeIds.push(sec.usdeUsdcStorkNodeId);
+        ls.meanPrices.push(meanPriceStableCoin);
+        ls.maxDeviations.push(maxDeviationStableCoin * 2);
+
+        ls.nodeIds.push(sec.usdeUsdcStorkFallbackNodeId);
         ls.meanPrices.push(meanPriceStableCoin);
         ls.maxDeviations.push(maxDeviationStableCoin * 2);
     }

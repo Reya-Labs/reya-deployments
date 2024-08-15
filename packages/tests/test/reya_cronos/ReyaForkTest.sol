@@ -72,8 +72,11 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.avaxUsdcStorkNodeId = 0x242ea32dfc4f37b7d3065d40b8d514718b1f9dbe15bae07e31dd6ec525ca0f20;
         sec.avaxUsdcStorkFallbackNodeId = 0x6d3e9bb53f658df1e64b36627f5f49b07bc516ddf2e247a479ce57ec72cc10af;
 
+        sec.usdeUsdNodeId = 0xbe0af1b6d97a67ac965623147c5df0eb768600fe656fb64e933d6ebbde9b20a3;
+        sec.usdeUsdcNodeId = 0xd37e1ea5c381faeadb7df088eb07d98b5f6804e1a876225932c8dd4627116320;
         sec.usdeUsdStorkNodeId = 0x2b30e0b99d6cfb46e7743a6fc93cee722bc36e94b48d99059de050e40294a005;
         sec.usdeUsdcStorkNodeId = 0xf37654fe7d50f92914ddb32104e82b81220be6e73257ef21ac8a49b9dc68193c;
+        sec.usdeUsdcStorkFallbackNodeId = 0xc821dc92f6dca0def7db09a186f641c6945cc1d13fb81879434350b77e97d7ac;
 
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
         dec.socketExecutionHelper[sec.usdc] = 0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE;

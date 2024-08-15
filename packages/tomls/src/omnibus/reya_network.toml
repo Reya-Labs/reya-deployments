@@ -130,6 +130,7 @@ redstonePriceFeedSOL = "0x7D123d462268A46679dc4A1b89cFC8fBBab7388A"
 redstonePriceFeedARB = "0x7b9e8a8ace50786c9Ee4500d23fe72Ad65D992D0"
 redstonePriceFeedOP = "0x44b081A05bE646B058Ec326cC93683A926E0B70E"
 redstonePriceFeedAVAX = "0x7FB5df802F869b1E0588B31BA9D080EAEBFc75b1"
+redstonePriceFeedUSDE = "0x039d91224f5e093C603b30709C8fD13fb14f4103"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -170,7 +171,7 @@ wbtcPolygonConnector = "0xA30e479EbfD576EDd69afB636d16926a05214149"
 # -------------------------------------------------------------------
 usdeController = "0xF5D4ea96d2efbdAB9C63fA85d2c45e8B75dF640c"
 usdeExecutionHelper = "0xC53D91C6D595b4259fa5649d77e1e31E648202A3"
-usdeEthereumConnector = "0xc2dE372337308cEd2754d8d9bC0AB1A1B004C3be"
+usdeEthereumConnector = "0xf004c4c51b6c026247B5910706Ee78134299eaBD"
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumWithdrawFeeUnscaled = "27.888"
@@ -198,12 +199,12 @@ rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
-wethWithdrawalWindowSize = "1"
-wethWithdrawalTvlPercentageLimitUnscaled = "1"
+wethWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+wethWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # -------------------------------------------------------------------
 usdeCollateralAdapter = "<%= AddressZero %>"
-usdeWithdrawalWindowSize = "1"
-usdeWithdrawalTvlPercentageLimitUnscaled = "1"
+usdeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+usdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.5"
@@ -230,8 +231,8 @@ btcUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECON
 ethUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 ethUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 ethUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-ethUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 ethUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ethUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 solUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 solUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -257,8 +258,11 @@ avaxUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 avaxUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 avaxUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
-usdeUsdMaxStaleDurationStork = "0"
-usdeUsdcMaxStaleDurationStork = "0"
+usdeUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdeUsdcMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdeUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdeUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdeUsdcMaxStaleDurationFallbackStorkRedstone = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -414,7 +418,7 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_weth_capUnscaled = "10"
+cp1Rusd_weth_capUnscaled = "1"
 cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0"
 cp1Rusd_weth_autoExchangeDustThresholdUnscaled = "0"
@@ -434,4 +438,4 @@ cp1Rusd_usde_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_usdeParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
 cp1Rusd_usdeParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_usdeParentConfig_autoExchangeDiscountUnscaled = "0.01"
-cp1Rusd_usdeParentConfig_oracleNodeId = "<%= settings.usdeUsdcNodeIdStork %>"
+cp1Rusd_usdeParentConfig_oracleNodeId = "<%= settings.usdeUsdcNodeId %>"
