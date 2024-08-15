@@ -77,7 +77,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         vm.mockCall(
             solUsdRedstone,
             abi.encodeCall(IAggregatorV3Interface.latestRoundData, ()),
-            abi.encode(0, 1000e8, 0, block.timestamp - ONE_MINUTE_IN_SECONDS - 1, 0)
+            abi.encode(0, 1000e8, 0, block.timestamp - 90 - 1, 0)
         );
 
         NodeDefinition.Data memory usdcUsdNodeDefinition =

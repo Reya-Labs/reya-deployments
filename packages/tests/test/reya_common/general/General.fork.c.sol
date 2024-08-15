@@ -228,8 +228,18 @@ contract GeneralForkCheck is BaseReyaForkTest {
             // note: in the case of it is not one minute staleness for all oracle nodes, create individual values,
             // similar to meanPrices
             if (flagCheckStaleness) {
-                assertLe(block.timestamp - ONE_MINUTE_IN_SECONDS, nodeOutput.timestamp);
-                assertEq(nodeDefinition.maxStaleDuration, ONE_MINUTE_IN_SECONDS);
+                uint256 max_stale_duration = 0;
+                if (nodeDefinition.nodeType == 1) {
+                    // it can be 60 or 90 depending on redstone/stork
+                    max_stale_duration = nodeDefinition.maxStaleDuration;
+                    assert(max_stale_duration == 60 || max_stale_duration == 90);
+                } else if (nodeDefinition.nodeType == 2 || nodeDefinition.nodeType == 5) {
+                    max_stale_duration = 90;
+                } else if (nodeDefinition.nodeType == 3 || nodeDefinition.nodeType == 4) {
+                    max_stale_duration = ONE_MINUTE_IN_SECONDS;
+                }
+                assertLe(block.timestamp - max_stale_duration, nodeOutput.timestamp);
+                assertEq(nodeDefinition.maxStaleDuration, max_stale_duration);
             }
 
             // if redstone node, check that the owner of the price feed is the multisig
