@@ -131,7 +131,7 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector, 1, sec.weth, 10e18, collateralPoolWethBalance + amount
+                ICoreProxy.CollateralCapExceeded.selector, 1, sec.weth, 1e18, collateralPoolWethBalance + amount
             )
         );
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
