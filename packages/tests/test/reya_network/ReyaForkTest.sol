@@ -99,7 +99,7 @@ contract ReyaForkTest is StorageReyaForkTest {
 
         dec.socketController[sec.usde] = 0xF5D4ea96d2efbdAB9C63fA85d2c45e8B75dF640c;
         dec.socketExecutionHelper[sec.usde] = 0xC53D91C6D595b4259fa5649d77e1e31E648202A3;
-        dec.socketConnector[sec.usde][ethereumChainId] = 0xc2dE372337308cEd2754d8d9bC0AB1A1B004C3be;
+        dec.socketConnector[sec.usde][ethereumChainId] = 0xf004c4c51b6c026247B5910706Ee78134299eaBD;
 
         try vm.activeFork() { }
         catch {
