@@ -22,7 +22,7 @@ contract DistributeFunds is Script, Test {
 
     function parsePendingFundsJson() private view returns (PendingTx[] memory pendingTxs) {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/src/scripts/data/pendingFunds-24Jun2024.json");
+        string memory path = string.concat(root, "/src/scripts/data/pendingFunds-16Aug2024.json");
         string memory json = vm.readFile(path);
         bytes memory parsed = vm.parseJson(json);
 
