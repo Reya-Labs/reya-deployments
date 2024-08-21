@@ -138,6 +138,8 @@ redstonePriceFeedARB = "0x3A2Cb95DE3EBE02Fc713049F30B8952296D9600d"
 redstonePriceFeedOP = "0xD583E60FD28Bb19d0C03Fb37553B83C665cf082B"
 redstonePriceFeedAVAX = "0xbF675f4AF4351ee79B95f24651f4E3741079af5E"
 redstonePriceFeedUSDE = "0xC70E99813ee971CD5703581fe016dF256427fCce"
+redstonePriceFeedMKR = "0xDf1A484d9C28204F12BF30960835169D458df835"
+redstonePriceFeedLINK = "0x1dc447efFE5eE0c9c5332286094975362f9ec84F"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -149,6 +151,8 @@ storkAssetPairIdOP = "OPUSD"
 storkAssetPairIdAVAX = "AVAXUSD"
 storkAssetPairIdWSTETH = "WSTETHUSD"
 storkAssetPairIdUSDE = "USDEUSD"
+storkAssetPairIdMKR = "MKRUSD"
+storkAssetPairIdLINK = "LINKUSD"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -231,6 +235,8 @@ market3Sol_tier0FeeUnscaled = "0.0005"
 market4Arb_tier0FeeUnscaled = "0.0005"
 market5Op_tier0FeeUnscaled = "0.0005"
 market6Avax_tier0FeeUnscaled = "0.0005"
+market7Mkr_tier0FeeUnscaled = "0.0005"
+market8Link_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "0"
@@ -282,6 +288,18 @@ usdeUsdcMaxStaleDuration = "0"
 usdeUsdMaxStaleDurationStork = "0"
 usdeUsdcMaxStaleDurationStork = "0"
 usdeUsdcMaxStaleDurationFallbackStorkRedstone = "0"
+#------------------------------------------------------------------------------
+mkrUsdMaxStaleDuration = "0"
+mkrUsdcMaxStaleDuration = "0"
+mkrUsdMaxStaleDurationStork = "0"
+mkrUsdcMaxStaleDurationStork = "0"
+mkrUsdcMaxStaleDurationFallbackStorkRedstone = "0"
+#------------------------------------------------------------------------------
+linkUsdMaxStaleDuration = "0"
+linkUsdcMaxStaleDuration = "0"
+linkUsdMaxStaleDurationStork = "0"
+linkUsdcMaxStaleDurationStork = "0"
+linkUsdcMaxStaleDurationFallbackStorkRedstone = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"

@@ -131,6 +131,8 @@ redstonePriceFeedARB = "0x7b9e8a8ace50786c9Ee4500d23fe72Ad65D992D0"
 redstonePriceFeedOP = "0x44b081A05bE646B058Ec326cC93683A926E0B70E"
 redstonePriceFeedAVAX = "0x7FB5df802F869b1E0588B31BA9D080EAEBFc75b1"
 redstonePriceFeedUSDE = "0x039d91224f5e093C603b30709C8fD13fb14f4103"
+redstonePriceFeedMKR = "0x09a35b10F1e0D79360De8Cb1e2F4709d849f57d4"
+redstonePriceFeedLINK = "0xDFB6f2DABD7774B37ec79E8036EB3FC893785922"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -141,6 +143,8 @@ storkAssetPairIdARB = "ARBUSD"
 storkAssetPairIdOP = "OPUSD"
 storkAssetPairIdAVAX = "AVAXUSD"
 storkAssetPairIdUSDE = "USDEUSD"
+storkAssetPairIdMKR = "MKRUSD"
+storkAssetPairIdLINK = "LINKUSD"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -215,6 +219,8 @@ market3Sol_tier0FeeUnscaled = "0.0005"
 market4Arb_tier0FeeUnscaled = "0.0005"
 market5Op_tier0FeeUnscaled = "0.0005"
 market6Avax_tier0FeeUnscaled = "0.0005"
+market7Mkr_tier0FeeUnscaled = "0.0005"
+market8Link_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -263,6 +269,18 @@ usdeUsdcMaxStaleDuration = "90"
 usdeUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 usdeUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 usdeUsdcMaxStaleDurationFallbackStorkRedstone = "90"
+#------------------------------------------------------------------------------
+mkrUsdMaxStaleDuration = "90"
+mkrUsdcMaxStaleDuration = "90"
+mkrUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+mkrUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+mkrUsdcMaxStaleDurationFallbackStorkRedstone = "90"
+#------------------------------------------------------------------------------
+linkUsdMaxStaleDuration = "90"
+linkUsdcMaxStaleDuration = "90"
+linkUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+linkUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+linkUsdcMaxStaleDurationFallbackStorkRedstone = "90"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
