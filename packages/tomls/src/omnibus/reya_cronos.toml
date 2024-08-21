@@ -489,7 +489,7 @@ market11Uni_maxExposureFactorUnscaled = "0.999"
 market11Uni_maxPSlippageUnscaled = "0.1"
 
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "6"
+cp1Rusd_maxMarkets = "8"
 cp1Rusd_maxCollaterals = "4"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
