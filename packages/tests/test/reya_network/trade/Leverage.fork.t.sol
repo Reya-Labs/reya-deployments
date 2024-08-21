@@ -28,6 +28,14 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_rusdCollateral_leverage_avax();
     }
 
+    function test_trade_rusdCollateral_leverage_mkr() public {
+        check_trade_rusdCollateral_leverage_mkr();
+    }
+
+    function test_trade_rusdCollateral_leverage_link() public {
+        check_trade_rusdCollateral_leverage_link();
+    }
+
     function test_trade_wethCollateral_leverage_eth() public {
         check_trade_wethCollateral_leverage_eth();
     }
@@ -52,6 +60,14 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_wethCollateral_leverage_avax();
     }
 
+    function test_trade_wethCollateral_leverage_mkr() public {
+        check_trade_wethCollateral_leverage_mkr();
+    }
+
+    function test_trade_wethCollateral_leverage_link() public {
+        check_trade_wethCollateral_leverage_link();
+    }
+
     function test_trade_usdeCollateral_leverage_eth() public {
         check_trade_usdeCollateral_leverage_eth();
     }
@@ -74,5 +90,13 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
 
     function test_trade_usdeCollateral_leverage_avax() public {
         check_trade_usdeCollateral_leverage_avax();
+    }
+
+    function test_trade_usdeCollateral_leverage_mkr() public {
+        check_trade_usdeCollateral_leverage_mkr();
+    }
+
+    function test_trade_usdeCollateral_leverage_link() public {
+        check_trade_usdeCollateral_leverage_link();
     }
 }

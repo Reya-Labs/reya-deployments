@@ -28,6 +28,14 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_avax_long();
     }
 
+    function test_Cronos_trade_slippage_mkr_long() public {
+        check_trade_slippage_mkr_long();
+    }
+
+    function test_Cronos_trade_slippage_link_long() public {
+        check_trade_slippage_link_long();
+    }
+
     function test_Cronos_trade_slippage_eth_short() public {
         check_trade_slippage_eth_short();
     }
@@ -50,5 +58,13 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
 
     function test_Cronos_trade_slippage_avax_short() public {
         check_trade_slippage_avax_short();
+    }
+
+    function test_Cronos_trade_slippage_mkr_short() public {
+        check_trade_slippage_mkr_short();
+    }
+
+    function test_Cronos_trade_slippage_link_short() public {
+        check_trade_slippage_link_short();
     }
 }

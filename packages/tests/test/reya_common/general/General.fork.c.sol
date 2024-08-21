@@ -59,6 +59,12 @@ contract GeneralForkCheck is BaseReyaForkTest {
         uint256 meanPriceAVAX = 28e18;
         uint256 maxDeviationAVAX = 14e18;
 
+        uint256 meanPriceMKR = 2000e18;
+        uint256 maxDeviationMKR = 1000e18;
+
+        uint256 meanPriceLINK = 15e18;
+        uint256 maxDeviationLINK = 10e18;
+
         uint256 meanPriceStableCoin = 1e18;
         uint256 maxDeviationStableCoin = 0.01e18;
 
@@ -213,6 +219,46 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.nodeIds.push(sec.usdeUsdcStorkFallbackNodeId);
         ls.meanPrices.push(meanPriceStableCoin);
         ls.maxDeviations.push(maxDeviationStableCoin * 2);
+
+        ls.nodeIds.push(sec.mkrUsdNodeId);
+        ls.meanPrices.push(meanPriceMKR);
+        ls.maxDeviations.push(maxDeviationMKR);
+
+        ls.nodeIds.push(sec.mkrUsdcNodeId);
+        ls.meanPrices.push(meanPriceMKR);
+        ls.maxDeviations.push(maxDeviationMKR);
+
+        ls.nodeIds.push(sec.mkrUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceMKR);
+        ls.maxDeviations.push(maxDeviationMKR);
+
+        ls.nodeIds.push(sec.mkrUsdcStorkNodeId);
+        ls.meanPrices.push(meanPriceMKR);
+        ls.maxDeviations.push(maxDeviationMKR);
+
+        ls.nodeIds.push(sec.mkrUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceMKR);
+        ls.maxDeviations.push(maxDeviationMKR);
+
+        ls.nodeIds.push(sec.linkUsdNodeId);
+        ls.meanPrices.push(meanPriceLINK);
+        ls.maxDeviations.push(maxDeviationLINK);
+
+        ls.nodeIds.push(sec.linkUsdcNodeId);
+        ls.meanPrices.push(meanPriceLINK);
+        ls.maxDeviations.push(maxDeviationLINK);
+
+        ls.nodeIds.push(sec.linkUsdStorkNodeId);
+        ls.meanPrices.push(meanPriceLINK);
+        ls.maxDeviations.push(maxDeviationLINK);
+
+        ls.nodeIds.push(sec.linkUsdcStorkNodeId);
+        ls.meanPrices.push(meanPriceLINK);
+        ls.maxDeviations.push(maxDeviationLINK);
+
+        ls.nodeIds.push(sec.linkUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(meanPriceLINK);
+        ls.maxDeviations.push(maxDeviationLINK);
     }
 
     function check_OracleNodePrices(bool flagCheckStaleness) public {
