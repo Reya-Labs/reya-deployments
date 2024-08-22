@@ -10,31 +10,22 @@ struct LocalState {
     bytes32[] nodeIds;
     uint256[] meanPrices;
     uint256[] maxDeviations;
-
     uint256 meanPriceETH;
     uint256 maxDeviationETH;
-
     uint256 meanPriceBTC;
     uint256 maxDeviationBTC;
-
     uint256 meanPriceSOL;
     uint256 maxDeviationSOL;
-
     uint256 meanPriceARB;
     uint256 maxDeviationARB;
-
     uint256 meanPriceOP;
     uint256 maxDeviationOP;
-
     uint256 meanPriceAVAX;
     uint256 maxDeviationAVAX;
-
     uint256 meanPriceMKR;
     uint256 maxDeviationMKR;
-
     uint256 meanPriceLINK;
     uint256 maxDeviationLINK;
-
     uint256 meanPriceStableCoin;
     uint256 maxDeviationStableCoin;
 }
