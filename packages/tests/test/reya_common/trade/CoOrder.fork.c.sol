@@ -196,6 +196,8 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1TriggerPrice = MAX_PRICE;
         st.coOrder1PriceLimit = MIN_PRICE;
 
+        st.nonce = 1;
+
         executeOrderAndTriggerCoOrder();
     }
 
@@ -225,6 +227,8 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1TriggerPrice = MIN_PRICE;
         st.coOrder1PriceLimit = MIN_PRICE;
 
+        st.nonce = 1;
+
         executeOrderAndTriggerCoOrder();
     }
 
@@ -249,6 +253,8 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.orderBase1 = sd(1e18);
         st.coOrder1Type = 2;
         st.coOrder1TriggerPrice = MAX_PRICE;
+
+        st.nonce = 1;
 
         executeOrderAndTriggerCoOrder();
     }

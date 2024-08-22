@@ -5,6 +5,8 @@ include = [
     "markets/market_4arb.toml",
     "markets/market_5op.toml",
     "markets/market_6avax.toml",
+    "markets/market_7mkr.toml",
+    "markets/market_8link.toml",
     "risk/risk_matrix.toml",
     "risk/risk_multipliers.toml",
     "risk/liquidations.toml",
@@ -27,4 +29,6 @@ depends = [
     "invoke.market_4arb_merge_collateral_pool",
     "invoke.market_5op_merge_collateral_pool",
     "invoke.market_6avax_merge_collateral_pool",
+    "invoke.market_7mkr_merge_collateral_pool",
+    "invoke.market_8link_merge_collateral_pool",
 ]
