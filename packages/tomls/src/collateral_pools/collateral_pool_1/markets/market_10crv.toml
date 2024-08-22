@@ -107,20 +107,20 @@ depends = ["invoke.create_market_10crv"]
 ##################################################
 # Market's Collateral Pool Insurance Fund
 ##################################################
-# [invoke.market_10crv_insurance_fund_config]
-# target = ["CoreProxy"]
-# fromCall.func = "getCollateralPoolOwner"
-# fromCall.args = ["<%= settings.market10CrvId %>"]
-# func = "configureCollateralPoolInsuranceFund"
-# args = [
-#     "<%= settings.market10CrvId %>",
-#     # reusing params from CP 1 since this CP will get merged
-#     { accountId = "<%= settings.cp1Rusd_insuranceFundAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_insuranceFund_liquidationFeeUnscaled) %>" },
-# ]
-# depends = [
-#     "invoke.cp_1rusd_create_insurance_fund_account",
-#     "invoke.create_market_10crv",
-# ]
+[invoke.market_10crv_insurance_fund_config]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market10CrvId %>"]
+func = "configureCollateralPoolInsuranceFund"
+args = [
+    "<%= settings.market10CrvId %>",
+    # reusing params from CP 1 since this CP will get merged
+    { accountId = "<%= settings.cp1Rusd_insuranceFundAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_insuranceFund_liquidationFeeUnscaled) %>" },
+]
+depends = [
+    "invoke.cp_1rusd_create_insurance_fund_account",
+    "invoke.create_market_10crv",
+]
 
 ##################################################
 # Market Tier Fees

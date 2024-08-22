@@ -474,7 +474,7 @@ market10Crv_slippageParams_phiUnscaled = "0"
 market10Crv_slippageParams_betaUnscaled = "0"
 market10Crv_minimumOrderBaseUnscaled = "0.1"
 market10Crv_baseSpacingUnscaled = "0.01"
-market10Crv_priceSpacingUnscaled = "0.001"
+market10Crv_priceSpacingUnscaled = "0.0001"
 market10Crv_depthFactorUnscaled = "0.4"
 market10Crv_maxExposureFactorUnscaled = "0.999"
 market10Crv_maxPSlippageUnscaled = "0.1"
@@ -497,7 +497,7 @@ market11Uni_maxExposureFactorUnscaled = "0.999"
 market11Uni_maxPSlippageUnscaled = "0.1"
 
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "8"
+cp1Rusd_maxMarkets = "11"
 cp1Rusd_maxCollaterals = "3"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
