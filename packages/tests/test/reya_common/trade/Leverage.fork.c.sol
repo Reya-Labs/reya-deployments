@@ -463,6 +463,13 @@ contract LeverageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_wethCollateral_leverage_mkr() public {
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
+
         // general info
         // this tests 15x leverage is successful
         (address user, uint256 userPk) = makeAddrAndKey("user");

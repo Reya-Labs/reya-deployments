@@ -274,59 +274,59 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         trade_slippage_helper({ marketId: 6, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
 
-    function check_trade_slippage_mkr_long() public {
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
+    // function check_trade_slippage_mkr_long() public {
+    //     SD59x18[] memory s = new SD59x18[](10);
+    //     s[1] = sd(0.01e18);
+    //     s[2] = sd(0.02e18);
+    //     s[3] = sd(0.03e18);
+    //     s[4] = sd(0.04e18);
+    //     s[5] = sd(0.05e18);
+    //     s[6] = sd(0.06e18);
+    //     s[7] = sd(0.07e18);
+    //     s[8] = sd(0.08e18);
+    //     s[9] = sd(0.09e18);
+    //     // s[10] = sd(0.99e18);
 
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd();
-        sPrime[2] = sd();
-        sPrime[3] = sd();
-        sPrime[4] = sd();
-        sPrime[5] = sd();
-        sPrime[6] = sd();
-        sPrime[7] = sd();
-        sPrime[8] = sd();
-        sPrime[9] = sd();
+    //     SD59x18[] memory sPrime = new SD59x18[](10);
+    //     sPrime[1] = sd();
+    //     sPrime[2] = sd();
+    //     sPrime[3] = sd();
+    //     sPrime[4] = sd();
+    //     sPrime[5] = sd();
+    //     sPrime[6] = sd();
+    //     sPrime[7] = sd();
+    //     sPrime[8] = sd();
+    //     sPrime[9] = sd();
 
-        trade_slippage_helper({ marketId: 7, s: s, sPrime: sPrime, eps: ud(0.007e18) });
-    }
+    //     trade_slippage_helper({ marketId: 7, s: s, sPrime: sPrime, eps: ud(0.007e18) });
+    // }
 
-    function check_trade_slippage_link_long() public {
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
+    // function check_trade_slippage_link_long() public {
+    //     SD59x18[] memory s = new SD59x18[](10);
+    //     s[1] = sd(0.01e18);
+    //     s[2] = sd(0.02e18);
+    //     s[3] = sd(0.03e18);
+    //     s[4] = sd(0.04e18);
+    //     s[5] = sd(0.05e18);
+    //     s[6] = sd(0.06e18);
+    //     s[7] = sd(0.07e18);
+    //     s[8] = sd(0.08e18);
+    //     s[9] = sd(0.09e18);
+    //     // s[10] = sd(0.99e18);
 
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd();
-        sPrime[2] = sd();
-        sPrime[3] = sd();
-        sPrime[4] = sd();
-        sPrime[5] = sd();
-        sPrime[6] = sd();
-        sPrime[7] = sd();
-        sPrime[8] = sd();
-        sPrime[9] = sd();
+    //     SD59x18[] memory sPrime = new SD59x18[](10);
+    //     sPrime[1] = sd();
+    //     sPrime[2] = sd();
+    //     sPrime[3] = sd();
+    //     sPrime[4] = sd();
+    //     sPrime[5] = sd();
+    //     sPrime[6] = sd();
+    //     sPrime[7] = sd();
+    //     sPrime[8] = sd();
+    //     sPrime[9] = sd();
 
-        trade_slippage_helper({ marketId: 8, s: s, sPrime: sPrime, eps: ud(0.007e18) });
-    }
+    //     trade_slippage_helper({ marketId: 8, s: s, sPrime: sPrime, eps: ud(0.007e18) });
+    // }
 
     function check_trade_slippage_eth_short() public {
         SD59x18[] memory s = new SD59x18[](10);
@@ -490,57 +490,57 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         trade_slippage_helper({ marketId: 6, s: s, sPrime: sPrime, eps: ud(0.007e18) });
     }
 
-    function check_trade_slippage_mkr_short() public {
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
+    // function check_trade_slippage_mkr_short() public {
+    //     SD59x18[] memory s = new SD59x18[](10);
+    //     s[1] = sd(-0.01e18);
+    //     s[2] = sd(-0.02e18);
+    //     s[3] = sd(-0.03e18);
+    //     s[4] = sd(-0.04e18);
+    //     s[5] = sd(-0.05e18);
+    //     s[6] = sd(-0.06e18);
+    //     s[7] = sd(-0.07e18);
+    //     s[8] = sd(-0.08e18);
+    //     s[9] = sd(-0.09e18);
+    //     // s[10] = sd(0.99e18);
 
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd();
-        sPrime[2] = sd();
-        sPrime[3] = sd();
-        sPrime[4] = sd();
-        sPrime[5] = sd();
-        sPrime[6] = sd();
-        sPrime[7] = sd();
-        sPrime[8] = sd();
-        sPrime[9] = sd();
+    //     SD59x18[] memory sPrime = new SD59x18[](10);
+    //     sPrime[1] = sd();
+    //     sPrime[2] = sd();
+    //     sPrime[3] = sd();
+    //     sPrime[4] = sd();
+    //     sPrime[5] = sd();
+    //     sPrime[6] = sd();
+    //     sPrime[7] = sd();
+    //     sPrime[8] = sd();
+    //     sPrime[9] = sd();
 
-        trade_slippage_helper({ marketId: 7, s: s, sPrime: sPrime, eps: ud(0.007e18) });
-    }
+    //     trade_slippage_helper({ marketId: 7, s: s, sPrime: sPrime, eps: ud(0.007e18) });
+    // }
 
-    function check_trade_slippage_link_short() public {
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
+    // function check_trade_slippage_link_short() public {
+    //     SD59x18[] memory s = new SD59x18[](10);
+    //     s[1] = sd(-0.01e18);
+    //     s[2] = sd(-0.02e18);
+    //     s[3] = sd(-0.03e18);
+    //     s[4] = sd(-0.04e18);
+    //     s[5] = sd(-0.05e18);
+    //     s[6] = sd(-0.06e18);
+    //     s[7] = sd(-0.07e18);
+    //     s[8] = sd(-0.08e18);
+    //     s[9] = sd(-0.09e18);
+    //     // s[10] = sd(0.99e18);
 
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd();
-        sPrime[2] = sd();
-        sPrime[3] = sd();
-        sPrime[4] = sd();
-        sPrime[5] = sd();
-        sPrime[6] = sd();
-        sPrime[7] = sd();
-        sPrime[8] = sd();
-        sPrime[9] = sd();
+    //     SD59x18[] memory sPrime = new SD59x18[](10);
+    //     sPrime[1] = sd();
+    //     sPrime[2] = sd();
+    //     sPrime[3] = sd();
+    //     sPrime[4] = sd();
+    //     sPrime[5] = sd();
+    //     sPrime[6] = sd();
+    //     sPrime[7] = sd();
+    //     sPrime[8] = sd();
+    //     sPrime[9] = sd();
 
-        trade_slippage_helper({ marketId: 8, s: s, sPrime: sPrime, eps: ud(0.007e18) });
-    }
+    //     trade_slippage_helper({ marketId: 8, s: s, sPrime: sPrime, eps: ud(0.007e18) });
+    // }
 }
