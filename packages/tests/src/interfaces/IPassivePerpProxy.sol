@@ -400,6 +400,7 @@ struct MarketConfigurationData {
     uint256 maxExposureFactor;
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
     uint256 maxPSlippage;
+    uint256 marketOrderMaxStaleDuration;
 }
 
 struct FundingAndADLTrackers {
