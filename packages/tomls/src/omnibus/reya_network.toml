@@ -133,6 +133,9 @@ redstonePriceFeedAVAX = "0x7FB5df802F869b1E0588B31BA9D080EAEBFc75b1"
 redstonePriceFeedUSDE = "0x039d91224f5e093C603b30709C8fD13fb14f4103"
 redstonePriceFeedMKR = "0x09a35b10F1e0D79360De8Cb1e2F4709d849f57d4"
 redstonePriceFeedLINK = "0xDFB6f2DABD7774B37ec79E8036EB3FC893785922"
+redstonePriceFeedAAVE = "0x367D5d92264090F0bD742480e127520DfeBd4f88"
+redstonePriceFeedCRV = "0x944B2a7fAe06A43a9053AD33fF20991785930513"
+redstonePriceFeedUNI = "0x57eB7606567f49Bb46ff21132b3B2aD3E325dbBD"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -145,6 +148,9 @@ storkAssetPairIdAVAX = "AVAXUSD"
 storkAssetPairIdUSDE = "USDEUSD"
 storkAssetPairIdMKR = "MKRUSD"
 storkAssetPairIdLINK = "LINKUSD"
+storkAssetPairIdAAVE = "AAVEUSD"
+storkAssetPairIdCRV = "CRVUSD"
+storkAssetPairIdUNI = "UNIUSD"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -221,6 +227,9 @@ market5Op_tier0FeeUnscaled = "0.0005"
 market6Avax_tier0FeeUnscaled = "0.0005"
 market7Mkr_tier0FeeUnscaled = "0.0005"
 market8Link_tier0FeeUnscaled = "0.0005"
+market9Aave_tier0FeeUnscaled = "0.0005"
+market10Crv_tier0FeeUnscaled = "0.0005"
+market11Uni_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -281,6 +290,24 @@ linkUsdcMaxStaleDuration = "90"
 linkUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 linkUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 linkUsdcMaxStaleDurationFallbackStorkRedstone = "90"
+#------------------------------------------------------------------------------
+aaveUsdMaxStaleDuration = "90"
+aaveUsdcMaxStaleDuration = "90"
+aaveUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+aaveUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+aaveUsdcMaxStaleDurationFallbackStorkRedstone = "90"
+#------------------------------------------------------------------------------
+crvUsdMaxStaleDuration = "90"
+crvUsdcMaxStaleDuration = "90"
+crvUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+crvUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+crvUsdcMaxStaleDurationFallbackStorkRedstone = "90"
+#------------------------------------------------------------------------------
+uniUsdMaxStaleDuration = "90"
+uniUsdcMaxStaleDuration = "90"
+uniUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+uniUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+uniUsdcMaxStaleDurationFallbackStorkRedstone = "90"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
