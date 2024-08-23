@@ -90,6 +90,24 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.linkUsdcStorkNodeId = 0xf47e4aaaaa8da8abe2d41c74a53490ca2c2937c6a541f4a3c74383b4b3ad63eb;
         sec.linkUsdcStorkFallbackNodeId = 0xcb3098ea289c21ee1fb27a37b9a3fa7dd8ed86c2dbde2e948342510b32fecf1b;
 
+        sec.aaveUsdNodeId = 0x52b638c5eb43dc48a5a6894d3b99548bd20c6c24d82e8c32f4e392f4a37729d9;
+        sec.aaveUsdcNodeId = 0xf48d83445dc0007a52c6181f70459a003368796132feed02347627b9d555f363;
+        sec.aaveUsdStorkNodeId = 0xeb4102b6e24d4f3446be08989c92709eb4c1660661686f815cf0272376890bec;
+        sec.aaveUsdcStorkNodeId = 0x725ae24c374c3a2530285b2a27dbc5b946b6dbc8706c4bb436b0be1698666b8b;
+        sec.aaveUsdcStorkFallbackNodeId = 0x983afacbf92b5aab21b4927cc7516af24e56cfa500ac477da89f56b8ba7fe999;
+
+        sec.crvUsdNodeId = 0x0a2b8aa034752df828605194f02ec6227a84ad26e452d23203a90e8bbb864bb8;
+        sec.crvUsdcNodeId = 0xe791c83f95269f70f5f07c0aa698e10d804b386e94f7f15006eda496237eb04a;
+        sec.crvUsdStorkNodeId = 0xd8bef3655106c404f35eaefcc644b4982945622d73feaf13d75384f0f8ef7767;
+        sec.crvUsdcStorkNodeId = 0xba95f5cb01117ab4ef95361c8ed3e5d14ca978151d86c5b780476e09fedfcd96;
+        sec.crvUsdcStorkFallbackNodeId = 0x168a4c6d873dafb9887009f8bde06de6a9e2a17efaeeb7a7ff4fd6d0d61dfefa;
+
+        sec.uniUsdNodeId = 0xe696757f37d427a9a75879336ba46b647057c4a06c70a4d755897e03d7baac5c;
+        sec.uniUsdcNodeId = 0x638ac95f3b619ce7aadc3ce45f5b50fc7edb34d698b854016ab2b84898364cab;
+        sec.uniUsdStorkNodeId = 0x048c9edf714da7ffd6db911b0850c19d5e01a99e672e07ca7f2e69d9b5895b1e;
+        sec.uniUsdcStorkNodeId = 0xc9394a17ca789f672ec03fd364427a79ecaa752f1ccd17635e1cbbb73df3cd21;
+        sec.uniUsdcStorkFallbackNodeId = 0x69210ee3b4c66560b3d5e5dde8943cc8b2a112afdb7e21b55863c95c6b2c36fb;
+
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
         dec.socketExecutionHelper[sec.usdc] = 0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE;
         dec.socketConnector[sec.usdc][ethereumSepoliaChainId] = 0x79B607E711853F83002d0649DcCeCA73Bef3F3A7;

@@ -7,6 +7,9 @@ include = [
     "markets/market_6avax.toml",
     "markets/market_7mkr.toml",
     "markets/market_8link.toml",
+    "markets/market_9aave.toml",
+    "markets/market_10crv.toml",
+    "markets/market_11uni.toml",
     "risk/risk_matrix.toml",
     "risk/risk_multipliers.toml",
     "risk/liquidations.toml",
@@ -31,4 +34,7 @@ depends = [
     "invoke.market_6avax_merge_collateral_pool",
     "invoke.market_7mkr_merge_collateral_pool",
     "invoke.market_8link_merge_collateral_pool",
+    "invoke.market_9aave_merge_collateral_pool",
+    "invoke.market_10crv_merge_collateral_pool",
+    "invoke.market_11uni_merge_collateral_pool",
 ]

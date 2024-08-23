@@ -140,6 +140,9 @@ redstonePriceFeedAVAX = "0xbF675f4AF4351ee79B95f24651f4E3741079af5E"
 redstonePriceFeedUSDE = "0xC70E99813ee971CD5703581fe016dF256427fCce"
 redstonePriceFeedMKR = "0xDf1A484d9C28204F12BF30960835169D458df835"
 redstonePriceFeedLINK = "0x1dc447efFE5eE0c9c5332286094975362f9ec84F"
+redstonePriceFeedAAVE = "0x5A81e9D5b1f4f0B51D6b7F2151ABDAe39854Fa28"
+redstonePriceFeedCRV = "0x768dFE8943C19E56560d0F160333bAd128AdB788"
+redstonePriceFeedUNI = "0xE66d369484d98103A849460D820e3D8A46ee4534"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -153,6 +156,9 @@ storkAssetPairIdWSTETH = "WSTETHUSD"
 storkAssetPairIdUSDE = "USDEUSD"
 storkAssetPairIdMKR = "MKRUSD"
 storkAssetPairIdLINK = "LINKUSD"
+storkAssetPairIdAAVE = "AAVEUSD"
+storkAssetPairIdCRV = "CRVUSD"
+storkAssetPairIdUNI = "UNIUSD"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -237,6 +243,9 @@ market5Op_tier0FeeUnscaled = "0.0005"
 market6Avax_tier0FeeUnscaled = "0.0005"
 market7Mkr_tier0FeeUnscaled = "0.0005"
 market8Link_tier0FeeUnscaled = "0.0005"
+market9Aave_tier0FeeUnscaled = "0.0005"
+market10Crv_tier0FeeUnscaled = "0.0005"
+market11Uni_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "0"
@@ -300,6 +309,24 @@ linkUsdcMaxStaleDuration = "0"
 linkUsdMaxStaleDurationStork = "0"
 linkUsdcMaxStaleDurationStork = "0"
 linkUsdcMaxStaleDurationFallbackStorkRedstone = "0"
+#------------------------------------------------------------------------------
+aaveUsdMaxStaleDuration = "0"
+aaveUsdcMaxStaleDuration = "0"
+aaveUsdMaxStaleDurationStork = "0"
+aaveUsdcMaxStaleDurationStork = "0"
+aaveUsdcMaxStaleDurationFallbackStorkRedstone = "0"
+#------------------------------------------------------------------------------
+crvUsdMaxStaleDuration = "0"
+crvUsdcMaxStaleDuration = "0"
+crvUsdMaxStaleDurationStork = "0"
+crvUsdcMaxStaleDurationStork = "0"
+crvUsdcMaxStaleDurationFallbackStorkRedstone = "0"
+#------------------------------------------------------------------------------
+uniUsdMaxStaleDuration = "0"
+uniUsdcMaxStaleDuration = "0"
+uniUsdMaxStaleDurationStork = "0"
+uniUsdcMaxStaleDurationStork = "0"
+uniUsdcMaxStaleDurationFallbackStorkRedstone = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -466,7 +493,7 @@ market10Crv_slippageParams_phiUnscaled = "0"
 market10Crv_slippageParams_betaUnscaled = "0"
 market10Crv_minimumOrderBaseUnscaled = "0.1"
 market10Crv_baseSpacingUnscaled = "0.01"
-market10Crv_priceSpacingUnscaled = "0.001"
+market10Crv_priceSpacingUnscaled = "0.0001"
 market10Crv_depthFactorUnscaled = "0.4"
 market10Crv_maxExposureFactorUnscaled = "0.999"
 market10Crv_maxPSlippageUnscaled = "0.1"
@@ -489,7 +516,7 @@ market11Uni_maxExposureFactorUnscaled = "0.999"
 market11Uni_maxPSlippageUnscaled = "0.1"
 
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "8"
+cp1Rusd_maxMarkets = "11"
 cp1Rusd_maxCollaterals = "4"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"

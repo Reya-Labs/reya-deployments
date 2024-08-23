@@ -26,6 +26,12 @@ struct LocalState {
     uint256 maxDeviationMKR;
     uint256 meanPriceLINK;
     uint256 maxDeviationLINK;
+    uint256 meanPriceAAVE;
+    uint256 maxDeviationAAVE;
+    uint256 meanPriceCRV;
+    uint256 maxDeviationCRV;
+    uint256 meanPriceUNI;
+    uint256 maxDeviationUNI;
     uint256 meanPriceStableCoin;
     uint256 maxDeviationStableCoin;
 }
@@ -82,6 +88,15 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
         ls.meanPriceLINK = 15e18;
         ls.maxDeviationLINK = 10e18;
+
+        ls.meanPriceAAVE = 130e18;
+        ls.maxDeviationAAVE = 50e18;
+
+        ls.meanPriceCRV = 0.3e18;
+        ls.maxDeviationCRV = 0.15e18;
+
+        ls.meanPriceUNI = 7e18;
+        ls.maxDeviationUNI = 3e18;
 
         ls.meanPriceStableCoin = 1e18;
         ls.maxDeviationStableCoin = 0.01e18;
@@ -277,6 +292,66 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.nodeIds.push(sec.linkUsdcStorkFallbackNodeId);
         ls.meanPrices.push(ls.meanPriceLINK);
         ls.maxDeviations.push(ls.maxDeviationLINK);
+
+        ls.nodeIds.push(sec.aaveUsdNodeId);
+        ls.meanPrices.push(ls.meanPriceAAVE);
+        ls.maxDeviations.push(ls.maxDeviationAAVE);
+
+        ls.nodeIds.push(sec.aaveUsdcNodeId);
+        ls.meanPrices.push(ls.meanPriceAAVE);
+        ls.maxDeviations.push(ls.maxDeviationAAVE);
+
+        ls.nodeIds.push(sec.aaveUsdStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceAAVE);
+        ls.maxDeviations.push(ls.maxDeviationAAVE);
+
+        ls.nodeIds.push(sec.aaveUsdcStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceAAVE);
+        ls.maxDeviations.push(ls.maxDeviationAAVE);
+
+        ls.nodeIds.push(sec.aaveUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(ls.meanPriceAAVE);
+        ls.maxDeviations.push(ls.maxDeviationAAVE);
+
+        ls.nodeIds.push(sec.crvUsdNodeId);
+        ls.meanPrices.push(ls.meanPriceCRV);
+        ls.maxDeviations.push(ls.maxDeviationCRV);
+
+        ls.nodeIds.push(sec.crvUsdcNodeId);
+        ls.meanPrices.push(ls.meanPriceCRV);
+        ls.maxDeviations.push(ls.maxDeviationCRV);
+
+        ls.nodeIds.push(sec.crvUsdStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceCRV);
+        ls.maxDeviations.push(ls.maxDeviationCRV);
+
+        ls.nodeIds.push(sec.crvUsdcStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceCRV);
+        ls.maxDeviations.push(ls.maxDeviationCRV);
+
+        ls.nodeIds.push(sec.crvUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(ls.meanPriceCRV);
+        ls.maxDeviations.push(ls.maxDeviationCRV);
+
+        ls.nodeIds.push(sec.uniUsdNodeId);
+        ls.meanPrices.push(ls.meanPriceUNI);
+        ls.maxDeviations.push(ls.maxDeviationUNI);
+
+        ls.nodeIds.push(sec.uniUsdcNodeId);
+        ls.meanPrices.push(ls.meanPriceUNI);
+        ls.maxDeviations.push(ls.maxDeviationUNI);
+
+        ls.nodeIds.push(sec.uniUsdStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceUNI);
+        ls.maxDeviations.push(ls.maxDeviationUNI);
+
+        ls.nodeIds.push(sec.uniUsdcStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceUNI);
+        ls.maxDeviations.push(ls.maxDeviationUNI);
+
+        ls.nodeIds.push(sec.uniUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(ls.meanPriceUNI);
+        ls.maxDeviations.push(ls.maxDeviationUNI);
     }
 
     function check_OracleNodePrices(bool flagCheckStaleness) public {
