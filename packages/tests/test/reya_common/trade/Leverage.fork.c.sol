@@ -281,6 +281,8 @@ contract LeverageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_rusdCollateral_leverage_aave() public {
+        mockFreshPrices();
+
         // general info
         // this tests 15x leverage is successful
         (address user, uint256 userPk) = makeAddrAndKey("user");
@@ -311,6 +313,8 @@ contract LeverageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_rusdCollateral_leverage_crv() public {
+        mockFreshPrices();
+
         // general info
         // this tests 15x leverage is successful
         (address user, uint256 userPk) = makeAddrAndKey("user");
@@ -341,6 +345,8 @@ contract LeverageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_rusdCollateral_leverage_uni() public {
+        mockFreshPrices();
+
         // general info
         // this tests 10x leverage is successful
         (address user, uint256 userPk) = makeAddrAndKey("user");
@@ -652,6 +658,8 @@ contract LeverageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_wethCollateral_leverage_aave() public {
+        mockFreshPrices();
+
         // general info
         // this tests 15x leverage is successful
         (address user, uint256 userPk) = makeAddrAndKey("user");
@@ -682,6 +690,8 @@ contract LeverageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_wethCollateral_leverage_crv() public {
+        mockFreshPrices();
+
         // general info
         // this tests 10x leverage is successful
         (address user, uint256 userPk) = makeAddrAndKey("user");
@@ -712,6 +722,8 @@ contract LeverageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_wethCollateral_leverage_uni() public {
+        mockFreshPrices();
+
         // general info
         // this tests 10x leverage is successful
         (address user, uint256 userPk) = makeAddrAndKey("user");
@@ -1009,6 +1021,8 @@ contract LeverageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_usdeCollateral_leverage_aave() public {
+        mockFreshPrices();
+
         // general info
         // this tests 15x leverage is successful
         (address user, uint256 userPk) = makeAddrAndKey("user");
@@ -1039,6 +1053,8 @@ contract LeverageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_usdeCollateral_leverage_crv() public {
+        mockFreshPrices();
+
         // general info
         // this tests 15x leverage is successful
         (address user, uint256 userPk) = makeAddrAndKey("user");
@@ -1069,6 +1085,8 @@ contract LeverageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_usdeCollateral_leverage_uni() public {
+        mockFreshPrices();
+
         // general info
         // this tests 10x leverage is successful
         (address user, uint256 userPk) = makeAddrAndKey("user");

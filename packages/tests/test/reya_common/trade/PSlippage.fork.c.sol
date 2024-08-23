@@ -345,6 +345,8 @@ contract PSlippageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_slippage_aave_long() public {
+        mockFreshPrices();
+
         SD59x18[] memory s = new SD59x18[](10);
         s[1] = sd(0.01e18);
         s[2] = sd(0.02e18);
@@ -372,6 +374,8 @@ contract PSlippageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_slippage_crv_long() public {
+        mockFreshPrices();
+
         SD59x18[] memory s = new SD59x18[](10);
         s[1] = sd(0.01e18);
         s[2] = sd(0.02e18);
@@ -399,6 +403,8 @@ contract PSlippageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_slippage_uni_long() public {
+        mockFreshPrices();
+        
         SD59x18[] memory s = new SD59x18[](10);
         s[1] = sd(0.01e18);
         s[2] = sd(0.02e18);
@@ -658,6 +664,8 @@ contract PSlippageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_slippage_aave_short() public {
+        mockFreshPrices();
+
         SD59x18[] memory s = new SD59x18[](10);
         s[1] = sd(-0.01e18);
         s[2] = sd(-0.02e18);
@@ -685,6 +693,8 @@ contract PSlippageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_slippage_crv_short() public {
+        mockFreshPrices();
+        
         SD59x18[] memory s = new SD59x18[](10);
         s[1] = sd(-0.01e18);
         s[2] = sd(-0.02e18);
@@ -712,6 +722,8 @@ contract PSlippageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_slippage_uni_short() public {
+        mockFreshPrices();
+        
         SD59x18[] memory s = new SD59x18[](10);
         s[1] = sd(-0.01e18);
         s[2] = sd(-0.02e18);
