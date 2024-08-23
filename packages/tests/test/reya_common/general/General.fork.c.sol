@@ -64,7 +64,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         assertEq(IOwnerUpgradeModule(sec.accountNft).owner(), sec.core);
     }
 
-    function setupOracleNodePriceParams() public {
+    function setupOracleNodePriceParams() private {
         ls.meanPriceETH = 3500e18;
         ls.maxDeviationETH = 2000e18;
 

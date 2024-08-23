@@ -227,4 +227,21 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         s.sharePrice = ud(IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId));
         assertGtDecimal(s.sharePrice.unwrap(), 0.99e18, 18);
     }
+
+    function mockFreshPrices() internal {
+        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+
+        for (uint128 i = 1; i <= lastMarketId; i++) {
+            MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
+            bytes32 nodeId = marketConfig.oracleNodeId;
+
+            NodeOutput.Data memory output = IOracleManagerProxy(sec.oracleManager).process(nodeId);
+
+            vm.mockCall(
+                sec.oracleManager,
+                abi.encodeCall(IOracleManagerProxy.process, (nodeId)),
+                abi.encode(NodeOutput.Data({ price: output.price, timestamp: block.timestamp }))
+            );
+        }
+    }
 }

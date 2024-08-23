@@ -48,6 +48,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_PassivePoolWithWeth() public {
+        mockFreshPrices();
+
         (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
 
@@ -115,6 +117,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_PassivePoolWithUsde() public {
+        mockFreshPrices();
+
         (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.usde);
 
@@ -146,6 +150,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
             abi.encode(10e6)
         );
+
         IPeripheryProxy(sec.periphery).depositPassivePool(
             DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: 0 })
         );
