@@ -158,5 +158,5 @@ depends = [
     "invoke.market_11uni_set_pausers_market",
     "invoke.market_11uni_set_market_config",
     "invoke.market_11uni_set_cp_limits",
-    # "invoke.market_11uni_insurance_fund_config",
+    "invoke.market_11uni_insurance_fund_config",
 ]
