@@ -162,7 +162,7 @@ contract UsdeCollateralForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_depositWithdraw() public {
         mockFreshPrices();
-    
+
         (address user, uint256 userPk) = makeAddrAndKey("user");
         uint256 amount = 3000e18; // denominated in usde
         uint128 marketId = 1; // eth
