@@ -1,0 +1,70 @@
+[var.susde_vars]
+susdeTokenName = "Ethena sUSDe"
+susdeTokenSymbol = "sUSDE"
+susdeTokenDecimals = "18"
+
+[clone.susde]
+source = "<%= settings.tokensProxyPackage %>"
+target = "reya-tokens:1.0.0@susde"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.susdeSalt %>"
+depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_susde_proxy]
+target = ["susde.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.SUSDEProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.SUSDEProxy.event = "Upgraded"
+factory.SUSDEProxy.arg = 0
+depends = ["clone.susde"]
+
+[invoke.susde_initialize]
+target = ["SUSDEProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.susdeTokenName %>",
+    "<%= settings.susdeTokenSymbol %>",
+    "<%= settings.susdeTokenDecimals %>",
+]
+depends = ["invoke.upgrade_susde_proxy"]
+
+[invoke.susde_unpause]
+target = ["SUSDEProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_susde_proxy"]
+
+[invoke.susde_set_pausers]
+target = ["SUSDEProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_susde_proxy"]
+
+# [invoke.susde_mint_permission]
+# target = ["SUSDEProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.susdeController %>"]
+# depends = ["invoke.upgrade_susde_proxy"]
+
+# [invoke.susde_burn_permission]
+# target = ["SUSDEProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.susdeController %>"]
+# depends = ["invoke.upgrade_susde_proxy"]
