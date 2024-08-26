@@ -70,6 +70,7 @@ wethSalt = "weth-main"
 wbtcSalt = "wbtc-main"
 wstethSalt = "wsteth-main"
 usdeSalt = "usde-main"
+susdeSalt = "susde-main-2" # second deployment on testnet
 
 [var.upgrade_proxy_vars]
 coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
