@@ -175,6 +175,8 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_wethCollateral_depositWithdraw() public {
+        mockFreshPrices();
+
         (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
 
@@ -215,6 +217,8 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_WethTradeWithWethCollateral() public {
+        mockFreshPrices();
+
         (user, userPk) = makeAddrAndKey("user");
 
         (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =

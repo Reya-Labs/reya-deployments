@@ -35,8 +35,6 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     bytes32 internal constant MATCH_ORDER = keccak256(bytes("MATCH_ORDER"));
     UD60x18 MIN_PRICE = ud(0);
     UD60x18 MAX_PRICE = ud(type(uint256).max);
-    uint128 LAST_MARKET_ID = 6;
-
     LocalState internal st;
 
     function createAccountAndDeposit() internal returns (uint128 accountId) {
@@ -171,7 +169,11 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     }
 
     function check_slOrderOnShortPosition() public {
-        for (uint128 i = 1; i <= LAST_MARKET_ID; i++) {
+        mockFreshPrices();
+
+        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+
+        for (uint128 i = 1; i <= lastMarketId; i++) {
             st.nonce = i;
             st.orderMarketId1 = i;
             st.orderBase1 = sd(-1e18);
@@ -187,6 +189,8 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     }
 
     function check_slOrderOnLongPosition_BTC() public {
+        mockFreshPrices();
+
         st.orderMarketId1 = 2;
         st.orderBase1 = sd(1e18);
         st.orderPriceLimit1 = MAX_PRICE;
@@ -202,7 +206,11 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     }
 
     function check_tpOrderOnShortPosition() public {
-        for (uint128 i = 1; i <= LAST_MARKET_ID; i++) {
+        mockFreshPrices();
+
+        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+
+        for (uint128 i = 1; i <= lastMarketId; i++) {
             st.nonce = i;
             st.orderMarketId1 = i;
             st.orderBase1 = sd(-1e18);
@@ -218,6 +226,8 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     }
 
     function check_tpOrderOnLongPosition_BTC() public {
+        mockFreshPrices();
+
         st.orderMarketId1 = 2;
         st.orderBase1 = sd(1e18);
         st.orderPriceLimit1 = MAX_PRICE;
@@ -233,7 +243,11 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     }
 
     function check_shortLimitOrder() public {
-        for (uint128 i = 1; i <= LAST_MARKET_ID; i++) {
+        mockFreshPrices();
+
+        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+
+        for (uint128 i = 1; i <= lastMarketId; i++) {
             st.nonce = i;
             st.orderMarketId1 = i;
             st.orderBase1 = sd(-1e18);
@@ -249,6 +263,8 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     }
 
     function check_longLimitOrder_BTC() public {
+        mockFreshPrices();
+
         st.orderMarketId1 = 2;
         st.orderBase1 = sd(1e18);
         st.coOrder1Type = 2;
