@@ -1,6 +1,6 @@
 [var.susde_vars]
-susdeTokenName = "Ethena sUSDe"
-susdeTokenSymbol = "sUSDE"
+susdeTokenName = "Staked USDe"
+susdeTokenSymbol = "sUSDe"
 susdeTokenDecimals = "18"
 
 [clone.susde]
