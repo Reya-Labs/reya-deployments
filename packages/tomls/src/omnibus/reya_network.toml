@@ -530,7 +530,7 @@ cp1Rusd_mmrMultiplierUnscaled = "1"
 cp1Rusd_dutchMultiplierUnscaled = "1"
 cp1Rusd_adlMultiplierUnscaled = "0.6"
 cp1Rusd_imBufferMultiplierUnscaled = "8.06"
-cp1Rusd_poolImMultiplierUnscaled = "8.01"
+cp1Rusd_poolImMultiplierUnscaled = "5.2"
 # -----------------------------------------------
 # TODO later: add backstop lp account id as config as well, must first activate first market
 cp1Rusd_backstopLp_liquidationFeeUnscaled = "0.15"
