@@ -1,0 +1,123 @@
+#####################################
+# Controller
+#####################################
+[invoke.periphery_set_susdeController]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenController"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.susdeController %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+#####################################
+# Execution Helper
+#####################################
+[invoke.periphery_set_susdeExecutionHelper]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenExecutionHelper"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.susdeExecutionHelper %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+#####################################
+# Connectors
+#####################################
+[invoke.periphery_set_susdeEthereumConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.ethereumChainId %>",
+    "<%= settings.susdeEthereumConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+[invoke.periphery_set_susdeArbitrumConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.arbitrumChainId %>",
+    "<%= settings.susdeArbitrumConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+[invoke.periphery_set_susdeOptimismConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.optimismChainId %>",
+    "<%= settings.susdeOptimismConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+[invoke.periphery_set_susdeBaseConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.baseChainId %>",
+    "<%= settings.susdeBaseConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+#####################################
+# Static Withdraw Fees
+#####################################
+[invoke.periphery_set_susde_ethereum_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.susdeEthereumConnector %>",
+    "<%= parseUnits(settings.susdeEthereumWithdrawFeeUnscaled, parseInt(settings.susdeTokenDecimals)) %>",
+]
+depends = [
+    "invoke.upgrade_periphery_proxy",
+    "invoke.upgrade_susde_proxy",
+    "var.susde_vars",
+]
+
+[invoke.periphery_set_susde_arbitrum_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.susdeArbitrumConnector %>",
+    "<%= parseUnits(settings.susdeArbitrumWithdrawFeeUnscaled, parseInt(settings.susdeTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+[invoke.periphery_set_susde_optimism_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.susdeOptimismConnector %>",
+    "<%= parseUnits(settings.susdeOptimismWithdrawFeeUnscaled, parseInt(settings.susdeTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+[invoke.periphery_set_susde_base_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.susdeBaseConnector %>",
+    "<%= parseUnits(settings.susdeBaseWithdrawFeeUnscaled, parseInt(settings.susdeTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]

@@ -1,0 +1,13 @@
+[invoke.susde_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    { collateralAdapter = "<%= settings.susdeCollateralAdapter %>", withdrawalWindowSize = "<%= settings.susdeWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.susdeWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = [
+    'invoke.upgrade_core_proxy',
+    'invoke.upgrade_susde_proxy',
+    'var.global_collateral_configs',
+]
