@@ -1,0 +1,101 @@
+#####################################
+# Controller
+#####################################
+[invoke.periphery_set_susdeController]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenController"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.susdeController %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+#####################################
+# Execution Helper
+#####################################
+[invoke.periphery_set_susdeExecutionHelper]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenExecutionHelper"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.susdeExecutionHelper %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+#####################################
+# Connectors
+#####################################
+[invoke.periphery_set_susdeEthereumSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.ethereumSepoliaChainId %>",
+    "<%= settings.susdeEthereumSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+[invoke.periphery_set_susdeArbitrumSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.arbitrumSepoliaChainId %>",
+    "<%= settings.susdeArbitrumSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+[invoke.periphery_set_susdeOptimismSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.optimismSepoliaChainId %>",
+    "<%= settings.susdeOptimismSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+#####################################
+# Static Withdraw Fees
+#####################################
+[invoke.periphery_set_susde_ethereum_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.susdeEthereumSepoliaConnector %>",
+    "<%= parseUnits(settings.susdeEthereumSepoliaWithdrawFeeUnscaled, parseInt(settings.susdeTokenDecimals)) %>",
+]
+depends = [
+    "invoke.upgrade_periphery_proxy",
+    "invoke.upgrade_susde_proxy",
+    "var.susde_vars",
+]
+
+[invoke.periphery_set_susde_arbitrum_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.susdeArbitrumSepoliaConnector %>",
+    "<%= parseUnits(settings.susdeArbitrumSepoliaWithdrawFeeUnscaled, parseInt(settings.susdeTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]
+
+[invoke.periphery_set_susde_optimism_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.SUSDEProxy.address %>",
+    "<%= settings.susdeOptimismSepoliaConnector %>",
+    "<%= parseUnits(settings.susdeOptimismSepoliaWithdrawFeeUnscaled, parseInt(settings.susdeTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_susde_proxy"]

@@ -55,16 +55,16 @@ args = [
 ]
 depends = ["invoke.upgrade_susde_proxy"]
 
-# [invoke.susde_mint_permission]
-# target = ["SUSDEProxy"]
-# fromCall.func = "owner"
-# func = "addToFeatureFlagAllowlist"
-# args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.susdeController %>"]
-# depends = ["invoke.upgrade_susde_proxy"]
+[invoke.susde_mint_permission]
+target = ["SUSDEProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.susdeController %>"]
+depends = ["invoke.upgrade_susde_proxy"]
 
-# [invoke.susde_burn_permission]
-# target = ["SUSDEProxy"]
-# fromCall.func = "owner"
-# func = "addToFeatureFlagAllowlist"
-# args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.susdeController %>"]
-# depends = ["invoke.upgrade_susde_proxy"]
+[invoke.susde_burn_permission]
+target = ["SUSDEProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.susdeController %>"]
+depends = ["invoke.upgrade_susde_proxy"]

@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/testnet.toml",
     "../oracle_adapters/testnet.toml",
 ]
-version = "1.0.20"
+version = "1.0.21"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -144,6 +144,7 @@ redstonePriceFeedLINK = "0x1dc447efFE5eE0c9c5332286094975362f9ec84F"
 redstonePriceFeedAAVE = "0x5A81e9D5b1f4f0B51D6b7F2151ABDAe39854Fa28"
 redstonePriceFeedCRV = "0x768dFE8943C19E56560d0F160333bAd128AdB788"
 redstonePriceFeedUNI = "0xE66d369484d98103A849460D820e3D8A46ee4534"
+redstonePriceFeedSUSDE = "0x335Cff1702EF7d36Acc347a1574a96a34BF382b0"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -160,6 +161,7 @@ storkAssetPairIdLINK = "LINKUSD"
 storkAssetPairIdAAVE = "AAVEUSD"
 storkAssetPairIdCRV = "CRVUSD"
 storkAssetPairIdUNI = "UNIUSD"
+storkAssetPairIdSUSDE = "SUSDEUSD"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -194,6 +196,12 @@ usdeExecutionHelper = "0xFEe7b6deAF61D2b04F6e05c80c2593BF29706410"
 usdeEthereumSepoliaConnector = "0x6c28616D6bBF8aa79b87C97509f97Af3F362f329"
 usdeArbitrumSepoliaConnector = "0x4F0A10029d1A7b2266773F598C26E67792320c94"
 usdeOptimismSepoliaConnector = "0x0B5e406e7F6BaB8Cf205bC583a0504135b11D6bB"
+# -------------------------------------------------------------------
+susdeController = "0x23e8Bf0eA7581d0BF82Ff918ea831b96fc62f718"
+susdeExecutionHelper = "0xe06D0387ead9198A013007DB2979104128462772"
+susdeEthereumSepoliaConnector = "0x98d6E43d66c6F9d824D1B56CF1C77583d7e7793f"
+susdeArbitrumSepoliaConnector = "0xF79f6c0BadA41F395CDe3a357B1c239D6aBA1B84"
+susdeOptimismSepoliaConnector = "0x502fBd9322a65A1a5a897cfDFB8f179A92b73300"
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumSepoliaWithdrawFeeUnscaled = "27.888"
@@ -215,6 +223,10 @@ wstethOptimismSepoliaWithdrawFeeUnscaled = "0.000034923065158525"
 usdeEthereumSepoliaWithdrawFeeUnscaled = "27.888"
 usdeArbitrumSepoliaWithdrawFeeUnscaled = "0.114"
 usdeOptimismSepoliaWithdrawFeeUnscaled = "0.102"
+# -------------------------------------------------------------------
+susdeEthereumSepoliaWithdrawFeeUnscaled = "27.888"
+susdeArbitrumSepoliaWithdrawFeeUnscaled = "0.114"
+susdeOptimismSepoliaWithdrawFeeUnscaled = "0.102"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -232,6 +244,10 @@ wstethWithdrawalTvlPercentageLimitUnscaled = "0.15"
 usdeCollateralAdapter = "<%= AddressZero %>"
 usdeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 usdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+susdeCollateralAdapter = "<%= AddressZero %>"
+susdeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+susdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.5"
@@ -328,6 +344,12 @@ uniUsdcMaxStaleDuration = "0"
 uniUsdMaxStaleDurationStork = "0"
 uniUsdcMaxStaleDurationStork = "0"
 uniUsdcMaxStaleDurationFallbackStorkRedstone = "0"
+#------------------------------------------------------------------------------
+susdeUsdMaxStaleDuration = "0"
+susdeUsdcMaxStaleDuration = "0"
+susdeUsdMaxStaleDurationStork = "0"
+susdeUsdcMaxStaleDurationStork = "0"
+susdeUsdcMaxStaleDurationFallbackStorkRedstone = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -529,7 +551,7 @@ market11Uni_marketOrderMaxStaleDuration = "0"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "11"
-cp1Rusd_maxCollaterals = "4"
+cp1Rusd_maxCollaterals = "5"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
 # -----------------------------------------------
@@ -617,3 +639,15 @@ cp1Rusd_usdeParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>
 cp1Rusd_usdeParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_usdeParentConfig_autoExchangeDiscountUnscaled = "0.01"
 cp1Rusd_usdeParentConfig_oracleNodeId = "<%= settings.usdeUsdcNodeId %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_susde_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_susde_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_susde_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_susde_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_susde_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_susdeParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_susdeParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_susdeParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_susdeParentConfig_oracleNodeId = "<%= settings.susdeUsdcNodeId %>"

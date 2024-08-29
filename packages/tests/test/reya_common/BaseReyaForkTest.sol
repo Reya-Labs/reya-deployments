@@ -4,7 +4,14 @@ import "forge-std/Test.sol";
 import "./DataTypes.sol";
 import { StorageReyaForkTest } from "./StorageReyaForkTest.sol";
 
-import { ICoreProxy, CommandType, Command as Command_Core, MarginInfo } from "../../src/interfaces/ICoreProxy.sol";
+import {
+    ICoreProxy,
+    CommandType,
+    Command as Command_Core,
+    MarginInfo,
+    CollateralConfig,
+    ParentCollateralConfig
+} from "../../src/interfaces/ICoreProxy.sol";
 
 import {
     IPeripheryProxy,
@@ -243,5 +250,14 @@ contract BaseReyaForkTest is StorageReyaForkTest {
                 abi.encode(NodeOutput.Data({ price: output.price, timestamp: block.timestamp }))
             );
         }
+    }
+
+    function removeCollateralCap(address collateral) internal {
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, collateral);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, collateral, collateralConfig, parentCollateralConfig);
     }
 }
