@@ -1,20 +1,7 @@
-/**
- *Submitted for verification at Etherscan.io on 2022-03-09
-*/
-
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.12;
+pragma solidity >=0.8.19 <0.9.0;
 
-/// @title Multicall3
-/// @notice Aggregate results from multiple function calls
-/// @dev Multicall & Multicall2 backwards-compatible
-/// @dev Aggregate methods are marked `payable` to save 24 gas per call
-/// @author Michael Elliot <mike@makerdao.com>
-/// @author Joshua Levine <joshua@makerdao.com>
-/// @author Nick Johnson <arachnid@notdot.net>
-/// @author Andreas Bigger <andreas@nascent.xyz>
-/// @author Matt Solomon <matt@mattsolomon.dev>
-contract Multicall3 {
+contract CustomMulticall3 {
     struct Call {
         address target;
         bytes callData;
@@ -70,6 +57,30 @@ contract Multicall3 {
             call = calls[i];
             (result.success, result.returnData) = call.target.call(call.callData);
             if (requireSuccess) require(result.success, "Multicall3: call failed");
+            unchecked { ++i; }
+        }
+    }
+
+    function tryAggregatePreservingError(bool requireSuccess, Call[] calldata calls) public payable returns (Result[] memory returnData) {
+        uint256 length = calls.length;
+        returnData = new Result[](length);
+        Call calldata call;
+
+        for (uint256 i = 0; i < length;) {
+            call = calls[i];
+            (bool success, bytes memory ret) = call.target.call(call.callData);
+
+            if (requireSuccess) {
+                if (!success) {
+                    assembly {
+                        revert(add(32, ret), mload(ret))
+                    }
+                }
+            }
+            
+            returnData[i].success = success;
+            returnData[i].returnData = ret;
+
             unchecked { ++i; }
         }
     }
