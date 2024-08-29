@@ -589,7 +589,7 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_weth_capUnscaled = "1"
+cp1Rusd_weth_capUnscaled = "0.5"
 cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0"
 cp1Rusd_weth_autoExchangeDustThresholdUnscaled = "0"
@@ -601,7 +601,7 @@ cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_usde_capUnscaled = "30000"
+cp1Rusd_usde_capUnscaled = "1000"
 cp1Rusd_usde_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_usde_autoExchangeInsuranceFeeUnscaled = "0"
 cp1Rusd_usde_autoExchangeDustThresholdUnscaled = "0"

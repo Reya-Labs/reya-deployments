@@ -45,13 +45,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
     function check_AutoExchange_wEth(uint256 userInitialRusdBalance) private {
         mockFreshPrices();
-
-        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
-
-        vm.prank(sec.multisig);
-        collateralConfig.cap = type(uint256).max;
-        ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
+        removeCollateralCap(sec.weth);
 
         (address user,) = makeAddrAndKey("user");
         s.userAccountId = 0;
@@ -245,6 +239,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
     function check_AutoExchange_USDe(uint256 userInitialRusdBalance) private {
         mockFreshPrices();
+        removeCollateralCap(sec.usde);
 
         (address user,) = makeAddrAndKey("user");
         s.userAccountId = 0;

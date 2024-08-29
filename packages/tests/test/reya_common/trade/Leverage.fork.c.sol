@@ -378,13 +378,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_wethCollateral_leverage_eth() public {
         mockFreshPrices();
-
-        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
-
-        vm.prank(sec.multisig);
-        collateralConfig.cap = type(uint256).max;
-        ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
+        removeCollateralCap(sec.weth);
 
         // general info
         // this tests 20x leverage is successful
@@ -419,13 +413,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_wethCollateral_leverage_btc() public {
         mockFreshPrices();
-
-        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
-
-        vm.prank(sec.multisig);
-        collateralConfig.cap = type(uint256).max;
-        ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
+        removeCollateralCap(sec.weth);
 
         // general info
         // this tests 20x leverage is successful
@@ -458,6 +446,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_wethCollateral_leverage_sol() public {
         mockFreshPrices();
+        removeCollateralCap(sec.weth);
 
         // general info
         // this tests 20x leverage is successful
@@ -490,6 +479,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_wethCollateral_leverage_arb() public {
         mockFreshPrices();
+        removeCollateralCap(sec.weth);
 
         // general info
         // this tests 20x leverage is successful
@@ -524,6 +514,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_wethCollateral_leverage_op() public {
         mockFreshPrices();
+        removeCollateralCap(sec.weth);
 
         // general info
         // this tests 13x leverage is successful
@@ -556,6 +547,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_wethCollateral_leverage_avax() public {
         mockFreshPrices();
+        removeCollateralCap(sec.weth);
 
         // general info
         // this tests 13x leverage is successful
@@ -588,13 +580,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_wethCollateral_leverage_mkr() public {
         mockFreshPrices();
-
-        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
-
-        vm.prank(sec.multisig);
-        collateralConfig.cap = type(uint256).max;
-        ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
+        removeCollateralCap(sec.weth);
 
         // general info
         // this tests 15x leverage is successful
@@ -627,6 +613,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_wethCollateral_leverage_link() public {
         mockFreshPrices();
+        removeCollateralCap(sec.weth);
 
         // general info
         // this tests 15x leverage is successful
@@ -659,6 +646,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_wethCollateral_leverage_aave() public {
         mockFreshPrices();
+        removeCollateralCap(sec.weth);
 
         // general info
         // this tests 15x leverage is successful
@@ -691,6 +679,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_wethCollateral_leverage_crv() public {
         mockFreshPrices();
+        removeCollateralCap(sec.weth);
 
         // general info
         // this tests 10x leverage is successful
@@ -723,6 +712,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_wethCollateral_leverage_uni() public {
         mockFreshPrices();
+        removeCollateralCap(sec.weth);
 
         // general info
         // this tests 10x leverage is successful
@@ -755,6 +745,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_leverage_eth() public {
         mockFreshPrices();
+        removeCollateralCap(sec.usde);
 
         // general info
         // this tests 20x leverage is successful
@@ -789,13 +780,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_leverage_btc() public {
         mockFreshPrices();
-
-        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, sec.usde);
-
-        vm.prank(sec.multisig);
-        collateralConfig.cap = type(uint256).max;
-        ICoreProxy(sec.core).setCollateralConfig(1, sec.usde, collateralConfig, parentCollateralConfig);
+        removeCollateralCap(sec.usde);
 
         // general info
         // this tests 20x leverage is successful
@@ -828,6 +813,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_leverage_sol() public {
         mockFreshPrices();
+        removeCollateralCap(sec.usde);
 
         // general info
         // this tests 13x leverage is successful
@@ -860,6 +846,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_leverage_arb() public {
         mockFreshPrices();
+        removeCollateralCap(sec.usde);
 
         // general info
         // this tests 13x leverage is successful
@@ -894,6 +881,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_leverage_op() public {
         mockFreshPrices();
+        removeCollateralCap(sec.usde);
 
         // general info
         // this tests 13x leverage is successful
@@ -926,6 +914,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_leverage_avax() public {
         mockFreshPrices();
+        removeCollateralCap(sec.usde);
 
         // general info
         // this tests 13x leverage is successful
@@ -958,6 +947,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_leverage_mkr() public {
         mockFreshPrices();
+        removeCollateralCap(sec.usde);
 
         // general info
         // this tests 15x leverage is successful
@@ -990,6 +980,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_leverage_link() public {
         mockFreshPrices();
+        removeCollateralCap(sec.usde);
 
         // general info
         // this tests 15x leverage is successful
@@ -1022,6 +1013,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_leverage_aave() public {
         mockFreshPrices();
+        removeCollateralCap(sec.usde);
 
         // general info
         // this tests 15x leverage is successful
@@ -1054,6 +1046,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_leverage_crv() public {
         mockFreshPrices();
+        removeCollateralCap(sec.usde);
 
         // general info
         // this tests 15x leverage is successful
@@ -1086,6 +1079,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_leverage_uni() public {
         mockFreshPrices();
+        removeCollateralCap(sec.usde);
 
         // general info
         // this tests 10x leverage is successful
@@ -1118,6 +1112,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_susdeCollateral_leverage_eth() public {
         mockFreshPrices();
+        removeCollateralCap(sec.susde);
 
         // general info
         // this tests 20x leverage is successful
@@ -1152,13 +1147,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_susdeCollateral_leverage_btc() public {
         mockFreshPrices();
-
-        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, sec.susde);
-
-        vm.prank(sec.multisig);
-        collateralConfig.cap = type(uint256).max;
-        ICoreProxy(sec.core).setCollateralConfig(1, sec.susde, collateralConfig, parentCollateralConfig);
+        removeCollateralCap(sec.susde);
 
         // general info
         // this tests 20x leverage is successful
@@ -1191,6 +1180,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_susdeCollateral_leverage_sol() public {
         mockFreshPrices();
+        removeCollateralCap(sec.susde);
 
         // general info
         // this tests 13x leverage is successful
@@ -1223,6 +1213,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_susdeCollateral_leverage_arb() public {
         mockFreshPrices();
+        removeCollateralCap(sec.susde);
 
         // general info
         // this tests 13x leverage is successful
@@ -1257,6 +1248,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_susdeCollateral_leverage_op() public {
         mockFreshPrices();
+        removeCollateralCap(sec.susde);
 
         // general info
         // this tests 13x leverage is successful
@@ -1289,6 +1281,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_susdeCollateral_leverage_avax() public {
         mockFreshPrices();
+        removeCollateralCap(sec.susde);
 
         // general info
         // this tests 13x leverage is successful
@@ -1321,6 +1314,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_susdeCollateral_leverage_mkr() public {
         mockFreshPrices();
+        removeCollateralCap(sec.susde);
 
         // general info
         // this tests 15x leverage is successful
@@ -1353,6 +1347,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_susdeCollateral_leverage_link() public {
         mockFreshPrices();
+        removeCollateralCap(sec.susde);
 
         // general info
         // this tests 15x leverage is successful
@@ -1385,6 +1380,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_susdeCollateral_leverage_aave() public {
         mockFreshPrices();
+        removeCollateralCap(sec.susde);
 
         // general info
         // this tests 15x leverage is successful
@@ -1417,6 +1413,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_susdeCollateral_leverage_crv() public {
         mockFreshPrices();
+        removeCollateralCap(sec.susde);
 
         // general info
         // this tests 15x leverage is successful
@@ -1449,6 +1446,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_susdeCollateral_leverage_uni() public {
         mockFreshPrices();
+        removeCollateralCap(sec.susde);
 
         // general info
         // this tests 10x leverage is successful
