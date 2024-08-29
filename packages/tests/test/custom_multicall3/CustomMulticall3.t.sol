@@ -1,7 +1,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import "forge-std/Test.sol";
-import { CustomMulticall3 } from "./CustomMulticall3.sol";
+import { CustomMulticall3 } from "../../src/custom-multicall3/CustomMulticall3.sol";
 
 contract CustomMulticall3Test is Test {
     error Custom1(uint256 a);
