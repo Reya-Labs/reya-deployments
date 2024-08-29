@@ -17,16 +17,10 @@ contract CustomMulticall3Test is Test {
     CustomMulticall3 multicall = new CustomMulticall3();
 
     function setUp() public {
-        CustomMulticall3.Call memory call1 = CustomMulticall3.Call({
-            target: target1,
-            callData: calldata1
-        });
+        CustomMulticall3.Call memory call1 = CustomMulticall3.Call({ target: target1, callData: calldata1 });
 
-        CustomMulticall3.Call memory call2 = CustomMulticall3.Call({
-            target: target2,
-            callData: calldata2
-        });
-    
+        CustomMulticall3.Call memory call2 = CustomMulticall3.Call({ target: target2, callData: calldata2 });
+
         calls.push(call1);
         calls.push(call2);
 
