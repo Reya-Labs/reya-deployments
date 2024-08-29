@@ -26,4 +26,8 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
     function test_PassivePoolWithUsde() public {
         check_PassivePoolWithUsde();
     }
+
+    function test_PassivePoolWithSusde() public {
+        check_PassivePoolWithSusde();
+    }
 }

@@ -32,6 +32,8 @@ struct LocalState {
     uint256 maxDeviationCRV;
     uint256 meanPriceUNI;
     uint256 maxDeviationUNI;
+    uint256 meanPriceSUSDE;
+    uint256 maxDeviationSUSDE;
     uint256 meanPriceStableCoin;
     uint256 maxDeviationStableCoin;
 }
@@ -97,6 +99,9 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
         ls.meanPriceUNI = 7e18;
         ls.maxDeviationUNI = 3e18;
+
+        ls.meanPriceSUSDE = 1.1e18;
+        ls.maxDeviationSUSDE = 0.01e18;
 
         ls.meanPriceStableCoin = 1e18;
         ls.maxDeviationStableCoin = 0.01e18;
@@ -352,6 +357,26 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.nodeIds.push(sec.uniUsdcStorkFallbackNodeId);
         ls.meanPrices.push(ls.meanPriceUNI);
         ls.maxDeviations.push(ls.maxDeviationUNI);
+
+        ls.nodeIds.push(sec.susdeUsdNodeId);
+        ls.meanPrices.push(ls.meanPriceSUSDE);
+        ls.maxDeviations.push(ls.maxDeviationSUSDE);
+
+        ls.nodeIds.push(sec.susdeUsdcNodeId);
+        ls.meanPrices.push(ls.meanPriceSUSDE);
+        ls.maxDeviations.push(ls.maxDeviationSUSDE);
+
+        ls.nodeIds.push(sec.susdeUsdStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceSUSDE);
+        ls.maxDeviations.push(ls.maxDeviationSUSDE);
+
+        ls.nodeIds.push(sec.susdeUsdcStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceSUSDE);
+        ls.maxDeviations.push(ls.maxDeviationSUSDE);
+
+        ls.nodeIds.push(sec.susdeUsdcStorkFallbackNodeId);
+        ls.meanPrices.push(ls.meanPriceSUSDE);
+        ls.maxDeviations.push(ls.maxDeviationSUSDE);
     }
 
     function check_OracleNodePrices(bool flagCheckStaleness) public {

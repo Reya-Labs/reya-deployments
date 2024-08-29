@@ -122,7 +122,7 @@ contract UsdeCollateralForkCheck is BaseReyaForkTest {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector, 1, sec.usde, 30_000e18, collateralPoolUsdeBalance + amount
+                ICoreProxy.CollateralCapExceeded.selector, 1, sec.usde, 1000e18, collateralPoolUsdeBalance + amount
             )
         );
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
@@ -162,6 +162,7 @@ contract UsdeCollateralForkCheck is BaseReyaForkTest {
 
     function check_trade_usdeCollateral_depositWithdraw() public {
         mockFreshPrices();
+        removeCollateralCap(sec.usde);
 
         (address user, uint256 userPk) = makeAddrAndKey("user");
         uint256 amount = 3000e18; // denominated in usde

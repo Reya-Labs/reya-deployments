@@ -14,11 +14,9 @@ include = [
     "risk/risk_multipliers.toml",
     "risk/liquidations.toml",
     "tokens/rusd.toml",
-    # "tokens/usdt.toml",
-    # "tokens/dai.toml",
     "tokens/weth.toml",
-    # "tokens/wbtc.toml",
     "tokens/usde.toml",
+    "tokens/susde.toml",
 ]
 
 # This var acts as an anchor point in dependencies.
