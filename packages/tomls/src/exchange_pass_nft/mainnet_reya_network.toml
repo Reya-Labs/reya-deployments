@@ -1,1 +1,1 @@
-include = ["utils/upgrade_proxy.toml", "configs/mint.toml"]
+include = ["utils/upgrade_proxy.toml", "configs/mint.toml", "configs/mintLotteryPot.toml"]
