@@ -26,6 +26,7 @@ baseChainId = "8453"
 [var.wallet_addresses]
 owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 passivePoolExchangeFeeCollectorOwner = "0x93701b8f4e212B4eC058AF375894DB4B64b4f708"
+lotteryPotExchangeFeeCollectorOwner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.cannonClonePackages]

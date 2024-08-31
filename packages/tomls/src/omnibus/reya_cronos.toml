@@ -24,6 +24,7 @@ optimismSepoliaChainId = "11155420"
 [var.wallet_addresses]
 owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+lotteryPotExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.cannonClonePackages]
