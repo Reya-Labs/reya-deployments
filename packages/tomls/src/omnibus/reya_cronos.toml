@@ -251,9 +251,9 @@ susdeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 susdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
-lotteryPotExchangeRebateUnscaled = "0.5"
+lotteryPotExchangeRebateUnscaled = "0.22"
 passivePoolExchangeRebateUnscaled = "0.5"
-pool1RusdRebateUnscaled = "0.6"
+pool1RusdRebateUnscaled = "0.54"
 market1Eth_tier0FeeUnscaled = "0.0005"
 market2Btc_tier0FeeUnscaled = "0.0005"
 market3Sol_tier0FeeUnscaled = "0.0005"
