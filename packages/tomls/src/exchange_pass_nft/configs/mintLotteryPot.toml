@@ -1,0 +1,9 @@
+[invoke.exchange_pass_lottery_pot_mint_owner]
+target = ["ExchangePassProxy"]
+fromCall.func = "owner"
+func = "mint"
+args = [
+    "<%= settings.lotteryPotExchangeFeeCollectorOwner %>",
+    "<%= solidityKeccak256(['address','uint256'],[settings.lotteryPotExchangeFeeCollectorOwner, 2]) %>",
+]
+depends = ["invoke.upgrade_exchange_pass_proxy"]
