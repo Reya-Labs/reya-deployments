@@ -22,26 +22,15 @@ depends = [
     "invoke.core_configure_protocol",
 ]
 
-[invoke.core_create_lottery_pot_exchange_fee_collector_account]
-target = ["CoreProxy"]
-abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'AccountCreated','inputs':[{'name':'accountId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'owner','type':'address','indexed':true,'internalType':'address'},{'name':'trigger','type':'address','indexed':true,'internalType':'address'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
-fromCall.func = "owner"
-func = "createAccount"
-args = ["<%= settings.lotteryPotExchangeFeeCollectorOwner %>"]
-var.lotteryPotExchangeFeeCollectorAccountId.event = "AccountCreated"
-var.lotteryPotExchangeFeeCollectorAccountId.arg = 0
-depends = ["invoke.core_unpause", "invoke.core_enable_account_creation"]
-
 [invoke.core_register_exchange_lottery_pot]
 target = ["CoreProxy"]
 abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'ExchangeRegistered','inputs':[{'name':'exchangeId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
 fromCall.func = "owner"
 func = "registerExchange"
-args = ["<%= settings.lotteryPotExchangeFeeCollectorAccountId %>"]
+args = ["<%= settings.lotteryPotAccountId %>"]
 var.lotteryPotExchangeId.event = "ExchangeRegistered"
 var.lotteryPotExchangeId.arg = 0
 depends = [
     "invoke.exchange_pass_lottery_pot_mint_owner",
-    "invoke.core_create_lottery_pot_exchange_fee_collector_account",
     "invoke.core_configure_protocol",
 ]
