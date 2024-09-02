@@ -29,6 +29,9 @@ passivePoolExchangeFeeCollectorOwner = "0x93701b8f4e212B4eC058AF375894DB4B64b4f7
 lotteryPotExchangeFeeCollectorOwner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
+[var.account_ids]
+lotteryPotAccountId = "20092"
+
 [var.cannonClonePackages]
 coreRouterPackage = "reya-core:1.0.5@router"
 coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
