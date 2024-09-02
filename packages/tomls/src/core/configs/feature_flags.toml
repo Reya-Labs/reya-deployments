@@ -106,3 +106,13 @@ args = [
     "<%= settings.liquidator10 %>",
 ]
 depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_enable_ae_liquidator1_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]

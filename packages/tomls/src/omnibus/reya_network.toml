@@ -99,6 +99,9 @@ liquidator8 = "0x8DA6DD4675e96F706F45BB9566Be31eB050ED652"
 liquidator9 = "0xffA24D284111E58E2142dc74e4FB08a398D97c45"
 liquidator10 = "0x4d0AfCA2357F1797CF18c579171b71B427604933"
 
+[var.ae_liquidators]
+ae_liquidator1 = "0x89520d105a125CC6165c6685de262c42113Df9c0"
+
 [var.stork_publishers]
 storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
 storkPublisher2 = "0xb91C675E0c0Ecfd4c16f97B110376C3C224061d8"
