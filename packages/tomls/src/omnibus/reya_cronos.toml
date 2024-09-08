@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/testnet.toml",
     "../oracle_adapters/testnet.toml",
 ]
-version = "1.0.21"
+version = "1.0.23"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -41,7 +41,7 @@ tokensRouterPackage = "reya-tokens:1.0.0@router"
 passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.1@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.8@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.10@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.0.2@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
