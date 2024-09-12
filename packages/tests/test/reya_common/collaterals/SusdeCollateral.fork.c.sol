@@ -105,7 +105,7 @@ contract SusdeCollateralForkCheck is BaseReyaForkTest {
 
     function check_susde_cap_exceeded() public {
         (address user, uint256 userPk) = makeAddrAndKey("user");
-        uint256 amount = 30_001e18; // denominated in susde
+        uint256 amount = 500_001e18; // denominated in susde
         uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(10_000e18);
@@ -122,7 +122,7 @@ contract SusdeCollateralForkCheck is BaseReyaForkTest {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector, 1, sec.susde, 30_000e18, collateralPoolSusdeBalance + amount
+                ICoreProxy.CollateralCapExceeded.selector, 1, sec.susde, 500_000e18, collateralPoolSusdeBalance + amount
             )
         );
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
