@@ -10,8 +10,8 @@
     "lint:write": "yarn lint:sol:write",
     "lint:sol:check": "forge fmt --check && yarn solhint \"{src,test}/**/*.sol\"",
     "lint:sol:write": "forge fmt && yarn solhint --fix \"{src,test}/**/*.sol\"",
-    "reya_network:test": "cannon test --provider-url https://rpc.reya.network ../tomls/src/omnibus/reya_network.toml --upgrade-from reya-omnibus:latest@main -- --mp \"test/reya_network/**/*.sol\"",
-    "reya_cronos:test": "cannon test --provider-url https://rpc.reya-cronos.gelato.digital ../tomls/src/omnibus/reya_cronos.toml --upgrade-from reya-omnibus:latest@main -- --mp \"test/reya_cronos/**/*.sol\""
+    "reya_network:test": "cannon test --rpc-url https://rpc.reya.network ../tomls/src/omnibus/reya_network.toml --upgrade-from reya-omnibus:latest@main -- --mp \"test/reya_network/**/*.sol\"",
+    "reya_cronos:test": "cannon test --rpc-url https://rpc.reya-cronos.gelato.digital ../tomls/src/omnibus/reya_cronos.toml --upgrade-from reya-omnibus:latest@main -- --mp \"test/reya_cronos/**/*.sol\""
   },
   "devDependencies": {
     "@prb/math": "3.3.0",

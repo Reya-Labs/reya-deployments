@@ -22,7 +22,7 @@ contract FundingRateForkCheck is BaseReyaForkTest {
         mockFreshPrices();
 
         uint128 fromMarketId = 1;
-        uint128 toMarketId = 3;
+        uint128 toMarketId = lastMarketId();
 
         // lower price spacing such that order price is not significantly
         // affected by price rounding. this was we can compute p slippage
