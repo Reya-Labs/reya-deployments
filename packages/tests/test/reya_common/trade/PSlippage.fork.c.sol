@@ -128,16 +128,16 @@ contract PSlippageForkCheck is BaseReyaForkTest {
 
         SD59x18[] memory sPrime = new SD59x18[](6);
         sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.01959e18);
-        sPrime[3] = sd(0.028271e18);
-        sPrime[4] = sd(0.035776e18);
-        sPrime[5] = sd(0.042024e18);
-        // sPrime[6] = sd(0.047107e18);
-        // sPrime[7] = sd(0.051191e18);
-        // sPrime[8] = sd(0.054460e18);
-        // sPrime[9] = sd(0.057082e18);
+        sPrime[2] = sd(0.019764e18);
+        sPrime[3] = sd(0.028981e18);
+        sPrime[4] = sd(0.037436e18);
+        sPrime[5] = sd(0.044991e18);
+        // sPrime[6] = sd(0.051607e18);
+        // sPrime[7] = sd(0.057320e18);
+        // sPrime[8] = sd(0.062206e18);
+        // sPrime[9] = sd(0.066363e18);
 
-        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.001e18) });
     }
 
     function check_trade_slippage_btc_long() public {
@@ -448,16 +448,16 @@ contract PSlippageForkCheck is BaseReyaForkTest {
 
         SD59x18[] memory sPrime = new SD59x18[](5);
         sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019598e18);
-        sPrime[3] = sd(-0.028293e18);
-        sPrime[4] = sd(-0.035783e18);
-        // sPrime[5] = sd(-0.041992e18);
-        // sPrime[6] = sd(-0.047006e18);
-        // sPrime[7] = sd(-0.050997e18);
-        // sPrime[8] = sd(-0.052813e18);
-        // sPrime[9] = sd(-0.053079e18);
+        sPrime[2] = sd(-0.019768e18);
+        sPrime[3] = sd(-0.028994e18);
+        sPrime[4] = sd(-0.037441e18);
+        // sPrime[5] = sd(-0.044968e18);
+        // sPrime[6] = sd(-0.051529e18);
+        // sPrime[7] = sd(-0.057156e18);
+        // sPrime[8] = sd(-0.061928e18);
+        // sPrime[9] = sd(-0.062575e18);
 
-        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.001e18) });
     }
 
     function check_trade_slippage_btc_short() public {
