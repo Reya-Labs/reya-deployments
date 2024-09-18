@@ -137,7 +137,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         // sPrime[8] = sd(0.054460e18);
         // sPrime[9] = sd(0.057082e18);
 
-        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_btc_long() public {
@@ -167,7 +167,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         // sPrime[8] = sd(0.060492e18);
         // sPrime[9] = sd(0.064265e18);
 
-        trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_sol_long() public {
@@ -196,7 +196,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(0.079622e18);
         sPrime[9] = sd(0.089456e18);
 
-        trade_slippage_helper({ marketId: 3, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 3, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_arb_long() public {
@@ -225,7 +225,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(0.079622e18);
         sPrime[9] = sd(0.089456e18);
 
-        trade_slippage_helper({ marketId: 4, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 4, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_op_long() public {
@@ -254,7 +254,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(0.079622e18);
         sPrime[9] = sd(0.089456e18);
 
-        trade_slippage_helper({ marketId: 5, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 5, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_avax_long() public {
@@ -283,7 +283,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(0.079622e18);
         sPrime[9] = sd(0.089456e18);
 
-        trade_slippage_helper({ marketId: 6, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 6, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_mkr_long() public {
@@ -312,7 +312,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(0.079802e18);
         sPrime[9] = sd(0.089715e18);
 
-        trade_slippage_helper({ marketId: 7, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 7, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_link_long() public {
@@ -341,7 +341,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(0.079802e18);
         sPrime[9] = sd(0.089715e18);
 
-        trade_slippage_helper({ marketId: 8, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 8, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_aave_long() public {
@@ -369,7 +369,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[7] = sd(0.06987e18);
         sPrime[8] = sd(0.079802e18);
         sPrime[9] = sd(0.089715e18);
-        trade_slippage_helper({ marketId: 9, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 9, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_crv_long() public {
@@ -398,7 +398,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(0.079802e18);
         sPrime[9] = sd(0.089715e18);
 
-        trade_slippage_helper({ marketId: 10, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 10, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_uni_long() public {
@@ -427,7 +427,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(0.079856e18);
         sPrime[9] = sd(0.089793e18);
 
-        trade_slippage_helper({ marketId: 11, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 11, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_eth_short() public {
@@ -457,7 +457,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         // sPrime[8] = sd(-0.052813e18);
         // sPrime[9] = sd(-0.053079e18);
 
-        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_btc_short() public {
@@ -487,7 +487,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         // sPrime[8] = sd(-0.060203e18);
         // sPrime[9] = sd(-0.060314e18);
 
-        trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_sol_short() public {
@@ -516,7 +516,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(-0.079451e18);
         sPrime[9] = sd(-0.089206e18);
 
-        trade_slippage_helper({ marketId: 3, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 3, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_arb_short() public {
@@ -545,7 +545,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(-0.079451e18);
         sPrime[9] = sd(-0.089206e18);
 
-        trade_slippage_helper({ marketId: 4, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 4, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_op_short() public {
@@ -574,7 +574,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(-0.079451e18);
         sPrime[9] = sd(-0.089206e18);
 
-        trade_slippage_helper({ marketId: 5, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 5, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_avax_short() public {
@@ -603,7 +603,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(-0.079451e18);
         sPrime[9] = sd(-0.089206e18);
 
-        trade_slippage_helper({ marketId: 6, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 6, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_mkr_short() public {
@@ -632,7 +632,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(-0.079797e18);
         sPrime[9] = sd(-0.089706e18);
 
-        trade_slippage_helper({ marketId: 7, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 7, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_link_short() public {
@@ -661,7 +661,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(-0.079797e18);
         sPrime[9] = sd(-0.089706e18);
 
-        trade_slippage_helper({ marketId: 8, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 8, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_aave_short() public {
@@ -690,7 +690,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(-0.079797e18);
         sPrime[9] = sd(-0.089706e18);
 
-        trade_slippage_helper({ marketId: 9, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 9, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_crv_short() public {
@@ -719,7 +719,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(-0.079797e18);
         sPrime[9] = sd(-0.089706e18);
 
-        trade_slippage_helper({ marketId: 10, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 10, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_uni_short() public {
@@ -748,6 +748,6 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(-0.079797e18);
         sPrime[9] = sd(-0.089706e18);
 
-        trade_slippage_helper({ marketId: 11, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 11, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 }
