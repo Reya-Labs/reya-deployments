@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/testnet.toml",
     "../oracle_adapters/testnet.toml",
 ]
-version = "1.0.23"
+version = "1.0.24"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
