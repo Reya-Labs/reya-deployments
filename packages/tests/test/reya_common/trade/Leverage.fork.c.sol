@@ -20,6 +20,18 @@ import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
 contract LeverageForkCheck is BaseReyaForkTest {
+    uint256 private constant ethLeverage = 35e18;
+    uint256 private constant btcLeverage = 40e18;
+    uint256 private constant solLeverage = 20e18;
+    uint256 private constant arbLeverage = 20e18;
+    uint256 private constant opLeverage = 20e18;
+    uint256 private constant avaxLeverage = 20e18;
+    uint256 private constant mkrLeverage = 25e18;
+    uint256 private constant linkLeverage = 25e18;
+    uint256 private constant aaveLeverage = 25e18;
+    uint256 private constant crvLeverage = 25e18;
+    uint256 private constant uniLeverage = 20e18;
+
     function check_trade_rusdCollateral_leverage_eth() public {
         mockFreshPrices();
 
@@ -49,7 +61,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), ethLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -81,7 +93,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), btcLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -113,7 +125,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.solUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), solLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -147,7 +159,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.arbUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), arbLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -181,7 +193,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.opUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 10e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), opLeverage, 2e18, 18);
     }
 
     function check_trade_rusdCollateral_leverage_avax() public {
@@ -213,7 +225,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.avaxUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), avaxLeverage, 2e18, 18);
     }
 
     function check_trade_rusdCollateral_leverage_mkr() public {
@@ -245,7 +257,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.mkrUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), mkrLeverage, 2e18, 18);
     }
 
     function check_trade_rusdCollateral_leverage_link() public {
@@ -277,7 +289,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.linkUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), linkLeverage, 2e18, 18);
     }
 
     function check_trade_rusdCollateral_leverage_aave() public {
@@ -309,7 +321,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.aaveUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), aaveLeverage, 2e18, 18);
     }
 
     function check_trade_rusdCollateral_leverage_crv() public {
@@ -341,7 +353,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.crvUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), crvLeverage, 2e18, 18);
     }
 
     function check_trade_rusdCollateral_leverage_uni() public {
@@ -373,7 +385,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.uniUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 10e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), uniLeverage, 2e18, 18);
     }
 
     function check_trade_wethCollateral_leverage_eth() public {
@@ -406,7 +418,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), ethLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -439,7 +451,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), btcLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -472,7 +484,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.solUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), solLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -507,7 +519,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.arbUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), arbLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -542,7 +554,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.opUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 10e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), opLeverage, 2e18, 18);
     }
 
     function check_trade_wethCollateral_leverage_avax() public {
@@ -575,7 +587,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.avaxUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), avaxLeverage, 2e18, 18);
     }
 
     function check_trade_wethCollateral_leverage_mkr() public {
@@ -608,7 +620,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.mkrUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), mkrLeverage, 2e18, 18);
     }
 
     function check_trade_wethCollateral_leverage_link() public {
@@ -641,7 +653,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.linkUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), linkLeverage, 2e18, 18);
     }
 
     function check_trade_wethCollateral_leverage_aave() public {
@@ -674,7 +686,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.aaveUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), aaveLeverage, 2e18, 18);
     }
 
     function check_trade_wethCollateral_leverage_crv() public {
@@ -707,7 +719,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.crvUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), crvLeverage, 2e18, 18);
     }
 
     function check_trade_wethCollateral_leverage_uni() public {
@@ -740,7 +752,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.uniUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 10e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), uniLeverage, 2e18, 18);
     }
 
     function check_trade_usdeCollateral_leverage_eth() public {
@@ -773,7 +785,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), ethLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -806,7 +818,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), btcLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -839,7 +851,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.solUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), solLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -874,7 +886,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.arbUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), arbLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -909,7 +921,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.opUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 10e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), opLeverage, 2e18, 18);
     }
 
     function check_trade_usdeCollateral_leverage_avax() public {
@@ -942,7 +954,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.avaxUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), avaxLeverage, 2e18, 18);
     }
 
     function check_trade_usdeCollateral_leverage_mkr() public {
@@ -975,7 +987,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.mkrUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), mkrLeverage, 2e18, 18);
     }
 
     function check_trade_usdeCollateral_leverage_link() public {
@@ -1008,7 +1020,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.linkUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), linkLeverage, 2e18, 18);
     }
 
     function check_trade_usdeCollateral_leverage_aave() public {
@@ -1041,7 +1053,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.aaveUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), aaveLeverage, 2e18, 18);
     }
 
     function check_trade_usdeCollateral_leverage_crv() public {
@@ -1074,7 +1086,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.crvUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), crvLeverage, 2e18, 18);
     }
 
     function check_trade_usdeCollateral_leverage_uni() public {
@@ -1107,7 +1119,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.uniUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 10e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), uniLeverage, 2e18, 18);
     }
 
     function check_trade_susdeCollateral_leverage_eth() public {
@@ -1140,7 +1152,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), ethLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -1173,7 +1185,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 20e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), btcLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -1206,7 +1218,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.solUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), solLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -1241,7 +1253,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.arbUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), arbLeverage, 2e18, 18);
 
         checkPoolHealth();
     }
@@ -1276,7 +1288,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.opUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 10e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), opLeverage, 2e18, 18);
     }
 
     function check_trade_susdeCollateral_leverage_avax() public {
@@ -1309,7 +1321,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.avaxUsdNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), avaxLeverage, 2e18, 18);
     }
 
     function check_trade_susdeCollateral_leverage_mkr() public {
@@ -1342,7 +1354,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.mkrUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), mkrLeverage, 2e18, 18);
     }
 
     function check_trade_susdeCollateral_leverage_link() public {
@@ -1375,7 +1387,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.linkUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), linkLeverage, 2e18, 18);
     }
 
     function check_trade_susdeCollateral_leverage_aave() public {
@@ -1408,7 +1420,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.aaveUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), aaveLeverage, 2e18, 18);
     }
 
     function check_trade_susdeCollateral_leverage_crv() public {
@@ -1441,7 +1453,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.crvUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 15e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), crvLeverage, 2e18, 18);
     }
 
     function check_trade_susdeCollateral_leverage_uni() public {
@@ -1474,6 +1486,6 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.uniUsdcNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
-        assertApproxEqAbsDecimal(leverage.unwrap(), 10e18, 2e18, 18);
+        assertApproxEqAbsDecimal(leverage.unwrap(), uniLeverage, 2e18, 18);
     }
 }

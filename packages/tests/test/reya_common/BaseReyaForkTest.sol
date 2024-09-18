@@ -236,9 +236,7 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     }
 
     function mockFreshPrices() internal {
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
-
-        for (uint128 i = 1; i <= lastMarketId; i++) {
+        for (uint128 i = 1; i <= lastMarketId(); i++) {
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
             bytes32 nodeId = marketConfig.oracleNodeId;
 
@@ -259,5 +257,9 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         vm.prank(sec.multisig);
         collateralConfig.cap = type(uint256).max;
         ICoreProxy(sec.core).setCollateralConfig(1, collateral, collateralConfig, parentCollateralConfig);
+    }
+
+    function lastMarketId() internal view returns (uint128) {
+        return ICoreProxy(sec.core).getLastCreatedMarketId();
     }
 }
