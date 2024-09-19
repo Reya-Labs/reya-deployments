@@ -348,7 +348,8 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
         assertEq(s.ae1.quoteAmountToIF, 4e6);
         assertEq(s.ae1.quoteAmountToAccount, 396e6);
-        NodeOutput.Data memory usdeUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.usdeUsdcStorkNodeId);
+        NodeOutput.Data memory usdeUsdcNodeOutput =
+            IOracleManagerProxy(sec.oracleManager).process(sec.usdeUsdcStorkNodeId);
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator,
             ud(400e18).div(ud(1e18 - 0.01e18)).div(ud(usdeUsdcNodeOutput.price)).unwrap(),
@@ -512,12 +513,12 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         s.bumpedEthPrice = orderPrice.unwrap() + 600e18;
         vm.mockCall(
             sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcNodeId)),
+            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
             abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
         );
         vm.mockCall(
             sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkFallbackNodeId)),
+            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
             abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
         );
 
@@ -547,7 +548,8 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
         assertEq(s.ae1.quoteAmountToIF, 4e6);
         assertEq(s.ae1.quoteAmountToAccount, 396e6);
-        NodeOutput.Data memory susdeUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(sec.susdeUsdcNodeId);
+        NodeOutput.Data memory susdeUsdcNodeOutput =
+            IOracleManagerProxy(sec.oracleManager).process(sec.susdeUsdcStorkNodeId);
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator,
             ud(400e18).div(ud(1e18 - 0.005e18)).div(ud(susdeUsdcNodeOutput.price)).unwrap(),

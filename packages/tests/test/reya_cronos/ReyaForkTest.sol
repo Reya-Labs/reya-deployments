@@ -79,41 +79,41 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.usdeUsdcStorkNodeId = 0xf37654fe7d50f92914ddb32104e82b81220be6e73257ef21ac8a49b9dc68193c;
         // sec.usdeUsdcStorkFallbackNodeId = 0xc821dc92f6dca0def7db09a186f641c6945cc1d13fb81879434350b77e97d7ac;
 
-        sec.mkrUsdNodeId = 0x7912d76ccc24fcaaae642938aa800060eb51a417f78bfbd2614e704a5e1c654d;
-        sec.mkrUsdcNodeId = 0xb6d5c17643033a9fdd9f7c334eff669b5ac7d24078a2f7fd0a1c6c9492656314;
+        // sec.mkrUsdNodeId = 0x7912d76ccc24fcaaae642938aa800060eb51a417f78bfbd2614e704a5e1c654d;
+        // sec.mkrUsdcNodeId = 0xb6d5c17643033a9fdd9f7c334eff669b5ac7d24078a2f7fd0a1c6c9492656314;
         sec.mkrUsdStorkNodeId = 0xfe7405e631e85b6639d2b367910f5eb4b9fb20f3e63f6994615a3ca4c59673e0;
         sec.mkrUsdcStorkNodeId = 0x57c7f9c7e4149f3f0d0d52ccf2e16773f30f7d86ce2238835b6b21a4369de9b6;
-        sec.mkrUsdcStorkFallbackNodeId = 0xbceafdc09744bd3f28d96be29b8681078b7ce2d5f56b5c4b9a376b3302864def;
+        // sec.mkrUsdcStorkFallbackNodeId = 0xbceafdc09744bd3f28d96be29b8681078b7ce2d5f56b5c4b9a376b3302864def;
 
-        sec.linkUsdNodeId = 0x4fd9b8fefdedd721960f645a094ed2440a8c66a2fe2155850c906cd11584d96c;
-        sec.linkUsdcNodeId = 0x7310324711693666d0af13f17be5aa6a35944f4b26378de1c2145e9603974fc4;
+        // sec.linkUsdNodeId = 0x4fd9b8fefdedd721960f645a094ed2440a8c66a2fe2155850c906cd11584d96c;
+        // sec.linkUsdcNodeId = 0x7310324711693666d0af13f17be5aa6a35944f4b26378de1c2145e9603974fc4;
         sec.linkUsdStorkNodeId = 0x3e969ab77d54bfdc9035abd97390ed6e8877c69a41241c15e833805fa863b010;
         sec.linkUsdcStorkNodeId = 0xf47e4aaaaa8da8abe2d41c74a53490ca2c2937c6a541f4a3c74383b4b3ad63eb;
-        sec.linkUsdcStorkFallbackNodeId = 0xcb3098ea289c21ee1fb27a37b9a3fa7dd8ed86c2dbde2e948342510b32fecf1b;
+        // sec.linkUsdcStorkFallbackNodeId = 0xcb3098ea289c21ee1fb27a37b9a3fa7dd8ed86c2dbde2e948342510b32fecf1b;
 
-        sec.aaveUsdNodeId = 0x52b638c5eb43dc48a5a6894d3b99548bd20c6c24d82e8c32f4e392f4a37729d9;
-        sec.aaveUsdcNodeId = 0xf48d83445dc0007a52c6181f70459a003368796132feed02347627b9d555f363;
+        // sec.aaveUsdNodeId = 0x52b638c5eb43dc48a5a6894d3b99548bd20c6c24d82e8c32f4e392f4a37729d9;
+        // sec.aaveUsdcNodeId = 0xf48d83445dc0007a52c6181f70459a003368796132feed02347627b9d555f363;
         sec.aaveUsdStorkNodeId = 0xeb4102b6e24d4f3446be08989c92709eb4c1660661686f815cf0272376890bec;
         sec.aaveUsdcStorkNodeId = 0x725ae24c374c3a2530285b2a27dbc5b946b6dbc8706c4bb436b0be1698666b8b;
-        sec.aaveUsdcStorkFallbackNodeId = 0x983afacbf92b5aab21b4927cc7516af24e56cfa500ac477da89f56b8ba7fe999;
+        // sec.aaveUsdcStorkFallbackNodeId = 0x983afacbf92b5aab21b4927cc7516af24e56cfa500ac477da89f56b8ba7fe999;
 
-        sec.crvUsdNodeId = 0x0a2b8aa034752df828605194f02ec6227a84ad26e452d23203a90e8bbb864bb8;
-        sec.crvUsdcNodeId = 0xe791c83f95269f70f5f07c0aa698e10d804b386e94f7f15006eda496237eb04a;
+        // sec.crvUsdNodeId = 0x0a2b8aa034752df828605194f02ec6227a84ad26e452d23203a90e8bbb864bb8;
+        // sec.crvUsdcNodeId = 0xe791c83f95269f70f5f07c0aa698e10d804b386e94f7f15006eda496237eb04a;
         sec.crvUsdStorkNodeId = 0xd8bef3655106c404f35eaefcc644b4982945622d73feaf13d75384f0f8ef7767;
         sec.crvUsdcStorkNodeId = 0xba95f5cb01117ab4ef95361c8ed3e5d14ca978151d86c5b780476e09fedfcd96;
-        sec.crvUsdcStorkFallbackNodeId = 0x168a4c6d873dafb9887009f8bde06de6a9e2a17efaeeb7a7ff4fd6d0d61dfefa;
+        // sec.crvUsdcStorkFallbackNodeId = 0x168a4c6d873dafb9887009f8bde06de6a9e2a17efaeeb7a7ff4fd6d0d61dfefa;
 
-        sec.uniUsdNodeId = 0xe696757f37d427a9a75879336ba46b647057c4a06c70a4d755897e03d7baac5c;
-        sec.uniUsdcNodeId = 0x638ac95f3b619ce7aadc3ce45f5b50fc7edb34d698b854016ab2b84898364cab;
+        // sec.uniUsdNodeId = 0xe696757f37d427a9a75879336ba46b647057c4a06c70a4d755897e03d7baac5c;
+        // sec.uniUsdcNodeId = 0x638ac95f3b619ce7aadc3ce45f5b50fc7edb34d698b854016ab2b84898364cab;
         sec.uniUsdStorkNodeId = 0x048c9edf714da7ffd6db911b0850c19d5e01a99e672e07ca7f2e69d9b5895b1e;
         sec.uniUsdcStorkNodeId = 0xc9394a17ca789f672ec03fd364427a79ecaa752f1ccd17635e1cbbb73df3cd21;
-        sec.uniUsdcStorkFallbackNodeId = 0x69210ee3b4c66560b3d5e5dde8943cc8b2a112afdb7e21b55863c95c6b2c36fb;
+        // sec.uniUsdcStorkFallbackNodeId = 0x69210ee3b4c66560b3d5e5dde8943cc8b2a112afdb7e21b55863c95c6b2c36fb;
 
-        sec.susdeUsdNodeId = 0x49d06a2cb959600d11400d550d9e3755e0a936565dfec5f29e6b02dfc96ac6a4;
-        sec.susdeUsdcNodeId = 0xd7275f9d50b4d64655b3a0150ad151368db0d2cac51dc0b185df99c3141324da;
+        // sec.susdeUsdNodeId = 0x49d06a2cb959600d11400d550d9e3755e0a936565dfec5f29e6b02dfc96ac6a4;
+        // sec.susdeUsdcNodeId = 0xd7275f9d50b4d64655b3a0150ad151368db0d2cac51dc0b185df99c3141324da;
         sec.susdeUsdStorkNodeId = 0x6497f91ed5f0057fcc55c01ddb28210776431a7e87035393cff808e98eb70d55;
         sec.susdeUsdcStorkNodeId = 0x1f12d26562a7ed66f142fcc9574045808ff6b0fece27a061ef4f7b5039902735;
-        sec.susdeUsdcStorkFallbackNodeId = 0x8cfa7cb4d7e1144ce9259ffe5c9c557ef199ec8e65fa7cf856c1e57a4858d600;
+        // sec.susdeUsdcStorkFallbackNodeId = 0x8cfa7cb4d7e1144ce9259ffe5c9c557ef199ec8e65fa7cf856c1e57a4858d600;
 
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
         dec.socketExecutionHelper[sec.usdc] = 0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE;
