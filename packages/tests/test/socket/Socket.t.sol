@@ -22,7 +22,28 @@ contract SocketTest is ReyaForkTest {
     IERC20TokenModule(sec.usdc).mint(user, amount);
   }
 
-  function test_socket_periphery_withdraw() public {
+  function test_socket_periphery_withdraw_no_payload() public {
+    vm.prank(user);
+    IERC20TokenModule(sec.usdc).approve(sec.periphery, amount);
+
+    uint256 minFees = 
+      ISocketControllerWithPayload(dec.socketController[sec.usdc]).getMinFees(
+        dec.socketConnector[sec.usdc][chainId], 10_000_000, 0
+      );
+
+    vm.prank(user);
+    WithdrawInputs memory withdrawInputs = WithdrawInputs({
+      tokenAmount: amount,
+      token: sec.usdc,
+      socketMsgGasLimit: 10_000_000,
+      chainId: chainId,
+      receiver: user
+    });
+  
+    IPeripheryProxy(sec.periphery).withdraw{value: minFees}(withdrawInputs);
+  }
+
+  function test_socket_periphery_withdraw_with_payload() public {
     vm.prank(user);
     IERC20TokenModule(sec.usdc).approve(sec.periphery, amount);
 
