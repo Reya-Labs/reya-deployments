@@ -469,7 +469,7 @@ market6Avax_marketOrderMaxStaleDuration = "0"
 
 [var.market_7mkr]
 market7Mkr_riskMatrixIndex = "0"
-market7Mkr_maxOpenBaseUnscaled = "5000"
+market7Mkr_maxOpenBaseUnscaled = "5"
 market7Mkr_velocityMultiplierUnscaled = "50"
 market7Mkr_oracleNodeId = "<%= settings.mkrUsdcNodeIdFallbackStorkRedstone %>"
 market7Mkr_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
