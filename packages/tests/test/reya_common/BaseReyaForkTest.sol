@@ -259,6 +259,15 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         ICoreProxy(sec.core).setCollateralConfig(1, collateral, collateralConfig, parentCollateralConfig);
     }
 
+    function removeMarketsOILimit() internal {
+        for (uint128 i = 1; i <= lastMarketId(); i++) {
+            MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
+            marketConfig.maxOpenBase = 1_000_000_000_000e18;
+            vm.prank(sec.multisig);
+            IPassivePerpProxy(sec.perp).setMarketConfiguration(i, marketConfig);
+        }
+    }
+
     function lastMarketId() internal view returns (uint128) {
         return ICoreProxy(sec.core).getLastCreatedMarketId();
     }

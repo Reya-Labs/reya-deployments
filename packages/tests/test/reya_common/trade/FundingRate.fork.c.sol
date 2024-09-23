@@ -20,6 +20,7 @@ contract FundingRateForkCheck is BaseReyaForkTest {
 
     function check_FundingVelocity() public {
         mockFreshPrices();
+        removeMarketsOILimit();
 
         uint128 fromMarketId = 1;
         uint128 toMarketId = lastMarketId();
