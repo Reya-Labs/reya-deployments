@@ -58,7 +58,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), ethLeverage, 2e18, 18);
@@ -90,7 +90,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), btcLeverage, 2e18, 18);
@@ -122,7 +122,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.solUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.solUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), solLeverage, 2e18, 18);
@@ -156,7 +156,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.arbUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.arbUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), arbLeverage, 2e18, 18);
@@ -190,7 +190,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.opUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.opUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), opLeverage, 2e18, 18);
@@ -222,7 +222,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.avaxUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.avaxUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), avaxLeverage, 2e18, 18);
@@ -254,7 +254,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.mkrUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.mkrUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), mkrLeverage, 2e18, 18);
@@ -286,7 +286,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.linkUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.linkUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), linkLeverage, 2e18, 18);
@@ -318,7 +318,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.aaveUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.aaveUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), aaveLeverage, 2e18, 18);
@@ -350,7 +350,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.crvUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.crvUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), crvLeverage, 2e18, 18);
@@ -382,7 +382,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.uniUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.uniUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), uniLeverage, 2e18, 18);
@@ -415,7 +415,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), ethLeverage, 2e18, 18);
@@ -448,7 +448,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), btcLeverage, 2e18, 18);
@@ -481,7 +481,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.solUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.solUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), solLeverage, 2e18, 18);
@@ -516,7 +516,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.arbUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.arbUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), arbLeverage, 2e18, 18);
@@ -551,7 +551,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.opUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.opUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), opLeverage, 2e18, 18);
@@ -584,7 +584,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.avaxUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.avaxUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), avaxLeverage, 2e18, 18);
@@ -617,7 +617,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.mkrUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.mkrUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), mkrLeverage, 2e18, 18);
@@ -650,7 +650,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.linkUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.linkUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), linkLeverage, 2e18, 18);
@@ -683,7 +683,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.aaveUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.aaveUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), aaveLeverage, 2e18, 18);
@@ -716,7 +716,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.crvUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.crvUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), crvLeverage, 2e18, 18);
@@ -749,7 +749,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.uniUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.uniUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), uniLeverage, 2e18, 18);
@@ -782,7 +782,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), ethLeverage, 2e18, 18);
@@ -815,7 +815,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), btcLeverage, 2e18, 18);
@@ -848,7 +848,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.solUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.solUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), solLeverage, 2e18, 18);
@@ -883,7 +883,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.arbUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.arbUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), arbLeverage, 2e18, 18);
@@ -918,7 +918,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.opUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.opUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), opLeverage, 2e18, 18);
@@ -951,7 +951,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.avaxUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.avaxUsdStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), avaxLeverage, 2e18, 18);
@@ -984,7 +984,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.mkrUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.mkrUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), mkrLeverage, 2e18, 18);
@@ -1017,7 +1017,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.linkUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.linkUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), linkLeverage, 2e18, 18);
@@ -1050,7 +1050,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.aaveUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.aaveUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), aaveLeverage, 2e18, 18);
@@ -1083,7 +1083,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.crvUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.crvUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), crvLeverage, 2e18, 18);
@@ -1116,7 +1116,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.uniUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.uniUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), uniLeverage, 2e18, 18);
@@ -1149,7 +1149,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), ethLeverage, 2e18, 18);
@@ -1182,7 +1182,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.btcUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), btcLeverage, 2e18, 18);
@@ -1215,7 +1215,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.solUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), solLeverage, 2e18, 18);
@@ -1250,7 +1250,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.arbUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.arbUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), arbLeverage, 2e18, 18);
@@ -1285,7 +1285,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.opUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.opUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), opLeverage, 2e18, 18);
@@ -1318,7 +1318,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.avaxUsdNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.avaxUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), avaxLeverage, 2e18, 18);
@@ -1351,7 +1351,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.mkrUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.mkrUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), mkrLeverage, 2e18, 18);
@@ -1384,7 +1384,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.linkUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.linkUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), linkLeverage, 2e18, 18);
@@ -1417,7 +1417,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.aaveUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.aaveUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), aaveLeverage, 2e18, 18);
@@ -1450,7 +1450,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.crvUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.crvUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), crvLeverage, 2e18, 18);
@@ -1483,7 +1483,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.uniUsdcNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.uniUsdcStorkNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), uniLeverage, 2e18, 18);
