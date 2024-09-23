@@ -1,4 +1,4 @@
-[invoke.oracle_manager_register_node_crv_usdc_stork]
+[invoke.oracle_manager_register_node_crv_usdc_mark_stork]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
@@ -6,20 +6,20 @@ args = [
     "<%= settings.ORACLE_MANAGER_NODE_TYPE_DIV_REDUCER %>",
     "0x",
     [
-        "<%= settings.crvUsdNodeIdStork %>",
+        "<%= settings.crvUsdMarkNodeIdStork %>",
         "<%= settings.usdcUsdNodeIdStork %>",
     ],
 ]
-var.crvUsdcNodeIdStork.event = "NodeRegistered"
-var.crvUsdcNodeIdStork.arg = 0
+var.crvUsdcMarkNodeIdStork.event = "NodeRegistered"
+var.crvUsdcMarkNodeIdStork.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
-[invoke.oracle_manager_crv_usdc_stork_max_stale_duration]
+[invoke.oracle_manager_crv_usdc_mark_stork_max_stale_duration]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "setMaxStaleDuration"
 args = [
-    "<%= settings.crvUsdcNodeIdStork %>",
-    "<%= settings.crvUsdcMaxStaleDurationStork %>",
+    "<%= settings.crvUsdcMarkNodeIdStork %>",
+    "<%= settings.crvUsdcMarkMaxStaleDurationStork %>",
 ]
-depends = ["invoke.oracle_manager_register_node_crv_usdc_stork"]
+depends = ["invoke.oracle_manager_register_node_crv_usdc_mark_stork"]

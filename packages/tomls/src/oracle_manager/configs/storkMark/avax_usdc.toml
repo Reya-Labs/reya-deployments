@@ -1,4 +1,4 @@
-[invoke.oracle_manager_register_node_avax_usdc_stork]
+[invoke.oracle_manager_register_node_avax_usdc_mark_stork]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
@@ -6,20 +6,20 @@ args = [
     "<%= settings.ORACLE_MANAGER_NODE_TYPE_DIV_REDUCER %>",
     "0x",
     [
-        "<%= settings.avaxUsdNodeIdStork %>",
+        "<%= settings.avaxUsdMarkNodeIdStork %>",
         "<%= settings.usdcUsdNodeIdStork %>",
     ],
 ]
-var.avaxUsdcNodeIdStork.event = "NodeRegistered"
-var.avaxUsdcNodeIdStork.arg = 0
+var.avaxUsdcMarkNodeIdStork.event = "NodeRegistered"
+var.avaxUsdcMarkNodeIdStork.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
-[invoke.oracle_manager_avax_usdc_stork_max_stale_duration]
+[invoke.oracle_manager_avax_usdc_mark_stork_max_stale_duration]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "setMaxStaleDuration"
 args = [
-    "<%= settings.avaxUsdcNodeIdStork %>",
-    "<%= settings.avaxUsdcMaxStaleDurationStork %>",
+    "<%= settings.avaxUsdcMarkNodeIdStork %>",
+    "<%= settings.avaxUsdcMarkMaxStaleDurationStork %>",
 ]
-depends = ["invoke.oracle_manager_register_node_avax_usdc_stork"]
+depends = ["invoke.oracle_manager_register_node_avax_usdc_mark_stork"]

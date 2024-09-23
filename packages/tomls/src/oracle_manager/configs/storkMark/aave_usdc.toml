@@ -1,25 +1,26 @@
-[invoke.oracle_manager_register_node_aave_usdc_stork]
+[invoke.oracle_manager_register_node_aave_usdc_mark_stork]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
 args = [
     "<%= settings.ORACLE_MANAGER_NODE_TYPE_DIV_REDUCER %>",
     "0x",
+    "<%= defaultAbiCoder.encode(['address','string'], [contracts.OracleAdaptersProxy.address, settings.storkAssetPairIdAaveUSDCMark]) %>",
     [
-        "<%= settings.aaveUsdNodeIdStork %>",
+        "<%= settings.aaveUsdMarkNodeIdStork %>",
         "<%= settings.usdcUsdNodeIdStork %>",
     ],
 ]
-var.aaveUsdcNodeIdStork.event = "NodeRegistered"
-var.aaveUsdcNodeIdStork.arg = 0
+var.aaveUsdcMarkNodeIdStork.event = "NodeRegistered"
+var.aaveUsdcMarkNodeIdStork.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
-[invoke.oracle_manager_aave_usdc_stork_max_stale_duration]
+[invoke.oracle_manager_aave_usdc_mark_stork_max_stale_duration]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "setMaxStaleDuration"
 args = [
-    "<%= settings.aaveUsdcNodeIdStork %>",
-    "<%= settings.aaveUsdcMaxStaleDurationStork %>",
+    "<%= settings.aaveUsdcMarkNodeIdStork %>",
+    "<%= settings.aaveUsdcMarkMaxStaleDurationStork %>",
 ]
-depends = ["invoke.oracle_manager_register_node_aave_usdc_stork"]
+depends = ["invoke.oracle_manager_register_node_aave_usdc_mark_stork"]

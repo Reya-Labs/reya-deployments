@@ -1,4 +1,4 @@
-[invoke.oracle_manager_register_node_eth_usdc_stork]
+[invoke.oracle_manager_register_node_eth_usdc_mark_stork]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
@@ -6,20 +6,20 @@ args = [
     "<%= settings.ORACLE_MANAGER_NODE_TYPE_DIV_REDUCER %>",
     "0x",
     [
-        "<%= settings.ethUsdNodeIdStork %>",
+        "<%= settings.ethUsdMarkNodeIdStork %>",
         "<%= settings.usdcUsdNodeIdStork %>",
     ],
 ]
-var.ethUsdcNodeIdStork.event = "NodeRegistered"
-var.ethUsdcNodeIdStork.arg = 0
+var.ethUsdcMarkNodeIdStork.event = "NodeRegistered"
+var.ethUsdcMarkNodeIdStork.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
-[invoke.oracle_manager_eth_usdc_stork_max_stale_duration]
+[invoke.oracle_manager_eth_usdc_mark_stork_max_stale_duration]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "setMaxStaleDuration"
 args = [
-    "<%= settings.ethUsdcNodeIdStork %>",
-    "<%= settings.ethUsdcMaxStaleDurationStork %>",
+    "<%= settings.ethUsdcMarkNodeIdStork %>",
+    "<%= settings.ethUsdcMarkMaxStaleDurationStork %>",
 ]
-depends = ["invoke.oracle_manager_register_node_eth_usdc_stork"]
+depends = ["invoke.oracle_manager_register_node_eth_usdc_mark_stork"]
