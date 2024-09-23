@@ -1,6 +1,6 @@
 [clone.reyaPeripheryRouter]
 source = "<%= settings.peripheryRouterPackage %>"
-target = "<%= settings.peripheryProxyPackage %>"
+target = "<%= settings.peripheryRouterPackage %>"
 depends = ["var.cannonClonePackages"]
 
 # Upgrades implementation of InitialProxy to point to the new
