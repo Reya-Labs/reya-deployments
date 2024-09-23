@@ -1,23 +1,23 @@
-[invoke.oracle_manager_register_node_eth_usd_mark_stork]
+[invoke.oracle_manager_register_node_eth_usdc_mark_reya]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
 args = [
-    "<%= settings.ORACLE_MANAGER_NODE_TYPE_STORK_OFFCHAIN_LOOKUP %>",
-    "<%= defaultAbiCoder.encode(['address','string'], [contracts.OracleAdaptersProxy.address, settings.storkAssetPairIdETHMark]) %>",
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_REYA_OFFCHAIN_LOOKUP %>",
+    "<%= defaultAbiCoder.encode(['address','string'], [contracts.OracleAdaptersProxy.address, settings.reyaAssetPairIdETHMark]) %>",
     [
     ],
 ]
-var.ethUsdMarkNodeIdStork.event = "NodeRegistered"
-var.ethUsdMarkNodeIdStork.arg = 0
+var.ethUsdcMarkNodeIdReya.event = "NodeRegistered"
+var.ethUsdcMarkNodeIdReya.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
-[invoke.oracle_manager_eth_usd_mark_stork_max_stale_duration]
+[invoke.oracle_manager_eth_usdc_mark_reya_max_stale_duration]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "setMaxStaleDuration"
 args = [
-    "<%= settings.ethUsdMarkNodeIdStork %>",
-    "<%= settings.ethUsdMarkMaxStaleDurationStork %>",
+    "<%= settings.ethUsdcMarkNodeIdReya %>",
+    "<%= settings.ethUsdcMarkMaxStaleDurationReya %>",
 ]
-depends = ["invoke.oracle_manager_register_node_eth_usd_mark_stork"]
+depends = ["invoke.oracle_manager_register_node_eth_usdc_mark_reya"]
