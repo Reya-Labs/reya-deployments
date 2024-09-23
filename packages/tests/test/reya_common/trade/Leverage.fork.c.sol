@@ -32,6 +32,10 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant crvLeverage = 25e18;
     uint256 private constant uniLeverage = 20e18;
 
+    function setUp() public {
+        removeMarketsOILimit();
+    }
+
     function check_trade_rusdCollateral_leverage_eth() public {
         mockFreshPrices();
 

@@ -23,6 +23,10 @@ struct LocalState {
 contract PSlippageForkCheck is BaseReyaForkTest {
     LocalState private st;
 
+    function setUp() public {
+        removeMarketsOILimit();
+    }
+
     function trade_slippage_helper(
         uint128 marketId,
         SD59x18[] memory s,

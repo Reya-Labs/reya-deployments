@@ -37,6 +37,10 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     UD60x18 MAX_PRICE = ud(type(uint256).max);
     LocalState internal st;
 
+    function setUp() public {
+        removeMarketsOILimit();
+    }
+
     function createAccountAndDeposit() internal returns (uint128 accountId) {
         uint256 amount = 1_000_000e6;
         deal(sec.usdc, address(sec.periphery), amount);
