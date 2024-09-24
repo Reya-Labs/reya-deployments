@@ -8,8 +8,8 @@ args = [
     [
     ],
 ]
-var.arbUsdNodeIdStork.event = "NodeRegistered"
-var.arbUsdNodeIdStork.arg = 0
+var.arbUsdMarkNodeIdStork.event = "NodeRegistered"
+var.arbUsdMarkNodeIdStork.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
 [invoke.oracle_manager_arb_usd_mark_stork_max_stale_duration]
