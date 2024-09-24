@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/mainnet.toml",
     "../oracle_adapters/mainnet.toml",
 ]
-version = "1.0.24"
+version = "1.0.25"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -33,7 +33,7 @@ ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 lotteryPotAccountId = "20092"
 
 [var.cannonClonePackages]
-coreRouterPackage = "reya-core:1.0.6@router"
+coreRouterPackage = "reya-core:1.0.7@router"
 coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
