@@ -20,7 +20,7 @@ fromCall.func = "owner"
 func = "setMaxStaleDuration"
 args = [
     "<%= settings.linkUsdcMarkNodeIdFallbackStorkReya %>",
-    "<%= settings.linkUsdcMaxStaleDurationFallbackStorkReyaMark %>",
+    "<%= settings.linkUsdcMarkMaxStaleDurationFallbackStorkReya %>",
 ]
 depends = [
     "invoke.oracle_manager_register_node_link_usdc_fallback_stork_reya_mark",
