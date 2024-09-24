@@ -183,6 +183,19 @@ storkAssetPairIdAAVEMark = "AAVEUSDMARK"
 storkAssetPairIdCRVMark = "CRVUSDMARK"
 storkAssetPairIdUNIMark = "UNIUSDMARK"
 
+[var.reya_asset_pair_ids_mark]
+reyaAssetPairIdETHMark = "ETHUSDMARKFALLBACK"
+reyaAssetPairIdBTCMark = "BTCUSDMARKFALLBACK"
+reyaAssetPairIdSOLMark = "SOLUSDMARKFALLBACK"
+reyaAssetPairIdARBMark = "ARBUSDMARKFALLBACK"
+reyaAssetPairIdOPMark = "OPUSDMARKFALLBACK"
+reyaAssetPairIdAVAXMark = "AVAXUSDMARKFALLBACK"
+reyaAssetPairIdMKRMark = "MKRUSDMARKFALLBACK"
+reyaAssetPairIdLINKMark = "LINKUSDMARKFALLBACK"
+reyaAssetPairIdAAVEMark = "AAVEUSDMARKFALLBACK"
+reyaAssetPairIdCRVMark = "CRVUSDMARKFALLBACK"
+reyaAssetPairIdUNIMark = "UNIUSDMARKFALLBACK"
+
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
 
