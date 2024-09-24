@@ -3,7 +3,7 @@ target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
 args = [
-    "<%= settings.ORACLE_MANAGER_NODE_TYPE_REYA_OFFCHAIN_LOOKUP %>",
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_STORK_OFFCHAIN_LOOKUP %>",
     "<%= defaultAbiCoder.encode(['address','string'], [contracts.OracleAdaptersProxy.address, settings.reyaAssetPairIdSOLMark]) %>",
     [
     ],
