@@ -170,6 +170,19 @@ storkAssetPairIdCRV = "CRVUSD"
 storkAssetPairIdUNI = "UNIUSD"
 storkAssetPairIdSUSDE = "SUSDEUSD"
 
+[var.stork_asset_pair_ids_mark]
+storkAssetPairIdETHMark = "ETHUSDMARK"
+storkAssetPairIdBTCMark = "BTCUSDMARK"
+storkAssetPairIdSOLMark = "SOLUSDMARK"
+storkAssetPairIdARBMark = "ARBUSDMARK"
+storkAssetPairIdOPMark = "OPUSDMARK"
+storkAssetPairIdAVAXMark = "AVAXUSDMARK"    
+storkAssetPairIdMKRMark = "MKRUSDMARK"
+storkAssetPairIdLINKMark = "LINKUSDMARK"
+storkAssetPairIdAAVEMark = "AAVEUSDMARK"
+storkAssetPairIdCRVMark = "CRVUSDMARK"
+storkAssetPairIdUNIMark = "UNIUSDMARK"
+
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
 
