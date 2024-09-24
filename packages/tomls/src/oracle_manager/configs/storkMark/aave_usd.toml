@@ -9,7 +9,7 @@ args = [
     ],
 ]
 var.aaveUsdMarkNodeIdStork.event = "NodeRegistered"
-var.aaveUsdMarkdNodeIdStork.arg = 0
+var.aaveUsdMarkNodeIdStork.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
 [invoke.oracle_manager_aave_usd_mark_stork_max_stale_duration]
