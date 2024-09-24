@@ -8,8 +8,8 @@ args = [
     [
     ],
 ]
-var.arbUsdcNodeIdReya.event = "NodeRegistered"
-var.arbUsdcNodeIdReya.arg = 0
+var.arbUsdcMarkNodeIdReya.event = "NodeRegistered"
+var.arbUsdcMarkNodeIdReya.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
 [invoke.oracle_manager_arb_usdc_mark_reya_max_stale_duration]
