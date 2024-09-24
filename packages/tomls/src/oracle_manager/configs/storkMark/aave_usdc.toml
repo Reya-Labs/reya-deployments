@@ -5,7 +5,6 @@ func = "registerNode"
 args = [
     "<%= settings.ORACLE_MANAGER_NODE_TYPE_DIV_REDUCER %>",
     "0x",
-    "<%= defaultAbiCoder.encode(['address','string'], [contracts.OracleAdaptersProxy.address, settings.storkAssetPairIdAaveUSDCMark]) %>",
     [
         "<%= settings.aaveUsdMarkNodeIdStork %>",
         "<%= settings.usdcUsdNodeIdStork %>",
