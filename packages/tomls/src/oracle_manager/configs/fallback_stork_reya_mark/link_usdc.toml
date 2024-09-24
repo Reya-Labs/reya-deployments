@@ -6,12 +6,12 @@ args = [
     "<%= settings.ORACLE_MANAGER_NODE_TYPE_FALLBACK_REDUCER %>",
     "0x",
     [
-        "<%= settings.linkUsdcNodeIdStork %>",
-        "<%= settings.linkUsdcNodeIdReya %>",
+        "<%= settings.linkUsdcMarkNodeIdStork %>",
+        "<%= settings.linkUsdcMarkNodeIdReya %>",  # reya
     ],
 ]
-var.linkUsdcNodeIdFallbackStorkReyaMark.event = "NodeRegistered"
-var.linkUsdcNodeIdFallbackStorkReyaMark.arg = 0
+var.linkUsdcMarkNodeIdFallbackStorkReya.event = "NodeRegistered"
+var.linkUsdcMarkNodeIdFallbackStorkReya.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
 [invoke.oracle_manager_link_usdc_fallback_stork_reya_mark_max_stale_duration]
@@ -19,7 +19,7 @@ target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "setMaxStaleDuration"
 args = [
-    "<%= settings.linkUsdcNodeIdFallbackStorkReyaMark %>",
+    "<%= settings.linkUsdcMarkNodeIdFallbackStorkReya %>",
     "<%= settings.linkUsdcMaxStaleDurationFallbackStorkReyaMark %>",
 ]
 depends = [

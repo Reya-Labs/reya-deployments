@@ -19,7 +19,7 @@ target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "setMaxStaleDuration"
 args = [
-    "<%= settings.aaveUsdcMarkNodeIdFallbackStorkRedstone %>",
+    "<%= settings.aaveUsdcMarkNodeIdFallbackStorkReya %>",
     "<%= settings.aaveUsdcMarkMaxStaleDurationFallbackStorkRedstone %>",
 ]
 depends = [

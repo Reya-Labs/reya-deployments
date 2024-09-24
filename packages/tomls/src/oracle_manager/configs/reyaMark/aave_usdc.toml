@@ -9,7 +9,7 @@ args = [
     ],
 ]
 var.aaveUsdcMarkNodeIdReya.event = "NodeRegistered"
-var.aaveUsdcMarkdNodeIdReya.arg = 0
+var.aaveUsdcMarkNodeIdReya.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
 [invoke.oracle_manager_aave_usdc_mark_reya_max_stale_duration]

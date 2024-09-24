@@ -6,12 +6,12 @@ args = [
     "<%= settings.ORACLE_MANAGER_NODE_TYPE_FALLBACK_REDUCER %>",
     "0x",
     [
-        "<%= settings.uniUsdcNodeIdStork %>",
-        "<%= settings.uniUsdcNodeId %>",      # redstone
+        "<%= settings.uniUsdcMarkNodeIdStork %>",
+        "<%= settings.uniUsdcMarkNodeIdReya %>",  # redstone
     ],
 ]
-var.uniUsdcNodeIdFallbackStorkRedstone.event = "NodeRegistered"
-var.uniUsdcNodeIdFallbackStorkRedstone.arg = 0
+var.uniUsdcMarkNodeIdFallbackStorkReya.event = "NodeRegistered"
+var.uniUsdcMarkNodeIdFallbackStorkReya.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
 [invoke.oracle_manager_uni_usdc_fallback_stork_redstone_max_stale_duration]
@@ -19,7 +19,7 @@ target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "setMaxStaleDuration"
 args = [
-    "<%= settings.uniUsdcNodeIdFallbackStorkRedstone %>",
+    "<%= settings.uniUsdcMarkNodeIdFallbackStorkReya %>",
     "<%= settings.uniUsdcMaxStaleDurationFallbackStorkRedstone %>",
 ]
 depends = [
