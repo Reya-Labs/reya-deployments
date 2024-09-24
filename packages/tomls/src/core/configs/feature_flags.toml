@@ -116,3 +116,13 @@ args = [
     "<%= settings.ae_liquidator1 %>",
 ]
 depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_enable_set_custom_im_multiplier]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('setCustomImMultiplier')) %>",
+    "<%= settings.passivePoolProxy %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
