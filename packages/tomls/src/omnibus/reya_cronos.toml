@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/testnet.toml",
     "../oracle_adapters/testnet.toml",
 ]
-version = "1.0.24"
+version = "1.0.25"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -32,7 +32,7 @@ lotteryPotAccountId = "6888"
 
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.6@router"
+coreRouterPackage = "reya-core:1.0.7@router"
 coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
 rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
