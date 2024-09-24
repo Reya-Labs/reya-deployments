@@ -7,7 +7,7 @@ args = [
     "0x",
     [
         "<%= settings.btcUsdcMarkNodeIdStork %>",
-        "<%= settings.btcUsdcMarkNodeIdReya %>",      # reya
+        "<%= settings.btcUsdcMarkNodeIdReya %>",  # reya
     ],
 ]
 var.btcUsdcMarkNodeIdFallbackStorkReya.event = "NodeRegistered"

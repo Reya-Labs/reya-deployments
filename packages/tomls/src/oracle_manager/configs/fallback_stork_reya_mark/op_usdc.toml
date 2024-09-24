@@ -7,7 +7,7 @@ args = [
     "0x",
     [
         "<%= settings.opUsdcMarkNodeIdStork %>",
-        "<%= settings.opUsdcMarkNodeIdReya %>",      # reya
+        "<%= settings.opUsdcMarkNodeIdReya %>",  # reya
     ],
 ]
 var.opUsdcMarkNodeIdFallbackStorkReya.event = "NodeRegistered"

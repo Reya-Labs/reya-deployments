@@ -9,7 +9,7 @@ args = [
         "<%= settings.solUsdMarkNodeIdStork %>",
         "<%= settings.usdcUsdNodeIdStork %>",
     ],
-]   
+]
 var.solUsdcMarkNodeIdStork.event = "NodeRegistered"
 var.solUsdcMarkNodeIdStork.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]

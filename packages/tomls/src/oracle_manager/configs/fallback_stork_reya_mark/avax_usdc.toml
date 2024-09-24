@@ -7,7 +7,7 @@ args = [
     "0x",
     [
         "<%= settings.avaxUsdcMarkNodeIdStork %>",
-        "<%= settings.avaxUsdcMarkNodeIdReya %>",      # reya
+        "<%= settings.avaxUsdcMarkNodeIdReya %>",  # reya
     ],
 ]
 var.avaxUsdcMarkNodeIdFallbackStorkReya.event = "NodeRegistered"

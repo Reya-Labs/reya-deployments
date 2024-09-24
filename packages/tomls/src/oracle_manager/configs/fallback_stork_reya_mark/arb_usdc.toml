@@ -7,7 +7,7 @@ args = [
     "0x",
     [
         "<%= settings.arbUsdcMarkNodeIdStork %>",
-        "<%= settings.arbUsdcMarkNodeIdReya %>",      # reya
+        "<%= settings.arbUsdcMarkNodeIdReya %>",  # reya
     ],
 ]
 var.arbUsdcMarkNodeIdFallbackStorkReya.event = "NodeRegistered"

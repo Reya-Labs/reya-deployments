@@ -7,7 +7,7 @@ args = [
     "0x",
     [
         "<%= settings.crvUsdcMarkNodeIdStork %>",
-        "<%= settings.crvUsdcMarkNodeIdReya %>",      # reya
+        "<%= settings.crvUsdcMarkNodeIdReya %>",  # reya
     ],
 ]
 var.crvUsdcMarkNodeIdFallbackStorkReya.event = "NodeRegistered"
