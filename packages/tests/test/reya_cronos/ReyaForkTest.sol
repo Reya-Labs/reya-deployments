@@ -39,39 +39,51 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         // sec.ethUsdNodeId = 0x82eef5437e9009ecf7691ffdae182e5463438c99963d0da9ac8512d0a3679a95;
         // sec.ethUsdcNodeId = 0xd0eec92140b39ef035b9b88f0e9a63355f8d60246115a84c439179b46904e841;
-        sec.ethUsdStorkNodeId = 0x6f1442b15af1cde852d45cdd67336b330257c9df23834909159097b25b57936c;
-        sec.ethUsdcStorkNodeId = 0xb19e4d8ea5f0a3752fbd19515075063f7486e6954b8aa2b3d462c61726c46619;
+        // sec.ethUsdStorkNodeId = 0x6f1442b15af1cde852d45cdd67336b330257c9df23834909159097b25b57936c;
+        // sec.ethUsdcStorkNodeId = 0xb19e4d8ea5f0a3752fbd19515075063f7486e6954b8aa2b3d462c61726c46619;
         // sec.ethUsdcStorkFallbackNodeId = 0x0f0a2e1036f9102c8ebad9d0c19e2dee774bcdefd459f5552058167e144ed3ca;
+        sec.ethUsdStorkMarkNodeId = 0x3f4c9f3d5efcbd98002f057a6c0acd0313aa63ab20334e611a30261b89acc1fa;
+        sec.ethUsdcStorkMarkNodeId = 0x14dba23a7f8775bceefeedb4266fbe135b949ae40fe08e491f2a476d3448c66f;
 
         // sec.btcUsdNodeId = 0x9b535a03d6bfaa6d85a3026580f42349e9e26a7067714732d977fc9c1b2c8668;
         // sec.btcUsdcNodeId = 0x931f2bb3837fb35ca01ac69b2bdf9ebd60972dca7c1698d377ae243049a9f2c7;
-        sec.btcUsdStorkNodeId = 0xc232870be8422ed7d9f74df9dd227b4f53b1f682e14b6b594a41893226a76e84;
-        sec.btcUsdcStorkNodeId = 0xc03b30c42ae5497a9b0062d503ae84cc83a9c282b92b0354dfcf80db949bc4dd;
+        // sec.btcUsdStorkNodeId = 0xc232870be8422ed7d9f74df9dd227b4f53b1f682e14b6b594a41893226a76e84;
+        // sec.btcUsdcStorkNodeId = 0xc03b30c42ae5497a9b0062d503ae84cc83a9c282b92b0354dfcf80db949bc4dd;
         // sec.btcUsdcStorkFallbackNodeId = 0xe83d3a85208a01a94fa56266b73f29ec4d897eb4477659aea702a477a97c7bf1;
+        sec.btcUsdStorkMarkNodeId = 0x22cc8b806bf8c6761ade13f0f07e7442f3447f5f19115ef16e679e2633a9a99b;
+        sec.btcUsdcStorkMarkNodeId = 0xf07b080f0f2546b188eab2a367041bf02293ab2484e3b700700daa05a2bd36da;
 
         // sec.solUsdNodeId = 0x124ba4123aa9d8663863554253e5859480211d1a0160257ccf5d12315aaacce1;
         // sec.solUsdcNodeId = 0x5f04732bb640020dd447ac06ef47eae461717fbc6b3ba2f71b3a95e00445a502;
-        sec.solUsdStorkNodeId = 0x556ff41dece77a2461e7dd72258a29e46ffc7ac5c6d0edf8001867d551ab21d2;
-        sec.solUsdcStorkNodeId = 0xa456e0f61bd6068a3a73176ab1c58b840e57e0a272ca29974d3f0bd709fc96c4;
+        // sec.solUsdStorkNodeId = 0x556ff41dece77a2461e7dd72258a29e46ffc7ac5c6d0edf8001867d551ab21d2;
+        // sec.solUsdcStorkNodeId = 0xa456e0f61bd6068a3a73176ab1c58b840e57e0a272ca29974d3f0bd709fc96c4;
         // sec.solUsdcStorkFallbackNodeId = 0xbc20afac3a933b7c7f814fc8fe08344d5dabe3d154b0584461b677b8568553c8;
+        sec.solUsdStorkMarkNodeId = 0xf9145aaf4f398421afb433b3c0ab5d7507fb9c9eac58f5be0ce4d7868c207b31;
+        sec.solUsdcStorkMarkNodeId = 0xfd68d8ff3f6a78957c7f6ebbcc8ed5ed5d49b4ba89a4a6b806ceb459b19f833a;
 
         // sec.arbUsdNodeId = 0xcc34b2231b502f570ed6c70ba8f7ed657d08aade237bcae7625ae7b8516fddab;
         // sec.arbUsdcNodeId = 0x4e568ee2ffcbcb5dd5e37027dc98939e7be9d12c4ff61780c2efbb8e3e57128e;
-        sec.arbUsdStorkNodeId = 0x6dd5ac4d5502d0f6e0ebf25a1743ba7e99522070b665e51363d1455d95e6dbfa;
-        sec.arbUsdcStorkNodeId = 0xe8f7ec437b0cf8d38198532b389189b2535e902d397e4d6877e9b77d24a5250b;
+        // sec.arbUsdStorkNodeId = 0x6dd5ac4d5502d0f6e0ebf25a1743ba7e99522070b665e51363d1455d95e6dbfa;
+        // sec.arbUsdcStorkNodeId = 0xe8f7ec437b0cf8d38198532b389189b2535e902d397e4d6877e9b77d24a5250b;
         // sec.arbUsdcStorkFallbackNodeId = 0xf4e627ab5747d3d0ac0f98f4b6eb35a716e666c19087509f7686fa9f835f688a;
+        sec.arbUsdStorkMarkNodeId = 0x1529a451b9a30854039881f704059ba0de48f5fee2a56a070826aff37748e91a;
+        sec.arbUsdcStorkMarkNodeId = 0x03038f283a2c622701d2a80e720273c3fde14af6e6c2153d911fe5403bf4ce93;
 
         // sec.opUsdNodeId = 0x7bb5195bd6b7c7bd928da2b52cae900a5f6262eb32b992ac4d97b4f2c322422c;
         // sec.opUsdcNodeId = 0xc0e6ecd826e2c4e4da4aba2af6b0851a23123c50f98d56e9bde32b1af6ad51a2;
-        sec.opUsdStorkNodeId = 0x0cbccc1a5534cea8494ee4974ba5f58339ce3b1a26857fc4d3aa4e54e773bd49;
-        sec.opUsdcStorkNodeId = 0xbfcb55865b2c2646c494e75d6267d897216b241fb67c28a23658f428bdbadc88;
+        // sec.opUsdStorkNodeId = 0x0cbccc1a5534cea8494ee4974ba5f58339ce3b1a26857fc4d3aa4e54e773bd49;
+        // sec.opUsdcStorkNodeId = 0xbfcb55865b2c2646c494e75d6267d897216b241fb67c28a23658f428bdbadc88;
         // sec.opUsdcStorkFallbackNodeId = 0xa209578cbe54887fa0ad99be2fed9a9f5a0678ac2718d00584c6bd541c75b878;
+        sec.opUsdStorkMarkNodeId = 0x31489adab3911d4377faf88912fd7c9507aa49f7eb80a9a8b25f40021e0a708b;
+        sec.opUsdcStorkMarkNodeId = 0xfc4347fdd16540a3386624e641440040b91987e664bff6b4ff72e9e68415d4d6;
 
         // sec.avaxUsdNodeId = 0x2973a5fc60ce7fd59c68e20eade5cbb56d3f22516f5dbd78d09654de5070df8e;
         // sec.avaxUsdcNodeId = 0xa0d3a59fa11788b208ecddbbfe823a52b15af75d8a2260e7ae05e08f860e0d55;
-        sec.avaxUsdStorkNodeId = 0x38a286a7e435fa4638bcd32620c5ae070b4be9cd905e696c696f1145b7a5e790;
-        sec.avaxUsdcStorkNodeId = 0x242ea32dfc4f37b7d3065d40b8d514718b1f9dbe15bae07e31dd6ec525ca0f20;
+        // sec.avaxUsdStorkNodeId = 0x38a286a7e435fa4638bcd32620c5ae070b4be9cd905e696c696f1145b7a5e790;
+        // sec.avaxUsdcStorkNodeId = 0x242ea32dfc4f37b7d3065d40b8d514718b1f9dbe15bae07e31dd6ec525ca0f20;
         // sec.avaxUsdcStorkFallbackNodeId = 0x6d3e9bb53f658df1e64b36627f5f49b07bc516ddf2e247a479ce57ec72cc10af;
+        sec.avaxUsdStorkMarkNodeId = 0x504509f270d28c1b0732f22b8f07d7a0818f7ad5091292d89c2c9a25c7ee6f8c;
+        sec.avaxUsdcStorkMarkNodeId = 0x8dc0d3487e7a5ba2dbeb8589e42775d3cd070ffc85b0ef13d2eff62d85fb699c;
 
         // sec.usdeUsdNodeId = 0xbe0af1b6d97a67ac965623147c5df0eb768600fe656fb64e933d6ebbde9b20a3;
         // sec.usdeUsdcNodeId = 0xd37e1ea5c381faeadb7df088eb07d98b5f6804e1a876225932c8dd4627116320;
@@ -81,27 +93,35 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         // sec.mkrUsdNodeId = 0x7912d76ccc24fcaaae642938aa800060eb51a417f78bfbd2614e704a5e1c654d;
         // sec.mkrUsdcNodeId = 0xb6d5c17643033a9fdd9f7c334eff669b5ac7d24078a2f7fd0a1c6c9492656314;
-        sec.mkrUsdStorkNodeId = 0xfe7405e631e85b6639d2b367910f5eb4b9fb20f3e63f6994615a3ca4c59673e0;
-        sec.mkrUsdcStorkNodeId = 0x57c7f9c7e4149f3f0d0d52ccf2e16773f30f7d86ce2238835b6b21a4369de9b6;
+        // sec.mkrUsdStorkNodeId = 0xfe7405e631e85b6639d2b367910f5eb4b9fb20f3e63f6994615a3ca4c59673e0;
+        // sec.mkrUsdcStorkNodeId = 0x57c7f9c7e4149f3f0d0d52ccf2e16773f30f7d86ce2238835b6b21a4369de9b6;
         // sec.mkrUsdcStorkFallbackNodeId = 0xbceafdc09744bd3f28d96be29b8681078b7ce2d5f56b5c4b9a376b3302864def;
+        sec.mkrUsdStorkMarkNodeId = 0xc4d8c893a0abab8d741a8e472bfff013332a8553d1a78b0f1a1b8038d45ef601;
+        sec.mkrUsdcStorkMarkNodeId = 0x0f6f0722363cd9acba72eec13b265415756e3b4194204d36c3e6db7b3cfa68d6;
 
         // sec.linkUsdNodeId = 0x4fd9b8fefdedd721960f645a094ed2440a8c66a2fe2155850c906cd11584d96c;
         // sec.linkUsdcNodeId = 0x7310324711693666d0af13f17be5aa6a35944f4b26378de1c2145e9603974fc4;
-        sec.linkUsdStorkNodeId = 0x3e969ab77d54bfdc9035abd97390ed6e8877c69a41241c15e833805fa863b010;
-        sec.linkUsdcStorkNodeId = 0xf47e4aaaaa8da8abe2d41c74a53490ca2c2937c6a541f4a3c74383b4b3ad63eb;
+        // sec.linkUsdStorkNodeId = 0x3e969ab77d54bfdc9035abd97390ed6e8877c69a41241c15e833805fa863b010;
+        // sec.linkUsdcStorkNodeId = 0xf47e4aaaaa8da8abe2d41c74a53490ca2c2937c6a541f4a3c74383b4b3ad63eb;
         // sec.linkUsdcStorkFallbackNodeId = 0xcb3098ea289c21ee1fb27a37b9a3fa7dd8ed86c2dbde2e948342510b32fecf1b;
+        sec.linkUsdStorkMarkNodeId = 0x56ab4776a8a68d0528cfcd9ac1692788367008f5aff1f036202172b9606abd21;
+        sec.linkUsdcStorkMarkNodeId = 0x7a29582bdeee69f780aa7cc9958377fc09d915606f0a2bdb44305eaf3c0f271b;
 
         // sec.aaveUsdNodeId = 0x52b638c5eb43dc48a5a6894d3b99548bd20c6c24d82e8c32f4e392f4a37729d9;
         // sec.aaveUsdcNodeId = 0xf48d83445dc0007a52c6181f70459a003368796132feed02347627b9d555f363;
-        sec.aaveUsdStorkNodeId = 0xeb4102b6e24d4f3446be08989c92709eb4c1660661686f815cf0272376890bec;
-        sec.aaveUsdcStorkNodeId = 0x725ae24c374c3a2530285b2a27dbc5b946b6dbc8706c4bb436b0be1698666b8b;
+        // sec.aaveUsdStorkNodeId = 0xeb4102b6e24d4f3446be08989c92709eb4c1660661686f815cf0272376890bec;
+        // sec.aaveUsdcStorkNodeId = 0x725ae24c374c3a2530285b2a27dbc5b946b6dbc8706c4bb436b0be1698666b8b;
         // sec.aaveUsdcStorkFallbackNodeId = 0x983afacbf92b5aab21b4927cc7516af24e56cfa500ac477da89f56b8ba7fe999;
+        sec.aaveUsdStorkMarkNodeId = 0xd8925d75e07cdbbdbf014acad19441d82516746863000543da4755e94d38a08c;
+        sec.aaveUsdcStorkMarkNodeId = 0xb63d0cd61644a24718427dd1ab9759bd2d4ec5441c5b26c43b5b9c82473caca5;
 
         // sec.crvUsdNodeId = 0x0a2b8aa034752df828605194f02ec6227a84ad26e452d23203a90e8bbb864bb8;
         // sec.crvUsdcNodeId = 0xe791c83f95269f70f5f07c0aa698e10d804b386e94f7f15006eda496237eb04a;
-        sec.crvUsdStorkNodeId = 0xd8bef3655106c404f35eaefcc644b4982945622d73feaf13d75384f0f8ef7767;
-        sec.crvUsdcStorkNodeId = 0xba95f5cb01117ab4ef95361c8ed3e5d14ca978151d86c5b780476e09fedfcd96;
+        // sec.crvUsdStorkNodeId = 0xd8bef3655106c404f35eaefcc644b4982945622d73feaf13d75384f0f8ef7767;
+        // sec.crvUsdcStorkNodeId = 0xba95f5cb01117ab4ef95361c8ed3e5d14ca978151d86c5b780476e09fedfcd96;
         // sec.crvUsdcStorkFallbackNodeId = 0x168a4c6d873dafb9887009f8bde06de6a9e2a17efaeeb7a7ff4fd6d0d61dfefa;
+        sec.crvUsdStorkMarkNodeId = 0x3cae607a8cf2a313032f6a77459085f9c93aab4180cced4f386a6f00512a6878;
+        sec.crvUsdcStorkMarkNodeId = 0x24131e9cde7f76bfc6c06cff3f2c7254deab73059e9b84a2347751ab98c0b119;
 
         // sec.uniUsdNodeId = 0xe696757f37d427a9a75879336ba46b647057c4a06c70a4d755897e03d7baac5c;
         // sec.uniUsdcNodeId = 0x638ac95f3b619ce7aadc3ce45f5b50fc7edb34d698b854016ab2b84898364cab;

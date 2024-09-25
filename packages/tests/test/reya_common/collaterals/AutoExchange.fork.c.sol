@@ -124,7 +124,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         );
         vm.mockCall(
             sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
+            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkMarkNodeId)),
             abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
         );
 
@@ -318,7 +318,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         );
         vm.mockCall(
             sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
+            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkMarkNodeId)),
             abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
         );
 
@@ -518,7 +518,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         );
         vm.mockCall(
             sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
+            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkMarkNodeId)),
             abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
         );
 
