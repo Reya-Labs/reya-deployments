@@ -1,0 +1,27 @@
+[invoke.oracle_manager_register_node_mkr_usdc_mark_fallback_stork_reya]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_FALLBACK_REDUCER %>",
+    "0x",
+    [
+        "<%= settings.mkrUsdcMarkNodeIdStork %>",
+        "<%= settings.mkrUsdcMarkNodeIdReya %>",  # reya
+    ],
+]
+var.mkrUsdcMarkNodeIdFallbackStorkReya.event = "NodeRegistered"
+var.mkrUsdcMarkNodeIdFallbackStorkReya.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]
+
+[invoke.oracle_manager_mkr_usdc_mark_fallback_stork_reya_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.mkrUsdcMarkNodeIdFallbackStorkReya %>",
+    "<%= settings.mkrUsdcMarkMaxStaleDurationFallbackStorkReya %>",
+]
+depends = [
+    "invoke.oracle_manager_register_node_mkr_usdc_mark_fallback_stork_reya",
+]

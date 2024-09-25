@@ -89,11 +89,13 @@ struct StaticEcosystem {
     // bytes32 crvUsdcStorkFallbackNodeId;
     // bytes32 uniUsdNodeId;
     // bytes32 uniUsdcNodeId;
-    bytes32 uniUsdStorkNodeId;
-    bytes32 uniUsdcStorkNodeId;
+    // bytes32 uniUsdStorkNodeId;
+    // bytes32 uniUsdcStorkNodeId;
     // bytes32 uniUsdcStorkFallbackNodeId;
     // bytes32 susdeUsdNodeId;
     // bytes32 susdeUsdcNodeId;
+    bytes32 uniUsdStorkMarkNodeId;
+    bytes32 uniUsdcStorkMarkNodeId;
     bytes32 susdeUsdStorkNodeId;
     bytes32 susdeUsdcStorkNodeId;
     // bytes32 susdeUsdcStorkFallbackNodeId;

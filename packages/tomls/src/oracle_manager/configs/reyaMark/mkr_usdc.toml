@@ -1,0 +1,23 @@
+[invoke.oracle_manager_register_node_mkr_usdc_mark_reya]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_STORK_OFFCHAIN_LOOKUP %>",
+    "<%= defaultAbiCoder.encode(['address','string'], [contracts.OracleAdaptersProxy.address, settings.reyaAssetPairIdMKRMark]) %>",
+    [
+    ],
+]
+var.mkrUsdcMarkNodeIdReya.event = "NodeRegistered"
+var.mkrUsdcMarkNodeIdReya.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]
+
+[invoke.oracle_manager_mkr_usdc_mark_reya_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.mkrUsdcMarkNodeIdReya %>",
+    "<%= settings.mkrUsdcMarkMaxStaleDurationReya %>",
+]
+depends = ["invoke.oracle_manager_register_node_mkr_usdc_mark_reya"]
