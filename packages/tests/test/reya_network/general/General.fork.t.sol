@@ -49,6 +49,10 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         check_OracleNodePrices(true);
     }
 
+    function test_MarketsPrices() public {
+        check_marketsPrices();
+    }
+
     // function mockStaleStork() private {
     //     vm.mockCall(
     //         sec.oracleAdaptersProxy,

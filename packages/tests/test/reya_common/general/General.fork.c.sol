@@ -5,6 +5,7 @@ import "../DataTypes.sol";
 
 import { IOwnerUpgradeModule } from "../../../src/interfaces/IOwnerUpgradeModule.sol";
 import { IOracleManagerProxy, NodeOutput, NodeDefinition } from "../../../src/interfaces/IOracleManagerProxy.sol";
+import { IPassivePerpProxy, MarketConfigurationData } from "../../../src/interfaces/IPassivePerpProxy.sol";
 
 struct LocalState {
     bytes32[] nodeIds;
@@ -36,6 +37,8 @@ struct LocalState {
     uint256 maxDeviationSUSDE;
     uint256 meanPriceStableCoin;
     uint256 maxDeviationStableCoin;
+    uint256[] meanPriceMarket;
+    uint256[] maxDeviationMarket;
 }
 
 contract GeneralForkCheck is BaseReyaForkTest {
@@ -67,38 +70,63 @@ contract GeneralForkCheck is BaseReyaForkTest {
     }
 
     function setupOracleNodePriceParams() private {
+        ls.meanPriceMarket.push(0);
+        ls.maxDeviationMarket.push(0);
+
         ls.meanPriceETH = 3500e18;
         ls.maxDeviationETH = 2000e18;
+        ls.meanPriceMarket.push(ls.meanPriceETH);
+        ls.maxDeviationMarket.push(ls.maxDeviationETH);
 
         ls.meanPriceBTC = 65_000e18;
         ls.maxDeviationBTC = 20_000e18;
+        ls.meanPriceMarket.push(ls.meanPriceBTC);
+        ls.maxDeviationMarket.push(ls.maxDeviationBTC);
 
         ls.meanPriceSOL = 150e18;
         ls.maxDeviationSOL = 100e18;
+        ls.meanPriceMarket.push(ls.meanPriceSOL);
+        ls.maxDeviationMarket.push(ls.maxDeviationSOL);
 
         ls.meanPriceARB = 0.7e18;
         ls.maxDeviationARB = 0.3e18;
+        ls.meanPriceMarket.push(ls.meanPriceARB);
+        ls.maxDeviationMarket.push(ls.maxDeviationARB);
 
         ls.meanPriceOP = 1.7e18;
         ls.maxDeviationOP = 1e18;
+        ls.meanPriceMarket.push(ls.meanPriceOP);
+        ls.maxDeviationMarket.push(ls.maxDeviationOP);
 
         ls.meanPriceAVAX = 28e18;
         ls.maxDeviationAVAX = 14e18;
+        ls.meanPriceMarket.push(ls.meanPriceAVAX);
+        ls.maxDeviationMarket.push(ls.maxDeviationAVAX);
 
         ls.meanPriceMKR = 2000e18;
         ls.maxDeviationMKR = 1000e18;
+        ls.meanPriceMarket.push(ls.meanPriceMKR);
+        ls.maxDeviationMarket.push(ls.maxDeviationMKR);
 
         ls.meanPriceLINK = 15e18;
         ls.maxDeviationLINK = 10e18;
+        ls.meanPriceMarket.push(ls.meanPriceLINK);
+        ls.maxDeviationMarket.push(ls.maxDeviationLINK);
 
         ls.meanPriceAAVE = 130e18;
         ls.maxDeviationAAVE = 50e18;
+        ls.meanPriceMarket.push(ls.meanPriceAAVE);
+        ls.maxDeviationMarket.push(ls.maxDeviationAAVE);
 
         ls.meanPriceCRV = 0.3e18;
         ls.maxDeviationCRV = 0.15e18;
+        ls.meanPriceMarket.push(ls.meanPriceCRV);
+        ls.maxDeviationMarket.push(ls.maxDeviationCRV);
 
         ls.meanPriceUNI = 7e18;
         ls.maxDeviationUNI = 3e18;
+        ls.meanPriceMarket.push(ls.meanPriceUNI);
+        ls.maxDeviationMarket.push(ls.maxDeviationUNI);
 
         ls.meanPriceSUSDE = 1.1e18;
         ls.maxDeviationSUSDE = 0.01e18;
@@ -199,7 +227,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviations.push(ls.maxDeviationSOL);
 
         ls.nodeIds.push(sec.solUsdcStorkMarkNodeId);
-        ls.meanPrices.push(ls.meanPriceSOL);        
+        ls.meanPrices.push(ls.meanPriceSOL);
         ls.maxDeviations.push(ls.maxDeviationSOL);
 
         // ls.nodeIds.push(sec.arbUsdNodeId);
@@ -415,7 +443,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviations.push(ls.maxDeviationCRV);
 
         ls.nodeIds.push(sec.crvUsdcStorkMarkNodeId);
-        ls.meanPrices.push(ls.meanPriceCRV);        
+        ls.meanPrices.push(ls.meanPriceCRV);
         ls.maxDeviations.push(ls.maxDeviationCRV);
 
         // ls.nodeIds.push(sec.uniUsdNodeId);
@@ -500,6 +528,18 @@ contract GeneralForkCheck is BaseReyaForkTest {
                 address owner = IOwnerUpgradeModule(priceFeed).owner();
                 assertEq(owner, sec.multisig);
             }
+        }
+    }
+
+    function check_marketsPrices() public {
+        setupOracleNodePriceParams();
+        for (uint128 i = 1; i <= lastMarketId(); i++) {
+            MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
+            bytes32 nodeId = marketConfig.oracleNodeId;
+
+            NodeOutput.Data memory nodeOutput = IOracleManagerProxy(sec.oracleManager).process(nodeId);
+
+            assertApproxEqAbsDecimal(nodeOutput.price, ls.meanPriceMarket[i], ls.maxDeviationMarket[i], 18);
         }
     }
 }
