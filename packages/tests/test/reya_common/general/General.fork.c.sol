@@ -363,7 +363,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviations.push(ls.maxDeviationUNI);
 
         ls.nodeIds.push(sec.uniUsdcStorkMarkNodeId);
-        ls.meanPrices.push(ls.meanPriceUNI);        
+        ls.meanPrices.push(ls.meanPriceUNI);
         ls.maxDeviations.push(ls.maxDeviationUNI);
 
         // ls.nodeIds.push(sec.susdeUsdNodeId);
