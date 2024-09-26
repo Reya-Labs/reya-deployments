@@ -967,6 +967,15 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         s[9] = sd(-0.09e18);
 
         SD59x18[] memory sPrime = new SD59x18[](10);
+        sPrime[1] = sd(-0.01e18);
+        sPrime[2] = sd(-0.019999e18);
+        sPrime[3] = sd(-0.029995e18);
+        sPrime[4] = sd(-0.039987e18);
+        sPrime[5] = sd(-0.049973e18);
+        sPrime[6] = sd(-0.059951e18);
+        sPrime[7] = sd(-0.06992e18);
+        sPrime[8] = sd(-0.079878e18);
+        sPrime[9] = sd(-0.089824e18);
 
         trade_slippage_helper({ marketId: 14, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }

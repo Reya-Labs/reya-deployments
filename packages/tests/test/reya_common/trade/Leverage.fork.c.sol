@@ -37,6 +37,9 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant zroLeverage = 5e18;
     uint256 private constant xrpLeverage = 30e18;
 
+    address private user;
+    uint256 private userPk;
+
     uint256[] private expectedLeverage;
 
     function setUp() public {
@@ -64,7 +67,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         mockFreshPrices();
         removeCollateralCap(collateral);
 
-        (address user, uint256 userPk) = makeAddrAndKey("user");
+        (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 1_000_000e18;
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(1_000_000e18);
