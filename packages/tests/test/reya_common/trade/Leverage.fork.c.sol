@@ -60,12 +60,17 @@ contract LeverageForkCheck is BaseReyaForkTest {
         expectedLeverage.push(suiLeverage);
         expectedLeverage.push(tiaLeverage);
         expectedLeverage.push(seiLeverage);
+        expectedLeverage.push(zroLeverage);
         expectedLeverage.push(xrpLeverage);
     }
 
     function check_trade_leverage_helper(uint128 marketId, address collateral) private {
         mockFreshPrices();
-        removeCollateralCap(collateral);
+        if (collateral == sec.usdc) {
+            removeCollateralCap(sec.rusd);
+        } else {
+            removeCollateralCap(collateral);
+        }
 
         (user, userPk) = makeAddrAndKey("user");
         uint256 amount = 1_000_000e18;
