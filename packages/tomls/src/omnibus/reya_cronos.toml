@@ -449,7 +449,7 @@ market1Eth_marketOrderMaxStaleDuration = "2"
 
 [var.market_2btc]
 market2Btc_riskMatrixIndex = "0"
-market2Btc_maxOpenBaseUnscaled = "5"
+market2Btc_maxOpenBaseUnscaled = "3"
 market2Btc_velocityMultiplierUnscaled = "300"
 market2Btc_oracleNodeId = "<%= settings.btcUsdcMarkNodeIdStork %>"
 market2Btc_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -485,7 +485,7 @@ market3Sol_marketOrderMaxStaleDuration = "2"
 
 [var.market_4arb]
 market4Arb_riskMatrixIndex = "0"
-market4Arb_maxOpenBaseUnscaled = "165000"
+market4Arb_maxOpenBaseUnscaled = "84000"
 market4Arb_velocityMultiplierUnscaled = "72"
 market4Arb_oracleNodeId = "<%= settings.arbUsdcMarkNodeIdStork %>"
 market4Arb_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -503,7 +503,7 @@ market4Arb_marketOrderMaxStaleDuration = "2"
 
 [var.market_5op]
 market5Op_riskMatrixIndex = "0"
-market5Op_maxOpenBaseUnscaled = "60000"
+market5Op_maxOpenBaseUnscaled = "15000"
 market5Op_velocityMultiplierUnscaled = "72"
 market5Op_oracleNodeId = "<%= settings.opUsdcMarkNodeIdStork %>"
 market5Op_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -521,7 +521,7 @@ market5Op_marketOrderMaxStaleDuration = "2"
 
 [var.market_6avax]
 market6Avax_riskMatrixIndex = "0"
-market6Avax_maxOpenBaseUnscaled = "3500"
+market6Avax_maxOpenBaseUnscaled = "3700"
 market6Avax_velocityMultiplierUnscaled = "72"
 market6Avax_oracleNodeId = "<%= settings.avaxUsdcMarkNodeIdStork %>"
 market6Avax_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -539,7 +539,7 @@ market6Avax_marketOrderMaxStaleDuration = "2"
 
 [var.market_7mkr]
 market7Mkr_riskMatrixIndex = "0"
-market7Mkr_maxOpenBaseUnscaled = "1"
+market7Mkr_maxOpenBaseUnscaled = "4.5"
 market7Mkr_velocityMultiplierUnscaled = "1000"
 market7Mkr_oracleNodeId = "<%= settings.mkrUsdcMarkNodeIdStork %>"
 market7Mkr_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -557,7 +557,7 @@ market7Mkr_marketOrderMaxStaleDuration = "2"
 
 [var.market_8link]
 market8Link_riskMatrixIndex = "0"
-market8Link_maxOpenBaseUnscaled = "8750"
+market8Link_maxOpenBaseUnscaled = "4400"
 market8Link_velocityMultiplierUnscaled = "50"
 market8Link_oracleNodeId = "<%= settings.linkUsdcMarkNodeIdStork %>"
 market8Link_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -575,7 +575,7 @@ market8Link_marketOrderMaxStaleDuration = "2"
 
 [var.market_9aave]
 market9Aave_riskMatrixIndex = "0"
-market9Aave_maxOpenBaseUnscaled = "580"
+market9Aave_maxOpenBaseUnscaled = "300"
 market9Aave_velocityMultiplierUnscaled = "50"
 market9Aave_oracleNodeId = "<%= settings.aaveUsdcMarkNodeIdStork %>"
 market9Aave_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -593,7 +593,7 @@ market9Aave_marketOrderMaxStaleDuration = "2"
 
 [var.market_10crv]
 market10Crv_riskMatrixIndex = "0"
-market10Crv_maxOpenBaseUnscaled = "335000"
+market10Crv_maxOpenBaseUnscaled = "170000"
 market10Crv_velocityMultiplierUnscaled = "50"
 market10Crv_oracleNodeId = "<%= settings.crvUsdcMarkNodeIdStork %>"
 market10Crv_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -611,7 +611,7 @@ market10Crv_marketOrderMaxStaleDuration = "2"
 
 [var.market_11uni]
 market11Uni_riskMatrixIndex = "0"
-market11Uni_maxOpenBaseUnscaled = "15000"
+market11Uni_maxOpenBaseUnscaled = "3700"
 market11Uni_velocityMultiplierUnscaled = "50"
 market11Uni_oracleNodeId = "<%= settings.uniUsdcMarkNodeIdStork %>"
 market11Uni_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
