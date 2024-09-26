@@ -436,7 +436,7 @@ market1Eth_marketOrderMaxStaleDuration = "0"
 
 [var.market_2btc]
 market2Btc_riskMatrixIndex = "0"
-market2Btc_maxOpenBaseUnscaled = "3"
+market2Btc_maxOpenBaseUnscaled = "3.8"
 market2Btc_velocityMultiplierUnscaled = "300"
 market2Btc_oracleNodeId = "<%= settings.btcUsdcMarkNodeIdStork %>"
 market2Btc_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
