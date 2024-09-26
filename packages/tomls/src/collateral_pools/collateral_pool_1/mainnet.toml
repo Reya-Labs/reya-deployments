@@ -40,4 +40,9 @@ depends = [
     "invoke.market_9aave_merge_collateral_pool",
     "invoke.market_10crv_merge_collateral_pool",
     "invoke.market_11uni_merge_collateral_pool",
+    "invoke.market_12sui_merge_collateral_pool",
+    "invoke.market_13tia_merge_collateral_pool",
+    "invoke.market_14sei_merge_collateral_pool",
+    "invoke.market_15zro_merge_collateral_pool",
+    "invoke.market_16xrp_merge_collateral_pool",
 ]
