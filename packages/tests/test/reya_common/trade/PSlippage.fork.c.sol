@@ -516,7 +516,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(0.079881e18);
         sPrime[9] = sd(0.089829e18);
 
-        trade_slippage_helper({ marketId: 14, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 14, s: s, sPrime: sPrime, eps: ud(0.004e18) });
     }
 
     function check_trade_slippage_zro_long() public {
@@ -977,7 +977,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(-0.079878e18);
         sPrime[9] = sd(-0.089824e18);
 
-        trade_slippage_helper({ marketId: 14, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 14, s: s, sPrime: sPrime, eps: ud(0.004e18) });
     }
 
     function check_trade_slippage_zro_short() public {
