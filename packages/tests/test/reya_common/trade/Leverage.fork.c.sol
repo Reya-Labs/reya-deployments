@@ -10,7 +10,7 @@ import {
     ParentCollateralConfig
 } from "../../../src/interfaces/ICoreProxy.sol";
 
-import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
+import { IPassivePerpProxy, MarketConfigurationData } from "../../../src/interfaces/IPassivePerpProxy.sol";
 
 import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
 
@@ -90,9 +90,10 @@ contract LeverageForkCheck is BaseReyaForkTest {
         assertEq(IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, accountId).base, base.unwrap());
 
         RiskMultipliers memory riskMultipliers = ICoreProxy(sec.core).getRiskMultipliers(1);
+        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
         UD60x18 lmr = ud(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).liquidationMarginRequirement);
         UD60x18 imr = lmr.mul(ud(riskMultipliers.imMultiplier));
-        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdcStorkMarkNodeId).price);
+        UD60x18 price = ud(IOracleManagerProxy(sec.oracleManager).process(marketConfig.oracleNodeId).price);
         UD60x18 absBase = base.abs().intoUD60x18();
         UD60x18 leverage = absBase.mul(price).div(imr);
         assertApproxEqAbsDecimal(leverage.unwrap(), expectedLeverage[marketId], 2e18, 18);
