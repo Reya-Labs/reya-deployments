@@ -445,7 +445,7 @@ market1Eth_priceSpacingUnscaled = "0.001"
 market1Eth_depthFactorUnscaled = "23"
 market1Eth_maxExposureFactorUnscaled = "0.999"
 market1Eth_maxPSlippageUnscaled = "0.1"
-market1Eth_marketOrderMaxStaleDuration = "2"
+market1Eth_marketOrderMaxStaleDuration = "4"
 
 [var.market_2btc]
 market2Btc_riskMatrixIndex = "0"
@@ -463,7 +463,7 @@ market2Btc_priceSpacingUnscaled = "0.001"
 market2Btc_depthFactorUnscaled = "23"
 market2Btc_maxExposureFactorUnscaled = "0.999"
 market2Btc_maxPSlippageUnscaled = "0.1"
-market2Btc_marketOrderMaxStaleDuration = "2"
+market2Btc_marketOrderMaxStaleDuration = "4"
 
 [var.market_3sol]
 market3Sol_riskMatrixIndex = "0"
@@ -481,7 +481,7 @@ market3Sol_priceSpacingUnscaled = "0.001"
 market3Sol_depthFactorUnscaled = "7.2"
 market3Sol_maxExposureFactorUnscaled = "0.999"
 market3Sol_maxPSlippageUnscaled = "0.1"
-market3Sol_marketOrderMaxStaleDuration = "2"
+market3Sol_marketOrderMaxStaleDuration = "4"
 
 [var.market_4arb]
 market4Arb_riskMatrixIndex = "0"
@@ -499,7 +499,7 @@ market4Arb_priceSpacingUnscaled = "0.0001"
 market4Arb_depthFactorUnscaled = "7.2"
 market4Arb_maxExposureFactorUnscaled = "0.999"
 market4Arb_maxPSlippageUnscaled = "0.1"
-market4Arb_marketOrderMaxStaleDuration = "2"
+market4Arb_marketOrderMaxStaleDuration = "4"
 
 [var.market_5op]
 market5Op_riskMatrixIndex = "0"
@@ -517,7 +517,7 @@ market5Op_priceSpacingUnscaled = "0.001"
 market5Op_depthFactorUnscaled = "7.2"
 market5Op_maxExposureFactorUnscaled = "0.999"
 market5Op_maxPSlippageUnscaled = "0.1"
-market5Op_marketOrderMaxStaleDuration = "2"
+market5Op_marketOrderMaxStaleDuration = "4"
 
 [var.market_6avax]
 market6Avax_riskMatrixIndex = "0"
@@ -535,7 +535,7 @@ market6Avax_priceSpacingUnscaled = "0.001"
 market6Avax_depthFactorUnscaled = "7.2"
 market6Avax_maxExposureFactorUnscaled = "0.999"
 market6Avax_maxPSlippageUnscaled = "0.1"
-market6Avax_marketOrderMaxStaleDuration = "2"
+market6Avax_marketOrderMaxStaleDuration = "4"
 
 [var.market_7mkr]
 market7Mkr_riskMatrixIndex = "0"
@@ -553,7 +553,7 @@ market7Mkr_priceSpacingUnscaled = "0.001"
 market7Mkr_depthFactorUnscaled = "3"
 market7Mkr_maxExposureFactorUnscaled = "0.999"
 market7Mkr_maxPSlippageUnscaled = "0.1"
-market7Mkr_marketOrderMaxStaleDuration = "2"
+market7Mkr_marketOrderMaxStaleDuration = "4"
 
 [var.market_8link]
 market8Link_riskMatrixIndex = "0"
@@ -571,7 +571,7 @@ market8Link_priceSpacingUnscaled = "0.001"
 market8Link_depthFactorUnscaled = "3"
 market8Link_maxExposureFactorUnscaled = "0.999"
 market8Link_maxPSlippageUnscaled = "0.1"
-market8Link_marketOrderMaxStaleDuration = "2"
+market8Link_marketOrderMaxStaleDuration = "4"
 
 [var.market_9aave]
 market9Aave_riskMatrixIndex = "0"
@@ -589,7 +589,7 @@ market9Aave_priceSpacingUnscaled = "0.001"
 market9Aave_depthFactorUnscaled = "3"
 market9Aave_maxExposureFactorUnscaled = "0.999"
 market9Aave_maxPSlippageUnscaled = "0.1"
-market9Aave_marketOrderMaxStaleDuration = "2"
+market9Aave_marketOrderMaxStaleDuration = "4"
 
 [var.market_10crv]
 market10Crv_riskMatrixIndex = "0"
@@ -607,7 +607,7 @@ market10Crv_priceSpacingUnscaled = "0.0001"
 market10Crv_depthFactorUnscaled = "3"
 market10Crv_maxExposureFactorUnscaled = "0.999"
 market10Crv_maxPSlippageUnscaled = "0.1"
-market10Crv_marketOrderMaxStaleDuration = "2"
+market10Crv_marketOrderMaxStaleDuration = "4"
 
 [var.market_11uni]
 market11Uni_riskMatrixIndex = "0"
@@ -625,7 +625,7 @@ market11Uni_priceSpacingUnscaled = "0.001"
 market11Uni_depthFactorUnscaled = "3"
 market11Uni_maxExposureFactorUnscaled = "0.999"
 market11Uni_maxPSlippageUnscaled = "0.1"
-market11Uni_marketOrderMaxStaleDuration = "2"
+market11Uni_marketOrderMaxStaleDuration = "4"
 
 [var.market_12sui]
 market12Sui_riskMatrixIndex = "0"
@@ -643,7 +643,7 @@ market12Sui_priceSpacingUnscaled = "0.001"
 market12Sui_depthFactorUnscaled = ".25"
 market12Sui_maxExposureFactorUnscaled = "0.999"
 market12Sui_maxPSlippageUnscaled = "0.1"
-market12Sui_marketOrderMaxStaleDuration = "2"
+market12Sui_marketOrderMaxStaleDuration = "4"
 
 [var.market_13tia]
 market13Tia_riskMatrixIndex = "0"
@@ -661,7 +661,7 @@ market13Tia_priceSpacingUnscaled = "0.001"
 market13Tia_depthFactorUnscaled = ".25"
 market13Tia_maxExposureFactorUnscaled = "0.999"
 market13Tia_maxPSlippageUnscaled = "0.1"
-market13Tia_marketOrderMaxStaleDuration = "2"
+market13Tia_marketOrderMaxStaleDuration = "4"
 
 [var.market_14sei]
 market14Sei_riskMatrixIndex = "0"
@@ -679,7 +679,7 @@ market14Sei_priceSpacingUnscaled = "0.001"
 market14Sei_depthFactorUnscaled = ".25"
 market14Sei_maxExposureFactorUnscaled = "0.999"
 market14Sei_maxPSlippageUnscaled = "0.1"
-market14Sei_marketOrderMaxStaleDuration = "2"
+market14Sei_marketOrderMaxStaleDuration = "4"
 
 [var.market_15zro]
 market15Zro_riskMatrixIndex = "0"
@@ -697,7 +697,7 @@ market15Zro_priceSpacingUnscaled = "0.001"
 market15Zro_depthFactorUnscaled = ".25"
 market15Zro_maxExposureFactorUnscaled = "0.999"
 market15Zro_maxPSlippageUnscaled = "0.1"
-market15Zro_marketOrderMaxStaleDuration = "2"
+market15Zro_marketOrderMaxStaleDuration = "4"
 
 [var.market_16xrp]
 market16Xrp_riskMatrixIndex = "0"
@@ -715,7 +715,7 @@ market16Xrp_priceSpacingUnscaled = "0.001"
 market16Xrp_depthFactorUnscaled = ".25"
 market16Xrp_maxExposureFactorUnscaled = "0.999"
 market16Xrp_maxPSlippageUnscaled = "0.1"
-market16Xrp_marketOrderMaxStaleDuration = "2"
+market16Xrp_marketOrderMaxStaleDuration = "4"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "11"
