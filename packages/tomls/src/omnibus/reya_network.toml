@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/mainnet.toml",
     "../oracle_adapters/mainnet.toml",
 ]
-version = "1.0.25"
+version = "1.0.26"
 
 [var.chain_ids]
 ethereumChainId = "1"
