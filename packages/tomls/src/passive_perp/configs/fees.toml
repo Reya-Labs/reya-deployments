@@ -18,6 +18,16 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
+[invoke.passive_perp_set_exchange_rage_trade_rebate]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setExchangeRebate"
+args = [
+    "<%= settings.rageTradeExchangeId %>",
+    "<%= parseEther(settings.rageTradeExchangeRebateUnscaled) %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
 [invoke.passive_perp_set_pool_1rusd_rebate]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"

@@ -33,4 +33,19 @@ var.lotteryPotExchangeId.arg = 0
 depends = [
     "invoke.exchange_pass_lottery_pot_mint_owner",
     "invoke.core_configure_protocol",
+    "invoke.core_register_exchange_passive_pool",
+]
+
+[invoke.core_register_exchange_rage_trade]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'ExchangeRegistered','inputs':[{'name':'exchangeId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "owner"
+func = "registerExchange"
+args = ["<%= settings.rageTradeAccountId %>"]
+var.rageTradeExchangeId.event = "ExchangeRegistered"
+var.rageTradeExchangeId.arg = 0
+depends = [
+    "invoke.exchange_pass_rage_trade_mint_owner",
+    "invoke.core_configure_protocol",
+    "invoke.core_register_exchange_lottery_pot",
 ]
