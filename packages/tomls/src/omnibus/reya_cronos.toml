@@ -488,7 +488,7 @@ market3Sol_marketOrderMaxStaleDuration = "4"
 
 [var.market_4arb]
 market4Arb_riskMatrixIndex = "0"
-market4Arb_maxOpenBaseUnscaled = "30000"
+market4Arb_maxOpenBaseUnscaled = "35000"
 market4Arb_velocityMultiplierUnscaled = "72"
 market4Arb_oracleNodeId = "<%= settings.arbUsdcMarkNodeIdStork %>"
 market4Arb_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -614,7 +614,7 @@ market10Crv_marketOrderMaxStaleDuration = "4"
 
 [var.market_11uni]
 market11Uni_riskMatrixIndex = "0"
-market11Uni_maxOpenBaseUnscaled = "1500"
+market11Uni_maxOpenBaseUnscaled = "2500"
 market11Uni_velocityMultiplierUnscaled = "50"
 market11Uni_oracleNodeId = "<%= settings.uniUsdcMarkNodeIdStork %>"
 market11Uni_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
