@@ -1,1 +1,1 @@
-include = ["./mainnet.toml"]
+include = ["./mainnet.toml", "configs/set_sub_second_executors.toml"]
