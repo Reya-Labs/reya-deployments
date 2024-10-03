@@ -5,5 +5,6 @@ include = [
     "configs/global_config.toml",
     "configs/set_publishers.toml",
     "configs/set_executors.toml",
+    "configs/set_sub_second_executors.toml",
     "configs/allow_all_executors.toml",
 ]
