@@ -1,0 +1,219 @@
+[invoke.core_proxy_set_pp_market_vol_configurator1]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator2]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator2 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator3]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator3 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator4]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator4 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator5]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator5 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator6]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator6 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator7]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator7 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator8]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator8 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator9]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator9 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator10]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator10 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator11]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator11 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator12]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator12 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator13]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator13 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator14]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator14 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator15]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator15 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator16]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator16 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator17]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator17 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator18]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator18 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator19]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator19 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_set_pp_market_vol_configurator20]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator20 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]

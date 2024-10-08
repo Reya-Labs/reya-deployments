@@ -1,5 +1,1 @@
-include = [
-    "./mainnet.toml",
-    "utils/deploy_proxy.toml",
-    "configs/market_vol_configurators.toml",
-]
+include = ["./mainnet.toml", "utils/deploy_proxy.toml"]
