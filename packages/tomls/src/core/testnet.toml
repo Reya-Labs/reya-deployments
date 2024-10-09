@@ -2,5 +2,4 @@ include = [
     "./mainnet.toml",
     "utils/deploy_proxy.toml",
     "configs/tokens/wsteth.toml",
-    "configs/market_vol_configurators.toml",
 ]
