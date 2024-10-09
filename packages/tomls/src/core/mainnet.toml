@@ -8,4 +8,5 @@ include = [
     "configs/tokens/weth.toml",
     "configs/tokens/usde.toml",
     "configs/tokens/susde.toml",
+    "configs/market_vol_configurators.toml",
 ]
