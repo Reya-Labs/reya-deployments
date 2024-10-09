@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/mainnet.toml",
     "../oracle_adapters/mainnet.toml",
 ]
-version = "1.0.26"
+version = "1.0.27"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -49,7 +49,7 @@ ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
 ordersGatewayRouterPackage = "reya-orders-gateway:1.0.6@router"
 oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
-oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.4@router"
+oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.5@router"
 
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
