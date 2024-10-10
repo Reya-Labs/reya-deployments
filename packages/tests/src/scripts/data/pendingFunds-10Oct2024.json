@@ -1,0 +1,78 @@
+[
+  {
+    "wallet_address": "0x623274e8ca0bfddea422a39c6bc789561a6aa02d",
+    "amount": 19193000
+  },
+  {
+    "wallet_address": "0xdf7616dbde187e56185913292eb8a7c7e9d4c0c0",
+    "amount": 10735000
+  },
+  {
+    "wallet_address": "0x713c16f062bbd1f4b365b18cd98642c6c95c5b7b",
+    "amount": 116083000
+  },
+  {
+    "wallet_address": "0xf269428631993dec20527c14d51753579c87fbbb",
+    "amount": 105000000
+  },
+  {
+    "wallet_address": "0x2d806988c9d9e0544b254130d3f177ee2400dd49",
+    "amount": 500000000
+  },
+  {
+    "wallet_address": "0x8953126e0b07c8ea5c043a7d57fc42a838344501",
+    "amount": 40000000
+  },
+  {
+    "wallet_address": "0xeec710616e67864840b1841651a502e283d069e1",
+    "amount": 99888000
+  },
+  {
+    "wallet_address": "0x0e3cf893fc0eec73565117911e11c15c8d4c6400",
+    "amount": 10000000
+  },
+  {
+    "wallet_address": "0x51305da5a03d71de4160b3a5219d1f2c4cc50be5",
+    "amount": 375425000
+  },
+  {
+    "wallet_address": "0x862a45a42be7069ee7b82df21c182570fef8b95e",
+    "amount": 10000000
+  },
+  {
+    "wallet_address": "0xc293aac2f929f75151b4626409103fd8162ee78d",
+    "amount": 109651000
+  },
+  {
+    "wallet_address": "0xde17846aaffe9e022bd0b32ba448a1f4961b0dd8",
+    "amount": 107895000
+  },
+  {
+    "wallet_address": "0x256c41d22fe0cbba38764f32e8bfdfca85ee3b55",
+    "amount": 10000000
+  },
+  {
+    "wallet_address": "0xb5283d88e6ad7e429bdb2312b5d8f3c5e889360b",
+    "amount": 10000000
+  },
+  {
+    "wallet_address": "0x0e3cf893fc0eec73565117911e11c15c8d4c6400",
+    "amount": 10000000
+  },
+  {
+    "wallet_address": "0x79543675186070f3cc18a3ba6cae883ca495e153",
+    "amount": 10000000
+  },
+  {
+    "wallet_address": "0xaf763e9a8cff6d03aece7e6d3f0f740c4e975c56",
+    "amount": 10000000
+  },
+  {
+    "wallet_address": "0x2c629076af75c971a4f608f965a21bbaf6d079c8",
+    "amount": 45000000
+  },
+  {
+    "wallet_address": "0xdfb540f3e2788f48acb10bd987cb4a9179445f8d",
+    "amount": 24985000000
+  }
+]
