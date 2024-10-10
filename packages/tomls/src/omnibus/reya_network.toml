@@ -73,7 +73,7 @@ susdeSalt = "susde-main"
 
 [var.missing_vars]
 salt = ""
-rusdTokenDecimals="6"
+rusdTokenDecimals = "6"
 
 [var.upgrade_proxy_vars]
 coreProxy = "0xA763B6a5E09378434406C003daE6487FbbDc1a80"
