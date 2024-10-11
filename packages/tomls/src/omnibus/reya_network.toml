@@ -255,11 +255,11 @@ susdeOptimismConnector = "0x79C06E5BD8e7a4dc151D7591eba71C2a5D49e2B6"
 susdeBaseConnector = "0xE71b58F3324d06786cA70b3c9695df23EEaaF630"
 
 [var.periphery_socket_withdraw_fees]
-usdcEthereumWithdrawFeeUnscaled = "27.888"
-usdcArbitrumWithdrawFeeUnscaled = "0.114"
-usdcOptimismWithdrawFeeUnscaled = "0.102"
-usdcPolygonWithdrawFeeUnscaled = "0.0492"
-usdcBaseWithdrawFeeUnscaled = "0.708"
+usdcEthereumWithdrawFeeUnscaled = "65"
+usdcArbitrumWithdrawFeeUnscaled = "0.5"
+usdcOptimismWithdrawFeeUnscaled = "0.04"
+usdcPolygonWithdrawFeeUnscaled = "0.04"
+usdcBaseWithdrawFeeUnscaled = "0.02"
 # -------------------------------------------------------------------
 wethEthereumWithdrawFeeUnscaled = "0.009533484442507446"
 wethArbitrumWithdrawFeeUnscaled = "0.000039000000751572"
