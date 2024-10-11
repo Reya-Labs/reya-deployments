@@ -542,4 +542,12 @@ contract GeneralForkCheck is BaseReyaForkTest {
             assertApproxEqAbsDecimal(nodeOutput.price, ls.meanPriceMarket[i], ls.maxDeviationMarket[i], 18);
         }
     }
+
+    function check_marketsOrderMaxStaleDuration(uint256 orderMaxStaleDuration) public view {
+        for (uint128 i = 1; i <= lastMarketId(); i += 1) {
+            MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
+
+            assertEq(marketConfig.marketOrderMaxStaleDuration, orderMaxStaleDuration);
+        }
+    }
 }

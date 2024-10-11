@@ -53,6 +53,10 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         check_marketsPrices();
     }
 
+    function test_MarketsOrderMaxStaleDuration() public view {
+        check_marketsOrderMaxStaleDuration(11);
+    }
+
     // function mockStaleStork() private {
     //     vm.mockCall(
     //         sec.oracleAdaptersProxy,

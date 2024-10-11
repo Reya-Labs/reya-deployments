@@ -42,4 +42,8 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     function test_Cronos_MarketsPrices() public {
         check_marketsPrices();
     }
+
+    function test_MarketsOrderMaxStaleDuration() public view {
+        check_marketsOrderMaxStaleDuration(11);
+    }
 }
