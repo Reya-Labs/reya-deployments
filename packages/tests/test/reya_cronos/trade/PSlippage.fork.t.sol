@@ -48,6 +48,26 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_uni_long();
     }
 
+    function test_Cronos_trade_slippage_sui_long() public {
+        check_trade_slippage_sui_long();
+    }
+
+    function test_Cronos_trade_slippage_tia_long() public {
+        check_trade_slippage_tia_long();
+    }
+
+    function test_Cronos_trade_slippage_sei_long() public {
+        check_trade_slippage_sei_long();
+    }
+
+    function test_Cronos_trade_slippage_zro_long() public {
+        check_trade_slippage_zro_long();
+    }
+
+    function test_Cronos_trade_slippage_xrp_long() public {
+        check_trade_slippage_xrp_long();
+    }
+
     function test_Cronos_trade_slippage_eth_short() public {
         check_trade_slippage_eth_short();
     }
@@ -90,5 +110,25 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
 
     function test_Cronos_trade_slippage_uni_short() public {
         check_trade_slippage_uni_short();
+    }
+
+    function test_Cronos_trade_slippage_sui_short() public {
+        check_trade_slippage_sui_short();
+    }
+
+    function test_Cronos_trade_slippage_tia_short() public {
+        check_trade_slippage_tia_short();
+    }
+
+    function test_Cronos_trade_slippage_sei_short() public {
+        check_trade_slippage_sei_short();
+    }
+
+    function test_Cronos_trade_slippage_zro_short() public {
+        check_trade_slippage_zro_short();
+    }
+
+    function test_Cronos_trade_slippage_xrp_short() public {
+        check_trade_slippage_xrp_short();
     }
 }
