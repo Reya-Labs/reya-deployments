@@ -264,9 +264,9 @@ susdeArbitrumSepoliaConnector = "0xF79f6c0BadA41F395CDe3a357B1c239D6aBA1B84"
 susdeOptimismSepoliaConnector = "0x502fBd9322a65A1a5a897cfDFB8f179A92b73300"
 
 [var.periphery_socket_withdraw_fees]
-usdcEthereumSepoliaWithdrawFeeUnscaled = "27.888"
-usdcArbitrumSepoliaWithdrawFeeUnscaled = "0.114"
-usdcOptimismSepoliaWithdrawFeeUnscaled = "0.102"
+usdcEthereumSepoliaWithdrawFeeUnscaled = "65"
+usdcArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
+usdcOptimismSepoliaWithdrawFeeUnscaled = "0.04"
 # -------------------------------------------------------------------
 wethEthereumSepoliaWithdrawFeeUnscaled = "0.009533484442507446"
 wethArbitrumSepoliaWithdrawFeeUnscaled = "0.000039000000751572"
