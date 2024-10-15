@@ -214,6 +214,8 @@ storkAssetPairIdTIAMark = "TIAUSDMARK"
 storkAssetPairIdSEIMark = "SEIUSDMARK"
 storkAssetPairIdZROMark = "ZROUSDMARK"
 storkAssetPairIdXRPMark = "XRPUSDMARK"
+storkAssetPairIdWIFMark = "WIFUSDMARK"
+storkAssetPairId1000PEPEMark = "1000PEPEUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
 reyaAssetPairIdETHMark = "ETHUSDMARKFALLBACK"
@@ -232,6 +234,8 @@ reyaAssetPairIdTIAMark = "TIAUSDMARKFALLBACK"
 reyaAssetPairIdSEIMark = "SEIUSDMARKFALLBACK"
 reyaAssetPairIdZROMark = "ZROUSDMARKFALLBACK"
 reyaAssetPairIdXRPMark = "XRPUSDMARKFALLBACK"
+reyaAssetPairIdWIFMark = "WIFUSDMARKFALLBACK"
+reyaAssetPairId1000PEPEMark = "1000PEPEUSDMARKFALLBACK"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -340,6 +344,8 @@ market13Tia_tier0FeeUnscaled = "0.0005"
 market14Sei_tier0FeeUnscaled = "0.0005"
 market15Zro_tier0FeeUnscaled = "0.0005"
 market16Xrp_tier0FeeUnscaled = "0.0005"
+market17Wif_tier0FeeUnscaled = "0.0005"
+market18Pepe1k_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "0"
@@ -490,6 +496,16 @@ xrpUsdMarkMaxStaleDurationStork = "0"
 xrpUsdcMarkMaxStaleDurationStork = "0"
 xrpUsdcMarkMaxStaleDurationReya = "0"
 xrpUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#------------------------------------------------------------------------------
+wifUsdMarkMaxStaleDurationStork = "0"
+wifUsdcMarkMaxStaleDurationStork = "0"
+wifUsdcMarkMaxStaleDurationReya = "0"
+wifUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#------------------------------------------------------------------------------
+pepe1kUsdMarkMaxStaleDurationStork = "0"
+pepe1kUsdcMarkMaxStaleDurationStork = "0"
+pepe1kUsdcMarkMaxStaleDurationReya = "0"
+pepe1kUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDuration = "0"
 susdeUsdcMaxStaleDuration = "0"

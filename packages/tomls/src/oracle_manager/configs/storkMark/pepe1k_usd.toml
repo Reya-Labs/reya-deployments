@@ -1,0 +1,23 @@
+[invoke.oracle_manager_register_node_pepe1k_usd_mark_stork]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_STORK_OFFCHAIN_LOOKUP %>",
+    "<%= defaultAbiCoder.encode(['address','string'], [contracts.OracleAdaptersProxy.address, settings.storkAssetPairId1000PEPEMark]) %>",
+    [
+    ],
+]
+var.pepe1kUsdMarkNodeIdStork.event = "NodeRegistered"
+var.pepe1kUsdMarkNodeIdStork.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]
+
+[invoke.oracle_manager_pepe1k_usd_mark_stork_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.pepe1kUsdMarkNodeIdStork %>",
+    "<%= settings.pepe1kUsdMarkMaxStaleDurationStork %>",
+]
+depends = ["invoke.oracle_manager_register_node_pepe1k_usd_mark_stork"]

@@ -207,6 +207,8 @@ storkAssetPairIdTIAMark = "TIAUSDMARK"
 storkAssetPairIdSEIMark = "SEIUSDMARK"
 storkAssetPairIdZROMark = "ZROUSDMARK"
 storkAssetPairIdXRPMark = "XRPUSDMARK"
+storkAssetPairIdWIFMark = "WIFUSDMARK"
+storkAssetPairId1000PEPEMark = "1000PEPEUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
 reyaAssetPairIdETHMark = "ETHUSDMARKFALLBACK"
@@ -225,6 +227,8 @@ reyaAssetPairIdTIAMark = "TIAUSDMARKFALLBACK"
 reyaAssetPairIdSEIMark = "SEIUSDMARKFALLBACK"
 reyaAssetPairIdZROMark = "ZROUSDMARKFALLBACK"
 reyaAssetPairIdXRPMark = "XRPUSDMARKFALLBACK"
+reyaAssetPairIdWIFMark = "WIFUSDMARKFALLBACK"
+reyaAssetPairId1000PEPEMark = "1000PEPEUSDMARKFALLBACK"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -327,6 +331,8 @@ market13Tia_tier0FeeUnscaled = "0.0005"
 market14Sei_tier0FeeUnscaled = "0.0005"
 market15Zro_tier0FeeUnscaled = "0.0005"
 market16Xrp_tier0FeeUnscaled = "0.0005"
+market17Wif_tier0FeeUnscaled = "0.0005"
+market18Pepe1k_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -478,6 +484,16 @@ xrpUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 xrpUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 xrpUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 xrpUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+wifUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+wifUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+wifUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+wifUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+pepe1kUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+pepe1kUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+pepe1kUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+pepe1kUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDuration = "90"
 susdeUsdcMaxStaleDuration = "90"
