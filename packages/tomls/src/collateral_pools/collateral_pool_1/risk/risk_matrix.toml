@@ -311,8 +311,8 @@ abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':
 fromCall.func = "getCollateralPoolOwner"
 fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "createRiskMatrix"
-var.cp_1rusdMarket17WifRiskBlockId.event = "RiskMatrixCreation"
-var.cp_1rusdMarket17WifRiskBlockId.arg = 1
+var.cp1RusdMarket17WifRiskBlockId.event = "RiskMatrixCreation"
+var.cp1RusdMarket17WifRiskBlockId.arg = 1
 args = [
     "<%= settings.cp1RusdId %>",
     [
@@ -329,8 +329,8 @@ abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':
 fromCall.func = "getCollateralPoolOwner"
 fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "createRiskMatrix"
-var.cp_1rusdMarket18Pepe1kRiskBlockId.event = "RiskMatrixCreation"
-var.cp_1rusdMarket18Pepe1kRiskBlockId.arg = 1
+var.cp1RusdMarket18Pepe1kRiskBlockId.event = "RiskMatrixCreation"
+var.cp1RusdMarket18Pepe1kRiskBlockId.arg = 1
 args = [
     "<%= settings.cp1RusdId %>",
     [

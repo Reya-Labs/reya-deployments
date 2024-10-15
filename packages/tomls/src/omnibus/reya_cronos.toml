@@ -845,7 +845,7 @@ market18Pepe1k_maxPSlippageUnscaled = "0.1"
 market18Pepe1k_marketOrderMaxStaleDuration = "11"
 
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "16"
+cp1Rusd_maxMarkets = "18"
 cp1Rusd_maxCollaterals = "5"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"

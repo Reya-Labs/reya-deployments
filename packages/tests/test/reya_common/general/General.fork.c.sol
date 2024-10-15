@@ -43,6 +43,10 @@ struct LocalState {
     uint256 maxDeviationZRO;
     uint256 meanPriceXRP;
     uint256 maxDeviationXRP;
+    uint256 meanPriceWIF;
+    uint256 maxDeviationWIF;
+    uint256 meanPrice1000PEPE;
+    uint256 maxDeviation1000PEPE;
     uint256 meanPriceSUSDE;
     uint256 maxDeviationSUSDE;
     uint256 meanPriceStableCoin;
@@ -162,6 +166,16 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviationXRP = 0.2e18;
         ls.meanPriceMarket.push(ls.meanPriceXRP);
         ls.maxDeviationMarket.push(ls.maxDeviationXRP);
+
+        ls.meanPriceWIF = 2.7e18;
+        ls.maxDeviationWIF = 1.5e18;
+        ls.meanPriceMarket.push(ls.meanPriceWIF);
+        ls.maxDeviationMarket.push(ls.maxDeviationWIF);
+
+        ls.meanPrice1000PEPE = 0.0105e18;
+        ls.maxDeviation1000PEPE = 0.007e18;
+        ls.meanPriceMarket.push(ls.meanPrice1000PEPE);
+        ls.maxDeviationMarket.push(ls.maxDeviation1000PEPE);
 
         ls.meanPriceSUSDE = 1.1e18;
         ls.maxDeviationSUSDE = 0.01e18;
@@ -548,6 +562,22 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.nodeIds.push(sec.xrpUsdcStorkMarkNodeId);
         ls.meanPrices.push(ls.meanPriceXRP);
         ls.maxDeviations.push(ls.maxDeviationXRP);
+
+        ls.nodeIds.push(sec.wifUsdStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPriceWIF);
+        ls.maxDeviations.push(ls.maxDeviationWIF);
+
+        ls.nodeIds.push(sec.wifUsdcStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPriceWIF);
+        ls.maxDeviations.push(ls.maxDeviationWIF);
+
+        ls.nodeIds.push(sec.pepe1kUsdStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPrice1000PEPE);
+        ls.maxDeviations.push(ls.maxDeviation1000PEPE);
+
+        ls.nodeIds.push(sec.pepe1kUsdcStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPrice1000PEPE);
+        ls.maxDeviations.push(ls.maxDeviation1000PEPE);
 
         // ls.nodeIds.push(sec.susdeUsdNodeId);
         // ls.meanPrices.push(ls.meanPriceSUSDE);
