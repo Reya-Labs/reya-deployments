@@ -68,6 +68,14 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_rusdCollateral_leverage_xrp();
     }
 
+    function test_Cronos_trade_rusdCollateral_leverage_wif() public {
+        check_trade_rusdCollateral_leverage_wif();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_pepe1k() public {
+        check_trade_rusdCollateral_leverage_pepe1k();
+    }
+
     function test_Cronos_trade_wethCollateral_leverage_eth() public {
         check_trade_wethCollateral_leverage_eth();
     }
@@ -130,6 +138,14 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
 
     function test_Cronos_trade_wethCollateral_leverage_xrp() public {
         check_trade_wethCollateral_leverage_xrp();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_wif() public {
+        check_trade_wethCollateral_leverage_wif();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_pepe1k() public {
+        check_trade_wethCollateral_leverage_pepe1k();
     }
 
     function test_Cronos_trade_usdeCollateral_leverage_eth() public {
@@ -196,6 +212,14 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_usdeCollateral_leverage_xrp();
     }
 
+    function test_Cronos_trade_usdeCollateral_leverage_wif() public {
+        check_trade_usdeCollateral_leverage_wif();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_pepe1k() public {
+        check_trade_usdeCollateral_leverage_pepe1k();
+    }
+
     function test_Cronos_trade_susdeCollateral_leverage_eth() public {
         check_trade_susdeCollateral_leverage_eth();
     }
@@ -258,5 +282,13 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
 
     function test_Cronos_trade_susdeCollateral_leverage_xrp() public {
         check_trade_susdeCollateral_leverage_xrp();
+    }
+
+    function test_Cronos_trade_susdeCollateral_leverage_wif() public {
+        check_trade_susdeCollateral_leverage_wif();
+    }
+
+    function test_Cronos_trade_susdeCollateral_leverage_pepe1k() public {
+        check_trade_susdeCollateral_leverage_pepe1k();
     }
 }
