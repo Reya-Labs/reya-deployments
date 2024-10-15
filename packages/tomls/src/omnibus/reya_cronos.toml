@@ -808,8 +808,7 @@ market16Xrp_marketOrderMaxStaleDuration = "11"
 
 [var.market_17wif]
 market17Wif_riskMatrixIndex = "0"
-# market17Wif_maxOpenBaseUnscaled = "370000"
-market17Wif_maxOpenBaseUnscaled = "0"
+market17Wif_maxOpenBaseUnscaled = "370000"
 market17Wif_velocityMultiplierUnscaled = "24"
 market17Wif_oracleNodeId = "<%= settings.wifUsdcMarkNodeIdStork %>"
 market17Wif_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
