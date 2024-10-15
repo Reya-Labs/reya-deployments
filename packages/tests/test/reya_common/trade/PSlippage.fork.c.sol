@@ -1117,7 +1117,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[8] = sd(-0.079919e18);
         sPrime[9] = sd(-0.089882e18);
 
-        trade_slippage_helper({ marketId: 18, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 17, s: s, sPrime: sPrime, eps: ud(0.002e18) });
     }
 
     function check_trade_slippage_pepe1k_short() public {
