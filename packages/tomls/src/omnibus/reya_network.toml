@@ -814,7 +814,8 @@ market17Wif_marketOrderMaxStaleDuration = "11"
 
 [var.market_18pepe1k]
 market18Pepe1k_riskMatrixIndex = "0"
-market18Pepe1k_maxOpenBaseUnscaled = "100000000"
+# market18Pepe1k_maxOpenBaseUnscaled = "100000000"
+market18Pepe1k_maxOpenBaseUnscaled = "0"
 market18Pepe1k_velocityMultiplierUnscaled = "24"
 market18Pepe1k_oracleNodeId = "<%= settings.pepe1kUsdcMarkNodeIdStork %>"
 market18Pepe1k_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
