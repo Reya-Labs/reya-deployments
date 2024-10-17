@@ -189,6 +189,7 @@ storkAssetPairIdAAVE = "AAVEUSD"
 storkAssetPairIdCRV = "CRVUSD"
 storkAssetPairIdUNI = "UNIUSD"
 storkAssetPairIdSUSDE = "SUSDEUSD"
+storkAssetPairIdDEUSD = "DEUSDUSD"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
@@ -211,6 +212,7 @@ storkAssetPairIdWIFMark = "WIFUSDMARK"
 storkAssetPairId1000PEPEMark = "1000PEPEUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
+# todo: consider using REYA rather than FALLBACK 
 reyaAssetPairIdETHMark = "ETHUSDMARKFALLBACK"
 reyaAssetPairIdBTCMark = "BTCUSDMARKFALLBACK"
 reyaAssetPairIdSOLMark = "SOLUSDMARKFALLBACK"
@@ -229,6 +231,9 @@ reyaAssetPairIdZROMark = "ZROUSDMARKFALLBACK"
 reyaAssetPairIdXRPMark = "XRPUSDMARKFALLBACK"
 reyaAssetPairIdWIFMark = "WIFUSDMARKFALLBACK"
 reyaAssetPairId1000PEPEMark = "1000PEPEUSDMARKFALLBACK"
+
+[var.reya_asset_pair_ids]
+reyaAssetPairIdSDEUSD = "SDEUSDUSDREYA"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
