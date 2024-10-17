@@ -9,4 +9,6 @@ include = [
     "configs/tokens-testnet/wsteth.toml",
     "configs/tokens-testnet/usde.toml",
     "configs/tokens-testnet/susde.toml",
+    "configs/tokens-testnet/deusd.toml",
+    "configs/tokens-testnet/sdeusd.toml",
 ]
