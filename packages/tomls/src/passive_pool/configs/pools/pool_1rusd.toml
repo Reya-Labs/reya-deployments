@@ -19,3 +19,13 @@ args = [
     true,
 ]
 depends = ["invoke.passive_pool_create_pool_1rusd"]
+
+[invoke.passive_pool_set_allocation_configuration_1rusd]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "setAllocationConfiguration"
+args = [
+    "<%= settings.pool1RusdId %>",
+    { quoteTokenTargetRatio = "<%= parseEther(settings.pool1_quoteTokenTargetRatioUnscaled) %>"}
+]
+depends = ["invoke.passive_pool_create_pool_1rusd", "invoke.passive_pool_unpause_pool_1rusd"]
