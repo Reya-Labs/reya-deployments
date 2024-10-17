@@ -328,6 +328,14 @@ usdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
 susdeCollateralAdapter = "<%= AddressZero %>"
 susdeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 susdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+deusdCollateralAdapter = "<%= AddressZero %>"
+deusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+deusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+sdeusdCollateralAdapter = "<%= AddressZero %>"
+sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "1.0"
@@ -525,7 +533,6 @@ deusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 sdeusdUsdMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdUsdcMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-
 
 [var.pool_1]
 pool1_quoteTokenTargetRatioUnscaled = "0.2"
@@ -863,7 +870,7 @@ market18Pepe1k_marketOrderMaxStaleDuration = "11"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "18"
-cp1Rusd_maxCollaterals = "4"
+cp1Rusd_maxCollaterals = "6"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
 # -----------------------------------------------
@@ -958,3 +965,27 @@ cp1Rusd_susdeParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %
 cp1Rusd_susdeParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_susdeParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_susdeParentConfig_oracleNodeId = "<%= settings.susdeUsdcNodeIdStork %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_deusd_capUnscaled = "500000"
+cp1Rusd_deusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_deusd_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_deusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_deusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_deusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_deusdParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_deusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_deusdParentConfig_oracleNodeId = "<%= settings.deusdUsdcNodeIdStork %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_sdeusd_capUnscaled = "500000"
+cp1Rusd_sdeusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_sdeusd_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_sdeusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_sdeusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_sdeusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_sdeusdParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_sdeusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdReya %>"
