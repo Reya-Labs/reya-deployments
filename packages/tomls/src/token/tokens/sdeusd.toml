@@ -1,0 +1,70 @@
+[var.sdeusd_vars]
+sdeusdTokenName = "Staked deUSD"
+sdeusdTokenSymbol = "sdeUSD"
+sdeusdTokenDecimals = "18"
+
+[clone.sdeusd]
+source = "<%= settings.tokensProxyPackage %>"
+target = "reya-tokens:1.0.0@sdeusd"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.sdeusdSalt %>"
+depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_sdeusd_proxy]
+target = ["sdeusd.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.SDEUSDProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.SDEUSDProxy.event = "Upgraded"
+factory.SDEUSDProxy.arg = 0
+depends = ["clone.sdeusd"]
+
+[invoke.sdeusd_initialize]
+target = ["SDEUSDProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.sdeusdTokenName %>",
+    "<%= settings.sdeusdTokenSymbol %>",
+    "<%= settings.sdeusdTokenDecimals %>",
+]
+depends = ["invoke.upgrade_sdeusd_proxy"]
+
+[invoke.sdeusd_unpause]
+target = ["SDEUSDProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_sdeusd_proxy"]
+
+[invoke.sdeusd_set_pausers]
+target = ["SDEUSDProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_sdeusd_proxy"]
+
+# [invoke.sdeusd_mint_permission]
+# target = ["SDEUSDProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.sdeusdController %>"]
+# depends = ["invoke.upgrade_sdeusd_proxy"]
+
+# [invoke.sdeusd_burn_permission]
+# target = ["SDEUSDProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.sdeusdController %>"]
+# depends = ["invoke.upgrade_sdeusd_proxy"]

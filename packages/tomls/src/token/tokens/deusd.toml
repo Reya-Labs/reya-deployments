@@ -1,0 +1,70 @@
+[var.deusd_vars]
+deusdTokenName = "deUSD"
+deusdTokenSymbol = "deUSD"
+deusdTokenDecimals = "18"
+
+[clone.deusd]
+source = "<%= settings.tokensProxyPackage %>"
+target = "reya-tokens:1.0.0@deusd"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.deusdSalt %>"
+depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_deusd_proxy]
+target = ["deusd.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.DEUSDProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.DEUSDProxy.event = "Upgraded"
+factory.DEUSDProxy.arg = 0
+depends = ["clone.deusd"]
+
+[invoke.deusd_initialize]
+target = ["DEUSDProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.deusdTokenName %>",
+    "<%= settings.deusdTokenSymbol %>",
+    "<%= settings.deusdTokenDecimals %>",
+]
+depends = ["invoke.upgrade_deusd_proxy"]
+
+[invoke.deusd_unpause]
+target = ["DEUSDProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_deusd_proxy"]
+
+[invoke.deusd_set_pausers]
+target = ["DEUSDProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_deusd_proxy"]
+
+# [invoke.deusd_mint_permission]
+# target = ["DEUSDProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.deusdController %>"]
+# depends = ["invoke.upgrade_deusd_proxy"]
+
+# [invoke.deusd_burn_permission]
+# target = ["DEUSDProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.deusdController %>"]
+# depends = ["invoke.upgrade_deusd_proxy"]
