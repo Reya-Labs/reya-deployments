@@ -1,0 +1,12 @@
+[invoke.cp_1rusd_set_deusd_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setCollateralConfig"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= contracts.DEUSDProxy.address %>",
+    # TODO later: pass depositingEnabled through var (but there's no parseBool)
+    { depositingEnabled = true, cap = "<%= parseUnits(settings.cp1Rusd_deusd_capUnscaled, parseInt(settings.deusdTokenDecimals)) %>", withdrawalWindowSize_DEPRECATED = "0", withdrawalTvlPercentageLimit_DEPRECATED = "0", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_deusd_autoExchangeThresholdUnscaled, parseInt(settings.deusdTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_deusd_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_deusd_autoExchangeDustThresholdUnscaled, parseInt(settings.deusdTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_deusd_bidSubmissionFeeUnscaled, parseInt(settings.deusdTokenDecimals)) %>" },
+    { collateralAddress = "<%= settings.cp1Rusd_deusdParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_deusdParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_deusdParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.cp1Rusd_deusdParentConfig_oracleNodeId %>" },
+]
+depends = ["var.cp_1rusd_vars", "invoke.cp_1rusd_set_rusd_config"]

@@ -26,9 +26,12 @@ fromCall.func = "owner"
 func = "setAllocationConfiguration"
 args = [
     "<%= settings.pool1RusdId %>",
-    { quoteTokenTargetRatio = "<%= parseEther(settings.pool1_quoteTokenTargetRatioUnscaled) %>"}
+    { quoteTokenTargetRatio = "<%= parseEther(settings.pool1_quoteTokenTargetRatioUnscaled) %>" },
 ]
-depends = ["invoke.passive_pool_create_pool_1rusd", "invoke.passive_pool_unpause_pool_1rusd"]
+depends = [
+    "invoke.passive_pool_create_pool_1rusd",
+    "invoke.passive_pool_unpause_pool_1rusd",
+]
 
 [invoke.passive_pool_set_allocations_1rusd]
 target = ["PassivePoolProxy"]
@@ -37,8 +40,12 @@ func = "setAllocations"
 args = [
     "<%= settings.pool1RusdId %>",
     [
-        {token = "<%= contracts.DEUSDProxy.address %>", tokenData={targetRatioPostQuote="<%= parseEther(settings.pool1_DEUSDTargetRatioPostQuoteUnscaled) %>", oracleNodeId="<%= settings.deusdUsdcNodeIdStork %>"}},
-        {token = "<%= contracts.SDEUSDProxy.address %>", tokenData={targetRatioPostQuote="<%= parseEther(settings.pool1_SDEUSDTargetRatioPostQuoteUnscaled) %>", oracleNodeId="<%= settings.sdeusdUsdcNodeIdReya %>"}},
-    ]
+        { token = "<%= contracts.DEUSDProxy.address %>", tokenData = { targetRatioPostQuote = "<%= parseEther(settings.pool1_DEUSDTargetRatioPostQuoteUnscaled) %>", oracleNodeId = "<%= settings.deusdUsdcNodeIdStork %>" } },
+        { token = "<%= contracts.SDEUSDProxy.address %>", tokenData = { targetRatioPostQuote = "<%= parseEther(settings.pool1_SDEUSDTargetRatioPostQuoteUnscaled) %>", oracleNodeId = "<%= settings.sdeusdUsdcNodeIdReya %>" } },
+    ],
 ]
-depends = ["invoke.passive_pool_create_pool_1rusd", "invoke.passive_pool_unpause_pool_1rusd", "invoke.passive_pool_set_allocation_configuration_1rusd"]
+depends = [
+    "invoke.passive_pool_create_pool_1rusd",
+    "invoke.passive_pool_unpause_pool_1rusd",
+    "invoke.passive_pool_set_allocation_configuration_1rusd",
+]

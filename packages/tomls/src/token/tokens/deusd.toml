@@ -55,16 +55,16 @@ args = [
 ]
 depends = ["invoke.upgrade_deusd_proxy"]
 
-# [invoke.deusd_mint_permission]
-# target = ["DEUSDProxy"]
-# fromCall.func = "owner"
-# func = "addToFeatureFlagAllowlist"
-# args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.deusdController %>"]
-# depends = ["invoke.upgrade_deusd_proxy"]
+[invoke.deusd_mint_permission]
+target = ["DEUSDProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.deusdController %>"]
+depends = ["invoke.upgrade_deusd_proxy"]
 
-# [invoke.deusd_burn_permission]
-# target = ["DEUSDProxy"]
-# fromCall.func = "owner"
-# func = "addToFeatureFlagAllowlist"
-# args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.deusdController %>"]
-# depends = ["invoke.upgrade_deusd_proxy"]
+[invoke.deusd_burn_permission]
+target = ["DEUSDProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.deusdController %>"]
+depends = ["invoke.upgrade_deusd_proxy"]

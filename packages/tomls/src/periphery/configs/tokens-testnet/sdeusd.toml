@@ -1,0 +1,57 @@
+#####################################
+# Controller
+#####################################
+[invoke.periphery_set_sdeusdController]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenController"
+args = [
+    "<%= contracts.SDEUSDProxy.address %>",
+    "<%= settings.sdeusdController %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_sdeusd_proxy"]
+
+#####################################
+# Execution Helper
+#####################################
+[invoke.periphery_set_sdeusdExecutionHelper]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenExecutionHelper"
+args = [
+    "<%= contracts.SDEUSDProxy.address %>",
+    "<%= settings.sdeusdExecutionHelper %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_sdeusd_proxy"]
+
+#####################################
+# Connectors
+#####################################
+[invoke.periphery_set_sdeusdEthereumSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.SDEUSDProxy.address %>",
+    "<%= settings.ethereumSepoliaChainId %>",
+    "<%= settings.sdeusdEthereumSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_sdeusd_proxy"]
+
+#####################################
+# Static Withdraw Fees
+#####################################
+[invoke.periphery_set_sdeusd_ethereum_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.SDEUSDProxy.address %>",
+    "<%= settings.sdeusdEthereumSepoliaConnector %>",
+    "<%= parseUnits(settings.sdeusdEthereumSepoliaWithdrawFeeUnscaled, parseInt(settings.sdeusdTokenDecimals)) %>",
+]
+depends = [
+    "invoke.upgrade_periphery_proxy",
+    "invoke.upgrade_sdeusd_proxy",
+    "var.sdeusd_vars",
+]
