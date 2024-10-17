@@ -520,6 +520,9 @@ susdeUsdcMaxStaleDurationFallbackStorkRedstone = "0"
 
 [var.pool_1]
 pool1_quoteTokenTargetRatioUnscaled = "0.2"
+pool1_DEUSDTargetRatioPostQuoteUnscaled = "0.4"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.6"
+
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
