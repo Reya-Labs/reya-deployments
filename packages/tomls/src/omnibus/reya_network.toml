@@ -519,6 +519,13 @@ susdeUsdcMaxStaleDuration = "90"
 susdeUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 susdeUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 susdeUsdcMaxStaleDurationFallbackStorkRedstone = "90"
+#------------------------------------------------------------------------------
+deusdUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+deusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+sdeusdUsdMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+sdeusdUsdcMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+
 
 [var.pool_1]
 pool1_quoteTokenTargetRatioUnscaled = "0.2"

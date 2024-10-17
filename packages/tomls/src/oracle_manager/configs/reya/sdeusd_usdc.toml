@@ -7,7 +7,7 @@ args = [
     "0x",
     [
         "<%= settings.sdeusdUsdNodeIdReya %>",
-        "<%= settings.usdcUsdNodeIdReya %>",
+        "<%= settings.usdcUsdNodeIdStork %>",
     ],
 ]
 var.sdeusdUsdcNodeIdReya.event = "NodeRegistered"
