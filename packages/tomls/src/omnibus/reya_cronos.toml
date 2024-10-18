@@ -208,7 +208,6 @@ storkAssetPairIdCRV = "CRVUSD"
 storkAssetPairIdUNI = "UNIUSD"
 storkAssetPairIdSUSDE = "SUSDEUSD"
 storkAssetPairIdDEUSD = "DEUSDUSD"
-storkAssetPairIdSPX6900 = "SPX6900USD"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
@@ -395,7 +394,6 @@ market19Popcat_tier0FeeUnscaled = "0.0005"
 market20Doge_tier0FeeUnscaled = "0.0005"
 market21KShib_tier0FeeUnscaled = "0.0005"
 market22KBonk_tier0FeeUnscaled = "0.0005"
-market23Spx6900_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "0"
@@ -576,9 +574,6 @@ kbonkUsdMarkMaxStaleDurationStork = "0"
 kbonkUsdcMarkMaxStaleDurationStork = "0"
 kbonkUsdcMarkMaxStaleDurationReya = "0"
 kbonkUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
-#-----------------------------------------------------------------------------------
-spx6900UsdMaxStaleDurationStork = "0"
-spx6900UsdcMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDuration = "0"
 susdeUsdcMaxStaleDuration = "0"

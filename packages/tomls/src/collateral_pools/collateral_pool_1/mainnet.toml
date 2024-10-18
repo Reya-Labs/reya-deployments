@@ -21,7 +21,6 @@ include = [
     "markets/market_20doge.toml",
     "markets/market_21kshib.toml",
     "markets/market_22kbonk.toml",
-    "markets/market_23spx6900.toml",
     "risk/risk_matrix.toml",
     "risk/risk_multipliers.toml",
     "risk/liquidations.toml",
@@ -60,5 +59,4 @@ depends = [
     "invoke.market_20doge_merge_collateral_pool",
     "invoke.market_21kshib_merge_collateral_pool",
     "invoke.market_22kbonk_merge_collateral_pool",
-    "invoke.market_23spx6900_merge_collateral_pool",
 ]

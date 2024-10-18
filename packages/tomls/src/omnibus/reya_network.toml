@@ -198,7 +198,6 @@ storkAssetPairIdCRV = "CRVUSD"
 storkAssetPairIdUNI = "UNIUSD"
 storkAssetPairIdSUSDE = "SUSDEUSD"
 storkAssetPairIdDEUSD = "DEUSDUSD"
-storkAssetPairdIdSPX6900 = "SPX6900USD"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
@@ -379,7 +378,6 @@ market19Popcat_tier0FeeUnscaled = "0.0005"
 market20Doge_tier0FeeUnscaled = "0.0005"
 market21KShib_tier0FeeUnscaled = "0.0005"
 market22KBonk_tier0FeeUnscaled = "0.0005"
-market23Spx6900_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -561,9 +559,6 @@ kbonkUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 kbonkUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 kbonkUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 kbonkUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-#-----------------------------------------------------------------------------------
-spx6900UsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-spx6900UsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDuration = "90"
 susdeUsdcMaxStaleDuration = "90"
