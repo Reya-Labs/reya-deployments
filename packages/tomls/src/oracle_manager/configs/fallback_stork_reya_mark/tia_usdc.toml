@@ -1,4 +1,4 @@
-[invoke.oracle_manager_register_node_tia_usdc_fallback_stork_redstone]
+[invoke.oracle_manager_register_node_tia_usdc_mark_fallback_stork_reya]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
@@ -7,7 +7,7 @@ args = [
     "0x",
     [
         "<%= settings.tiaUsdcMarkNodeIdStork %>",
-        "<%= settings.tiaUsdcMarkNodeIdReya %>",  # redstone
+        "<%= settings.tiaUsdcMarkNodeIdReya %>",  # reya
     ],
 ]
 var.tiaUsdcMarkNodeIdFallbackStorkReya.event = "NodeRegistered"
@@ -23,5 +23,5 @@ args = [
     "<%= settings.tiaUsdcMarkMaxStaleDurationFallbackStorkReya %>",
 ]
 depends = [
-    "invoke.oracle_manager_register_node_tia_usdc_fallback_stork_redstone",
+    "invoke.oracle_manager_register_node_tia_usdc_mark_fallback_stork_reya",
 ]
