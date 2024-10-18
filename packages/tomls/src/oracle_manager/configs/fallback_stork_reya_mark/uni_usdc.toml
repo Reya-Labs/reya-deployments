@@ -1,4 +1,4 @@
-[invoke.oracle_manager_register_node_uni_usdc_fallback_stork_redstone]
+[invoke.oracle_manager_register_node_uni_usdc_mark_fallback_stork_reya]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
@@ -7,7 +7,7 @@ args = [
     "0x",
     [
         "<%= settings.uniUsdcMarkNodeIdStork %>",
-        "<%= settings.uniUsdcMarkNodeIdReya %>",  # redstone
+        "<%= settings.uniUsdcMarkNodeIdReya %>",  # reya
     ],
 ]
 var.uniUsdcMarkNodeIdFallbackStorkReya.event = "NodeRegistered"
@@ -23,5 +23,5 @@ args = [
     "<%= settings.uniUsdcMarkMaxStaleDurationFallbackStorkReya %>",
 ]
 depends = [
-    "invoke.oracle_manager_register_node_uni_usdc_fallback_stork_redstone",
+    "invoke.oracle_manager_register_node_uni_usdc_mark_fallback_stork_reya",
 ]

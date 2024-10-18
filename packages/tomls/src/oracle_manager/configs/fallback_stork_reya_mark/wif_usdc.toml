@@ -1,4 +1,4 @@
-[invoke.oracle_manager_register_node_wif_usdc_fallback_stork_redstone]
+[invoke.oracle_manager_register_node_wif_usdc_mark_fallback_stork_reya]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
@@ -7,7 +7,7 @@ args = [
     "0x",
     [
         "<%= settings.wifUsdcMarkNodeIdStork %>",
-        "<%= settings.wifUsdcMarkNodeIdReya %>",  # redstone
+        "<%= settings.wifUsdcMarkNodeIdReya %>",  # reya
     ],
 ]
 var.wifUsdcMarkNodeIdFallbackStorkReya.event = "NodeRegistered"
@@ -23,5 +23,5 @@ args = [
     "<%= settings.wifUsdcMarkMaxStaleDurationFallbackStorkReya %>",
 ]
 depends = [
-    "invoke.oracle_manager_register_node_wif_usdc_fallback_stork_redstone",
+    "invoke.oracle_manager_register_node_wif_usdc_mark_fallback_stork_reya",
 ]

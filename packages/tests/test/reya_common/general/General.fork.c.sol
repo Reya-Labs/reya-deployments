@@ -47,6 +47,14 @@ struct LocalState {
     uint256 maxDeviationWIF;
     uint256 meanPrice1000PEPE;
     uint256 maxDeviation1000PEPE;
+    uint256 meanPricePOPCAT;
+    uint256 maxDeviationPOPCAT;
+    uint256 meanPriceDOGE;
+    uint256 maxDeviationDOGE;
+    uint256 meanPriceKSHIB;
+    uint256 maxDeviationKSHIB;
+    uint256 meanPriceKBONK;
+    uint256 maxDeviationKBONK;
     uint256 meanPriceSUSDE;
     uint256 maxDeviationSUSDE;
     uint256 meanPriceStableCoin;
@@ -176,6 +184,26 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviation1000PEPE = 0.007e18;
         ls.meanPriceMarket.push(ls.meanPrice1000PEPE);
         ls.maxDeviationMarket.push(ls.maxDeviation1000PEPE);
+
+        ls.meanPricePOPCAT = ;
+        ls.maxDeviationPOPCAT = ;
+        ls.meanPriceMarket.push(ls.meanPricePOPCAT);
+        ls.maxDeviationMarket.push(ls.maxDeviationPOPCAT);
+
+        ls.meanPriceDOGE = ;
+        ls.maxDeviationDOGE = ;
+        ls.meanPriceMarket.push(ls.meanPriceDOGE);
+        ls.maxDeviationMarket.push(ls.maxDeviationDOGE);
+
+        ls.meanPriceKSHIB = ;
+        ls.maxDeviationKSHIB = ;
+        ls.meanPriceMarket.push(ls.meanPriceKSHIB);
+        ls.maxDeviationMarket.push(ls.maxDeviationKSHIB);
+
+        ls.meanPriceKBONK = ;
+        ls.maxDeviationKBONK = ;
+        ls.meanPriceMarket.push(ls.meanPriceKBONK); 
+        ls.maxDeviationMarket.push(ls.maxDeviationKBONK);
 
         ls.meanPriceSUSDE = 1.1e18;
         ls.maxDeviationSUSDE = 0.01e18;
@@ -578,6 +606,38 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.nodeIds.push(sec.pepe1kUsdcStorkMarkNodeId);
         ls.meanPrices.push(ls.meanPrice1000PEPE);
         ls.maxDeviations.push(ls.maxDeviation1000PEPE);
+
+        ls.nodeIds.push(sec.popcatUsdStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPricePOPCAT);
+        ls.maxDeviations.push(ls.maxDeviationPOPCAT);
+
+        ls.nodeIds.push(sec.popcatUsdcStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPricePOPCAT);
+        ls.maxDeviations.push(ls.maxDeviationPOPCAT);
+
+        ls.nodeIds.push(sec.dogeUsdStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPriceDOGE);
+        ls.maxDeviations.push(ls.maxDeviationDOGE);
+
+        ls.nodeIds.push(sec.dogeUsdcStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPriceDOGE);
+        ls.maxDeviations.push(ls.maxDeviationDOGE);
+
+        ls.nodeIds.push(sec.kshibUsdStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPriceKSHIB);
+        ls.maxDeviations.push(ls.maxDeviationKSHIB);
+
+        ls.nodeIds.push(sec.kshibUsdcStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPriceKSHIB);
+        ls.maxDeviations.push(ls.maxDeviationKSHIB);
+
+        ls.nodeIds.push(sec.kbonkUsdStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPriceKBONK);
+        ls.maxDeviations.push(ls.maxDeviationKBONK);
+
+        ls.nodeIds.push(sec.kbonkUsdcStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPriceKBONK);
+        ls.maxDeviations.push(ls.maxDeviationKBONK);
 
         // ls.nodeIds.push(sec.susdeUsdNodeId);
         // ls.meanPrices.push(ls.meanPriceSUSDE);
