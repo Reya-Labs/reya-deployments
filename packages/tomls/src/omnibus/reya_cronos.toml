@@ -208,6 +208,7 @@ storkAssetPairIdCRV = "CRVUSD"
 storkAssetPairIdUNI = "UNIUSD"
 storkAssetPairIdSUSDE = "SUSDEUSD"
 storkAssetPairIdDEUSD = "DEUSDUSD"
+storkAssetPairIdSPX6900 = "SPX6900USD"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
@@ -228,6 +229,10 @@ storkAssetPairIdZROMark = "ZROUSDMARK"
 storkAssetPairIdXRPMark = "XRPUSDMARK"
 storkAssetPairIdWIFMark = "WIFUSDMARK"
 storkAssetPairId1000PEPEMark = "1000PEPEUSDMARK"
+storkAssetPairIdPOPCATMark = "POPCATUSDMARK"
+storkAssetPairIdDOGEMark = "DOGEUSDMARK"
+storkAssetPairIdKSHIBMark = "1000SHIBUSDMARK"
+storkAssetPairIdKBONKMark = "1000BONKUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
 # todo: consider using REYA rather than FALLBACK 
@@ -249,6 +254,10 @@ reyaAssetPairIdZROMark = "ZROUSDMARKFALLBACK"
 reyaAssetPairIdXRPMark = "XRPUSDMARKFALLBACK"
 reyaAssetPairIdWIFMark = "WIFUSDMARKFALLBACK"
 reyaAssetPairId1000PEPEMark = "1000PEPEUSDMARKFALLBACK"
+reyaAssetPairIdPOPCATMark = "POPCATUSDMARKFALLBACK"
+reyaAssetPairIdDOGEMark = "DOGEUSDMARKFALLBACK"
+reyaAssetPairIdKSHIBMark = "1000SHIBUSDMARKFALLBACK"
+reyaAssetPairIdKBONKMark = "1000BONKUSDMARKFALLBACK"
 
 [var.reya_asset_pair_ids]
 reyaAssetPairIdSDEUSD = "SDEUSDUSDREYA"
@@ -382,6 +391,11 @@ market15Zro_tier0FeeUnscaled = "0.0005"
 market16Xrp_tier0FeeUnscaled = "0.0005"
 market17Wif_tier0FeeUnscaled = "0.0005"
 market18Pepe1k_tier0FeeUnscaled = "0.0005"
+market19Popcat_tier0FeeUnscaled = "0.0005"
+market20Doge_tier0FeeUnscaled = "0.0005"
+market21KShib_tier0FeeUnscaled = "0.0005"
+market22KBonk_tier0FeeUnscaled = "0.0005"
+market23Spx6900_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "0"
@@ -542,6 +556,29 @@ pepe1kUsdMarkMaxStaleDurationStork = "0"
 pepe1kUsdcMarkMaxStaleDurationStork = "0"
 pepe1kUsdcMarkMaxStaleDurationReya = "0"
 pepe1kUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#-----------------------------------------------------------------------------------
+popcatUsdMarkMaxStaleDurationStork = "0"
+popcatUsdcMarkMaxStaleDurationStork = "0"
+popcatUsdcMarkMaxStaleDurationReya = "0"
+popcatUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#-----------------------------------------------------------------------------------
+dogeUsdMarkMaxStaleDurationStork = "0"
+dogeUsdcMarkMaxStaleDurationStork = "0"
+dogeUsdcMarkMaxStaleDurationReya = "0"
+dogeUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#-----------------------------------------------------------------------------------
+kshibUsdMarkMaxStaleDurationStork = "0"
+kshibUsdcMarkMaxStaleDurationStork = "0"
+kshibUsdcMarkMaxStaleDurationReya = "0"
+kshibUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#-----------------------------------------------------------------------------------
+kbonkUsdMarkMaxStaleDurationStork = "0"
+kbonkUsdcMarkMaxStaleDurationStork = "0"
+kbonkUsdcMarkMaxStaleDurationReya = "0"
+kbonkUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#-----------------------------------------------------------------------------------
+spx6900UsdMaxStaleDurationStork = "0"
+spx6900UsdcMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDuration = "0"
 susdeUsdcMaxStaleDuration = "0"

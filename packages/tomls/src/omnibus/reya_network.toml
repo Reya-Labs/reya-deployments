@@ -198,6 +198,7 @@ storkAssetPairIdCRV = "CRVUSD"
 storkAssetPairIdUNI = "UNIUSD"
 storkAssetPairIdSUSDE = "SUSDEUSD"
 storkAssetPairIdDEUSD = "DEUSDUSD"
+storkAssetPairdIdSPX6900 = "SPX6900USD"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
@@ -218,6 +219,10 @@ storkAssetPairIdZROMark = "ZROUSDMARK"
 storkAssetPairIdXRPMark = "XRPUSDMARK"
 storkAssetPairIdWIFMark = "WIFUSDMARK"
 storkAssetPairId1000PEPEMark = "1000PEPEUSDMARK"
+storkAssetPairIdPOPCATMark = "POPCATUSDMARK"
+storkAssetPairIdDOGEMark = "DOGEUSDMARK"
+storkAssetPairIdKSHIBMark = "1000SHIBUSDMARK"
+storkAssetPairIdKBONKMark = "1000BONKUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
 # todo: consider using REYA rather than FALLBACK 
@@ -239,6 +244,10 @@ reyaAssetPairIdZROMark = "ZROUSDMARKFALLBACK"
 reyaAssetPairIdXRPMark = "XRPUSDMARKFALLBACK"
 reyaAssetPairIdWIFMark = "WIFUSDMARKFALLBACK"
 reyaAssetPairId1000PEPEMark = "1000PEPEUSDMARKFALLBACK"
+reyaAssetPairIdPOPCATMark = "POPCATUSDMARKFALLBACK"
+reyaAssetPairIdDOGEMark = "DOGEUSDMARKFALLBACK"
+reyaAssetPairIdKSHIBMark = "1000SHIBUSDMARKFALLBACK"
+reyaAssetPairIdKBONKMark = "1000BONKUSDMARKFALLBACK"
 
 [var.reya_asset_pair_ids]
 reyaAssetPairIdSDEUSD = "SDEUSDUSDREYA"
@@ -366,6 +375,11 @@ market15Zro_tier0FeeUnscaled = "0.0005"
 market16Xrp_tier0FeeUnscaled = "0.0005"
 market17Wif_tier0FeeUnscaled = "0.0005"
 market18Pepe1k_tier0FeeUnscaled = "0.0005"
+market19Popcat_tier0FeeUnscaled = "0.0005"
+market20Doge_tier0FeeUnscaled = "0.0005"
+market21KShib_tier0FeeUnscaled = "0.0005"
+market22KBonk_tier0FeeUnscaled = "0.0005"
+market23Spx6900_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -527,6 +541,29 @@ pepe1kUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 pepe1kUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 pepe1kUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 pepe1kUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-----------------------------------------------------------------------------------
+popcatUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+popcatUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+popcatUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+popcatUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-----------------------------------------------------------------------------------
+dogeUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+dogeUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+dogeUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+dogeUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-----------------------------------------------------------------------------------
+kshibUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+kshibUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+kshibUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+kshibUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-----------------------------------------------------------------------------------
+kbonkUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+kbonkUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+kbonkUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+kbonkUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-----------------------------------------------------------------------------------
+spx6900UsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+spx6900UsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDuration = "90"
 susdeUsdcMaxStaleDuration = "90"
