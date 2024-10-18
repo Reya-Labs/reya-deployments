@@ -278,6 +278,14 @@ susdeExecutionHelper = "0xe06D0387ead9198A013007DB2979104128462772"
 susdeEthereumSepoliaConnector = "0x98d6E43d66c6F9d824D1B56CF1C77583d7e7793f"
 susdeArbitrumSepoliaConnector = "0xF79f6c0BadA41F395CDe3a357B1c239D6aBA1B84"
 susdeOptimismSepoliaConnector = "0x502fBd9322a65A1a5a897cfDFB8f179A92b73300"
+# -------------------------------------------------------------------
+deusdController = "0x3A76507b4493866A161c948f44e696122762f14a"
+deusdExecutionHelper = "0x7Bbd35e35065a29A6B6DDf2Fe087880567f47655"
+deusdEthereumSepoliaConnector = "0x5878357eB1d12f2a3F36D299C9eF6dd3A6B4d29a"
+# -------------------------------------------------------------------
+sdeusdController = "0x8b798242936f528F53c6c93f045D808367CD01fD"
+sdeusdExecutionHelper = "0xFaA0313F2a7a48Cc995e01ADC68cb3aAD130Bdaa"
+sdeusdEthereumSepoliaConnector = "0x596c0Bb29466cE75A4d1296657AE9275fD4b0912"
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumSepoliaWithdrawFeeUnscaled = "65"
@@ -303,6 +311,10 @@ usdeOptimismSepoliaWithdrawFeeUnscaled = "0.1"
 susdeEthereumSepoliaWithdrawFeeUnscaled = "65"
 susdeArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
 susdeOptimismSepoliaWithdrawFeeUnscaled = "0.1"
+# -------------------------------------------------------------------
+deusdEthereumSepoliaWithdrawFeeUnscaled = "65"
+# -------------------------------------------------------------------
+sdeusdEthereumSepoliaWithdrawFeeUnscaled = "65"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
