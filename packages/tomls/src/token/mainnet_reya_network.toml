@@ -9,6 +9,8 @@ include = [
     "./tokens/susde.toml",
     "./tokens/deusd.toml",
     "./tokens/sdeusd.toml",
+    "./tokens/deusd.toml",
+    "./tokens/sdeusd.toml",
 ]
 
 [clone.reyaTokenRouter]

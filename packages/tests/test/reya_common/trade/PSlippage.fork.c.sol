@@ -594,7 +594,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[2] = sd(0.019942e18);
         sPrime[3] = sd(0.029745e18);
         sPrime[4] = sd(0.039337e18);
-        sPrime[5] = sd(0.048650e18);
+        sPrime[5] = sd(0.04865e18);
         sPrime[6] = sd(0.057627e18);
         sPrime[7] = sd(0.066226e18);
         sPrime[8] = sd(0.074412e18);
@@ -622,7 +622,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[2] = sd(0.019942e18);
         sPrime[3] = sd(0.029745e18);
         sPrime[4] = sd(0.039337e18);
-        sPrime[5] = sd(0.048650e18);
+        sPrime[5] = sd(0.04865e18);
         sPrime[6] = sd(0.057627e18);
         sPrime[7] = sd(0.066226e18);
         sPrime[8] = sd(0.074412e18);
@@ -1112,7 +1112,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[3] = sd(-0.029749e18);
         sPrime[4] = sd(-0.039338e18);
         sPrime[5] = sd(-0.048643e18);
-        sPrime[6] = sd(-0.057600e18);
+        sPrime[6] = sd(-0.0576e18);
         sPrime[7] = sd(-0.066161e18);
         sPrime[8] = sd(-0.074289e18);
         sPrime[9] = sd(-0.080878e18);
@@ -1140,7 +1140,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         sPrime[3] = sd(-0.029749e18);
         sPrime[4] = sd(-0.039338e18);
         sPrime[5] = sd(-0.048643e18);
-        sPrime[6] = sd(-0.057600e18);
+        sPrime[6] = sd(-0.0576e18);
         sPrime[7] = sd(-0.066161e18);
         sPrime[8] = sd(-0.074289e18);
         sPrime[9] = sd(-0.080878e18);
