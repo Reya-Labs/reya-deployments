@@ -1,0 +1,27 @@
+[invoke.oracle_manager_register_node_kbonk_usdc_mark_fallback_stork_reya]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_FALLBACK_REDUCER %>",
+    "0x",
+    [
+        "<%= settings.kbonkUsdcMarkNodeIdStork %>",
+        "<%= settings.kbonkUsdcMarkNodeIdReya %>",  # reya
+    ],
+]
+var.kbonkUsdcMarkNodeIdFallbackStorkReya.event = "NodeRegistered"
+var.kbonkUsdcMarkNodeIdFallbackStorkReya.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]
+
+[invoke.oracle_manager_kbonk_usdc_fallback_stork_redstone_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.kbonkUsdcMarkNodeIdFallbackStorkReya %>",
+    "<%= settings.kbonkUsdcMarkMaxStaleDurationFallbackStorkReya %>",
+]
+depends = [
+    "invoke.oracle_manager_register_node_kbonk_usdc_mark_fallback_stork_reya",
+]
