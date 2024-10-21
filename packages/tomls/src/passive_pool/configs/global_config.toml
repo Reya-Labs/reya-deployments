@@ -3,7 +3,7 @@ target = ["PassivePoolProxy"]
 fromCall.func = "owner"
 func = "setGlobalConfiguration"
 args = [
-    { coreProxy = "<%= contracts.CoreProxy.address %>", oracleManager = "<%= contracts.OracleManagerProxy.address %>" },
+    { coreProxy = "<%= contracts.CoreProxy.address %>" },
 ]
 depends = [
     "invoke.upgrade_passive_pool_proxy",
