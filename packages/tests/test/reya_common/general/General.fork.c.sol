@@ -185,23 +185,23 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPrice1000PEPE);
         ls.maxDeviationMarket.push(ls.maxDeviation1000PEPE);
 
-        ls.meanPricePOPCAT = ;
-        ls.maxDeviationPOPCAT = ;
+        ls.meanPricePOPCAT = 1.3e18;
+        ls.maxDeviationPOPCAT = 0.6e18;
         ls.meanPriceMarket.push(ls.meanPricePOPCAT);
         ls.maxDeviationMarket.push(ls.maxDeviationPOPCAT);
 
-        ls.meanPriceDOGE = ;
-        ls.maxDeviationDOGE = ;
+        ls.meanPriceDOGE = 0.15e18;
+        ls.maxDeviationDOGE = 0.07e18;
         ls.meanPriceMarket.push(ls.meanPriceDOGE);
         ls.maxDeviationMarket.push(ls.maxDeviationDOGE);
 
-        ls.meanPriceKSHIB = ;
-        ls.maxDeviationKSHIB = ;
+        ls.meanPriceKSHIB = 0.018e18;
+        ls.maxDeviationKSHIB = 0.009e18;
         ls.meanPriceMarket.push(ls.meanPriceKSHIB);
         ls.maxDeviationMarket.push(ls.maxDeviationKSHIB);
 
-        ls.meanPriceKBONK = ;
-        ls.maxDeviationKBONK = ;
+        ls.meanPriceKBONK = 0.023e18;
+        ls.maxDeviationKBONK = 0.012e18;
         ls.meanPriceMarket.push(ls.meanPriceKBONK); 
         ls.maxDeviationMarket.push(ls.maxDeviationKBONK);
 
