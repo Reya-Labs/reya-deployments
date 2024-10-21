@@ -39,9 +39,14 @@ fromCall.func = "owner"
 func = "setAllocations"
 args = [
     "<%= settings.pool1RusdId %>",
-    [
-        { token = "<%= contracts.DEUSDProxy.address %>", tokenData = { targetRatioPostQuote = "<%= parseEther(settings.pool1_DEUSDTargetRatioPostQuoteUnscaled) %>", oracleNodeId = "<%= settings.deusdUsdcNodeIdStork %>" } },
-        { token = "<%= contracts.SDEUSDProxy.address %>", tokenData = { targetRatioPostQuote = "<%= parseEther(settings.pool1_SDEUSDTargetRatioPostQuoteUnscaled) %>", oracleNodeId = "<%= settings.sdeusdUsdcNodeIdReya %>" } },
+    [   
+        # weth, wsteth, usde, usde, deusd, sdeusd -> need to double check order and make sure same on mainnet
+        0,
+        0, 
+        0,
+        0,
+        "<%= parseEther(settings.pool1_DEUSDTargetRatioPostQuoteUnscaled) %>",
+        "<%= parseEther(settings.pool1_SDEUSDTargetRatioPostQuoteUnscaled) %>"
     ],
 ]
 depends = [
