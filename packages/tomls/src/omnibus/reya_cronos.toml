@@ -125,6 +125,9 @@ storkPublisher2 = "0xb91C675E0c0Ecfd4c16f97B110376C3C224061d8"
 storkPublisher3 = "0x51aa9e9c781f85a2c0636a835eb80114c4553098"
 storkPublisher4 = "0xf024a9aa110798e5cd0d698fba6523113eaa7fb2"
 
+[var.reya_publishers]
+reyaPublisher1 = "0x4abD94336349C300c0E1f6b5CB71438538FB5D61"
+
 [var.stork_executors]
 storkExecutor1 = "0xA8F317B19AecCb2Ed9f335317A9bea59152aCF4d"
 storkExecutor2 = "0x45B03980C67Ec0974E944618AE345b56b3be988f"
