@@ -45,7 +45,7 @@ passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.4@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.14@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
-peripheryRouterPackage = "reya-periphery:1.0.3@router"
+peripheryRouterPackage = "reya-periphery:1.0.4@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassProxyPackage = "reya-exchange-pass-nft:1.0.0@proxy"
@@ -53,7 +53,7 @@ exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksProxyPackage = "reya-ranks:1.0.0@proxy"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
-ordersGatewayRouterPackage = "reya-orders-gateway:1.0.6@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.7@router"
 oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
 oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.5@router"
 
@@ -115,6 +115,9 @@ liquidator10 = "0x45556408e543158f74403e882E3C8c23eCD9f732"
 
 [var.ae_liquidators]
 ae_liquidator1 = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
+
+[var.co_execution_bots]
+co_execution_bot1 = "0xB6EaF546b84E1f917579FC4FD3d7082DfE2ba212"
 
 [var.stork_publishers]
 storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"

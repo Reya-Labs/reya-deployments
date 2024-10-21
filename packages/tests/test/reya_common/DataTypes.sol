@@ -138,6 +138,7 @@ struct StaticEcosystem {
     uint256 mainChainId;
     uint128 passivePoolId;
     uint128 passivePoolAccountId;
+    address coExecutionBot;
 }
 
 struct DynamicEcosystem {

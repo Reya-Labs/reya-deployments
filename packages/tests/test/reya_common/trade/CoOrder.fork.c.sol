@@ -141,6 +141,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         assertTrue(ICoreProxy(sec.core).isAuthorizedForAccount(st.accountId, MATCH_ORDER, address(st.og)));
 
         // generate the EIP712 signature and execute the SL order
+        vm.prank(sec.coExecutionBot);
         st.og.execute(co, coSig);
 
         // check base after SL order
