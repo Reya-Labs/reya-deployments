@@ -19,3 +19,42 @@ args = [
     true,
 ]
 depends = ["invoke.passive_pool_create_pool_1rusd"]
+
+[invoke.passive_pool_set_allocation_configuration_1rusd]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "setAllocationConfiguration"
+args = [
+    "<%= settings.pool1RusdId %>",
+    { quoteTokenTargetRatio = "<%= parseEther(settings.pool1_quoteTokenTargetRatioUnscaled) %>" },
+]
+depends = [
+    "invoke.passive_pool_create_pool_1rusd",
+    "invoke.passive_pool_unpause_pool_1rusd",
+]
+
+[invoke.passive_pool_set_allocations_1rusd]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "setAllocations"
+args = [
+    "<%= settings.pool1RusdId %>",
+    [
+        # weth, wsteth, usde, susde, deusd, sdeusd -> need to double check order and make sure same on mainnet
+        # todo: remove wsteth from testet to align it with mainnet (need to add another zero for testnet to work)
+        # todo: make sure ordering also aligns between testnet and mainnet
+        0,
+        0,
+        0,
+        "<%= parseEther(settings.pool1_DEUSDTargetRatioPostQuoteUnscaled) %>",
+        "<%= parseEther(settings.pool1_SDEUSDTargetRatioPostQuoteUnscaled) %>",
+    ],
+]
+depends = [
+    # todo: needs to depend on all supporting tokens being configured
+    "invoke.passive_pool_create_pool_1rusd",
+    "invoke.passive_pool_unpause_pool_1rusd",
+    "invoke.passive_pool_set_allocation_configuration_1rusd",
+    "invoke.cp_1rusd_set_deusd_config",
+    "invoke.cp_1rusd_set_sdeusd_config",
+]

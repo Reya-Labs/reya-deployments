@@ -34,14 +34,14 @@ rageTradeAccountId = "7224"
 
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.9@router"
+coreRouterPackage = "reya-core:1.0.10@router"
 coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
 rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.0@router"
 passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
-passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.2@router"
+passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.4@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.14@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
@@ -100,6 +100,9 @@ pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
 pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
 pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
+
+[var.rebalancers]
+rebalancer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.liquidators]
 liquidator1 = "0x6f7Fa28A4C6457F0dcCcD95360dd072155aA1439"
@@ -204,6 +207,7 @@ storkAssetPairIdAAVE = "AAVEUSD"
 storkAssetPairIdCRV = "CRVUSD"
 storkAssetPairIdUNI = "UNIUSD"
 storkAssetPairIdSUSDE = "SUSDEUSD"
+storkAssetPairIdDEUSD = "DEUSDUSD"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
@@ -226,6 +230,7 @@ storkAssetPairIdWIFMark = "WIFUSDMARK"
 storkAssetPairId1000PEPEMark = "1000PEPEUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
+# todo: consider using REYA rather than FALLBACK 
 reyaAssetPairIdETHMark = "ETHUSDMARKFALLBACK"
 reyaAssetPairIdBTCMark = "BTCUSDMARKFALLBACK"
 reyaAssetPairIdSOLMark = "SOLUSDMARKFALLBACK"
@@ -244,6 +249,9 @@ reyaAssetPairIdZROMark = "ZROUSDMARKFALLBACK"
 reyaAssetPairIdXRPMark = "XRPUSDMARKFALLBACK"
 reyaAssetPairIdWIFMark = "WIFUSDMARKFALLBACK"
 reyaAssetPairId1000PEPEMark = "1000PEPEUSDMARKFALLBACK"
+
+[var.reya_asset_pair_ids]
+reyaAssetPairIdSDEUSD = "SDEUSDUSDREYA"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -342,6 +350,14 @@ usdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
 susdeCollateralAdapter = "<%= AddressZero %>"
 susdeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 susdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+deusdCollateralAdapter = "<%= AddressZero %>"
+deusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+deusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+sdeusdCollateralAdapter = "<%= AddressZero %>"
+sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "1.0"
@@ -532,6 +548,17 @@ susdeUsdcMaxStaleDuration = "0"
 susdeUsdMaxStaleDurationStork = "0"
 susdeUsdcMaxStaleDurationStork = "0"
 susdeUsdcMaxStaleDurationFallbackStorkRedstone = "0"
+#------------------------------------------------------------------------------
+deusdUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+deusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+sdeusdUsdMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+sdeusdUsdcMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+
+[var.pool_1]
+pool1_quoteTokenTargetRatioUnscaled = "0.2"
+pool1_DEUSDTargetRatioPostQuoteUnscaled = "0.4"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.6"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -864,7 +891,7 @@ market18Pepe1k_marketOrderMaxStaleDuration = "11"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "18"
-cp1Rusd_maxCollaterals = "5"
+cp1Rusd_maxCollaterals = "7"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
 # -----------------------------------------------
@@ -971,3 +998,27 @@ cp1Rusd_susdeParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %
 cp1Rusd_susdeParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_susdeParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_susdeParentConfig_oracleNodeId = "<%= settings.susdeUsdcNodeIdStork %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_deusd_capUnscaled = "500000"
+cp1Rusd_deusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_deusd_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_deusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_deusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_deusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_deusdParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_deusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_deusdParentConfig_oracleNodeId = "<%= settings.deusdUsdcNodeIdStork %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_sdeusd_capUnscaled = "500000"
+cp1Rusd_sdeusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_sdeusd_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_sdeusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_sdeusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_sdeusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_sdeusdParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_sdeusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdReya %>"
