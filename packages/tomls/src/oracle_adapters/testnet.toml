@@ -1,1 +1,1 @@
-include = ["./mainnet.toml"]
+include = ["./mainnet.toml", "./configs/set_reya_publishers.toml"]

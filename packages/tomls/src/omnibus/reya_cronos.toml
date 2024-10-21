@@ -122,6 +122,9 @@ storkPublisher2 = "0xb91C675E0c0Ecfd4c16f97B110376C3C224061d8"
 storkPublisher3 = "0x51aa9e9c781f85a2c0636a835eb80114c4553098"
 storkPublisher4 = "0xf024a9aa110798e5cd0d698fba6523113eaa7fb2"
 
+[var.reya_publishers]
+reyaPublisher1 = "0x4abD94336349C300c0E1f6b5CB71438538FB5D61"
+
 [var.stork_executors]
 storkExecutor1 = "0xA8F317B19AecCb2Ed9f335317A9bea59152aCF4d"
 storkExecutor2 = "0x45B03980C67Ec0974E944618AE345b56b3be988f"
@@ -283,6 +286,14 @@ susdeExecutionHelper = "0xe06D0387ead9198A013007DB2979104128462772"
 susdeEthereumSepoliaConnector = "0x98d6E43d66c6F9d824D1B56CF1C77583d7e7793f"
 susdeArbitrumSepoliaConnector = "0xF79f6c0BadA41F395CDe3a357B1c239D6aBA1B84"
 susdeOptimismSepoliaConnector = "0x502fBd9322a65A1a5a897cfDFB8f179A92b73300"
+# -------------------------------------------------------------------
+deusdController = "0x3A76507b4493866A161c948f44e696122762f14a"
+deusdExecutionHelper = "0x7Bbd35e35065a29A6B6DDf2Fe087880567f47655"
+deusdEthereumSepoliaConnector = "0x5878357eB1d12f2a3F36D299C9eF6dd3A6B4d29a"
+# -------------------------------------------------------------------
+sdeusdController = "0x8b798242936f528F53c6c93f045D808367CD01fD"
+sdeusdExecutionHelper = "0xFaA0313F2a7a48Cc995e01ADC68cb3aAD130Bdaa"
+sdeusdEthereumSepoliaConnector = "0x596c0Bb29466cE75A4d1296657AE9275fD4b0912"
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumSepoliaWithdrawFeeUnscaled = "65"
@@ -308,6 +319,10 @@ usdeOptimismSepoliaWithdrawFeeUnscaled = "0.1"
 susdeEthereumSepoliaWithdrawFeeUnscaled = "65"
 susdeArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
 susdeOptimismSepoliaWithdrawFeeUnscaled = "0.1"
+# -------------------------------------------------------------------
+deusdEthereumSepoliaWithdrawFeeUnscaled = "65"
+# -------------------------------------------------------------------
+sdeusdEthereumSepoliaWithdrawFeeUnscaled = "65"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -329,6 +344,14 @@ usdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
 susdeCollateralAdapter = "<%= AddressZero %>"
 susdeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 susdeWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+deusdCollateralAdapter = "<%= AddressZero %>"
+deusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+deusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+sdeusdCollateralAdapter = "<%= AddressZero %>"
+sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "1.0"
@@ -530,7 +553,6 @@ sdeusdUsdcMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 pool1_quoteTokenTargetRatioUnscaled = "0.2"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0.4"
 pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.6"
-
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -838,7 +860,7 @@ market17Wif_slippageParams_betaUnscaled = "0"
 market17Wif_minimumOrderBaseUnscaled = "0.100"
 market17Wif_baseSpacingUnscaled = "0.0001"
 market17Wif_priceSpacingUnscaled = "0.001"
-market17Wif_depthFactorUnscaled = ".25"
+market17Wif_depthFactorUnscaled = "1.5"
 market17Wif_maxExposureFactorUnscaled = "0.999"
 market17Wif_maxPSlippageUnscaled = "0.1"
 market17Wif_marketOrderMaxStaleDuration = "11"
@@ -856,14 +878,14 @@ market18Pepe1k_slippageParams_betaUnscaled = "0"
 market18Pepe1k_minimumOrderBaseUnscaled = "0.100"
 market18Pepe1k_baseSpacingUnscaled = "0.0100"
 market18Pepe1k_priceSpacingUnscaled = "<%= 1e-6 %>"
-market18Pepe1k_depthFactorUnscaled = ".25"
+market18Pepe1k_depthFactorUnscaled = "1.5"
 market18Pepe1k_maxExposureFactorUnscaled = "0.999"
 market18Pepe1k_maxPSlippageUnscaled = "0.1"
 market18Pepe1k_marketOrderMaxStaleDuration = "11"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "18"
-cp1Rusd_maxCollaterals = "5"
+cp1Rusd_maxCollaterals = "7"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
 # -----------------------------------------------
@@ -970,3 +992,27 @@ cp1Rusd_susdeParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %
 cp1Rusd_susdeParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_susdeParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_susdeParentConfig_oracleNodeId = "<%= settings.susdeUsdcNodeIdStork %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_deusd_capUnscaled = "500000"
+cp1Rusd_deusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_deusd_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_deusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_deusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_deusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_deusdParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_deusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_deusdParentConfig_oracleNodeId = "<%= settings.deusdUsdcNodeIdStork %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_sdeusd_capUnscaled = "500000"
+cp1Rusd_sdeusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_sdeusd_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_sdeusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_sdeusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_sdeusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_sdeusdParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_sdeusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdReya %>"
