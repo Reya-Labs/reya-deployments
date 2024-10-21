@@ -34,7 +34,7 @@ rageTradeAccountId = "7224"
 
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.8@router"
+coreRouterPackage = "reya-core:1.0.10@router"
 coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
 rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
