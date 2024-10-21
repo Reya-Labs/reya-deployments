@@ -40,7 +40,7 @@ func = "setAllocations"
 args = [
     "<%= settings.pool1RusdId %>",
     [
-        # weth, wsteth, usde, usde, deusd, sdeusd -> need to double check order and make sure same on mainnet
+        # weth, wsteth, usde, susde, deusd, sdeusd -> need to double check order and make sure same on mainnet
         0,
         0,
         0,
@@ -50,6 +50,7 @@ args = [
     ],
 ]
 depends = [
+    # todo: needs to depend on all supporting tokens being configured
     "invoke.passive_pool_create_pool_1rusd",
     "invoke.passive_pool_unpause_pool_1rusd",
     "invoke.passive_pool_set_allocation_configuration_1rusd",
