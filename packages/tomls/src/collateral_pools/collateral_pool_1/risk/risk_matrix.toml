@@ -413,7 +413,6 @@ args = [
 ]
 depends = ["var.cp_1rusd_vars"]
 
-
 [invoke.cp_1rusd_set_risk_block_id_market_1eth]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
