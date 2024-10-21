@@ -70,6 +70,8 @@ wbtcSalt = "wbtc-main"
 wstethSalt = "wsteth-main"
 usdeSalt = "usde-main"
 susdeSalt = "susde-main"
+deusdSalt = "deusd-main"
+sdeusdSalt = "sdeusd-main"
 
 [var.missing_vars]
 salt = ""
@@ -267,6 +269,14 @@ susdeEthereumConnector = "0x888f5426Bf4E387770A225d0097f0716aF98e7b5"
 susdeArbitrumConnector = "0x4f471ff392733b722992F012e40728e36c5e9848"
 susdeOptimismConnector = "0x79C06E5BD8e7a4dc151D7591eba71C2a5D49e2B6"
 susdeBaseConnector = "0xE71b58F3324d06786cA70b3c9695df23EEaaF630"
+# -------------------------------------------------------------------
+deusdController = "0x322A8EA44716586b6BB31456055e61B28da4f1C1"
+deusdExecutionHelper = "0xEB7F89394B325a021259939DA5Ba5EE83984b7F5"
+deusdEthereumConnector = "0x65ce0D9c5bbF43ee7A6011B3D077DD2FeA6b2726"
+# -------------------------------------------------------------------
+sdeusdController = "0xCDb4A30CEBbf9d8C14e4e96fDe6EA7E40c6f3f5B"
+sdeusdExecutionHelper = "0x70c46c24f9f923F44278C3B5451986C175c39F73"
+sdeusdEthereumConnector = "0x2dc464B4f5Fd55ea19f0bdF71A8dc3584eeb64d7"
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumWithdrawFeeUnscaled = "65"
@@ -292,6 +302,10 @@ susdeEthereumWithdrawFeeUnscaled = "65"
 susdeArbitrumWithdrawFeeUnscaled = "0.5"
 susdeOptimismWithdrawFeeUnscaled = "0.1"
 susdeBaseWithdrawFeeUnscaled = "0.1"
+# -------------------------------------------------------------------
+deusdEthereumWithdrawFeeUnscaled = "65"
+# -------------------------------------------------------------------
+sdeusdEthereumWithdrawFeeUnscaled = "65"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -807,7 +821,7 @@ market17Wif_slippageParams_betaUnscaled = "0"
 market17Wif_minimumOrderBaseUnscaled = "0.100"
 market17Wif_baseSpacingUnscaled = "0.0001"
 market17Wif_priceSpacingUnscaled = "0.001"
-market17Wif_depthFactorUnscaled = ".25"
+market17Wif_depthFactorUnscaled = "1.5"
 market17Wif_maxExposureFactorUnscaled = "0.999"
 market17Wif_maxPSlippageUnscaled = "0.1"
 market17Wif_marketOrderMaxStaleDuration = "11"
@@ -825,7 +839,7 @@ market18Pepe1k_slippageParams_betaUnscaled = "0"
 market18Pepe1k_minimumOrderBaseUnscaled = "0.100"
 market18Pepe1k_baseSpacingUnscaled = "0.0100"
 market18Pepe1k_priceSpacingUnscaled = "<%= 1e-6 %>"
-market18Pepe1k_depthFactorUnscaled = ".25"
+market18Pepe1k_depthFactorUnscaled = "1.5"
 market18Pepe1k_maxExposureFactorUnscaled = "0.999"
 market18Pepe1k_maxPSlippageUnscaled = "0.1"
 market18Pepe1k_marketOrderMaxStaleDuration = "11"
