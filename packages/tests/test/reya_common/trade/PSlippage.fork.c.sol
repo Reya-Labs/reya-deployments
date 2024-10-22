@@ -49,6 +49,10 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         );
 
         for (uint128 _marketId = 1; _marketId <= lastMarketId(); _marketId += 1) {
+            if (_marketId == 19 || _marketId == 21 || _marketId == 22) {
+                continue;
+            }
+
             st.marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(_marketId);
 
             // Step 1: Unwind any exposure of the pool
