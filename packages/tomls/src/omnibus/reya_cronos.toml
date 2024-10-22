@@ -941,7 +941,7 @@ market19Popcat_marketOrderMaxStaleDuration = "11"
 
 [var.market_20doge]
 market20Doge_riskMatrixIndex = "0"
-market20Doge_maxOpenBaseUnscaled = "100000000"
+market20Doge_maxOpenBaseUnscaled = "7050000"
 market20Doge_velocityMultiplierUnscaled = "24"
 market20Doge_oracleNodeId = "<%= settings.dogeUsdcMarkNodeIdStork %>"
 market20Doge_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
