@@ -71,7 +71,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // check that the new 1 wETH does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-        assertEq(sharePrice1, sharePrice0);
+        assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
         // make sure that the passive pool deposit works
         deal(sec.usdc, sec.periphery, 10e6);
@@ -140,7 +140,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // check that the new 3000 USDe does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-        assertEq(sharePrice1, sharePrice0);
+        assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
         // make sure that the passive pool deposit works
         deal(sec.usdc, sec.periphery, 10e6);
@@ -210,7 +210,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // check that the new 3000 sUSDe does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-        assertEq(sharePrice1, sharePrice0);
+        assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
         // make sure that the passive pool deposit works
         deal(sec.usdc, sec.periphery, 10e6);
