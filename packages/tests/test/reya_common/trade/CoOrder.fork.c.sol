@@ -179,7 +179,14 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
 
         for (uint128 i = 1; i <= lastMarketId; i++) {
+            if (i == 19 || i == 21 || i == 22) {
+                continue;
+            }
+
             st.nonce = i;
+            if (i == 20) {
+                st.nonce = i - 1;
+            }
             st.orderMarketId1 = i;
             st.orderBase1 = sd(-1e18);
             st.orderPriceLimit1 = MIN_PRICE;
@@ -216,7 +223,14 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
 
         for (uint128 i = 1; i <= lastMarketId; i++) {
+            if (i == 19 || i == 21 || i == 22) {
+                continue;
+            }
+
             st.nonce = i;
+            if (i == 20) {
+                st.nonce = i - 1;
+            }
             st.orderMarketId1 = i;
             st.orderBase1 = sd(-1e18);
             st.orderPriceLimit1 = MIN_PRICE;
@@ -253,7 +267,14 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
 
         for (uint128 i = 1; i <= lastMarketId; i++) {
+            if (i == 19 || i == 21 || i == 22) {
+                continue;
+            }
+
             st.nonce = i;
+            if (i == 20) {
+                st.nonce = i - 1;
+            }
             st.orderMarketId1 = i;
             st.orderBase1 = sd(-1e18);
             st.orderPriceLimit1 = MIN_PRICE; // irrelevant

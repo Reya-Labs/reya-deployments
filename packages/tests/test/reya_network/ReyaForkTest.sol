@@ -151,6 +151,18 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.pepe1kUsdStorkMarkNodeId = 0x4a26454f03accc21ea55b84af70ae6e341f9db157f1640d60c95d3386f4af971;
         sec.pepe1kUsdcStorkMarkNodeId = 0xf9e4583c01139e4ac5b097da69a188c34a180f1dd34ce05d01cc740569492604;
 
+        sec.popcatUsdStorkMarkNodeId = 0x74d1cab0aaff7789f646c2550821dd5f69ea7c7f1a34156030536b8feb157603;
+        sec.popcatUsdcStorkMarkNodeId = 0x877f87f0e83878498c00ce65d884d59cc64cf428b2c6282c60f5b3be8ef43846;
+
+        sec.dogeUsdStorkMarkNodeId = 0x62af2e85b91624b749eac4dc6fb0097068620e1f863a8e4e9d8790b99b989349;
+        sec.dogeUsdcStorkMarkNodeId = 0x82fbad667884fb2e7696771e28b21b9becca3b00c6015708dd061eadbad527d2;
+
+        sec.kshibUsdStorkMarkNodeId = 0xc5233c69c0c0776f586556eb59f7e8585160a9d2ca0c7c890dea06914d981f15;
+        sec.kshibUsdcStorkMarkNodeId = 0xdcd17b3db84c05f0579f84ff7e9390c4e27b02d9aa9be9ba3c02e1c08ac9345e;
+
+        sec.kbonkUsdStorkMarkNodeId = 0x4d22904b2194dcda3678655c03e7864bc139d1e72c8fe0d97d5cbbd366878e6d;
+        sec.kbonkUsdcStorkMarkNodeId = 0xb7082b990c3aaf729ee79d955dda71b9477acc2886f69ab83ff5c03ee8515c31;
+
         // sec.susdeUsdNodeId = 0xca59e8ff5f899c7117a1e82a1e915ede07c45835e8d02b10535a9f58058be10c;
         // sec.susdeUsdcNodeId = 0x46effa5a7464c0e305d73ca20fb965d985e543e37f9cf3f0eacd680936c4c5e0;
         sec.susdeUsdStorkNodeId = 0x5176edbcbb7126ba8fe024a930aaa5a88bfd8a5f0de4c823e19f439d5f6c5c59;

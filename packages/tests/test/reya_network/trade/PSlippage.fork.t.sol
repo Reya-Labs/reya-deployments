@@ -76,6 +76,22 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_pepe1k_long();
     }
 
+    // function test_trade_slippage_popcat_long() public {
+    //     check_trade_slippage_popcat_long();
+    // }
+
+    function test_trade_slippage_doge_long() public {
+        check_trade_slippage_doge_long();
+    }
+
+    // function test_trade_slippage_kshib_long() public {
+    //     check_trade_slippage_kshib_long();
+    // }
+
+    // function test_trade_slippage_kbonk_long() public {
+    //     check_trade_slippage_kbonk_long();
+    // }
+
     function test_trade_slippage_eth_short() public {
         check_trade_slippage_eth_short();
     }
@@ -147,4 +163,20 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
     function test_trade_slippage_pepe1k_short() public {
         check_trade_slippage_pepe1k_short();
     }
+
+    // function test_trade_slippage_popcat_short() public {
+    //     check_trade_slippage_popcat_short();
+    // }
+
+    function test_trade_slippage_doge_short() public {
+        check_trade_slippage_doge_short();
+    }
+
+    // function test_trade_slippage_kshib_short() public {
+    //     check_trade_slippage_kshib_short();
+    // }
+
+    // function test_trade_slippage_kbonk_short() public {
+    //     check_trade_slippage_kbonk_short();
+    // }
 }

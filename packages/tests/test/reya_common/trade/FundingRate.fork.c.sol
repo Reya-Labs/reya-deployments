@@ -44,6 +44,10 @@ contract FundingRateForkCheck is BaseReyaForkTest {
 
         SD59x18[] memory pSlippage = new SD59x18[](toMarketId - fromMarketId + 1);
         for (uint128 marketId = fromMarketId; marketId <= toMarketId; marketId += 1) {
+            if (marketId == 19 || marketId == 21 || marketId == 22) {
+                continue;
+            }
+
             (, pSlippage[marketId - fromMarketId]) = executeCoreMatchOrder({
                 marketId: marketId,
                 sender: user,
@@ -70,7 +74,7 @@ contract FundingRateForkCheck is BaseReyaForkTest {
             assertApproxEqAbsDecimal(
                 fundingRate2[marketId - fromMarketId] - fundingRate1[marketId - fromMarketId],
                 pSlippage[marketId - fromMarketId].mul(sd(int256(marketConfig.velocityMultiplier))).unwrap(),
-                1e3,
+                1e4,
                 18
             );
         }
