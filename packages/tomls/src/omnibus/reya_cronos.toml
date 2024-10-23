@@ -959,7 +959,7 @@ market20Doge_marketOrderMaxStaleDuration = "11"
 
 [var.market_21kshib]
 market21KShib_riskMatrixIndex = "0"
-market21KShib_maxOpenBaseUnscaled = "0"
+market21KShib_maxOpenBaseUnscaled = "56150000"
 market21KShib_velocityMultiplierUnscaled = "24"
 market21KShib_oracleNodeId = "<%= settings.kshibUsdcMarkNodeIdStork %>"
 market21KShib_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
