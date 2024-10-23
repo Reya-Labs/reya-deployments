@@ -5,7 +5,7 @@ import "../DataTypes.sol";
 
 import { CollateralConfig, ParentCollateralConfig, ICoreProxy } from "../../../src/interfaces/ICoreProxy.sol";
 
-import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
+import { IPassivePoolProxy, RebalanceAmounts, AutoRebalanceInput } from "../../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IPeripheryProxy,
     DepositNewMAInputs,
@@ -14,6 +14,8 @@ import {
 } from "../../../src/interfaces/IPeripheryProxy.sol";
 
 import { ISocketExecutionHelper } from "../../../src/interfaces/ISocketExecutionHelper.sol";
+
+import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol";
 
 import { sd } from "@prb/math/SD59x18.sol";
 import { ud } from "@prb/math/UD60x18.sol";
@@ -254,5 +256,58 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // withdraw 100 sUSDe from account
         executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.susde, 100e18, sec.mainChainId);
+    }
+
+    function autoRebalancePool() internal {
+        address quoteToken = sec.rusd;
+        address[] memory supportingTokens = IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
+
+        address[] memory allTokens = new address[](supportingTokens.length + 1);
+        allTokens[0] = quoteToken;
+        for (uint256 i = 0; i < supportingTokens.length; i++) {
+            allTokens[i + 1] = supportingTokens[i];
+        }
+
+        for (uint256 i = 0; i < allTokens.length; i++) {
+            for (uint256 j = 0; j < allTokens.length; j++) {
+                if (i == j) {
+                    continue;
+                }
+
+                address tokenIn = allTokens[i];
+                address tokenOut = allTokens[j];
+
+                uint256 amountIn = 100_000_000 * (10 ** IERC20TokenModule(tokenIn).decimals());
+
+                RebalanceAmounts memory rebalanceAmounts =
+                    IPassivePoolProxy(sec.pool).getRebalanceAmounts(sec.passivePoolId, tokenIn, tokenOut, amountIn);
+
+                if (rebalanceAmounts.amountIn != 0) {
+                    vm.prank(dec.socketController[tokenIn]);
+                    IERC20TokenModule(tokenIn).mint(sec.rebalancer1, rebalanceAmounts.amountIn);
+
+                    vm.prank(sec.rebalancer1);
+                    IERC20TokenModule(tokenIn).approve(sec.pool, rebalanceAmounts.amountIn);
+
+                    vm.prank(sec.rebalancer1);
+                    IPassivePoolProxy(sec.pool).triggerAutoRebalance(
+                        sec.passivePoolId,
+                        AutoRebalanceInput({
+                            tokenIn: tokenIn,
+                            amountIn: rebalanceAmounts.amountIn,
+                            tokenOut: tokenOut,
+                            minPrice: rebalanceAmounts.priceInToOut,
+                            receiverAddress: sec.periphery
+                        })
+                    );
+
+                    vm.warp(block.timestamp + 1);
+                }
+            }
+        }
+    }
+
+    function check_autoRebalance() public {
+        autoRebalancePool();
     }
 }
