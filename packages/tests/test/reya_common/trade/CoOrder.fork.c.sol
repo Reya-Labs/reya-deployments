@@ -179,12 +179,12 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
 
         for (uint128 i = 1; i <= lastMarketId; i++) {
-            if (i == 19 || i == 22) {
+            if (i == 19) {
                 continue;
             }
 
             st.nonce = i;
-            if (i == 20 || i == 21) {
+            if (i == 20 || i == 21 || i == 22) {
                 st.nonce = i - 1;
             }
             st.orderMarketId1 = i;
@@ -223,12 +223,12 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
 
         for (uint128 i = 1; i <= lastMarketId; i++) {
-            if (i == 19 || i == 22) {
+            if (i == 19) {
                 continue;
             }
 
             st.nonce = i;
-            if (i == 20 || i == 21) {
+            if (i == 20 || i == 21 || i == 22) {
                 st.nonce = i - 1;
             }
             st.orderMarketId1 = i;
@@ -267,12 +267,12 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
 
         for (uint128 i = 1; i <= lastMarketId; i++) {
-            if (i == 19 || i == 22) {
+            if (i == 19) {
                 continue;
             }
 
             st.nonce = i;
-            if (i == 20 || i == 21) {
+            if (i == 20 || i == 21 || i == 22) {
                 st.nonce = i - 1;
             }
             st.orderMarketId1 = i;

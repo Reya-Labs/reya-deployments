@@ -237,7 +237,7 @@ contract BaseReyaForkTest is StorageReyaForkTest {
 
     function mockFreshPrices() internal {
         for (uint128 i = 1; i <= lastMarketId(); i++) {
-            if (i == 19 || i == 22) {
+            if (i == 19) {
                 continue;
             }
 

@@ -965,7 +965,7 @@ market21KShib_marketOrderMaxStaleDuration = "11"
 
 [var.market_22kbonk]
 market22KBonk_riskMatrixIndex = "0"
-market22KBonk_maxOpenBaseUnscaled = "0"
+market22KBonk_maxOpenBaseUnscaled = "40000000"
 market22KBonk_velocityMultiplierUnscaled = "24"
 market22KBonk_oracleNodeId = "<%= settings.kbonkUsdcMarkNodeIdStork %>"
 market22KBonk_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"

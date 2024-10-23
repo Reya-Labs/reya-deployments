@@ -88,9 +88,9 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_rusdCollateral_leverage_kshib();
     }
 
-    // function test_trade_rusdCollateral_leverage_kbonk() public {
-    //     check_trade_rusdCollateral_leverage_kbonk();
-    // }
+    function test_trade_rusdCollateral_leverage_kbonk() public {
+        check_trade_rusdCollateral_leverage_kbonk();
+    }
 
     function test_trade_wethCollateral_leverage_eth() public {
         check_trade_wethCollateral_leverage_eth();
@@ -176,9 +176,9 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_wethCollateral_leverage_kshib();
     }
 
-    // function test_trade_wethCollateral_leverage_kbonk() public {
-    //     check_trade_wethCollateral_leverage_kbonk();
-    // }
+    function test_trade_wethCollateral_leverage_kbonk() public {
+        check_trade_wethCollateral_leverage_kbonk();
+    }
 
     function test_trade_usdeCollateral_leverage_eth() public {
         check_trade_usdeCollateral_leverage_eth();
@@ -264,9 +264,9 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_usdeCollateral_leverage_kshib();
     }
 
-    // function test_trade_usdeCollateral_leverage_kbonk() public {
-    //     check_trade_usdeCollateral_leverage_kbonk();
-    // }
+    function test_trade_usdeCollateral_leverage_kbonk() public {
+        check_trade_usdeCollateral_leverage_kbonk();
+    }
 
     function test_trade_susdeCollateral_leverage_eth() public {
         check_trade_susdeCollateral_leverage_eth();
@@ -352,7 +352,7 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_susdeCollateral_leverage_kshib();
     }
 
-    // function test_trade_susdeCollateral_leverage_kbonk() public {
-    //     check_trade_susdeCollateral_leverage_kbonk();
-    // }
+    function test_trade_susdeCollateral_leverage_kbonk() public {
+        check_trade_susdeCollateral_leverage_kbonk();
+    }
 }
