@@ -84,9 +84,9 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_rusdCollateral_leverage_doge();
     }
 
-    // function test_trade_rusdCollateral_leverage_kshib() public {
-    //     check_trade_rusdCollateral_leverage_kshib();
-    // }
+    function test_trade_rusdCollateral_leverage_kshib() public {
+        check_trade_rusdCollateral_leverage_kshib();
+    }
 
     // function test_trade_rusdCollateral_leverage_kbonk() public {
     //     check_trade_rusdCollateral_leverage_kbonk();
@@ -172,9 +172,9 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_wethCollateral_leverage_doge();
     }
 
-    // function test_trade_wethCollateral_leverage_kshib() public {
-    //     check_trade_wethCollateral_leverage_kshib();
-    // }
+    function test_trade_wethCollateral_leverage_kshib() public {
+        check_trade_wethCollateral_leverage_kshib();
+    }
 
     // function test_trade_wethCollateral_leverage_kbonk() public {
     //     check_trade_wethCollateral_leverage_kbonk();
@@ -260,9 +260,9 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_usdeCollateral_leverage_doge();
     }
 
-    // function test_trade_usdeCollateral_leverage_kshib() public {
-    //     check_trade_usdeCollateral_leverage_kshib();
-    // }
+    function test_trade_usdeCollateral_leverage_kshib() public {
+        check_trade_usdeCollateral_leverage_kshib();
+    }
 
     // function test_trade_usdeCollateral_leverage_kbonk() public {
     //     check_trade_usdeCollateral_leverage_kbonk();
@@ -348,9 +348,9 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_susdeCollateral_leverage_doge();
     }
 
-    // function test_trade_susdeCollateral_leverage_kshib() public {
-    //     check_trade_susdeCollateral_leverage_kshib();
-    // }
+    function test_trade_susdeCollateral_leverage_kshib() public {
+        check_trade_susdeCollateral_leverage_kshib();
+    }
 
     // function test_trade_susdeCollateral_leverage_kbonk() public {
     //     check_trade_susdeCollateral_leverage_kbonk();
