@@ -631,13 +631,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(ls.meanPriceKSHIB);
         ls.maxDeviations.push(ls.maxDeviationKSHIB);
 
-        // ls.nodeIds.push(sec.kbonkUsdStorkMarkNodeId);
-        // ls.meanPrices.push(ls.meanPriceKBONK);
-        // ls.maxDeviations.push(ls.maxDeviationKBONK);
+        ls.nodeIds.push(sec.kbonkUsdStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPriceKBONK);
+        ls.maxDeviations.push(ls.maxDeviationKBONK);
 
-        // ls.nodeIds.push(sec.kbonkUsdcStorkMarkNodeId);
-        // ls.meanPrices.push(ls.meanPriceKBONK);
-        // ls.maxDeviations.push(ls.maxDeviationKBONK);
+        ls.nodeIds.push(sec.kbonkUsdcStorkMarkNodeId);
+        ls.meanPrices.push(ls.meanPriceKBONK);
+        ls.maxDeviations.push(ls.maxDeviationKBONK);
 
         // ls.nodeIds.push(sec.susdeUsdNodeId);
         // ls.meanPrices.push(ls.meanPriceSUSDE);
@@ -699,7 +699,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
     function check_marketsPrices() public {
         setupOracleNodePriceParams();
         for (uint128 i = 1; i <= lastMarketId(); i++) {
-            if (i == 19 || i == 21 || i == 22) {
+            if (i == 19) {
                 continue;
             }
 
