@@ -5,6 +5,8 @@ import "forge-std/Test.sol";
 import { StorageReyaForkTest } from "../reya_common/StorageReyaForkTest.sol";
 import "../reya_common/DataTypes.sol";
 
+import { ICoreProxy } from "../../src/interfaces/ICoreProxy.sol";
+
 contract ReyaForkTest is StorageReyaForkTest {
     constructor() {
         sec.REYA_RPC = "https://rpc.reya.network";
@@ -215,5 +217,8 @@ contract ReyaForkTest is StorageReyaForkTest {
         catch {
             vm.createSelectFork(sec.REYA_RPC);
         }
+
+        vm.prank(sec.multisig);
+        ICoreProxy(sec.core).setFeatureFlagAllowAll(keccak256(bytes("matchOrderPublisher")), true);
     }
 }

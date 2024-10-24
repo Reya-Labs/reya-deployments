@@ -6,6 +6,7 @@ import { BaseReyaForkTest } from "../reya_common/BaseReyaForkTest.sol";
 import "../reya_common/DataTypes.sol";
 
 import { IPeripheryProxy, DepositPassivePoolInputs } from "../../src/interfaces/IPeripheryProxy.sol";
+import { ICoreProxy } from "../../src/interfaces/ICoreProxy.sol";
 
 import { ISocketExecutionHelper } from "../../src/interfaces/ISocketExecutionHelper.sol";
 
@@ -226,5 +227,8 @@ contract ReyaForkTest is BaseReyaForkTest {
             abi.encode(50_000_000e6)
         );
         IPeripheryProxy(sec.periphery).depositPassivePool(inputs);
+
+        vm.prank(sec.multisig);
+        ICoreProxy(sec.core).setFeatureFlagAllowAll(keccak256(bytes("matchOrderPublisher")), true);
     }
 }
