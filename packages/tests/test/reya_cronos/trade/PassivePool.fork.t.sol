@@ -31,7 +31,11 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         check_PassivePoolWithSusde();
     }
 
-    function test_Cronos_PassivePoolAutoRebalance() public {
-        check_autoRebalance();
+    function test_Cronos_PassivePoolAutoRebalance_CurrentTargets() public {
+        check_autoRebalance_currentTargets();
+    }
+
+    function test_Cronos_PassivePoolAutoRebalance_DifferentTargets() public {
+        check_autoRebalance_differentTargets();
     }
 }

@@ -5,7 +5,12 @@ import "../DataTypes.sol";
 
 import { CollateralConfig, ParentCollateralConfig, ICoreProxy } from "../../../src/interfaces/ICoreProxy.sol";
 
-import { IPassivePoolProxy, RebalanceAmounts, AutoRebalanceInput } from "../../../src/interfaces/IPassivePoolProxy.sol";
+import {
+    IPassivePoolProxy,
+    RebalanceAmounts,
+    AutoRebalanceInput,
+    AllocationConfigurationData
+} from "../../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IPeripheryProxy,
     DepositNewMAInputs,
@@ -18,7 +23,7 @@ import { ISocketExecutionHelper } from "../../../src/interfaces/ISocketExecution
 import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol";
 
 import { sd } from "@prb/math/SD59x18.sol";
-import { ud } from "@prb/math/UD60x18.sol";
+import { ud, convert as convert_ud } from "@prb/math/UD60x18.sol";
 
 contract PassivePoolForkCheck is BaseReyaForkTest {
     function check_PoolHealth() public {
@@ -307,7 +312,26 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         }
     }
 
-    function check_autoRebalance() public {
+    function check_autoRebalance_currentTargets() public {
+        autoRebalancePool();
+    }
+
+    function check_autoRebalance_differentTargets() public {
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).setAllocationConfiguration(
+            sec.passivePoolId, AllocationConfigurationData({ quoteTokenTargetRatio: 0.353535e18 })
+        );
+
+        address[] memory supportingCollaterals =
+            IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
+        uint256[] memory newSupportingCollateralsAllocations = new uint256[](supportingCollaterals.length);
+
+        newSupportingCollateralsAllocations[newSupportingCollateralsAllocations.length - 2] = 0.454545e18;
+        newSupportingCollateralsAllocations[newSupportingCollateralsAllocations.length - 1] = 1e18 - 0.454545e18;
+
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).setAllocations(sec.passivePoolId, newSupportingCollateralsAllocations);
+
         autoRebalancePool();
     }
 }
