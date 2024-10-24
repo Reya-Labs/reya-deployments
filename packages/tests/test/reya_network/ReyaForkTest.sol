@@ -33,6 +33,7 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.ownerUpgradeModule = 0x70230eE0CcA326A559410DCEd74F2972306D1e1e;
         sec.mainChainId = ethereumChainId;
         sec.coExecutionBot = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
+        sec.rebalancer1 = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
 
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
         // sec.usdcUsdNodeId = 0x7c1a73684de34b95f492a9ee72c0d8e1589714eeba4a457f766b84bd1c2f240f;

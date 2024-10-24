@@ -5,7 +5,12 @@ import "../DataTypes.sol";
 
 import { CollateralConfig, ParentCollateralConfig, ICoreProxy } from "../../../src/interfaces/ICoreProxy.sol";
 
-import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
+import {
+    IPassivePoolProxy,
+    RebalanceAmounts,
+    AutoRebalanceInput,
+    AllocationConfigurationData
+} from "../../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IPeripheryProxy,
     DepositNewMAInputs,
@@ -13,10 +18,16 @@ import {
     DepositPassivePoolInputs
 } from "../../../src/interfaces/IPeripheryProxy.sol";
 
+import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
+
 import { ISocketExecutionHelper } from "../../../src/interfaces/ISocketExecutionHelper.sol";
 
+import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol";
+
+import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
+
 import { sd } from "@prb/math/SD59x18.sol";
-import { ud } from "@prb/math/UD60x18.sol";
+import { ud, convert as convert_ud } from "@prb/math/UD60x18.sol";
 
 contract PassivePoolForkCheck is BaseReyaForkTest {
     function check_PoolHealth() public {
@@ -254,5 +265,145 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // withdraw 100 sUSDe from account
         executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.susde, 100e18, sec.mainChainId);
+    }
+
+    function autoRebalancePool() internal {
+        address quoteToken = sec.rusd;
+        address[] memory supportingTokens = IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
+
+        address[] memory allTokens = new address[](supportingTokens.length + 1);
+        allTokens[0] = quoteToken;
+        for (uint256 i = 0; i < supportingTokens.length; i++) {
+            allTokens[i + 1] = supportingTokens[i];
+        }
+
+        for (uint256 i = 0; i < allTokens.length; i++) {
+            for (uint256 j = 0; j < allTokens.length; j++) {
+                if (i == j) {
+                    continue;
+                }
+
+                address tokenIn = allTokens[i];
+                address tokenOut = allTokens[j];
+
+                uint256 amountIn = 100_000_000 * (10 ** IERC20TokenModule(tokenIn).decimals());
+
+                RebalanceAmounts memory rebalanceAmounts =
+                    IPassivePoolProxy(sec.pool).getRebalanceAmounts(sec.passivePoolId, tokenIn, tokenOut, amountIn);
+
+                if (rebalanceAmounts.amountIn != 0) {
+                    vm.prank(dec.socketController[tokenIn]);
+                    IERC20TokenModule(tokenIn).mint(sec.rebalancer1, rebalanceAmounts.amountIn);
+
+                    vm.prank(sec.rebalancer1);
+                    IERC20TokenModule(tokenIn).approve(sec.pool, rebalanceAmounts.amountIn);
+
+                    vm.prank(sec.rebalancer1);
+                    IPassivePoolProxy(sec.pool).triggerAutoRebalance(
+                        sec.passivePoolId,
+                        AutoRebalanceInput({
+                            tokenIn: tokenIn,
+                            amountIn: rebalanceAmounts.amountIn,
+                            tokenOut: tokenOut,
+                            minPrice: rebalanceAmounts.priceInToOut,
+                            receiverAddress: sec.periphery
+                        })
+                    );
+
+                    vm.warp(block.timestamp + 1);
+                }
+            }
+        }
+    }
+
+    function check_autoRebalance_currentTargets() public {
+        autoRebalancePool();
+    }
+
+    function check_autoRebalance_differentTargets() public {
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).setAllocationConfiguration(
+            sec.passivePoolId, AllocationConfigurationData({ quoteTokenTargetRatio: 0.353535e18 })
+        );
+
+        address[] memory supportingCollaterals =
+            IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
+        uint256[] memory newSupportingCollateralsAllocations = new uint256[](supportingCollaterals.length);
+
+        newSupportingCollateralsAllocations[newSupportingCollateralsAllocations.length - 2] = 0.454545e18;
+        newSupportingCollateralsAllocations[newSupportingCollateralsAllocations.length - 1] = 1e18 - 0.454545e18;
+
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).setAllocations(sec.passivePoolId, newSupportingCollateralsAllocations);
+
+        autoRebalancePool();
+    }
+
+    function check_autoRebalance_noSharePriceChange() public {
+        uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+        check_autoRebalance_differentTargets();
+        uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+        assertLe(sharePrice0, sharePrice1);
+        assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e8, 18);
+    }
+
+    function check_autoRebalance_maxExposure() public {
+        (uint256 maxExposureShort0, uint256 maxExposureLong0) =
+            IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
+
+        check_autoRebalance_differentTargets();
+
+        (uint256 maxExposureShort1, uint256 maxExposureLong1) =
+            IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
+
+        assertNotEq(maxExposureShort0, maxExposureShort1);
+        assertNotEq(maxExposureLong0, maxExposureLong1);
+        assertApproxEqRelDecimal(maxExposureShort0, maxExposureShort1, 0.075e18, 18);
+        assertApproxEqRelDecimal(maxExposureLong0, maxExposureLong1, 0.075e18, 18);
+    }
+
+    function check_autoRebalance_instantaneousPrice() public {
+        uint128 marketId = 1;
+        uint256 instantaneousPrice0 = IPassivePerpProxy(sec.perp).getInstantaneousPoolPrice(marketId);
+        check_autoRebalance_differentTargets();
+        uint256 instantaneousPrice1 = IPassivePerpProxy(sec.perp).getInstantaneousPoolPrice(marketId);
+        assertNotEq(instantaneousPrice0, instantaneousPrice1);
+        assertApproxEqRelDecimal(instantaneousPrice0, instantaneousPrice1, 0.075e18, 18);
+    }
+
+    function check_sharePriceChangesWhenAssetPriceChanges() public {
+        autoRebalancePool();
+
+        uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+        (CollateralConfig memory deusdCollateralConfig, ParentCollateralConfig memory deusdParentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.deusd);
+        (CollateralConfig memory sdeusdCollateralConfig, ParentCollateralConfig memory sdeusdParentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.sdeusd);
+
+        NodeOutput.Data memory deusdOutput =
+            IOracleManagerProxy(sec.oracleManager).process(deusdParentCollateralConfig.oracleNodeId);
+        vm.mockCall(
+            sec.oracleManager,
+            abi.encodeCall(IOracleManagerProxy.process, (deusdParentCollateralConfig.oracleNodeId)),
+            abi.encode(
+                NodeOutput.Data({ price: ud(deusdOutput.price).mul(ud(0.99e18)).unwrap(), timestamp: block.timestamp })
+            )
+        );
+
+        NodeOutput.Data memory sdeusdOutput =
+            IOracleManagerProxy(sec.oracleManager).process(sdeusdParentCollateralConfig.oracleNodeId);
+        vm.mockCall(
+            sec.oracleManager,
+            abi.encodeCall(IOracleManagerProxy.process, (sdeusdParentCollateralConfig.oracleNodeId)),
+            abi.encode(
+                NodeOutput.Data({ price: ud(sdeusdOutput.price).mul(ud(1.01e18)).unwrap(), timestamp: block.timestamp })
+            )
+        );
+
+        uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+        assertNotEq(sharePrice0, sharePrice1);
+        assertApproxEqRelDecimal(sharePrice0, sharePrice1, 0.01e18, 18);
     }
 }
