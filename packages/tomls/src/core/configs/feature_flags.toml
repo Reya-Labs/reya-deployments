@@ -133,3 +133,15 @@ fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
 args = ["<%= keccak256(hexlify('matchOrderPublisher')) %>", true]
 depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_enable_match_order_publisher_admins]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setAdmins"
+args = [
+    "<%= keccak256(hexlify('matchOrderPublisher')) %>",
+    [
+        "<%= settings.matchOrderPublisherAdmin1 %>",
+    ],
+]
+depends = ["invoke.upgrade_core_proxy"]

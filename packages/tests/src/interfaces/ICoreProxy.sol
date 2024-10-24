@@ -423,6 +423,11 @@ interface ICoreProxy {
         view
         returns (address[] memory);
 
+    function getAdmins(bytes32 feature)
+        external
+        view
+        returns (address[] memory);
+
     function getFeatureFlagAllowAll(bytes32 feature)
         external
         view
@@ -447,6 +452,8 @@ interface ICoreProxy {
         external;
 
     function setDeniers(bytes32 feature, address[] memory deniers) external;
+
+    function setAdmins(bytes32 feature, address[] memory admins) external;
 
     function setFeatureFlagAllowAll(bytes32 feature, bool allowAll) external;
 
