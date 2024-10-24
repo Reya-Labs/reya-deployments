@@ -133,4 +133,3 @@ fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
 args = ["<%= keccak256(hexlify('matchOrderPublisher')) %>", true]
 depends = ["invoke.upgrade_core_proxy"]
-
