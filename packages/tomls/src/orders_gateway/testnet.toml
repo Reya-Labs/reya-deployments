@@ -1,1 +1,6 @@
-include = ["./mainnet.toml"]
+include = [
+    "utils/deploy_proxy.toml",
+    "utils/upgrade_proxy.toml",
+    "configs/feature_flags.toml",
+    "configs/global_config.toml",
+]

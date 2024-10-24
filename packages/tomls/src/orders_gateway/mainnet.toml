@@ -3,5 +3,5 @@ include = [
     "utils/upgrade_proxy.toml",
     "configs/feature_flags.toml",
     "configs/global_config.toml",
-    "configs/mainnet_co_access.toml"
+    "configs/mainnet_co_access.toml",
 ]
