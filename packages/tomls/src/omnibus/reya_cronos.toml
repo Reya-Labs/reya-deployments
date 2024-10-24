@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/testnet.toml",
     "../oracle_adapters/testnet.toml",
 ]
-version = "1.0.30"
+version = "1.0.31"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -34,7 +34,7 @@ rageTradeAccountId = "7224"
 
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.10@router"
+coreRouterPackage = "reya-core:1.0.11@router"
 coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
 rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
@@ -120,7 +120,10 @@ liquidator10 = "0x45556408e543158f74403e882E3C8c23eCD9f732"
 ae_liquidator1 = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
 
 [var.co_execution_bots]
-co_execution_bot1 = "0xB6EaF546b84E1f917579FC4FD3d7082DfE2ba212"
+co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a"
+
+[var.match_order_publisher_admins]
+matchOrderPublisherAdmin1 = "0xFF095BF9d6034C0680Ca2Ee51aE1e22b3d301414"
 
 [var.stork_publishers]
 storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"

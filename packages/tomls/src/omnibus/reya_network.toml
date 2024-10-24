@@ -116,6 +116,10 @@ ae_liquidator1 = "0x89520d105a125CC6165c6685de262c42113Df9c0"
 [var.co_execution_bots]
 co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a"
 
+# TODO: confirm that this is the admin for mainnet
+[var.match_order_publisher_admins]
+matchOrderPublisherAdmin1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
 [var.stork_publishers]
 storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
 storkPublisher2 = "0xb91C675E0c0Ecfd4c16f97B110376C3C224061d8"
