@@ -18,9 +18,13 @@ import {
     DepositPassivePoolInputs
 } from "../../../src/interfaces/IPeripheryProxy.sol";
 
+import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
+
 import { ISocketExecutionHelper } from "../../../src/interfaces/ISocketExecutionHelper.sol";
 
 import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol";
+
+import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
 import { sd } from "@prb/math/SD59x18.sol";
 import { ud, convert as convert_ud } from "@prb/math/UD60x18.sol";
@@ -333,5 +337,73 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         IPassivePoolProxy(sec.pool).setAllocations(sec.passivePoolId, newSupportingCollateralsAllocations);
 
         autoRebalancePool();
+    }
+
+    function check_autoRebalance_noSharePriceChange() public {
+        uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+        check_autoRebalance_differentTargets();
+        uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+        assertLe(sharePrice0, sharePrice1);
+        assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e8, 18);
+    }
+
+    function check_autoRebalance_maxExposure() public {
+        (uint256 maxExposureShort0, uint256 maxExposureLong0) =
+            IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
+
+        check_autoRebalance_differentTargets();
+
+        (uint256 maxExposureShort1, uint256 maxExposureLong1) =
+            IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
+
+        assertNotEq(maxExposureShort0, maxExposureShort1);
+        assertNotEq(maxExposureLong0, maxExposureLong1);
+        assertApproxEqRelDecimal(maxExposureShort0, maxExposureShort1, 0.075e18, 18);
+        assertApproxEqRelDecimal(maxExposureLong0, maxExposureLong1, 0.075e18, 18);
+    }
+
+    function check_autoRebalance_instantaneousPrice() public {
+        uint128 marketId = 1;
+        uint256 instantaneousPrice0 = IPassivePerpProxy(sec.perp).getInstantaneousPoolPrice(marketId);
+        check_autoRebalance_differentTargets();
+        uint256 instantaneousPrice1 = IPassivePerpProxy(sec.perp).getInstantaneousPoolPrice(marketId);
+        assertNotEq(instantaneousPrice0, instantaneousPrice1);
+        assertApproxEqRelDecimal(instantaneousPrice0, instantaneousPrice1, 0.075e18, 18);
+    }
+
+    function check_sharePriceChangesWhenAssetPriceChanges() public {
+        autoRebalancePool();
+
+        uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+        (CollateralConfig memory deusdCollateralConfig, ParentCollateralConfig memory deusdParentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.deusd);
+        (CollateralConfig memory sdeusdCollateralConfig, ParentCollateralConfig memory sdeusdParentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.sdeusd);
+
+        NodeOutput.Data memory deusdOutput =
+            IOracleManagerProxy(sec.oracleManager).process(deusdParentCollateralConfig.oracleNodeId);
+        vm.mockCall(
+            sec.oracleManager,
+            abi.encodeCall(IOracleManagerProxy.process, (deusdParentCollateralConfig.oracleNodeId)),
+            abi.encode(
+                NodeOutput.Data({ price: ud(deusdOutput.price).mul(ud(0.99e18)).unwrap(), timestamp: block.timestamp })
+            )
+        );
+
+        NodeOutput.Data memory sdeusdOutput =
+            IOracleManagerProxy(sec.oracleManager).process(sdeusdParentCollateralConfig.oracleNodeId);
+        vm.mockCall(
+            sec.oracleManager,
+            abi.encodeCall(IOracleManagerProxy.process, (sdeusdParentCollateralConfig.oracleNodeId)),
+            abi.encode(
+                NodeOutput.Data({ price: ud(sdeusdOutput.price).mul(ud(1.01e18)).unwrap(), timestamp: block.timestamp })
+            )
+        );
+
+        uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+        assertNotEq(sharePrice0, sharePrice1);
+        assertApproxEqRelDecimal(sharePrice0, sharePrice1, 0.01e18, 18);
     }
 }
