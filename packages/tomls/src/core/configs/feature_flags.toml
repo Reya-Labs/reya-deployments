@@ -142,10 +142,10 @@ args = [
     "<%= keccak256(hexlify('matchOrderPublisher')) %>",
     [
         "<%= settings.matchOrderPublisherAdmin1 %>",
-        "<%= settings.pauser1 %>",
-        "<%= settings.pauser2 %>",
-        "<%= settings.pauser3 %>",
-        "<%= settings.pauser4 %>",
+        "<%= settings.matchOrderPublisherAdmin2 %>",
+        "<%= settings.matchOrderPublisherAdmin3 %>",
+        "<%= settings.matchOrderPublisherAdmin4 %>",
+        "<%= settings.matchOrderPublisherAdmin5 %>",
     ],
 ]
 depends = ["invoke.upgrade_core_proxy"]

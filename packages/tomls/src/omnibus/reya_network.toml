@@ -116,9 +116,12 @@ ae_liquidator1 = "0x89520d105a125CC6165c6685de262c42113Df9c0"
 [var.co_execution_bots]
 co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a"
 
-# note, global pausers are also admins for this flag
 [var.match_order_publisher_admins]
-matchOrderPublisherAdmin1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+matchOrderPublisherAdmin1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
+matchOrderPublisherAdmin2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
+matchOrderPublisherAdmin3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
+matchOrderPublisherAdmin4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
+matchOrderPublisherAdmin5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.stork_publishers]
 storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
