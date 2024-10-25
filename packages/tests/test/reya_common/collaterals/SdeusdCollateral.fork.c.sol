@@ -127,7 +127,7 @@ contract SdeusdCollateralForkCheck is BaseReyaForkTest {
                 ICoreProxy.CollateralCapExceeded.selector,
                 1,
                 sec.sdeusd,
-                500_000e18,
+                50_000_000e18,
                 collateralPoolSdeusdBalance + amount
             )
         );

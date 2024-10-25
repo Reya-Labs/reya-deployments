@@ -123,7 +123,11 @@ contract DeusdCollateralForkCheck is BaseReyaForkTest {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector, 1, sec.deusd, 500_000e18, collateralPoolDeusdBalance + amount
+                ICoreProxy.CollateralCapExceeded.selector,
+                1,
+                sec.deusd,
+                50_000_000e18,
+                collateralPoolDeusdBalance + amount
             )
         );
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
