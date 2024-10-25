@@ -1,4 +1,4 @@
-[invoke.orders_gateway_unpause]
+[invoke.orders_gateway_enable_free_execution_access]
 target = ["OrdersGatewayProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
