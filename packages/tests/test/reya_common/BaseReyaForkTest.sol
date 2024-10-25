@@ -10,7 +10,8 @@ import {
     Command as Command_Core,
     MarginInfo,
     CollateralConfig,
-    ParentCollateralConfig
+    ParentCollateralConfig,
+    GlobalCollateralConfig
 } from "../../src/interfaces/ICoreProxy.sol";
 
 import {
@@ -261,6 +262,16 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         vm.prank(sec.multisig);
         collateralConfig.cap = type(uint256).max;
         ICoreProxy(sec.core).setCollateralConfig(1, collateral, collateralConfig, parentCollateralConfig);
+    }
+
+    function removeCollateralWithdrawalLimit(address collateral) internal {
+        (GlobalCollateralConfig memory globalCollateralConfig,) =
+            ICoreProxy(sec.core).getGlobalCollateralConfig(collateral);
+
+        vm.prank(sec.multisig);
+        globalCollateralConfig.withdrawalWindowSize = 0;
+        globalCollateralConfig.withdrawalTvlPercentageLimit = 1;
+        ICoreProxy(sec.core).setGlobalCollateralConfig(collateral, globalCollateralConfig);
     }
 
     function removeMarketsOILimit() internal {

@@ -408,6 +408,10 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function autoRebalancePool() internal {
+        removeCollateralWithdrawalLimit(sec.rusd);
+        removeCollateralWithdrawalLimit(sec.deusd);
+        removeCollateralWithdrawalLimit(sec.sdeusd);
+
         address quoteToken = sec.rusd;
         address[] memory supportingTokens = IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
 
@@ -516,9 +520,9 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
-        (CollateralConfig memory deusdCollateralConfig, ParentCollateralConfig memory deusdParentCollateralConfig,) =
+        (, ParentCollateralConfig memory deusdParentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.deusd);
-        (CollateralConfig memory sdeusdCollateralConfig, ParentCollateralConfig memory sdeusdParentCollateralConfig,) =
+        (, ParentCollateralConfig memory sdeusdParentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.sdeusd);
 
         NodeOutput.Data memory deusdOutput =
