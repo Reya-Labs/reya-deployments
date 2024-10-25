@@ -270,7 +270,7 @@ contract BaseReyaForkTest is StorageReyaForkTest {
 
         vm.prank(sec.multisig);
         globalCollateralConfig.withdrawalWindowSize = 0;
-        globalCollateralConfig.withdrawalTvlPercentageLimit = 1;
+        globalCollateralConfig.withdrawalTvlPercentageLimit = 1e18;
         ICoreProxy(sec.core).setGlobalCollateralConfig(collateral, globalCollateralConfig);
     }
 
