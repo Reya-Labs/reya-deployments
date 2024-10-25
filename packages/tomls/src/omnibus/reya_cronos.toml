@@ -41,11 +41,11 @@ rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.0@router"
 passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
-passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.4@router"
+passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.5@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.16@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
-peripheryRouterPackage = "reya-periphery:1.0.4@router"
+peripheryRouterPackage = "reya-periphery:1.0.5@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassProxyPackage = "reya-exchange-pass-nft:1.0.0@proxy"
@@ -103,6 +103,9 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
 [var.rebalancers]
 rebalancer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+[var.v2_liquidity_access]
+liquidityV2Address1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.liquidators]
 liquidator1 = "0x6f7Fa28A4C6457F0dcCcD95360dd072155aA1439"
@@ -215,6 +218,7 @@ storkAssetPairIdCRV = "CRVUSD"
 storkAssetPairIdUNI = "UNIUSD"
 storkAssetPairIdSUSDE = "SUSDEUSD"
 storkAssetPairIdDEUSD = "DEUSDUSD"
+storkAssetPairIdSDEUSDDEUSD = "SDEUSDDEUSD"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
@@ -590,9 +594,13 @@ susdeUsdcMaxStaleDurationFallbackStorkRedstone = "0"
 #------------------------------------------------------------------------------
 deusdUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 deusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+usdcDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 sdeusdUsdMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdUsdcMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+sdeusdDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+sdeusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 
 [var.pool_1]
 pool1_quoteTokenTargetRatioUnscaled = "0.2"
@@ -1137,4 +1145,4 @@ cp1Rusd_sdeusd_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_sdeusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
 cp1Rusd_sdeusdParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_sdeusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
-cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdReya %>"
+cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdStork %>"
