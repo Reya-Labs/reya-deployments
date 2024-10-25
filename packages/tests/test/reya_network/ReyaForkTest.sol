@@ -214,11 +214,11 @@ contract ReyaForkTest is StorageReyaForkTest {
 
         dec.socketController[sec.deusd] = 0x322A8EA44716586b6BB31456055e61B28da4f1C1;
         dec.socketExecutionHelper[sec.deusd] = 0xEB7F89394B325a021259939DA5Ba5EE83984b7F5;
-        dec.socketConnector[sec.deusd][ethereumSepoliaChainId] = 0x65ce0D9c5bbF43ee7A6011B3D077DD2FeA6b2726;
+        dec.socketConnector[sec.deusd][ethereumChainId] = 0x65ce0D9c5bbF43ee7A6011B3D077DD2FeA6b2726;
 
         dec.socketController[sec.sdeusd] = 0xCDb4A30CEBbf9d8C14e4e96fDe6EA7E40c6f3f5B;
         dec.socketExecutionHelper[sec.sdeusd] = 0x70c46c24f9f923F44278C3B5451986C175c39F73;
-        dec.socketConnector[sec.sdeusd][ethereumSepoliaChainId] = 0x2dc464B4f5Fd55ea19f0bdF71A8dc3584eeb64d7;
+        dec.socketConnector[sec.sdeusd][ethereumChainId] = 0x2dc464B4f5Fd55ea19f0bdF71A8dc3584eeb64d7;
 
         try vm.activeFork() { }
         catch {
