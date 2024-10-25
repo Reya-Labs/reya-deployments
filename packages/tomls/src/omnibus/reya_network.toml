@@ -98,6 +98,9 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 [var.rebalancers]
 rebalancer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
+[var.v2_liquidity_access]
+liquidityV2Address1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
 [var.liquidators]
 liquidator1 = "0x7Cef71c72d97Ac8CbE4bB9aB091C3bCDB7c1CB56"
 liquidator2 = "0xb7335ad22b33afF74F07cA77b0945A3A242A7956"
