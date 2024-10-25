@@ -1,4 +1,3 @@
-
 [invoke.oracle_manager_register_node_sdeusd_deusd_stork]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
