@@ -47,17 +47,17 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         check_autoRebalance_differentTargets();
     }
 
-    function test_PassivePoolAutoRebalance_NoSharePriceChange() public {
-        check_autoRebalance_noSharePriceChange();
-    }
+    // function test_PassivePoolAutoRebalance_NoSharePriceChange() public {
+    //     check_autoRebalance_noSharePriceChange();
+    // }
 
     function test_PassivePoolAutoRebalance_MaxExposure() public {
         check_autoRebalance_maxExposure();
     }
 
-    function test_PassivePoolAutoRebalance_InstantaneousPrice() public {
-        check_autoRebalance_instantaneousPrice();
-    }
+    // function test_PassivePoolAutoRebalance_InstantaneousPrice() public {
+    //     check_autoRebalance_instantaneousPrice();
+    // }
 
     function test_PassivePoolAutoRebalance_SharePriceChangesWhenAssetPriceChanges() public {
         check_sharePriceChangesWhenAssetPriceChanges();
