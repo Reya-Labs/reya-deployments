@@ -123,7 +123,11 @@ ae_liquidator1 = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
 co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a"
 
 [var.match_order_publisher_admins]
-matchOrderPublisherAdmin1 = "0xFF095BF9d6034C0680Ca2Ee51aE1e22b3d301414"
+matchOrderPublisherAdmin1 = "<%= settings.pauser1 %>"
+matchOrderPublisherAdmin2 = "<%= settings.pauser2 %>"
+matchOrderPublisherAdmin3 = "<%= settings.pauser3 %>"
+matchOrderPublisherAdmin4 = "<%= settings.pauser4 %>"
+matchOrderPublisherAdmin5 = "0xFF095BF9d6034C0680Ca2Ee51aE1e22b3d301414"
 
 [var.stork_publishers]
 storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
