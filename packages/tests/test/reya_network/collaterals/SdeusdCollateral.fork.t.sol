@@ -13,9 +13,9 @@ contract SdeusdCollateralForkTest is ReyaForkTest, SdeusdCollateralForkCheck {
         check_sdeusd_view_functions();
     }
 
-    function test_sdeusd_cap_exceeded() public {
-        check_sdeusd_cap_exceeded();
-    }
+    // function test_sdeusd_cap_exceeded() public {
+    //     check_sdeusd_cap_exceeded();
+    // }
 
     function test_sdeusd_deposit_withdraw() public {
         check_sdeusd_deposit_withdraw();

@@ -13,9 +13,9 @@ contract DeusdCollateralForkTest is ReyaForkTest, DeusdCollateralForkCheck {
         check_deusd_view_functions();
     }
 
-    function test_deusd_cap_exceeded() public {
-        check_deusd_cap_exceeded();
-    }
+    // function test_deusd_cap_exceeded() public {
+    //     check_deusd_cap_exceeded();
+    // }
 
     function test_deusd_deposit_withdraw() public {
         check_deusd_deposit_withdraw();

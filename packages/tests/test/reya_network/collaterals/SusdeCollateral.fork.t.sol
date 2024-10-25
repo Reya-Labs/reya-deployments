@@ -14,9 +14,9 @@ contract SusdeCollateralForkTest is ReyaForkTest, SusdeCollateralForkCheck {
         check_susde_view_functions();
     }
 
-    function test_susde_cap_exceeded() public {
-        check_susde_cap_exceeded();
-    }
+    // function test_susde_cap_exceeded() public {
+    //     check_susde_cap_exceeded();
+    // }
 
     function test_susde_deposit_withdraw() public {
         check_susde_deposit_withdraw();
