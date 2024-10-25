@@ -8,4 +8,8 @@ contract DeusdCollateralForkTest is ReyaForkTest, DeusdCollateralForkCheck {
         vm.assume(attacker != dec.socketController[sec.deusd]);
         checkFuzz_DEUSDMintBurn(attacker);
     }
+
+    function test_Cronos_deusd_view_functions() public {
+        check_deusd_view_functions();
+    }
 }

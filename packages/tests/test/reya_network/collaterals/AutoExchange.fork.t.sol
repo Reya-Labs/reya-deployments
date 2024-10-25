@@ -27,4 +27,20 @@ contract AutoExchangeForkTest is ReyaForkTest, AutoExchangeForkCheck {
     function test_AutoExchangeSUSDe_WhenUserHasBothSusdeAndRusd() public {
         check_AutoExchangeSUSDe_WhenUserHasBothSusdeAndRusd();
     }
+
+    function test_AutoExchangeDEUSD_WhenUserHasOnlyDeusd() public {
+        check_AutoExchangeDeusd_WhenUserHasOnlyDeusd();
+    }
+
+    function test_AutoExchangeDEUSD_WhenUserHasBothDeusdAndRusd() public {
+        check_AutoExchangeDeusd_WhenUserHasBothDeusdAndRusd();
+    }
+
+    function test_AutoExchangeSDEUSD_WhenUserHasOnlySdeusd() public {
+        check_AutoExchangeSdeusd_WhenUserHasOnlySdeusd();
+    }
+
+    function test_AutoExchangeSDEUSD_WhenUserHasBothSdeusdAndRusd() public {
+        check_AutoExchangeSdeusd_WhenUserHasBothSdeusdAndRusd();
+    }
 }

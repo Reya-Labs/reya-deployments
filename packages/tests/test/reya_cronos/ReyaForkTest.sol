@@ -175,6 +175,12 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.susdeUsdcStorkNodeId = 0x1f12d26562a7ed66f142fcc9574045808ff6b0fece27a061ef4f7b5039902735;
         // sec.susdeUsdcStorkFallbackNodeId = 0x8cfa7cb4d7e1144ce9259ffe5c9c557ef199ec8e65fa7cf856c1e57a4858d600;
 
+        sec.deusdUsdStorkNodeId = 0x466cc622a5f9a753472566bcbdf38ce938ee1d0a87a3fa8ae073ad714b60f89d;
+        sec.deusdUsdcStorkNodeId = 0x6b346cf521e6a90d532adf6a9413c0634c37ebcae8c7786de0d163ad26be8cbe;
+
+        sec.sdeusdDeusdStorkNodeId = 0x2c14164e11064f9666096a57f2502ef935bc2aaa0a21efd326b1652e47cf8cdc;
+        sec.sdeusdUsdcStorkNodeId = 0x4a600800dcd1db78bbc2880174df4e886a8a67e418f065e27ca5866e11b5f886;
+
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
         dec.socketExecutionHelper[sec.usdc] = 0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE;
         dec.socketConnector[sec.usdc][ethereumSepoliaChainId] = 0x79B607E711853F83002d0649DcCeCA73Bef3F3A7;

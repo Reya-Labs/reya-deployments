@@ -267,6 +267,146 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.susde, 100e18, sec.mainChainId);
     }
 
+    function check_PassivePoolWithDeusd() public {
+        mockFreshPrices();
+
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.deusd);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.deusd, collateralConfig, parentCollateralConfig);
+
+        (address user, uint256 userPk) = makeAddrAndKey("user");
+
+        uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+        // add 3000 deUSD to the passive pool directly
+        deal(sec.deusd, address(sec.periphery), 3000e18);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.deusd], 3000e18);
+        vm.prank(dec.socketExecutionHelper[sec.deusd]);
+        IPeripheryProxy(sec.periphery).depositExistingMA(
+            DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.deusd) })
+        );
+
+        // check that the new 3000 deUSD does not influence the share price
+        uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+        assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
+
+        // make sure that the passive pool deposit works
+        deal(sec.usdc, sec.periphery, 10e6);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
+        vm.mockCall(
+            dec.socketExecutionHelper[sec.usdc],
+            abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
+            abi.encode(10e6)
+        );
+
+        IPeripheryProxy(sec.periphery).depositPassivePool(
+            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: 0 })
+        );
+
+        uint256 sharesIn = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user);
+
+        // make sure that the passive pool withdrawal works
+        vm.prank(user);
+        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
+        assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
+
+        // create new account and deposit 33000 deUSD in it
+        deal(sec.deusd, address(sec.periphery), 33_000e18);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.deusd], 33_000e18);
+        vm.prank(dec.socketExecutionHelper[sec.deusd]);
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.deusd) })
+        );
+
+        // user executes short trade on ETH
+        executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });
+
+        // user closes the short trade on ETH and goes same long
+        executeCoreMatchOrder({
+            marketId: 1,
+            sender: user,
+            base: sd(20e18),
+            priceLimit: ud(type(uint256).max),
+            accountId: accountId
+        });
+
+        // withdraw 100 deUSD from account
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.deusd, 100e18, sec.mainChainId);
+    }
+
+    function check_PassivePoolWithSdeusd() public {
+        mockFreshPrices();
+
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.sdeusd);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.sdeusd, collateralConfig, parentCollateralConfig);
+
+        (address user, uint256 userPk) = makeAddrAndKey("user");
+
+        uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+        // add 3000 deUSD to the passive pool directly
+        deal(sec.sdeusd, address(sec.periphery), 3000e18);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.sdeusd], 3000e18);
+        vm.prank(dec.socketExecutionHelper[sec.sdeusd]);
+        IPeripheryProxy(sec.periphery).depositExistingMA(
+            DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.sdeusd) })
+        );
+
+        // check that the new 3000 deUSD does not influence the share price
+        uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+        assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
+
+        // make sure that the passive pool deposit works
+        deal(sec.usdc, sec.periphery, 10e6);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
+        vm.mockCall(
+            dec.socketExecutionHelper[sec.usdc],
+            abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
+            abi.encode(10e6)
+        );
+
+        IPeripheryProxy(sec.periphery).depositPassivePool(
+            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: 0 })
+        );
+
+        uint256 sharesIn = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user);
+
+        // make sure that the passive pool withdrawal works
+        vm.prank(user);
+        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
+        assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
+
+        // create new account and deposit 33000 deUSD in it
+        deal(sec.sdeusd, address(sec.periphery), 33_000e18);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.sdeusd], 33_000e18);
+        vm.prank(dec.socketExecutionHelper[sec.sdeusd]);
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.sdeusd) })
+        );
+
+        // user executes short trade on ETH
+        executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });
+
+        // user closes the short trade on ETH and goes same long
+        executeCoreMatchOrder({
+            marketId: 1,
+            sender: user,
+            base: sd(20e18),
+            priceLimit: ud(type(uint256).max),
+            accountId: accountId
+        });
+
+        // withdraw 100 deUSD from account
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.sdeusd, 100e18, sec.mainChainId);
+    }
+
     function autoRebalancePool() internal {
         address quoteToken = sec.rusd;
         address[] memory supportingTokens = IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
