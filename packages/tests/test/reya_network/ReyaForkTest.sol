@@ -33,6 +33,7 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.ownerUpgradeModule = 0x70230eE0CcA326A559410DCEd74F2972306D1e1e;
         sec.mainChainId = ethereumChainId;
         sec.coExecutionBot = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
+        sec.rebalancer1 = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
 
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
         // sec.usdcUsdNodeId = 0x7c1a73684de34b95f492a9ee72c0d8e1589714eeba4a457f766b84bd1c2f240f;
@@ -171,6 +172,12 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.susdeUsdcStorkNodeId = 0x4886cf0e120ecc44a7218921cfdf8f5dc2ff36d70ecc6f2857031e572dad65e7;
         // sec.susdeUsdcStorkFallbackNodeId = 0x77c5a8870d9474f1efc1822bd18bb3aa8e724bc836e0a61c9aee82fdbacfbcb6;
 
+        sec.deusdUsdStorkNodeId = 0x8c8bdfa29a872e123ad1d84f4484ba7a66d901ef61b8d28e536e27c754f110a0;
+        sec.deusdUsdcStorkNodeId = 0x82bb2b688e2f358bedf3718b141b7d7bbdac7a51d6347b46ee776bc2b444adee;
+
+        sec.sdeusdDeusdStorkNodeId = 0xa772de4b37974a3283055e04cd7eae5fc8bd330b44adb1aee9c1568cb7d37a03;
+        sec.sdeusdUsdcStorkNodeId = 0xc938a9d958707db169635f9c5a82dd2bb3d0e635f92a75b4dd177dd514e034f0;
+
         dec.socketController[sec.usdc] = 0x1d43076909Ca139BFaC4EbB7194518bE3638fc76;
         dec.socketExecutionHelper[sec.usdc] = 0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa;
         dec.socketConnector[sec.usdc][ethereumChainId] = 0x807B2e8724cDf346c87EEFF4E309bbFCb8681eC1;
@@ -207,11 +214,11 @@ contract ReyaForkTest is StorageReyaForkTest {
 
         dec.socketController[sec.deusd] = 0x322A8EA44716586b6BB31456055e61B28da4f1C1;
         dec.socketExecutionHelper[sec.deusd] = 0xEB7F89394B325a021259939DA5Ba5EE83984b7F5;
-        dec.socketConnector[sec.deusd][ethereumSepoliaChainId] = 0x65ce0D9c5bbF43ee7A6011B3D077DD2FeA6b2726;
+        dec.socketConnector[sec.deusd][ethereumChainId] = 0x65ce0D9c5bbF43ee7A6011B3D077DD2FeA6b2726;
 
         dec.socketController[sec.sdeusd] = 0xCDb4A30CEBbf9d8C14e4e96fDe6EA7E40c6f3f5B;
         dec.socketExecutionHelper[sec.sdeusd] = 0x70c46c24f9f923F44278C3B5451986C175c39F73;
-        dec.socketConnector[sec.sdeusd][ethereumSepoliaChainId] = 0x2dc464B4f5Fd55ea19f0bdF71A8dc3584eeb64d7;
+        dec.socketConnector[sec.sdeusd][ethereumChainId] = 0x2dc464B4f5Fd55ea19f0bdF71A8dc3584eeb64d7;
 
         try vm.activeFork() { }
         catch {

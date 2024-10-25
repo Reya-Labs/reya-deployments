@@ -143,10 +143,15 @@ struct StaticEcosystem {
     bytes32 susdeUsdStorkNodeId;
     bytes32 susdeUsdcStorkNodeId;
     // bytes32 susdeUsdcStorkFallbackNodeId;
+    bytes32 deusdUsdStorkNodeId;
+    bytes32 deusdUsdcStorkNodeId;
+    bytes32 sdeusdDeusdStorkNodeId;
+    bytes32 sdeusdUsdcStorkNodeId;
     uint256 mainChainId;
     uint128 passivePoolId;
     uint128 passivePoolAccountId;
     address coExecutionBot;
+    address rebalancer1;
 }
 
 struct DynamicEcosystem {

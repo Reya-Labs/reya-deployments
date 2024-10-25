@@ -57,6 +57,10 @@ struct LocalState {
     uint256 maxDeviationKBONK;
     uint256 meanPriceSUSDE;
     uint256 maxDeviationSUSDE;
+    uint256 meanPriceDEUSD;
+    uint256 maxDeviationDEUSD;
+    uint256 meanPriceSDEUSD;
+    uint256 maxDeviationSDEUSD;
     uint256 meanPriceStableCoin;
     uint256 maxDeviationStableCoin;
     uint256[] meanPriceMarket;
@@ -658,6 +662,22 @@ contract GeneralForkCheck is BaseReyaForkTest {
         // ls.nodeIds.push(sec.susdeUsdcStorkFallbackNodeId);
         // ls.meanPrices.push(ls.meanPriceSUSDE);
         // ls.maxDeviations.push(ls.maxDeviationSUSDE);
+
+        ls.nodeIds.push(sec.deusdUsdStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceStableCoin);
+        ls.maxDeviations.push(ls.maxDeviationStableCoin * 2);
+
+        ls.nodeIds.push(sec.deusdUsdcStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceStableCoin);
+        ls.maxDeviations.push(ls.maxDeviationStableCoin * 2);
+
+        ls.nodeIds.push(sec.sdeusdDeusdStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceStableCoin);
+        ls.maxDeviations.push(ls.maxDeviationStableCoin * 2);
+
+        ls.nodeIds.push(sec.sdeusdUsdcStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceStableCoin);
+        ls.maxDeviations.push(ls.maxDeviationStableCoin * 2);
     }
 
     function check_OracleNodePrices(bool flagCheckStaleness) public {

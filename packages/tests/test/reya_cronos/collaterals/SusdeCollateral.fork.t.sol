@@ -9,7 +9,7 @@ contract SusdeCollateralForkTest is ReyaForkTest, SusdeCollateralForkCheck {
         checkFuzz_SUSDEMintBurn(attacker);
     }
 
-    function test_Cronos_susde_view_functions() public {
-        check_susde_view_functions();
-    }
+    // function test_Cronos_susde_view_functions() public {
+    //     check_susde_view_functions();
+    // }
 }

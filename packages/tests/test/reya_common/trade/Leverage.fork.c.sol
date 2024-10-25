@@ -464,4 +464,180 @@ contract LeverageForkCheck is BaseReyaForkTest {
     function check_trade_susdeCollateral_leverage_kbonk() public {
         check_trade_leverage_helper(22, sec.susde);
     }
+
+    function check_trade_deusdCollateral_leverage_eth() public {
+        check_trade_leverage_helper(1, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_btc() public {
+        check_trade_leverage_helper(2, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_sol() public {
+        check_trade_leverage_helper(3, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_arb() public {
+        check_trade_leverage_helper(4, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_op() public {
+        check_trade_leverage_helper(5, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_avax() public {
+        check_trade_leverage_helper(6, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_mkr() public {
+        check_trade_leverage_helper(7, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_link() public {
+        check_trade_leverage_helper(8, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_aave() public {
+        check_trade_leverage_helper(9, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_crv() public {
+        check_trade_leverage_helper(10, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_uni() public {
+        check_trade_leverage_helper(11, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_sui() public {
+        check_trade_leverage_helper(12, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_tia() public {
+        check_trade_leverage_helper(13, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_sei() public {
+        check_trade_leverage_helper(14, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_zro() public {
+        check_trade_leverage_helper(15, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_xrp() public {
+        check_trade_leverage_helper(16, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_wif() public {
+        check_trade_leverage_helper(17, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_pepe1k() public {
+        check_trade_leverage_helper(18, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_popcat() public {
+        check_trade_leverage_helper(19, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_doge() public {
+        check_trade_leverage_helper(20, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_kshib() public {
+        check_trade_leverage_helper(21, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_kbonk() public {
+        check_trade_leverage_helper(22, sec.deusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_eth() public {
+        check_trade_leverage_helper(1, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_btc() public {
+        check_trade_leverage_helper(2, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_sol() public {
+        check_trade_leverage_helper(3, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_arb() public {
+        check_trade_leverage_helper(4, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_op() public {
+        check_trade_leverage_helper(5, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_avax() public {
+        check_trade_leverage_helper(6, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_mkr() public {
+        check_trade_leverage_helper(7, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_link() public {
+        check_trade_leverage_helper(8, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_aave() public {
+        check_trade_leverage_helper(9, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_crv() public {
+        check_trade_leverage_helper(10, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_uni() public {
+        check_trade_leverage_helper(11, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_sui() public {
+        check_trade_leverage_helper(12, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_tia() public {
+        check_trade_leverage_helper(13, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_sei() public {
+        check_trade_leverage_helper(14, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_zro() public {
+        check_trade_leverage_helper(15, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_xrp() public {
+        check_trade_leverage_helper(16, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_wif() public {
+        check_trade_leverage_helper(17, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_pepe1k() public {
+        check_trade_leverage_helper(18, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_popcat() public {
+        check_trade_leverage_helper(19, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_doge() public {
+        check_trade_leverage_helper(20, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_kshib() public {
+        check_trade_leverage_helper(21, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_kbonk() public {
+        check_trade_leverage_helper(22, sec.sdeusd);
+    }
 }
