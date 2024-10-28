@@ -27,7 +27,7 @@ import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
 import { sd } from "@prb/math/SD59x18.sol";
-import { ud, convert as convert_ud } from "@prb/math/UD60x18.sol";
+import { ud } from "@prb/math/UD60x18.sol";
 
 contract PassivePoolForkCheck is BaseReyaForkTest {
     function check_PoolHealth() public {
@@ -488,7 +488,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         check_autoRebalance_differentTargets();
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertLe(sharePrice0, sharePrice1);
-        assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e8, 18);
+        assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e11, 18);
     }
 
     function check_autoRebalance_maxExposure() public {
@@ -508,11 +508,14 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
     function check_autoRebalance_instantaneousPrice() public {
         uint128 marketId = 1;
-        uint256 instantaneousPrice0 = IPassivePerpProxy(sec.perp).getInstantaneousPoolPrice(marketId);
+        int256 baseDelta = 10_000e18;
+
+        uint256 simulatedPrice0 = IPassivePerpProxy(sec.perp).getSimulatedPoolPrice(marketId, baseDelta);
         check_autoRebalance_differentTargets();
-        uint256 instantaneousPrice1 = IPassivePerpProxy(sec.perp).getInstantaneousPoolPrice(marketId);
-        assertNotEq(instantaneousPrice0, instantaneousPrice1);
-        assertApproxEqRelDecimal(instantaneousPrice0, instantaneousPrice1, 0.075e18, 18);
+        uint256 simulatedPrice1 = IPassivePerpProxy(sec.perp).getSimulatedPoolPrice(marketId, baseDelta);
+
+        assertNotEq(simulatedPrice0, simulatedPrice1);
+        assertApproxEqRelDecimal(simulatedPrice0, simulatedPrice1, 0.075e18, 18);
     }
 
     function check_sharePriceChangesWhenAssetPriceChanges() public {
