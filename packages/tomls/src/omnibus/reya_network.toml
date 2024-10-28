@@ -795,7 +795,7 @@ market11Uni_marketOrderMaxStaleDuration = "11"
 
 [var.market_12sui]
 market12Sui_riskMatrixIndex = "0"
-market12Sui_maxOpenBaseUnscaled = "570000"
+market12Sui_maxOpenBaseUnscaled = "97187"
 market12Sui_velocityMultiplierUnscaled = "12"
 market12Sui_oracleNodeId = "<%= settings.suiUsdcMarkNodeIdStork %>"
 market12Sui_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -813,7 +813,7 @@ market12Sui_marketOrderMaxStaleDuration = "11"
 
 [var.market_13tia]
 market13Tia_riskMatrixIndex = "0"
-market13Tia_maxOpenBaseUnscaled = "190000"
+market13Tia_maxOpenBaseUnscaled = "11125"
 market13Tia_velocityMultiplierUnscaled = "12"
 market13Tia_oracleNodeId = "<%= settings.tiaUsdcMarkNodeIdStork %>"
 market13Tia_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -831,7 +831,7 @@ market13Tia_marketOrderMaxStaleDuration = "11"
 
 [var.market_14sei]
 market14Sei_riskMatrixIndex = "0"
-market14Sei_maxOpenBaseUnscaled = "2700000"
+market14Sei_maxOpenBaseUnscaled = "163696"
 market14Sei_velocityMultiplierUnscaled = "12"
 market14Sei_oracleNodeId = "<%= settings.seiUsdcMarkNodeIdStork %>"
 market14Sei_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -849,7 +849,7 @@ market14Sei_marketOrderMaxStaleDuration = "11"
 
 [var.market_15zro]
 market15Zro_riskMatrixIndex = "0"
-market15Zro_maxOpenBaseUnscaled = "290000"
+market15Zro_maxOpenBaseUnscaled = "12641"
 market15Zro_velocityMultiplierUnscaled = "12"
 market15Zro_oracleNodeId = "<%= settings.zroUsdcMarkNodeIdStork %>"
 market15Zro_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
@@ -867,7 +867,7 @@ market15Zro_marketOrderMaxStaleDuration = "11"
 
 [var.market_16xrp]
 market16Xrp_riskMatrixIndex = "0"
-market16Xrp_maxOpenBaseUnscaled = "1900000"
+market16Xrp_maxOpenBaseUnscaled = "87237"
 market16Xrp_velocityMultiplierUnscaled = "12"
 market16Xrp_oracleNodeId = "<%= settings.xrpUsdcMarkNodeIdStork %>"
 market16Xrp_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
