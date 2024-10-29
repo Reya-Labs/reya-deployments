@@ -66,4 +66,8 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
     function test_Cronos_PassivePoolAutoRebalance_SharePriceChangesWhenAssetPriceChanges() public {
         check_sharePriceChangesWhenAssetPriceChanges();
     }
+
+    function test_Cronos_AutoRevalance_RevertWhenSenderIsNotRebalancer() public {
+        check_autoRebalance_revertWhenSenderIsNotRebalancer();
+    }
 }

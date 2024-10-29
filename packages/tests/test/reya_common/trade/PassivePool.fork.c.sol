@@ -557,4 +557,24 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         assertNotEq(sharePrice0, sharePrice1);
         assertApproxEqRelDecimal(sharePrice0, sharePrice1, 0.01e18, 18);
     }
+
+    function check_autoRebalance_revertWhenSenderIsNotRebalancer() public {
+        vm.prank(address(5555));
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IPassivePoolProxy.FeatureUnavailable.selector,
+                keccak256(abi.encode(keccak256(bytes("autoRebalance")), sec.passivePoolId))
+            )
+        );
+        IPassivePoolProxy(sec.pool).triggerAutoRebalance(
+            sec.passivePoolId,
+            AutoRebalanceInput({
+                tokenIn: address(0),
+                amountIn: 0,
+                tokenOut: address(0),
+                minPrice: 0,
+                receiverAddress: address(0)
+            })
+        );
+    }
 }
