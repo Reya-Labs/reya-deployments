@@ -403,7 +403,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.sdeusd, 100e18, sec.mainChainId);
     }
 
-    function autoRebalancePool() internal {
+    function autoRebalancePool(bool partialAutoRebalance) internal {
         removeCollateralWithdrawalLimit(sec.rusd);
         removeCollateralWithdrawalLimit(sec.deusd);
         removeCollateralWithdrawalLimit(sec.sdeusd);
@@ -432,6 +432,10 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                     IPassivePoolProxy(sec.pool).getRebalanceAmounts(sec.passivePoolId, tokenIn, tokenOut, amountIn);
 
                 if (rebalanceAmounts.amountIn != 0) {
+                    if (partialAutoRebalance) {
+                        rebalanceAmounts.amountIn = rebalanceAmounts.amountIn / 2;
+                    }
+
                     vm.prank(dec.socketController[tokenIn]);
                     IERC20TokenModule(tokenIn).mint(sec.rebalancer1, rebalanceAmounts.amountIn);
 
@@ -450,6 +454,10 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                         })
                     );
 
+                    if (partialAutoRebalance) {
+                        return;
+                    }
+
                     vm.warp(block.timestamp + 1);
                 }
             }
@@ -457,10 +465,10 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_autoRebalance_currentTargets() public {
-        autoRebalancePool();
+        autoRebalancePool(false);
     }
 
-    function check_autoRebalance_differentTargets() public {
+    function check_autoRebalance_differentTargets(bool partialAutoRebalance) public {
         vm.prank(sec.multisig);
         IPassivePoolProxy(sec.pool).setAllocationConfiguration(
             sec.passivePoolId, AllocationConfigurationData({ quoteTokenTargetRatio: 0.353535e18 })
@@ -476,12 +484,12 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         vm.prank(sec.multisig);
         IPassivePoolProxy(sec.pool).setAllocations(sec.passivePoolId, newSupportingCollateralsAllocations);
 
-        autoRebalancePool();
+        autoRebalancePool(partialAutoRebalance);
     }
 
     function check_autoRebalance_noSharePriceChange() public {
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-        check_autoRebalance_differentTargets();
+        check_autoRebalance_differentTargets(false);
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertLe(sharePrice0, sharePrice1);
         assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e11, 18);
@@ -491,7 +499,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         (uint256 maxExposureShort0, uint256 maxExposureLong0) =
             IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
 
-        check_autoRebalance_differentTargets();
+        check_autoRebalance_differentTargets(false);
 
         (uint256 maxExposureShort1, uint256 maxExposureLong1) =
             IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
@@ -507,7 +515,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         int256 baseDelta = 10_000e18;
 
         uint256 simulatedPrice0 = IPassivePerpProxy(sec.perp).getSimulatedPoolPrice(marketId, baseDelta);
-        check_autoRebalance_differentTargets();
+        check_autoRebalance_differentTargets(false);
         uint256 simulatedPrice1 = IPassivePerpProxy(sec.perp).getSimulatedPoolPrice(marketId, baseDelta);
 
         assertNotEq(simulatedPrice0, simulatedPrice1);
@@ -515,7 +523,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_sharePriceChangesWhenAssetPriceChanges() public {
-        autoRebalancePool();
+        autoRebalancePool(false);
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
