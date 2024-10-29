@@ -80,7 +80,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.weth) })
         );
 
-        // check that the new 1 wETH does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
@@ -149,7 +148,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.usde) })
         );
 
-        // check that the new 3000 USDe does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
@@ -219,7 +217,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.susde) })
         );
 
-        // check that the new 3000 sUSDe does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
@@ -289,7 +286,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.deusd) })
         );
 
-        // check that the new 3000 deUSD does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
@@ -351,7 +347,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
-        // add 3000 deUSD to the passive pool directly
+        // add 3000 sdeUSD to the passive pool directly
         deal(sec.sdeusd, address(sec.periphery), 3000e18);
         mockBridgedAmount(dec.socketExecutionHelper[sec.sdeusd], 3000e18);
         vm.prank(dec.socketExecutionHelper[sec.sdeusd]);
@@ -359,7 +355,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.sdeusd) })
         );
 
-        // check that the new 3000 deUSD does not influence the share price
+        // check that the new 3000 sdeUSD does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
@@ -383,7 +379,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
-        // create new account and deposit 33000 deUSD in it
+        // create new account and deposit 33000 sdeUSD in it
         deal(sec.sdeusd, address(sec.periphery), 33_000e18);
         mockBridgedAmount(dec.socketExecutionHelper[sec.sdeusd], 33_000e18);
         vm.prank(dec.socketExecutionHelper[sec.sdeusd]);
@@ -403,7 +399,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             accountId: accountId
         });
 
-        // withdraw 100 deUSD from account
+        // withdraw 100 sdeUSD from account
         executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.sdeusd, 100e18, sec.mainChainId);
     }
 
