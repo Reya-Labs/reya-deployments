@@ -35,7 +35,7 @@ lotteryPotAccountId = "20092"
 rageTradeAccountId = "22262"
 
 [var.cannonClonePackages]
-coreRouterPackage = "reya-core:1.0.11@router"
+coreRouterPackage = "reya-core:1.0.12@router"
 coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
