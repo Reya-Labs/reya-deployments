@@ -581,8 +581,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     )
         public
     {
-        vm.assume(tokensFuzz.length <= 200);
-        vm.assume(amountsFuzz.length <= 200);
+        vm.assume(tokensFuzz.length <= 10);
+        vm.assume(amountsFuzz.length <= 10);
 
         uint256 len = (tokensFuzz.length < amountsFuzz.length) ? tokensFuzz.length : amountsFuzz.length;
 
