@@ -79,4 +79,20 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
     {
         checkFuzz_depositWithdrawV2_noSharePriceChange(tokensFuzz, amountsFuzz);
     }
+
+    // function test_PassivePoolDepositWithdrawV2_RevertWhenOwnerIsNotAuthorized() public {
+    //     check_depositWithdrawV2_revertWhenOwnerIsNotAuthorized();
+    // }
+
+    function test_PassivePoolDepositV2_RevertWhenTokenIsWETH() public {
+        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.weth);
+    }
+
+    function test_PassivePoolDepositV2_RevertWhenTokenIsUsde() public {
+        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.usde);
+    }
+
+    function test_PassivePoolDepositV2_RevertWhenTokenIsSusde() public {
+        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.susde);
+    }
 }

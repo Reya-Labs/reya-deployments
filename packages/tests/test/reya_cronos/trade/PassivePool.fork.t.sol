@@ -77,16 +77,26 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
     )
         public
     {
-        // function testFuzz_Cronos_DepositWithdrawV2_NoSharePriceChange() public {
-        // uint128[] memory tokensFuzz = new uint128[](3);
-        // tokensFuzz[0] = 3467;
-        // tokensFuzz[1] = 9844;
-        // tokensFuzz[2] = 6897;
-
-        // int256[] memory amountsFuzz = new int256[](3);
-        // amountsFuzz[0] = 3479394634;
-        // amountsFuzz[1] = 6740;
-        // amountsFuzz[2] = -5551;
         checkFuzz_depositWithdrawV2_noSharePriceChange(tokensFuzz, amountsFuzz);
+    }
+
+    // function test_Cronos_DepositWithdrawV2_RevertWhenOwnerIsNotAuthorized() public {
+    //     check_depositWithdrawV2_revertWhenOwnerIsNotAuthorized();
+    // }
+
+    function test_Cronos_DepositV2_RevertWhenTokenIsWETH() public {
+        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.weth);
+    }
+
+    function test_Cronos_DepositV2_RevertWhenTokenIsUsde() public {
+        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.usde);
+    }
+
+    function test_Cronos_DepositV2_RevertWhenTokenIsSusde() public {
+        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.susde);
+    }
+
+    function test_Cronos_SetTokenTargetRatio_RevertWhenWSTETH() public {
+        check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(0xDF52410A19298FE168c900513e762adaD00C42b1);
     }
 }

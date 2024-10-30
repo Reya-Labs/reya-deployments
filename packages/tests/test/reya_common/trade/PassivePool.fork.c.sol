@@ -671,4 +671,39 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             assertApproxEqRelDecimal(sharePrice0, sharePrice1, 1e12, 18);
         }
     }
+
+    function check_depositWithdrawV2_revertWhenOwnerIsNotAuthorized() public {
+        address owner = vm.addr(333_222);
+
+        vm.prank(owner);
+        vm.expectRevert(
+            abi.encodeWithSelector(IPassivePoolProxy.UnauthorizedV2Liquidity.selector, sec.passivePoolAccountId, owner)
+        );
+        IPassivePoolProxy(sec.pool).addLiquidityV2({
+            poolId: sec.passivePoolId,
+            input: AddLiquidityV2Input({ token: sec.rusd, amount: 0, owner: owner, minShares: 0 })
+        });
+    }
+
+    function check_depositV2_revertWhenTokenHasZeroTargetRatio(address token) public {
+        address owner = vm.addr(333_222);
+
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(
+            keccak256(abi.encode(keccak256(bytes("v2Liquidity")), sec.passivePoolId)), owner
+        );
+
+        vm.prank(owner);
+        vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.TokenNotEligibleForShares.selector, token));
+        IPassivePoolProxy(sec.pool).addLiquidityV2({
+            poolId: sec.passivePoolId,
+            input: AddLiquidityV2Input({ token: token, amount: 1e18, owner: owner, minShares: 0 })
+        });
+    }
+
+    function check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(address token) public {
+        vm.prank(sec.multisig);
+        vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.TokenNotEligibleForShares.selector, sec.weth));
+        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, token, 0.1e18);
+    }
 }
