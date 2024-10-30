@@ -474,15 +474,10 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             sec.passivePoolId, AllocationConfigurationData({ quoteTokenTargetRatio: 0.353535e18 })
         );
 
-        address[] memory supportingCollaterals =
-            IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
-        uint256[] memory newSupportingCollateralsAllocations = new uint256[](supportingCollaterals.length);
-
-        newSupportingCollateralsAllocations[newSupportingCollateralsAllocations.length - 2] = 0.454545e18;
-        newSupportingCollateralsAllocations[newSupportingCollateralsAllocations.length - 1] = 1e18 - 0.454545e18;
-
         vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setAllocations(sec.passivePoolId, newSupportingCollateralsAllocations);
+        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.deusd, 0.454545e18);
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.sdeusd, 1e18 - 0.454545e18);
 
         autoRebalancePool(partialAutoRebalance);
     }
