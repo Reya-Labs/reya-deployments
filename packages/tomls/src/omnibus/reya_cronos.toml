@@ -103,6 +103,7 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
 [var.rebalancers]
 rebalancer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+rebalancer2 = "0x25E028A45a6012763A76145d7CEEa3587015e990"
 
 [var.v2_liquidity_access]
 liquidityV2Address1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
@@ -137,9 +138,6 @@ storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
 storkPublisher2 = "0xb91C675E0c0Ecfd4c16f97B110376C3C224061d8"
 storkPublisher3 = "0x51aa9e9c781f85a2c0636a835eb80114c4553098"
 storkPublisher4 = "0xf024a9aa110798e5cd0d698fba6523113eaa7fb2"
-
-[var.reya_publishers]
-reyaPublisher1 = "0x4abD94336349C300c0E1f6b5CB71438538FB5D61"
 
 [var.stork_executors]
 storkExecutor1 = "0xA8F317B19AecCb2Ed9f335317A9bea59152aCF4d"
