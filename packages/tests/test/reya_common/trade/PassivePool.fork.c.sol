@@ -703,7 +703,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
     function check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(address token) public {
         vm.prank(sec.multisig);
-        vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.TokenNotSupportingCollateral.selector, sec.weth));
+        vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.TokenNotSupportingCollateral.selector, token));
         IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, token, 0.1e18);
     }
 }
