@@ -7,5 +7,4 @@ include = [
     "configs/set_executors.toml",
     "configs/set_sub_second_executors.toml",
     "configs/allow_all_executors.toml",
-    "configs/set_reya_publishers.toml",
 ]

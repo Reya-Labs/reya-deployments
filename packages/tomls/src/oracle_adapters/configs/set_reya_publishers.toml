@@ -1,9 +1,0 @@
-[invoke.oracle_adapters_set_reya_publisher1]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('publishers')) %>",
-    "<%= settings.reyaPublisher1 %>",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
