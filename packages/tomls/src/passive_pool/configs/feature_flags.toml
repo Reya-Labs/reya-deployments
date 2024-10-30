@@ -20,13 +20,23 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_pool_proxy"]
 
-[invoke.passive_pool_set_rebalancers]
+[invoke.passive_pool_set_rebalancers_1]
 target = ["PassivePoolProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
     "0xdbb7931048f78e204c07e47b3a15798abbbce8263d259f29d90c72edfffc2262",
     "<%= settings.rebalancer1 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_set_rebalancers_2]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "0xdbb7931048f78e204c07e47b3a15798abbbce8263d259f29d90c72edfffc2262",
+    "<%= settings.rebalancer2 %>",
 ]
 depends = ["invoke.upgrade_passive_pool_proxy"]
 
