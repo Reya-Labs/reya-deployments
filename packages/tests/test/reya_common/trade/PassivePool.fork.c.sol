@@ -9,7 +9,9 @@ import {
     IPassivePoolProxy,
     RebalanceAmounts,
     AutoRebalanceInput,
-    AllocationConfigurationData
+    AllocationConfigurationData,
+    AddLiquidityV2Input,
+    RemoveLiquidityV2Input
 } from "../../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IPeripheryProxy,
@@ -27,7 +29,7 @@ import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
 import { sd } from "@prb/math/SD59x18.sol";
-import { ud, convert as convert_ud } from "@prb/math/UD60x18.sol";
+import { ud } from "@prb/math/UD60x18.sol";
 
 contract PassivePoolForkCheck is BaseReyaForkTest {
     function check_PoolHealth() public {
@@ -80,7 +82,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.weth) })
         );
 
-        // check that the new 1 wETH does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
@@ -149,7 +150,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.usde) })
         );
 
-        // check that the new 3000 USDe does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
@@ -219,7 +219,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.susde) })
         );
 
-        // check that the new 3000 sUSDe does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
@@ -289,7 +288,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.deusd) })
         );
 
-        // check that the new 3000 deUSD does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
@@ -351,7 +349,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
-        // add 3000 deUSD to the passive pool directly
+        // add 3000 sdeUSD to the passive pool directly
         deal(sec.sdeusd, address(sec.periphery), 3000e18);
         mockBridgedAmount(dec.socketExecutionHelper[sec.sdeusd], 3000e18);
         vm.prank(dec.socketExecutionHelper[sec.sdeusd]);
@@ -359,7 +357,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             DepositExistingMAInputs({ accountId: sec.passivePoolAccountId, token: address(sec.sdeusd) })
         );
 
-        // check that the new 3000 deUSD does not influence the share price
+        // check that the new 3000 sdeUSD does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
@@ -383,7 +381,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
-        // create new account and deposit 33000 deUSD in it
+        // create new account and deposit 33000 sdeUSD in it
         deal(sec.sdeusd, address(sec.periphery), 33_000e18);
         mockBridgedAmount(dec.socketExecutionHelper[sec.sdeusd], 33_000e18);
         vm.prank(dec.socketExecutionHelper[sec.sdeusd]);
@@ -403,11 +401,11 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             accountId: accountId
         });
 
-        // withdraw 100 deUSD from account
+        // withdraw 100 sdeUSD from account
         executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.sdeusd, 100e18, sec.mainChainId);
     }
 
-    function autoRebalancePool() internal {
+    function autoRebalancePool(bool partialAutoRebalance) internal {
         removeCollateralWithdrawalLimit(sec.rusd);
         removeCollateralWithdrawalLimit(sec.deusd);
         removeCollateralWithdrawalLimit(sec.sdeusd);
@@ -436,6 +434,10 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                     IPassivePoolProxy(sec.pool).getRebalanceAmounts(sec.passivePoolId, tokenIn, tokenOut, amountIn);
 
                 if (rebalanceAmounts.amountIn != 0) {
+                    if (partialAutoRebalance) {
+                        rebalanceAmounts.amountIn = rebalanceAmounts.amountIn / 2;
+                    }
+
                     vm.prank(dec.socketController[tokenIn]);
                     IERC20TokenModule(tokenIn).mint(sec.rebalancer1, rebalanceAmounts.amountIn);
 
@@ -454,6 +456,10 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                         })
                     );
 
+                    if (partialAutoRebalance) {
+                        return;
+                    }
+
                     vm.warp(block.timestamp + 1);
                 }
             }
@@ -461,41 +467,36 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_autoRebalance_currentTargets() public {
-        autoRebalancePool();
+        autoRebalancePool(false);
     }
 
-    function check_autoRebalance_differentTargets() public {
+    function check_autoRebalance_differentTargets(bool partialAutoRebalance) public {
         vm.prank(sec.multisig);
         IPassivePoolProxy(sec.pool).setAllocationConfiguration(
             sec.passivePoolId, AllocationConfigurationData({ quoteTokenTargetRatio: 0.353535e18 })
         );
 
-        address[] memory supportingCollaterals =
-            IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
-        uint256[] memory newSupportingCollateralsAllocations = new uint256[](supportingCollaterals.length);
-
-        newSupportingCollateralsAllocations[newSupportingCollateralsAllocations.length - 2] = 0.454545e18;
-        newSupportingCollateralsAllocations[newSupportingCollateralsAllocations.length - 1] = 1e18 - 0.454545e18;
-
         vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setAllocations(sec.passivePoolId, newSupportingCollateralsAllocations);
+        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.deusd, 0.454545e18);
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.sdeusd, 1e18 - 0.454545e18);
 
-        autoRebalancePool();
+        autoRebalancePool(partialAutoRebalance);
     }
 
     function check_autoRebalance_noSharePriceChange() public {
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-        check_autoRebalance_differentTargets();
+        check_autoRebalance_differentTargets(false);
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertLe(sharePrice0, sharePrice1);
-        assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e8, 18);
+        assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e11, 18);
     }
 
     function check_autoRebalance_maxExposure() public {
         (uint256 maxExposureShort0, uint256 maxExposureLong0) =
             IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
 
-        check_autoRebalance_differentTargets();
+        check_autoRebalance_differentTargets(false);
 
         (uint256 maxExposureShort1, uint256 maxExposureLong1) =
             IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
@@ -508,15 +509,18 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
     function check_autoRebalance_instantaneousPrice() public {
         uint128 marketId = 1;
-        uint256 instantaneousPrice0 = IPassivePerpProxy(sec.perp).getInstantaneousPoolPrice(marketId);
-        check_autoRebalance_differentTargets();
-        uint256 instantaneousPrice1 = IPassivePerpProxy(sec.perp).getInstantaneousPoolPrice(marketId);
-        assertNotEq(instantaneousPrice0, instantaneousPrice1);
-        assertApproxEqRelDecimal(instantaneousPrice0, instantaneousPrice1, 0.075e18, 18);
+        int256 baseDelta = 10_000e18;
+
+        uint256 simulatedPrice0 = IPassivePerpProxy(sec.perp).getSimulatedPoolPrice(marketId, baseDelta);
+        check_autoRebalance_differentTargets(false);
+        uint256 simulatedPrice1 = IPassivePerpProxy(sec.perp).getSimulatedPoolPrice(marketId, baseDelta);
+
+        assertNotEq(simulatedPrice0, simulatedPrice1);
+        assertApproxEqRelDecimal(simulatedPrice0, simulatedPrice1, 0.075e18, 18);
     }
 
     function check_sharePriceChangesWhenAssetPriceChanges() public {
-        autoRebalancePool();
+        autoRebalancePool(false);
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
@@ -549,5 +553,157 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         assertNotEq(sharePrice0, sharePrice1);
         assertApproxEqRelDecimal(sharePrice0, sharePrice1, 0.01e18, 18);
+    }
+
+    function check_autoRebalance_revertWhenSenderIsNotRebalancer() public {
+        vm.prank(address(5555));
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IPassivePoolProxy.FeatureUnavailable.selector,
+                keccak256(abi.encode(keccak256(bytes("autoRebalance")), sec.passivePoolId))
+            )
+        );
+        IPassivePoolProxy(sec.pool).triggerAutoRebalance(
+            sec.passivePoolId,
+            AutoRebalanceInput({
+                tokenIn: address(0),
+                amountIn: 0,
+                tokenOut: address(0),
+                minPrice: 0,
+                receiverAddress: address(0)
+            })
+        );
+    }
+
+    function checkFuzz_depositWithdrawV2_noSharePriceChange(
+        uint128[] memory tokensFuzz,
+        int256[] memory amountsFuzz
+    )
+        public
+    {
+        vm.assume(tokensFuzz.length <= 10);
+        vm.assume(amountsFuzz.length <= 10);
+
+        uint256 len = (tokensFuzz.length < amountsFuzz.length) ? tokensFuzz.length : amountsFuzz.length;
+
+        address[] memory tokens = new address[](len);
+        int256[] memory amounts = new int256[](len);
+
+        for (uint256 i = 0; i < len; i++) {
+            address token;
+            uint128 tokenFuzz = tokensFuzz[i] % 3;
+            if (tokenFuzz == 0) {
+                token = sec.rusd;
+            } else if (tokenFuzz == 1) {
+                token = sec.deusd;
+            } else if (tokenFuzz == 2) {
+                token = sec.sdeusd;
+            }
+            tokens[i] = token;
+            if (amountsFuzz[i] < 0) {
+                if (amountsFuzz[i] == type(int256).min) {
+                    amountsFuzz[i] += 1;
+                }
+                amounts[i] = (-1000 + int256((uint256(-amountsFuzz[i]) % 1000)))
+                    * int256(10 ** IERC20TokenModule(token).decimals());
+            } else {
+                amounts[i] =
+                    int256((uint256(amountsFuzz[i]) % 1000)) * int256(10 ** IERC20TokenModule(token).decimals());
+            }
+        }
+
+        address owner = vm.addr(333_222);
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(
+            keccak256(abi.encode(keccak256(bytes("v2Liquidity")), sec.passivePoolId)), owner
+        );
+
+        for (uint256 i = 0; i < len; i++) {
+            uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+            if (amounts[i] > 0) {
+                uint256 amount = uint256(amounts[i]);
+                if (amount == 0) {
+                    continue;
+                }
+
+                deal(tokens[i], owner, amount);
+                vm.prank(owner);
+                IERC20TokenModule(tokens[i]).approve(sec.pool, amount);
+                vm.prank(owner);
+                IPassivePoolProxy(sec.pool).addLiquidityV2({
+                    poolId: sec.passivePoolId,
+                    input: AddLiquidityV2Input({ token: tokens[i], amount: amount, owner: owner, minShares: 0 })
+                });
+            } else {
+                uint256 amount = uint256(-amounts[i]);
+
+                uint256 poolTokenBalance =
+                    uint256(ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolId, tokens[i]).marginBalance);
+                if (amount > poolTokenBalance) {
+                    amount = poolTokenBalance;
+                }
+
+                uint256 sharesAmount = amount * 99 / 100 * 10 ** (30 - IERC20TokenModule(tokens[i]).decimals());
+                uint256 ownerSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, owner);
+                if (ownerSharesAmount < sharesAmount) {
+                    sharesAmount = ownerSharesAmount;
+                }
+
+                if (sharesAmount == 0) {
+                    continue;
+                }
+
+                vm.prank(owner);
+                IPassivePoolProxy(sec.pool).removeLiquidityV2({
+                    poolId: sec.passivePoolId,
+                    input: RemoveLiquidityV2Input({
+                        token: tokens[i],
+                        sharesAmount: sharesAmount,
+                        receiver: owner,
+                        minOut: 0
+                    })
+                });
+            }
+
+            uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+            assertLe(sharePrice0, sharePrice1);
+            assertApproxEqRelDecimal(sharePrice0, sharePrice1, 1e12, 18);
+        }
+    }
+
+    function check_depositWithdrawV2_revertWhenOwnerIsNotAuthorized() public {
+        address owner = vm.addr(333_222);
+
+        vm.prank(owner);
+        vm.expectRevert(
+            abi.encodeWithSelector(IPassivePoolProxy.UnauthorizedV2Liquidity.selector, sec.passivePoolAccountId, owner)
+        );
+        IPassivePoolProxy(sec.pool).addLiquidityV2({
+            poolId: sec.passivePoolId,
+            input: AddLiquidityV2Input({ token: sec.rusd, amount: 0, owner: owner, minShares: 0 })
+        });
+    }
+
+    function check_depositV2_revertWhenTokenHasZeroTargetRatio(address token) public {
+        address owner = vm.addr(333_222);
+
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(
+            keccak256(abi.encode(keccak256(bytes("v2Liquidity")), sec.passivePoolId)), owner
+        );
+
+        vm.prank(owner);
+        vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.TokenNotEligibleForShares.selector, token));
+        IPassivePoolProxy(sec.pool).addLiquidityV2({
+            poolId: sec.passivePoolId,
+            input: AddLiquidityV2Input({ token: token, amount: 1e18, owner: owner, minShares: 0 })
+        });
+    }
+
+    function check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(address token) public {
+        vm.prank(sec.multisig);
+        vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.TokenNotSupportingCollateral.selector, token));
+        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, token, 0.1e18);
     }
 }

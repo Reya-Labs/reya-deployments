@@ -44,22 +44,59 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
     }
 
     function test_Cronos_PassivePoolAutoRebalance_DifferentTargets() public {
-        check_autoRebalance_differentTargets();
+        check_autoRebalance_differentTargets(false);
     }
 
-    // function test_Cronos_PassivePoolAutoRebalance_NoSharePriceChange() public {
-    //     check_autoRebalance_noSharePriceChange();
-    // }
+    function test_Cronos_PassivePoolAutoRebalance_DifferentTargets_Partial() public {
+        check_autoRebalance_differentTargets(true);
+    }
+
+    function test_Cronos_PassivePoolAutoRebalance_NoSharePriceChange() public {
+        check_autoRebalance_noSharePriceChange();
+    }
 
     function test_Cronos_PassivePoolAutoRebalance_MaxExposure() public {
         check_autoRebalance_maxExposure();
     }
 
-    // function test_Cronos_PassivePoolAutoRebalance_InstantaneousPrice() public {
-    //     check_autoRebalance_instantaneousPrice();
-    // }
+    function test_Cronos_PassivePoolAutoRebalance_InstantaneousPrice() public {
+        check_autoRebalance_instantaneousPrice();
+    }
 
     function test_Cronos_PassivePoolAutoRebalance_SharePriceChangesWhenAssetPriceChanges() public {
         check_sharePriceChangesWhenAssetPriceChanges();
+    }
+
+    function test_Cronos_AutoRevalance_RevertWhenSenderIsNotRebalancer() public {
+        check_autoRebalance_revertWhenSenderIsNotRebalancer();
+    }
+
+    function testFuzz_Cronos_DepositWithdrawV2_NoSharePriceChange(
+        uint128[] memory tokensFuzz,
+        int256[] memory amountsFuzz
+    )
+        public
+    {
+        checkFuzz_depositWithdrawV2_noSharePriceChange(tokensFuzz, amountsFuzz);
+    }
+
+    // function test_Cronos_DepositWithdrawV2_RevertWhenOwnerIsNotAuthorized() public {
+    //     check_depositWithdrawV2_revertWhenOwnerIsNotAuthorized();
+    // }
+
+    function test_Cronos_DepositV2_RevertWhenTokenIsWETH() public {
+        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.weth);
+    }
+
+    function test_Cronos_DepositV2_RevertWhenTokenIsUsde() public {
+        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.usde);
+    }
+
+    function test_Cronos_DepositV2_RevertWhenTokenIsSusde() public {
+        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.susde);
+    }
+
+    function test_Cronos_SetTokenTargetRatio_RevertWhenWSTETH() public {
+        check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(0xDF52410A19298FE168c900513e762adaD00C42b1);
     }
 }
