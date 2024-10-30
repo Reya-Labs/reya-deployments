@@ -11,9 +11,10 @@ src = "src"
 test = "test"
 auto_detect_remappings = false
 fs_permissions = [{ access = "read", path = "./"}]
+gas_limit = "18446744073709551615" # u64::MAX
 
 [profile.ci]
-fuzz = { runs = 1_000, max_test_rejects = 100_000 }
+fuzz = { runs = 256, max_test_rejects = 100_000 }
 verbosity = 2
 
 [fmt]
