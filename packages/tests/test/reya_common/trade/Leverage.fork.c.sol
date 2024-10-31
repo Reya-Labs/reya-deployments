@@ -22,14 +22,14 @@ import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant ethLeverage = 35e18;
     uint256 private constant btcLeverage = 40e18;
-    uint256 private constant solLeverage = 20e18;
+    uint256 private constant solLeverage = 25e18;
     uint256 private constant arbLeverage = 20e18;
     uint256 private constant opLeverage = 20e18;
     uint256 private constant avaxLeverage = 20e18;
     uint256 private constant mkrLeverage = 25e18;
     uint256 private constant linkLeverage = 25e18;
     uint256 private constant aaveLeverage = 25e18;
-    uint256 private constant crvLeverage = 25e18;
+    uint256 private constant crvLeverage = 20e18;
     uint256 private constant uniLeverage = 20e18;
     uint256 private constant suiLeverage = 15e18;
     uint256 private constant tiaLeverage = 5e18;
