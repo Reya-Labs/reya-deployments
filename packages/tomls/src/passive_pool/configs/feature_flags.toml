@@ -43,9 +43,9 @@ depends = ["invoke.upgrade_passive_pool_proxy"]
 [invoke.passive_pool_set_v2_liquidity_access]
 target = ["PassivePoolProxy"]
 fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
+func = "setFeatureFlagAllowAll"
 args = [
     "0xd73be014cab0a933a7806bc90f4a90b1a55a79960d89bb39c0e72abdfd43090d",
-    "<%= settings.liquidityV2Address1 %>",
+    true,
 ]
 depends = ["invoke.upgrade_passive_pool_proxy"]
