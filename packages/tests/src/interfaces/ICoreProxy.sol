@@ -64,6 +64,14 @@ interface ICoreProxy {
         view
         returns (MarginInfo memory);
 
+    function getNodeCollateralInfo(
+        uint128 accountId,
+        address quoteToken
+    )
+        external
+        view
+        returns (CollateralInfo memory);
+    
     function grantAccountPermission(
         uint128 accountId,
         bytes32 permission,

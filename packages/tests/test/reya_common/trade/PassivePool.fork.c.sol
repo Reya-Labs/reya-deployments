@@ -434,6 +434,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                     IPassivePoolProxy(sec.pool).getRebalanceAmounts(sec.passivePoolId, tokenIn, tokenOut, amountIn);
 
                 if (rebalanceAmounts.amountIn != 0) {
+                    uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
                     if (partialAutoRebalance) {
                         rebalanceAmounts.amountIn = rebalanceAmounts.amountIn / 2;
                     }
@@ -455,6 +457,11 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                             receiverAddress: sec.periphery
                         })
                     );
+
+                    uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+                    assertLe(sharePrice0, sharePrice1);
+                    assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e11, 18);
 
                     if (partialAutoRebalance) {
                         return;
@@ -485,11 +492,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_autoRebalance_noSharePriceChange() public {
-        uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         check_autoRebalance_differentTargets(false);
-        uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-        assertLe(sharePrice0, sharePrice1);
-        assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e11, 18);
     }
 
     function check_autoRebalance_maxExposure() public {
