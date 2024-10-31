@@ -18,24 +18,279 @@ struct LocalState {
     uint256 passivePoolImMultiplier;
     int64[][] marketRiskMatrix;
     SD59x18 pSlippage;
+    int64 a;
+    SD59x18[] sLong;
+    SD59x18[] sShort;
+    SD59x18[] s;
+    SD59x18[] sPrime;
+    mapping(int64 a => mapping(uint256 depth => SD59x18[] sPrime)) sPrimeLong;
+    mapping(int64 a => mapping(uint256 depth => SD59x18[] sPrime)) sPrimeShort;
 }
 
 contract PSlippageForkCheck is BaseReyaForkTest {
     LocalState private st;
 
-    function setUp() public {
-        removeMarketsOILimit();
+    constructor() {
+        st.sLong = new SD59x18[](10);
+        st.sLong[1] = sd(0.01e18);
+        st.sLong[2] = sd(0.02e18);
+        st.sLong[3] = sd(0.03e18);
+        st.sLong[4] = sd(0.04e18);
+        st.sLong[5] = sd(0.05e18);
+        st.sLong[6] = sd(0.06e18);
+        st.sLong[7] = sd(0.07e18);
+        st.sLong[8] = sd(0.08e18);
+        st.sLong[9] = sd(0.09e18);
+
+        st.sShort = new SD59x18[](10);
+        st.sShort[1] = sd(-0.01e18);
+        st.sShort[2] = sd(-0.02e18);
+        st.sShort[3] = sd(-0.03e18);
+        st.sShort[4] = sd(-0.04e18);
+        st.sShort[5] = sd(-0.05e18);
+        st.sShort[6] = sd(-0.06e18);
+        st.sShort[7] = sd(-0.07e18);
+        st.sShort[8] = sd(-0.08e18);
+        st.sShort[9] = sd(-0.09e18);
+
+        st.sPrimeLong[0.000483e18][23e18] = new SD59x18[](10);
+        st.sPrimeLong[0.000483e18][23e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.000483e18][23e18][2] = sd(0.019764e18);
+        st.sPrimeLong[0.000483e18][23e18][3] = sd(0.028981e18);
+        st.sPrimeLong[0.000483e18][23e18][4] = sd(0.037436e18);
+        st.sPrimeLong[0.000483e18][23e18][5] = sd(0.044991e18);
+        st.sPrimeLong[0.000483e18][23e18][6] = sd(0.051607e18);
+        st.sPrimeLong[0.000483e18][23e18][7] = sd(0.05732e18);
+        st.sPrimeLong[0.000483e18][23e18][8] = sd(0.062206e18);
+        st.sPrimeLong[0.000483e18][23e18][9] = sd(0.066363e18);
+
+        st.sPrimeShort[0.000483e18][23e18] = new SD59x18[](10);
+        st.sPrimeShort[0.000483e18][23e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.000483e18][23e18][2] = sd(-0.019768e18);
+        st.sPrimeShort[0.000483e18][23e18][3] = sd(-0.028994e18);
+        st.sPrimeShort[0.000483e18][23e18][4] = sd(-0.037441e18);
+        st.sPrimeShort[0.000483e18][23e18][5] = sd(-0.044968e18);
+        st.sPrimeShort[0.000483e18][23e18][6] = sd(-0.051529e18);
+        st.sPrimeShort[0.000483e18][23e18][7] = sd(-0.057156e18);
+        st.sPrimeShort[0.000483e18][23e18][8] = sd(-0.061928e18);
+        st.sPrimeShort[0.000483e18][23e18][9] = sd(-0.062575e18);
+
+        st.sPrimeLong[0.00037e18][23e18] = new SD59x18[](10);
+        st.sPrimeLong[0.00037e18][23e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.00037e18][23e18][2] = sd(0.01973e18);
+        st.sPrimeLong[0.00037e18][23e18][3] = sd(0.028843e18);
+        st.sPrimeLong[0.00037e18][23e18][4] = sd(0.037105e18);
+        st.sPrimeLong[0.00037e18][23e18][5] = sd(0.044383e18);
+        st.sPrimeLong[0.00037e18][23e18][6] = sd(0.05066e18);
+        st.sPrimeLong[0.00037e18][23e18][7] = sd(0.055995e18);
+        st.sPrimeLong[0.00037e18][23e18][8] = sd(0.060492e18);
+        st.sPrimeLong[0.00037e18][23e18][9] = sd(0.064265e18);
+
+        st.sPrimeShort[0.00037e18][23e18] = new SD59x18[](10);
+        st.sPrimeShort[0.00037e18][23e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.00037e18][23e18][2] = sd(-0.019736e18);
+        st.sPrimeShort[0.00037e18][23e18][3] = sd(-0.028858e18);
+        st.sPrimeShort[0.00037e18][23e18][4] = sd(-0.037111e18);
+        st.sPrimeShort[0.00037e18][23e18][5] = sd(-0.044358e18);
+        st.sPrimeShort[0.00037e18][23e18][6] = sd(-0.050576e18);
+        st.sPrimeShort[0.00037e18][23e18][7] = sd(-0.055823e18);
+        st.sPrimeShort[0.00037e18][23e18][8] = sd(-0.060203e18);
+        st.sPrimeShort[0.00037e18][23e18][9] = sd(-0.060314e18);
+
+        st.sPrimeLong[0.001479e18][7.2e18] = new SD59x18[](10);
+        st.sPrimeLong[0.001479e18][7.2e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.001479e18][7.2e18][2] = sd(0.019957e18);
+        st.sPrimeLong[0.001479e18][7.2e18][3] = sd(0.029811e18);
+        st.sPrimeLong[0.001479e18][7.2e18][4] = sd(0.039508e18);
+        st.sPrimeLong[0.001479e18][7.2e18][5] = sd(0.048993e18);
+        st.sPrimeLong[0.001479e18][7.2e18][6] = sd(0.058223e18);
+        st.sPrimeLong[0.001479e18][7.2e18][7] = sd(0.067157e18);
+        st.sPrimeLong[0.001479e18][7.2e18][8] = sd(0.075766e18);
+        st.sPrimeLong[0.001479e18][7.2e18][9] = sd(0.084026e18);
+
+        st.sPrimeShort[0.001479e18][7.2e18] = new SD59x18[](10);
+        st.sPrimeShort[0.001479e18][7.2e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.001479e18][7.2e18][2] = sd(-0.019958e18);
+        st.sPrimeShort[0.001479e18][7.2e18][3] = sd(-0.029814e18);
+        st.sPrimeShort[0.001479e18][7.2e18][4] = sd(-0.039509e18);
+        st.sPrimeShort[0.001479e18][7.2e18][5] = sd(-0.048988e18);
+        st.sPrimeShort[0.001479e18][7.2e18][6] = sd(-0.058202e18);
+        st.sPrimeShort[0.001479e18][7.2e18][7] = sd(-0.067108e18);
+        st.sPrimeShort[0.001479e18][7.2e18][8] = sd(-0.075669e18);
+        st.sPrimeShort[0.001479e18][7.2e18][9] = sd(-0.083208e18);
+
+        st.sPrimeLong[0.000947e18][3e18] = new SD59x18[](10);
+        st.sPrimeLong[0.000947e18][3e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.000947e18][3e18][2] = sd(0.019978e18);
+        st.sPrimeLong[0.000947e18][3e18][3] = sd(0.029901e18);
+        st.sPrimeLong[0.000947e18][3e18][4] = sd(0.039742e18);
+        st.sPrimeLong[0.000947e18][3e18][5] = sd(0.049469e18);
+        st.sPrimeLong[0.000947e18][3e18][6] = sd(0.059056e18);
+        st.sPrimeLong[0.000947e18][3e18][7] = sd(0.068479e18);
+        st.sPrimeLong[0.000947e18][3e18][8] = sd(0.077715e18);
+        st.sPrimeLong[0.000947e18][3e18][9] = sd(0.086744e18);
+
+        st.sPrimeShort[0.000947e18][3e18] = new SD59x18[](10);
+        st.sPrimeShort[0.000947e18][3e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.000947e18][3e18][2] = sd(-0.019978e18);
+        st.sPrimeShort[0.000947e18][3e18][3] = sd(-0.029903e18);
+        st.sPrimeShort[0.000947e18][3e18][4] = sd(-0.039742e18);
+        st.sPrimeShort[0.000947e18][3e18][5] = sd(-0.049466e18);
+        st.sPrimeShort[0.000947e18][3e18][6] = sd(-0.059045e18);
+        st.sPrimeShort[0.000947e18][3e18][7] = sd(-0.068451e18);
+        st.sPrimeShort[0.000947e18][3e18][8] = sd(-0.07766e18);
+        st.sPrimeShort[0.000947e18][3e18][9] = sd(-0.086648e18);
+
+        st.sPrimeLong[0.001479e18][3e18] = new SD59x18[](10);
+        st.sPrimeLong[0.001479e18][3e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.001479e18][3e18][2] = sd(0.019982e18);
+        st.sPrimeLong[0.001479e18][3e18][3] = sd(0.029921e18);
+        st.sPrimeLong[0.001479e18][3e18][4] = sd(0.039793e18);
+        st.sPrimeLong[0.001479e18][3e18][5] = sd(0.049574e18);
+        st.sPrimeLong[0.001479e18][3e18][6] = sd(0.059241e18);
+        st.sPrimeLong[0.001479e18][3e18][7] = sd(0.068775e18);
+        st.sPrimeLong[0.001479e18][3e18][8] = sd(0.078157e18);
+        st.sPrimeLong[0.001479e18][3e18][9] = sd(0.087368e18);
+
+        st.sPrimeShort[0.001479e18][3e18] = new SD59x18[](10);
+        st.sPrimeShort[0.001479e18][3e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.001479e18][3e18][2] = sd(-0.019983e18);
+        st.sPrimeShort[0.001479e18][3e18][3] = sd(-0.029922e18);
+        st.sPrimeShort[0.001479e18][3e18][4] = sd(-0.039793e18);
+        st.sPrimeShort[0.001479e18][3e18][5] = sd(-0.049571e18);
+        st.sPrimeShort[0.001479e18][3e18][6] = sd(-0.059232e18);
+        st.sPrimeShort[0.001479e18][3e18][7] = sd(-0.068753e18);
+        st.sPrimeShort[0.001479e18][3e18][8] = sd(-0.078112e18);
+        st.sPrimeShort[0.001479e18][3e18][9] = sd(-0.087289e18);
+
+        st.sPrimeLong[0.00263e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeLong[0.00263e18][0.25e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.00263e18][0.25e18][2] = sd(0.019999e18);
+        st.sPrimeLong[0.00263e18][0.25e18][3] = sd(0.029995e18);
+        st.sPrimeLong[0.00263e18][0.25e18][4] = sd(0.039987e18);
+        st.sPrimeLong[0.00263e18][0.25e18][5] = sd(0.049973e18);
+        st.sPrimeLong[0.00263e18][0.25e18][6] = sd(0.059952e18);
+        st.sPrimeLong[0.00263e18][0.25e18][7] = sd(0.069922e18);
+        st.sPrimeLong[0.00263e18][0.25e18][8] = sd(0.079881e18);
+        st.sPrimeLong[0.00263e18][0.25e18][9] = sd(0.089829e18);
+
+        st.sPrimeShort[0.00263e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeShort[0.00263e18][0.25e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.00263e18][0.25e18][2] = sd(-0.019999e18);
+        st.sPrimeShort[0.00263e18][0.25e18][3] = sd(-0.029995e18);
+        st.sPrimeShort[0.00263e18][0.25e18][4] = sd(-0.039987e18);
+        st.sPrimeShort[0.00263e18][0.25e18][5] = sd(-0.049973e18);
+        st.sPrimeShort[0.00263e18][0.25e18][6] = sd(-0.059951e18);
+        st.sPrimeShort[0.00263e18][0.25e18][7] = sd(-0.06992e18);
+        st.sPrimeShort[0.00263e18][0.25e18][8] = sd(-0.079878e18);
+        st.sPrimeShort[0.00263e18][0.25e18][9] = sd(-0.089824e18);
+
+        st.sPrimeLong[0.005917e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeLong[0.005917e18][0.25e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.005917e18][0.25e18][2] = sd(0.019999e18);
+        st.sPrimeLong[0.005917e18][0.25e18][3] = sd(0.029997e18);
+        st.sPrimeLong[0.005917e18][0.25e18][4] = sd(0.039991e18);
+        st.sPrimeLong[0.005917e18][0.25e18][5] = sd(0.049982e18);
+        st.sPrimeLong[0.005917e18][0.25e18][6] = sd(0.059968e18);
+        st.sPrimeLong[0.005917e18][0.25e18][7] = sd(0.069948e18);
+        st.sPrimeLong[0.005917e18][0.25e18][8] = sd(0.079921e18);
+        st.sPrimeLong[0.005917e18][0.25e18][9] = sd(0.089886e18);
+
+        st.sPrimeShort[0.005917e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeShort[0.005917e18][0.25e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.005917e18][0.25e18][2] = sd(-0.019999e18);
+        st.sPrimeShort[0.005917e18][0.25e18][3] = sd(-0.029997e18);
+        st.sPrimeShort[0.005917e18][0.25e18][4] = sd(-0.039991e18);
+        st.sPrimeShort[0.005917e18][0.25e18][5] = sd(-0.049982e18);
+        st.sPrimeShort[0.005917e18][0.25e18][6] = sd(-0.059967e18);
+        st.sPrimeShort[0.005917e18][0.25e18][7] = sd(-0.069947e18);
+        st.sPrimeShort[0.005917e18][0.25e18][8] = sd(-0.079919e18);
+        st.sPrimeShort[0.005917e18][0.25e18][9] = sd(-0.089882e18);
+
+        st.sPrimeLong[0.000657e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeLong[0.000657e18][0.25e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.000657e18][0.25e18][2] = sd(0.019998e18);
+        st.sPrimeLong[0.000657e18][0.25e18][3] = sd(0.02999e18);
+        st.sPrimeLong[0.000657e18][0.25e18][4] = sd(0.039974e18);
+        st.sPrimeLong[0.000657e18][0.25e18][5] = sd(0.049946e18);
+        st.sPrimeLong[0.000657e18][0.25e18][6] = sd(0.059904e18);
+        st.sPrimeLong[0.000657e18][0.25e18][7] = sd(0.069844e18);
+        st.sPrimeLong[0.000657e18][0.25e18][8] = sd(0.079763e18);
+        st.sPrimeLong[0.000657e18][0.25e18][9] = sd(0.089659e18);
+
+        st.sPrimeShort[0.000657e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeShort[0.000657e18][0.25e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.000657e18][0.25e18][2] = sd(-0.019998e18);
+        st.sPrimeShort[0.000657e18][0.25e18][3] = sd(-0.02999e18);
+        st.sPrimeShort[0.000657e18][0.25e18][4] = sd(-0.039974e18);
+        st.sPrimeShort[0.000657e18][0.25e18][5] = sd(-0.049946e18);
+        st.sPrimeShort[0.000657e18][0.25e18][6] = sd(-0.059903e18);
+        st.sPrimeShort[0.000657e18][0.25e18][7] = sd(-0.069841e18);
+        st.sPrimeShort[0.000657e18][0.25e18][8] = sd(-0.079757e18);
+        st.sPrimeShort[0.000657e18][0.25e18][9] = sd(-0.089648e18);
+
+        st.sPrimeLong[0.005917e18][1.5e18] = new SD59x18[](10);
+        st.sPrimeLong[0.005917e18][1.5e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.005917e18][1.5e18][2] = sd(0.019942e18);
+        st.sPrimeLong[0.005917e18][1.5e18][3] = sd(0.029744e18);
+        st.sPrimeLong[0.005917e18][1.5e18][4] = sd(0.039335e18);
+        st.sPrimeLong[0.005917e18][1.5e18][5] = sd(0.048647e18);
+        st.sPrimeLong[0.005917e18][1.5e18][6] = sd(0.057624e18);
+        st.sPrimeLong[0.005917e18][1.5e18][7] = sd(0.066222e18);
+        st.sPrimeLong[0.005917e18][1.5e18][8] = sd(0.074408e18);
+        st.sPrimeLong[0.005917e18][1.5e18][9] = sd(0.082162e18);
+
+        st.sPrimeShort[0.005917e18][1.5e18] = new SD59x18[](10);
+        st.sPrimeShort[0.005917e18][1.5e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.005917e18][1.5e18][2] = sd(-0.019943e18);
+        st.sPrimeShort[0.005917e18][1.5e18][3] = sd(-0.029747e18);
+        st.sPrimeShort[0.005917e18][1.5e18][4] = sd(-0.039335e18);
+        st.sPrimeShort[0.005917e18][1.5e18][5] = sd(-0.048637e18);
+        st.sPrimeShort[0.005917e18][1.5e18][6] = sd(-0.057593e18);
+        st.sPrimeShort[0.005917e18][1.5e18][7] = sd(-0.066151e18);
+        st.sPrimeShort[0.005917e18][1.5e18][8] = sd(-0.074276e18);
+        st.sPrimeShort[0.005917e18][1.5e18][9] = sd(-0.080861e18);
+
+        st.sPrimeLong[0.00263e18][1.5e18] = new SD59x18[](10);
+        st.sPrimeLong[0.00263e18][1.5e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.00263e18][1.5e18][2] = sd(0.019869e18);
+        st.sPrimeLong[0.00263e18][1.5e18][3] = sd(0.029431e18);
+        st.sPrimeLong[0.00263e18][1.5e18][4] = sd(0.038543e18);
+        st.sPrimeLong[0.00263e18][1.5e18][5] = sd(0.047088e18);
+        st.sPrimeLong[0.00263e18][1.5e18][6] = sd(0.054992e18);
+        st.sPrimeLong[0.00263e18][1.5e18][7] = sd(0.062219e18);
+        st.sPrimeLong[0.00263e18][1.5e18][8] = sd(0.068766e18);
+        st.sPrimeLong[0.00263e18][1.5e18][9] = sd(0.074656e18);
+
+        st.sPrimeShort[0.00263e18][1.5e18] = new SD59x18[](10);
+        st.sPrimeShort[0.00263e18][1.5e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.00263e18][1.5e18][2] = sd(-0.019872e18);
+        st.sPrimeShort[0.00263e18][1.5e18][3] = sd(-0.029438e18);
+        st.sPrimeShort[0.00263e18][1.5e18][4] = sd(-0.038544e18);
+        st.sPrimeShort[0.00263e18][1.5e18][5] = sd(-0.047068e18);
+        st.sPrimeShort[0.00263e18][1.5e18][6] = sd(-0.05493e18);
+        st.sPrimeShort[0.00263e18][1.5e18][7] = sd(-0.062088e18);
+        st.sPrimeShort[0.00263e18][1.5e18][8] = sd(-0.068536e18);
+        st.sPrimeShort[0.00263e18][1.5e18][9] = sd(-0.071852e18);
     }
 
-    function trade_slippage_helper(
-        uint128 marketId,
-        SD59x18[] memory s,
-        SD59x18[] memory sPrime,
-        UD60x18 eps
-    )
-        internal
-    {
-        assertEq(s.length, sPrime.length);
+    function setUp() public {
+        removeMarketsOILimit();
+        mockFreshPrices();
+    }
+
+    function trade_slippage_helper(uint128 marketId, UD60x18 eps, bool isLong, uint256 iterations) internal {
+        st.marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+        st.a = ICoreProxy(sec.core).getRiskBlockMatrixByMarket(marketId)[st.marketConfig.riskMatrixIndex][st
+            .marketConfig
+            .riskMatrixIndex];
+
+        st.s = (isLong) ? st.sLong : st.sShort;
+        st.sPrime = (isLong)
+            ? st.sPrimeLong[st.a][st.marketConfig.depthFactor]
+            : st.sPrimeShort[st.a][st.marketConfig.depthFactor];
+
+        assertEq(st.s.length, st.sPrime.length);
 
         (st.user,) = makeAddrAndKey("user");
 
@@ -93,8 +348,10 @@ contract PSlippageForkCheck is BaseReyaForkTest {
 
         // Step 3: Compute the grid
         SD59x18 prevNotionalsSum = sd(0);
-        for (uint256 i = 1; i < s.length; i += 1) {
-            SD59x18 notional = s[i].div(UNIT_sd.add(s[i])).mul(
+        for (uint256 i = 1; i < st.s.length && iterations > 0; i += 1) {
+            iterations -= 1;
+
+            SD59x18 notional = st.s[i].div(UNIT_sd.add(st.s[i])).mul(
                 sd(int256(st.marketConfig.depthFactor)).mul(passivePoolTVL).div(
                     sd(int256(st.passivePoolImMultiplier)).mul(
                         sd(st.marketRiskMatrix[st.marketConfig.riskMatrixIndex][st.marketConfig.riskMatrixIndex]).sqrt()
@@ -112,1267 +369,185 @@ contract PSlippageForkCheck is BaseReyaForkTest {
                 accountId: accountId
             });
 
-            assertApproxEqAbsDecimal(st.pSlippage.unwrap(), sPrime[i].unwrap(), eps.unwrap(), 18);
+            assertApproxEqAbsDecimal(st.pSlippage.unwrap(), st.sPrime[i].unwrap(), eps.unwrap(), 18);
 
             prevNotionalsSum = prevNotionalsSum.add(baseToExposure(marketId, base));
         }
     }
 
     function check_trade_slippage_eth_long() public {
-        mockFreshPrices();
-
-        // less iterations due to max exposure being reached
-        SD59x18[] memory s = new SD59x18[](6);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        // s[6] = sd(0.06e18);
-        // s[7] = sd(0.07e18);
-        // s[8] = sd(0.08e18);
-        // s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](6);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019764e18);
-        sPrime[3] = sd(0.028981e18);
-        sPrime[4] = sd(0.037436e18);
-        sPrime[5] = sd(0.044991e18);
-        // sPrime[6] = sd(0.051607e18);
-        // sPrime[7] = sd(0.057320e18);
-        // sPrime[8] = sd(0.062206e18);
-        // sPrime[9] = sd(0.066363e18);
-
-        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 1, eps: ud(0.001e18), isLong: true, iterations: 5 });
     }
 
     function check_trade_slippage_btc_long() public {
-        mockFreshPrices();
-
-        // less iterations due to max exposure being reached
-        SD59x18[] memory s = new SD59x18[](6);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        // s[6] = sd(0.06e18);
-        // s[7] = sd(0.07e18);
-        // s[8] = sd(0.08e18);
-        // s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](6);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.01973e18);
-        sPrime[3] = sd(0.028843e18);
-        sPrime[4] = sd(0.037105e18);
-        sPrime[5] = sd(0.044383e18);
-        // sPrime[6] = sd(0.050660e18);
-        // sPrime[7] = sd(0.055995e18);
-        // sPrime[8] = sd(0.060492e18);
-        // sPrime[9] = sd(0.064265e18);
-
-        trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 2, eps: ud(0.002e18), isLong: true, iterations: 5 });
     }
 
     function check_trade_slippage_sol_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019957e18);
-        sPrime[3] = sd(0.029811e18);
-        sPrime[4] = sd(0.039508e18);
-        sPrime[5] = sd(0.048993e18);
-        sPrime[6] = sd(0.058223e18);
-        sPrime[7] = sd(0.067157e18);
-        sPrime[8] = sd(0.075766e18);
-        sPrime[9] = sd(0.084026e18);
-
-        trade_slippage_helper({ marketId: 3, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 3, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_arb_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019957e18);
-        sPrime[3] = sd(0.029811e18);
-        sPrime[4] = sd(0.039508e18);
-        sPrime[5] = sd(0.048993e18);
-        sPrime[6] = sd(0.058223e18);
-        sPrime[7] = sd(0.067157e18);
-        sPrime[8] = sd(0.075766e18);
-        sPrime[9] = sd(0.084026e18);
-
-        trade_slippage_helper({ marketId: 4, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 4, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_op_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019957e18);
-        sPrime[3] = sd(0.029811e18);
-        sPrime[4] = sd(0.039508e18);
-        sPrime[5] = sd(0.048993e18);
-        sPrime[6] = sd(0.058223e18);
-        sPrime[7] = sd(0.067157e18);
-        sPrime[8] = sd(0.075766e18);
-        sPrime[9] = sd(0.084026e18);
-
-        trade_slippage_helper({ marketId: 5, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 5, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_avax_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019957e18);
-        sPrime[3] = sd(0.029811e18);
-        sPrime[4] = sd(0.039508e18);
-        sPrime[5] = sd(0.048993e18);
-        sPrime[6] = sd(0.058223e18);
-        sPrime[7] = sd(0.067157e18);
-        sPrime[8] = sd(0.075766e18);
-        sPrime[9] = sd(0.084026e18);
-
-        trade_slippage_helper({ marketId: 6, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 6, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_mkr_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019978e18);
-        sPrime[3] = sd(0.029901e18);
-        sPrime[4] = sd(0.039742e18);
-        sPrime[5] = sd(0.049469e18);
-        sPrime[6] = sd(0.059056e18);
-        sPrime[7] = sd(0.068479e18);
-        sPrime[8] = sd(0.077715e18);
-        sPrime[9] = sd(0.086744e18);
-
-        trade_slippage_helper({ marketId: 7, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 7, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_link_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019978e18);
-        sPrime[3] = sd(0.029901e18);
-        sPrime[4] = sd(0.039742e18);
-        sPrime[5] = sd(0.049469e18);
-        sPrime[6] = sd(0.059056e18);
-        sPrime[7] = sd(0.068479e18);
-        sPrime[8] = sd(0.077715e18);
-        sPrime[9] = sd(0.086744e18);
-
-        trade_slippage_helper({ marketId: 8, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 8, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_aave_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019978e18);
-        sPrime[3] = sd(0.029901e18);
-        sPrime[4] = sd(0.039742e18);
-        sPrime[5] = sd(0.049469e18);
-        sPrime[6] = sd(0.059056e18);
-        sPrime[7] = sd(0.068479e18);
-        sPrime[8] = sd(0.077715e18);
-        sPrime[9] = sd(0.086744e18);
-
-        trade_slippage_helper({ marketId: 9, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 9, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_crv_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019978e18);
-        sPrime[3] = sd(0.029901e18);
-        sPrime[4] = sd(0.039742e18);
-        sPrime[5] = sd(0.049469e18);
-        sPrime[6] = sd(0.059056e18);
-        sPrime[7] = sd(0.068479e18);
-        sPrime[8] = sd(0.077715e18);
-        sPrime[9] = sd(0.086744e18);
-
-        trade_slippage_helper({ marketId: 10, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 10, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_uni_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019982e18);
-        sPrime[3] = sd(0.029921e18);
-        sPrime[4] = sd(0.039793e18);
-        sPrime[5] = sd(0.049574e18);
-        sPrime[6] = sd(0.059241e18);
-        sPrime[7] = sd(0.068775e18);
-        sPrime[8] = sd(0.078157e18);
-        sPrime[9] = sd(0.087368e18);
-
-        trade_slippage_helper({ marketId: 11, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 11, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_sui_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019999e18);
-        sPrime[3] = sd(0.029995e18);
-        sPrime[4] = sd(0.039987e18);
-        sPrime[5] = sd(0.049973e18);
-        sPrime[6] = sd(0.059952e18);
-        sPrime[7] = sd(0.069922e18);
-        sPrime[8] = sd(0.079881e18);
-        sPrime[9] = sd(0.089829e18);
-
-        trade_slippage_helper({ marketId: 12, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 12, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_tia_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019999e18);
-        sPrime[3] = sd(0.029997e18);
-        sPrime[4] = sd(0.039991e18);
-        sPrime[5] = sd(0.049982e18);
-        sPrime[6] = sd(0.059968e18);
-        sPrime[7] = sd(0.069948e18);
-        sPrime[8] = sd(0.079921e18);
-        sPrime[9] = sd(0.089886e18);
-
-        trade_slippage_helper({ marketId: 13, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 13, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_sei_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019999e18);
-        sPrime[3] = sd(0.029995e18);
-        sPrime[4] = sd(0.039987e18);
-        sPrime[5] = sd(0.049973e18);
-        sPrime[6] = sd(0.059952e18);
-        sPrime[7] = sd(0.069922e18);
-        sPrime[8] = sd(0.079881e18);
-        sPrime[9] = sd(0.089829e18);
-
-        trade_slippage_helper({ marketId: 14, s: s, sPrime: sPrime, eps: ud(0.004e18) });
+        trade_slippage_helper({ marketId: 14, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_zro_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019999e18);
-        sPrime[3] = sd(0.029997e18);
-        sPrime[4] = sd(0.039991e18);
-        sPrime[5] = sd(0.049982e18);
-        sPrime[6] = sd(0.059968e18);
-        sPrime[7] = sd(0.069948e18);
-        sPrime[8] = sd(0.079921e18);
-        sPrime[9] = sd(0.089886e18);
-
-        trade_slippage_helper({ marketId: 15, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 15, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_xrp_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019998e18);
-        sPrime[3] = sd(0.02999e18);
-        sPrime[4] = sd(0.039974e18);
-        sPrime[5] = sd(0.049946e18);
-        sPrime[6] = sd(0.059904e18);
-        sPrime[7] = sd(0.069844e18);
-        sPrime[8] = sd(0.079763e18);
-        sPrime[9] = sd(0.089659e18);
-
-        trade_slippage_helper({ marketId: 16, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 16, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_wif_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](6);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        // s[6] = sd(0.06e18);
-        // s[7] = sd(0.07e18);
-        // s[8] = sd(0.08e18);
-        // s[9] = sd(0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](6);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019942e18);
-        sPrime[3] = sd(0.029745e18);
-        sPrime[4] = sd(0.039337e18);
-        sPrime[5] = sd(0.04865e18);
-        // sPrime[6] = sd(0.057627e18);
-        // sPrime[7] = sd(0.066226e18);
-        // sPrime[8] = sd(0.074412e18);
-        // sPrime[9] = sd(0.082166e18);
-
-        trade_slippage_helper({ marketId: 17, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 17, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_pepe1k_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](6);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        // s[6] = sd(0.06e18);
-        // s[7] = sd(0.07e18);
-        // s[8] = sd(0.08e18);
-        // s[9] = sd(0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](6);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019942e18);
-        sPrime[3] = sd(0.029745e18);
-        sPrime[4] = sd(0.039337e18);
-        sPrime[5] = sd(0.04865e18);
-        // sPrime[6] = sd(0.057627e18);
-        // sPrime[7] = sd(0.066226e18);
-        // sPrime[8] = sd(0.074412e18);
-        // sPrime[9] = sd(0.082166e18);
-
-        trade_slippage_helper({ marketId: 18, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 18, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_popcat_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        s[6] = sd(0.06e18);
-        s[7] = sd(0.07e18);
-        s[8] = sd(0.08e18);
-        s[9] = sd(0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019942e18);
-        sPrime[3] = sd(0.029745e18);
-        sPrime[4] = sd(0.039337e18);
-        sPrime[5] = sd(0.04865e18);
-        sPrime[6] = sd(0.057627e18);
-        sPrime[7] = sd(0.066226e18);
-        sPrime[8] = sd(0.074412e18);
-        sPrime[9] = sd(0.082166e18);
-
-        trade_slippage_helper({ marketId: 19, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 19, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_doge_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](5);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        // s[5] = sd(0.05e18);
-        // s[6] = sd(0.06e18);
-        // s[7] = sd(0.07e18);
-        // s[8] = sd(0.08e18);
-        // s[9] = sd(0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](5);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019869e18);
-        sPrime[3] = sd(0.029431e18);
-        sPrime[4] = sd(0.038543e18);
-        // sPrime[5] = sd(0.047088e18);
-        // sPrime[6] = sd(0.054992e18);
-        // sPrime[7] = sd(0.062219e18);
-        // sPrime[8] = sd(0.068766e18);
-        // sPrime[9] = sd(0.074656e18);
-
-        trade_slippage_helper({ marketId: 20, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 20, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_kshib_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](6);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        // s[6] = sd(0.06e18);
-        // s[7] = sd(0.07e18);
-        // s[8] = sd(0.08e18);
-        // s[9] = sd(0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](6);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019942e18);
-        sPrime[3] = sd(0.029745e18);
-        sPrime[4] = sd(0.039337e18);
-        sPrime[5] = sd(0.04865e18);
-        // sPrime[6] = sd(0.057627e18);
-        // sPrime[7] = sd(0.066226e18);
-        // sPrime[8] = sd(0.074412e18);
-        // sPrime[9] = sd(0.082166e18);
-
-        trade_slippage_helper({ marketId: 21, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 21, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_kbonk_long() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](6);
-        s[1] = sd(0.01e18);
-        s[2] = sd(0.02e18);
-        s[3] = sd(0.03e18);
-        s[4] = sd(0.04e18);
-        s[5] = sd(0.05e18);
-        // s[6] = sd(0.06e18);
-        // s[7] = sd(0.07e18);
-        // s[8] = sd(0.08e18);
-        // s[9] = sd(0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](6);
-        sPrime[1] = sd(0.01e18);
-        sPrime[2] = sd(0.019942e18);
-        sPrime[3] = sd(0.029745e18);
-        sPrime[4] = sd(0.039337e18);
-        sPrime[5] = sd(0.04865e18);
-        // sPrime[6] = sd(0.057627e18);
-        // sPrime[7] = sd(0.066226e18);
-        // sPrime[8] = sd(0.074412e18);
-        // sPrime[9] = sd(0.082166e18);
-
-        trade_slippage_helper({ marketId: 22, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 22, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
     function check_trade_slippage_eth_short() public {
-        mockFreshPrices();
-
-        // less iterations due to max exposure being reached
-        SD59x18[] memory s = new SD59x18[](5);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        // s[5] = sd(-0.05e18);
-        // s[6] = sd(-0.06e18);
-        // s[7] = sd(-0.07e18);
-        // s[8] = sd(-0.08e18);
-        // s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](5);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019768e18);
-        sPrime[3] = sd(-0.028994e18);
-        sPrime[4] = sd(-0.037441e18);
-        // sPrime[5] = sd(-0.044968e18);
-        // sPrime[6] = sd(-0.051529e18);
-        // sPrime[7] = sd(-0.057156e18);
-        // sPrime[8] = sd(-0.061928e18);
-        // sPrime[9] = sd(-0.062575e18);
-
-        trade_slippage_helper({ marketId: 1, s: s, sPrime: sPrime, eps: ud(0.001e18) });
+        trade_slippage_helper({ marketId: 1, eps: ud(0.001e18), isLong: false, iterations: 4 });
     }
 
     function check_trade_slippage_btc_short() public {
-        mockFreshPrices();
-
-        // less iterations due to max exposure being reached
-        SD59x18[] memory s = new SD59x18[](5);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        // s[5] = sd(-0.05e18);
-        // s[6] = sd(-0.06e18);
-        // s[7] = sd(-0.07e18);
-        // s[8] = sd(-0.08e18);
-        // s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](5);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019736e18);
-        sPrime[3] = sd(-0.028858e18);
-        sPrime[4] = sd(-0.037111e18);
-        // sPrime[5] = sd(-0.044358e18);
-        // sPrime[6] = sd(-0.050576e18);
-        // sPrime[7] = sd(-0.055823e18);
-        // sPrime[8] = sd(-0.060203e18);
-        // sPrime[9] = sd(-0.060314e18);
-
-        trade_slippage_helper({ marketId: 2, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 2, eps: ud(0.001e18), isLong: false, iterations: 4 });
     }
 
     function check_trade_slippage_sol_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019958e18);
-        sPrime[3] = sd(-0.029814e18);
-        sPrime[4] = sd(-0.039509e18);
-        sPrime[5] = sd(-0.048988e18);
-        sPrime[6] = sd(-0.058202e18);
-        sPrime[7] = sd(-0.067108e18);
-        sPrime[8] = sd(-0.075669e18);
-        sPrime[9] = sd(-0.083208e18);
-
-        trade_slippage_helper({ marketId: 3, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 3, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_arb_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019958e18);
-        sPrime[3] = sd(-0.029814e18);
-        sPrime[4] = sd(-0.039509e18);
-        sPrime[5] = sd(-0.048988e18);
-        sPrime[6] = sd(-0.058202e18);
-        sPrime[7] = sd(-0.067108e18);
-        sPrime[8] = sd(-0.075669e18);
-        sPrime[9] = sd(-0.083208e18);
-
-        trade_slippage_helper({ marketId: 4, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 4, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_op_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019958e18);
-        sPrime[3] = sd(-0.029814e18);
-        sPrime[4] = sd(-0.039509e18);
-        sPrime[5] = sd(-0.048988e18);
-        sPrime[6] = sd(-0.058202e18);
-        sPrime[7] = sd(-0.067108e18);
-        sPrime[8] = sd(-0.075669e18);
-        sPrime[9] = sd(-0.083208e18);
-
-        trade_slippage_helper({ marketId: 5, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 5, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_avax_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019958e18);
-        sPrime[3] = sd(-0.029814e18);
-        sPrime[4] = sd(-0.039509e18);
-        sPrime[5] = sd(-0.048988e18);
-        sPrime[6] = sd(-0.058202e18);
-        sPrime[7] = sd(-0.067108e18);
-        sPrime[8] = sd(-0.075669e18);
-        sPrime[9] = sd(-0.083208e18);
-
-        trade_slippage_helper({ marketId: 6, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 6, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_mkr_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019978e18);
-        sPrime[3] = sd(-0.029901e18);
-        sPrime[4] = sd(-0.039742e18);
-        sPrime[5] = sd(-0.049469e18);
-        sPrime[6] = sd(-0.059056e18);
-        sPrime[7] = sd(-0.068479e18);
-        sPrime[8] = sd(-0.077715e18);
-        sPrime[9] = sd(-0.086744e18);
-
-        trade_slippage_helper({ marketId: 7, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 7, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_link_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019978e18);
-        sPrime[3] = sd(-0.029901e18);
-        sPrime[4] = sd(-0.039742e18);
-        sPrime[5] = sd(-0.049469e18);
-        sPrime[6] = sd(-0.059056e18);
-        sPrime[7] = sd(-0.068479e18);
-        sPrime[8] = sd(-0.077715e18);
-        sPrime[9] = sd(-0.086744e18);
-
-        trade_slippage_helper({ marketId: 8, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 8, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_aave_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019978e18);
-        sPrime[3] = sd(-0.029901e18);
-        sPrime[4] = sd(-0.039742e18);
-        sPrime[5] = sd(-0.049469e18);
-        sPrime[6] = sd(-0.059056e18);
-        sPrime[7] = sd(-0.068479e18);
-        sPrime[8] = sd(-0.077715e18);
-        sPrime[9] = sd(-0.086744e18);
-
-        trade_slippage_helper({ marketId: 9, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 9, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_crv_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019978e18);
-        sPrime[3] = sd(-0.029901e18);
-        sPrime[4] = sd(-0.039742e18);
-        sPrime[5] = sd(-0.049469e18);
-        sPrime[6] = sd(-0.059056e18);
-        sPrime[7] = sd(-0.068479e18);
-        sPrime[8] = sd(-0.077715e18);
-        sPrime[9] = sd(-0.086744e18);
-
-        trade_slippage_helper({ marketId: 10, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 10, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_uni_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-        // s[10] = sd(0.99e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019982e18);
-        sPrime[3] = sd(-0.029921e18);
-        sPrime[4] = sd(-0.039793e18);
-        sPrime[5] = sd(-0.049574e18);
-        sPrime[6] = sd(-0.059241e18);
-        sPrime[7] = sd(-0.068775e18);
-        sPrime[8] = sd(-0.078157e18);
-        sPrime[9] = sd(-0.087368e18);
-
-        trade_slippage_helper({ marketId: 11, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 11, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_sui_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019999e18);
-        sPrime[3] = sd(-0.029995e18);
-        sPrime[4] = sd(-0.039987e18);
-        sPrime[5] = sd(-0.049973e18);
-        sPrime[6] = sd(-0.059951e18);
-        sPrime[7] = sd(-0.06992e18);
-        sPrime[8] = sd(-0.079878e18);
-        sPrime[9] = sd(-0.089824e18);
-
-        trade_slippage_helper({ marketId: 12, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 12, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_tia_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019999e18);
-        sPrime[3] = sd(-0.029997e18);
-        sPrime[4] = sd(-0.039991e18);
-        sPrime[5] = sd(-0.049982e18);
-        sPrime[6] = sd(-0.059967e18);
-        sPrime[7] = sd(-0.069947e18);
-        sPrime[8] = sd(-0.079919e18);
-        sPrime[9] = sd(-0.089882e18);
-
-        trade_slippage_helper({ marketId: 13, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 13, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_sei_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019999e18);
-        sPrime[3] = sd(-0.029995e18);
-        sPrime[4] = sd(-0.039987e18);
-        sPrime[5] = sd(-0.049973e18);
-        sPrime[6] = sd(-0.059951e18);
-        sPrime[7] = sd(-0.06992e18);
-        sPrime[8] = sd(-0.079878e18);
-        sPrime[9] = sd(-0.089824e18);
-
-        trade_slippage_helper({ marketId: 14, s: s, sPrime: sPrime, eps: ud(0.004e18) });
+        trade_slippage_helper({ marketId: 14, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_zro_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019999e18);
-        sPrime[3] = sd(-0.029997e18);
-        sPrime[4] = sd(-0.039991e18);
-        sPrime[5] = sd(-0.049982e18);
-        sPrime[6] = sd(-0.059967e18);
-        sPrime[7] = sd(-0.069947e18);
-        sPrime[8] = sd(-0.079919e18);
-        sPrime[9] = sd(-0.089882e18);
-
-        trade_slippage_helper({ marketId: 15, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 15, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_xrp_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019998e18);
-        sPrime[3] = sd(-0.02999e18);
-        sPrime[4] = sd(-0.039974e18);
-        sPrime[5] = sd(-0.049946e18);
-        sPrime[6] = sd(-0.059903e18);
-        sPrime[7] = sd(-0.069841e18);
-        sPrime[8] = sd(-0.079757e18);
-        sPrime[9] = sd(-0.089648e18);
-
-        trade_slippage_helper({ marketId: 16, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 16, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_wif_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](6);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        // s[6] = sd(-0.06e18);
-        // s[7] = sd(-0.07e18);
-        // s[8] = sd(-0.08e18);
-        // s[9] = sd(-0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](6);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019943e18);
-        sPrime[3] = sd(-0.029749e18);
-        sPrime[4] = sd(-0.039338e18);
-        sPrime[5] = sd(-0.048643e18);
-        // sPrime[6] = sd(-0.0576e18);
-        // sPrime[7] = sd(-0.066161e18);
-        // sPrime[8] = sd(-0.074289e18);
-        // sPrime[9] = sd(-0.080878e18);
-
-        trade_slippage_helper({ marketId: 17, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 17, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_pepe1k_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](6);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        // s[6] = sd(-0.06e18);
-        // s[7] = sd(-0.07e18);
-        // s[8] = sd(-0.08e18);
-        // s[9] = sd(-0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](6);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019943e18);
-        sPrime[3] = sd(-0.029749e18);
-        sPrime[4] = sd(-0.039338e18);
-        sPrime[5] = sd(-0.048643e18);
-        // sPrime[6] = sd(-0.0576e18);
-        // sPrime[7] = sd(-0.066161e18);
-        // sPrime[8] = sd(-0.074289e18);
-        // sPrime[9] = sd(-0.080878e18);
-
-        trade_slippage_helper({ marketId: 18, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 18, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_popcat_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](10);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        s[6] = sd(-0.06e18);
-        s[7] = sd(-0.07e18);
-        s[8] = sd(-0.08e18);
-        s[9] = sd(-0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](10);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019943e18);
-        sPrime[3] = sd(-0.029749e18);
-        sPrime[4] = sd(-0.039338e18);
-        sPrime[5] = sd(-0.048643e18);
-        sPrime[6] = sd(-0.0576e18);
-        sPrime[7] = sd(-0.066161e18);
-        sPrime[8] = sd(-0.074289e18);
-        sPrime[9] = sd(-0.080878e18);
-
-        trade_slippage_helper({ marketId: 19, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 19, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_doge_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](5);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        // s[5] = sd(-0.05e18);
-        // s[6] = sd(-0.06e18);
-        // s[7] = sd(-0.07e18);
-        // s[8] = sd(-0.08e18);
-        // s[9] = sd(-0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](5);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019872e18);
-        sPrime[3] = sd(-0.029438e18);
-        sPrime[4] = sd(-0.038544e18);
-        // sPrime[5] = sd(-0.047068e18);
-        // sPrime[6] = sd(-0.05493e18);
-        // sPrime[7] = sd(-0.062088e18);
-        // sPrime[8] = sd(-0.068536e18);
-        // sPrime[9] = sd(-0.071852e18);
-
-        trade_slippage_helper({ marketId: 20, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 20, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_kshib_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](6);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        // s[6] = sd(-0.06e18);
-        // s[7] = sd(-0.07e18);
-        // s[8] = sd(-0.08e18);
-        // s[9] = sd(-0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](6);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019943e18);
-        sPrime[3] = sd(-0.029749e18);
-        sPrime[4] = sd(-0.039338e18);
-        sPrime[5] = sd(-0.048643e18);
-        // sPrime[6] = sd(-0.0576e18);
-        // sPrime[7] = sd(-0.066161e18);
-        // sPrime[8] = sd(-0.074289e18);
-        // sPrime[9] = sd(-0.080878e18);
-
-        trade_slippage_helper({ marketId: 21, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 21, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 
     function check_trade_slippage_kbonk_short() public {
-        mockFreshPrices();
-
-        SD59x18[] memory s = new SD59x18[](6);
-        s[1] = sd(-0.01e18);
-        s[2] = sd(-0.02e18);
-        s[3] = sd(-0.03e18);
-        s[4] = sd(-0.04e18);
-        s[5] = sd(-0.05e18);
-        // s[6] = sd(-0.06e18);
-        // s[7] = sd(-0.07e18);
-        // s[8] = sd(-0.08e18);
-        // s[9] = sd(-0.09e18);
-
-        SD59x18[] memory sPrime = new SD59x18[](6);
-        sPrime[1] = sd(-0.01e18);
-        sPrime[2] = sd(-0.019943e18);
-        sPrime[3] = sd(-0.029749e18);
-        sPrime[4] = sd(-0.039338e18);
-        sPrime[5] = sd(-0.048643e18);
-        // sPrime[6] = sd(-0.0576e18);
-        // sPrime[7] = sd(-0.066161e18);
-        // sPrime[8] = sd(-0.074289e18);
-        // sPrime[9] = sd(-0.080878e18);
-
-        trade_slippage_helper({ marketId: 22, s: s, sPrime: sPrime, eps: ud(0.002e18) });
+        trade_slippage_helper({ marketId: 22, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 }
