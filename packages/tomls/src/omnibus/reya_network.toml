@@ -361,8 +361,8 @@ sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
-passivePoolExchangeRebateUnscaled = "0"
-lotteryPotExchangeRebateUnscaled = "0"
+passivePoolExchangeRebateUnscaled = "0.2"
+lotteryPotExchangeRebateUnscaled = "0.2"
 rageTradeExchangeRebateUnscaled = "0.2"
 pool1RusdRebateUnscaled = "1"
 market1Eth_tier0FeeUnscaled = "0.0005"
