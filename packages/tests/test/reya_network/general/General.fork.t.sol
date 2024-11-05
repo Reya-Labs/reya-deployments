@@ -119,4 +119,12 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     //     vm.expectRevert(abi.encodeWithSelector(IOracleManagerProxy.StalePriceDetected.selector, sec.solUsdcNodeId));
     //     IOracleManagerProxy(sec.oracleManager).process(sec.solUsdcStorkFallbackNodeId);
     // }
+
+    function test_CheckSDEUSDPrice() public view {
+        check_sdeusd_price();
+    }
+
+    function test_CheckSDEUSDPrice_AgainstMainnet() public {
+        check_sdeusd_deusd_price();
+    }
 }

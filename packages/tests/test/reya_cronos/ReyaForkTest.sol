@@ -13,6 +13,7 @@ import { ISocketExecutionHelper } from "../../src/interfaces/ISocketExecutionHel
 contract ReyaForkTest is BaseReyaForkTest {
     constructor() {
         sec.REYA_RPC = "https://rpc.reya-cronos.gelato.digital";
+        sec.MAINNET_RPC = "https://gateway.tenderly.co/public/sepolia";
         sec.multisig = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
         sec.core = payable(0xC6fB022962e1426F4e0ec9D2F8861c57926E9f72);
         sec.pool = payable(0x9A3A664987b88790A6FDC1632e3b607813fd94fF);
@@ -37,6 +38,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.mainChainId = ethereumSepoliaChainId;
         sec.coExecutionBot = 0xB6EaF546b84E1f917579FC4FD3d7082DfE2ba212;
         sec.rebalancer1 = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+        sec.elixirSdeusd = 0x97D3e518029c622015afa7aD20036EbEF60A7A4e;
 
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
         // sec.usdcUsdNodeId = 0x11aa53901ced174bb9f60b47d2c2c9a0ed7d51916caf0a072cf96842a800acc3;

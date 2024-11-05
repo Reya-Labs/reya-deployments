@@ -6,6 +6,9 @@ import "../DataTypes.sol";
 import { IOwnerUpgradeModule } from "../../../src/interfaces/IOwnerUpgradeModule.sol";
 import { IOracleManagerProxy, NodeOutput, NodeDefinition } from "../../../src/interfaces/IOracleManagerProxy.sol";
 import { IPassivePerpProxy, MarketConfigurationData } from "../../../src/interfaces/IPassivePerpProxy.sol";
+import { IElixirSdeusd } from "../../../src/interfaces/IElixirSdeusd.sol";
+
+import { ud } from "@prb/math/UD60x18.sol";
 
 struct LocalState {
     bytes32[] nodeIds;
@@ -738,5 +741,29 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
             assertEq(marketConfig.marketOrderMaxStaleDuration, orderMaxStaleDuration);
         }
+    }
+
+    function check_sdeusd_price() public view {
+        NodeOutput.Data memory sdeusdUsdcOutput =
+            IOracleManagerProxy(sec.oracleManager).process(sec.sdeusdUsdcStorkNodeId);
+
+        NodeOutput.Data memory sdeusdDeusdOutput =
+            IOracleManagerProxy(sec.oracleManager).process(sec.sdeusdDeusdStorkNodeId);
+
+        NodeOutput.Data memory deusdUsdcOutput =
+            IOracleManagerProxy(sec.oracleManager).process(sec.deusdUsdcStorkNodeId);
+
+        uint256 reconstructedSdeusdUsdcPrice = ud(sdeusdDeusdOutput.price).mul(ud(deusdUsdcOutput.price)).unwrap();
+        assertApproxEqAbsDecimal(sdeusdUsdcOutput.price, reconstructedSdeusdUsdcPrice, 1, 18);
+    }
+
+    function check_sdeusd_deusd_price() public {
+        NodeOutput.Data memory sdeusdDeusdOutput =
+            IOracleManagerProxy(sec.oracleManager).process(sec.sdeusdDeusdStorkNodeId);
+
+        vm.createSelectFork(sec.MAINNET_RPC);
+        uint256 originalSdeusdDeusdPrice = IElixirSdeusd(sec.elixirSdeusd).convertToAssets(1e18);
+
+        assertLe(sdeusdDeusdOutput.price, originalSdeusdDeusdPrice);
     }
 }

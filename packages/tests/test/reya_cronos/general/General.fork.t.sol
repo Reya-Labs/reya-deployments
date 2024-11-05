@@ -46,4 +46,12 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     function test_MarketsOrderMaxStaleDuration() public view {
         check_marketsOrderMaxStaleDuration(11);
     }
+
+    function test_CheckSDEUSDPrice() public view {
+        check_sdeusd_price();
+    }
+
+    function test_CheckSDEUSDPrice_AgainstMainnet() public {
+        check_sdeusd_deusd_price();
+    }
 }
