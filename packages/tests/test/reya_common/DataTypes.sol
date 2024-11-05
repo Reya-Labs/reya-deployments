@@ -12,6 +12,7 @@ uint256 constant ONE_MINUTE_IN_SECONDS = 60;
 
 struct StaticEcosystem {
     string REYA_RPC;
+    string MAINNET_RPC;
     address multisig;
     address payable core;
     address payable pool;
@@ -31,6 +32,7 @@ struct StaticEcosystem {
     address deusd;
     address sdeusd;
     address ownerUpgradeModule;
+    address elixirSdeusd;
     bytes32 rusdUsdNodeId;
     // bytes32 usdcUsdNodeId;
     bytes32 usdcUsdStorkNodeId;
