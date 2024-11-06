@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/mainnet.toml",
     "../oracle_adapters/mainnet.toml",
 ]
-version = "1.0.32"
+version = "1.0.33"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -1011,7 +1011,7 @@ market22KBonk_maxPSlippageUnscaled = "0.1"
 market22KBonk_marketOrderMaxStaleDuration = "11"
 
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "22"
+cp1Rusd_maxMarkets = "25"
 cp1Rusd_maxCollaterals = "6"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
