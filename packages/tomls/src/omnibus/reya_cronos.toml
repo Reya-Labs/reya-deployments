@@ -238,9 +238,9 @@ storkAssetPairIdPOPCATMark = "POPCATUSDMARK"
 storkAssetPairIdDOGEMark = "DOGEUSDMARK"
 storkAssetPairIdKSHIBMark = "1000SHIBUSDMARK"
 storkAssetPairIdKBONKMark = "1000BONKUSDMARK"
-storkAssetPairIdAptMark = "APTUSDMARK"
-storkAssetPairIdBnbMark = "BNBUSDMARK"
-storkAssetPairIdJtoMark = "JTOUSDMARK"
+storkAssetPairIdAPTMark = "APTUSDMARK"
+storkAssetPairIdBNBMark = "BNBUSDMARK"
+storkAssetPairIdJTOMark = "JTOUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
 # todo: consider using REYA rather than FALLBACK 

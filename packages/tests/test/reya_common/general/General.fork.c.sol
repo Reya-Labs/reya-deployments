@@ -230,7 +230,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
         ls.meanPriceJTO = 2.2e18;
         ls.maxDeviationJTO = 1.1e18;
-        ls.meanPriceMarket.push(ls.meanPriceJTO);        
+        ls.meanPriceMarket.push(ls.meanPriceJTO);
         ls.maxDeviationMarket.push(ls.maxDeviationJTO);
 
         ls.meanPriceSUSDE = 1.11e18;
@@ -688,7 +688,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviations.push(ls.maxDeviationJTO);
 
         ls.nodeIds.push(sec.jtoUsdcStorkMarkNodeId);
-        ls.meanPrices.push(ls.meanPriceJTO);        
+        ls.meanPrices.push(ls.meanPriceJTO);
         ls.maxDeviations.push(ls.maxDeviationJTO);
 
         // ls.nodeIds.push(sec.susdeUsdNodeId);
