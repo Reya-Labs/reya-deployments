@@ -10,6 +10,7 @@ import { ICoreProxy } from "../../src/interfaces/ICoreProxy.sol";
 contract ReyaForkTest is StorageReyaForkTest {
     constructor() {
         sec.REYA_RPC = "https://rpc.reya.network";
+        sec.MAINNET_RPC = "https://gateway.tenderly.co/public/mainnet";
         sec.multisig = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9;
         sec.core = payable(0xA763B6a5E09378434406C003daE6487FbbDc1a80);
         sec.pool = payable(0xB4B77d6180cc14472A9a7BDFF01cc2459368D413);
@@ -34,6 +35,7 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.mainChainId = ethereumChainId;
         sec.coExecutionBot = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
         sec.rebalancer1 = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+        sec.elixirSdeusd = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326;
 
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
         // sec.usdcUsdNodeId = 0x7c1a73684de34b95f492a9ee72c0d8e1589714eeba4a457f766b84bd1c2f240f;
