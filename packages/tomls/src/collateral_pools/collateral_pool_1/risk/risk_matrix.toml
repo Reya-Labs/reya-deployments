@@ -413,6 +413,60 @@ args = [
 ]
 depends = ["var.cp_1rusd_vars"]
 
+[invoke.cp_1rusd_create_risk_matrix_market_23apt]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint256','indexed':true,'internalType':'uint256'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
+func = "createRiskMatrix"
+var.cp1RusdMarket23AptRiskBlockId.event = "RiskMatrixCreation"
+var.cp1RusdMarket23AptRiskBlockId.arg = 1
+args = [
+    "<%= settings.cp1RusdId %>",
+    [
+        [
+            "<%= parseEther(settings.cp1Rusd_market23Apt_riskMatrix00Unscaled) %>",
+        ],
+    ],
+]
+depends = ["var.cp_1rusd_vars"]
+
+[invoke.cp_1rusd_create_risk_matrix_market_24bnb]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint256','indexed':true,'internalType':'uint256'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
+func = "createRiskMatrix"
+var.cp1RusdMarket24BnbRiskBlockId.event = "RiskMatrixCreation"
+var.cp1RusdMarket24BnbRiskBlockId.arg = 1
+args = [
+    "<%= settings.cp1RusdId %>",
+    [
+        [
+            "<%= parseEther(settings.cp1Rusd_market24Bnb_riskMatrix00Unscaled) %>",
+        ],
+    ],
+]
+depends = ["var.cp_1rusd_vars"]
+
+[invoke.cp_1rusd_create_risk_matrix_market_25jto]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint256','indexed':true,'internalType':'uint256'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
+func = "createRiskMatrix"
+var.cp1RusdMarket25JtoRiskBlockId.event = "RiskMatrixCreation"
+var.cp1RusdMarket25JtoRiskBlockId.arg = 1
+args = [
+    "<%= settings.cp1RusdId %>",
+    [
+        [
+            "<%= parseEther(settings.cp1Rusd_market25Jto_riskMatrix00Unscaled) %>",
+        ],
+    ],
+]
+depends = ["var.cp_1rusd_vars"]
+
 [invoke.cp_1rusd_set_risk_block_id_market_1eth]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -654,3 +708,36 @@ args = [
     "<%= settings.market22KBonk_riskMatrixIndex %>",
 ]
 depends = ["invoke.cp_1rusd_create_risk_matrix_market_22kbonk"]
+
+[invoke.cp_1rusd_set_risk_block_id_market_23apt]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setRiskBlockId"
+args = [
+    "<%= settings.market23AptId %>",
+    "<%= settings.cp1RusdMarket23AptRiskBlockId %>",
+    "<%= settings.market23Apt_riskMatrixIndex %>",
+]
+depends = ["invoke.cp_1rusd_create_risk_matrix_market_23apt"]
+
+[invoke.cp_1rusd_set_risk_block_id_market_24bnb]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setRiskBlockId"
+args = [
+    "<%= settings.market24BnbId %>",
+    "<%= settings.cp1RusdMarket24BnbRiskBlockId %>",
+    "<%= settings.market24Bnb_riskMatrixIndex %>",
+]
+depends = ["invoke.cp_1rusd_create_risk_matrix_market_24bnb"]
+
+[invoke.cp_1rusd_set_risk_block_id_market_25jto]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setRiskBlockId"
+args = [
+    "<%= settings.market25JtoId %>",
+    "<%= settings.cp1RusdMarket25JtoRiskBlockId %>",
+    "<%= settings.market25Jto_riskMatrixIndex %>",
+]
+depends = ["invoke.cp_1rusd_create_risk_matrix_market_25jto"]

@@ -238,6 +238,9 @@ storkAssetPairIdPOPCATMark = "POPCATUSDMARK"
 storkAssetPairIdDOGEMark = "DOGEUSDMARK"
 storkAssetPairIdKSHIBMark = "1000SHIBUSDMARK"
 storkAssetPairIdKBONKMark = "1000BONKUSDMARK"
+storkAssetPairIdAptMark = "APTUSDMARK"
+storkAssetPairIdBnbMark = "BNBUSDMARK"
+storkAssetPairIdJtoMark = "JTOUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
 # todo: consider using REYA rather than FALLBACK 
@@ -263,6 +266,9 @@ reyaAssetPairIdPOPCATMark = "POPCATUSDMARKFALLBACK"
 reyaAssetPairIdDOGEMark = "DOGEUSDMARKFALLBACK"
 reyaAssetPairIdKSHIBMark = "1000SHIBUSDMARKFALLBACK"
 reyaAssetPairIdKBONKMark = "1000BONKUSDMARKFALLBACK"
+reyaAssetPairIdApyMark = "APTUSDMARKFALLBACK"
+reyaAssetPairIdBnbMark = "BNBUSDMARKFALLBACK"
+reyaAssetPairIdJtoMark = "JTOUSDMARKFALLBACK"
 
 [var.reya_asset_pair_ids]
 reyaAssetPairIdSDEUSD = "SDEUSDUSDREYA"
@@ -400,6 +406,9 @@ market19Popcat_tier0FeeUnscaled = "0.0005"
 market20Doge_tier0FeeUnscaled = "0.0005"
 market21KShib_tier0FeeUnscaled = "0.0005"
 market22KBonk_tier0FeeUnscaled = "0.0005"
+market23Apt_tier0FeeUnscaled = "0.0005"
+market24Bnb_tier0FeeUnscaled = "0.0005"
+market25Jto_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "0"
@@ -580,6 +589,21 @@ kbonkUsdMarkMaxStaleDurationStork = "0"
 kbonkUsdcMarkMaxStaleDurationStork = "0"
 kbonkUsdcMarkMaxStaleDurationReya = "0"
 kbonkUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#-----------------------------------------------------------------------------------
+aptUsdMarkMaxStaleDurationStork = "0"
+aptUsdcMarkMaxStaleDurationStork = "0"
+aptUsdcMarkMaxStaleDurationReya = "0"
+aptUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#-----------------------------------------------------------------------------------
+bnbUsdMarkMaxStaleDurationStork = "0"
+bnbUsdcMarkMaxStaleDurationStork = "0"
+bnbUsdcMarkMaxStaleDurationReya = "0"
+bnbUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#-----------------------------------------------------------------------------------
+jtoUsdMarkMaxStaleDurationStork = "0"
+jtoUsdcMarkMaxStaleDurationStork = "0"
+jtoUsdcMarkMaxStaleDurationReya = "0"
+jtoUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDuration = "0"
 susdeUsdcMaxStaleDuration = "0"

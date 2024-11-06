@@ -231,6 +231,9 @@ storkAssetPairIdPOPCATMark = "POPCATUSDMARK"
 storkAssetPairIdDOGEMark = "DOGEUSDMARK"
 storkAssetPairIdKSHIBMark = "1000SHIBUSDMARK"
 storkAssetPairIdKBONKMark = "1000BONKUSDMARK"
+storkAssetPairIdAptMark = "APTUSDMARK"
+storkAssetPairIdBnbMark = "BNBUSDMARK"
+storkAssetPairIdJtoMark = "JTOUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
 # todo: consider using REYA rather than FALLBACK 
@@ -256,6 +259,9 @@ reyaAssetPairIdPOPCATMark = "POPCATUSDMARKFALLBACK"
 reyaAssetPairIdDOGEMark = "DOGEUSDMARKFALLBACK"
 reyaAssetPairIdKSHIBMark = "1000SHIBUSDMARKFALLBACK"
 reyaAssetPairIdKBONKMark = "1000BONKUSDMARKFALLBACK"
+reyaAssetPairIdAptMark = "APTUSDMARKFALLBACK"
+reyaAssetPairIdBnbMark = "BNBUSDMARKFALLBACK"
+reyaAssetPairIdJtoMark = "JTOUSDMARKFALLBACK"
 
 [var.reya_asset_pair_ids]
 reyaAssetPairIdSDEUSD = "SDEUSDUSDREYA"
@@ -387,6 +393,9 @@ market19Popcat_tier0FeeUnscaled = "0.0005"
 market20Doge_tier0FeeUnscaled = "0.0005"
 market21KShib_tier0FeeUnscaled = "0.0005"
 market22KBonk_tier0FeeUnscaled = "0.0005"
+market23Apt_tier0FeeUnscaled = "0.0005"
+market24Bnb_tier0FeeUnscaled = "0.0005"
+market25Jto_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -568,6 +577,21 @@ kbonkUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 kbonkUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 kbonkUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 kbonkUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-----------------------------------------------------------------------------------
+aptUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+aptUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+aptUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+aptUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-----------------------------------------------------------------------------------
+bnbUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+bnbUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+bnbUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+bnbUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-----------------------------------------------------------------------------------
+jtoUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+jtoUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+jtoUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+jtoUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDuration = "90"
 susdeUsdcMaxStaleDuration = "90"
