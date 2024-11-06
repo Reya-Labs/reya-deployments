@@ -42,6 +42,9 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant dogeLeverage = 15e18;
     uint256 private constant kshibLeverage = 10e18;
     uint256 private constant kbonkLeverage = 10e18;
+    uint256 private constant aptLeverage = 10e18;
+    uint256 private constant bnbLeverage = 10e18;
+    uint256 private constant jtoLeverage = 10e18;
 
     address private user;
     uint256 private userPk;
@@ -74,6 +77,9 @@ contract LeverageForkCheck is BaseReyaForkTest {
         expectedLeverage.push(dogeLeverage);
         expectedLeverage.push(kshibLeverage);
         expectedLeverage.push(kbonkLeverage);
+        expectedLeverage.push(aptLeverage);
+        expectedLeverage.push(bnbLeverage);
+        expectedLeverage.push(jtoLeverage);
     }
 
     function check_trade_leverage_helper(uint128 marketId, address collateral) private {
@@ -201,6 +207,18 @@ contract LeverageForkCheck is BaseReyaForkTest {
         check_trade_leverage_helper(22, sec.usdc);
     }
 
+    function check_trade_rusdCollateral_leverage_apt() public {
+        check_trade_leverage_helper(23, sec.usdc);
+    }
+
+    function check_trade_rusdCollateral_leverage_bnb() public {
+        check_trade_leverage_helper(24, sec.usdc);
+    }
+
+    function check_trade_rusdCollateral_leverage_jto() public {
+        check_trade_leverage_helper(25, sec.usdc);
+    }
+
     function check_trade_wethCollateral_leverage_eth() public {
         check_trade_leverage_helper(1, sec.weth);
     }
@@ -287,6 +305,18 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_wethCollateral_leverage_kbonk() public {
         check_trade_leverage_helper(22, sec.weth);
+    }
+
+    function check_trade_wethCollateral_leverage_apt() public {
+        check_trade_leverage_helper(23, sec.weth);
+    }
+
+    function check_trade_wethCollateral_leverage_bnb() public {
+        check_trade_leverage_helper(24, sec.weth);
+    }
+
+    function check_trade_wethCollateral_leverage_jto() public {
+        check_trade_leverage_helper(25, sec.weth);
     }
 
     function check_trade_usdeCollateral_leverage_eth() public {
@@ -377,6 +407,18 @@ contract LeverageForkCheck is BaseReyaForkTest {
         check_trade_leverage_helper(22, sec.usde);
     }
 
+    function check_trade_usdeCollateral_leverage_apt() public {
+        check_trade_leverage_helper(23, sec.usde);
+    }
+
+    function check_trade_usdeCollateral_leverage_bnb() public {
+        check_trade_leverage_helper(24, sec.usde);
+    }
+
+    function check_trade_usdeCollateral_leverage_jto() public {
+        check_trade_leverage_helper(25, sec.usde);
+    }
+
     function check_trade_susdeCollateral_leverage_eth() public {
         check_trade_leverage_helper(1, sec.susde);
     }
@@ -463,6 +505,18 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_susdeCollateral_leverage_kbonk() public {
         check_trade_leverage_helper(22, sec.susde);
+    }
+
+    function check_trade_susdeCollateral_leverage_apt() public {
+        check_trade_leverage_helper(23, sec.susde);
+    }
+
+    function check_trade_susdeCollateral_leverage_bnb() public {
+        check_trade_leverage_helper(24, sec.susde);
+    }
+
+    function check_trade_susdeCollateral_leverage_jto() public {
+        check_trade_leverage_helper(25, sec.susde);
     }
 
     function check_trade_deusdCollateral_leverage_eth() public {
@@ -553,6 +607,18 @@ contract LeverageForkCheck is BaseReyaForkTest {
         check_trade_leverage_helper(22, sec.deusd);
     }
 
+    function check_trade_deusdCollateral_leverage_apt() public {
+        check_trade_leverage_helper(23, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_bnb() public {
+        check_trade_leverage_helper(24, sec.deusd);
+    }
+
+    function check_trade_deusdCollateral_leverage_jto() public {
+        check_trade_leverage_helper(25, sec.deusd);
+    }
+
     function check_trade_sdeusdCollateral_leverage_eth() public {
         check_trade_leverage_helper(1, sec.sdeusd);
     }
@@ -639,5 +705,17 @@ contract LeverageForkCheck is BaseReyaForkTest {
 
     function check_trade_sdeusdCollateral_leverage_kbonk() public {
         check_trade_leverage_helper(22, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_apt() public {
+        check_trade_leverage_helper(23, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_bnb() public {
+        check_trade_leverage_helper(24, sec.sdeusd);
+    }
+
+    function check_trade_sdeusdCollateral_leverage_jto() public {
+        check_trade_leverage_helper(25, sec.sdeusd);
     }
 }
