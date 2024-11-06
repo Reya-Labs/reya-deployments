@@ -92,6 +92,18 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_kbonk_long();
     }
 
+    function test_Cronos_trade_slippage_apt_long() public {
+        check_trade_slippage_apt_long();
+    }
+
+    function test_Cronos_trade_slippage_bnb_long() public {
+        check_trade_slippage_bnb_long();
+    }
+
+    function test_Cronos_trade_slippage_jto_long() public {
+        check_trade_slippage_jto_long();
+    }
+
     function test_Cronos_trade_slippage_eth_short() public {
         check_trade_slippage_eth_short();
     }
@@ -178,5 +190,17 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
 
     function test_Cronos_trade_slippage_kbonk_short() public {
         check_trade_slippage_kbonk_short();
+    }
+
+    function test_Cronos_trade_slippage_apt_short() public {
+        check_trade_slippage_apt_short();
+    }
+
+    function test_Cronos_trade_slippage_bnb_short() public {
+        check_trade_slippage_bnb_short();
+    }
+
+    function test_Cronos_trade_slippage_jto_short() public {
+        check_trade_slippage_jto_short();
     }
 }
