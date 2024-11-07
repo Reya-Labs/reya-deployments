@@ -184,7 +184,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
             }
 
             st.nonce = i;
-            if (i == 20 || i == 21 || i == 22) {
+            if (i > 19) {
                 st.nonce = i - 1;
             }
             st.orderMarketId1 = i;
@@ -228,7 +228,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
             }
 
             st.nonce = i;
-            if (i == 20 || i == 21 || i == 22) {
+            if (i > 19) {
                 st.nonce = i - 1;
             }
             st.orderMarketId1 = i;
@@ -272,7 +272,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
             }
 
             st.nonce = i;
-            if (i == 20 || i == 21 || i == 22) {
+            if (i > 19) {
                 st.nonce = i - 1;
             }
             st.orderMarketId1 = i;

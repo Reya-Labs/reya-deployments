@@ -42,9 +42,9 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant dogeLeverage = 15e18;
     uint256 private constant kshibLeverage = 10e18;
     uint256 private constant kbonkLeverage = 10e18;
-    uint256 private constant aptLeverage = 10e18;
-    uint256 private constant bnbLeverage = 10e18;
-    uint256 private constant jtoLeverage = 10e18;
+    uint256 private constant aptLeverage = 20e18;
+    uint256 private constant bnbLeverage = 30e18;
+    uint256 private constant jtoLeverage = 15e18;
 
     address private user;
     uint256 private userPk;
