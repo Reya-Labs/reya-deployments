@@ -272,6 +272,94 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         st.sPrimeShort[0.00263e18][1.5e18][7] = sd(-0.062088e18);
         st.sPrimeShort[0.00263e18][1.5e18][8] = sd(-0.068536e18);
         st.sPrimeShort[0.00263e18][1.5e18][9] = sd(-0.071852e18);
+
+        st.sPrimeLong[0.023669e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeLong[0.023669e18][0.25e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.023669e18][0.25e18][2] = sd(0.02e18);
+        st.sPrimeLong[0.023669e18][0.25e18][3] = sd(0.029998e18);
+        st.sPrimeLong[0.023669e18][0.25e18][4] = sd(0.039996e18);
+        st.sPrimeLong[0.023669e18][0.25e18][5] = sd(0.049991e18);
+        st.sPrimeLong[0.023669e18][0.25e18][6] = sd(0.059984e18);
+        st.sPrimeLong[0.023669e18][0.25e18][7] = sd(0.069974e18);
+        st.sPrimeLong[0.023669e18][0.25e18][8] = sd(0.07996e18);
+        st.sPrimeLong[0.023669e18][0.25e18][9] = sd(0.089943e18);
+
+        st.sPrimeShort[0.023669e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeShort[0.023669e18][0.25e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.023669e18][0.25e18][2] = sd(-0.02e18);
+        st.sPrimeShort[0.023669e18][0.25e18][3] = sd(-0.029998e18);
+        st.sPrimeShort[0.023669e18][0.25e18][4] = sd(-0.039996e18);
+        st.sPrimeShort[0.023669e18][0.25e18][5] = sd(-0.049991e18);
+        st.sPrimeShort[0.023669e18][0.25e18][6] = sd(-0.059984e18);
+        st.sPrimeShort[0.023669e18][0.25e18][7] = sd(-0.069973e18);
+        st.sPrimeShort[0.023669e18][0.25e18][8] = sd(-0.079959e18);
+        st.sPrimeShort[0.023669e18][0.25e18][9] = sd(-0.089941e18);
+
+        st.sPrimeLong[0.00263e18][1] = new SD59x18[](10);
+        st.sPrimeLong[0.00263e18][1][1] = sd(0.01e18);
+        st.sPrimeLong[0.00263e18][1][2] = sd(0.019996e18);
+        st.sPrimeLong[0.00263e18][1][3] = sd(0.02998e18);
+        st.sPrimeLong[0.00263e18][1][4] = sd(0.039948e18);
+        st.sPrimeLong[0.00263e18][1][5] = sd(0.049892e18);
+        st.sPrimeLong[0.00263e18][1][6] = sd(0.059808e18);
+        st.sPrimeLong[0.00263e18][1][7] = sd(0.069688e18);
+        st.sPrimeLong[0.00263e18][1][8] = sd(0.079527e18);
+        st.sPrimeLong[0.00263e18][1][9] = sd(0.089321e18);
+
+        st.sPrimeShort[0.00263e18][1] = new SD59x18[](10);
+        st.sPrimeShort[0.00263e18][1][1] = sd(-0.01e18);
+        st.sPrimeShort[0.00263e18][1][2] = sd(-0.019996e18);
+        st.sPrimeShort[0.00263e18][1][3] = sd(-0.02998e18);
+        st.sPrimeShort[0.00263e18][1][4] = sd(-0.039948e18);
+        st.sPrimeShort[0.00263e18][1][5] = sd(-0.049892e18);
+        st.sPrimeShort[0.00263e18][1][6] = sd(-0.059805e18);
+        st.sPrimeShort[0.00263e18][1][7] = sd(-0.069681e18);
+        st.sPrimeShort[0.00263e18][1][8] = sd(-0.079515e18);
+        st.sPrimeShort[0.00263e18][1][9] = sd(-0.089298e18);
+
+        st.sPrimeLong[0.001479e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeLong[0.001479e18][0.25e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.001479e18][0.25e18][2] = sd(0.019998e18);
+        st.sPrimeLong[0.001479e18][0.25e18][3] = sd(0.029993e18);
+        st.sPrimeLong[0.001479e18][0.25e18][4] = sd(0.039983e18);
+        st.sPrimeLong[0.001479e18][0.25e18][5] = sd(0.049964e18);
+        st.sPrimeLong[0.001479e18][0.25e18][6] = sd(0.059936e18);
+        st.sPrimeLong[0.001479e18][0.25e18][7] = sd(0.069896e18);
+        st.sPrimeLong[0.001479e18][0.25e18][8] = sd(0.079842e18);
+        st.sPrimeLong[0.001479e18][0.25e18][9] = sd(0.089772e18);
+
+        st.sPrimeShort[0.001479e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeShort[0.001479e18][0.25e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.001479e18][0.25e18][2] = sd(-0.019999e18);
+        st.sPrimeShort[0.001479e18][0.25e18][3] = sd(-0.029993e18);
+        st.sPrimeShort[0.001479e18][0.25e18][4] = sd(-0.039983e18);
+        st.sPrimeShort[0.001479e18][0.25e18][5] = sd(-0.049964e18);
+        st.sPrimeShort[0.001479e18][0.25e18][6] = sd(-0.059935e18);
+        st.sPrimeShort[0.001479e18][0.25e18][7] = sd(-0.069893e18);
+        st.sPrimeShort[0.001479e18][0.25e18][8] = sd(-0.079837e18);
+        st.sPrimeShort[0.001479e18][0.25e18][9] = sd(-0.089764e18);
+
+        st.sPrimeLong[0.000947e18][7.2e18] = new SD59x18[](10);
+        st.sPrimeLong[0.000947e18][7.2e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.000947e18][7.2e18][2] = sd(0.019946e18);
+        st.sPrimeLong[0.000947e18][7.2e18][3] = sd(0.029763e18);
+        st.sPrimeLong[0.000947e18][7.2e18][4] = sd(0.039385e18);
+        st.sPrimeLong[0.000947e18][7.2e18][5] = sd(0.048748e18);
+        st.sPrimeLong[0.000947e18][7.2e18][6] = sd(0.057798e18);
+        st.sPrimeLong[0.000947e18][7.2e18][7] = sd(0.066493e18);
+        st.sPrimeLong[0.000947e18][7.2e18][8] = sd(0.074801e18);
+        st.sPrimeLong[0.000947e18][7.2e18][9] = sd(0.082698e18);
+
+        st.sPrimeShort[0.000947e18][7.2e18] = new SD59x18[](10);
+        st.sPrimeShort[0.000947e18][7.2e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.000947e18][7.2e18][2] = sd(-0.019947e18);
+        st.sPrimeShort[0.000947e18][7.2e18][3] = sd(-0.029766e18);
+        st.sPrimeShort[0.000947e18][7.2e18][4] = sd(-0.039386e18);
+        st.sPrimeShort[0.000947e18][7.2e18][5] = sd(-0.048739e18);
+        st.sPrimeShort[0.000947e18][7.2e18][6] = sd(-0.057769e18);
+        st.sPrimeShort[0.000947e18][7.2e18][7] = sd(-0.066427e18);
+        st.sPrimeShort[0.000947e18][7.2e18][8] = sd(-0.074676e18);
+        st.sPrimeShort[0.000947e18][7.2e18][9] = sd(-0.08249e18);
     }
 
     function setUp() public {
