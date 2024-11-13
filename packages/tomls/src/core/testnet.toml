@@ -3,3 +3,12 @@ include = [
     "utils/deploy_proxy.toml",
     "configs/tokens/wsteth.toml",
 ]
+
+[invoke.core_configure_protocol]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "configureProtocol"
+args = [
+    { oracleManagerAddress = "<%= settings.oracleManagerProxy %>", exchangePassNFTAddress = "<%= contracts.ExchangePassProxy.address %>", feeCollectorAccountId = "<%= settings.coreFeeCollectorAccountId %>", yakRouterAddress = "<%= settings.camelotYakRouter %>" },
+]
+depends = ["invoke.core_create_fee_collector_account"]
