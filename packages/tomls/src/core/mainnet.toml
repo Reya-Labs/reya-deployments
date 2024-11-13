@@ -12,3 +12,12 @@ include = [
     "configs/tokens/sdeusd.toml",
     "configs/market_vol_configurators.toml",
 ]
+
+[invoke.core_configure_protocol]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "configureProtocol"
+args = [
+    { oracleManagerAddress = "<%= settings.oracleManagerProxy %>", exchangePassNFTAddress = "<%= contracts.ExchangePassProxy.address %>", feeCollectorAccountId = "<%= settings.coreFeeCollectorAccountId %>" },
+]
+depends = ["invoke.core_create_fee_collector_account"]
