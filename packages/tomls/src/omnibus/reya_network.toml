@@ -30,19 +30,22 @@ lotteryPotExchangeFeeCollectorOwner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb
 rageTradeExchangeFeeCollectorOwner = "0x507c7777837b85ede1e67f5a4554ddd7e58b1f87"
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
+[var.external_contracts]
+camelotYakRouter = "0x2b59Eb03865D18d8B62a5956BBbFaE352fc1C148"
+
 [var.account_ids]
 lotteryPotAccountId = "20092"
 rageTradeAccountId = "22262"
 
 [var.cannonClonePackages]
-coreRouterPackage = "reya-core:1.0.12@router"
+coreRouterPackage = "reya-core:1.0.13@router"
 coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.0@router"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.8@router"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.16@router"
-peripheryRouterPackage = "reya-periphery:1.0.6@router"
+peripheryRouterPackage = "reya-periphery:1.0.7@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
@@ -123,6 +126,14 @@ matchOrderPublisherAdmin2 = "<%= settings.pauser2 %>"
 matchOrderPublisherAdmin3 = "<%= settings.pauser3 %>"
 matchOrderPublisherAdmin4 = "<%= settings.pauser4 %>"
 matchOrderPublisherAdmin5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+[var.camelot_swap_publisher_settings]
+camelotSwapPublisher = "0xE32519ca0e751C754c8E1378846B5cd95A1CB66a"
+camelotSwapPublisherAdmin1 = "<%= settings.matchOrderPublisherAdmin1 %>"
+camelotSwapPublisherAdmin2 = "<%= settings.matchOrderPublisherAdmin2 %>"
+camelotSwapPublisherAdmin3 = "<%= settings.matchOrderPublisherAdmin3 %>"
+camelotSwapPublisherAdmin4 = "<%= settings.matchOrderPublisherAdmin4 %>"
+camelotSwapPublisherAdmin5 = "<%= settings.matchOrderPublisherAdmin5 %>"
 
 [var.stork_publishers]
 storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"

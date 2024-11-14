@@ -3,37 +3,3 @@ include = [
     "utils/deploy_proxy.toml",
     "configs/tokens/wsteth.toml",
 ]
-
-[invoke.core_configure_protocol]
-target = ["CoreProxy"]
-fromCall.func = "owner"
-func = "configureProtocol"
-args = [
-    { oracleManagerAddress = "<%= settings.oracleManagerProxy %>", exchangePassNFTAddress = "<%= contracts.ExchangePassProxy.address %>", feeCollectorAccountId = "<%= settings.coreFeeCollectorAccountId %>", yakRouterAddress = "<%= settings.camelotYakRouter %>" },
-]
-depends = ["invoke.core_create_fee_collector_account"]
-
-[invoke.core_enable_camelot_swap_publisher]
-target = ["CoreProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('camelotSwapPublisher')) %>",
-    "<%= settings.camelotSwapPublisher %>",
-]
-depends = ["invoke.upgrade_core_proxy"]
-
-[invoke.core_enable_camelot_swap_admins]
-target = ["CoreProxy"]
-fromCall.func = "owner"
-func = "setAdmins"
-args = [
-    "<%= keccak256(hexlify('camelotSwapPublisher')) %>",
-    [
-        "<%= settings.camelotSwapPublisherAdmin1 %>",
-        "<%= settings.camelotSwapPublisherAdmin2 %>",
-        "<%= settings.camelotSwapPublisherAdmin3 %>",
-        "<%= settings.camelotSwapPublisherAdmin4 %>",
-        "<%= settings.camelotSwapPublisherAdmin5 %>",
-    ],
-]
