@@ -113,7 +113,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceETH);
         ls.maxDeviationMarket.push(ls.maxDeviationETH);
 
-        ls.meanPriceBTC = 65_000e18;
+        ls.meanPriceBTC = 90_000e18;
         ls.maxDeviationBTC = 20_000e18;
         ls.meanPriceMarket.push(ls.meanPriceBTC);
         ls.maxDeviationMarket.push(ls.maxDeviationBTC);
