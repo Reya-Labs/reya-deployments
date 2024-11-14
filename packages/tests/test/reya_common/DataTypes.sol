@@ -160,6 +160,7 @@ struct StaticEcosystem {
     uint128 passivePoolAccountId;
     address coExecutionBot;
     address rebalancer1;
+    address camelotYakRouter;
 }
 
 struct DynamicEcosystem {
