@@ -193,8 +193,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceWIF);
         ls.maxDeviationMarket.push(ls.maxDeviationWIF);
 
-        ls.meanPrice1000PEPE = 0.0105e18;
-        ls.maxDeviation1000PEPE = 0.007e18;
+        ls.meanPrice1000PEPE = 0.02e18;
+        ls.maxDeviation1000PEPE = 0.01e18;
         ls.meanPriceMarket.push(ls.meanPrice1000PEPE);
         ls.maxDeviationMarket.push(ls.maxDeviation1000PEPE);
 
