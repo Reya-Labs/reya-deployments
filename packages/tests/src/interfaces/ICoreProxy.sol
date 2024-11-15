@@ -729,6 +729,7 @@ interface ProtocolConfiguration {
         address oracleManagerAddress;
         address exchangePassNFTAddress;
         uint128 feeCollectorAccountId;
+        address yakRouterAddress;
     }
 }
 

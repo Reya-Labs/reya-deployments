@@ -3,7 +3,12 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 
 import { IYakRouter } from "../../../src/interfaces/IYakRouter.sol";
-import { ICoreProxy, Command as Command_Core, CommandType } from "../../../src/interfaces/ICoreProxy.sol";
+import {
+    ICoreProxy,
+    Command as Command_Core,
+    CommandType,
+    ProtocolConfiguration
+} from "../../../src/interfaces/ICoreProxy.sol";
 import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
 import { IAdapter } from "../../../src/interfaces/IAdapter.sol";
 
@@ -212,6 +217,134 @@ contract CamelotSwapForkCheck is BaseReyaForkTest {
 
         vm.prank(alice);
         vm.expectRevert(abi.encodeWithSelector(ICoreProxy.GlobalLockOn.selector));
+        ICoreProxy(sec.core).execute(accountId, commands);
+    }
+
+    function check_RevertWhen_DepositRusdAndSwapMore_NoCP() internal {
+        uint256 rusdAmount = 100e6;
+        uint256 minWethAmount = 0.02e18;
+
+        deal(sec.usdc, address(sec.periphery), rusdAmount);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], rusdAmount);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: alice, token: address(sec.usdc) })
+        );
+
+        Command_Core[] memory commands = new Command_Core[](1);
+        commands[0] = getCamelotSwapCommand(sec.rusd, rusdAmount + 1, sec.weth, minWethAmount);
+        vm.prank(alice);
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.NegativeAccountRealBalance.selector, accountId, -1));
+        ICoreProxy(sec.core).execute(accountId, commands);
+    }
+
+    function check_RevertWhen_DepositRusdAndTradeAndSwapUnsupportedTokenWbtc() internal {
+        uint256 rusdAmount = 100e6;
+        uint256 minWbtcAmount = 0.02e18;
+        uint128 marketId = 1;
+        SD59x18 base = sd(0.01e18);
+        UD60x18 tier0Fee = ud(0.0005e18);
+
+        deal(sec.usdc, address(sec.periphery), rusdAmount);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], rusdAmount);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: alice, token: address(sec.usdc) })
+        );
+
+        executePeripheryMatchOrder({
+            userPrivateKey: alicePk,
+            incrementedNonce: 1,
+            marketId: marketId,
+            base: base,
+            priceLimit: ud(10_000e18),
+            accountId: accountId
+        });
+
+        address[] memory path = new address[](2);
+        path[0] = sec.rusd;
+        path[1] = sec.wbtc;
+
+        Command_Core[] memory commands = new Command_Core[](1);
+        commands[0] = Command_Core({
+            commandType: uint8(CommandType.CamelotSwap),
+            inputs: abi.encode(
+                IYakRouter.Trade({
+                    amountIn: 1,
+                    amountOut: 0,
+                    path: path,
+                    adapters: new address[](0),
+                    recipients: new address[](0)
+                })
+            ),
+            marketId: 0,
+            exchangeId: 0
+        });
+
+        vm.mockCall(
+            sec.camelotYakRouter,
+            abi.encodeCall(
+                IYakRouter.swapNoSplit,
+                (
+                    IYakRouter.Trade({
+                        amountIn: 1,
+                        amountOut: 0,
+                        path: path,
+                        adapters: new address[](0),
+                        recipients: new address[](0)
+                    }),
+                    0,
+                    sec.core
+                )
+            ),
+            abi.encode()
+        );
+
+        vm.prank(alice);
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.GlobalCollateralNotFound.selector, sec.wbtc));
+        ICoreProxy(sec.core).execute(accountId, commands);
+    }
+
+    function check_RevertWhen_YakRouterIsZero() internal {
+        uint256 rusdAmount = 100e6;
+        uint256 minWethAmount = 0.02e18;
+
+        deal(sec.usdc, address(sec.periphery), rusdAmount);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], rusdAmount);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: alice, token: address(sec.usdc) })
+        );
+
+        Command_Core[] memory commands = new Command_Core[](1);
+        commands[0] = getCamelotSwapCommand(sec.rusd, rusdAmount, sec.weth, minWethAmount);
+
+        ProtocolConfiguration.Data memory protocolConfig = ICoreProxy(sec.core).getProtocolConfiguration();
+        protocolConfig.yakRouterAddress = address(0);
+        vm.prank(sec.multisig);
+        ICoreProxy(sec.core).configureProtocol(protocolConfig);
+
+        vm.prank(alice);
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.ZeroAddress.selector));
+        ICoreProxy(sec.core).execute(accountId, commands);
+    }
+
+    function check_RevertWhen_MinAmountIsHigher() internal {
+        uint256 rusdAmount = 100e6;
+        uint256 minWethAmount = 0.1e18;
+
+        deal(sec.usdc, address(sec.periphery), rusdAmount);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], rusdAmount);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: alice, token: address(sec.usdc) })
+        );
+
+        Command_Core[] memory commands = new Command_Core[](1);
+        commands[0] = getCamelotSwapCommand(sec.rusd, rusdAmount, sec.weth, minWethAmount);
+
+        vm.prank(alice);
+        vm.expectRevert("YakRouter: Insufficient output amount");
         ICoreProxy(sec.core).execute(accountId, commands);
     }
 }
