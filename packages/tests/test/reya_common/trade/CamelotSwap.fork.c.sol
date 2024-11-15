@@ -73,6 +73,8 @@ contract CamelotSwapForkCheck is BaseReyaForkTest {
 
     constructor() {
         (alice, alicePk) = makeAddrAndKey("alice");
+        vm.prank(sec.multisig);
+        ICoreProxy(sec.core).addToFeatureFlagAllowlist(keccak256(bytes("camelotSwapPublisher")), alice);
     }
 
     function setUp() public {
@@ -209,7 +211,7 @@ contract CamelotSwapForkCheck is BaseReyaForkTest {
         // account is eligible for backstop liquidation without any upnl mocking
 
         vm.prank(alice);
-        // vm.expectRevert(abi.encodeWithSelector(ICoreProxy.GlobalLockOn.selector));
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.GlobalLockOn.selector));
         ICoreProxy(sec.core).execute(accountId, commands);
     }
 }

@@ -166,6 +166,7 @@ interface ICoreProxy {
     );
     error FeatureUnavailable(bytes32 which);
     error GlobalCollateralNotFound(address collateral);
+    error GlobalLockOn();
     error InvalidAccountPermission(bytes32 permission);
     error InvalidFilledExposures(FilledExposure[] filledExposures);
     error MarketNotFound(uint128 marketId);

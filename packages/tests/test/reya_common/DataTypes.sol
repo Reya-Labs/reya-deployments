@@ -161,6 +161,7 @@ struct StaticEcosystem {
     address coExecutionBot;
     address rebalancer1;
     address camelotYakRouter;
+    address camelotSwapPublisher;
 }
 
 struct DynamicEcosystem {
