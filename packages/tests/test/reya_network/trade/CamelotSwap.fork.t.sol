@@ -7,4 +7,8 @@ contract CamelotSwapForkTest is ReyaForkTest, CamelotSwapForkCheck {
     function test_DepositRusdAndSwapWeth_NoCP() public {
         check_DepositRusdAndSwapWeth_NoCP();
     }
+
+    function test_DepositRusdAndTradeAndSwapWeth() public {
+        check_DepositRusdAndTradeAndSwapWeth();
+    }
 }

@@ -6,12 +6,19 @@ import { IYakRouter } from "../../../src/interfaces/IYakRouter.sol";
 import { ICoreProxy, Command as Command_Core, CommandType } from "../../../src/interfaces/ICoreProxy.sol";
 import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
 
+import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
+import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
+
 contract CamelotSwapForkCheck is BaseReyaForkTest {
     address alice;
     uint256 alicePk;
 
     constructor() {
         (alice, alicePk) = makeAddrAndKey("alice");
+    }
+
+    function setUp() public {
+        mockFreshPrices();
     }
 
     function getCamelotSwapCommand(
@@ -70,6 +77,38 @@ contract CamelotSwapForkCheck is BaseReyaForkTest {
 
         Command_Core[] memory commands = new Command_Core[](1);
         commands[0] = getCamelotSwapCommand(sec.rusd, rusdAmount, sec.weth, minWethAmount);
+        vm.prank(alice);
+        ICoreProxy(sec.core).execute(accountId, commands);
+    }
+
+    function check_DepositRusdAndTradeAndSwapWeth() internal {
+        uint256 rusdAmount = 100e6;
+        uint256 minWethAmount = 0.02e18;
+        uint128 marketId = 1;
+        SD59x18 base = sd(0.01e18);
+        UD60x18 tier0Fee = ud(0.0005e18);
+
+        deal(sec.usdc, address(sec.periphery), rusdAmount);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], rusdAmount);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: alice, token: address(sec.usdc) })
+        );
+
+        executePeripheryMatchOrder({
+            userPrivateKey: alicePk,
+            incrementedNonce: 1,
+            marketId: marketId,
+            base: base,
+            priceLimit: ud(10_000e18),
+            accountId: accountId
+        });
+
+        uint256 takerFees = baseToExposure(marketId, base).intoUD60x18().mul(tier0Fee).unwrap();
+
+        Command_Core[] memory commands = new Command_Core[](1);
+        commands[0] =
+            getCamelotSwapCommand(sec.rusd, rusdAmount - takerFees / 1e12 * 1.01e18 / 1e18, sec.weth, minWethAmount);
         vm.prank(alice);
         ICoreProxy(sec.core).execute(accountId, commands);
     }

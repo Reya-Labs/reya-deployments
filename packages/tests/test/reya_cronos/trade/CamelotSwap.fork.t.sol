@@ -4,7 +4,11 @@ import { ReyaForkTest } from "../ReyaForkTest.sol";
 import { CamelotSwapForkCheck } from "../../reya_common/trade/CamelotSwap.fork.c.sol";
 
 contract CamelotSwapForkTest is ReyaForkTest, CamelotSwapForkCheck {
-    function test_Cronos_DepositRusdAndSwapWeth_NoCP() public {
-        check_DepositRusdAndSwapWeth_NoCP();
-    }
+// function test_Cronos_DepositRusdAndSwapWeth_NoCP() public {
+//     check_DepositRusdAndSwapWeth_NoCP();
+// }
+
+// function test_Cronos_DepositRusdAndTradeAndSwapWeth() public {
+//     check_DepositRusdAndTradeAndSwapWeth();
+// }
 }
