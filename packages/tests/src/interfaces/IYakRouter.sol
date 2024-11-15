@@ -1,22 +1,21 @@
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
 interface IYakRouter {
+    struct FormattedOffer {
+        uint256[] amounts;
+        address[] adapters;
+        address[] path;
+        address[] recipients;
+        uint256 gasEstimate;
+    }
 
-  struct FormattedOffer {
-      uint256[] amounts;
-      address[] adapters;
-      address[] path;
-      address[] recipients;
-      uint256 gasEstimate;
-  }
-  struct Trade {
-      uint256 amountIn;
-      uint256 amountOut;
-      address[] path;
-      address[] adapters;
-      address[] recipients;
-  }
+    struct Trade {
+        uint256 amountIn;
+        uint256 amountOut;
+        address[] path;
+        address[] adapters;
+        address[] recipients;
+    }
 
     function findBestPath(
         uint256 _amountIn,

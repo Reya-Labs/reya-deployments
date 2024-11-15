@@ -11,4 +11,8 @@ contract CamelotSwapForkTest is ReyaForkTest, CamelotSwapForkCheck {
     function test_DepositRusdAndTradeAndSwapWeth() public {
         check_DepositRusdAndTradeAndSwapWeth();
     }
+
+    function test_RevertWhen_DepositRusdAndTradeAndSwapWeth_AttemptBackstopLiquidation() public {
+        check_RevertWhen_DepositRusdAndTradeAndSwapWeth_AttemptBackstopLiquidation();
+    }
 }
