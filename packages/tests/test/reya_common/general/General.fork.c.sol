@@ -183,8 +183,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceZRO);
         ls.maxDeviationMarket.push(ls.maxDeviationZRO);
 
-        ls.meanPriceXRP = 0.55e18;
-        ls.maxDeviationXRP = 0.2e18;
+        ls.meanPriceXRP = 0.85e18;
+        ls.maxDeviationXRP = 0.4e18;
         ls.meanPriceMarket.push(ls.meanPriceXRP);
         ls.maxDeviationMarket.push(ls.maxDeviationXRP);
 
