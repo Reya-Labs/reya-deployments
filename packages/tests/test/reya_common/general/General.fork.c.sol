@@ -163,8 +163,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceUNI);
         ls.maxDeviationMarket.push(ls.maxDeviationUNI);
 
-        ls.meanPriceSUI = 1.6e18;
-        ls.maxDeviationSUI = 0.8e18;
+        ls.meanPriceSUI = 3.5e18;
+        ls.maxDeviationSUI = 1.7e18;
         ls.meanPriceMarket.push(ls.meanPriceSUI);
         ls.maxDeviationMarket.push(ls.maxDeviationSUI);
 
