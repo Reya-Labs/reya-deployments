@@ -87,6 +87,61 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         return ud(0);
     }
 
+    function getMatchOrderPeripheryCommand(
+        uint128 marketId,
+        SD59x18 base,
+        UD60x18 priceLimit
+    )
+        internal
+        view
+        returns (Command_Periphery memory command)
+    {
+        uint128[] memory counterpartyAccountIds = new uint128[](1);
+        counterpartyAccountIds[0] = sec.passivePoolAccountId;
+
+        return Command_Periphery({
+            commandType: uint8(CommandType.MatchOrder),
+            inputs: abi.encode(counterpartyAccountIds, abi.encode(base, priceLimit)),
+            marketId: marketId,
+            exchangeId: 1 // passive pool
+         });
+    }
+
+    function getEIP712SignatureForPeripheryCommands(
+        uint128 accountId,
+        Command_Periphery[] memory commands,
+        uint256 userPrivateKey,
+        uint256 incrementedNonce
+    )
+        internal
+        view
+        returns (EIP712Signature memory sig)
+    {
+        uint256 deadline = block.timestamp + 3600; // one hour
+        bytes32 digest = CoreCommandHashing.mockCalculateDigest(
+            address(sec.periphery), accountId, commands, incrementedNonce, deadline, keccak256(abi.encode()), sec.core
+        );
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, digest);
+        sig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
+    }
+
+    function executePeripheryCommands(
+        uint128 accountId,
+        Command_Periphery[] memory commands,
+        uint256 userPrivateKey,
+        uint256 incrementedNonce
+    )
+        internal
+    {
+        IPeripheryProxy(sec.periphery).execute(
+            PeripheryExecutionInputs({
+                accountId: accountId,
+                commands: commands,
+                sig: getEIP712SignatureForPeripheryCommands(accountId, commands, userPrivateKey, incrementedNonce)
+            })
+        );
+    }
+
     function executePeripheryMatchOrder(
         uint256 userPrivateKey,
         uint256 incrementedNonce,
@@ -97,33 +152,22 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     )
         internal
     {
-        s.counterpartyAccountIds = new uint128[](1);
-        s.counterpartyAccountIds[0] = sec.passivePoolAccountId;
-        s.deadline = block.timestamp + 3600; // one hour
-
-        s.exchangeId = 1;
-
         Command_Periphery[] memory commands = new Command_Periphery[](1);
-        commands[0] = Command_Periphery({
-            commandType: uint8(CommandType.MatchOrder),
-            inputs: abi.encode(s.counterpartyAccountIds, abi.encode(base, priceLimit)),
-            marketId: marketId,
-            exchangeId: s.exchangeId
+        commands[0] = getMatchOrderPeripheryCommand(marketId, base, priceLimit);
+        executePeripheryCommands(accountId, commands, userPrivateKey, incrementedNonce);
+    }
+
+    function convertCoreCommandToPeripheryCommand(Command_Core memory command)
+        internal
+        pure
+        returns (Command_Periphery memory)
+    {
+        return Command_Periphery({
+            commandType: command.commandType,
+            inputs: command.inputs,
+            marketId: command.marketId,
+            exchangeId: command.exchangeId
         });
-
-        s.digest = CoreCommandHashing.mockCalculateDigest(
-            address(sec.periphery), accountId, commands, incrementedNonce, s.deadline, keccak256(abi.encode()), sec.core
-        );
-
-        (s.v, s.r, s.s) = vm.sign(userPrivateKey, s.digest);
-
-        IPeripheryProxy(sec.periphery).execute(
-            PeripheryExecutionInputs({
-                accountId: accountId,
-                commands: commands,
-                sig: EIP712Signature({ v: s.v, r: s.r, s: s.s, deadline: s.deadline })
-            })
-        );
     }
 
     function executeCoreMatchOrder(
