@@ -367,20 +367,20 @@ rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
-wethWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-wethWithdrawalTvlPercentageLimitUnscaled = "0"
+wethWithdrawalWindowSize = "1"
+wethWithdrawalTvlPercentageLimitUnscaled = "1.0"
 # -------------------------------------------------------------------
 wstethCollateralAdapter = "<%= AddressZero %>"
-wstethWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-wstethWithdrawalTvlPercentageLimitUnscaled = "0"
+wstethWithdrawalWindowSize = "1"
+wstethWithdrawalTvlPercentageLimitUnscaled = "1.0"
 # -------------------------------------------------------------------
 usdeCollateralAdapter = "<%= AddressZero %>"
-usdeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-usdeWithdrawalTvlPercentageLimitUnscaled = "0"
+usdeWithdrawalWindowSize = "1"
+usdeWithdrawalTvlPercentageLimitUnscaled = "1.0"
 # -------------------------------------------------------------------
 susdeCollateralAdapter = "<%= AddressZero %>"
-susdeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-susdeWithdrawalTvlPercentageLimitUnscaled = "0"
+susdeWithdrawalWindowSize = "1"
+susdeWithdrawalTvlPercentageLimitUnscaled = "1.0"
 # -------------------------------------------------------------------
 deusdCollateralAdapter = "<%= AddressZero %>"
 deusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
