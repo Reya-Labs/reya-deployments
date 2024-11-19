@@ -252,6 +252,9 @@ storkAssetPairIdKBONKMark = "1000BONKUSDMARK"
 storkAssetPairIdAPTMark = "APTUSDMARK"
 storkAssetPairIdBNBMark = "BNBUSDMARK"
 storkAssetPairIdJTOMark = "JTOUSDMARK"
+storkAssetPairIdADAMark = "ADAUSDMARK"
+storkAssetPAirIdLDOMark = "LDOUSDMARK"
+storkAssetPairIdPOLMark = "POLUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
 # todo: consider using REYA rather than FALLBACK 
@@ -280,6 +283,9 @@ reyaAssetPairIdKBONKMark = "1000BONKUSDMARKFALLBACK"
 reyaAssetPairIdAptMark = "APTUSDMARKFALLBACK"
 reyaAssetPairIdBnbMark = "BNBUSDMARKFALLBACK"
 reyaAssetPairIdJtoMark = "JTOUSDMARKFALLBACK"
+reyaAssetPairIdADAMark = "ADAUSDMARKFALLBACK"
+reyaAssetPairIdLDOMark = "LDOUSDMARKFALLBACK"
+reyaAssetPairIdPOLMark = "POLUSDMARKFALLBACK"
 
 [var.reya_asset_pair_ids]
 reyaAssetPairIdSDEUSD = "SDEUSDUSDREYA"
@@ -420,6 +426,9 @@ market22KBonk_tier0FeeUnscaled = "0.0005"
 market23Apt_tier0FeeUnscaled = "0.0005"
 market24Bnb_tier0FeeUnscaled = "0.0005"
 market25Jto_tier0FeeUnscaled = "0.0005"
+market26Ada_tier0FeeUnscaled = "0.0005"
+market27Ldo_tier0FeeUnscaled = "0.0005"
+market28Pol_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "0"
@@ -615,6 +624,21 @@ jtoUsdMarkMaxStaleDurationStork = "0"
 jtoUsdcMarkMaxStaleDurationStork = "0"
 jtoUsdcMarkMaxStaleDurationReya = "0"
 jtoUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#-----------------------------------------------------------------------------------
+adaUsdMarkMaxStaleDurationStork = "0"
+adaUsdcMarkMaxStaleDurationStork = "0"
+adaUsdcMarkMaxStaleDurationReya = "0"
+adaUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#-----------------------------------------------------------------------------------
+ldoUsdMarkMaxStaleDurationStork = "0"
+ldoUsdcMarkMaxStaleDurationStork = "0"
+ldoUsdcMarkMaxStaleDurationReya = "0"
+ldoUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
+#-----------------------------------------------------------------------------------
+polUsdMarkMaxStaleDurationStork = "0"
+polUsdcMarkMaxStaleDurationStork = "0"
+polUsdcMarkMaxStaleDurationReya = "0"
+polUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDuration = "0"
 susdeUsdcMaxStaleDuration = "0"

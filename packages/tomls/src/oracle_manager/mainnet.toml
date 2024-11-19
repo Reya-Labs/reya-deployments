@@ -98,6 +98,9 @@ include = [
     "configs/storkMark/apt_usd.toml",
     "configs/storkMark/bnb_usd.toml",
     "configs/storkMark/jto_usd.toml",
+    "configs/storkMark/ada_usd.toml",
+    "configs/storkMark/ldo_usd.toml",
+    "configs/storkMark/pol_usd.toml",
     "configs/storkMark/eth_usdc.toml",
     "configs/storkMark/btc_usdc.toml",
     "configs/storkMark/sol_usdc.toml",
@@ -125,4 +128,7 @@ include = [
     "configs/storkMark/apt_usdc.toml",
     "configs/storkMark/bnb_usdc.toml",
     "configs/storkMark/jto_usdc.toml",
+    "configs/storkMark/ada_usdc.toml",
+    "configs/storkMark/ldo_usdc.toml",
+    "configs/storkMark/pol_usdc.toml",
 ]
