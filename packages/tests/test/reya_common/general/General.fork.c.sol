@@ -203,8 +203,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPricePOPCAT);
         ls.maxDeviationMarket.push(ls.maxDeviationPOPCAT);
 
-        ls.meanPriceDOGE = 0.15e18;
-        ls.maxDeviationDOGE = 0.07e18;
+        ls.meanPriceDOGE = 0.35e18;
+        ls.maxDeviationDOGE = 0.2e18;
         ls.meanPriceMarket.push(ls.meanPriceDOGE);
         ls.maxDeviationMarket.push(ls.maxDeviationDOGE);
 
