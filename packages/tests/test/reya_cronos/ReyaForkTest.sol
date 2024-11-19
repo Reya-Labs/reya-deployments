@@ -182,6 +182,15 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.jtoUsdStorkMarkNodeId = 0x0e46e740d3a975debc6c27df2b7184284f0cc3e997296098f0aefeb9e617607c;
         sec.jtoUsdcStorkMarkNodeId = 0xe1c6251c1cc58f1a96dc7ba3e8a798487870027319ecb2b866539eb0d57c6d98;
 
+        sec.adaUsdcStorkMarkNodeId = 0x00; // todo
+        sec.adaUsdStorkMarkNodeId = 0x00; // todo
+
+        sec.ldoUsdcStorkMarkNodeId = 0x00; // todo
+        sec.ldoUsdStorkMarkNodeId = 0x00; // todo
+
+        sec.polUsdcStorkMarkNodeId = 0x00; // todo
+        sec.polUsdStorkMarkNodeId = 0x00; // todo
+
         // sec.susdeUsdNodeId = 0x49d06a2cb959600d11400d550d9e3755e0a936565dfec5f29e6b02dfc96ac6a4;
         // sec.susdeUsdcNodeId = 0xd7275f9d50b4d64655b3a0150ad151368db0d2cac51dc0b185df99c3141324da;
         sec.susdeUsdStorkNodeId = 0x6497f91ed5f0057fcc55c01ddb28210776431a7e87035393cff808e98eb70d55;
