@@ -2649,10 +2649,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"forge-std@github:foundry-rs/forge-std#v1.8.0":
-  version: 1.7.6
-  resolution: "forge-std@https://github.com/foundry-rs/forge-std.git#commit=b6a506db2262cad5ff982a87789ee6d1558ec861"
-  checksum: c14c5180bf1824ab4b5a5dc99b6e2d1d906619f1e30cf490d391c078a02bcacf6138970e7b81567382c4d5b5dd2eb0afc532d6f063000d63858f434a1bf666dd
+"forge-std@github:foundry-rs/forge-std#v1.9.4":
+  version: 1.9.4
+  resolution: "forge-std@https://github.com/foundry-rs/forge-std.git#commit=1eea5bae12ae557d589f9f0f0edae2faa47cb262"
+  checksum: a765a8797fb46808f476db6504d4192489a723d26764be73dde4c583ecfef0d8a453ee4f51e7f22be360670827814e5ed6260e085f19d4d9e9b973fb011f563c
   languageName: node
   linkType: hard
 
@@ -5745,7 +5745,7 @@ __metadata:
     "@ethersproject/abi": 5.7.0
     "@usecannon/builder": ^2.19.1
     "@usecannon/cli": ^2.19.1
-    forge-std: "github:foundry-rs/forge-std#v1.8.0"
+    forge-std: "github:foundry-rs/forge-std#v1.9.4"
     lerna: ^8.1.2
     prettier: 3.2.5
     prettier-plugin-toml: 2.0.1
