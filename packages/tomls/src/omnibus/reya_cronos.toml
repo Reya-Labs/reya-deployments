@@ -253,7 +253,7 @@ storkAssetPairIdAPTMark = "APTUSDMARK"
 storkAssetPairIdBNBMark = "BNBUSDMARK"
 storkAssetPairIdJTOMark = "JTOUSDMARK"
 storkAssetPairIdADAMark = "ADAUSDMARK"
-storkAssetPAirIdLDOMark = "LDOUSDMARK"
+storkAssetPairIdLDOMark = "LDOUSDMARK"
 storkAssetPairIdPOLMark = "POLUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
@@ -1166,7 +1166,7 @@ market28Pol_maxPSlippageUnscaled = "0.1"
 market28Pol_marketOrderMaxStaleDuration = "11"
 
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "25"
+cp1Rusd_maxMarkets = "28"
 cp1Rusd_maxCollaterals = "7"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"

@@ -469,7 +469,7 @@ depends = ["var.cp_1rusd_vars"]
 
 [invoke.cp_1rusd_create_risk_matrix_market_26ada]
 target = ["CoreProxy"]
-abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint256','indexed':true,'internalType':'uint256'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
 fromCall.func = "getCollateralPoolOwner"
 fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "createRiskMatrix"
@@ -487,7 +487,7 @@ depends = ["var.cp_1rusd_vars"]
 
 [invoke.cp_1rusd_create_risk_matrix_market_27ldo]
 target = ["CoreProxy"]
-abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint256','indexed':true,'internalType':'uint256'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
 fromCall.func = "getCollateralPoolOwner"
 fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "createRiskMatrix"
@@ -505,7 +505,7 @@ depends = ["var.cp_1rusd_vars"]
 
 [invoke.cp_1rusd_create_risk_matrix_market_28pol]
 target = ["CoreProxy"]
-abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'RiskMatrixCreation','inputs':[{'name':'collateralPoolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'riskBlockId','type':'uint256','indexed':true,'internalType':'uint256'},{'name':'riskMatrix','type':'int64[][]','indexed':false,'internalType':'SD1x18[][]'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
 fromCall.func = "getCollateralPoolOwner"
 fromCall.args = ["<%= settings.cp1RusdId %>"]
 func = "createRiskMatrix"

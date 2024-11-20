@@ -45,9 +45,9 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant aptLeverage = 20e18;
     uint256 private constant bnbLeverage = 30e18;
     uint256 private constant jtoLeverage = 15e18;
-    uint256 private constant adaLeverage = 0e18; // todo
-    uint256 private constant ldoLeverage = 0e18; // todo
-    uint256 private constant polLeverage = 0e18; // todo
+    uint256 private constant adaLeverage = 20e18;
+    uint256 private constant ldoLeverage = 20e18;
+    uint256 private constant polLeverage = 25e18;
 
     address private user;
     uint256 private userPk;

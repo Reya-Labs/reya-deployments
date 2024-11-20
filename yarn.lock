@@ -1135,9 +1135,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usecannon/builder@npm:2.19.1, @usecannon/builder@npm:^2.19.1":
-  version: 2.19.1
-  resolution: "@usecannon/builder@npm:2.19.1"
+"@usecannon/builder@npm:2.19.4, @usecannon/builder@npm:^2.19.4":
+  version: 2.19.4
+  resolution: "@usecannon/builder@npm:2.19.4"
   dependencies:
     "@usecannon/router": ^4.0.1
     "@usecannon/web-solc": 0.5.1
@@ -1154,16 +1154,16 @@ __metadata:
     typestub-ipfs-only-hash: ^4.0.0
     viem: ^2.21.15
     zod: ^3.23.6
-  checksum: cfe444441049c1fad2aa4ca00d4d1ffb8b8341bf4a5df2af297e6aedf3fa24b3dd2bc2d03d83b1e3a688bc8973a3fcd066b4280fc49fc7edf604f48fc8b38eab
+  checksum: 476e13678af464b1abe9d5312c805d9273f1bb5939511e648a22785e32e647ba2fbdee29242b01443a2d87bedc85fa34404617ba49ad88d8d752e0cbc06d9182
   languageName: node
   linkType: hard
 
-"@usecannon/cli@npm:^2.19.1":
-  version: 2.19.1
-  resolution: "@usecannon/cli@npm:2.19.1"
+"@usecannon/cli@npm:^2.19.4":
+  version: 2.19.4
+  resolution: "@usecannon/cli@npm:2.19.4"
   dependencies:
     "@iarna/toml": ^3.0.0
-    "@usecannon/builder": 2.19.1
+    "@usecannon/builder": 2.19.4
     abitype: ^1.0.5
     chalk: ^4.1.2
     commander: ^12.1.0
@@ -1182,7 +1182,7 @@ __metadata:
     zod: ^3.23.8
   bin:
     cannon: bin/cannon.js
-  checksum: 8d55ee290521060cbac102e96d266736a95255ec2d855a226adbffcb5cc134ecc85bcd2bbbf30526da29a84339f9a834a8ce19710bfc210b2b1f31331d349cd7
+  checksum: 469c57e16ad0f52ded7f66bf3ccbe9c9925ca02b0e1869f7714e5406f50e99ddc932a836c154dd767702f652e1de08d6e7f534a7d657e898550cd95f106e8187
   languageName: node
   linkType: hard
 
@@ -5743,8 +5743,8 @@ __metadata:
   resolution: "reya-deployments@workspace:."
   dependencies:
     "@ethersproject/abi": 5.7.0
-    "@usecannon/builder": ^2.19.1
-    "@usecannon/cli": ^2.19.1
+    "@usecannon/builder": ^2.19.4
+    "@usecannon/cli": ^2.19.4
     forge-std: "github:foundry-rs/forge-std#v1.9.4"
     lerna: ^8.1.2
     prettier: 3.2.5
