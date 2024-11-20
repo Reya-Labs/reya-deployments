@@ -14,7 +14,7 @@ include = [
     "../orders_gateway/mainnet.toml",
     "../oracle_adapters/mainnet.toml",
 ]
-version = "1.0.34"
+version = "1.0.35"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -245,6 +245,9 @@ storkAssetPairIdKBONKMark = "1000BONKUSDMARK"
 storkAssetPairIdAPTMark = "APTUSDMARK"
 storkAssetPairIdBNBMark = "BNBUSDMARK"
 storkAssetPairIdJTOMark = "JTOUSDMARK"
+storkAssetPairIdADAMark = "ADAUSDMARK"
+storkAssetPairIdLDOMark = "LDOUSDMARK"
+storkAssetPairIdPOLMark = "POLUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
 # todo: consider using REYA rather than FALLBACK 
@@ -273,6 +276,9 @@ reyaAssetPairIdKBONKMark = "1000BONKUSDMARKFALLBACK"
 reyaAssetPairIdAptMark = "APTUSDMARKFALLBACK"
 reyaAssetPairIdBnbMark = "BNBUSDMARKFALLBACK"
 reyaAssetPairIdJtoMark = "JTOUSDMARKFALLBACK"
+reyaAssetPairIdADAMark = "ADAUSDMARKFALLBACK"
+reyaAssetPairIdLDOMark = "LDOUSDMARKFALLBACK"
+reyaAssetPairIdPOLMark = "POLUSDMARKFALLBACK"
 
 [var.reya_asset_pair_ids]
 reyaAssetPairIdSDEUSD = "SDEUSDUSDREYA"
@@ -407,6 +413,9 @@ market22KBonk_tier0FeeUnscaled = "0.0005"
 market23Apt_tier0FeeUnscaled = "0.0005"
 market24Bnb_tier0FeeUnscaled = "0.0005"
 market25Jto_tier0FeeUnscaled = "0.0005"
+market26Ada_tier0FeeUnscaled = "0.0005"
+market27Ldo_tier0FeeUnscaled = "0.0005"
+market28Pol_tier0FeeUnscaled = "0.0005"
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -603,6 +612,21 @@ jtoUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 jtoUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 jtoUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 jtoUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-----------------------------------------------------------------------------------
+adaUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+adaUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+adaUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+adaUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-----------------------------------------------------------------------------------
+ldoUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ldoUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ldoUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ldoUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-----------------------------------------------------------------------------------
+polUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+polUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+polUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+polUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDuration = "90"
 susdeUsdcMaxStaleDuration = "90"
@@ -1075,8 +1099,62 @@ market25Jto_maxExposureFactorUnscaled = "0.999"
 market25Jto_maxPSlippageUnscaled = "0.1"
 market25Jto_marketOrderMaxStaleDuration = "11"
 
+[var.market_26Ada]
+market26Ada_riskMatrixIndex = "0"
+market26Ada_maxOpenBaseUnscaled = "142000"
+market26Ada_velocityMultiplierUnscaled = "5"
+market26Ada_oracleNodeId = "<%= settings.adaUsdcMarkNodeIdStork %>"
+market26Ada_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
+market26Ada_dutchConfig_lambdaUnscaled = "1"
+market26Ada_dutchConfig_minBaseUnscaled = "0.11"
+market26Ada_slippageParams_phiUnscaled = "0"
+market26Ada_slippageParams_betaUnscaled = "0"
+market26Ada_minimumOrderBaseUnscaled = "1.0"
+market26Ada_baseSpacingUnscaled = "0.1"
+market26Ada_priceSpacingUnscaled = "<%= 1e-5 %>"
+market26Ada_depthFactorUnscaled = ".25"
+market26Ada_maxExposureFactorUnscaled = "0.999"
+market26Ada_maxPSlippageUnscaled = "0.1"
+market26Ada_marketOrderMaxStaleDuration = "11"
+
+[var.market_27Ldo]
+market27Ldo_riskMatrixIndex = "0"
+market27Ldo_maxOpenBaseUnscaled = "86000"
+market27Ldo_velocityMultiplierUnscaled = "5"
+market27Ldo_oracleNodeId = "<%= settings.ldoUsdcMarkNodeIdStork %>"
+market27Ldo_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
+market27Ldo_dutchConfig_lambdaUnscaled = "1"
+market27Ldo_dutchConfig_minBaseUnscaled = "0.11"
+market27Ldo_slippageParams_phiUnscaled = "0"
+market27Ldo_slippageParams_betaUnscaled = "0"
+market27Ldo_minimumOrderBaseUnscaled = "1.0"
+market27Ldo_baseSpacingUnscaled = "0.1"
+market27Ldo_priceSpacingUnscaled = "<%= 1e-4 %>"
+market27Ldo_depthFactorUnscaled = ".25"
+market27Ldo_maxExposureFactorUnscaled = "0.999"
+market27Ldo_maxPSlippageUnscaled = "0.1"
+market27Ldo_marketOrderMaxStaleDuration = "11"
+
+[var.market_28Pol]
+market28Pol_riskMatrixIndex = "0"
+market28Pol_maxOpenBaseUnscaled = "250000"
+market28Pol_velocityMultiplierUnscaled = "5"
+market28Pol_oracleNodeId = "<%= settings.polUsdcMarkNodeIdStork %>"
+market28Pol_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
+market28Pol_dutchConfig_lambdaUnscaled = "1"
+market28Pol_dutchConfig_minBaseUnscaled = "0.11"
+market28Pol_slippageParams_phiUnscaled = "0"
+market28Pol_slippageParams_betaUnscaled = "0"
+market28Pol_minimumOrderBaseUnscaled = "1.0"
+market28Pol_baseSpacingUnscaled = "0.1"
+market28Pol_priceSpacingUnscaled = "<%= 1e-5 %>"
+market28Pol_depthFactorUnscaled = ".25"
+market28Pol_maxExposureFactorUnscaled = "0.999"
+market28Pol_maxPSlippageUnscaled = "0.1"
+market28Pol_marketOrderMaxStaleDuration = "11"
+
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "25"
+cp1Rusd_maxMarkets = "28"
 cp1Rusd_maxCollaterals = "6"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
@@ -1106,6 +1184,9 @@ cp1Rusd_market22KBonk_riskMatrix00Unscaled = "0.005917"
 cp1Rusd_market23Apt_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market24Bnb_riskMatrix00Unscaled = "0.000657"
 cp1Rusd_market25Jto_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market26Ada_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market27Ldo_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market28Pol_riskMatrix00Unscaled = "0.000947"
 
 # -----------------------------------------------
 cp1Rusd_imMultiplierUnscaled = "1.3"

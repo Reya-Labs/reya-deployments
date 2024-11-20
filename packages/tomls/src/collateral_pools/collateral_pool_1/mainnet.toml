@@ -24,6 +24,9 @@ include = [
     "markets/market_23apt.toml",
     "markets/market_24bnb.toml",
     "markets/market_25jto.toml",
+    "markets/market_26ada.toml",
+    "markets/market_27ldo.toml",
+    'markets/market_28pol.toml',
     "risk/risk_matrix.toml",
     "risk/risk_multipliers.toml",
     "risk/liquidations.toml",
@@ -65,4 +68,7 @@ depends = [
     "invoke.market_23apt_merge_collateral_pool",
     "invoke.market_24bnb_merge_collateral_pool",
     "invoke.market_25jto_merge_collateral_pool",
+    "invoke.market_26ada_merge_collateral_pool",
+    "invoke.market_27ldo_merge_collateral_pool",
+    'invoke.market_28pol_merge_collateral_pool',
 ]
