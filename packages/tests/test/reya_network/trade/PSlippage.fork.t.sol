@@ -116,6 +116,38 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_pol_long();
     }
 
+    function test_trade_slippage_near_long() public {
+        check_trade_slippage_near_long();
+    }
+
+    function test_trade_slippage_ftm_long() public {
+        check_trade_slippage_ftm_long();
+    }
+
+    function test_trade_slippage_ena_long() public {
+        check_trade_slippage_ena_long();
+    }
+
+    function test_trade_slippage_eigen_long() public {
+        check_trade_slippage_eigen_long();
+    }
+
+    function test_trade_slippage_pendle_long() public {
+        check_trade_slippage_pendle_long();
+    }
+
+    function test_trade_slippage_goat_long() public {
+        check_trade_slippage_goat_long();
+    }
+
+    function test_trade_slippage_grass_long() public {
+        check_trade_slippage_grass_long();
+    }
+
+    function test_trade_slippage_kneiro_long() public {
+        check_trade_slippage_kneiro_long();
+    }
+
     function test_trade_slippage_eth_short() public {
         check_trade_slippage_eth_short();
     }
@@ -226,5 +258,37 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
 
     function test_trade_slippage_pol_short() public {
         check_trade_slippage_pol_short();
+    }
+
+    function test_trade_slippage_near_short() public {
+        check_trade_slippage_near_short();
+    }
+
+    function test_trade_slippage_ftm_short() public {
+        check_trade_slippage_ftm_short();
+    }
+
+    function test_trade_slippage_ena_short() public {
+        check_trade_slippage_ena_short();
+    }
+
+    function test_trade_slippage_eigen_short() public {
+        check_trade_slippage_eigen_short();
+    }
+
+    function test_trade_slippage_pendle_short() public {
+        check_trade_slippage_pendle_short();
+    }
+
+    function test_trade_slippage_goat_short() public {
+        check_trade_slippage_goat_short();
+    }
+
+    function test_trade_slippage_grass_short() public {
+        check_trade_slippage_grass_short();
+    }
+
+    function test_trade_slippage_kneiro_short() public {
+        check_trade_slippage_kneiro_short();
     }
 }
