@@ -116,6 +116,38 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_rusdCollateral_leverage_pol();
     }
 
+    function test_Cronos_trade_rusdCollateral_leverage_near() public {
+        check_trade_rusdCollateral_leverage_near();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_ftm() public {
+        check_trade_rusdCollateral_leverage_ftm();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_ena() public {
+        check_trade_rusdCollateral_leverage_ena();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_eigen() public {
+        check_trade_rusdCollateral_leverage_eigen();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_pendle() public {
+        check_trade_rusdCollateral_leverage_pendle();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_goat() public {
+        check_trade_rusdCollateral_leverage_goat();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_grass() public {
+        check_trade_rusdCollateral_leverage_grass();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_kneiro() public {
+        check_trade_rusdCollateral_leverage_kneiro();
+    }
+
     function test_Cronos_trade_wethCollateral_leverage_eth() public {
         check_trade_wethCollateral_leverage_eth();
     }
@@ -228,6 +260,38 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_wethCollateral_leverage_pol();
     }
 
+    function test_Cronos_trade_wethCollateral_leverage_near() public {
+        check_trade_wethCollateral_leverage_near();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_ftm() public {
+        check_trade_wethCollateral_leverage_ftm();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_ena() public {
+        check_trade_wethCollateral_leverage_ena();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_eigen() public {
+        check_trade_wethCollateral_leverage_eigen();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_pendle() public {
+        check_trade_wethCollateral_leverage_pendle();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_goat() public {
+        check_trade_wethCollateral_leverage_goat();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_grass() public {
+        check_trade_wethCollateral_leverage_grass();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_kneiro() public {
+        check_trade_wethCollateral_leverage_kneiro();
+    }
+
     function test_Cronos_trade_usdeCollateral_leverage_eth() public {
         check_trade_usdeCollateral_leverage_eth();
     }
@@ -338,6 +402,38 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
 
     function test_Cronos_trade_usdeCollateral_leverage_pol() public {
         check_trade_usdeCollateral_leverage_pol();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_near() public {
+        check_trade_usdeCollateral_leverage_near();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_ftm() public {
+        check_trade_usdeCollateral_leverage_ftm();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_ena() public {
+        check_trade_usdeCollateral_leverage_ena();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_eigen() public {
+        check_trade_usdeCollateral_leverage_eigen();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_pendle() public {
+        check_trade_usdeCollateral_leverage_pendle();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_goat() public {
+        check_trade_usdeCollateral_leverage_goat();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_grass() public {
+        check_trade_usdeCollateral_leverage_grass();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_kneiro() public {
+        check_trade_usdeCollateral_leverage_kneiro();
     }
 
     function test_Cronos_trade_susdeCollateral_leverage_eth() public {
@@ -674,5 +770,37 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
 
     function test_Cronos_trade_sdeusdCollateral_leverage_pol() public {
         check_trade_sdeusdCollateral_leverage_pol();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_near() public {
+        check_trade_sdeusdCollateral_leverage_near();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_ftm() public {
+        check_trade_sdeusdCollateral_leverage_ftm();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_ena() public {
+        check_trade_sdeusdCollateral_leverage_ena();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_eigen() public {
+        check_trade_sdeusdCollateral_leverage_eigen();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_pendle() public {
+        check_trade_sdeusdCollateral_leverage_pendle();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_goat() public {
+        check_trade_sdeusdCollateral_leverage_goat();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_grass() public {
+        check_trade_sdeusdCollateral_leverage_grass();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_kneiro() public {
+        check_trade_sdeusdCollateral_leverage_kneiro();
     }
 }
