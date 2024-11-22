@@ -124,7 +124,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceBTC);
         ls.maxDeviationMarket.push(ls.maxDeviationBTC);
 
-        ls.meanPriceSOL = 150e18;
+        ls.meanPriceSOL = 250e18;
         ls.maxDeviationSOL = 100e18;
         ls.meanPriceMarket.push(ls.meanPriceSOL);
         ls.maxDeviationMarket.push(ls.maxDeviationSOL);
@@ -189,12 +189,12 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceZRO);
         ls.maxDeviationMarket.push(ls.maxDeviationZRO);
 
-        ls.meanPriceXRP = 0.85e18;
+        ls.meanPriceXRP = 1.5e18;
         ls.maxDeviationXRP = 0.4e18;
         ls.meanPriceMarket.push(ls.meanPriceXRP);
         ls.maxDeviationMarket.push(ls.maxDeviationXRP);
 
-        ls.meanPriceWIF = 2.7e18;
+        ls.meanPriceWIF = 3.35e18;
         ls.maxDeviationWIF = 1.5e18;
         ls.meanPriceMarket.push(ls.meanPriceWIF);
         ls.maxDeviationMarket.push(ls.maxDeviationWIF);
@@ -234,7 +234,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceBNB);
         ls.maxDeviationMarket.push(ls.maxDeviationBNB);
 
-        ls.meanPriceJTO = 2.2e18;
+        ls.meanPriceJTO = 3.5e18;
         ls.maxDeviationJTO = 1.1e18;
         ls.meanPriceMarket.push(ls.meanPriceJTO);
         ls.maxDeviationMarket.push(ls.maxDeviationJTO);
@@ -254,7 +254,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPricePOL);
         ls.maxDeviationMarket.push(ls.maxDeviationPOL);
 
-        ls.meanPriceSUSDE = 1.11e18;
+        ls.meanPriceSUSDE = 1.12e18;
         ls.maxDeviationSUSDE = 0.01e18;
 
         ls.meanPriceStableCoin = 1e18;
@@ -844,7 +844,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
             IOracleManagerProxy(sec.oracleManager).process(sec.deusdUsdcStorkNodeId);
 
         uint256 reconstructedSdeusdUsdcPrice = ud(sdeusdDeusdOutput.price).mul(ud(deusdUsdcOutput.price)).unwrap();
-        assertApproxEqAbsDecimal(sdeusdUsdcOutput.price, reconstructedSdeusdUsdcPrice, 1, 18);
+        assertApproxEqAbsDecimal(sdeusdUsdcOutput.price, reconstructedSdeusdUsdcPrice, 1, 16);
     }
 
     function check_sdeusd_deusd_price() public {
