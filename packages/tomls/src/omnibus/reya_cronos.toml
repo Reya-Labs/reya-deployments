@@ -1357,7 +1357,7 @@ cp1Rusd_market29Near_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market30Ftm_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market31Ena_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market32Eigen_riskMatrix00Unscaled = "0.002630"
-cp1Rusd_market3Pendle_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market33Pendle_riskMatrix00Unscaled = "0.002630"
 
 # -----------------------------------------------
 cp1Rusd_imMultiplierUnscaled = "1.3"
