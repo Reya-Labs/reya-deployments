@@ -1318,6 +1318,8 @@ market29Near_depthFactorUnscaled = ".25"
 market29Near_maxExposureFactorUnscaled = "0.999"
 market29Near_maxPSlippageUnscaled = "0.1"
 market29Near_marketOrderMaxStaleDuration = "11"
+market29Near_priceSpreadUnscaled = "0"
+market29Near_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_29Ftm]
 market30Ftm_riskMatrixIndex = "0"
@@ -1336,6 +1338,8 @@ market30Ftm_depthFactorUnscaled = ".25"
 market30Ftm_maxExposureFactorUnscaled = "0.999"
 market30Ftm_maxPSlippageUnscaled = "0.1"
 market30Ftm_marketOrderMaxStaleDuration = "11"
+market30Ftm_priceSpreadUnscaled = "0"
+market30Ftm_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_31Ena]
 market31Ena_riskMatrixIndex = "0"
@@ -1354,6 +1358,8 @@ market31Ena_depthFactorUnscaled = ".25"
 market31Ena_maxExposureFactorUnscaled = "0.999"
 market31Ena_maxPSlippageUnscaled = "0.1"
 market31Ena_marketOrderMaxStaleDuration = "11"
+market31Ena_priceSpreadUnscaled = "0"
+market31Ena_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_32Eigen]
 market32Eigen_riskMatrixIndex = "0"
@@ -1372,6 +1378,8 @@ market32Eigen_depthFactorUnscaled = ".25"
 market32Eigen_maxExposureFactorUnscaled = "0.999"
 market32Eigen_maxPSlippageUnscaled = "0.1"
 market32Eigen_marketOrderMaxStaleDuration = "11"
+market32Eigen_priceSpreadUnscaled = "0"
+market32Eigen_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_33Pendle]
 market33Pendle_riskMatrixIndex = "0"
@@ -1390,6 +1398,8 @@ market33Pendle_depthFactorUnscaled = ".25"
 market33Pendle_maxExposureFactorUnscaled = "0.999"
 market33Pendle_maxPSlippageUnscaled = "0.1"
 market33Pendle_marketOrderMaxStaleDuration = "11"
+market33Pendle_priceSpreadUnscaled = "0"
+market33Pendle_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_34Goat]
 market34Goat_riskMatrixIndex = "0"
@@ -1408,6 +1418,8 @@ market34Goat_depthFactorUnscaled = ".25"
 market34Goat_maxExposureFactorUnscaled = "0.999"
 market34Goat_maxPSlippageUnscaled = "0.1"
 market34Goat_marketOrderMaxStaleDuration = "11"
+market34Goat_priceSpreadUnscaled = "0"
+market34Goat_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_35Grass]
 market35Grass_riskMatrixIndex = "0"
@@ -1426,6 +1438,8 @@ market35Grass_depthFactorUnscaled = ".25"
 market35Grass_maxExposureFactorUnscaled = "0.999"
 market35Grass_maxPSlippageUnscaled = "0.1"
 market35Grass_marketOrderMaxStaleDuration = "11"
+market35Grass_priceSpreadUnscaled = "0"
+market35Grass_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_36KNeiro]
 market36KNeiro_riskMatrixIndex = "0"
@@ -1444,6 +1458,8 @@ market36KNeiro_depthFactorUnscaled = ".25"
 market36KNeiro_maxExposureFactorUnscaled = "0.999"
 market36KNeiro_maxPSlippageUnscaled = "0.1"
 market36KNeiro_marketOrderMaxStaleDuration = "11"
+market36KNeiro_priceSpreadUnscaled = "0"
+market36KNeiro_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "36"
