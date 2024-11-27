@@ -136,6 +136,28 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_36kneiro"]
 
+[invoke.market_36kneiro_set_tier100_fee]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setTierFee"
+args = [
+    "<%= settings.market36KNeiroId %>",
+    "100",
+    "<%= parseEther(settings.market36KNeiro_tier100FeeUnscaled) %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_36kneiro"]
+
+[invoke.market_36kneiro_set_tier200_fee]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setTierFee"
+args = [
+    "<%= settings.market36KNeiroId %>",
+    "200",
+    "<%= parseEther(settings.market36KNeiro_tier200FeeUnscaled) %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_36kneiro"]
+
 ##################################################
 # Merge Market's Collateral Pool 
 ##################################################

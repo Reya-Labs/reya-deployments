@@ -300,8 +300,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceGOAT);
         ls.maxDeviationMarket.push(ls.maxDeviationGOAT);
 
-        ls.meanPriceGRASS = 2e18;
-        ls.maxDeviationGRASS = 1e18;
+        ls.meanPriceGRASS = 3.2e18;
+        ls.maxDeviationGRASS = 2e18;
         ls.meanPriceMarket.push(ls.meanPriceGRASS);
         ls.maxDeviationMarket.push(ls.maxDeviationGRASS);
 
@@ -931,7 +931,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
     function check_marketsPrices() public {
         setupOracleNodePriceParams();
-        for (uint128 i = 1; i <= lastMarketId(); i++) {
+        for (uint128 i = lastMarketId(); i >= 1; i--) {
             if (i == 19) {
                 continue;
             }
@@ -946,7 +946,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
     }
 
     function check_marketsOrderMaxStaleDuration(uint256 orderMaxStaleDuration) public view {
-        for (uint128 i = 1; i <= lastMarketId(); i += 1) {
+        for (uint128 i = lastMarketId(); i >= 1; i--) {
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
 
             assertEq(marketConfig.marketOrderMaxStaleDuration, orderMaxStaleDuration);

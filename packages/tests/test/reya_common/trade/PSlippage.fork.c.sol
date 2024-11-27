@@ -426,6 +426,28 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         st.sPrimeShort[0.023669e18][0.25e18][7] = sd(-0.069973e18);
         st.sPrimeShort[0.023669e18][0.25e18][8] = sd(-0.079959e18);
         st.sPrimeShort[0.023669e18][0.25e18][9] = sd(-0.089941e18);
+
+        st.sPrimeLong[0.065746e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeLong[0.065746e18][0.25e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.065746e18][0.25e18][2] = sd(0.02e18);
+        st.sPrimeLong[0.065746e18][0.25e18][3] = sd(0.029999e18);
+        st.sPrimeLong[0.065746e18][0.25e18][4] = sd(0.039997e18);
+        st.sPrimeLong[0.065746e18][0.25e18][5] = sd(0.049995e18);
+        st.sPrimeLong[0.065746e18][0.25e18][6] = sd(0.05999e18);
+        st.sPrimeLong[0.065746e18][0.25e18][7] = sd(0.069984e18);
+        st.sPrimeLong[0.065746e18][0.25e18][8] = sd(0.079976e18);
+        st.sPrimeLong[0.065746e18][0.25e18][9] = sd(0.089966e18);
+
+        st.sPrimeShort[0.065746e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeShort[0.065746e18][0.25e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.065746e18][0.25e18][2] = sd(-0.02e18);
+        st.sPrimeShort[0.065746e18][0.25e18][3] = sd(-0.029999e18);
+        st.sPrimeShort[0.065746e18][0.25e18][4] = sd(-0.039997e18);
+        st.sPrimeShort[0.065746e18][0.25e18][5] = sd(-0.049995e18);
+        st.sPrimeShort[0.065746e18][0.25e18][6] = sd(-0.05999e18);
+        st.sPrimeShort[0.065746e18][0.25e18][7] = sd(-0.069984e18);
+        st.sPrimeShort[0.065746e18][0.25e18][8] = sd(-0.079976e18);
+        st.sPrimeShort[0.065746e18][0.25e18][9] = sd(-0.089965e18);
     }
 
     function setUp() public {
