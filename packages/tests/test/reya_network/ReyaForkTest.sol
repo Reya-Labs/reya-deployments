@@ -188,29 +188,29 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.polUsdStorkMarkNodeId = 0x43087a65b16a825d10912d4ef0a56eaac2242dfb3158cf0321f3b35fc0c7f61a;
         sec.polUsdcStorkMarkNodeId = 0xfc1124aeb7b1a71720e58f1b87e99b733d0f177cf28fcf3ed1580aa6c1b13c90;
 
-        sec.nearUsdStorkMarkNodeId = 0x00;
-        sec.nearUsdcStorkMarkNodeId = 0x00;
+        sec.nearUsdStorkMarkNodeId = 0x1cbed930dc4d277758237164b2f9c625b5d733bdd16b77268111b16b7b426fea;
+        sec.nearUsdcStorkMarkNodeId = 0xdbd8543af7cc96fac35926c15ef5f13f89bc873721211493e112d4bc4f275cd2;
 
-        sec.ftmUsdStorkMarkNodeId = 0x00;
-        sec.ftmUsdcStorkMarkNodeId = 0x00;
+        sec.ftmUsdStorkMarkNodeId = 0xa8bf70dc422734b9799a5d464e703f2950443891aac44fe6f6da2b03fb05e603;
+        sec.ftmUsdcStorkMarkNodeId = 0xd1d28310033a47a1b66a5c7c051bd5a7029f962a73f4577ac89fcbb2ad9bb42b;
 
-        sec.enaUsdStorkMarkNodeId = 0x00;
-        sec.enaUsdcStorkMarkNodeId = 0x00;
+        sec.enaUsdStorkMarkNodeId = 0x4d06d4eaa2f04e517035af06b005157b38f2999e0e46510ef5d744d151111703;
+        sec.enaUsdcStorkMarkNodeId = 0xe19227f2d63cb74d087e1679dce6a66d9ae137d83ded1d2d294c41fdd38f5912;
 
-        sec.eigenUsdStorkMarkNodeId = 0x00;
-        sec.eigenUsdcStorkMarkNodeId = 0x00;
+        sec.eigenUsdStorkMarkNodeId = 0xaa8008f4443d8eb90fe63a6a3d90089d97195640eba8b60981be1d506221e86b;
+        sec.eigenUsdcStorkMarkNodeId = 0x345d048d424bd2c4b3559601b73afd8e837f65196bd51b989781ae55e76f8c23;
 
-        sec.pendleUsdStorkMarkNodeId = 0x00;
-        sec.pendleUsdcStorkMarkNodeId = 0x00;
+        sec.pendleUsdStorkMarkNodeId = 0xd37aa03141faf5205c7481cb853b7ef950483f8bdedfdb5a273a150427a3aef6;
+        sec.pendleUsdcStorkMarkNodeId = 0x698c2bb8d74cf2c350cc8c1724bf14650cd7a7164d660e30da08c1cbd638dfb0;
 
-        sec.goatUsdStorkMarkNodeId = 0x00;
-        sec.goatUsdcStorkMarkNodeId = 0x00;
+        sec.goatUsdStorkMarkNodeId = 0x7c9bba0499998bfc2c1f2a21eb5b8ee7dc5a865eaf4e6dff36fe6e987ffa279e;
+        sec.goatUsdcStorkMarkNodeId = 0xad4473e51e15cde6fabacd8992f87f363d0a56b67260d55f20f42608b8c0e061;
 
-        sec.grassUsdStorkMarkNodeId = 0x00;
-        sec.grassUsdcStorkMarkNodeId = 0x00;
+        sec.grassUsdStorkMarkNodeId = 0x79961b55ec036ab08cd00fc633f2e77d60cb67238e7694eaa16308b564341661;
+        sec.grassUsdcStorkMarkNodeId = 0x3b63f7ee280b405050690d30fd3efeaa6ecfa6ba4b09b2f3ac7bb586a348a34b;
 
-        sec.kneiroUsdStorkMarkNodeId = 0x00;
-        sec.kneiroUsdcStorkMarkNodeId = 0x00;
+        sec.kneiroUsdStorkMarkNodeId = 0x33a1175eff91f9d43b12a871a08186c5aa856506e9342b7cb8e51a948809076e;
+        sec.kneiroUsdcStorkMarkNodeId = 0x20c07861bda3900f5ef4b9bdf206f2bc884dc592ef99fe3d75b604d2036c26d3;
 
         // sec.susdeUsdNodeId = 0xca59e8ff5f899c7117a1e82a1e915ede07c45835e8d02b10535a9f58058be10c;
         // sec.susdeUsdcNodeId = 0x46effa5a7464c0e305d73ca20fb965d985e543e37f9cf3f0eacd680936c4c5e0;
