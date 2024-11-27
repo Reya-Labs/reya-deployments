@@ -1373,7 +1373,6 @@ market36KNeiro_maxExposureFactorUnscaled = "0.999"
 market36KNeiro_maxPSlippageUnscaled = "0.1"
 market36KNeiro_marketOrderMaxStaleDuration = "11"
 
-
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "36"
 cp1Rusd_maxCollaterals = "7"

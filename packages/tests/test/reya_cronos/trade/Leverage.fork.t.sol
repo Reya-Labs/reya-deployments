@@ -698,7 +698,7 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
 
     function test_Cronos_trade_deusdCollateral_leverage_ftm() public {
         check_trade_deusdCollateral_leverage_ftm();
-    }    
+    }
 
     function test_Cronos_trade_deusdCollateral_leverage_ena() public {
         check_trade_deusdCollateral_leverage_ena();
