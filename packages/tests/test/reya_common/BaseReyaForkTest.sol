@@ -121,8 +121,8 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         bytes32 digest = CoreCommandHashing.mockCalculateDigest(
             address(sec.periphery), accountId, commands, incrementedNonce, deadline, keccak256(abi.encode()), sec.core
         );
-        (uint8 sv, bytes32 sr, bytes32 ss) = vm.sign(userPrivateKey, digest);
-        sig = EIP712Signature({ v: sv, r: sr, s: ss, deadline: deadline });
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, digest);
+        sig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
     }
 
     function executePeripheryCommands(
