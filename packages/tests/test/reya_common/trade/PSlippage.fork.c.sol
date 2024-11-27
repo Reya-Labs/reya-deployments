@@ -426,6 +426,28 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         st.sPrimeShort[0.023669e18][0.25e18][7] = sd(-0.069973e18);
         st.sPrimeShort[0.023669e18][0.25e18][8] = sd(-0.079959e18);
         st.sPrimeShort[0.023669e18][0.25e18][9] = sd(-0.089941e18);
+
+        st.sPrimeLong[0.065746e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeLong[0.065746e18][0.25e18][1] = sd(0.01e18);
+        st.sPrimeLong[0.065746e18][0.25e18][2] = sd(0.02e18);
+        st.sPrimeLong[0.065746e18][0.25e18][3] = sd(0.029999e18);
+        st.sPrimeLong[0.065746e18][0.25e18][4] = sd(0.039997e18);
+        st.sPrimeLong[0.065746e18][0.25e18][5] = sd(0.049995e18);
+        st.sPrimeLong[0.065746e18][0.25e18][6] = sd(0.05999e18);
+        st.sPrimeLong[0.065746e18][0.25e18][7] = sd(0.069984e18);
+        st.sPrimeLong[0.065746e18][0.25e18][8] = sd(0.079976e18);
+        st.sPrimeLong[0.065746e18][0.25e18][9] = sd(0.089966e18);
+
+        st.sPrimeShort[0.065746e18][0.25e18] = new SD59x18[](10);
+        st.sPrimeShort[0.065746e18][0.25e18][1] = sd(-0.01e18);
+        st.sPrimeShort[0.065746e18][0.25e18][2] = sd(-0.02e18);
+        st.sPrimeShort[0.065746e18][0.25e18][3] = sd(-0.029999e18);
+        st.sPrimeShort[0.065746e18][0.25e18][4] = sd(-0.039997e18);
+        st.sPrimeShort[0.065746e18][0.25e18][5] = sd(-0.049995e18);
+        st.sPrimeShort[0.065746e18][0.25e18][6] = sd(-0.05999e18);
+        st.sPrimeShort[0.065746e18][0.25e18][7] = sd(-0.069984e18);
+        st.sPrimeShort[0.065746e18][0.25e18][8] = sd(-0.079976e18);
+        st.sPrimeShort[0.065746e18][0.25e18][9] = sd(-0.089965e18);
     }
 
     function setUp() public {
@@ -641,6 +663,38 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         trade_slippage_helper({ marketId: 28, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
+    function check_trade_slippage_near_long() public {
+        trade_slippage_helper({ marketId: 29, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_ftm_long() public {
+        trade_slippage_helper({ marketId: 30, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_ena_long() public {
+        trade_slippage_helper({ marketId: 31, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_eigen_long() public {
+        trade_slippage_helper({ marketId: 32, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_pendle_long() public {
+        trade_slippage_helper({ marketId: 33, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_goat_long() public {
+        trade_slippage_helper({ marketId: 34, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_grass_long() public {
+        trade_slippage_helper({ marketId: 35, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_kneiro_long() public {
+        trade_slippage_helper({ marketId: 36, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
     function check_trade_slippage_eth_short() public {
         trade_slippage_helper({ marketId: 1, eps: ud(0.001e18), isLong: false, iterations: 4 });
     }
@@ -751,5 +805,37 @@ contract PSlippageForkCheck is BaseReyaForkTest {
 
     function check_trade_slippage_pol_short() public {
         trade_slippage_helper({ marketId: 28, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_near_short() public {
+        trade_slippage_helper({ marketId: 29, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_ftm_short() public {
+        trade_slippage_helper({ marketId: 30, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_ena_short() public {
+        trade_slippage_helper({ marketId: 31, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_eigen_short() public {
+        trade_slippage_helper({ marketId: 32, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_pendle_short() public {
+        trade_slippage_helper({ marketId: 33, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_goat_short() public {
+        trade_slippage_helper({ marketId: 34, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_grass_short() public {
+        trade_slippage_helper({ marketId: 35, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_kneiro_short() public {
+        trade_slippage_helper({ marketId: 36, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 }

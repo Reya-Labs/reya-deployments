@@ -191,6 +191,30 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.polUsdStorkMarkNodeId = 0xa05eb1786f15f188fe512b28cb3454214334d9405649d424703588cd8401b983;
         sec.polUsdcStorkMarkNodeId = 0xfdb6b666648fd03913c626d194a8e45fd9597d1f6dfd7ca0d37e1de34a9e8a44;
 
+        sec.nearUsdStorkMarkNodeId = 0xc25d299810d171e98fe8a797965eb6664a019f0181724d3cac7d995a7aab9a45;
+        sec.nearUsdcStorkMarkNodeId = 0x8c208770d94d827d3fbf0d4e290b807016114aad7c2366e1988995debe8f7935;
+
+        sec.ftmUsdStorkMarkNodeId = 0x76c6895cb63ebd6819a0d63a279d215b28d00dd86ca9144ff0f65e43f96fc2b2;
+        sec.ftmUsdcStorkMarkNodeId = 0xa8e375325d43a550400fe1b9162d43125fd40ab19a39fd142fdb8e352d519a14;
+
+        sec.enaUsdStorkMarkNodeId = 0x8894b428e86881563f6d0cc02f1ebbc0c51dcfac9f04854933dcbafe9a091286;
+        sec.enaUsdcStorkMarkNodeId = 0x05baa2ab9655f3f75826acfdc58b493cfb3f9e317170d1e814f6f06daa3d5b14;
+
+        sec.eigenUsdStorkMarkNodeId = 0x64ebd12f7caf3158fa64bba08486585a1ee2ab53c67b2508d75963cd59b25d29;
+        sec.eigenUsdcStorkMarkNodeId = 0xf86dcc555840a7e61e914538041f091fe3c52b8e8ce392c8ecdb765053953137;
+
+        sec.pendleUsdStorkMarkNodeId = 0x819e7518f839034c03e68e7753cf045025d9a5a8a526c2d2504d3710c6e6cda8;
+        sec.pendleUsdcStorkMarkNodeId = 0xa995ce577688bc12726d237e977e66829cbb99e09fac99a9719d86996898a7cc;
+
+        sec.goatUsdStorkMarkNodeId = 0x1c4414fcfbce931a22a3a4604fe64e60765692713e06ad919c76958159bdbae4;
+        sec.goatUsdcStorkMarkNodeId = 0xafa3dbc8ac85789e782cc5cafc5286660e27ff31729a7135fe616157062304cb;
+
+        sec.grassUsdStorkMarkNodeId = 0xd3e85eb7e7c817ee36c2c377eb1c1e6a94b56259f3abfd688042d5d0ece19970;
+        sec.grassUsdcStorkMarkNodeId = 0x4e1d074f4e4be6a9c0cfa1f5d858881515936dcebfd8306c366d14708f2e9190;
+
+        sec.kneiroUsdStorkMarkNodeId = 0x79509bac2a12e47b0cf7c1511c7f8689096e7a8fc1772808d2866c19c5470f4d;
+        sec.kneiroUsdcStorkMarkNodeId = 0xa0bc615fdfbda6cb321b19b2eae8e7b164f41fc10c8393dbdc92ab32f98485fa;
+
         // sec.susdeUsdNodeId = 0x49d06a2cb959600d11400d550d9e3755e0a936565dfec5f29e6b02dfc96ac6a4;
         // sec.susdeUsdcNodeId = 0xd7275f9d50b4d64655b3a0150ad151368db0d2cac51dc0b185df99c3141324da;
         sec.susdeUsdStorkNodeId = 0x6497f91ed5f0057fcc55c01ddb28210776431a7e87035393cff808e98eb70d55;
