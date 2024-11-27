@@ -107,6 +107,13 @@ interface IPassivePerpProxy {
         uint256 feeParameter
     ) external;
 
+    function setRebalancingDiscount(
+        uint128 marketId, 
+        uint256 tierId, 
+        /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
+        uint256 discount
+    ) external;
+
     error InvalidMarketConfiguration(
         uint128 marketId,
         MarketConfigurationData config,
@@ -515,6 +522,10 @@ struct MarketConfigurationData {
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
     uint256 maxPSlippage;
     uint256 marketOrderMaxStaleDuration;
+    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
+    uint256 priceSpread;
+    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
+    uint256 volatilityIndexMultiplier;
 }
 
 struct MarketVolatilityConfigurationData {
