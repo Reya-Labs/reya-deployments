@@ -285,8 +285,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceENA);
         ls.maxDeviationMarket.push(ls.maxDeviationENA);
 
-        ls.meanPriceEIGEN = 2.5e18;
-        ls.maxDeviationEIGEN = 1.25e18;
+        ls.meanPriceEIGEN = 3.7e18;
+        ls.maxDeviationEIGEN = 2e18;
         ls.meanPriceMarket.push(ls.meanPriceEIGEN);
         ls.maxDeviationMarket.push(ls.maxDeviationEIGEN);
 
