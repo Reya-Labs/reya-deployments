@@ -82,7 +82,7 @@ rseliniSalt = "rselini-main"
 
 [var.missing_vars]
 salt = ""
-rusdTokenDecimals = "7"
+rusdTokenDecimals = "6"
 
 [var.upgrade_proxy_vars]
 coreProxy = "0xA763B6a5E09378434406C003daE6487FbbDc1a80"
@@ -189,11 +189,10 @@ marketVolConfigurator18 = "<%= settings.storkExecutor18 %>"
 marketVolConfigurator19 = "<%= settings.storkExecutor19 %>"
 marketVolConfigurator20 = "<%= settings.storkExecutor20 %>"
 
-# TODO: add proper addresses
 [var.share_token_roles]
-rseliniSubscriber1 = "0x0000000000000000000000000000000000000000"
-rseliniRedeemer1 = "0x0000000000000000000000000000000000000000"
-rseliniCustodian1 = "0x0000000000000000000000000000000000000000"
+rseliniSubscriber1 = "0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E"
+rseliniRedeemer1 = "0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E"
+rseliniCustodian1 = "0x75cfe7F41953cDfeA30C9F6A0BceC6BAA3dA71B0"
 
 [var.redstone_oracles]
 redstonePriceFeedUSDC = "0x73ac348c40403ff1156a2f53BA57bcCbA2C63915"
@@ -1465,7 +1464,7 @@ market36KNeiro_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "36"
-cp1Rusd_maxCollaterals = "6"
+cp1Rusd_maxCollaterals = "7"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
 # -----------------------------------------------
