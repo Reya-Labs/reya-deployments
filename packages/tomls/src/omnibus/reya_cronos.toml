@@ -13,6 +13,7 @@ include = [
     "../collateral_pools/collateral_pool_1/testnet.toml",
     "../orders_gateway/testnet.toml",
     "../oracle_adapters/testnet.toml",
+    "../share_token/mainnet.toml",
 ]
 version = "1.0.37"
 
@@ -59,6 +60,8 @@ ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
 ordersGatewayRouterPackage = "reya-orders-gateway:1.0.7@router"
 oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
 oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.5@router"
+shareTokensProxyPackage = "reya-share-tokens:1.0.0@proxy"
+shareTokensRouterPackage = "reya-share-tokens:1.0.0@router"
 
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
@@ -82,6 +85,7 @@ usdeSalt = "usde-main"
 susdeSalt = "susde-main-2" # second deployment on testnet
 deusdSalt = "deusd-main"
 sdeusdSalt = "sdeusd-main"
+rseliniSalt = "rselini-main"
 
 [var.missing_vars]
 salt = ""
@@ -190,6 +194,12 @@ marketVolConfigurator17 = "<%= settings.storkExecutor17 %>"
 marketVolConfigurator18 = "<%= settings.storkExecutor18 %>"
 marketVolConfigurator19 = "<%= settings.storkExecutor19 %>"
 marketVolConfigurator20 = "<%= settings.storkExecutor20 %>"
+
+# TODO: add proper addresses
+[var.share_token_roles]
+rseliniSubscriber1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+rseliniRedeemer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+rseliniCustodian1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.redstone_oracles]
 redstonePriceFeedUSDC = "0xDefB236eB69b7f94490786375B093C6c8271214A"
@@ -411,6 +421,10 @@ deusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 sdeusdCollateralAdapter = "<%= AddressZero %>"
 sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+rseliniCollateralAdapter = "<%= AddressZero %>"
+rseliniWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+rseliniWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.2"
@@ -1613,3 +1627,15 @@ cp1Rusd_sdeusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address 
 cp1Rusd_sdeusdParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_sdeusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdStork %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_rselini_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_rselini_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_rselini_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_rselini_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_rselini_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_rseliniParentConfig_collateralAddress = "<%= contracts.RSELINIProxy.address %>"
+cp1Rusd_rseliniParentConfig_priceHaircutUnscaled = "0"
+cp1Rusd_rseliniParentConfig_autoExchangeDiscountUnscaled = "0"
+cp1Rusd_rseliniParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"

@@ -11,4 +11,5 @@ include = [
     "configs/tokens/deusd.toml",
     "configs/tokens/sdeusd.toml",
     "configs/market_vol_configurators.toml",
+    "configs/tokens/rselini.toml",
 ]

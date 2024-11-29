@@ -1,0 +1,13 @@
+[invoke.rselini_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= contracts.RSELINIProxy.address %>",
+    { collateralAdapter = "<%= settings.rseliniCollateralAdapter %>", withdrawalWindowSize = "<%= settings.rseliniWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.rseliniWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = [
+    'invoke.upgrade_core_proxy',
+    'invoke.upgrade_rselini_proxy',
+    'var.global_collateral_configs',
+]

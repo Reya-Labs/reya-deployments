@@ -1,0 +1,105 @@
+[var.rselini_vars]
+rseliniTokenName = "Reya Lm Selini"
+rseliniTokenSymbol = "rSelini"
+rseliniTokenDecimals = "18"
+
+[clone.rselini]
+source = "<%= settings.shareTokensProxyPackage %>"
+target = "reya-share-tokens:1.0.0@rselini"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.rseliniSalt %>"
+depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_rselini_proxy]
+target = ["rselini.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaShareTokenRouter.contracts.ShareTokenRouter.address %>"]
+factory.RSELINIProxy.abiOf = ["reyaShareTokenRouter.ShareTokenRouter"]
+factory.RSELINIProxy.event = "Upgraded"
+factory.RSELINIProxy.arg = 0
+depends = ["clone.rselini"]
+
+[invoke.rselini_initialize]
+target = ["RSELINIProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.rseliniTokenName %>",
+    "<%= settings.rseliniTokenSymbol %>",
+    "<%= settings.rseliniTokenDecimals %>",
+]
+depends = ["invoke.upgrade_rselini_proxy"]
+
+[invoke.rselini_unpause]
+target = ["RSELINIProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_rselini_proxy"]
+
+[invoke.rselini_set_pausers]
+target = ["RSELINIProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_rselini_proxy"]
+
+[invoke.rselini_global_config]
+target = ["RSELINIProxy"]
+fromCall.func = "owner"
+func = "setGlobalConfiguration"
+args = [
+    { coreProxy = "<%= contracts.CoreProxy.address %>" },
+]
+depends = ["invoke.upgrade_rselini_proxy"]
+
+[invoke.rselini_enable_subscriber]
+target = ["RSELINIProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subscription')) %>",
+    "<%= settings.rseliniSubscriber1 %>",
+]
+depends = ["invoke.upgrade_rselini_proxy"]
+
+[invoke.rselini_enable_redeemer]
+target = ["RSELINIProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('redemption')) %>",
+    "<%= settings.rseliniRedeemer1 %>",
+]
+depends = ["invoke.upgrade_rselini_proxy"]
+
+[invoke.rselini_enable_custodian]
+target = ["RSELINIProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('whitelistedCustodians')) %>",
+    "<%= settings.rseliniCustodian1 %>",
+]
+depends = ["invoke.upgrade_rselini_proxy"]
+
+[invoke.rselini_enable_underlying_token]
+target = ["RSELINIProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('whitelistedTokens')) %>",
+    "<%= settings.rUSDProxy %>",
+]
+depends = ["invoke.upgrade_rselini_proxy"]
