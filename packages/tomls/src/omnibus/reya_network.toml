@@ -82,7 +82,7 @@ rseliniSalt = "rselini-main"
 
 [var.missing_vars]
 salt = ""
-rusdTokenDecimals = "6"
+rusdTokenDecimals = "7"
 
 [var.upgrade_proxy_vars]
 coreProxy = "0xA763B6a5E09378434406C003daE6487FbbDc1a80"
@@ -191,9 +191,9 @@ marketVolConfigurator20 = "<%= settings.storkExecutor20 %>"
 
 # TODO: add proper addresses
 [var.share_token_roles]
-rseliniSubscriber1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-rseliniRedeemer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-rseliniCustodian1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+rseliniSubscriber1 = "0x0000000000000000000000000000000000000000"
+rseliniRedeemer1 = "0x0000000000000000000000000000000000000000"
+rseliniCustodian1 = "0x0000000000000000000000000000000000000000"
 
 [var.redstone_oracles]
 redstonePriceFeedUSDC = "0x73ac348c40403ff1156a2f53BA57bcCbA2C63915"
@@ -1611,7 +1611,7 @@ cp1Rusd_rselini_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_rselini_autoExchangeInsuranceFeeUnscaled = "0"
 cp1Rusd_rselini_autoExchangeDustThresholdUnscaled = "0"
 cp1Rusd_rselini_bidSubmissionFeeUnscaled = "0"
-cp1Rusd_rseliniParentConfig_collateralAddress = "<%= contracts.RSELINIProxy.address %>"
+cp1Rusd_rseliniParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
 cp1Rusd_rseliniParentConfig_priceHaircutUnscaled = "0"
 cp1Rusd_rseliniParentConfig_autoExchangeDiscountUnscaled = "0"
 cp1Rusd_rseliniParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"

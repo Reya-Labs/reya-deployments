@@ -32,6 +32,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.susde = 0x08A766935478A1632FA776DCEbD3E75Ce88A1034;
         sec.deusd = 0x3b9D28dC180813a106d26778135Ac2A674F89957;
         sec.sdeusd = 0xbEB316680B6fcd2dC3aF1fC933B3A27a2513d89D;
+        sec.rselini = 0xbA8ae4D2A147c54c3aBA123e8e01937AF505FC3c;
         sec.passivePoolId = 1;
         sec.passivePoolAccountId = 4;
         sec.ownerUpgradeModule = 0x3fa74FfE7B278a25877E16f00e73d5F5FA499183;
@@ -226,6 +227,10 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         sec.sdeusdDeusdStorkNodeId = 0x2c14164e11064f9666096a57f2502ef935bc2aaa0a21efd326b1652e47cf8cdc;
         sec.sdeusdUsdcStorkNodeId = 0x4a600800dcd1db78bbc2880174df4e886a8a67e418f065e27ca5866e11b5f886;
+
+        sec.rseliniCustodian = 0x45556408e543158f74403e882E3C8c23eCD9f732;
+        sec.rseliniSubscriber = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+        sec.rseliniRedeemer = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
 
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
         dec.socketExecutionHelper[sec.usdc] = 0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE;

@@ -31,6 +31,7 @@ struct StaticEcosystem {
     address susde;
     address deusd;
     address sdeusd;
+    address rselini;
     address ownerUpgradeModule;
     address elixirSdeusd;
     bytes32 rusdUsdNodeId;
@@ -184,6 +185,9 @@ struct StaticEcosystem {
     address rebalancer1;
     address camelotYakRouter;
     address camelotSwapPublisher;
+    address rseliniCustodian;
+    address rseliniSubscriber;
+    address rseliniRedeemer;
 }
 
 struct DynamicEcosystem {
