@@ -1,0 +1,8 @@
+include = [
+    "./share_tokens/rselini.toml",
+]
+
+[clone.reyaShareTokenRouter]
+source = "<%= settings.shareTokensRouterPackage %>"
+target = "<%= settings.shareTokensRouterPackage %>"
+depends = ["var.cannonClonePackages"]

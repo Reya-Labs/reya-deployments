@@ -346,10 +346,8 @@ contract CamelotSwapForkCheck is BaseReyaForkTest {
 
     function check_RevertWhen_DepositRusdAndTradeAndSwapUnsupportedTokenWbtc() internal {
         uint256 rusdAmount = 100e6;
-        uint256 minWbtcAmount = 0.02e18;
         uint128 marketId = 1;
         SD59x18 base = sd(0.01e18);
-        UD60x18 tier0Fee = ud(0.0005e18);
 
         deal(sec.usdc, address(sec.periphery), rusdAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], rusdAmount);
