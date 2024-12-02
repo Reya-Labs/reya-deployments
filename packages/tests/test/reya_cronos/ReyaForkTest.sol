@@ -36,7 +36,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.passivePoolId = 1;
         sec.passivePoolAccountId = 4;
         sec.ownerUpgradeModule = 0x3fa74FfE7B278a25877E16f00e73d5F5FA499183;
-        sec.mainChainId = ethereumSepoliaChainId;
+        sec.destinationChainId = ethereumSepoliaChainId;
         sec.coExecutionBot = 0xB6EaF546b84E1f917579FC4FD3d7082DfE2ba212;
         sec.rebalancer1 = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
         sec.elixirSdeusd = 0x97D3e518029c622015afa7aD20036EbEF60A7A4e;

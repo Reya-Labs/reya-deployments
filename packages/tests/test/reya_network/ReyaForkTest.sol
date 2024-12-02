@@ -32,7 +32,7 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.passivePoolId = 1;
         sec.passivePoolAccountId = 2;
         sec.ownerUpgradeModule = 0x70230eE0CcA326A559410DCEd74F2972306D1e1e;
-        sec.mainChainId = ethereumChainId;
+        sec.destinationChainId = ethereumChainId;
         sec.coExecutionBot = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
         sec.rebalancer1 = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
         sec.elixirSdeusd = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326;

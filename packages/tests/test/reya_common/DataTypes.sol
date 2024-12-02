@@ -8,12 +8,18 @@ uint256 constant baseChainId = 8453;
 uint256 constant ethereumSepoliaChainId = 11_155_111;
 uint256 constant arbitrumSepoliaChainId = 421_614;
 uint256 constant optimismSepoliaChainId = 11_155_420;
+
 uint256 constant ONE_MINUTE_IN_SECONDS = 60;
 
 struct StaticEcosystem {
+    // network
     string REYA_RPC;
     string MAINNET_RPC;
+    // other (external) chain id
+    uint256 destinationChainId;
+    // multisigs
     address multisig;
+    // Reya contracts
     address payable core;
     address payable pool;
     address payable perp;
@@ -23,6 +29,10 @@ struct StaticEcosystem {
     address payable oracleAdaptersProxy;
     address exchangePass;
     address accountNft;
+    // Camelot contracts
+    address camelotYakRouter;
+    address camelotSwapPublisher;
+    // Reya tokens
     address rusd;
     address usdc;
     address weth;
@@ -32,91 +42,53 @@ struct StaticEcosystem {
     address deusd;
     address sdeusd;
     address rselini;
-    address ownerUpgradeModule;
+    // Elixir tokens on Mainnet (Ethereum or Ethereum Sepolia)
     address elixirSdeusd;
+    // Reya modules
+    address ownerUpgradeModule;
+    // Reya variables
+    uint128 passivePoolId;
+    uint128 passivePoolAccountId;
+    // Reya bots
+    address coExecutionBot;
+    address rebalancer1;
+    address rseliniCustodian;
+    address rseliniSubscriber;
+    address rseliniRedeemer;
+    // node ids for spot prices
     bytes32 rusdUsdNodeId;
-    // bytes32 usdcUsdNodeId;
     bytes32 usdcUsdStorkNodeId;
-    // bytes32 ethUsdNodeId;
-    // bytes32 ethUsdcNodeId;
     bytes32 ethUsdStorkNodeId;
     bytes32 ethUsdcStorkNodeId;
-    // bytes32 ethUsdcStorkFallbackNodeId;
-    bytes32 ethUsdStorkMarkNodeId;
-    bytes32 ethUsdcStorkMarkNodeId;
-    // bytes32 btcUsdNodeId;
-    // bytes32 btcUsdcNodeId;
-    // bytes32 btcUsdStorkNodeId;
-    // bytes32 btcUsdcStorkNodeId;
-    // bytes32 btcUsdcStorkFallbackNodeId;
-    bytes32 btcUsdStorkMarkNodeId;
-    bytes32 btcUsdcStorkMarkNodeId;
-    // bytes32 solUsdNodeId;
-    // bytes32 solUsdcNodeId;
-    // bytes32 solUsdStorkNodeId;
-    // bytes32 solUsdcStorkNodeId;
-    // bytes32 solUsdcStorkFallbackNodeId;
-    bytes32 solUsdStorkMarkNodeId;
-    bytes32 solUsdcStorkMarkNodeId;
-    // bytes32 arbUsdNodeId;
-    // bytes32 arbUsdcNodeId;
-    // bytes32 arbUsdStorkNodeId;
-    // bytes32 arbUsdcStorkNodeId;
-    // bytes32 arbUsdcStorkFallbackNodeId;
-    bytes32 arbUsdStorkMarkNodeId;
-    bytes32 arbUsdcStorkMarkNodeId;
-    // bytes32 opUsdNodeId;
-    // bytes32 opUsdcNodeId;
-    // bytes32 opUsdStorkNodeId;
-    // bytes32 opUsdcStorkNodeId;
-    // bytes32 opUsdcStorkFallbackNodeId;
-    bytes32 opUsdStorkMarkNodeId;
-    bytes32 opUsdcStorkMarkNodeId;
-    // bytes32 avaxUsdNodeId;
-    // bytes32 avaxUsdcNodeId;
-    // bytes32 avaxUsdStorkNodeId;
-    // bytes32 avaxUsdcStorkNodeId;
-    // bytes32 avaxUsdcStorkFallbackNodeId;
-    bytes32 avaxUsdStorkMarkNodeId;
-    bytes32 avaxUsdcStorkMarkNodeId;
-    // bytes32 usdeUsdNodeId;
-    // bytes32 usdeUsdcNodeId;
     bytes32 usdeUsdStorkNodeId;
     bytes32 usdeUsdcStorkNodeId;
-    // bytes32 usdeUsdcStorkFallbackNodeId;
-    // bytes32 mkrUsdNodeId;
-    // bytes32 mkrUsdcNodeId;
-    // bytes32 mkrUsdStorkNodeId;
-    // bytes32 mkrUsdcStorkNodeId;
-    // bytes32 mkrUsdcStorkFallbackNodeId;
+    bytes32 susdeUsdStorkNodeId;
+    bytes32 susdeUsdcStorkNodeId;
+    bytes32 deusdUsdStorkNodeId;
+    bytes32 deusdUsdcStorkNodeId;
+    bytes32 sdeusdDeusdStorkNodeId;
+    bytes32 sdeusdUsdcStorkNodeId;
+    // node ids for mark prices
+    bytes32 ethUsdStorkMarkNodeId;
+    bytes32 ethUsdcStorkMarkNodeId;
+    bytes32 btcUsdStorkMarkNodeId;
+    bytes32 btcUsdcStorkMarkNodeId;
+    bytes32 solUsdStorkMarkNodeId;
+    bytes32 solUsdcStorkMarkNodeId;
+    bytes32 arbUsdStorkMarkNodeId;
+    bytes32 arbUsdcStorkMarkNodeId;
+    bytes32 opUsdStorkMarkNodeId;
+    bytes32 opUsdcStorkMarkNodeId;
+    bytes32 avaxUsdStorkMarkNodeId;
+    bytes32 avaxUsdcStorkMarkNodeId;
     bytes32 mkrUsdStorkMarkNodeId;
     bytes32 mkrUsdcStorkMarkNodeId;
-    // bytes32 linkUsdNodeId;
-    // bytes32 linkUsdcNodeId;
-    // bytes32 linkUsdStorkNodeId;
-    // bytes32 linkUsdcStorkNodeId;
-    // bytes32 linkUsdcStorkFallbackNodeId;
     bytes32 linkUsdStorkMarkNodeId;
     bytes32 linkUsdcStorkMarkNodeId;
-    // bytes32 aaveUsdNodeId;
-    // bytes32 aaveUsdcNodeId;
-    // bytes32 aaveUsdStorkNodeId;
-    // bytes32 aaveUsdcStorkNodeId;
-    // bytes32 aaveUsdcStorkFallbackNodeId;
     bytes32 aaveUsdStorkMarkNodeId;
     bytes32 aaveUsdcStorkMarkNodeId;
-    // bytes32 crvUsdNodeId;
-    // bytes32 crvUsdcNodeId;
-    // bytes32 crvUsdStorkNodeId;
-    // bytes32 crvUsdcStorkNodeId;
-    // bytes32 crvUsdcStorkFallbackNodeId;
     bytes32 crvUsdStorkMarkNodeId;
     bytes32 crvUsdcStorkMarkNodeId;
-    // bytes32 uniUsdNodeId;
-    // bytes32 uniUsdcNodeId;
-    // bytes32 uniUsdStorkNodeId;
-    // bytes32 uniUsdcStorkNodeId;
-    // bytes32 uniUsdcStorkFallbackNodeId;
     bytes32 uniUsdStorkMarkNodeId;
     bytes32 uniUsdcStorkMarkNodeId;
     bytes32 suiUsdStorkMarkNodeId;
@@ -169,25 +141,6 @@ struct StaticEcosystem {
     bytes32 grassUsdcStorkMarkNodeId;
     bytes32 kneiroUsdStorkMarkNodeId;
     bytes32 kneiroUsdcStorkMarkNodeId;
-    // bytes32 susdeUsdNodeId;
-    // bytes32 susdeUsdcNodeId;
-    bytes32 susdeUsdStorkNodeId;
-    bytes32 susdeUsdcStorkNodeId;
-    // bytes32 susdeUsdcStorkFallbackNodeId;
-    bytes32 deusdUsdStorkNodeId;
-    bytes32 deusdUsdcStorkNodeId;
-    bytes32 sdeusdDeusdStorkNodeId;
-    bytes32 sdeusdUsdcStorkNodeId;
-    uint256 mainChainId;
-    uint128 passivePoolId;
-    uint128 passivePoolAccountId;
-    address coExecutionBot;
-    address rebalancer1;
-    address camelotYakRouter;
-    address camelotSwapPublisher;
-    address rseliniCustodian;
-    address rseliniSubscriber;
-    address rseliniRedeemer;
 }
 
 struct DynamicEcosystem {
