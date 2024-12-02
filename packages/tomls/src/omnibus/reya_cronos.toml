@@ -766,11 +766,11 @@ seliniUsdcReyaLmMaxStaleDuration = "0"
 amberUsdcReyaLmMaxStaleDuration = "0"
 
 [var.pool_1]
-pool1_quoteTokenTargetRatioUnscaled = "0.2"
-pool1_DEUSDTargetRatioPostQuoteUnscaled = "0.4"
-pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.6"
-pool1_RSELINITargetRatioPostQuoteUnscaled = "0"
-pool1_RAMBERTargetRatioPostQuoteUnscaled = "0"
+pool1_quoteTokenTargetRatioUnscaled = "0.1"
+pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.8"
+pool1_RSELINITargetRatioPostQuoteUnscaled = "0.1"
+pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.1"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
