@@ -40,6 +40,16 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_pool_proxy"]
 
+[invoke.passive_pool_set_rebalancers_3]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('autoRebalance')),settings.pool1RusdId])) %>",
+    "<%= settings.rebalancer3 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
 [invoke.passive_pool_set_v2_liquidity_access]
 target = ["PassivePoolProxy"]
 fromCall.func = "owner"
