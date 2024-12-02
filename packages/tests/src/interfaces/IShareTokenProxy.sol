@@ -105,6 +105,16 @@ interface IShareTokenProxy {
         uint256 amount
     ) external returns (bool);
 
+    function calculateSharesOut(
+        address token, 
+        uint256 tokenAmount
+    ) external view returns (uint256);
+
+    function calculateTokensOut(
+        address token, 
+        uint256 shareAmount
+    ) external view returns (uint256);
+
     event Approval(
         address indexed owner,
         address indexed spender,
