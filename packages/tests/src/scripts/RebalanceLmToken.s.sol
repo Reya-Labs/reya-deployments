@@ -8,20 +8,24 @@ import { IRUSDProxy } from "../../src/interfaces/IRUSDProxy.sol";
 import { IShareTokenProxy, SubscriptionInputs } from "../../src/interfaces/IShareTokenProxy.sol";
 
 contract RebalanceLmToken is Script, Test {
-    // TODO: adjust these addresses
-    address private rebalancerEOA = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
-    address private multisigDestination = 0x01A8e78B7ba1313A482630837c3978c6259aC1eA;
-    address private underlyingAssetToken = 0x01A8e78B7ba1313A482630837c3978c6259aC1eA;
-    address private shareToken = 0x01A8e78B7ba1313A482630837c3978c6259aC1eA;
+    // testnet setup
+    address private rebalancerEOA = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+    address private multisigDestination = 0x45556408e543158f74403e882E3C8c23eCD9f732;
+    address private underlyingAssetToken = 0x9DE724e7b3facF87Ce39465D3D712717182e3e55;
 
-    address payable private pool = payable(0xB4B77d6180cc14472A9a7BDFF01cc2459368D413);
+    // Selini LM token
+    address private shareToken = 0xbA8ae4D2A147c54c3aBA123e8e01937AF505FC3c;
+
+    address payable private pool = payable(0x9A3A664987b88790A6FDC1632e3b607813fd94fF);
     uint128 private poolId = 1;
 
-    uint256 tokenAmountOneStep = 1000e6;
+    // amount of tokens to rebalance each step
+    uint256 tokenAmountOneStep = 1_000e6;
     uint256 steps = 10;
 
     function rebalance() public {
 
+        // check that conversion in LM token followed by conversion in passive pool results in the initial amount
         uint256 shareAmountOneStep = IShareTokenProxy(shareToken).calculateSharesOut(underlyingAssetToken, tokenAmountOneStep);
         assertGe(shareAmountOneStep, 1000e18);
 
