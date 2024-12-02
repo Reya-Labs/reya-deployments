@@ -147,4 +147,6 @@ include = [
     "configs/storkMark/goat_usdc.toml",
     "configs/storkMark/grass_usdc.toml",
     "configs/storkMark/kneiro_usdc.toml",
+    "configs/reyaLm/selini_usdc.toml",
+    "configs/reyaLm/amber_usdc.toml",
 ]

@@ -15,7 +15,7 @@ include = [
     "../oracle_adapters/testnet.toml",
     "../share_token/mainnet.toml",
 ]
-version = "1.0.38"
+version = "1.0.39"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -59,7 +59,7 @@ ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
 ordersGatewayRouterPackage = "reya-orders-gateway:1.0.7@router"
 oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
-oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.5@router"
+oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.6@router"
 shareTokensProxyPackage = "reya-share-tokens:1.0.0@proxy"
 shareTokensRouterPackage = "reya-share-tokens:1.0.1@router"
 
@@ -311,6 +311,10 @@ reyaAssetPairIdPENDLEMark = "PENDLEUSDMARKFALLBACK"
 reyaAssetPairIdGOATMark = "GOATUSDMARKFALLBACK"
 reyaAssetPairIdGRASSMark = "GRASSUSDMARKFALLBACK"
 reyaAssetPairIdKNEIROMark = "1000NEIROUSDMARKFALLBACK"
+
+[var.reya_lm_asset_pair_ids]
+reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
+reyaLmAssetPairIdAMBER = "REYALM#AMBERUSDC"
 
 [var.reya_asset_pair_ids]
 reyaAssetPairIdSDEUSD = "SDEUSDUSDREYA"
@@ -748,6 +752,9 @@ sdeusdUsdcMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 sdeusdDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+seliniUsdcReyaLmMaxStaleDuration = "0"
+amberUsdcReyaLmMaxStaleDuration = "0"
 
 [var.pool_1]
 pool1_quoteTokenTargetRatioUnscaled = "0.2"
@@ -1637,4 +1644,4 @@ cp1Rusd_rselini_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_rseliniParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
 cp1Rusd_rseliniParentConfig_priceHaircutUnscaled = "0"
 cp1Rusd_rseliniParentConfig_autoExchangeDiscountUnscaled = "0"
-cp1Rusd_rseliniParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
+cp1Rusd_rseliniParentConfig_oracleNodeId = "<%= settings.seliniUsdcReyaLmNodeId %>"
