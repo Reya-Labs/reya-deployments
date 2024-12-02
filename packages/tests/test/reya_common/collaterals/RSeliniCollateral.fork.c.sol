@@ -39,13 +39,15 @@ contract RSeliniCollateralForkCheck is BaseReyaForkTest {
 
         // subscriber subscribes 100 rusd to rSelini and sends shares to custom recipient
         vm.prank(sec.rseliniSubscriber);
-        IShareTokenProxy(sec.rselini).subscribe(SubscriptionInputs({
-            recipient: recipient1,
-            custodian: sec.rseliniCustodian,
-            tokenIn: sec.rusd,
-            amountIn: 100e6,
-            minSharesOut: 0
-        }));
+        IShareTokenProxy(sec.rselini).subscribe(
+            SubscriptionInputs({
+                recipient: recipient1,
+                custodian: sec.rseliniCustodian,
+                tokenIn: sec.rusd,
+                amountIn: 100e6,
+                minSharesOut: 0
+            })
+        );
 
         // check balances after subscription
         s1.rseliniTotalSupply = IShareTokenProxy(sec.rselini).totalSupply();
@@ -53,7 +55,7 @@ contract RSeliniCollateralForkCheck is BaseReyaForkTest {
         s1.rUsdSubscriberBalance = IERC20TokenModule(sec.rusd).balanceOf(sec.rseliniSubscriber);
         s1.rUsdCustodianBalance = IERC20TokenModule(sec.rusd).balanceOf(sec.rseliniCustodian);
         s1.rUsdRecipientBalance2 = IERC20TokenModule(sec.rusd).balanceOf(recipient2);
-    
+
         assertEq(s1.rseliniTotalSupply, s0.rseliniTotalSupply + 100e18);
         assertEq(s1.rseliniRecipientBalance1, s0.rseliniRecipientBalance1 + 100e18);
         assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance - 100e6);
@@ -72,12 +74,9 @@ contract RSeliniCollateralForkCheck is BaseReyaForkTest {
 
         // redeemer redeems 50 shares from rSelini
         vm.prank(sec.rseliniRedeemer);
-        IShareTokenProxy(sec.rselini).redeem(RedemptionInputs({
-            recipient: recipient2,
-            tokenOut: sec.rusd,
-            sharesToRedeem: 50e18,
-            minTokensOut: 0
-        }));
+        IShareTokenProxy(sec.rselini).redeem(
+            RedemptionInputs({ recipient: recipient2, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
+        );
 
         // check balances after redemption
         s1.rseliniTotalSupply = IShareTokenProxy(sec.rselini).totalSupply();
