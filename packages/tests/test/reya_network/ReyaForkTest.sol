@@ -43,7 +43,8 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.susde = 0x2339D41f410EA761F346a14c184385d15f7266c4;
         sec.deusd = 0x809B99df4DDd6fA90F2CF305E2cDC310C6AD3C2c;
         sec.sdeusd = 0x4D3fEB76ab1C7eF40388Cd7a2066edacE1a2237D;
-        sec.rselini = 0x0000000000000000000000000000000000000000; // TODO: add
+        sec.rselini = 0xb6A307Bb281BcA13d69792eAF5Db7c2BBe6De248;
+        sec.ramber = 0x63FC3F743eE2e70e670864079978a1deB9c18b76;
 
         // Elixir tokens on Mainnet (Ethereum)
         sec.elixirSdeusd = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326;
@@ -58,9 +59,12 @@ contract ReyaForkTest is StorageReyaForkTest {
         // Reya bots
         sec.coExecutionBot = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
         sec.poolRebalancer = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
-        sec.rseliniCustodian = 0x0000000000000000000000000000000000000000; // TODO: add
-        sec.rseliniSubscriber = 0x0000000000000000000000000000000000000000; // TODO: add
-        sec.rseliniRedeemer = 0x0000000000000000000000000000000000000000; // TODO: add
+        sec.rseliniCustodian = 0x75cfe7F41953cDfeA30C9F6A0BceC6BAA3dA71B0;
+        sec.rseliniSubscriber = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
+        sec.rseliniRedeemer = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
+        sec.ramberCustodian = 0xdd96e677939f0C78e2D671DD37abB44B49710a5A;
+        sec.ramberSubscriber = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
+        sec.ramberRedeemer = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
 
         // node ids for spot prices
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;

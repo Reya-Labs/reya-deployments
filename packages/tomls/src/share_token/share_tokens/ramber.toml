@@ -1,0 +1,105 @@
+[var.ramber_vars]
+ramberTokenName = "Reya Amber LM"
+ramberTokenSymbol = "rAmber"
+ramberTokenDecimals = "18"
+
+[clone.ramber]
+source = "<%= settings.shareTokensProxyPackage %>"
+target = "reya-share-tokens:1.0.0@ramber"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.ramberSalt %>"
+depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_ramber_proxy]
+target = ["ramber.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = [
+    "<%= imports.reyaShareTokenRouter.contracts.ShareTokenRouter.address %>",
+]
+factory.RAMBERProxy.abiOf = ["reyaShareTokenRouter.ShareTokenRouter"]
+factory.RAMBERProxy.event = "Upgraded"
+factory.RAMBERProxy.arg = 0
+depends = ["clone.ramber"]
+
+[invoke.ramber_initialize]
+target = ["RAMBERProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.ramberTokenName %>",
+    "<%= settings.ramberTokenSymbol %>",
+    "<%= settings.ramberTokenDecimals %>",
+]
+depends = ["invoke.upgrade_ramber_proxy"]
+
+[invoke.ramber_unpause]
+target = ["RAMBERProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_ramber_proxy"]
+
+[invoke.ramber_set_pausers]
+target = ["RAMBERProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_ramber_proxy"]
+
+[invoke.ramber_global_config]
+target = ["RAMBERProxy"]
+fromCall.func = "owner"
+func = "setGlobalConfiguration"
+args = [{ coreProxy = "<%= contracts.CoreProxy.address %>" }]
+depends = ["invoke.upgrade_ramber_proxy"]
+
+[invoke.ramber_enable_subscriber]
+target = ["RAMBERProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subscription')) %>",
+    "<%= settings.ramberSubscriber1 %>",
+]
+depends = ["invoke.upgrade_ramber_proxy"]
+
+[invoke.ramber_enable_redeemer]
+target = ["RAMBERProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('redemption')) %>",
+    "<%= settings.ramberRedeemer1 %>",
+]
+depends = ["invoke.upgrade_ramber_proxy"]
+
+[invoke.ramber_enable_custodian]
+target = ["RAMBERProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('whitelistedCustodians')) %>",
+    "<%= settings.ramberCustodian1 %>",
+]
+depends = ["invoke.upgrade_ramber_proxy"]
+
+[invoke.ramber_enable_underlying_token]
+target = ["RAMBERProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('whitelistedTokens')) %>",
+    "<%= settings.rUSDProxy %>",
+]
+depends = ["invoke.upgrade_ramber_proxy"]

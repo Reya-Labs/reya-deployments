@@ -76,4 +76,21 @@ depends = [
     "invoke.passive_pool_create_pool_1rusd",
     "invoke.passive_pool_unpause_pool_1rusd",
     "invoke.passive_pool_set_allocation_configuration_1rusd",
+    "invoke.cp_1rusd_set_rselini_config",
+]
+
+[invoke.passive_pool_set_target_ratio_post_quote_ramber]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "setTargetRatioPostQuote"
+args = [
+    "<%= settings.pool1RusdId %>",
+    "<%= contracts.RAMBERProxy.address %>",
+    "<%= parseEther(settings.pool1_RAMBERTargetRatioPostQuoteUnscaled) %>",
+]
+depends = [
+    "invoke.passive_pool_create_pool_1rusd",
+    "invoke.passive_pool_unpause_pool_1rusd",
+    "invoke.passive_pool_set_allocation_configuration_1rusd",
+    "invoke.cp_1rusd_set_ramber_config",
 ]

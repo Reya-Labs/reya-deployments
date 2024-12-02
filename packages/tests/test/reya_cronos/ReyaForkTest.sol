@@ -47,6 +47,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.deusd = 0x3b9D28dC180813a106d26778135Ac2A674F89957;
         sec.sdeusd = 0xbEB316680B6fcd2dC3aF1fC933B3A27a2513d89D;
         sec.rselini = 0xbA8ae4D2A147c54c3aBA123e8e01937AF505FC3c;
+        sec.ramber = 0x125FD68Ec0ab65ce9606DeD99e8F19C286f9E534;
 
         // Elixir tokens on Mainnet (Ethereum Sepolia)
         sec.elixirSdeusd = 0x97D3e518029c622015afa7aD20036EbEF60A7A4e;
@@ -64,6 +65,9 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.rseliniCustodian = 0x45556408e543158f74403e882E3C8c23eCD9f732;
         sec.rseliniSubscriber = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
         sec.rseliniRedeemer = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+        sec.ramberCustodian = 0x45556408e543158f74403e882E3C8c23eCD9f732;
+        sec.ramberSubscriber = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+        sec.ramberRedeemer = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
 
         // node ids for spot prices
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;

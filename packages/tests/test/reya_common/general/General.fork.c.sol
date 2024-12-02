@@ -145,8 +145,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceSOL);
         ls.maxDeviationMarket.push(ls.maxDeviationSOL);
 
-        ls.meanPriceARB = 0.7e18;
-        ls.maxDeviationARB = 0.3e18;
+        ls.meanPriceARB = 1.03e18;
+        ls.maxDeviationARB = 0.5e18;
         ls.meanPriceMarket.push(ls.meanPriceARB);
         ls.maxDeviationMarket.push(ls.maxDeviationARB);
 
@@ -175,13 +175,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceAAVE);
         ls.maxDeviationMarket.push(ls.maxDeviationAAVE);
 
-        ls.meanPriceCRV = 0.48e18;
-        ls.maxDeviationCRV = 0.15e18;
+        ls.meanPriceCRV = 0.72e18;
+        ls.maxDeviationCRV = 0.35e18;
         ls.meanPriceMarket.push(ls.meanPriceCRV);
         ls.maxDeviationMarket.push(ls.maxDeviationCRV);
 
-        ls.meanPriceUNI = 11.5e18;
-        ls.maxDeviationUNI = 3e18;
+        ls.meanPriceUNI = 13.7e18;
+        ls.maxDeviationUNI = 6e18;
         ls.meanPriceMarket.push(ls.meanPriceUNI);
         ls.maxDeviationMarket.push(ls.maxDeviationUNI);
 
@@ -275,8 +275,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceNEAR);
         ls.maxDeviationMarket.push(ls.maxDeviationNEAR);
 
-        ls.meanPriceFTM = 0.7e18;
-        ls.maxDeviationFTM = 0.35e18;
+        ls.meanPriceFTM = 1.19e18;
+        ls.maxDeviationFTM = 0.5e18;
         ls.meanPriceMarket.push(ls.meanPriceFTM);
         ls.maxDeviationMarket.push(ls.maxDeviationFTM);
 
@@ -310,7 +310,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceKNEIRO);
         ls.maxDeviationMarket.push(ls.maxDeviationKNEIRO);
 
-        ls.meanPriceSUSDE = 1.12e18;
+        ls.meanPriceSUSDE = 1.13e18;
         ls.maxDeviationSUSDE = 0.01e18;
 
         ls.meanPriceStableCoin = 1e18;
@@ -692,7 +692,6 @@ contract GeneralForkCheck is BaseReyaForkTest {
     function check_marketsPrices() public {
         setupOracleNodePriceParams();
         for (uint128 i = lastMarketId(); i >= 1; i--) {
-
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
             bytes32 nodeId = marketConfig.oracleNodeId;
 

@@ -42,6 +42,7 @@ struct StaticEcosystem {
     address deusd;
     address sdeusd;
     address rselini;
+    address ramber;
     // Elixir tokens on Mainnet (Ethereum or Ethereum Sepolia)
     address elixirSdeusd;
     // Reya modules
@@ -55,6 +56,9 @@ struct StaticEcosystem {
     address rseliniCustodian;
     address rseliniSubscriber;
     address rseliniRedeemer;
+    address ramberCustodian;
+    address ramberSubscriber;
+    address ramberRedeemer;
     // node ids for spot prices
     bytes32 rusdUsdNodeId;
     bytes32 usdcUsdStorkNodeId;

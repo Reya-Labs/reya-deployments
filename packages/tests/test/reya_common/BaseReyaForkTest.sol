@@ -282,7 +282,6 @@ contract BaseReyaForkTest is StorageReyaForkTest {
 
     function mockFreshPrices() internal {
         for (uint128 i = 1; i <= lastMarketId(); i++) {
-
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
             bytes32 nodeId = marketConfig.oracleNodeId;
 

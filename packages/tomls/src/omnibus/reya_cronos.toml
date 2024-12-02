@@ -86,6 +86,7 @@ susdeSalt = "susde-main-2"   # second deployment on testnet
 deusdSalt = "deusd-main"
 sdeusdSalt = "sdeusd-main"
 rseliniSalt = "rselini-main"
+ramberSalt = "ramber-main"
 
 [var.missing_vars]
 salt = ""
@@ -200,6 +201,9 @@ marketVolConfigurator20 = "<%= settings.storkExecutor20 %>"
 rseliniSubscriber1 = "<%= settings.rebalancer1 %>"
 rseliniRedeemer1 = "<%= settings.rebalancer1 %>"
 rseliniCustodian1 = "0x45556408e543158f74403e882E3C8c23eCD9f732"
+ramberSubscriber1 = "<%= settings.rebalancer1 %>"
+ramberRedeemer1 = "<%= settings.rebalancer1 %>"
+ramberCustodian1 = "0x45556408e543158f74403e882E3C8c23eCD9f732"
 
 [var.redstone_oracles]
 redstonePriceFeedUSDC = "0xDefB236eB69b7f94490786375B093C6c8271214A"
@@ -429,6 +433,10 @@ sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 rseliniCollateralAdapter = "<%= AddressZero %>"
 rseliniWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rseliniWithdrawalTvlPercentageLimitUnscaled = "0.15"
+# -------------------------------------------------------------------
+ramberCollateralAdapter = "<%= AddressZero %>"
+ramberWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+ramberWithdrawalTvlPercentageLimitUnscaled = "0.15"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.2"
@@ -762,6 +770,7 @@ pool1_quoteTokenTargetRatioUnscaled = "0.2"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0.4"
 pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.6"
 pool1_RSELINITargetRatioPostQuoteUnscaled = "0"
+pool1_RAMBERTargetRatioPostQuoteUnscaled = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -1485,7 +1494,7 @@ market36KNeiro_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "36"
-cp1Rusd_maxCollaterals = "8"
+cp1Rusd_maxCollaterals = "9"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
 # -----------------------------------------------
@@ -1647,3 +1656,15 @@ cp1Rusd_rseliniParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address
 cp1Rusd_rseliniParentConfig_priceHaircutUnscaled = "0"
 cp1Rusd_rseliniParentConfig_autoExchangeDiscountUnscaled = "0"
 cp1Rusd_rseliniParentConfig_oracleNodeId = "<%= settings.seliniUsdcReyaLmNodeId %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_ramber_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_ramber_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_ramber_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_ramber_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_ramber_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_ramberParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_ramberParentConfig_priceHaircutUnscaled = "0"
+cp1Rusd_ramberParentConfig_autoExchangeDiscountUnscaled = "0"
+cp1Rusd_ramberParentConfig_oracleNodeId = "<%= settings.amberUsdcReyaLmNodeId %>"
