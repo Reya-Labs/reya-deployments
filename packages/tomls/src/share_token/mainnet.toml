@@ -1,6 +1,4 @@
-include = [
-    "./share_tokens/rselini.toml",
-]
+include = ["./share_tokens/rselini.toml"]
 
 [clone.reyaShareTokenRouter]
 source = "<%= settings.shareTokensRouterPackage %>"
