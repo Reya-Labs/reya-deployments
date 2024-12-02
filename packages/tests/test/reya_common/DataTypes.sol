@@ -51,7 +51,7 @@ struct StaticEcosystem {
     uint128 passivePoolAccountId;
     // Reya bots
     address coExecutionBot;
-    address rebalancer1;
+    address poolRebalancer;
     address rseliniCustodian;
     address rseliniSubscriber;
     address rseliniRedeemer;

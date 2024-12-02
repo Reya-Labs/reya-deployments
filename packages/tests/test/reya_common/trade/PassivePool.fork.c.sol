@@ -441,12 +441,12 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                     }
 
                     vm.prank(dec.socketController[tokenIn]);
-                    IERC20TokenModule(tokenIn).mint(sec.rebalancer1, rebalanceAmounts.amountIn);
+                    IERC20TokenModule(tokenIn).mint(sec.poolRebalancer, rebalanceAmounts.amountIn);
 
-                    vm.prank(sec.rebalancer1);
+                    vm.prank(sec.poolRebalancer);
                     IERC20TokenModule(tokenIn).approve(sec.pool, rebalanceAmounts.amountIn);
 
-                    vm.prank(sec.rebalancer1);
+                    vm.prank(sec.poolRebalancer);
                     IPassivePoolProxy(sec.pool).triggerAutoRebalance(
                         sec.passivePoolId,
                         AutoRebalanceInput({
