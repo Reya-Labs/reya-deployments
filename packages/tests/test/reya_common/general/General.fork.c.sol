@@ -692,9 +692,6 @@ contract GeneralForkCheck is BaseReyaForkTest {
     function check_marketsPrices() public {
         setupOracleNodePriceParams();
         for (uint128 i = lastMarketId(); i >= 1; i--) {
-            if (i == 19) {
-                continue;
-            }
 
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
             bytes32 nodeId = marketConfig.oracleNodeId;

@@ -44,10 +44,6 @@ contract FundingRateForkCheck is BaseReyaForkTest {
 
         SD59x18[] memory pSlippage = new SD59x18[](toMarketId - fromMarketId + 1);
         for (uint128 marketId = fromMarketId; marketId <= toMarketId; marketId += 1) {
-            if (marketId == 19) {
-                continue;
-            }
-
             (, pSlippage[marketId - fromMarketId]) = executeCoreMatchOrder({
                 marketId: marketId,
                 sender: user,
