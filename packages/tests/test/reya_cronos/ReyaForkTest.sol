@@ -88,9 +88,8 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.sdeusdDeusdStorkNodeId = 0x2c14164e11064f9666096a57f2502ef935bc2aaa0a21efd326b1652e47cf8cdc;
         sec.sdeusdUsdcStorkNodeId = 0x4a600800dcd1db78bbc2880174df4e886a8a67e418f065e27ca5866e11b5f886;
 
-        // todo: lm
-        sec.rseliniUsdcReyaLmNodeId = 0x00;
-        sec.ramberUsdcReyaLmNodeId = 0x00;
+        sec.rseliniUsdcReyaLmNodeId = 0x8831605e4b3e4d533b9123c50106de11623f1188975d107029a4534bfd5acfd2;
+        sec.ramberUsdcReyaLmNodeId = 0xa7feb4d88a1b9a17b11f5d24de36c942f2de2fd3a772b3a05b41f2fdfa45f770;
 
         // node ids for mark prices
         sec.ethUsdStorkMarkNodeId = 0x3f4c9f3d5efcbd98002f057a6c0acd0313aa63ab20334e611a30261b89acc1fa;

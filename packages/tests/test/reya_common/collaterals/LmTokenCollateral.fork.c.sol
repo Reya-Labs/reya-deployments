@@ -184,23 +184,19 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         assertEq(s1.rUsdRecipientBalance2, s0.rUsdRecipientBalance2 + 50e6);
     }
 
-    function check_lmToken_view_functions(address lmToken, bytes32 lmTokenUsdcStorkNodeId) private {
+    function check_lmToken_view_functions(address lmToken, bytes32 lmTokenUsdcNodeId) private {
         (address user,) = makeAddrAndKey("user");
 
         uint256 lmTokenAmount = 1e6;
 
         // deposit new margin account
-        deal(sec.rselini, address(user), lmTokenAmount);
-        vm.prank(user);
-        uint128 accountId = ICoreProxy(sec.core).createAccount(user);
-        vm.prank(user);
-        ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: address(sec.rselini), amount: lmTokenAmount });
+        uint128 accountId = depositNewMA(user, lmToken, lmTokenAmount);
 
         vm.prank(user);
         ICoreProxy(sec.core).activateFirstMarketForAccount(accountId, 1);
 
         NodeOutput.Data memory lmTokenUsdcNodeOutput =
-            IOracleManagerProxy(sec.oracleManager).process(lmTokenUsdcStorkNodeId);
+            IOracleManagerProxy(sec.oracleManager).process(lmTokenUsdcNodeId);
 
         (, ParentCollateralConfig memory parentCollateralConfig,) = ICoreProxy(sec.core).getCollateralConfig(1, lmToken);
         SD59x18 lmTokenAmountInUSD = sd(int256(lmTokenAmount)).mul(sd(int256(lmTokenUsdcNodeOutput.price))).mul(
@@ -244,11 +240,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         uint256 collateralPoolLmTokenBalance = ICoreProxy(sec.core).getCollateralPoolBalance(1, lmToken);
 
         // deposit new margin account
-        deal(sec.rselini, address(user), amount);
-        vm.prank(user);
-        uint128 accountId = ICoreProxy(sec.core).createAccount(user);
-        vm.prank(user);
-        ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: address(sec.rselini), amount: amount });
+        uint128 accountId = depositNewMA(user, lmToken, amount);
 
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -263,11 +255,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         uint256 amount = 1000e6; // denominated in lmToken
 
         // deposit new margin account
-        deal(sec.rselini, address(user), amount);
-        vm.prank(user);
-        uint128 accountId = ICoreProxy(sec.core).createAccount(user);
-        vm.prank(user);
-        ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: address(sec.rselini), amount: amount });
+        uint128 accountId = depositNewMA(user, lmToken, amount);
 
         uint256 coreLmTokenBalanceBefore = IERC20TokenModule(lmToken).balanceOf(sec.core);
 
@@ -297,11 +285,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         UD60x18 priceLimit = ud(10_000e18);
 
         // deposit new margin account
-        deal(sec.rselini, address(user), amount);
-        vm.prank(user);
-        uint128 accountId = ICoreProxy(sec.core).createAccount(user);
-        vm.prank(user);
-        ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: address(sec.rselini), amount: amount });
+        uint128 accountId = depositNewMA(user, lmToken, amount);
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 

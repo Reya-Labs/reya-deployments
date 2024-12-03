@@ -19,7 +19,8 @@ import {
     PeripheryExecutionInputs,
     Command as Command_Periphery,
     EIP712Signature,
-    WithdrawMAInputs
+    WithdrawMAInputs,
+    DepositNewMAInputs
 } from "../../src/interfaces/IPeripheryProxy.sol";
 
 import { IOracleManagerProxy, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
@@ -35,6 +36,8 @@ import { ISocketControllerWithPayload } from "../../src/interfaces/ISocketContro
 
 import { ud, UD60x18, ZERO as ZERO_ud } from "@prb/math/UD60x18.sol";
 import { SD59x18, ZERO as ZERO_sd, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
+
+import { IERC20TokenModule } from "../../src/interfaces/IERC20TokenModule.sol";
 
 struct LocalState {
     MarketConfigurationData marketConfig;
@@ -85,6 +88,26 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         }
 
         return ud(0);
+    }
+
+    function depositNewMA(address user, address collateral, uint256 amount) internal returns (uint128 accountId) {
+        if (collateral == sec.rselini || collateral == sec.ramber) {
+            deal(collateral, address(user), amount);
+            vm.prank(user);
+            accountId = ICoreProxy(sec.core).createAccount(user);
+            vm.prank(user);
+            IERC20TokenModule(collateral).approve(sec.core, amount);
+            vm.prank(user);
+            ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: collateral, amount: amount });
+        } else {
+            deal(collateral, address(sec.periphery), amount);
+            mockBridgedAmount(dec.socketExecutionHelper[collateral], amount);
+            vm.prank(dec.socketExecutionHelper[collateral]);
+            accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+                DepositNewMAInputs({ accountOwner: user, token: address(collateral) })
+            );
+        }
+        
     }
 
     function getMatchOrderPeripheryCommand(

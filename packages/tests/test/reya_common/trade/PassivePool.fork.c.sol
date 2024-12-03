@@ -420,7 +420,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
         // add 3000 rselini to the passive pool directly
-
         deal(sec.rselini, address(user), 3000e6);
         vm.prank(user);
         ICoreProxy(sec.core).deposit({
@@ -454,11 +453,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 rselini in it
-        deal(sec.rselini, address(user), 33_000e6);
-        vm.prank(user);
-        uint128 accountId = ICoreProxy(sec.core).createAccount(user);
-        vm.prank(user);
-        ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: address(sec.rselini), amount: 33_000e6 });
+       uint128 accountId = depositNewMA(user, sec.rselini, 33000e6);
 
         // user executes short trade on ETH
         executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });
@@ -525,11 +520,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 ramber in it
-        deal(sec.ramber, address(user), 33_000e6);
-        vm.prank(user);
-        uint128 accountId = ICoreProxy(sec.core).createAccount(user);
-        vm.prank(user);
-        ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: address(sec.ramber), amount: 33_000e6 });
+        uint128 accountId = depositNewMA(user, sec.ramber, 33000e6);
 
         // user executes short trade on ETH
         executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });

@@ -1059,12 +1059,8 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
         // deposit rUSD and rSelini into user's account
         {
-            deal(sec.rselini, address(user), 2200e6);
-            vm.prank(user);
-            s.userAccountId = ICoreProxy(sec.core).createAccount(user);
-            vm.prank(user);
-            ICoreProxy(sec.core).deposit({ accountId: s.userAccountId, collateral: address(sec.rselini), amount: 2200e6 });
-
+            s.userAccountId = depositNewMA(user, sec.rselini, 2200e6);
+            
             if (userInitialRusdBalance > 0) {
                 deal(sec.usdc, address(sec.periphery), userInitialRusdBalance);
                 mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], userInitialRusdBalance);

@@ -118,12 +118,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         UD60x18 priceLimit = ud(1_000_000e18);
 
         // deposit new margin account
-        deal(collateral, address(sec.periphery), amount);
-        mockBridgedAmount(dec.socketExecutionHelper[collateral], amount);
-        vm.prank(dec.socketExecutionHelper[collateral]);
-        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
-            DepositNewMAInputs({ accountOwner: user, token: address(collateral) })
-        );
+        uint128 accountId = depositNewMA(user, collateral, amount);
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
