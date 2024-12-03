@@ -3,4 +3,4 @@ target = ["OracleAdaptersProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
 args = ["<%= keccak256(hexlify('executors')) %>", true]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
+depends = ["invoke.oracle_adapters_reya_lm_price_updater_owner"]

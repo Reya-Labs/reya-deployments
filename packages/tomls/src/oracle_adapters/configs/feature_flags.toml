@@ -19,3 +19,13 @@ args = [
     ],
 ]
 depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_reya_lm_price_updater_owner]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('lmTokenPriceUpdaters')) %>",
+    "<%= settings.owner %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]

@@ -1,0 +1,17 @@
+[invoke.oracle_adapters_reya_lm_selini_init_price]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "updateLmTokenPrice"
+args = [
+    { assetPairId = "<%= settings.reyaLmAssetPairIdSELINI %>", price = "<%= parseEther('1') %>", vestingPeriodInSeconds = "0" },
+]
+depends = ["invoke.oracle_adapters_reya_lm_price_updater_owner"]
+
+[invoke.oracle_adapters_reya_lm_amber_init_price]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "updateLmTokenPrice"
+args = [
+    { assetPairId = "<%= settings.reyaLmAssetPairIdAMBER %>", price = "<%= parseEther('1') %>", vestingPeriodInSeconds = "0" },
+]
+depends = ["invoke.oracle_adapters_reya_lm_price_updater_owner"]
