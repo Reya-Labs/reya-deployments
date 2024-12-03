@@ -405,6 +405,148 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.sdeusd, 100e18, sec.destinationChainId);
     }
 
+    function check_PassivePoolWithRselini() public {
+        mockFreshPrices();
+
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.rselini);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.rselini, collateralConfig, parentCollateralConfig);
+
+        (address user, uint256 userPk) = makeAddrAndKey("user");
+
+        uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+        // add 3000 rselini to the passive pool directly
+
+        deal(sec.rselini, address(user), 3000e6);
+        vm.prank(user);
+        ICoreProxy(sec.core).deposit({
+            accountId: sec.passivePoolAccountId,
+            collateral: address(sec.rselini),
+            amount: 3000e6
+        });
+
+        // check that the new 3000 rselini does not influence the share price
+        uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+        assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
+
+        // make sure that the passive pool deposit works
+        deal(sec.usdc, sec.periphery, 10e6);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
+        vm.mockCall(
+            dec.socketExecutionHelper[sec.usdc],
+            abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
+            abi.encode(10e6)
+        );
+
+        IPeripheryProxy(sec.periphery).depositPassivePool(
+            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: 0 })
+        );
+
+        uint256 sharesIn = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user);
+
+        // make sure that the passive pool withdrawal works
+        vm.prank(user);
+        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
+        assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
+
+        // create new account and deposit 33000 rselini in it
+        deal(sec.rselini, address(user), 33_000e6);
+        vm.prank(user);
+        uint128 accountId = ICoreProxy(sec.core).createAccount(user);
+        vm.prank(user);
+        ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: address(sec.rselini), amount: 33_000e6 });
+
+        // user executes short trade on ETH
+        executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });
+
+        // user closes the short trade on ETH and goes same long
+        executeCoreMatchOrder({
+            marketId: 1,
+            sender: user,
+            base: sd(20e18),
+            priceLimit: ud(type(uint256).max),
+            accountId: accountId
+        });
+
+        // withdraw 100 reselini from account
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.rselini, 100e6, sec.destinationChainId);
+    }
+
+    function check_PassivePoolWithRamber() public {
+        mockFreshPrices();
+
+        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.ramber);
+
+        vm.prank(sec.multisig);
+        collateralConfig.cap = type(uint256).max;
+        ICoreProxy(sec.core).setCollateralConfig(1, sec.ramber, collateralConfig, parentCollateralConfig);
+
+        (address user, uint256 userPk) = makeAddrAndKey("user");
+
+        uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+        // add 3000 ramber to the passive pool directly
+
+        deal(sec.ramber, address(user), 3000e6);
+        vm.prank(user);
+        ICoreProxy(sec.core).deposit({
+            accountId: sec.passivePoolAccountId,
+            collateral: address(sec.ramber),
+            amount: 3000e6
+        });
+
+        // check that the new 3000 ramber does not influence the share price
+        uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+        assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
+
+        // make sure that the passive pool deposit works
+        deal(sec.usdc, sec.periphery, 10e6);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
+        vm.mockCall(
+            dec.socketExecutionHelper[sec.usdc],
+            abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
+            abi.encode(10e6)
+        );
+
+        IPeripheryProxy(sec.periphery).depositPassivePool(
+            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: 0 })
+        );
+
+        uint256 sharesIn = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user);
+
+        // make sure that the passive pool withdrawal works
+        vm.prank(user);
+        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
+        assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
+
+        // create new account and deposit 33000 ramber in it
+        deal(sec.ramber, address(user), 33_000e6);
+        vm.prank(user);
+        uint128 accountId = ICoreProxy(sec.core).createAccount(user);
+        vm.prank(user);
+        ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: address(sec.ramber), amount: 33_000e6 });
+
+        // user executes short trade on ETH
+        executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });
+
+        // user closes the short trade on ETH and goes same long
+        executeCoreMatchOrder({
+            marketId: 1,
+            sender: user,
+            base: sd(20e18),
+            priceLimit: ud(type(uint256).max),
+            accountId: accountId
+        });
+
+        // withdraw 100 reselini from account
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.ramber, 100e6, sec.destinationChainId);
+    }
+
     function autoRebalancePool(bool partialAutoRebalance) internal {
         removeCollateralWithdrawalLimit(sec.rusd);
         removeCollateralWithdrawalLimit(sec.deusd);

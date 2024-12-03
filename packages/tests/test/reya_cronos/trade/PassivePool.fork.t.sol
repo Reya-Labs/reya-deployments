@@ -39,6 +39,14 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         check_PassivePoolWithSdeusd();
     }
 
+    function test_Cronos_PassivePoolWithRselini() public {
+        check_PassivePoolWithRselini();
+    }
+
+    function test_Cronos_PassivePoolWithRamber() public {
+        check_PassivePoolWithRamber();
+    }
+
     function test_Cronos_PassivePoolAutoRebalance_CurrentTargets() public {
         check_autoRebalance_currentTargets();
     }
@@ -94,6 +102,14 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
 
     function test_Cronos_DepositV2_RevertWhenTokenIsSusde() public {
         check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.susde);
+    }
+
+    function test_Cronos_DepositV2_RevertWhenTokenIsRselini() public {
+        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.rselini);
+    }
+
+    function test_Cronos_DepositV2_RevertWhenTokenIsRamber() public {
+        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.ramber);
     }
 
     function test_Cronos_SetTokenTargetRatio_RevertWhenWSTETH() public {
