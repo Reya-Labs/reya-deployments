@@ -1,0 +1,13 @@
+[invoke.ramber_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= contracts.RAMBERProxy.address %>",
+    { collateralAdapter = "<%= settings.ramberCollateralAdapter %>", withdrawalWindowSize = "<%= settings.ramberWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.ramberWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = [
+    'invoke.upgrade_core_proxy',
+    'invoke.upgrade_ramber_proxy',
+    'var.global_collateral_configs',
+]

@@ -45,6 +45,7 @@ include = [
     "tokens/deusd.toml",
     "tokens/sdeusd.toml",
     "tokens/rselini.toml",
+    "tokens/ramber.toml",
 ]
 
 # This var acts as an anchor point in dependencies.

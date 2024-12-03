@@ -125,7 +125,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         });
 
         // withdraw 1 wETH from account
-        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.weth, 1e18, sec.mainChainId);
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.weth, 1e18, sec.destinationChainId);
     }
 
     function check_PassivePoolWithUsde() public {
@@ -194,7 +194,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         });
 
         // withdraw 100 USDe from account
-        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.usde, 100e18, sec.mainChainId);
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.usde, 100e18, sec.destinationChainId);
     }
 
     function check_PassivePoolWithSusde() public {
@@ -263,7 +263,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         });
 
         // withdraw 100 sUSDe from account
-        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.susde, 100e18, sec.mainChainId);
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.susde, 100e18, sec.destinationChainId);
     }
 
     function check_PassivePoolWithDeusd() public {
@@ -332,7 +332,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         });
 
         // withdraw 100 deUSD from account
-        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.deusd, 100e18, sec.mainChainId);
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.deusd, 100e18, sec.destinationChainId);
     }
 
     function check_PassivePoolWithSdeusd() public {
@@ -402,7 +402,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         });
 
         // withdraw 100 sdeUSD from account
-        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.sdeusd, 100e18, sec.mainChainId);
+        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.sdeusd, 100e18, sec.destinationChainId);
     }
 
     function autoRebalancePool(bool partialAutoRebalance) internal {
@@ -441,12 +441,12 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                     }
 
                     vm.prank(dec.socketController[tokenIn]);
-                    IERC20TokenModule(tokenIn).mint(sec.rebalancer1, rebalanceAmounts.amountIn);
+                    IERC20TokenModule(tokenIn).mint(sec.poolRebalancer, rebalanceAmounts.amountIn);
 
-                    vm.prank(sec.rebalancer1);
+                    vm.prank(sec.poolRebalancer);
                     IERC20TokenModule(tokenIn).approve(sec.pool, rebalanceAmounts.amountIn);
 
-                    vm.prank(sec.rebalancer1);
+                    vm.prank(sec.poolRebalancer);
                     IPassivePoolProxy(sec.pool).triggerAutoRebalance(
                         sec.passivePoolId,
                         AutoRebalanceInput({

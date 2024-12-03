@@ -12,4 +12,5 @@ include = [
     "configs/tokens/sdeusd.toml",
     "configs/market_vol_configurators.toml",
     "configs/tokens/rselini.toml",
+    "configs/tokens/ramber.toml",
 ]
