@@ -27,6 +27,8 @@ import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol
 import { sd, SD59x18, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
+import { console2 } from "forge-std/Test.sol";
+
 struct LocalState {
     uint256 lmTokenTotalSupply;
     uint256 lmTokenRecipientBalance1;
@@ -44,11 +46,13 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         address lmToken,
         address subscriber,
         address redeemer,
+        address custodian,
         address attacker
     )
         private
     {
         vm.assume(attacker != subscriber);
+        vm.assume(attacker != address(0));
 
         uint256 totalSupplyBefore = IERC20TokenModule(lmToken).totalSupply();
 
@@ -56,26 +60,51 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         // attacker cannot mint
         vm.prank(attacker);
-        vm.expectRevert();
-        IERC20TokenModule(lmToken).mint(user, 100e6);
-
-        // user cannot mint
-        vm.prank(user);
-        vm.expectRevert();
-        IERC20TokenModule(lmToken).mint(user, 100e6);
-
-        // subscriber mints to attacker
-        deal(sec.rusd, address(subscriber), 100e6);
-        vm.prank(subscriber);
+        vm.expectRevert(
+            abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, keccak256(bytes("subscription")))
+        );
         IShareTokenProxy(lmToken).subscribe(
             SubscriptionInputs({
                 recipient: attacker,
-                custodian: user,
+                custodian: custodian,
                 tokenIn: sec.rusd,
                 amountIn: 100e6,
                 minSharesOut: 0
             })
         );
+
+        // user cannot mint
+        vm.prank(user);
+        vm.expectRevert(
+            abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, keccak256(bytes("subscription")))
+        );
+        IShareTokenProxy(lmToken).subscribe(
+            SubscriptionInputs({
+                recipient: attacker,
+                custodian: custodian,
+                tokenIn: sec.rusd,
+                amountIn: 100e6,
+                minSharesOut: 0
+            })
+        );
+
+        // subscriber mints to attacker
+        deal(sec.rusd, address(subscriber), 100e6);
+        vm.prank(subscriber);
+        IERC20TokenModule(sec.rusd).approve(lmToken, 100e6);
+        vm.prank(subscriber);
+        IShareTokenProxy(lmToken).subscribe(
+            SubscriptionInputs({
+                recipient: attacker,
+                custodian: custodian,
+                tokenIn: sec.rusd,
+                amountIn: 100e6,
+                minSharesOut: 0
+            })
+        );
+
+        vm.prank(custodian);
+        IERC20TokenModule(sec.rusd).transfer(lmToken, 100e6);
 
         // attacker cannot burn
         vm.prank(attacker);
@@ -102,7 +131,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         );
 
         uint256 totalSupplyAfter = IERC20TokenModule(lmToken).totalSupply();
-        assertEq(totalSupplyAfter, totalSupplyBefore);
+        assertEq(totalSupplyAfter, totalSupplyBefore + 50e18);
     }
 
     function check_LmToken_RedemptionAndSubscription(
@@ -187,7 +216,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
     function check_lmToken_view_functions(address lmToken, bytes32 lmTokenUsdcNodeId) private {
         (address user,) = makeAddrAndKey("user");
 
-        uint256 lmTokenAmount = 1e6;
+        uint256 lmTokenAmount = 1e18;
 
         // deposit new margin account
         uint128 accountId = depositNewMA(user, lmToken, lmTokenAmount);
@@ -195,8 +224,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         vm.prank(user);
         ICoreProxy(sec.core).activateFirstMarketForAccount(accountId, 1);
 
-        NodeOutput.Data memory lmTokenUsdcNodeOutput =
-            IOracleManagerProxy(sec.oracleManager).process(lmTokenUsdcNodeId);
+        NodeOutput.Data memory lmTokenUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(lmTokenUsdcNodeId);
 
         (, ParentCollateralConfig memory parentCollateralConfig,) = ICoreProxy(sec.core).getCollateralConfig(1, lmToken);
         SD59x18 lmTokenAmountInUSD = sd(int256(lmTokenAmount)).mul(sd(int256(lmTokenUsdcNodeOutput.price))).mul(
@@ -232,7 +260,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
     function check_lmToken_cap_exceeded(address lmToken) private {
         (address user, uint256 userPk) = makeAddrAndKey("user");
-        uint256 amount = 2_000_000e6; // denominated in lmToken
+        uint256 amount = 2_000_001e18; // denominated in lmToken
         uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(10_000e18);
@@ -244,7 +272,11 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector, 1, lmToken, 500_000e18, collateralPoolLmTokenBalance + amount
+                ICoreProxy.CollateralCapExceeded.selector,
+                1,
+                lmToken,
+                2_000_000e18,
+                collateralPoolLmTokenBalance + amount
             )
         );
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
@@ -252,23 +284,15 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
     function check_lmToken_deposit_withdraw(address lmToken) private {
         (address user, uint256 userPk) = makeAddrAndKey("user");
-        uint256 amount = 1000e6; // denominated in lmToken
+        uint256 amount = 1000e18; // denominated in lmToken
 
         // deposit new margin account
         uint128 accountId = depositNewMA(user, lmToken, amount);
 
         uint256 coreLmTokenBalanceBefore = IERC20TokenModule(lmToken).balanceOf(sec.core);
 
-        amount = 100e6;
-        Command[] memory commands = new Command[](1);
-        commands[0] = Command({
-            commandType: uint8(CommandType.Withdraw),
-            inputs: abi.encode(lmToken, amount),
-            marketId: 0,
-            exchangeId: 0
-        });
-        vm.prank(user);
-        ICoreProxy(sec.core).execute(accountId, commands);
+        amount = 100e18;
+        withdrawMA(accountId, lmToken, amount);
 
         uint256 coreLmTokenBalanceAfter = IERC20TokenModule(lmToken).balanceOf(sec.core);
 
@@ -279,13 +303,17 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         mockFreshPrices();
 
         (address user, uint256 userPk) = makeAddrAndKey("user");
-        uint256 amount = 3000e6; // denominated in lmToken
+        uint256 amount = 3000e18; // denominated in lmToken
         uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(10_000e18);
 
         // deposit new margin account
         uint128 accountId = depositNewMA(user, lmToken, amount);
+
+        vm.prank(user);
+        ICoreProxy(sec.core).activateFirstMarketForAccount(accountId, 1);
+        console2.log(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).marginBalance);
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
@@ -299,18 +327,20 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
             DepositExistingMAInputs({ accountId: accountId, token: sec.usdc })
         );
 
-        amount = 100e6;
-        executePeripheryWithdrawMA(user, userPk, 2, accountId, lmToken, amount, ethereumChainId);
+        amount = 100e18;
+        withdrawMA(accountId, lmToken, amount);
 
         checkPoolHealth();
     }
 
     function checkFuzz_rseliniMintBurn(address attacker) public {
-        checkFuzz_LmTokenMintBurn(sec.rselini, sec.rseliniSubscriber, sec.rseliniRedeemer, attacker);
+        checkFuzz_LmTokenMintBurn(
+            sec.rselini, sec.rseliniSubscriber, sec.rseliniRedeemer, sec.rseliniCustodian, attacker
+        );
     }
 
     function checkFuzz_ramberMintBurn(address attacker) public {
-        checkFuzz_LmTokenMintBurn(sec.ramber, sec.ramberSubscriber, sec.ramberRedeemer, attacker);
+        checkFuzz_LmTokenMintBurn(sec.ramber, sec.ramberSubscriber, sec.ramberRedeemer, sec.ramberCustodian, attacker);
     }
 
     function check_rseliniRedemptionAndSubscription() public {

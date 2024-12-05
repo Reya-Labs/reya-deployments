@@ -95,12 +95,4 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
     function test_PassivePoolDepositV2_RevertWhenTokenIsSusde() public {
         check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.susde);
     }
-
-    function test_PassivePoolDepositV2_RevertWhenTokenIsRselini() public {
-        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.rselini);
-    }
-
-    function test_PassivePoolDepositV2_RevertWhenTokenIsRamber() public {
-        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.ramber);
-    }
 }

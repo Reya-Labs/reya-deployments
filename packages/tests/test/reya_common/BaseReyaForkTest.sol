@@ -107,7 +107,20 @@ contract BaseReyaForkTest is StorageReyaForkTest {
                 DepositNewMAInputs({ accountOwner: user, token: address(collateral) })
             );
         }
-        
+    }
+
+    function withdrawMA(uint128 accountId, address collateral, uint256 amount) internal {
+        address accountOwner = ICoreProxy(sec.core).getAccountOwner(accountId);
+
+        Command_Core[] memory commands = new Command_Core[](1);
+        commands[0] = Command_Core({
+            commandType: uint8(CommandType.Withdraw),
+            inputs: abi.encode(collateral, amount),
+            marketId: 0,
+            exchangeId: 0
+        });
+        vm.prank(accountOwner);
+        ICoreProxy(sec.core).execute(accountId, commands);
     }
 
     function getMatchOrderPeripheryCommand(

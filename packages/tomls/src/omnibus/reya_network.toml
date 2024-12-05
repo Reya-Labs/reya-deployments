@@ -752,8 +752,8 @@ sdeusdUsdcMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
-seliniUsdcReyaLmMaxStaleDuration = "0"
-amberUsdcReyaLmMaxStaleDuration = "0"
+seliniUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+amberUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 
 [var.pool_1]
 pool1_quoteTokenTargetRatioUnscaled = "0.1"

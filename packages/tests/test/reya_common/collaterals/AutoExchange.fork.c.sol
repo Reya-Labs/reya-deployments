@@ -1060,7 +1060,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         // deposit rUSD and rSelini into user's account
         {
             s.userAccountId = depositNewMA(user, sec.rselini, 2200e6);
-            
+
             if (userInitialRusdBalance > 0) {
                 deal(sec.usdc, address(sec.periphery), userInitialRusdBalance);
                 mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], userInitialRusdBalance);

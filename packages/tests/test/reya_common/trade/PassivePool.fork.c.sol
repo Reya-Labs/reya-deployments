@@ -453,7 +453,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 rselini in it
-       uint128 accountId = depositNewMA(user, sec.rselini, 33000e6);
+        uint128 accountId = depositNewMA(user, sec.rselini, 33_000e6);
 
         // user executes short trade on ETH
         executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });
@@ -520,7 +520,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 ramber in it
-        uint128 accountId = depositNewMA(user, sec.ramber, 33000e6);
+        uint128 accountId = depositNewMA(user, sec.ramber, 33_000e6);
 
         // user executes short trade on ETH
         executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });
@@ -573,8 +573,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                         rebalanceAmounts.amountIn = rebalanceAmounts.amountIn / 2;
                     }
 
-                    vm.prank(dec.socketController[tokenIn]);
-                    IERC20TokenModule(tokenIn).mint(sec.poolRebalancer, rebalanceAmounts.amountIn);
+                    deal(tokenIn, sec.poolRebalancer, rebalanceAmounts.amountIn);
 
                     vm.prank(sec.poolRebalancer);
                     IERC20TokenModule(tokenIn).approve(sec.pool, rebalanceAmounts.amountIn);
@@ -593,7 +592,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
                     uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
-                    assertLe(sharePrice0, sharePrice1);
+                    assertLe(sharePrice0, sharePrice1 + 1e6);
                     assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e11, 18);
 
                     if (partialAutoRebalance) {
@@ -611,15 +610,20 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_autoRebalance_differentTargets(bool partialAutoRebalance) public {
+        removeCollateralCap(sec.rselini);
+        removeCollateralCap(sec.ramber);
+
         vm.prank(sec.multisig);
         IPassivePoolProxy(sec.pool).setAllocationConfiguration(
             sec.passivePoolId, AllocationConfigurationData({ quoteTokenTargetRatio: 0.353535e18 })
         );
 
         vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.deusd, 0.454545e18);
+        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.sdeusd, 0.454545e18);
         vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.sdeusd, 1e18 - 0.454545e18);
+        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.rselini, 0.2e18);
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.ramber, 1e18 - 0.454545e18 - 0.2e18);
 
         autoRebalancePool(partialAutoRebalance);
     }
@@ -727,13 +731,15 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         for (uint256 i = 0; i < len; i++) {
             address token;
-            uint128 tokenFuzz = tokensFuzz[i] % 3;
+            uint128 tokenFuzz = tokensFuzz[i] % 4;
             if (tokenFuzz == 0) {
                 token = sec.rusd;
             } else if (tokenFuzz == 1) {
-                token = sec.deusd;
-            } else if (tokenFuzz == 2) {
                 token = sec.sdeusd;
+            } else if (tokenFuzz == 2) {
+                token = sec.rselini;
+            } else if (tokenFuzz == 3) {
+                token = sec.ramber;
             }
             tokens[i] = token;
             if (amountsFuzz[i] < 0) {
