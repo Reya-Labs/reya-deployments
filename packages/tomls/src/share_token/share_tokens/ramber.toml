@@ -64,6 +64,12 @@ func = "setGlobalConfiguration"
 args = [{ coreProxy = "<%= contracts.CoreProxy.address %>" }]
 depends = ["invoke.upgrade_ramber_proxy"]
 
+[invoke.ramber_enable_minter1]
+target = ["RAMBERProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.ramberMinter1 %>"]
+
 [invoke.ramber_enable_subscriber]
 target = ["RAMBERProxy"]
 fromCall.func = "owner"

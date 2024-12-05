@@ -64,6 +64,12 @@ func = "setGlobalConfiguration"
 args = [{ coreProxy = "<%= contracts.CoreProxy.address %>" }]
 depends = ["invoke.upgrade_rselini_proxy"]
 
+[invoke.rselini_enable_minter1]
+target = ["RSELINIProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.rseliniMinter1 %>"]
+
 [invoke.rselini_enable_subscriber]
 target = ["RSELINIProxy"]
 fromCall.func = "owner"
