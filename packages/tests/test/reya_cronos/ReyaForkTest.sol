@@ -63,11 +63,11 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.coExecutionBot = 0xB6EaF546b84E1f917579FC4FD3d7082DfE2ba212;
         sec.poolRebalancer = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
         sec.rseliniCustodian = 0x45556408e543158f74403e882E3C8c23eCD9f732;
-        sec.rseliniSubscriber = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
-        sec.rseliniRedeemer = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+        sec.rseliniSubscriber = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
+        sec.rseliniRedeemer = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
         sec.ramberCustodian = 0x45556408e543158f74403e882E3C8c23eCD9f732;
-        sec.ramberSubscriber = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
-        sec.ramberRedeemer = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+        sec.ramberSubscriber = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
+        sec.ramberRedeemer = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
 
         // node ids for spot prices
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
