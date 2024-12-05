@@ -27,8 +27,6 @@ import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol
 import { sd, SD59x18, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
-import { console2 } from "forge-std/Test.sol";
-
 struct LocalState {
     uint256 lmTokenTotalSupply;
     uint256 lmTokenRecipientBalance1;
@@ -313,7 +311,6 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         vm.prank(user);
         ICoreProxy(sec.core).activateFirstMarketForAccount(accountId, 1);
-        console2.log(ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId).marginBalance);
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
