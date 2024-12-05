@@ -91,7 +91,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         vm.prank(subscriber);
         IERC20TokenModule(sec.rusd).approve(lmToken, 100e6);
         vm.prank(subscriber);
-        IShareTokenProxy(lmToken).subscribe(
+        uint256 sharesOut = IShareTokenProxy(lmToken).subscribe(
             SubscriptionInputs({
                 recipient: attacker,
                 custodian: custodian,
@@ -129,7 +129,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         );
 
         uint256 totalSupplyAfter = IERC20TokenModule(lmToken).totalSupply();
-        assertEq(totalSupplyAfter, totalSupplyBefore + 50e18);
+        assertEq(totalSupplyAfter, totalSupplyBefore + sharesOut - 50e18);
     }
 
     function check_LmToken_RedemptionAndSubscription(
@@ -185,9 +185,9 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         s0 = s1;
 
-        // custodian sends 50 rusd back to LM token
+        // custodian sends 51 rusd back to LM token
         vm.prank(custodian);
-        IERC20TokenModule(sec.rusd).transfer(lmToken, 50e6);
+        IERC20TokenModule(sec.rusd).transfer(lmToken, 51e6);
 
         // recipient sends 50 LM tokens to redeemer
         vm.prank(recipient1);
@@ -195,9 +195,11 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         // redeemer redeems 50 shares from LM token
         vm.prank(redeemer);
-        IShareTokenProxy(lmToken).redeem(
+        uint256 tokenOut = IShareTokenProxy(lmToken).redeem(
             RedemptionInputs({ recipient: recipient2, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
         );
+
+        assertApproxEqAbsDecimal(tokenOut, 50e6, 1e6, 6);
 
         // check balances after redemption
         s1.lmTokenTotalSupply = IShareTokenProxy(lmToken).totalSupply();
@@ -209,8 +211,9 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         assertEq(s1.lmTokenTotalSupply, s0.lmTokenTotalSupply - 50e18);
         assertEq(s1.lmTokenRecipientBalance1, s0.lmTokenRecipientBalance1 - 50e18);
         assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance);
-        assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 50e6);
-        assertEq(s1.rUsdRecipientBalance2, s0.rUsdRecipientBalance2 + 50e6);
+        assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 51e6);
+        assertEq(s1.rUsdRecipientBalance2, s0.rUsdRecipientBalance2 + tokenOut);
+        assertEq(IERC20TokenModule(sec.rusd).balanceOf(lmToken), 51e6 - tokenOut);
     }
 
     function check_lmToken_view_functions(address lmToken, bytes32 lmTokenUsdcNodeId) private {
