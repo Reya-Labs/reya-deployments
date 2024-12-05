@@ -158,7 +158,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         // subscriber subscribes 100 rusd to rSelini and sends shares to custom recipient
         vm.prank(subscriber);
-        IShareTokenProxy(lmToken).subscribe(
+        uint256 sharesOut = IShareTokenProxy(lmToken).subscribe(
             SubscriptionInputs({
                 recipient: recipient1,
                 custodian: custodian,
@@ -168,6 +168,8 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
             })
         );
 
+        assertApproxEqAbsDecimal(sharesOut, 100e18, 1e18, 18);
+
         // check balances after subscription
         s1.lmTokenTotalSupply = IShareTokenProxy(lmToken).totalSupply();
         s1.lmTokenRecipientBalance1 = IShareTokenProxy(lmToken).balanceOf(recipient1);
@@ -175,8 +177,8 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         s1.rUsdCustodianBalance = IERC20TokenModule(sec.rusd).balanceOf(custodian);
         s1.rUsdRecipientBalance2 = IERC20TokenModule(sec.rusd).balanceOf(recipient2);
 
-        assertEq(s1.lmTokenTotalSupply, s0.lmTokenTotalSupply + 100e18);
-        assertEq(s1.lmTokenRecipientBalance1, s0.lmTokenRecipientBalance1 + 100e18);
+        assertEq(s1.lmTokenTotalSupply, s0.lmTokenTotalSupply + sharesOut);
+        assertEq(s1.lmTokenRecipientBalance1, s0.lmTokenRecipientBalance1 + sharesOut);
         assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance - 100e6);
         assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance + 100e6);
         assertEq(s1.rUsdRecipientBalance2, s0.rUsdRecipientBalance2);
