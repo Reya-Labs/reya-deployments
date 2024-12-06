@@ -758,9 +758,9 @@ amberUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 [var.pool_1]
 pool1_quoteTokenTargetRatioUnscaled = "0.1"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
-pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.8"
-pool1_RSELINITargetRatioPostQuoteUnscaled = "0.1"
-pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.1"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.7"
+pool1_RSELINITargetRatioPostQuoteUnscaled = "0.15"
+pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.15"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
