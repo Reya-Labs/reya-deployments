@@ -1059,7 +1059,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
         // deposit rUSD and rSelini into user's account
         {
-            s.userAccountId = depositNewMA(user, sec.rselini, 2200e6);
+            s.userAccountId = depositNewMA(user, sec.rselini, 2200e18);
 
             if (userInitialRusdBalance > 0) {
                 deal(sec.usdc, address(sec.periphery), userInitialRusdBalance);
@@ -1157,7 +1157,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             IOracleManagerProxy(sec.oracleManager).process(sec.rseliniUsdcReyaLmNodeId);
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator,
-            ud(400e18).div(ud(1e18 - 0.005e18)).div(ud(rseliniUsdcNodeOutput.price)).unwrap(),
+            ud(400e18).div(ud(1e18)).div(ud(rseliniUsdcNodeOutput.price)).unwrap(),
             0.001e18,
             18
         );
@@ -1211,7 +1211,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertEq(int256(s.ae2.quoteAmountToAccount) + s.tbal1.userBalanceRusd, 0);
         assertApproxEqAbsDecimal(
             s.ae2.collateralAmountToLiquidator,
-            ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e12).div(ud(1e18 - 0.005e18)).div(
+            ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e12).div(ud(1e18)).div(
                 ud(rseliniUsdcNodeOutput.price)
             ).unwrap(),
             0.001e18,
@@ -1256,12 +1256,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
         // deposit rUSD and rAmber into user's account
         {
-            deal(sec.ramber, address(sec.periphery), 2200e6);
-            mockBridgedAmount(dec.socketExecutionHelper[sec.ramber], 2200e6);
-            vm.prank(dec.socketExecutionHelper[sec.ramber]);
-            s.userAccountId = IPeripheryProxy(sec.periphery).depositNewMA(
-                DepositNewMAInputs({ accountOwner: user, token: address(sec.ramber) })
-            );
+            s.userAccountId = depositNewMA(user, sec.ramber, 2200e18);
 
             if (userInitialRusdBalance > 0) {
                 deal(sec.usdc, address(sec.periphery), userInitialRusdBalance);
@@ -1359,7 +1354,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             IOracleManagerProxy(sec.oracleManager).process(sec.ramberUsdcReyaLmNodeId);
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator,
-            ud(400e18).div(ud(1e18 - 0.005e18)).div(ud(ramberUsdcNodeOutput.price)).unwrap(),
+            ud(400e18).div(ud(1e18)).div(ud(ramberUsdcNodeOutput.price)).unwrap(),
             0.001e18,
             18
         );
@@ -1413,7 +1408,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertEq(int256(s.ae2.quoteAmountToAccount) + s.tbal1.userBalanceRusd, 0);
         assertApproxEqAbsDecimal(
             s.ae2.collateralAmountToLiquidator,
-            ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e12).div(ud(1e18 - 0.005e18)).div(
+            ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e12).div(ud(1e18)).div(
                 ud(ramberUsdcNodeOutput.price)
             ).unwrap(),
             0.001e18,

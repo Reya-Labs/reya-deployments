@@ -185,6 +185,8 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         s0 = s1;
 
+        uint256 lmtokenRusdBalanceBefore = IERC20TokenModule(sec.rusd).balanceOf(lmToken);
+
         // custodian sends 51 rusd back to LM token
         vm.prank(custodian);
         IERC20TokenModule(sec.rusd).transfer(lmToken, 51e6);
@@ -213,7 +215,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance);
         assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 51e6);
         assertEq(s1.rUsdRecipientBalance2, s0.rUsdRecipientBalance2 + tokenOut);
-        assertEq(IERC20TokenModule(sec.rusd).balanceOf(lmToken), 51e6 - tokenOut);
+        assertEq(IERC20TokenModule(sec.rusd).balanceOf(lmToken), lmtokenRusdBalanceBefore + 51e6 - tokenOut);
     }
 
     function check_lmToken_view_functions(address lmToken, bytes32 lmTokenUsdcNodeId) private {

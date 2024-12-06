@@ -420,7 +420,9 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
         // add 3000 rselini to the passive pool directly
-        deal(sec.rselini, address(user), 3000e6);
+        deal(sec.rselini, address(user), 3000e18);
+        vm.prank(user);
+        IERC20TokenModule(sec.rselini).approve(sec.core, 3000e18);
         vm.prank(user);
         ICoreProxy(sec.core).deposit({
             accountId: sec.passivePoolAccountId,
@@ -453,7 +455,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 rselini in it
-        uint128 accountId = depositNewMA(user, sec.rselini, 33_000e6);
+        uint128 accountId = depositNewMA(user, sec.rselini, 33_000e18);
 
         // user executes short trade on ETH
         executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });
@@ -468,7 +470,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         });
 
         // withdraw 100 reselini from account
-        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.rselini, 100e6, sec.destinationChainId);
+        withdrawMA(accountId, sec.rselini, 100e18);
     }
 
     function check_PassivePoolWithRamber() public {
@@ -487,7 +489,9 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // add 3000 ramber to the passive pool directly
 
-        deal(sec.ramber, address(user), 3000e6);
+        deal(sec.ramber, address(user), 3000e18);
+        vm.prank(user);
+        IERC20TokenModule(sec.ramber).approve(sec.core, 3000e18);
         vm.prank(user);
         ICoreProxy(sec.core).deposit({
             accountId: sec.passivePoolAccountId,
@@ -520,7 +524,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 ramber in it
-        uint128 accountId = depositNewMA(user, sec.ramber, 33_000e6);
+        uint128 accountId = depositNewMA(user, sec.ramber, 33_000e18);
 
         // user executes short trade on ETH
         executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });
@@ -535,7 +539,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         });
 
         // withdraw 100 reselini from account
-        executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.ramber, 100e6, sec.destinationChainId);
+        withdrawMA(accountId, sec.ramber, 100e18);
     }
 
     function autoRebalancePool(bool partialAutoRebalance) internal {
