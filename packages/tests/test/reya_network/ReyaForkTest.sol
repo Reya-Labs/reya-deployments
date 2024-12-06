@@ -58,7 +58,7 @@ contract ReyaForkTest is StorageReyaForkTest {
 
         // Reya bots
         sec.coExecutionBot = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
-        sec.poolRebalancer = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+        sec.poolRebalancer = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
         sec.rseliniCustodian = 0x75cfe7F41953cDfeA30C9F6A0BceC6BAA3dA71B0;
         sec.rseliniSubscriber = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
         sec.rseliniRedeemer = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
