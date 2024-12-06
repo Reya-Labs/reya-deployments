@@ -536,6 +536,8 @@ contract CamelotSwapForkCheck is BaseReyaForkTest {
     // }
 
     function check_RevertWhen_SwapAndUnhealthyAccount() internal {
+        removeMarketsOILimit();
+
         uint256 rusdAmount = 1_000_000e6;
         uint256 minWethAmount = 0.02e18;
         uint128 marketId = 1;

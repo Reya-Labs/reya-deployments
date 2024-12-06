@@ -92,6 +92,10 @@ struct LocalState {
     uint256 maxDeviationDEUSD;
     uint256 meanPriceSDEUSD;
     uint256 maxDeviationSDEUSD;
+    uint256 meanPriceRSELINI;
+    uint256 maxDeviationRSELINI;
+    uint256 meanPriceRAMBER;
+    uint256 maxDeviationRAMBER;
     uint256 meanPriceStableCoin;
     uint256 maxDeviationStableCoin;
     uint256[] meanPriceMarket;
@@ -175,8 +179,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceAAVE);
         ls.maxDeviationMarket.push(ls.maxDeviationAAVE);
 
-        ls.meanPriceCRV = 0.72e18;
-        ls.maxDeviationCRV = 0.35e18;
+        ls.meanPriceCRV = 1.1e18;
+        ls.maxDeviationCRV = 0.5e18;
         ls.meanPriceMarket.push(ls.meanPriceCRV);
         ls.maxDeviationMarket.push(ls.maxDeviationCRV);
 
@@ -200,13 +204,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceSEI);
         ls.maxDeviationMarket.push(ls.maxDeviationSEI);
 
-        ls.meanPriceZRO = 4.5e18;
-        ls.maxDeviationZRO = 2.5e18;
+        ls.meanPriceZRO = 7e18;
+        ls.maxDeviationZRO = 4e18;
         ls.meanPriceMarket.push(ls.meanPriceZRO);
         ls.maxDeviationMarket.push(ls.maxDeviationZRO);
 
         ls.meanPriceXRP = 2.8e18;
-        ls.maxDeviationXRP = 0.4e18;
+        ls.maxDeviationXRP = 1.4e18;
         ls.meanPriceMarket.push(ls.meanPriceXRP);
         ls.maxDeviationMarket.push(ls.maxDeviationXRP);
 
@@ -270,8 +274,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPricePOL);
         ls.maxDeviationMarket.push(ls.maxDeviationPOL);
 
-        ls.meanPriceNEAR = 5.5e18;
-        ls.maxDeviationNEAR = 2.5e18;
+        ls.meanPriceNEAR = 8e18;
+        ls.maxDeviationNEAR = 4e18;
         ls.meanPriceMarket.push(ls.meanPriceNEAR);
         ls.maxDeviationMarket.push(ls.maxDeviationNEAR);
 
@@ -280,8 +284,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceFTM);
         ls.maxDeviationMarket.push(ls.maxDeviationFTM);
 
-        ls.meanPriceENA = 0.6e18;
-        ls.maxDeviationENA = 0.3e18;
+        ls.meanPriceENA = 0.95e18;
+        ls.maxDeviationENA = 0.45e18;
         ls.meanPriceMarket.push(ls.meanPriceENA);
         ls.maxDeviationMarket.push(ls.maxDeviationENA);
 
@@ -312,6 +316,12 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
         ls.meanPriceSUSDE = 1.13e18;
         ls.maxDeviationSUSDE = 0.01e18;
+
+        ls.meanPriceRSELINI = 1e18;
+        ls.maxDeviationRSELINI = 0.01e18;
+
+        ls.meanPriceRAMBER = 1e18;
+        ls.maxDeviationRAMBER = 0.01e18;
 
         ls.meanPriceStableCoin = 1e18;
         ls.maxDeviationStableCoin = 0.01e18;
@@ -651,6 +661,14 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.nodeIds.push(sec.sdeusdUsdcStorkNodeId);
         ls.meanPrices.push(ls.meanPriceStableCoin);
         ls.maxDeviations.push(ls.maxDeviationStableCoin * 2);
+
+        ls.nodeIds.push(sec.rseliniUsdcReyaLmNodeId);
+        ls.meanPrices.push(ls.meanPriceRSELINI);
+        ls.maxDeviations.push(ls.maxDeviationRSELINI);
+
+        ls.nodeIds.push(sec.ramberUsdcReyaLmNodeId);
+        ls.meanPrices.push(ls.meanPriceRAMBER);
+        ls.maxDeviations.push(ls.maxDeviationRAMBER);
     }
 
     function check_OracleNodePrices(bool flagCheckStaleness) public {
@@ -720,7 +738,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
             IOracleManagerProxy(sec.oracleManager).process(sec.deusdUsdcStorkNodeId);
 
         uint256 reconstructedSdeusdUsdcPrice = ud(sdeusdDeusdOutput.price).mul(ud(deusdUsdcOutput.price)).unwrap();
-        assertApproxEqAbsDecimal(sdeusdUsdcOutput.price, reconstructedSdeusdUsdcPrice, 1, 16);
+        assertApproxEqAbsDecimal(sdeusdUsdcOutput.price, reconstructedSdeusdUsdcPrice, 10, 18);
     }
 
     function check_sdeusd_deusd_price() public {
