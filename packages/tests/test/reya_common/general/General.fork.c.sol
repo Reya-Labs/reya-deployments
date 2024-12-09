@@ -169,8 +169,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceMKR);
         ls.maxDeviationMarket.push(ls.maxDeviationMKR);
 
-        ls.meanPriceLINK = 15e18;
-        ls.maxDeviationLINK = 10e18;
+        ls.meanPriceLINK = 25e18;
+        ls.maxDeviationLINK = 15e18;
         ls.meanPriceMarket.push(ls.meanPriceLINK);
         ls.maxDeviationMarket.push(ls.maxDeviationLINK);
 
