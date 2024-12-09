@@ -546,6 +546,11 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         removeCollateralWithdrawalLimit(sec.rusd);
         removeCollateralWithdrawalLimit(sec.deusd);
         removeCollateralWithdrawalLimit(sec.sdeusd);
+        removeCollateralWithdrawalLimit(sec.rselini);
+        removeCollateralWithdrawalLimit(sec.ramber);
+
+        removeCollateralCap(sec.rselini);
+        removeCollateralCap(sec.ramber);
 
         address quoteToken = sec.rusd;
         address[] memory supportingTokens = IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
