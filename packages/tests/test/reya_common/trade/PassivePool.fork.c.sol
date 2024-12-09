@@ -542,10 +542,15 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         withdrawMA(accountId, sec.ramber, 100e18);
     }
 
-    function autoRebalancePool(bool partialAutoRebalance) internal {
+    function autoRebalancePool(bool partialAutoRebalance, bool mintLmTokens) internal {
         removeCollateralWithdrawalLimit(sec.rusd);
         removeCollateralWithdrawalLimit(sec.deusd);
         removeCollateralWithdrawalLimit(sec.sdeusd);
+        removeCollateralWithdrawalLimit(sec.rselini);
+        removeCollateralWithdrawalLimit(sec.ramber);
+
+        removeCollateralCap(sec.rselini);
+        removeCollateralCap(sec.ramber);
 
         address quoteToken = sec.rusd;
         address[] memory supportingTokens = IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
@@ -577,7 +582,12 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                         rebalanceAmounts.amountIn = rebalanceAmounts.amountIn / 2;
                     }
 
-                    deal(tokenIn, sec.poolRebalancer, rebalanceAmounts.amountIn);
+                    if (isLmToken(tokenIn) && mintLmTokens) {
+                        vm.prank(sec.poolRebalancer);
+                        IERC20TokenModule(tokenIn).mint(sec.poolRebalancer, rebalanceAmounts.amountIn);
+                    } else {
+                        deal(tokenIn, sec.poolRebalancer, rebalanceAmounts.amountIn);
+                    }
 
                     vm.prank(sec.poolRebalancer);
                     IERC20TokenModule(tokenIn).approve(sec.pool, rebalanceAmounts.amountIn);
@@ -609,11 +619,11 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         }
     }
 
-    function check_autoRebalance_currentTargets() public {
-        autoRebalancePool(false);
+    function check_autoRebalance_currentTargets(bool mintLmTokens) public {
+        autoRebalancePool(false, mintLmTokens);
     }
 
-    function check_autoRebalance_differentTargets(bool partialAutoRebalance) public {
+    function check_autoRebalance_differentTargets(bool partialAutoRebalance, bool mintLmTokens) public {
         removeCollateralCap(sec.rselini);
         removeCollateralCap(sec.ramber);
 
@@ -629,18 +639,18 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         vm.prank(sec.multisig);
         IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.ramber, 1e18 - 0.454545e18 - 0.2e18);
 
-        autoRebalancePool(partialAutoRebalance);
+        autoRebalancePool(partialAutoRebalance, mintLmTokens);
     }
 
     function check_autoRebalance_noSharePriceChange() public {
-        check_autoRebalance_differentTargets(false);
+        check_autoRebalance_differentTargets(false, false);
     }
 
     function check_autoRebalance_maxExposure() public {
         (uint256 maxExposureShort0, uint256 maxExposureLong0) =
             IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
 
-        check_autoRebalance_differentTargets(false);
+        check_autoRebalance_differentTargets(false, false);
 
         (uint256 maxExposureShort1, uint256 maxExposureLong1) =
             IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
@@ -656,7 +666,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         int256 baseDelta = 10_000e18;
 
         uint256 simulatedPrice0 = IPassivePerpProxy(sec.perp).getSimulatedPoolPrice(marketId, baseDelta);
-        check_autoRebalance_differentTargets(false);
+        check_autoRebalance_differentTargets(false, false);
         uint256 simulatedPrice1 = IPassivePerpProxy(sec.perp).getSimulatedPoolPrice(marketId, baseDelta);
 
         assertNotEq(simulatedPrice0, simulatedPrice1);
@@ -664,7 +674,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_sharePriceChangesWhenAssetPriceChanges() public {
-        autoRebalancePool(false);
+        autoRebalancePool(false, false);
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 

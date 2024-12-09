@@ -48,15 +48,27 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
     }
 
     function test_Cronos_PassivePoolAutoRebalance_CurrentTargets() public {
-        check_autoRebalance_currentTargets();
+        check_autoRebalance_currentTargets(false);
+    }
+
+    function test_Cronos_PassivePoolAutoRebalance_CurrentTargets_MintLmTokens() public {
+        check_autoRebalance_currentTargets(true);
     }
 
     function test_Cronos_PassivePoolAutoRebalance_DifferentTargets() public {
-        check_autoRebalance_differentTargets(false);
+        check_autoRebalance_differentTargets(false, false);
+    }
+
+    function test_Cronos_PassivePoolAutoRebalance_DifferentTargets_MintLmTokens() public {
+        check_autoRebalance_differentTargets(false, true);
     }
 
     function test_Cronos_PassivePoolAutoRebalance_DifferentTargets_Partial() public {
-        check_autoRebalance_differentTargets(true);
+        check_autoRebalance_differentTargets(true, false);
+    }
+
+    function test_Cronos_PassivePoolAutoRebalance_DifferentTargets_Partial_MintLmTokens() public {
+        check_autoRebalance_differentTargets(true, true);
     }
 
     function test_Cronos_PassivePoolAutoRebalance_NoSharePriceChange() public {
