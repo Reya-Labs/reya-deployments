@@ -405,7 +405,7 @@ sdeusdEthereumSepoliaWithdrawFeeUnscaled = "65"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
-rusdWithdrawalWindowSize = "3600"
+rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
@@ -425,20 +425,20 @@ susdeWithdrawalWindowSize = "1"
 susdeWithdrawalTvlPercentageLimitUnscaled = "1.0"
 # -------------------------------------------------------------------
 deusdCollateralAdapter = "<%= AddressZero %>"
-deusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-deusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
+deusdWithdrawalWindowSize = "1"
+deusdWithdrawalTvlPercentageLimitUnscaled = "1.0"
 # -------------------------------------------------------------------
 sdeusdCollateralAdapter = "<%= AddressZero %>"
 sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
+sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.001"
 # -------------------------------------------------------------------
 rseliniCollateralAdapter = "<%= AddressZero %>"
 rseliniWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-rseliniWithdrawalTvlPercentageLimitUnscaled = "0.15"
+rseliniWithdrawalTvlPercentageLimitUnscaled = "0"
 # -------------------------------------------------------------------
 ramberCollateralAdapter = "<%= AddressZero %>"
 ramberWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-ramberWithdrawalTvlPercentageLimitUnscaled = "0.15"
+ramberWithdrawalTvlPercentageLimitUnscaled = "0"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.2"
@@ -770,9 +770,9 @@ amberUsdcReyaLmMaxStaleDuration = "0"
 [var.pool_1]
 pool1_quoteTokenTargetRatioUnscaled = "0.1"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
-pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.7"
-pool1_RSELINITargetRatioPostQuoteUnscaled = "0.15"
-pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.15"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.8"
+pool1_RSELINITargetRatioPostQuoteUnscaled = "0.1"
+pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.1"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -1663,10 +1663,10 @@ cp1Rusd_rseliniParentConfig_oracleNodeId = "<%= settings.seliniUsdcReyaLmNodeId 
 # cp1Rusd_rusd_depositingEnabled = "true"
 cp1Rusd_ramber_capUnscaled = "<%= formatEther(MaxUint256) %>"
 cp1Rusd_ramber_autoExchangeThresholdUnscaled = "0"
-cp1Rusd_ramber_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_ramber_autoExchangeInsuranceFeeUnscaled = "0.005"
 cp1Rusd_ramber_autoExchangeDustThresholdUnscaled = "0"
 cp1Rusd_ramber_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_ramberParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
-cp1Rusd_ramberParentConfig_priceHaircutUnscaled = "0"
-cp1Rusd_ramberParentConfig_autoExchangeDiscountUnscaled = "0"
+cp1Rusd_ramberParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_ramberParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_ramberParentConfig_oracleNodeId = "<%= settings.amberUsdcReyaLmNodeId %>"
