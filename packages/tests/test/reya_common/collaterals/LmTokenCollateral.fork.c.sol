@@ -360,10 +360,12 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_rselini_view_functions() public {
+        removeCollateralCap(sec.rselini);
         check_lmToken_view_functions(sec.rselini, sec.rseliniUsdcReyaLmNodeId);
     }
 
     function check_ramber_view_functions() public {
+        removeCollateralCap(sec.ramber);
         check_lmToken_view_functions(sec.ramber, sec.ramberUsdcReyaLmNodeId);
     }
 
@@ -376,18 +378,26 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_rselini_deposit_withdraw() public {
+        removeCollateralCap(sec.rselini);
+        removeCollateralWithdrawalLimit(sec.rselini);
         check_lmToken_deposit_withdraw(sec.rselini);
     }
 
     function check_ramber_deposit_withdraw() public {
+        removeCollateralCap(sec.ramber);
+        removeCollateralWithdrawalLimit(sec.ramber);
         check_lmToken_deposit_withdraw(sec.ramber);
     }
 
     function check_trade_rseliniCollateral_depositWithdraw() public {
+        removeCollateralCap(sec.rselini);
+        removeCollateralWithdrawalLimit(sec.rselini);
         check_trade_lmTokenCollateral_depositWithdraw(sec.rselini);
     }
 
     function check_trade_ramberCollateral_depositWithdraw() public {
+        removeCollateralCap(sec.ramber);
+        removeCollateralWithdrawalLimit(sec.ramber);
         check_trade_lmTokenCollateral_depositWithdraw(sec.ramber);
     }
 }

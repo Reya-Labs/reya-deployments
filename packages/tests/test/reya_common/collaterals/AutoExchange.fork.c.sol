@@ -1050,6 +1050,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
     function check_AutoExchange_rSelini(uint256 userInitialRusdBalance) private {
         mockFreshPrices();
+        removeCollateralCap(sec.rselini);
 
         (address user,) = makeAddrAndKey("user");
         s.userAccountId = 0;
@@ -1247,6 +1248,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
     function check_AutoExchange_rAmber(uint256 userInitialRusdBalance) private {
         mockFreshPrices();
+        removeCollateralCap(sec.ramber);
 
         (address user,) = makeAddrAndKey("user");
         s.userAccountId = 0;
