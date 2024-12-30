@@ -49,7 +49,7 @@ contract DistributeFunds is Script, Test {
 
             vm.broadcast(multisigEOA);
             IPassivePoolProxy(pool).addLiquidity(
-                poolId, pendingTxs[i].wallet_address, pendingTxs[i].amount, pendingTxs[i].amount * 99 / 100 * 1e24
+                poolId, pendingTxs[i].wallet_address, pendingTxs[i].amount, pendingTxs[i].amount * 98 / 100 * 1e24
             );
 
             uint256 shareSupplyUserAfter =
