@@ -199,7 +199,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceTIA);
         ls.maxDeviationMarket.push(ls.maxDeviationTIA);
 
-        ls.meanPriceSEI = 0.65e18;
+        ls.meanPriceSEI = 0.4e18;
         ls.maxDeviationSEI = 0.2e18;
         ls.meanPriceMarket.push(ls.meanPriceSEI);
         ls.maxDeviationMarket.push(ls.maxDeviationSEI);
@@ -314,7 +314,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceKNEIRO);
         ls.maxDeviationMarket.push(ls.maxDeviationKNEIRO);
 
-        ls.meanPriceSUSDE = 1.13e18;
+        ls.meanPriceSUSDE = 1.14e18;
         ls.maxDeviationSUSDE = 0.01e18;
 
         ls.meanPriceRSELINI = 1e18;
@@ -325,6 +325,9 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
         ls.meanPriceStableCoin = 1e18;
         ls.maxDeviationStableCoin = 0.01e18;
+
+        ls.meanPriceSDEUSD = 1.02e18;
+        ls.maxDeviationSDEUSD = 0.01e18;
 
         ls.nodeIds.push(sec.rusdUsdNodeId);
         ls.meanPrices.push(1e18);
@@ -659,8 +662,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviations.push(ls.maxDeviationStableCoin * 2);
 
         ls.nodeIds.push(sec.sdeusdUsdcStorkNodeId);
-        ls.meanPrices.push(ls.meanPriceStableCoin);
-        ls.maxDeviations.push(ls.maxDeviationStableCoin * 2);
+        ls.meanPrices.push(ls.meanPriceSDEUSD);
+        ls.maxDeviations.push(ls.maxDeviationSDEUSD);
 
         ls.nodeIds.push(sec.rseliniUsdcReyaLmNodeId);
         ls.meanPrices.push(ls.meanPriceRSELINI);
