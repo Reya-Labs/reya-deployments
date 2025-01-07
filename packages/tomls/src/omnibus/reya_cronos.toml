@@ -15,7 +15,7 @@ include = [
     "../oracle_adapters/testnet.toml",
     "../share_token/mainnet.toml",
 ]
-version = "1.0.41"
+version = "1.0.42"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -38,8 +38,8 @@ rageTradeAccountId = "7224"
 
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.13@router"
-coreAccountNftRouterPackage = "reya-core:1.0.1@account-nft-router"
+coreRouterPackage = "reya-core:1.0.14@router"
+coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
@@ -47,7 +47,7 @@ tokensRouterPackage = "reya-tokens:1.0.0@router"
 passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.8@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.19@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.20@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.0.7@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
