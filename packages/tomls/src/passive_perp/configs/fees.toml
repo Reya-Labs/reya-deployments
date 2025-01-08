@@ -28,6 +28,15 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
+[invoke.passive_perp_set_exchange_zeuz_trade_rebate]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setExchangeRebate"
+args = [
+    "<%= settings.zeuzExchangeId %>",
+    "<%= parseEther(settings.zeuzExchangeRebateUnscaled) %>",
+]
+
 [invoke.passive_perp_set_pool_1rusd_rebate]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"

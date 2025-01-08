@@ -27,3 +27,13 @@ args = [
     "<%= solidityKeccak256(['address','uint256'],[settings.rageTradeExchangeFeeCollectorOwner, 3]) %>",
 ]
 depends = ["invoke.upgrade_exchange_pass_proxy"]
+
+[invoke.exchange_pass_zeuz_mint_owner]
+target = ["ExchangePassProxy"]
+fromCall.func = "owner"
+func = "mint"
+args = [
+    "<%= settings.zeuzExchangeFeeCollectorOwner %>",
+    "<%= solidityKeccak256(['address','uint256'],[settings.zeuzExchangeFeeCollectorOwner, 4]) %>",
+]
+depends = ["invoke.upgrade_exchange_pass_proxy"]
