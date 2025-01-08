@@ -1135,11 +1135,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usecannon/builder@npm:2.19.4, @usecannon/builder@npm:^2.19.4":
-  version: 2.19.4
-  resolution: "@usecannon/builder@npm:2.19.4"
+"@usecannon/builder@npm:2.20.3":
+  version: 2.20.3
+  resolution: "@usecannon/builder@npm:2.20.3"
   dependencies:
-    "@usecannon/router": ^4.0.1
+    "@usecannon/router": ^4.1.2
     "@usecannon/web-solc": 0.5.1
     axios: ^1.7.2
     axios-retry: ^4.4.2
@@ -1154,16 +1154,16 @@ __metadata:
     typestub-ipfs-only-hash: ^4.0.0
     viem: ^2.21.15
     zod: ^3.23.6
-  checksum: 476e13678af464b1abe9d5312c805d9273f1bb5939511e648a22785e32e647ba2fbdee29242b01443a2d87bedc85fa34404617ba49ad88d8d752e0cbc06d9182
+  checksum: e94f2f88cfde6b1924ed82682dde993905031939c4a88482835bce10788a52b1a5a74040df740aea6c27ddfd2ab60578328bed6142efc3b499a5e0ba63e00ff6
   languageName: node
   linkType: hard
 
-"@usecannon/cli@npm:^2.19.4":
-  version: 2.19.4
-  resolution: "@usecannon/cli@npm:2.19.4"
+"@usecannon/cli@npm:2.20.3":
+  version: 2.20.3
+  resolution: "@usecannon/cli@npm:2.20.3"
   dependencies:
     "@iarna/toml": ^3.0.0
-    "@usecannon/builder": 2.19.4
+    "@usecannon/builder": 2.20.3
     abitype: ^1.0.5
     chalk: ^4.1.2
     commander: ^12.1.0
@@ -1182,19 +1182,19 @@ __metadata:
     zod: ^3.23.8
   bin:
     cannon: bin/cannon.js
-  checksum: 469c57e16ad0f52ded7f66bf3ccbe9c9925ca02b0e1869f7714e5406f50e99ddc932a836c154dd767702f652e1de08d6e7f534a7d657e898550cd95f106e8187
+  checksum: 24850d8e739bf8c1912b5d409fa998a75f64e664ae11b15e48ae0064592a81d1679b0329eb67f7b77ba5d4b9931392fb46c19a56f82929c1baff59840aaca734
   languageName: node
   linkType: hard
 
-"@usecannon/router@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "@usecannon/router@npm:4.0.1"
+"@usecannon/router@npm:^4.1.2":
+  version: 4.1.3
+  resolution: "@usecannon/router@npm:4.1.3"
   dependencies:
     "@ethersproject/abi": ^5.7.0
     "@ethersproject/keccak256": ^5.7.0
     debug: ^4.3.7
     mustache: ^4.2.0
-  checksum: 4f4251c0c9da659c56fe7d54b0fec80045c5dff0a6ccb9c16a7458512cf3e7b3d0f1cfc9212bd28db2272c33a1101a0e2eecb80ac43676e5e641cbf59e506c96
+  checksum: 058d6e0620afeb8cea0293f3f72271273652e0f2c245451bbcf50fe5e40f064be3c125453cff338e60c22ea99d5155f259041b2ab3032615ced1c00a0469f6fe
   languageName: node
   linkType: hard
 
@@ -5743,8 +5743,8 @@ __metadata:
   resolution: "reya-deployments@workspace:."
   dependencies:
     "@ethersproject/abi": 5.7.0
-    "@usecannon/builder": ^2.19.4
-    "@usecannon/cli": ^2.19.4
+    "@usecannon/builder": 2.20.3
+    "@usecannon/cli": 2.20.3
     forge-std: "github:foundry-rs/forge-std#v1.9.4"
     lerna: ^8.1.2
     prettier: 3.2.5
