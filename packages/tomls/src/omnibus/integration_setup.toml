@@ -1,0 +1,79 @@
+name = "reya-omnibus"
+preset = "integration-setup"
+description = "Reya Omnibus"
+privateSourceCode = true
+version = "1.0.0"
+
+include = [
+  "../core/utils/deploy_proxy.toml",
+  "../core/utils/upgrade_proxy.toml",
+  "../core/configs/protocol_config.toml",
+  "../passive_pool/utils/deploy_proxy.toml",
+  "../passive_pool/utils/upgrade_proxy.toml",
+  "../passive_pool/configs/global_config.toml",
+  "../passive_perp/utils/deploy_proxy.toml",
+  "../passive_perp/utils/upgrade_proxy.toml",
+  "../passive_perp/configs/global_config.toml",
+  "../exchange_pass_nft/utils/deploy_proxy.toml",
+  "../exchange_pass_nft/utils/upgrade_proxy.toml",
+  "../exchange_pass_nft/configs/initialize.toml",
+  "../oracle_manager/utils/deploy_proxy.toml",
+  "../oracle_manager/utils/upgrade_proxy.toml",
+]
+
+[var.global_settings]
+owner = "<%= `0x${(999_999_999).toString(16).padStart(40, '0')}` %>"
+salt = "main"
+
+[var.cannonClonePackages]
+coreProxyPackage = "reya-core:1.0.0@proxy"
+coreRouterPackage = "reya-core:1.0.14@router"
+coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
+passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
+passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.8@router"
+passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.20@router"
+exchangePassProxyPackage = "reya-exchange-pass-nft:1.0.0@proxy"
+exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
+oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
+oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
+
+
+[var.upgrade_proxy_vars]
+coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
+passivePoolProxy = "<%= imports.reyaPassivePoolProxy.contracts.InitialProxy.address %>"
+passivePerpProxy = "<%= imports.reyaPassivePerpProxy.contracts.InitialProxy.address %>"
+oracleManagerProxy = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>"
+exchangePassProxy = "<%= imports.reyaExchangePassProxy.contracts.InitialProxy.address %>"
+
+[var.account_nft_vars]
+accountNftId = "<%= formatBytes32String('accountNFT') %>"
+accountNftName = "Reya Account NFT"
+accountNftSymbol = "REYA"
+accountNftUri = "https://reya.xyz/"
+
+[var.exchange_pass_vars]
+exchangePassName = "Reya Exchange Pass"
+exchangePassSymbol = "ReyaEPass"
+exchangePassUri = "https://reya.xyz/"
+
+[invoke.core_unpause]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_enable_account_creation]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('createAccount')) %>", true]
+depends = ["invoke.upgrade_core_proxy"]
+
+[var.external_contracts]
+camelotYakRouter = "<%= `0x${(1000).toString(16).padStart(40, '0')}` %>"
+
+[var.asserts]
+assert1 = "<%= (String(settings.coreFeeCollectorAccountId) === '1') ? settings.coreFeeCollectorAccountId : parseUnits('0', 'assert coreFeeCollectorAccountId failed') %>"
+
