@@ -1,26 +1,28 @@
 name = "reya-omnibus"
-preset = "integration-setup"
+preset = "test-setup"
 description = "Reya Omnibus"
 privateSourceCode = true
 version = "1.0.0"
 
 include = [
-  "../core/utils/deploy_proxy.toml",
-  "../core/utils/upgrade_proxy.toml",
-  "../core/configs/protocol_config.toml",
-  "../passive_pool/utils/deploy_proxy.toml",
-  "../passive_pool/utils/upgrade_proxy.toml",
-  "../passive_pool/configs/global_config.toml",
-  "../passive_perp/utils/deploy_proxy.toml",
-  "../passive_perp/utils/upgrade_proxy.toml",
-  "../passive_perp/configs/global_config.toml",
-  "../exchange_pass_nft/utils/deploy_proxy.toml",
-  "../exchange_pass_nft/utils/upgrade_proxy.toml",
-  "../exchange_pass_nft/configs/initialize.toml",
-  "../oracle_manager/utils/deploy_proxy.toml",
-  "../oracle_manager/utils/upgrade_proxy.toml",
-  "../periphery/utils/deploy_proxy.toml",
-  "../periphery/utils/upgrade_proxy.toml",
+    "../core/utils/deploy_proxy.toml",
+    "../core/utils/upgrade_proxy.toml",
+    "../core/configs/protocol_config.toml",
+    "../passive_pool/utils/deploy_proxy.toml",
+    "../passive_pool/utils/upgrade_proxy.toml",
+    "../passive_pool/configs/global_config.toml",
+    "../passive_perp/utils/deploy_proxy.toml",
+    "../passive_perp/utils/upgrade_proxy.toml",
+    "../passive_perp/configs/global_config.toml",
+    "../exchange_pass_nft/utils/deploy_proxy.toml",
+    "../exchange_pass_nft/utils/upgrade_proxy.toml",
+    "../exchange_pass_nft/configs/initialize.toml",
+    "../oracle_manager/utils/deploy_proxy.toml",
+    "../oracle_manager/utils/upgrade_proxy.toml",
+    "../periphery/utils/deploy_proxy.toml",
+    "../periphery/utils/upgrade_proxy.toml",
+    "../rusd/utils/deploy_proxy.toml",
+    "../rusd/utils/upgrade_proxy.toml",
 ]
 
 [var.global_settings]
@@ -41,6 +43,8 @@ oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.0.7@router"
+rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
+rUSDRouterPackage = "reya-rusd:1.0.0@router"
 
 [var.upgrade_proxy_vars]
 coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
@@ -49,6 +53,7 @@ passivePerpProxy = "<%= imports.reyaPassivePerpProxy.contracts.InitialProxy.addr
 oracleManagerProxy = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>"
 exchangePassProxy = "<%= imports.reyaExchangePassProxy.contracts.InitialProxy.address %>"
 peripheryProxy = "<%= imports.reyaPeripheryProxy.contracts.InitialProxy.address %>"
+rUSDProxy = "<%= imports.reyaRusdProxy.contracts.InitialProxy.address %>"
 
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
@@ -80,4 +85,3 @@ camelotYakRouter = "<%= `0x${(1000).toString(16).padStart(40, '0')}` %>"
 
 [var.asserts]
 assert1 = "<%= (String(settings.coreFeeCollectorAccountId) === '1') ? settings.coreFeeCollectorAccountId : parseUnits('0', 'assert coreFeeCollectorAccountId failed') %>"
-
