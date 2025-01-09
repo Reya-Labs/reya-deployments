@@ -29,6 +29,7 @@ owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 passivePoolExchangeFeeCollectorOwner = "0x93701b8f4e212B4eC058AF375894DB4B64b4f708"
 lotteryPotExchangeFeeCollectorOwner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 rageTradeExchangeFeeCollectorOwner = "0x507c7777837b85ede1e67f5a4554ddd7e58b1f87"
+zeuzExchangeFeeCollectorOwner = "0x51D53305e5e64C8f147FaE561856c6d5a351d97f"
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.external_contracts]
@@ -37,6 +38,7 @@ camelotYakRouter = "0x2b59Eb03865D18d8B62a5956BBbFaE352fc1C148"
 [var.account_ids]
 lotteryPotAccountId = "20092"
 rageTradeAccountId = "22262"
+zeuzAccountId = "46092"
 
 [var.cannonClonePackages]
 coreRouterPackage = "reya-core:1.0.14@router"
@@ -431,6 +433,7 @@ ramberWithdrawalTvlPercentageLimitUnscaled = "0"
 passivePoolExchangeRebateUnscaled = "0.2"
 lotteryPotExchangeRebateUnscaled = "0.2"
 rageTradeExchangeRebateUnscaled = "0.2"
+zeuzExchangeRebateUnscaled = "0.2"
 pool1RusdRebateUnscaled = "1"
 market1Eth_tier0FeeUnscaled = "0.0005"
 market2Btc_tier0FeeUnscaled = "0.0005"
