@@ -29,3 +29,13 @@ args = [
     true,
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_unpause_ftm_market]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market30FtmId])) %>",
+    false,
+]
+depends = ["invoke.passive_perp_pause_ftm_market"]

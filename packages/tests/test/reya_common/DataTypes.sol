@@ -74,6 +74,8 @@ struct StaticEcosystem {
     bytes32 sdeusdUsdcStorkNodeId;
     bytes32 rseliniUsdcReyaLmNodeId;
     bytes32 ramberUsdcReyaLmNodeId;
+    bytes32 ftmUsdStorkNodeId;
+    bytes32 ftmUsdcStorkNodeId;
     // node ids for mark prices
     bytes32 ethUsdStorkMarkNodeId;
     bytes32 ethUsdcStorkMarkNodeId;
@@ -133,8 +135,8 @@ struct StaticEcosystem {
     bytes32 polUsdcStorkMarkNodeId;
     bytes32 nearUsdStorkMarkNodeId;
     bytes32 nearUsdcStorkMarkNodeId;
-    bytes32 ftmUsdStorkMarkNodeId;
-    bytes32 ftmUsdcStorkMarkNodeId;
+    // bytes32 ftmUsdStorkMarkNodeId;
+    // bytes32 ftmUsdcStorkMarkNodeId;
     bytes32 enaUsdStorkMarkNodeId;
     bytes32 enaUsdcStorkMarkNodeId;
     bytes32 eigenUsdStorkMarkNodeId;
