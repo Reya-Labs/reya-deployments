@@ -1374,7 +1374,7 @@ market30Ftm_priceSpacingUnscaled = "<%= 1e-5 %>"
 market30Ftm_depthFactorUnscaled = ".25"
 market30Ftm_maxExposureFactorUnscaled = "0.999"
 market30Ftm_maxPSlippageUnscaled = "0.1"
-market30Ftm_marketOrderMaxStaleDuration = "0"
+market30Ftm_marketOrderMaxStaleDuration = "11"
 market30Ftm_priceSpreadUnscaled = "0"
 market30Ftm_volatilityIndexMultiplierUnscaled = "0"
 
