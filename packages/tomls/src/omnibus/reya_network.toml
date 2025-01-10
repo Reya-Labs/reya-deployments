@@ -710,6 +710,11 @@ ftmUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 ftmUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 ftmUsdcMarkMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #-----------------------------------------------------------------------------------
+ftmUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ftmUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ftmUsdcMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ftmUsdcMaxStaleDurationFallbackStorkReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-----------------------------------------------------------------------------------
 enaUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 enaUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 enaUsdcMarkMaxStaleDurationReya = "<%= settings.ONE_MINUTE_IN_SECONDS %>"

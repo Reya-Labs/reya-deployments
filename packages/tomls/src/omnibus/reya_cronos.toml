@@ -722,6 +722,11 @@ ftmUsdcMarkMaxStaleDurationStork = "0"
 ftmUsdcMarkMaxStaleDurationReya = "0"
 ftmUsdcMarkMaxStaleDurationFallbackStorkReya = "0"
 #-----------------------------------------------------------------------------------
+ftmUsdMaxStaleDurationStork = "0"
+ftmUsdcMaxStaleDurationStork = "0"
+ftmUsdcMaxStaleDurationReya = "0"
+ftmUsdcMaxStaleDurationFallbackStorkReya = "0"
+#-----------------------------------------------------------------------------------
 enaUsdMarkMaxStaleDurationStork = "0"
 enaUsdcMarkMaxStaleDurationStork = "0"
 enaUsdcMarkMaxStaleDurationReya = "0"

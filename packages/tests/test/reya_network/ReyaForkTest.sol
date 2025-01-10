@@ -176,8 +176,8 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.nearUsdStorkMarkNodeId = 0x1cbed930dc4d277758237164b2f9c625b5d733bdd16b77268111b16b7b426fea;
         sec.nearUsdcStorkMarkNodeId = 0xdbd8543af7cc96fac35926c15ef5f13f89bc873721211493e112d4bc4f275cd2;
 
-        sec.ftmUsdStorkMarkNodeId = 0xa8bf70dc422734b9799a5d464e703f2950443891aac44fe6f6da2b03fb05e603;
-        sec.ftmUsdcStorkMarkNodeId = 0xd1d28310033a47a1b66a5c7c051bd5a7029f962a73f4577ac89fcbb2ad9bb42b;
+        sec.ftmUsdStorkNodeId = 0x121a33532e703bfaa003a784b1f69bea1737c686136b15ab4eda8ec6a9142e1a;
+        sec.ftmUsdcStorkNodeId = 0xdadaa29fe1e6f8959640a9222b3a7c6a0099bd778da90da5167d986f75b69a59;
 
         sec.enaUsdStorkMarkNodeId = 0x4d06d4eaa2f04e517035af06b005157b38f2999e0e46510ef5d744d151111703;
         sec.enaUsdcStorkMarkNodeId = 0xe19227f2d63cb74d087e1679dce6a66d9ae137d83ded1d2d294c41fdd38f5912;
