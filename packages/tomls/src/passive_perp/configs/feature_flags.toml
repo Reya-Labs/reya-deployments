@@ -24,5 +24,8 @@ depends = ["invoke.upgrade_passive_perp_proxy"]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagDenyAll"
-args = ["<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market30FtmId])) %>", true]
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market30FtmId])) %>",
+    true,
+]
 depends = ["invoke.upgrade_passive_perp_proxy"]
