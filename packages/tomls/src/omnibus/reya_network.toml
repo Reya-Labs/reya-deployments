@@ -1347,7 +1347,7 @@ market29Near_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_29Ftm]
 market30Ftm_riskMatrixIndex = "0"
-market30Ftm_maxOpenBaseUnscaled = "0"
+market30Ftm_maxOpenBaseUnscaled = "300000"
 market30Ftm_velocityMultiplierUnscaled = "5"
 market30Ftm_oracleNodeId = "<%= settings.ftmUsdcMarkNodeIdStork %>"
 market30Ftm_mtmWindow = "<%= 7 * settings.ONE_DAY_IN_SECONDS %>"
