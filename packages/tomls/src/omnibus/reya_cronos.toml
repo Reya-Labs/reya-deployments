@@ -243,6 +243,7 @@ storkAssetPairIdUNI = "UNIUSD"
 storkAssetPairIdSUSDE = "SUSDEUSD"
 storkAssetPairIdDEUSD = "DEUSDUSD"
 storkAssetPairIdSDEUSDDEUSD = "SDEUSDDEUSD"
+storkAssetPairIdFTM = "FTMUSD"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
