@@ -13,4 +13,3 @@ args = [
 var.ftmUsdcNodeIdClosing.event = "NodeRegistered"
 var.ftmUsdcNodeIdClosing.arg = 0
 depends = ["invoke.oracle_manager_register_node_ftm_usd_closing"]
-
