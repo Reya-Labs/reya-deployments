@@ -1,0 +1,16 @@
+[invoke.oracle_manager_register_node_ftm_usdc_closing]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_DIV_REDUCER %>",
+    "0x",
+    [
+        "<%= settings.ftmUsdNodeIdClosing %>",
+        "<%= settings.usdcUsdNodeIdStork %>",
+    ],
+]
+var.ftmUsdcNodeIdClosing.event = "NodeRegistered"
+var.ftmUsdcNodeIdClosing.arg = 0
+depends = ["invoke.oracle_manager_register_node_ftm_usd_closing"]
+

@@ -1,0 +1,13 @@
+[invoke.oracle_manager_register_node_ftm_usd_closing]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_CONSTANT %>",
+    "<%= defaultAbiCoder.encode(['uint256'], [parseEther('1')]) %>",
+    [
+    ],
+]
+var.ftmUsdNodeIdClosing.event = "NodeRegistered"
+var.ftmUsdNodeIdClosing.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]
