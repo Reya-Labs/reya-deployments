@@ -4,7 +4,7 @@ fromCall.func = "owner"
 func = "registerNode"
 args = [
     "<%= settings.ORACLE_MANAGER_NODE_TYPE_CONSTANT %>",
-    "<%= defaultAbiCoder.encode(['uint256'], ['1000000000000000000']) %>",
+    "<%= defaultAbiCoder.encode(['uint256'], ['695867000000000000']) %>",
     [
     ],
 ]
