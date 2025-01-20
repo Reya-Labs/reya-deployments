@@ -56,6 +56,11 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant goatLeverage = 5e18;
     uint256 private constant grassLeverage = 5e18;
     uint256 private constant kneiroLeverage = 3e18;
+    uint256 private constant dotLeverage = 20e18;
+    uint256 private constant ltcLeverage = 20e18;
+    uint256 private constant pythLeverage = 10e18;
+    uint256 private constant jupLeverage = 15e18;
+    uint256 private constant penguLeverage = 15e18;
 
     address private user;
     uint256 private userPk;
