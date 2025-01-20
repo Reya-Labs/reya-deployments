@@ -719,7 +719,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
             if (i == 30) {
                 continue;
             }
-            
+
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
             bytes32 nodeId = marketConfig.oracleNodeId;
 
