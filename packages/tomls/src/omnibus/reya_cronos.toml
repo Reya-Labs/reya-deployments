@@ -1654,7 +1654,7 @@ market41Pengu_priceSpreadUnscaled = "0"
 market41Pengu_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "36"
+cp1Rusd_maxMarkets = "41"
 cp1Rusd_maxCollaterals = "9"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
