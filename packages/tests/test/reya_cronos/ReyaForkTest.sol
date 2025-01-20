@@ -215,8 +215,8 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.jupUsdStorkMarkNodeId = 0xa037efb159c65f7aa7e87494144ae9658f97fd4cf9128b1422c5124b4016148e;
         sec.jupUsdcStorkMarkNodeId = 0x40883d2df144b70606d33f1328197e2627656faa271557f4a31acd733c96379d;
 
-        sec.penguUsdStorkMarkNodeId = 0xa47c7a9acd2492e8d7df58c9bf0e03607aa19898d637f84759b679ad3013a290;
-        sec.penguUsdcStorkMarkNodeId = 0x7df8d1c9be866fb7c4175bad4e130628dcc8a3c989c3bc655ae43080ef74f2cc;
+        sec.penguUsdStorkMarkNodeId = 0x70713196edbccbb0656594528b434ecfae5dfe47dd375e4fb56274a6e4ebf1fc;
+        sec.penguUsdcStorkMarkNodeId = 0x29cfe9e8e20c5c0bdadbb6c884e49e83aa3e46415e6b45b5bb247f72969c990b;
 
         // Socket variables
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
