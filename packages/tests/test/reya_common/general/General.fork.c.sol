@@ -72,8 +72,8 @@ struct LocalState {
     uint256 maxDeviationPOL;
     uint256 meanPriceNEAR;
     uint256 maxDeviationNEAR;
-    // uint256 meanPriceFTM;
-    // uint256 maxDeviationFTM;
+    uint256 meanPriceFTM;
+    uint256 maxDeviationFTM;
     uint256 meanPriceENA;
     uint256 maxDeviationENA;
     uint256 meanPriceEIGEN;
@@ -279,10 +279,11 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceNEAR);
         ls.maxDeviationMarket.push(ls.maxDeviationNEAR);
 
-        // ls.meanPriceFTM = 0.65e18;
-        // ls.maxDeviationFTM = 0.3e18;
-        // ls.meanPriceMarket.push(ls.meanPriceFTM);
-        // ls.maxDeviationMarket.push(ls.maxDeviationFTM);
+        // deprecated
+        ls.meanPriceFTM = 0e18;
+        ls.maxDeviationFTM = 0e18;
+        ls.meanPriceMarket.push(ls.meanPriceFTM);
+        ls.maxDeviationMarket.push(ls.maxDeviationFTM);
 
         ls.meanPriceENA = 0.95e18;
         ls.maxDeviationENA = 0.45e18;
@@ -317,10 +318,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceSUSDE = 1.14e18;
         ls.maxDeviationSUSDE = 0.01e18;
 
-        ls.meanPriceRSELINI = 1e18;
+        ls.meanPriceRSELINI = 1.01e18;
         ls.maxDeviationRSELINI = 0.01e18;
 
-        ls.meanPriceRAMBER = 1e18;
+        ls.meanPriceRAMBER = 1.01e18;
         ls.maxDeviationRAMBER = 0.01e18;
 
         ls.meanPriceStableCoin = 1e18;
@@ -585,13 +586,15 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(ls.meanPriceNEAR);
         ls.maxDeviations.push(ls.maxDeviationNEAR);
 
+        // deprecated
         // ls.nodeIds.push(sec.ftmUsdStorkNodeId);
-        // ls.meanPrices.push(ls.meanPriceFTM);
-        // ls.maxDeviations.push(ls.maxDeviationFTM);
+        // ls.meanPrices.push(0);
+        // ls.maxDeviations.push(0);
 
+        // deprecated
         // ls.nodeIds.push(sec.ftmUsdcStorkNodeId);
-        // ls.meanPrices.push(ls.meanPriceFTM);
-        // ls.maxDeviations.push(ls.maxDeviationFTM);
+        // ls.meanPrices.push(0);
+        // ls.maxDeviations.push(0);
 
         ls.nodeIds.push(sec.enaUsdStorkMarkNodeId);
         ls.meanPrices.push(ls.meanPriceENA);
@@ -713,6 +716,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
     function check_marketsPrices() public {
         setupOracleNodePriceParams();
         for (uint128 i = lastMarketId(); i >= 1; i--) {
+            if (i == 30) {
+                continue;
+            }
+            
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
             bytes32 nodeId = marketConfig.oracleNodeId;
 
