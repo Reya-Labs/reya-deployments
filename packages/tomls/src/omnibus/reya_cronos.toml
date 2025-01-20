@@ -15,7 +15,7 @@ include = [
     "../oracle_adapters/testnet.toml",
     "../share_token/mainnet.toml",
 ]
-version = "1.0.42"
+version = "1.0.43"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -286,7 +286,7 @@ storkAssetPairIdDOTMark = "DOTUSDMARK"
 storkAssetPairIdLTCMark = "LTCUSDMARK"
 storkAssetPairIdPYTHMark = "PYTHUSDMARK"
 storkAssetPairIdJUPMark = "JUPUSDMARK"
-storkAssetPairIdPENGUMark = "PENGUSDMARK"
+storkAssetPairIdPENGUMark = "PENGUUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
 # todo: consider using REYA rather than FALLBACK 
@@ -330,7 +330,7 @@ reyaAssetPairIdDOTMark = "DOTUSDMARKFALLBACK"
 reyaAssetPairIdLTCMark = "LTCUSDMARKFALLBACK"
 reyaAssetPairIdPYTHMark = "PYTHUSDMARKFALLBACK"
 reyaAssetPairIdJUPMark = "JUPUSDMARKFALLBACK"
-reyaAssetPairIdPENGUMark = "PENGUSDMARKFALLBACK"
+reyaAssetPairIdPENGUMark = "PENGUUSDMARKFALLBACK"
 
 [var.reya_lm_asset_pair_ids]
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"

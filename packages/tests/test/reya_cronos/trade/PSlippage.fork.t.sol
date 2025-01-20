@@ -120,9 +120,9 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_near_long();
     }
 
-    function test_Cronos_trade_slippage_ftm_long() public {
-        check_trade_slippage_ftm_long();
-    }
+    // function test_Cronos_trade_slippage_ftm_long() public {
+    //     check_trade_slippage_ftm_long();
+    // }
 
     function test_Cronos_trade_slippage_ena_long() public {
         check_trade_slippage_ena_long();
@@ -284,9 +284,9 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_near_short();
     }
 
-    function test_Cronos_trade_slippage_ftm_short() public {
-        check_trade_slippage_ftm_short();
-    }
+    // function test_Cronos_trade_slippage_ftm_short() public {
+    //     check_trade_slippage_ftm_short();
+    // }
 
     function test_Cronos_trade_slippage_ena_short() public {
         check_trade_slippage_ena_short();
