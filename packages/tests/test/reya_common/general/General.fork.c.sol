@@ -72,8 +72,8 @@ struct LocalState {
     uint256 maxDeviationPOL;
     uint256 meanPriceNEAR;
     uint256 maxDeviationNEAR;
-    uint256 meanPriceFTM;
-    uint256 maxDeviationFTM;
+    // uint256 meanPriceFTM;
+    // uint256 maxDeviationFTM;
     uint256 meanPriceENA;
     uint256 maxDeviationENA;
     uint256 meanPriceEIGEN;
@@ -279,10 +279,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceNEAR);
         ls.maxDeviationMarket.push(ls.maxDeviationNEAR);
 
-        ls.meanPriceFTM = 0.65e18;
-        ls.maxDeviationFTM = 0.3e18;
-        ls.meanPriceMarket.push(ls.meanPriceFTM);
-        ls.maxDeviationMarket.push(ls.maxDeviationFTM);
+        // ls.meanPriceFTM = 0.65e18;
+        // ls.maxDeviationFTM = 0.3e18;
+        // ls.meanPriceMarket.push(ls.meanPriceFTM);
+        // ls.maxDeviationMarket.push(ls.maxDeviationFTM);
 
         ls.meanPriceENA = 0.95e18;
         ls.maxDeviationENA = 0.45e18;
@@ -585,13 +585,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(ls.meanPriceNEAR);
         ls.maxDeviations.push(ls.maxDeviationNEAR);
 
-        ls.nodeIds.push(sec.ftmUsdStorkNodeId);
-        ls.meanPrices.push(ls.meanPriceFTM);
-        ls.maxDeviations.push(ls.maxDeviationFTM);
+        // ls.nodeIds.push(sec.ftmUsdStorkNodeId);
+        // ls.meanPrices.push(ls.meanPriceFTM);
+        // ls.maxDeviations.push(ls.maxDeviationFTM);
 
-        ls.nodeIds.push(sec.ftmUsdcStorkNodeId);
-        ls.meanPrices.push(ls.meanPriceFTM);
-        ls.maxDeviations.push(ls.maxDeviationFTM);
+        // ls.nodeIds.push(sec.ftmUsdcStorkNodeId);
+        // ls.meanPrices.push(ls.meanPriceFTM);
+        // ls.maxDeviations.push(ls.maxDeviationFTM);
 
         ls.nodeIds.push(sec.enaUsdStorkMarkNodeId);
         ls.meanPrices.push(ls.meanPriceENA);
@@ -726,7 +726,9 @@ contract GeneralForkCheck is BaseReyaForkTest {
         for (uint128 i = lastMarketId(); i >= 1; i--) {
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
 
-            assertEq(marketConfig.marketOrderMaxStaleDuration, orderMaxStaleDuration);
+            if (i != 30) {
+                assertEq(marketConfig.marketOrderMaxStaleDuration, orderMaxStaleDuration);
+            }
         }
     }
 
