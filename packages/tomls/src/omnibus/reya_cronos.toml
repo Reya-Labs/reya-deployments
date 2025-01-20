@@ -282,6 +282,11 @@ storkAssetPairIdPENDLEMark = "PENDLEUSDMARK"
 storkAssetPairIdGOATMark = "GOATUSDMARK"
 storkAssetPairIdGRASSMark = "GRASSUSDMARK"
 storkAssetPairIdKNEIROMark = "1000NEIROUSDMARK"
+storkAssetPairIdDOTMark = "DOTUSDMARK"
+storkAssetPairIdLTCMark = "LTCUSDMARK"
+storkAssetPairIdPYTHMark = "PYTHUSDMARK"
+storkAssetPairIdJUPMark = "JUPUSDMARK"
+storkAssetPairIdPENGUMark = "PENGUSDMARK"
 
 [var.reya_asset_pair_ids_mark]
 # todo: consider using REYA rather than FALLBACK 
