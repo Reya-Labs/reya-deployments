@@ -120,9 +120,9 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_near_long();
     }
 
-    function test_trade_slippage_ftm_long() public {
-        check_trade_slippage_ftm_long();
-    }
+    // function test_trade_slippage_ftm_long() public {
+    //     check_trade_slippage_ftm_long();
+    // }
 
     function test_trade_slippage_ena_long() public {
         check_trade_slippage_ena_long();
@@ -146,6 +146,26 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
 
     function test_trade_slippage_kneiro_long() public {
         check_trade_slippage_kneiro_long();
+    }
+
+    function test_trade_slippage_dot_long() public {
+        check_trade_slippage_dot_long();
+    }
+
+    function test_trade_slippage_ltc_long() public {
+        check_trade_slippage_ltc_long();
+    }
+
+    function test_trade_slippage_pyth_long() public {
+        check_trade_slippage_pyth_long();
+    }
+
+    function test_trade_slippage_jup_long() public {
+        check_trade_slippage_jup_long();
+    }
+
+    function test_trade_slippage_pengu_long() public {
+        check_trade_slippage_pengu_long();
     }
 
     function test_trade_slippage_eth_short() public {
@@ -264,9 +284,9 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_near_short();
     }
 
-    function test_trade_slippage_ftm_short() public {
-        check_trade_slippage_ftm_short();
-    }
+    // function test_trade_slippage_ftm_short() public {
+    //     check_trade_slippage_ftm_short();
+    // }
 
     function test_trade_slippage_ena_short() public {
         check_trade_slippage_ena_short();
@@ -290,5 +310,25 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
 
     function test_trade_slippage_kneiro_short() public {
         check_trade_slippage_kneiro_short();
+    }
+
+    function test_trade_slippage_dot_short() public {
+        check_trade_slippage_dot_short();
+    }
+
+    function test_trade_slippage_ltc_short() public {
+        check_trade_slippage_ltc_short();
+    }
+
+    function test_trade_slippage_pyth_short() public {
+        check_trade_slippage_pyth_short();
+    }
+
+    function test_trade_slippage_jup_short() public {
+        check_trade_slippage_jup_short();
+    }
+
+    function test_trade_slippage_pengu_short() public {
+        check_trade_slippage_pengu_short();
     }
 }

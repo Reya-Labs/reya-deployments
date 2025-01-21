@@ -203,6 +203,21 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.kneiroUsdStorkMarkNodeId = 0x79509bac2a12e47b0cf7c1511c7f8689096e7a8fc1772808d2866c19c5470f4d;
         sec.kneiroUsdcStorkMarkNodeId = 0xa0bc615fdfbda6cb321b19b2eae8e7b164f41fc10c8393dbdc92ab32f98485fa;
 
+        sec.dotUsdStorkMarkNodeId = 0xb4022a1691f5c8c5b3a09f0b6990454b378448a8d7d624f1eb5ad0b374019ac1;
+        sec.dotUsdcStorkMarkNodeId = 0x0f181ed704b343d57ca93d683f1675b9e5a0f3de10e5f579c4fb179b6819045c;
+
+        sec.ltcUsdStorkMarkNodeId = 0x16577e7f8dd6431c989a1eef7abc1b0d2062c085b9b4c21b57b05c37732f462e;
+        sec.ltcUsdcStorkMarkNodeId = 0x5fe9a27d7bcd215343c19f7f4e89c6a01a9d45b383e084a64c7b175383d9edc2;
+
+        sec.pythUsdStorkMarkNodeId = 0x2710537a21c6b2bd8f6dd1170dcc95558e048ef4a549413de9fade6d01b23ff0;
+        sec.pythUsdcStorkMarkNodeId = 0xb9089452619f661064443b747273b4cbf94d44de456996276d62cf4e155cc0ed;
+
+        sec.jupUsdStorkMarkNodeId = 0xa037efb159c65f7aa7e87494144ae9658f97fd4cf9128b1422c5124b4016148e;
+        sec.jupUsdcStorkMarkNodeId = 0x40883d2df144b70606d33f1328197e2627656faa271557f4a31acd733c96379d;
+
+        sec.penguUsdStorkMarkNodeId = 0x70713196edbccbb0656594528b434ecfae5dfe47dd375e4fb56274a6e4ebf1fc;
+        sec.penguUsdcStorkMarkNodeId = 0x29cfe9e8e20c5c0bdadbb6c884e49e83aa3e46415e6b45b5bb247f72969c990b;
+
         // Socket variables
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
         dec.socketExecutionHelper[sec.usdc] = 0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE;
