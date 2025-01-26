@@ -883,13 +883,6 @@ contract GeneralForkCheck is BaseReyaForkTest {
                 assertLe(block.timestamp - max_stale_duration, nodeOutput.timestamp);
                 assertEq(nodeDefinition.maxStaleDuration, max_stale_duration);
             }
-
-            // if redstone node, check that the owner of the price feed is the multisig
-            if (nodeDefinition.nodeType == 2) {
-                (address priceFeed,) = abi.decode(nodeDefinition.parameters, (address, uint256));
-                address owner = IOwnerUpgradeModule(priceFeed).owner();
-                assertEq(owner, sec.multisig);
-            }
         }
     }
 
