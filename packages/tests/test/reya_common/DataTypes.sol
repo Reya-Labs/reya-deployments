@@ -159,6 +159,20 @@ struct StaticEcosystem {
     bytes32 jupUsdcStorkMarkNodeId;
     bytes32 penguUsdStorkMarkNodeId;
     bytes32 penguUsdcStorkMarkNodeId;
+    byttes32 trumpUsdStorkMarkNodeId;
+    bytes32 trumpUsdcStorkMarkNodeId;
+    bytes32 hypeUsdStorkMarkNodeId;
+    bytes32 hypeUsdcStorkMarkNodeId;
+    bytes32 virtualUsdStorkMarkNodeId;
+    bytes32 virtualUsdcStorkMarkNodeId;
+    bytes32 ai16zUsdStorkMarkNodeId;
+    bytes32 ai16zUsdcStorkMarkNodeId;
+    bytes32 aixbtUsdStorkMarkNodeId;
+    bytes32 aixbtUsdcStorkMarkNodeId;
+    bytes32 sonicUsdStorkMarkNodeId;
+    bytes32 sonicUsdcStorkMarkNodeId;
+    bytes32 fartcoinUsdStorkMarkNodeId;
+    bytes32 fartcoinUsdcStorkMarkNodeId;
 }
 
 struct DynamicEcosystem {

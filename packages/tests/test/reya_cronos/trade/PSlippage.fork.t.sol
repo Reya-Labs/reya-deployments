@@ -168,6 +168,34 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_pengu_long();
     }
 
+    function test_Cronos_trade_slippage_trump_long() public {
+        check_trade_slippage_trump_long();
+    }
+
+    function test_Cronos_trade_slippage_hype_long() public {
+        check_trade_slippage_hype_long();
+    }
+
+    function test_Cronos_trade_slippage_virtual_long() public {
+        check_trade_slippage_virtual_long();
+    }
+
+    function test_Cronos_trade_slippage_ai16z_long() public {
+        check_trade_slippage_ai16z_long();
+    }
+
+    function test_Cronos_trade_slippage_aixbt_long() public {
+        check_trade_slippage_aixbt_long();
+    }
+
+    function test_Cronos_trade_slippage_sonic_long() public {
+        check_trade_slippage_sonic_long();
+    }
+
+    function test_Cronos_trade_slippage_fartcoin_long() public {
+        check_trade_slippage_fartcoin_long();
+    }
+
     function test_Cronos_trade_slippage_eth_short() public {
         check_trade_slippage_eth_short();
     }
@@ -330,5 +358,33 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
 
     function test_Cronos_trade_slippage_pengu_short() public {
         check_trade_slippage_pengu_short();
+    }
+
+    function test_Cronos_trade_slippage_trump_short() public {
+        check_trade_slippage_trump_short();
+    }
+
+    function test_Cronos_trade_slippage_hype_short() public {
+        check_trade_slippage_hype_short();
+    }
+
+    function test_Cronos_trade_slippage_virtual_short() public {
+        check_trade_slippage_virtual_short();
+    }
+
+    function test_Cronos_trade_slippage_ai16z_short() public {
+        check_trade_slippage_ai16z_short();
+    }
+
+    function test_Cronos_trade_slippage_aixbt_short() public {
+        check_trade_slippage_aixbt_short();
+    }
+
+    function test_Cronos_trade_slippage_sonic_short() public {
+        check_trade_slippage_sonic_short();
+    }
+
+    function test_Cronos_trade_slippage_fartcoin_short() public {
+        check_trade_slippage_fartcoin_short();
     }
 }
