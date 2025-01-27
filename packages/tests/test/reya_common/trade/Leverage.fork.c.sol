@@ -61,13 +61,13 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant pythLeverage = 10e18;
     uint256 private constant jupLeverage = 15e18;
     uint256 private constant penguLeverage = 15e18;
-    uint256 private constant trumpLeverage = 0e18;
-    uint256 private constant hypeLeverage = 0e18;
-    uint256 private constant virtualLeverage = 0e18;
-    uint256 private constant ai16zLeverage = 0e18;
-    uint256 private constant aixbtLeverage = 0e18;
-    uint256 private constant sonicLeverage = 0e18;
-    uint256 private constant fartcoinLeverage = 0e18;
+    uint256 private constant trumpLeverage = 5e18;
+    uint256 private constant hypeLeverage = 5e18;
+    uint256 private constant virtualLeverage = 5e18;
+    uint256 private constant ai16zLeverage = 5e18;
+    uint256 private constant aixbtLeverage = 5e18;
+    uint256 private constant sonicLeverage = 20e18;
+    uint256 private constant fartcoinLeverage = 5e18;
 
     address private user;
     uint256 private userPk;
