@@ -159,7 +159,7 @@ struct StaticEcosystem {
     bytes32 jupUsdcStorkMarkNodeId;
     bytes32 penguUsdStorkMarkNodeId;
     bytes32 penguUsdcStorkMarkNodeId;
-    byttes32 trumpUsdStorkMarkNodeId;
+    bytes32 trumpUsdStorkMarkNodeId;
     bytes32 trumpUsdcStorkMarkNodeId;
     bytes32 hypeUsdStorkMarkNodeId;
     bytes32 hypeUsdcStorkMarkNodeId;
