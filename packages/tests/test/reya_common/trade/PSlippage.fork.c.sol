@@ -711,6 +711,34 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         trade_slippage_helper({ marketId: 41, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
+    function check_trade_slippage_trump_long() public {
+        trade_slippage_helper({ marketId: 42, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_hype_long() public {
+        trade_slippage_helper({ marketId: 43, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_virtual_long() public {
+        trade_slippage_helper({ marketId: 44, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_ai16z_long() public {
+        trade_slippage_helper({ marketId: 45, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_aixbt_long() public {
+        trade_slippage_helper({ marketId: 46, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_sonic_long() public {
+        trade_slippage_helper({ marketId: 47, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_fartcoin_long() public {
+        trade_slippage_helper({ marketId: 48, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
     function check_trade_slippage_eth_short() public {
         trade_slippage_helper({ marketId: 1, eps: ud(0.001e18), isLong: false, iterations: 4 });
     }
@@ -873,5 +901,33 @@ contract PSlippageForkCheck is BaseReyaForkTest {
 
     function check_trade_slippage_pengu_short() public {
         trade_slippage_helper({ marketId: 41, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_trump_short() public {
+        trade_slippage_helper({ marketId: 42, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_hype_short() public {
+        trade_slippage_helper({ marketId: 43, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_virtual_short() public {
+        trade_slippage_helper({ marketId: 44, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_ai16z_short() public {
+        trade_slippage_helper({ marketId: 45, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_aixbt_short() public {
+        trade_slippage_helper({ marketId: 46, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_sonic_short() public {
+        trade_slippage_helper({ marketId: 47, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_fartcoin_short() public {
+        trade_slippage_helper({ marketId: 48, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 }

@@ -168,6 +168,34 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_rusdCollateral_leverage_pengu();
     }
 
+    function test_Cronos_trade_rusdCollateral_leverage_trump() public {
+        check_trade_rusdCollateral_leverage_trump();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_hype() public {
+        check_trade_rusdCollateral_leverage_hype();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_virtual() public {
+        check_trade_rusdCollateral_leverage_virtual();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_ai16z() public {
+        check_trade_rusdCollateral_leverage_ai16z();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_aixbt() public {
+        check_trade_rusdCollateral_leverage_aixbt();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_sonic() public {
+        check_trade_rusdCollateral_leverage_sonic();
+    }
+
+    function test_Cronos_trade_rusdCollateral_leverage_fartcoin() public {
+        check_trade_rusdCollateral_leverage_fartcoin();
+    }
+
     function test_Cronos_trade_wethCollateral_leverage_eth() public {
         check_trade_wethCollateral_leverage_eth();
     }
@@ -330,6 +358,34 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
 
     function test_Cronos_trade_wethCollateral_leverage_pengu() public {
         check_trade_wethCollateral_leverage_pengu();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_trump() public {
+        check_trade_wethCollateral_leverage_trump();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_hype() public {
+        check_trade_wethCollateral_leverage_hype();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_virtual() public {
+        check_trade_wethCollateral_leverage_virtual();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_ai16z() public {
+        check_trade_wethCollateral_leverage_ai16z();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_aixbt() public {
+        check_trade_wethCollateral_leverage_aixbt();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_sonic() public {
+        check_trade_wethCollateral_leverage_sonic();
+    }
+
+    function test_Cronos_trade_wethCollateral_leverage_fartcoin() public {
+        check_trade_wethCollateral_leverage_fartcoin();
     }
 
     function test_Cronos_trade_usdeCollateral_leverage_eth() public {
@@ -496,6 +552,34 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_usdeCollateral_leverage_pengu();
     }
 
+    function test_Cronos_trade_usdeCollateral_leverage_trump() public {
+        check_trade_usdeCollateral_leverage_trump();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_hype() public {
+        check_trade_usdeCollateral_leverage_hype();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_virtual() public {
+        check_trade_usdeCollateral_leverage_virtual();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_ai16z() public {
+        check_trade_usdeCollateral_leverage_ai16z();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_aixbt() public {
+        check_trade_usdeCollateral_leverage_aixbt();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_sonic() public {
+        check_trade_usdeCollateral_leverage_sonic();
+    }
+
+    function test_Cronos_trade_usdeCollateral_leverage_fartcoin() public {
+        check_trade_usdeCollateral_leverage_fartcoin();
+    }
+
     function test_Cronos_trade_susdeCollateral_leverage_eth() public {
         check_trade_susdeCollateral_leverage_eth();
     }
@@ -658,6 +742,34 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
 
     function test_Cronos_trade_susdeCollateral_leverage_pengu() public {
         check_trade_susdeCollateral_leverage_pengu();
+    }
+
+    function test_Cronos_trade_susdeCollateral_leverage_trump() public {
+        check_trade_susdeCollateral_leverage_trump();
+    }
+
+    function test_Cronos_trade_susdeCollateral_leverage_hype() public {
+        check_trade_susdeCollateral_leverage_hype();
+    }
+
+    function test_Cronos_trade_susdeCollateral_leverage_virtual() public {
+        check_trade_susdeCollateral_leverage_virtual();
+    }
+
+    function test_Cronos_trade_susdeCollateral_leverage_ai16z() public {
+        check_trade_susdeCollateral_leverage_ai16z();
+    }
+
+    function test_Cronos_trade_susdeCollateral_leverage_aixbt() public {
+        check_trade_susdeCollateral_leverage_aixbt();
+    }
+
+    function test_Cronos_trade_susdeCollateral_leverage_sonic() public {
+        check_trade_susdeCollateral_leverage_sonic();
+    }
+
+    function test_Cronos_trade_susdeCollateral_leverage_fartcoin() public {
+        check_trade_susdeCollateral_leverage_fartcoin();
     }
 
     function test_Cronos_trade_deusdCollateral_leverage_eth() public {
@@ -824,6 +936,34 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_deusdCollateral_leverage_pengu();
     }
 
+    function test_Cronos_trade_deusdCollateral_leverage_trump() public {
+        check_trade_deusdCollateral_leverage_trump();
+    }
+
+    function test_Cronos_trade_deusdCollateral_leverage_hype() public {
+        check_trade_deusdCollateral_leverage_hype();
+    }
+
+    function test_Cronos_trade_deusdCollateral_leverage_virtual() public {
+        check_trade_deusdCollateral_leverage_virtual();
+    }
+
+    function test_Cronos_trade_deusdCollateral_leverage_ai16z() public {
+        check_trade_deusdCollateral_leverage_ai16z();
+    }
+
+    function test_Cronos_trade_deusdCollateral_leverage_aixbt() public {
+        check_trade_deusdCollateral_leverage_aixbt();
+    }
+
+    function test_Cronos_trade_deusdCollateral_leverage_sonic() public {
+        check_trade_deusdCollateral_leverage_sonic();
+    }
+
+    function test_Cronos_trade_deusdCollateral_leverage_fartcoin() public {
+        check_trade_deusdCollateral_leverage_fartcoin();
+    }
+
     function test_Cronos_trade_sdeusdCollateral_leverage_eth() public {
         check_trade_sdeusdCollateral_leverage_eth();
     }
@@ -986,6 +1126,34 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
 
     function test_Cronos_trade_sdeusdCollateral_leverage_pengu() public {
         check_trade_sdeusdCollateral_leverage_pengu();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_trump() public {
+        check_trade_sdeusdCollateral_leverage_trump();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_hype() public {
+        check_trade_sdeusdCollateral_leverage_hype();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_virtual() public {
+        check_trade_sdeusdCollateral_leverage_virtual();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_ai16z() public {
+        check_trade_sdeusdCollateral_leverage_ai16z();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_aixbt() public {
+        check_trade_sdeusdCollateral_leverage_aixbt();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_sonic() public {
+        check_trade_sdeusdCollateral_leverage_sonic();
+    }
+
+    function test_Cronos_trade_sdeusdCollateral_leverage_fartcoin() public {
+        check_trade_sdeusdCollateral_leverage_fartcoin();
     }
 
     function test_Cronos_trade_rseliniCollateral_leverage_eth() public {
@@ -1152,6 +1320,34 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_rseliniCollateral_leverage_pengu();
     }
 
+    function test_Cronos_trade_rseliniCollateral_leverage_trump() public {
+        check_trade_rseliniCollateral_leverage_trump();
+    }
+
+    function test_Cronos_trade_rseliniCollateral_leverage_hype() public {
+        check_trade_rseliniCollateral_leverage_hype();
+    }
+
+    function test_Cronos_trade_rseliniCollateral_leverage_virtual() public {
+        check_trade_rseliniCollateral_leverage_virtual();
+    }
+
+    function test_Cronos_trade_rseliniCollateral_leverage_ai16z() public {
+        check_trade_rseliniCollateral_leverage_ai16z();
+    }
+
+    function test_Cronos_trade_rseliniCollateral_leverage_aixbt() public {
+        check_trade_rseliniCollateral_leverage_aixbt();
+    }
+
+    function test_Cronos_trade_rseliniCollateral_leverage_sonic() public {
+        check_trade_rseliniCollateral_leverage_sonic();
+    }
+
+    function test_Cronos_trade_rseliniCollateral_leverage_fartcoin() public {
+        check_trade_rseliniCollateral_leverage_fartcoin();
+    }
+
     function test_Cronos_trade_ramberCollateral_leverage_eth() public {
         check_trade_ramberCollateral_leverage_eth();
     }
@@ -1314,5 +1510,33 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
 
     function test_Cronos_trade_ramberCollateral_leverage_pengu() public {
         check_trade_ramberCollateral_leverage_pengu();
+    }
+
+    function test_Cronos_trade_ramberCollateral_leverage_trump() public {
+        check_trade_ramberCollateral_leverage_trump();
+    }
+
+    function test_Cronos_trade_ramberCollateral_leverage_hype() public {
+        check_trade_ramberCollateral_leverage_hype();
+    }
+
+    function test_Cronos_trade_ramberCollateral_leverage_virtual() public {
+        check_trade_ramberCollateral_leverage_virtual();
+    }
+
+    function test_Cronos_trade_ramberCollateral_leverage_ai16z() public {
+        check_trade_ramberCollateral_leverage_ai16z();
+    }
+
+    function test_Cronos_trade_ramberCollateral_leverage_aixbt() public {
+        check_trade_ramberCollateral_leverage_aixbt();
+    }
+
+    function test_Cronos_trade_ramberCollateral_leverage_sonic() public {
+        check_trade_ramberCollateral_leverage_sonic();
+    }
+
+    function test_Cronos_trade_ramberCollateral_leverage_fartcoin() public {
+        check_trade_ramberCollateral_leverage_fartcoin();
     }
 }
