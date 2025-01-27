@@ -268,7 +268,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceKBONK);
         ls.maxDeviationMarket.push(ls.maxDeviationKBONK);
 
-        ls.meanPriceAPT = 11.8e18;
+        ls.meanPriceAPT = 7.5e18;
         ls.maxDeviationAPT = 4.5e18;
         ls.meanPriceMarket.push(ls.meanPriceAPT);
         ls.maxDeviationMarket.push(ls.maxDeviationAPT);
