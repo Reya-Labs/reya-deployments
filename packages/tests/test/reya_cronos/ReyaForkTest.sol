@@ -218,6 +218,27 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.penguUsdStorkMarkNodeId = 0x70713196edbccbb0656594528b434ecfae5dfe47dd375e4fb56274a6e4ebf1fc;
         sec.penguUsdcStorkMarkNodeId = 0x29cfe9e8e20c5c0bdadbb6c884e49e83aa3e46415e6b45b5bb247f72969c990b;
 
+        sec.trumpUsdStorkMarkNodeId = 0xf42a67b3f1243214f978cbc4cef886c2e81875145416f3bbb7bd27971fed9e95;
+        sec.trumpUsdcStorkMarkNodeId = 0xecd68e5bcfa749395b1b062168b07697918965af15b98428bde2de12fe97e3c8;
+
+        sec.hypeUsdStorkMarkNodeId = 0xead1efd32fe0933e548b545cc493e4fa0fd84bfef7a35b63a8b54762c492fa5e;
+        sec.hypeUsdcStorkMarkNodeId = 0xd676c03848e1bed665a0cdb5a9c0f779a3e05932b3b3e172e60e82ae32e0fb2a;
+
+        sec.virtualUsdStorkMarkNodeId = 0xeb1ac4c2f76d6a1f7dc9425a08244d8e38ac382158ca15f7abcf452790acb1f8;
+        sec.virtualUsdcStorkMarkNodeId = 0x4dfb2b23ea7bf61c2e857df8e4b0f5896617aaba3fcc631f6c8d464101d43ff6;
+
+        sec.ai16zUsdStorkMarkNodeId = 0x4c375e5ddad34ef7cbdc60fef0641e7ec65c7a8a766f441beaab9747993c8a9a;
+        sec.ai16zUsdcStorkMarkNodeId = 0x2c775a3ae4ad1f1114281028b6d18d0484e1877980c35322885cbc3e2bd49770;
+
+        sec.aixbtUsdStorkMarkNodeId = 0x3eefe4d068948e9d567c841e67d614ce96ba4d131c9ad3fc38f6bcb9bb3b08ff;
+        sec.aixbtUsdcStorkMarkNodeId = 0x7bd274a58a43c605234d64d60323be4996e7d0a494063f95ac3eb06cec2bb566;
+
+        sec.sonicUsdStorkMarkNodeId = 0xc3d57ef53e9afea34fad01eba3021a3ed33d362fa2e176716d3213d6fd7da1b0;
+        sec.sonicUsdcStorkMarkNodeId = 0xc2677d595a7159ba0d451eab4b6d2bf34918b9ae9ee54c8b680778b00d86e39b;
+
+        sec.fartcoinUsdStorkMarkNodeId = 0x743cb9ec187bbeae3dc7130e930887b4b5a32de4f7c36a2c915e45c25e92cc60;
+        sec.fartcoinUsdcStorkMarkNodeId = 0xd6a7c94b15ca430bab03e4f7fa06485fff89fa85474d13922b43892ec6a8fe80;
+
         // Socket variables
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
         dec.socketExecutionHelper[sec.usdc] = 0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE;
