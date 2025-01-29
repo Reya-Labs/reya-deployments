@@ -29,3 +29,13 @@ args = [
     "<%= settings.co_execution_bot1 %>",
 ]
 depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_execution_bot_2]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot2 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]

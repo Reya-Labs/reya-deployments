@@ -133,6 +133,7 @@ ae_liquidator1 = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
 
 [var.co_execution_bots]
 co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a"
+co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688"
 
 [var.match_order_publisher_admins]
 matchOrderPublisherAdmin1 = "<%= settings.pauser1 %>"
