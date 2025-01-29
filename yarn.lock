@@ -48,6 +48,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@endo/env-options@npm:^1.1.8":
+  version: 1.1.8
+  resolution: "@endo/env-options@npm:1.1.8"
+  checksum: f9df0715e88a47bb262d7d10eb3bb07d507cbc4cee13738d090063ae464ce19edc37e6589493303447f202eb498cc51d047ff4c56794952b256d42dd14d7115d
+  languageName: node
+  linkType: hard
+
 "@ethersproject/abi@npm:5.7.0, @ethersproject/abi@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/abi@npm:5.7.0"
@@ -1135,35 +1142,39 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usecannon/builder@npm:2.20.3":
-  version: 2.20.3
-  resolution: "@usecannon/builder@npm:2.20.3"
+"@usecannon/builder@npm:2.21.0":
+  version: 2.21.0
+  resolution: "@usecannon/builder@npm:2.21.0"
   dependencies:
     "@usecannon/router": ^4.1.2
     "@usecannon/web-solc": 0.5.1
+    acorn: ^8.14.0
     axios: ^1.7.2
     axios-retry: ^4.4.2
     buffer: ^6.0.3
     chalk: ^4.1.2
     debug: ^4.3.6
+    deep-freeze: ^0.0.1
     form-data: ^4.0.0
     fuse.js: ^7.0.0
     lodash: ^4.17.21
     pako: ^2.1.0
     promise-events: ^0.2.4
+    rfdc: ^1.4.1
+    ses: ^1.10.0
     typestub-ipfs-only-hash: ^4.0.0
     viem: ^2.21.15
     zod: ^3.23.6
-  checksum: e94f2f88cfde6b1924ed82682dde993905031939c4a88482835bce10788a52b1a5a74040df740aea6c27ddfd2ab60578328bed6142efc3b499a5e0ba63e00ff6
+  checksum: 473556ca3ebd983ad8a1bf39dae1ebb4c726b0a7c4e476ab98ed6f199c7b36ecb042576965dd2a472578cd874f5d0da971e7b6a4c7819d51ca971cc84fc6bf60
   languageName: node
   linkType: hard
 
-"@usecannon/cli@npm:2.20.3":
-  version: 2.20.3
-  resolution: "@usecannon/cli@npm:2.20.3"
+"@usecannon/cli@npm:2.21.0":
+  version: 2.21.0
+  resolution: "@usecannon/cli@npm:2.21.0"
   dependencies:
     "@iarna/toml": ^3.0.0
-    "@usecannon/builder": 2.20.3
+    "@usecannon/builder": 2.21.0
     abitype: ^1.0.5
     chalk: ^4.1.2
     commander: ^12.1.0
@@ -1182,7 +1193,7 @@ __metadata:
     zod: ^3.23.8
   bin:
     cannon: bin/cannon.js
-  checksum: 24850d8e739bf8c1912b5d409fa998a75f64e664ae11b15e48ae0064592a81d1679b0329eb67f7b77ba5d4b9931392fb46c19a56f82929c1baff59840aaca734
+  checksum: 17b2d962b5a6e8739f3f3d2f98674cf03089d65e0632fed52d0133a423e00aabdc8a02d331949cbb1afa337a47656acd53ea328840e20df34717616e849b9265
   languageName: node
   linkType: hard
 
@@ -1264,6 +1275,15 @@ __metadata:
     zod:
       optional: true
   checksum: 0bf6ed5ec785f372746c3ec5d6c87bf4d8cf0b6db30867b8d24e86fbc66d9f6599ae3d463ccd49817e67eedec6deba7cdae317bcf4da85b02bc48009379b9f84
+  languageName: node
+  linkType: hard
+
+"acorn@npm:^8.14.0":
+  version: 8.14.0
+  resolution: "acorn@npm:8.14.0"
+  bin:
+    acorn: bin/acorn
+  checksum: 8755074ba55fff94e84e81c72f1013c2d9c78e973c31231c8ae505a5f966859baf654bddd75046bffd73ce816b149298977fff5077a3033dedba0ae2aad152d4
   languageName: node
   linkType: hard
 
@@ -2229,6 +2249,13 @@ __metadata:
   version: 0.7.0
   resolution: "dedent@npm:0.7.0"
   checksum: 87de191050d9a40dd70cad01159a0bcf05ecb59750951242070b6abf9569088684880d00ba92a955b4058804f16eeaf91d604f283929b4f614d181cd7ae633d2
+  languageName: node
+  linkType: hard
+
+"deep-freeze@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "deep-freeze@npm:0.0.1"
+  checksum: 1e43c98e44c7849382d9f896e679d48a1b5bf40993f7cc858e3730ef4e2ba387b9b7b7fe722cac34febe7f6a564cd242c27bbc319e8df793c2a287f21e5ba038
   languageName: node
   linkType: hard
 
@@ -5743,8 +5770,8 @@ __metadata:
   resolution: "reya-deployments@workspace:."
   dependencies:
     "@ethersproject/abi": 5.7.0
-    "@usecannon/builder": 2.20.3
-    "@usecannon/cli": 2.20.3
+    "@usecannon/builder": 2.21.0
+    "@usecannon/cli": 2.21.0
     forge-std: "github:foundry-rs/forge-std#v1.9.4"
     lerna: ^8.1.2
     prettier: 3.2.5
@@ -5752,6 +5779,13 @@ __metadata:
     solc: 0.8.21
   languageName: unknown
   linkType: soft
+
+"rfdc@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "rfdc@npm:1.4.1"
+  checksum: 3b05bd55062c1d78aaabfcea43840cdf7e12099968f368e9a4c3936beb744adb41cbdb315eac6d4d8c6623005d6f87fdf16d8a10e1ff3722e84afea7281c8d13
+  languageName: node
+  linkType: hard
 
 "rimraf@npm:^4.4.1":
   version: 4.4.1
@@ -5845,6 +5879,15 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: 4110ec5d015c9438f322257b1c51fe30276e5f766a3f64c09edd1d7ea7118ecbc3f379f3b69032bacf13116dc7abc4ad8ce0d7e2bd642e26b0d271b56b61a7d8
+  languageName: node
+  linkType: hard
+
+"ses@npm:^1.10.0":
+  version: 1.11.0
+  resolution: "ses@npm:1.11.0"
+  dependencies:
+    "@endo/env-options": ^1.1.8
+  checksum: c36319697b6d99990ceb21b4f9001b8db467c6c66bdac927af9acb954bb12fe52025f3a5aeac70f64ecef04789082bff9ecaf0d0b3fb90d305f3dd11a5763c60
   languageName: node
   linkType: hard
 
