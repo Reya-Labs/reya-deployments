@@ -68,6 +68,15 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant aixbtLeverage = 5e18;
     uint256 private constant sonicLeverage = 20e18;
     uint256 private constant fartcoinLeverage = 5e18;
+    uint256 private constant griffainLeverage = 10e18;
+    uint256 private constant wldLeverage = 10e18;
+    uint256 private constant atomLeverage = 20e18;
+    uint256 private constant apeLeverage = 15e18;
+    uint256 private constant tonLeverage = 20e18;
+    uint256 private constant ondoLeverage = 15e18;
+    uint256 private constant trxLeverage = 15e18;
+    uint256 private constant injLeverage = 20e18;
+    uint256 private constant moveLeverage = 15e18;
 
     address private user;
     uint256 private userPk;
