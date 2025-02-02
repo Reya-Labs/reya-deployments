@@ -1,0 +1,23 @@
+[invoke.oracle_manager_register_node_wld_usd_mark_stork]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_STORK_OFFCHAIN_LOOKUP %>",
+    "<%= defaultAbiCoder.encode(['address','string'], [contracts.OracleAdaptersProxy.address, settings.storkAssetPairIdWLDMark]) %>",
+    [
+    ],
+]
+var.wldUsdMarkNodeIdStork.event = "NodeRegistered"
+var.wldUsdMarkNodeIdStork.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]
+
+[invoke.oracle_manager_wld_usd_mark_stork_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.wldUsdMarkNodeIdStork %>",
+    "<%= settings.wldUsdMarkMaxStaleDurationStork %>",
+]
+depends = ["invoke.oracle_manager_register_node_wld_usd_mark_stork"]

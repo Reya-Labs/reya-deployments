@@ -272,6 +272,15 @@ storkAssetPairIdAI16ZMark = "AI16ZUSDMARK"
 storkAssetPairIdAIXBTMark = "AIXBTUSDMARK"
 storkAssetPairIdSONICMark = "SUSDMARK"
 storkAssetPairIdFARTCOINMark = "FARTCOINUSDMARK"
+storkAssetPairIdGRIFFAINMark = "GRIFFAINUSDMARK"
+storkAssetPairIdWLDMark = "WLDUSDMARK"
+storkAssetPairIdATOMMark = "ATOMUSDMARK"
+storkAssetPairIdAPEMark = "APEUSDMARK"
+storkAssetPairIdTONMark = "TONUSDMARK"
+storkAssetPairIdONDOMark = "ONDOUSDMARK"
+storkAssetPairIdTRXMark = "TRXUSDMARK"
+storkAssetPairIdINJMark = "INJUSDMARK"
+storkAssetPairIdMOVEMark = "MOVEUSDMARK"
 
 [var.reya_lm_asset_pair_ids]
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
@@ -1849,7 +1858,7 @@ market57Move_priceSpreadUnscaled = "0"
 market57Move_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "48"
+cp1Rusd_maxMarkets = "57"
 cp1Rusd_maxCollaterals = "8"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"

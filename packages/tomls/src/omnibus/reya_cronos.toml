@@ -210,22 +210,6 @@ ramberSubscriber1 = "<%= settings.rebalancer3 %>"
 ramberRedeemer1 = "<%= settings.rebalancer3 %>"
 ramberCustodian1 = "0x45556408e543158f74403e882E3C8c23eCD9f732"
 
-[var.redstone_oracles]
-redstonePriceFeedUSDC = "0xDefB236eB69b7f94490786375B093C6c8271214A"
-redstonePriceFeedETH = "0x187078471869387119FB88E8F033412A0F0fdfcd"
-redstonePriceFeedBTC = "0x22Ef8eb05189cF39a347F93a33508D0ce9e37830"
-redstonePriceFeedSOL = "0x3e3762c10F018fE02701be651b5c0937C3a7d7e1"
-redstonePriceFeedARB = "0x3A2Cb95DE3EBE02Fc713049F30B8952296D9600d"
-redstonePriceFeedOP = "0xD583E60FD28Bb19d0C03Fb37553B83C665cf082B"
-redstonePriceFeedAVAX = "0xbF675f4AF4351ee79B95f24651f4E3741079af5E"
-redstonePriceFeedUSDE = "0xC70E99813ee971CD5703581fe016dF256427fCce"
-redstonePriceFeedMKR = "0xDf1A484d9C28204F12BF30960835169D458df835"
-redstonePriceFeedLINK = "0x1dc447efFE5eE0c9c5332286094975362f9ec84F"
-redstonePriceFeedAAVE = "0x5A81e9D5b1f4f0B51D6b7F2151ABDAe39854Fa28"
-redstonePriceFeedCRV = "0x768dFE8943C19E56560d0F160333bAd128AdB788"
-redstonePriceFeedUNI = "0xE66d369484d98103A849460D820e3D8A46ee4534"
-redstonePriceFeedSUSDE = "0x335Cff1702EF7d36Acc347a1574a96a34BF382b0"
-
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
 storkAssetPairIdETH = "ETHUSD"
@@ -295,6 +279,15 @@ storkAssetPairIdAI16ZMark = "AI16ZUSDMARK"
 storkAssetPairIdAIXBTMark = "AIXBTUSDMARK"
 storkAssetPairIdSONICMark = "SUSDMARK"
 storkAssetPairIdFARTCOINMark = "FARTCOINUSDMARK"
+storkAssetPairIdGRIFFAINMark = "GRIFFAINUSDMARK"
+storkAssetPairIdWLDMark = "WLDUSDMARK"
+storkAssetPairIdATOMMark = "ATOMUSDMARK"
+storkAssetPairIdAPEMark = "APEUSDMARK"
+storkAssetPairIdTONMark = "TONUSDMARK"
+storkAssetPairIdONDOMark = "ONDOUSDMARK"
+storkAssetPairIdTRXMark = "TRXUSDMARK"
+storkAssetPairIdINJMark = "INJUSDMARK"
+storkAssetPairIdMOVEMark = "MOVEUSDMARK"
 
 [var.reya_lm_asset_pair_ids]
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
@@ -697,32 +690,32 @@ sonicUsdcMarkMaxStaleDurationStork = "0"
 fartcoinUsdMarkMaxStaleDurationStork = "0"
 fartcoinUsdcMarkMaxStaleDurationStork = "0"
 #-----------------------------------------------------------------------------------
-griffainUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-griffainUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+griffainUsdMarkMaxStaleDurationStork = "0"
+griffainUsdcMarkMaxStaleDurationStork = "0"
 #-----------------------------------------------------------------------------------
-wldUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-wldUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+wldUsdMarkMaxStaleDurationStork = "0"
+wldUsdcMarkMaxStaleDurationStork = "0"
 #-----------------------------------------------------------------------------------
-atomUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-atomUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+atomUsdMarkMaxStaleDurationStork = "0"
+atomUsdcMarkMaxStaleDurationStork = "0"
 #-----------------------------------------------------------------------------------
-apeUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-apeUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+apeUsdMarkMaxStaleDurationStork = "0"
+apeUsdcMarkMaxStaleDurationStork = "0"
 #-----------------------------------------------------------------------------------
-tonUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-tonUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+tonUsdMarkMaxStaleDurationStork = "0"
+tonUsdcMarkMaxStaleDurationStork = "0"
 #-----------------------------------------------------------------------------------
-ondoUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-ondoUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+ondoUsdMarkMaxStaleDurationStork = "0"
+ondoUsdcMarkMaxStaleDurationStork = "0"
 #-----------------------------------------------------------------------------------
-trxUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-trxUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+trxUsdMarkMaxStaleDurationStork = "0"
+trxUsdcMarkMaxStaleDurationStork = "0"
 #-----------------------------------------------------------------------------------
-injUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-injUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+injUsdMarkMaxStaleDurationStork = "0"
+injUsdcMarkMaxStaleDurationStork = "0"
 #-----------------------------------------------------------------------------------
-moveUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-moveUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+moveUsdMarkMaxStaleDurationStork = "0"
+moveUsdcMarkMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDurationStork = "0"
 susdeUsdcMaxStaleDurationStork = "0"
@@ -1885,7 +1878,7 @@ market57Move_priceSpreadUnscaled = "0"
 market57Move_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "48"
+cp1Rusd_maxMarkets = "57"
 cp1Rusd_maxCollaterals = "9"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
