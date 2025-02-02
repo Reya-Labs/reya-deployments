@@ -239,32 +239,32 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.fartcoinUsdStorkMarkNodeId = 0x743cb9ec187bbeae3dc7130e930887b4b5a32de4f7c36a2c915e45c25e92cc60;
         sec.fartcoinUsdcStorkMarkNodeId = 0xd6a7c94b15ca430bab03e4f7fa06485fff89fa85474d13922b43892ec6a8fe80;
 
-        sec.griffainUsdStorkMarkNodeId = 0x00;
-        sec.griffainUsdcStorkMarkNodeId = 0x00;
+        sec.griffainUsdStorkMarkNodeId = 0xfa4af4ea5d2238d1fa9c8c6735b166e81908b16d80f03ea7ca4fe786777c629d;
+        sec.griffainUsdcStorkMarkNodeId = 0x8d39580b274245a40849b7e33e955252fff843700d819b2c1392b1150674208a;
 
-        sec.wldUsdStorkMarkNodeId = 0x00;
-        sec.wldUsdcStorkMarkNodeId = 0x00;
+        sec.wldUsdStorkMarkNodeId = 0xd7901c508bfbdef85f1cda0414fbd689627f0a31581934cf03893cc6d818fae7;
+        sec.wldUsdcStorkMarkNodeId = 0x4d759a96963f6db950df6f180bd3368e58ed335f4afd88e730fe7598419cc76f;
 
-        sec.atomUsdStorkMarkNodeId = 0x00;
-        sec.atomUsdcStorkMarkNodeId = 0x00;
+        sec.atomUsdStorkMarkNodeId = 0x1d732b62a03c21063d302ef79d29654dc2214da93fdf2cba7539b7568324dcd7;
+        sec.atomUsdcStorkMarkNodeId = 0x9f0830fd7a009bc1b3296af09aecda984e3917a5319a5dd8308693d8e5e9d7cf;
 
-        sec.apeUsdStorkMarkNodeId = 0x00;
-        sec.apeUsdcStorkMarkNodeId = 0x00;
+        sec.apeUsdStorkMarkNodeId = 0xbcce14d1b28b4a6f3909e5fc348155aec4dc9aec4cf3a35b525fb15590b600e0;
+        sec.apeUsdcStorkMarkNodeId = 0xc1eed93b5101fb39ca7b80ccc07fe0ab5e76d01881c2bc77af412cc753166d44;
 
-        sec.tonUsdStorkMarkNodeId = 0x00;
-        sec.tonUsdcStorkMarkNodeId = 0x00;
+        sec.tonUsdStorkMarkNodeId = 0x5219f953773566ab88b4ea5c5e892cc537f4ec6c41ee0e3fe05f01e5efefa1b2;
+        sec.tonUsdcStorkMarkNodeId = 0x95f69d27844376c6fce9af2850aa32feecd6530294065c7bef2a7644d28e456f;
 
-        sec.ondoUsdStorkMarkNodeId = 0x00;
-        sec.ondoUsdcStorkMarkNodeId = 0x00;
+        sec.ondoUsdStorkMarkNodeId = 0xe6ae89ba88295df9efa6ad4facef67f76db2d33e91f6fff5383c711eb456870b;
+        sec.ondoUsdcStorkMarkNodeId = 0xbc2fcb2a52604995f02eabc1ed159c379aac9ca253e67cd357370259c86fac8e;
 
-        sec.trxUsdStorkMarkNodeId = 0x00;
-        sec.trxUsdcStorkMarkNodeId = 0x00;
+        sec.trxUsdStorkMarkNodeId = 0x3022e8ddfccbee79a13bc8815704b328d569247f34ea2c1198418f4ab7238038;
+        sec.trxUsdcStorkMarkNodeId = 0x038e502bf9bf88c351a024b02d65279d6aa8794072530ecdd7cae6e25448541e;
 
-        sec.injUsdStorkMarkNodeId = 0x00;
-        sec.injUsdcStorkMarkNodeId = 0x00;
+        sec.injUsdStorkMarkNodeId = 0x43ceaba5a1b6f85b37ad4337035a5362530b6b6202f076b71216fa1a7275806b;
+        sec.injUsdcStorkMarkNodeId = 0x97a0cc1aa18bb21d3c56e735979235f3b321eaac77507eac7ca447a4a06813e8;
 
-        sec.moveUsdStorkMarkNodeId = 0x00;
-        sec.moveUsdcStorkMarkNodeId = 0x00;
+        sec.moveUsdStorkMarkNodeId = 0x9218f695dbe45c4122f5ad9f7e27e49b33a9532dea4eeb9372a179d96be4d576;
+        sec.moveUsdcStorkMarkNodeId = 0xa5e2a329e4fe870643700a5feb7cd029af49db11a647332275da15728861093b;
 
         // Socket variables
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;

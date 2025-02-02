@@ -1919,7 +1919,7 @@ cp1Rusd_market53Ton_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market54Ondo_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market55Trx_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market56Inj_riskMatrix00Unscaled = "0.001479"
-cp1Rusd_marketMove_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market57Move_riskMatrix00Unscaled = "0.002630"
 
 # -----------------------------------------------
 cp1Rusd_imMultiplierUnscaled = "1.3"
