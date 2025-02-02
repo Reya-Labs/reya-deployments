@@ -196,6 +196,42 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
         check_trade_slippage_fartcoin_long();
     }
 
+    function test_Cronos_trade_slippage_griffain_long() public {
+        check_trade_slippage_griffain_long();
+    }
+
+    function test_Cronos_trade_slippage_wld_long() public {
+        check_trade_slippage_wld_long();
+    }
+
+    function test_Cronos_trade_slippage_atom_long() public {
+        check_trade_slippage_atom_long();
+    }
+
+    function test_Cronos_trade_slippage_ape_long() public {
+        check_trade_slippage_ape_long();
+    }
+
+    function test_Cronos_trade_slippage_ton_long() public {
+        check_trade_slippage_ton_long();
+    }
+
+    function test_Cronos_trade_slippage_ondo_long() public {
+        check_trade_slippage_ondo_long();
+    }
+
+    function test_Cronos_trade_slippage_trx_long() public {
+        check_trade_slippage_trx_long();
+    }
+
+    function test_Cronos_trade_slippage_inj_long() public {
+        check_trade_slippage_inj_long();
+    }
+
+    function test_Cronos_trade_slippage_move_long() public {
+        check_trade_slippage_move_long();
+    }
+
     function test_Cronos_trade_slippage_eth_short() public {
         check_trade_slippage_eth_short();
     }
@@ -386,5 +422,41 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
 
     function test_Cronos_trade_slippage_fartcoin_short() public {
         check_trade_slippage_fartcoin_short();
+    }
+
+    function test_Cronos_trade_slippage_griffain_short() public {
+        check_trade_slippage_griffain_short();
+    }
+
+    function test_Cronos_trade_slippage_wld_short() public {
+        check_trade_slippage_wld_short();
+    }
+
+    function test_Cronos_trade_slippage_atom_short() public {
+        check_trade_slippage_atom_short();
+    }
+
+    function test_Cronos_trade_slippage_ape_short() public {
+        check_trade_slippage_ape_short();
+    }
+
+    function test_Cronos_trade_slippage_ton_short() public {
+        check_trade_slippage_ton_short();
+    }
+
+    function test_Cronos_trade_slippage_ondo_short() public {
+        check_trade_slippage_ondo_short();
+    }
+
+    function test_Cronos_trade_slippage_trx_short() public {
+        check_trade_slippage_trx_short();
+    }
+
+    function test_Cronos_trade_slippage_inj_short() public {
+        check_trade_slippage_inj_short();
+    }
+
+    function test_Cronos_trade_slippage_move_short() public {
+        check_trade_slippage_move_short();
     }
 }

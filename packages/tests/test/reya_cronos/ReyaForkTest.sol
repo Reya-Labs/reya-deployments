@@ -239,6 +239,33 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.fartcoinUsdStorkMarkNodeId = 0x743cb9ec187bbeae3dc7130e930887b4b5a32de4f7c36a2c915e45c25e92cc60;
         sec.fartcoinUsdcStorkMarkNodeId = 0xd6a7c94b15ca430bab03e4f7fa06485fff89fa85474d13922b43892ec6a8fe80;
 
+        sec.griffainUsdStorkMarkNodeId = 0x00;
+        sec.griffainUsdcStorkMarkNodeId = 0x00;
+
+        sec.wldUsdStorkMarkNodeId = 0x00;
+        sec.wldUsdcStorkMarkNodeId = 0x00;
+
+        sec.atomUsdStorkMarkNodeId = 0x00;
+        sec.atomUsdcStorkMarkNodeId = 0x00;
+
+        sec.apeUsdStorkMarkNodeId = 0x00;
+        sec.apeUsdcStorkMarkNodeId = 0x00;
+
+        sec.tonUsdStorkMarkNodeId = 0x00;
+        sec.tonUsdcStorkMarkNodeId = 0x00;
+
+        sec.ondoUsdStorkMarkNodeId = 0x00;
+        sec.ondoUsdcStorkMarkNodeId = 0x00;
+
+        sec.trxUsdStorkMarkNodeId = 0x00;
+        sec.trxUsdcStorkMarkNodeId = 0x00;
+
+        sec.injUsdStorkMarkNodeId = 0x00;
+        sec.injUsdcStorkMarkNodeId = 0x00;
+
+        sec.moveUsdStorkMarkNodeId = 0x00;
+        sec.moveUsdcStorkMarkNodeId = 0x00;
+
         // Socket variables
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
         dec.socketExecutionHelper[sec.usdc] = 0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE;
