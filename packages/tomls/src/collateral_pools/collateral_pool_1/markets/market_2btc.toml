@@ -107,20 +107,20 @@ depends = ["invoke.create_market_2btc"]
 ##################################################
 # Market's Collateral Pool Insurance Fund
 ##################################################
-# [invoke.market_2btc_insurance_fund_config]
-# target = ["CoreProxy"]
-# fromCall.func = "getCollateralPoolOwner"
-# fromCall.args = ["<%= settings.market2BtcId %>"]
-# func = "configureCollateralPoolInsuranceFund"
-# args = [
-#     "<%= settings.market2BtcId %>",
-#     # reusing params from CP 1 since this CP will get merged
-#     { accountId = "<%= settings.cp1Rusd_insuranceFundAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_insuranceFund_liquidationFeeUnscaled) %>" },
-# ]
-# depends = [
-#     "invoke.cp_1rusd_create_insurance_fund_account",
-#     "invoke.create_market_2btc",
-# ]
+[invoke.market_2btc_insurance_fund_config]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market2BtcId %>"]
+func = "configureCollateralPoolInsuranceFund"
+args = [
+    "<%= settings.market2BtcId %>",
+    # reusing params from CP 1 since this CP will get merged
+    { accountId = "<%= settings.cp1Rusd_insuranceFundAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_insuranceFund_liquidationFeeUnscaled) %>" },
+]
+depends = [
+    "invoke.cp_1rusd_create_insurance_fund_account",
+    "invoke.create_market_2btc",
+]
 
 ##################################################
 # Market Tier Fees
@@ -158,5 +158,5 @@ depends = [
     "invoke.market_2btc_set_pausers_market",
     "invoke.market_2btc_set_market_config",
     "invoke.market_2btc_set_cp_limits",
-    # "invoke.market_2btc_insurance_fund_config",
+    "invoke.market_2btc_insurance_fund_config",
 ]
