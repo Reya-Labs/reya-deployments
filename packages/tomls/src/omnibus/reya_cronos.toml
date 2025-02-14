@@ -77,21 +77,21 @@ exchangePassSymbol = "ReyaEPass"
 exchangePassUri = "https://reya.xyz/"
 
 [var.initial_proxy_vars]
-usdcSalt = "usdc-main"
-usdtSalt = "usdt-main"
-daiSalt = "dai-main"
-wethSalt = "weth-main"
-wbtcSalt = "wbtc-main"
-wstethSalt = "wsteth-main"
-usdeSalt = "usde-main"
-susdeSalt = "susde-main-2"   # second deployment on testnet
-deusdSalt = "deusd-main"
-sdeusdSalt = "sdeusd-main"
-rseliniSalt = "rselini-main"
-ramberSalt = "ramber-main"
+usdcSalt = "usdc-main-second"
+usdtSalt = "usdt-main-second"
+daiSalt = "dai-main-second"
+wethSalt = "weth-main-second"
+wbtcSalt = "wbtc-main-second"
+wstethSalt = "wsteth-main-second"
+usdeSalt = "usde-main-second"
+susdeSalt = "susde-main-2-second"   # second deployment on testnet
+deusdSalt = "deusd-main-second"
+sdeusdSalt = "sdeusd-main-second"
+rseliniSalt = "rselini-main-second"
+ramberSalt = "ramber-main-second"
 
 [var.missing_vars]
-salt = ""
+salt = "second"
 
 [var.upgrade_proxy_vars]
 coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
@@ -1879,7 +1879,7 @@ market57Move_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "57"
-cp1Rusd_maxCollaterals = "9"
+cp1Rusd_maxCollaterals = "10"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
 # -----------------------------------------------
