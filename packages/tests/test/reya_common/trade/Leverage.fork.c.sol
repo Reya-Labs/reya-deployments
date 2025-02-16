@@ -77,6 +77,11 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant trxLeverage = 15e18;
     uint256 private constant injLeverage = 20e18;
     uint256 private constant moveLeverage = 15e18;
+    uint256 private constant beraLeverage = 3e18;
+    uint256 private constant layerLeverage = 3e18;
+    uint256 private constant taoLeverage = 20e18;
+    uint256 private constant ipLeverage = 3e18;
+    uint256 private constant meLeverage = 5e18;
 
     address private user;
     uint256 private userPk;
