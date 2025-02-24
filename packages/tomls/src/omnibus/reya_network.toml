@@ -15,7 +15,7 @@ include = [
     "../oracle_adapters/mainnet.toml",
     "../share_token/mainnet.toml",
 ]
-version = "1.0.44"
+version = "1.0.45"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -2057,7 +2057,7 @@ cp1Rusd_market56Inj_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market57Move_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market58Bera_riskMatrix00Unscaled = "0.50636"
 cp1Rusd_market59Layer_riskMatrix00Unscaled = "0.50636"
-cp1Rusd_market60Tao_riskMatrix00Unscaled = "0.023669"
+cp1Rusd_market60Tao_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market61Ip_riskMatrix00Unscaled = "0.50636"
 cp1Rusd_market62Me_riskMatrix00Unscaled = "0.023669"
 
