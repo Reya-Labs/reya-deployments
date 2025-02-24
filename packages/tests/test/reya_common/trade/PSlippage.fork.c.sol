@@ -775,6 +775,26 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         trade_slippage_helper({ marketId: 57, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
+    function check_trade_slippage_bera_long() public {
+        trade_slippage_helper({ marketId: 58, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_layer_long() public {
+        trade_slippage_helper({ marketId: 59, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_tao_long() public {
+        trade_slippage_helper({ marketId: 60, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_ip_long() public {
+        trade_slippage_helper({ marketId: 61, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
+    function check_trade_slippage_me_long() public {
+        trade_slippage_helper({ marketId: 62, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
     function check_trade_slippage_eth_short() public {
         trade_slippage_helper({ marketId: 1, eps: ud(0.001e18), isLong: false, iterations: 4 });
     }
@@ -1001,5 +1021,25 @@ contract PSlippageForkCheck is BaseReyaForkTest {
 
     function check_trade_slippage_move_short() public {
         trade_slippage_helper({ marketId: 57, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_bera_short() public {
+        trade_slippage_helper({ marketId: 58, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_layer_short() public {
+        trade_slippage_helper({ marketId: 59, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_tao_short() public {
+        trade_slippage_helper({ marketId: 60, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_ip_short() public {
+        trade_slippage_helper({ marketId: 61, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_me_short() public {
+        trade_slippage_helper({ marketId: 62, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 }

@@ -260,6 +260,21 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.moveUsdStorkMarkNodeId = 0xc8a0c66533e534ba674eeb88be2419ed729c1f7486040e040121fea6c4776207;
         sec.moveUsdcStorkMarkNodeId = 0x41eedd0c7e99062ddc6b2236d832421f93bedb1a1c0a199d60d36a910505835a;
 
+        sec.beraUsdStorkMarkNodeId = 0x4062c06c9e7bbacfaaa64122dac852bf681e060ba1f270d7ae6d37b1fd9e8e83;
+        sec.beraUsdcStorkMarkNodeId = 0x5e066410873633e2144d5d84f6103598c1fd58d8481c4b3f8ee27278613a100c;
+
+        sec.layerUsdStorkMarkNodeId = 0x2f73df82f135e40f91791306aed8e1ede704c034409a72aa92271c97ac2468be;
+        sec.layerUsdcStorkMarkNodeId = 0x7e8c35128fcb04b662843e6db2359f97cca981fbe54f1f8a4b660d4b4fa93f6e;
+
+        sec.taoUsdStorkMarkNodeId = 0x311f98e0cbea124c7add927d760065acb846191e789f5adca7f336276681591f;
+        sec.taoUsdcStorkMarkNodeId = 0x20ea080fd3e412b5866026e74975a51278ec526ddef595d29d332086c617fac0;
+
+        sec.ipUsdMarkNodeIdStork = 0x31a9c7ff27a8fe628657d3df8f65a095f07001a000cc24b144a31c41404ac214;
+        sec.ipUsdcMarkNodeIdStork = 0xc6e576793b02473ea40dab35b5f23bbfe4dc56159940f5f6139f0e4e3822f8b3;
+
+        sec.meUsdMarkNodeIdStork = 0xb63ceab97734e1c0e1753d7159b2b73f4fb9c575dbd9e679edc118b6249316a8;
+        sec.meUsdcMarkNodeIdStork = 0x005ba8cf801945fe393812fff754d399e4718538bd78f83d490201a5eef466eb;
+
         // Socket variables
         dec.socketController[sec.usdc] = 0x1d43076909Ca139BFaC4EbB7194518bE3638fc76;
         dec.socketExecutionHelper[sec.usdc] = 0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa;

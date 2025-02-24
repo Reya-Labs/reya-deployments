@@ -191,6 +191,16 @@ struct StaticEcosystem {
     bytes32 injUsdcStorkMarkNodeId;
     bytes32 moveUsdStorkMarkNodeId;
     bytes32 moveUsdcStorkMarkNodeId;
+    bytes32 beraUsdStorkMarkNodeId;
+    bytes32 beraUsdcStorkMarkNodeId;
+    bytes32 layerUsdStorkMarkNodeId;
+    bytes32 layerUsdcStorkMarkNodeId;
+    bytes32 taoUsdStorkMarkNodeId;
+    bytes32 taoUsdcStorkMarkNodeId;
+    bytes32 ipUsdMarkNodeIdStork;
+    bytes32 ipUsdcMarkNodeIdStork;
+    bytes32 meUsdMarkNodeIdStork;
+    bytes32 meUsdcMarkNodeIdStork;
 }
 
 struct DynamicEcosystem {
