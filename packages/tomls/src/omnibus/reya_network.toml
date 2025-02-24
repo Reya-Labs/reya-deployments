@@ -281,6 +281,11 @@ storkAssetPairIdONDOMark = "ONDOUSDMARK"
 storkAssetPairIdTRXMark = "TRXUSDMARK"
 storkAssetPairIdINJMark = "INJUSDMARK"
 storkAssetPairIdMOVEMark = "MOVEUSDMARK"
+storkAssetPairIdBERAMark = "BERAUSDMARK"
+storkAssetPairIdLAYERMark = "LAYERUSDMARK"
+storkAssetPairIdTAOMark = "TAOUSDMARK"
+storkAssetPairIdIPMark = "IPUSDMARK"
+storkAssetPairIdMEMark = "MEUSDMARK"
 
 [var.reya_lm_asset_pair_ids]
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
