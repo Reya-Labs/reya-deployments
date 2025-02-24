@@ -149,6 +149,11 @@ contract LeverageForkCheck is BaseReyaForkTest {
         expectedLeverage.push(trxLeverage);
         expectedLeverage.push(injLeverage);
         expectedLeverage.push(moveLeverage);
+        expectedLeverage.push(beraLeverage);
+        expectedLeverage.push(layerLeverage);
+        expectedLeverage.push(taoLeverage);
+        expectedLeverage.push(ipLeverage);
+        expectedLeverage.push(meLeverage);
     }
 
     function check_trade_leverage_helper(uint128 marketId, address collateral) private {
