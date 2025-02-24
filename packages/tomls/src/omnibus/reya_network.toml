@@ -1993,7 +1993,7 @@ market62Me_priceSpreadUnscaled = "0"
 market62Me_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "57"
+cp1Rusd_maxMarkets = "62"
 cp1Rusd_maxCollaterals = "8"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
