@@ -11,3 +11,10 @@ depends = [
     'invoke.upgrade_rselini_proxy',
     'var.global_collateral_configs',
 ]
+
+[invoke.rselini_auto_exchange_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('autoExchange')) %>", true]
+depends = ["invoke.upgrade_core_proxy"]
