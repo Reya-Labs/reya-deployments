@@ -10,7 +10,7 @@ args = [
 ]
 var.srusdUsdcPoolNodeId.event = "NodeRegistered"
 var.srusdUsdcPoolNodeId.arg = 0
-depends = ["invoke.upgrade_oracle_manager_proxy"]
+depends = ["invoke.upgrade_oracle_manager_proxy", "invoke.oracle_adapters_global_config", "invoke.passive_pool_tokenize_pool_1rusd"]
 
 [invoke.oracle_manager_pool_srusd_max_stale_duration]
 target = ["OracleManagerProxy"]

@@ -300,7 +300,7 @@ reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
 reyaLmAssetPairIdAMBER = "REYALM#AMBERUSDC"
 
 [var.pool_asset_pair_ids]
-poolAssetPairIdSRUSD = "REYAPOOL#SRUSD"
+poolAssetPairIdSRUSD = "REYAPOOL#1"
 
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
@@ -2024,7 +2024,7 @@ market62Me_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "62"
-cp1Rusd_maxCollaterals = "9"
+cp1Rusd_maxCollaterals = "10"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
 # -----------------------------------------------
@@ -2203,7 +2203,7 @@ cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdStork %>
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_srusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_srusd_capUnscaled = "<%= formatUnits(MaxUint256, parseInt(settings.srusdTokenDecimals)) %>"
 cp1Rusd_srusd_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled = "0.005"
 cp1Rusd_srusd_autoExchangeDustThresholdUnscaled = "0"
