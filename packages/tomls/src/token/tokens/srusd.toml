@@ -1,0 +1,77 @@
+[var.srusd_vars]
+srusdTokenName = "Staked rUSD"
+srusdTokenSymbol = "srUSD"
+srusdTokenDecimals = "30"
+
+[clone.srusd]
+source = "<%= settings.tokensProxyPackage %>"
+target = "reya-tokens:1.0.0@srusd"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.srusdSalt %>"
+depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_srusd_proxy]
+target = ["srusd.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.SRUSDProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.SRUSDProxy.event = "Upgraded"
+factory.SRUSDProxy.arg = 0
+depends = ["clone.srusd"]
+
+[invoke.srusd_initialize]
+target = ["SRUSDProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.srusdTokenName %>",
+    "<%= settings.srusdTokenSymbol %>",
+    "<%= settings.srusdTokenDecimals %>",
+]
+depends = ["invoke.upgrade_srusd_proxy"]
+
+[invoke.srusd_unpause]
+target = ["SRUSDProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_srusd_proxy"]
+
+[invoke.srusd_set_pausers]
+target = ["SRUSDProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_srusd_proxy"]
+
+[invoke.srusd_mint_permission]
+target = ["SRUSDProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.passivePoolProxy %>"]
+depends = ["invoke.upgrade_srusd_proxy"]
+
+[invoke.srusd_burn_permission]
+target = ["SRUSDProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.passivePoolProxy %>"]
+depends = ["invoke.upgrade_srusd_proxy"]
+
+[invoke.srusd_authorized_holders_allow_all]
+target = ["SRUSDProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('authorizedHolder')) %>", true]
+depends = ["invoke.upgrade_srusd_proxy"]

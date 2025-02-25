@@ -80,6 +80,7 @@ usdeSalt = "usde-main"
 susdeSalt = "susde-main"
 deusdSalt = "deusd-main"
 sdeusdSalt = "sdeusd-main"
+srusdSalt = "srusd-main"
 rseliniSalt = "rselini-main"
 ramberSalt = "ramber-main"
 
@@ -291,6 +292,9 @@ storkAssetPairIdMEMark = "MEUSDMARK"
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
 reyaLmAssetPairIdAMBER = "REYALM#AMBERUSDC"
 
+[var.pool_asset_pair_ids]
+poolAssetPairIdSRUSD = "REYAPOOL#SRUSD"
+
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
 
@@ -390,6 +394,10 @@ deusdWithdrawalTvlPercentageLimitUnscaled = "1"
 sdeusdCollateralAdapter = "<%= AddressZero %>"
 sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.02"
+# -------------------------------------------------------------------
+srusdCollateralAdapter = "<%= AddressZero %>"
+srusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+srusdWithdrawalTvlPercentageLimitUnscaled = "0"
 # -------------------------------------------------------------------
 rseliniCollateralAdapter = "<%= AddressZero %>"
 rseliniWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
@@ -741,6 +749,8 @@ usdcDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 sdeusdDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-------------------------------------------------------------------------------
+srusdUsdcPoolMaxDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 seliniUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 amberUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -2158,6 +2168,18 @@ cp1Rusd_sdeusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address 
 cp1Rusd_sdeusdParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_sdeusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdStork %>"
+# ------------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_srusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_srusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_srusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_srusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_srusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_srusdParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
+cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdUsdcPoolNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
