@@ -174,3 +174,10 @@ args = [
         "<%= settings.camelotSwapPublisherAdmin5 %>",
     ],
 ]
+
+[invoke.core_set_stake_pool_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('stakePool')) %>", true]
+depends = ["invoke.upgrade_core_proxy"]
