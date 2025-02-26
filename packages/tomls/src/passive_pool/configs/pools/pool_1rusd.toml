@@ -99,10 +99,7 @@ depends = [
 target = ["PassivePoolProxy"]
 fromCall.func = "owner"
 func = "tokenizePool"
-args = [
-    "<%= settings.pool1RusdId %>",
-    "<%= contracts.SRUSDProxy.address %>",
-]
+args = ["<%= settings.pool1RusdId %>", "<%= contracts.SRUSDProxy.address %>"]
 depends = [
     "invoke.passive_pool_create_pool_1rusd",
     "invoke.passive_pool_unpause_pool_1rusd",

@@ -16,5 +16,8 @@ depends = [
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
-args = ["<%= keccak256(hexlify('autoExchange')) %>", true]
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), contracts.RAMBERProxy.address])) %>",
+    true,
+]
 depends = ["invoke.upgrade_core_proxy"]
