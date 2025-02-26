@@ -8,8 +8,7 @@ import { IRUSDProxy } from "../../src/interfaces/IRUSDProxy.sol";
 import { TransferInput } from "../../src/interfaces/IPeripheryProxy.sol";
 
 contract CompensateAccount is Script, Test {
-    address private multisigEOA = 0x4d0AfCA2357F1797CF18c579171b71B427604933;
-    uint128 private accountId = 51;
+    address private refundEOA = 0xc5c08b78E7811BDCcB0A960c6BF85e5aeA14BD4c;
 
     address payable private core = payable(0xA763B6a5E09378434406C003daE6487FbbDc1a80);
     address private rusd = 0xa9F32a851B1800742e47725DA54a09A7Ef2556A3;
@@ -21,21 +20,10 @@ contract CompensateAccount is Script, Test {
         // Replace the amount you want to compensate
         uint256 rusdAmount = 1 * 1e6;
 
-        Command[] memory commands = new Command[](1);
-        commands[0] = Command({
-            commandType: uint8(CommandType.Withdraw),
-            inputs: abi.encode(rusd, rusdAmount),
-            marketId: 0,
-            exchangeId: 0
-        });
-
-        vm.broadcast(multisigEOA);
-        ICoreProxy(core).execute(accountId, commands);
-
-        vm.broadcast(multisigEOA);
+        vm.broadcast(refundEOA);
         IERC20TokenModule(rusd).approve(core, rusdAmount);
 
-        vm.broadcast(multisigEOA);
+        vm.broadcast(refundEOA);
         ICoreProxy(core).deposit(toAccountId, rusd, rusdAmount);
     }
 }
