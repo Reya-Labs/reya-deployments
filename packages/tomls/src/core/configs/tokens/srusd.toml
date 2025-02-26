@@ -15,6 +15,9 @@ depends = [
 [invoke.srusd_auto_exchange_access]
 target = ["CoreProxy"]
 fromCall.func = "owner"
-func = "setFeatureFlagAllowAll"
-args = ["<%= keccak256(hexlify('autoExchange')) %>", true]
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), contracts.SRUSDProxy.address])) %>",
+    "<%= settings.passivePoolProxy %>",
+]
 depends = ["invoke.upgrade_core_proxy"]
