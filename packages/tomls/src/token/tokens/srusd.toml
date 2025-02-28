@@ -69,23 +69,32 @@ func = "addToFeatureFlagAllowlist"
 args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.passivePoolProxy %>"]
 depends = ["invoke.upgrade_srusd_proxy"]
 
-[invoke.srusd_authorized_holders_allow_all_pool]
+[invoke.srusd_authorized_holders_allow_pool]
 target = ["SRUSDProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
-args = ["<%= keccak256(hexlify('authorizedHolder')) %>", "<%= settings.passivePoolProxy %>"]
+args = [
+    "<%= keccak256(hexlify('authorizedHolder')) %>",
+    "<%= settings.passivePoolProxy %>",
+]
 depends = ["invoke.upgrade_srusd_proxy"]
 
-[invoke.srusd_authorized_holders_allow_all_core]
+[invoke.srusd_authorized_holders_allow_core]
 target = ["SRUSDProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
-args = ["<%= keccak256(hexlify('authorizedHolder')) %>", "<%= settings.coreProxy %>"]
+args = [
+    "<%= keccak256(hexlify('authorizedHolder')) %>",
+    "<%= settings.coreProxy %>",
+]
 depends = ["invoke.upgrade_srusd_proxy"]
 
-[invoke.srusd_authorized_holders_allow_all_periphery]
+[invoke.srusd_authorized_holders_allow_periphery]
 target = ["SRUSDProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
-args = ["<%= keccak256(hexlify('authorizedHolder')) %>", "<%= settings.peripheryProxy %>"]
+args = [
+    "<%= keccak256(hexlify('authorizedHolder')) %>",
+    "<%= settings.peripheryProxy %>",
+]
 depends = ["invoke.upgrade_srusd_proxy"]
