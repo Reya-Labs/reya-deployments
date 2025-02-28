@@ -60,11 +60,24 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_pool_proxy"]
 
-[invoke.passive_pool_set_staked_quote_auto_exchange_access]
+[invoke.passive_pool_set_staked_quote_auto_exchange_access_1]
 target = ["PassivePoolProxy"]
 fromCall.func = "owner"
-func = "setFeatureFlagAllowAll"
-args = ["<%= keccak256(hexlify('stakedAssetAutoExchange')) %>", true]
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('stakedAssetAutoExchange')) %>",
+    "<%= settings.ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_set_staked_quote_auto_exchange_access_2]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('stakedAssetAutoExchange')) %>",
+    "<%= settings.ae_liquidator2 %>",
+]
 depends = ["invoke.upgrade_passive_pool_proxy"]
 
 [invoke.passive_pool_set_tokenized_liquidity_access]
