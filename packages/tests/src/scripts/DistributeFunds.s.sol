@@ -55,7 +55,7 @@ contract DistributeFunds is Script, Test {
                 pendingTxs[i].wallet_address,
                 pendingTxs[i].amount,
                 pendingTxs[i].amount * 98 / 100 * 1e24,
-                ActionMetadata({ action: Action.Stake, onBehalfOf: multisigEOA })
+                ActionMetadata({ action: Action.Stake, onBehalfOf: pendingTxs[i].wallet_address })
             );
 
             uint256 shareSupplyUserAfter =
