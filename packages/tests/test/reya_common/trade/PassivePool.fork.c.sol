@@ -3,7 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import "../DataTypes.sol";
 
-import { CollateralConfig, ParentCollateralConfig, ICoreProxy } from "../../../src/interfaces/ICoreProxy.sol";
+import { CollateralConfig, ParentCollateralConfig, ICoreProxy, Action, ActionMetadata } from "../../../src/interfaces/ICoreProxy.sol";
 
 import {
     IPassivePoolProxy,
@@ -62,10 +62,10 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         vm.prank(attacker);
         vm.expectRevert();
-        IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, userSharesAmount, 0);
+        IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, userSharesAmount, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: attacker}));
 
         vm.prank(user);
-        IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, userSharesAmount, 0);
+        IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, userSharesAmount, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user}));
     }
 
     function check_PassivePoolWithWeth() public {
@@ -109,7 +109,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // make sure that the passive pool withdrawal works
         vm.prank(user);
-        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
+        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user}));
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 11 wETH in it
@@ -178,7 +178,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // make sure that the passive pool withdrawal works
         vm.prank(user);
-        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
+        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user}));
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 USDe in it
@@ -247,7 +247,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // make sure that the passive pool withdrawal works
         vm.prank(user);
-        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
+        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user}));
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 sUSDe in it
@@ -316,7 +316,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // make sure that the passive pool withdrawal works
         vm.prank(user);
-        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
+        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user}));
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 deUSD in it
@@ -386,7 +386,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // make sure that the passive pool withdrawal works
         vm.prank(user);
-        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
+        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user}));
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 sdeUSD in it
@@ -459,7 +459,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // make sure that the passive pool withdrawal works
         vm.prank(user);
-        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
+        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user}));
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 rselini in it
@@ -528,7 +528,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // make sure that the passive pool withdrawal works
         vm.prank(user);
-        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0);
+        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(sec.passivePoolId, sharesIn, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user}));
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit 33000 ramber in it
@@ -796,7 +796,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                 vm.prank(owner);
                 IPassivePoolProxy(sec.pool).addLiquidityV2({
                     poolId: sec.passivePoolId,
-                    input: AddLiquidityV2Input({ token: tokens[i], amount: amount, owner: owner, minShares: 0 })
+                    input: AddLiquidityV2Input({ token: tokens[i], amount: amount, owner: owner, minShares: 0 }),
+                    actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: owner})
                 });
             } else {
                 uint256 amount = uint256(-amounts[i]);
@@ -825,7 +826,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                         sharesAmount: sharesAmount,
                         receiver: owner,
                         minOut: 0
-                    })
+                    }),
+                    actionMetadata: ActionMetadata({ action: Action.Unstake, onBehalfOf: owner})
                 });
             }
 
@@ -845,7 +847,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         );
         IPassivePoolProxy(sec.pool).addLiquidityV2({
             poolId: sec.passivePoolId,
-            input: AddLiquidityV2Input({ token: sec.rusd, amount: 0, owner: owner, minShares: 0 })
+            input: AddLiquidityV2Input({ token: sec.rusd, amount: 0, owner: owner, minShares: 0 }),
+            actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: owner})
         });
     }
 
@@ -861,7 +864,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.TokenNotEligibleForShares.selector, token));
         IPassivePoolProxy(sec.pool).addLiquidityV2({
             poolId: sec.passivePoolId,
-            input: AddLiquidityV2Input({ token: token, amount: 1e18, owner: owner, minShares: 0 })
+            input: AddLiquidityV2Input({ token: token, amount: 1e18, owner: owner, minShares: 0 }),
+            actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: owner})
         });
     }
 
