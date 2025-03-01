@@ -398,7 +398,7 @@ sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.02"
 # -------------------------------------------------------------------
 srusdCollateralAdapter = "<%= AddressZero %>"
 srusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-srusdWithdrawalTvlPercentageLimitUnscaled = "0"
+srusdWithdrawalTvlPercentageLimitUnscaled = "0.02"
 # -------------------------------------------------------------------
 rseliniCollateralAdapter = "<%= AddressZero %>"
 rseliniWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"

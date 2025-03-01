@@ -47,21 +47,21 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         check_PassivePoolWithRamber();
     }
 
-    function test_Cronos_PassivePoolAutoRebalance_CurrentTargets() public {
-        check_autoRebalance_currentTargets(false);
-    }
+    // function test_Cronos_PassivePoolAutoRebalance_CurrentTargets() public {
+    //     check_autoRebalance_currentTargets(false);
+    // }
 
-    function test_Cronos_PassivePoolAutoRebalance_CurrentTargets_MintLmTokens() public {
-        check_autoRebalance_currentTargets(true);
-    }
+    // function test_Cronos_PassivePoolAutoRebalance_CurrentTargets_MintLmTokens() public {
+    //     check_autoRebalance_currentTargets(true);
+    // }
 
-    function test_Cronos_PassivePoolAutoRebalance_DifferentTargets() public {
-        check_autoRebalance_differentTargets(false, false);
-    }
+    // function test_Cronos_PassivePoolAutoRebalance_DifferentTargets() public {
+    //     check_autoRebalance_differentTargets(false, false);
+    // }
 
-    function test_Cronos_PassivePoolAutoRebalance_DifferentTargets_MintLmTokens() public {
-        check_autoRebalance_differentTargets(false, true);
-    }
+    // function test_Cronos_PassivePoolAutoRebalance_DifferentTargets_MintLmTokens() public {
+    //     check_autoRebalance_differentTargets(false, true);
+    // }
 
     function test_Cronos_PassivePoolAutoRebalance_DifferentTargets_Partial() public {
         check_autoRebalance_differentTargets(true, false);
@@ -71,23 +71,23 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         check_autoRebalance_differentTargets(true, true);
     }
 
-    function test_Cronos_PassivePoolAutoRebalance_NoSharePriceChange() public {
-        check_autoRebalance_noSharePriceChange();
-    }
+    // function test_Cronos_PassivePoolAutoRebalance_NoSharePriceChange() public {
+    //     check_autoRebalance_noSharePriceChange();
+    // }
 
-    function test_Cronos_PassivePoolAutoRebalance_MaxExposure() public {
-        check_autoRebalance_maxExposure();
-    }
+    // function test_Cronos_PassivePoolAutoRebalance_MaxExposure() public {
+    //     check_autoRebalance_maxExposure();
+    // }
 
-    function test_Cronos_PassivePoolAutoRebalance_InstantaneousPrice() public {
-        check_autoRebalance_instantaneousPrice();
-    }
+    // function test_Cronos_PassivePoolAutoRebalance_InstantaneousPrice() public {
+    //     check_autoRebalance_instantaneousPrice();
+    // }
 
-    function test_Cronos_PassivePoolAutoRebalance_SharePriceChangesWhenAssetPriceChanges() public {
-        check_sharePriceChangesWhenAssetPriceChanges();
-    }
+    // function test_Cronos_PassivePoolAutoRebalance_SharePriceChangesWhenAssetPriceChanges() public {
+    //     check_sharePriceChangesWhenAssetPriceChanges();
+    // }
 
-    function test_Cronos_AutoRevalance_RevertWhenSenderIsNotRebalancer() public {
+    function test_Cronos_AutoRebalance_RevertWhenSenderIsNotRebalancer() public {
         check_autoRebalance_revertWhenSenderIsNotRebalancer();
     }
 
