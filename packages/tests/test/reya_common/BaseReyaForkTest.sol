@@ -95,7 +95,7 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     }
 
     function depositNewMA(address user, address collateral, uint256 amount) internal returns (uint128 accountId) {
-        if (collateral == sec.rselini || collateral == sec.ramber) {
+        if (isLmToken(collateral) || collateral == sec.srusd) {
             deal(collateral, address(user), amount);
             vm.prank(user);
             accountId = ICoreProxy(sec.core).createAccount(user);
