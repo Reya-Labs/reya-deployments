@@ -65,7 +65,7 @@ target = ["PassivePoolProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
-    "<%= keccak256(hexlify('stakedAssetAutoExchange')) %>",
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('stakedAssetAutoExchange')),settings.pool1RusdId])) %>",
     "<%= settings.ae_liquidator1 %>",
 ]
 depends = ["invoke.upgrade_passive_pool_proxy"]
@@ -75,7 +75,7 @@ target = ["PassivePoolProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
-    "<%= keccak256(hexlify('stakedAssetAutoExchange')) %>",
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('stakedAssetAutoExchange')),settings.pool1RusdId])) %>",
     "<%= settings.ae_liquidator2 %>",
 ]
 depends = ["invoke.upgrade_passive_pool_proxy"]
