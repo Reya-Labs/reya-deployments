@@ -1532,6 +1532,8 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
         uint256 srUsdSupplyBefore = IERC20TokenModule(sec.srusd).totalSupply();
 
+        uint256 sharePriceBefore = IPassivePoolProxy(sec.pool).getSharePrice(1);
+
         // auto-exchange 400 rUSD
         vm.prank(s.liquidator);
         s.ae1 = IPassivePoolProxy(sec.pool).triggerStakedAssetAutoExchange(1, s.userAccountId);
@@ -1543,6 +1545,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator, ud(400e30).div(ud(srusdUsdcNodeOutput.price)).unwrap(), 0.001e30, 30
         );
+        assertLe(sharePriceBefore, IPassivePoolProxy(sec.pool).getSharePrice(1));
 
         s.tbal1.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.rusd).marginBalance;
         s.tbal1.userBalanceSrusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.srusd).marginBalance;
@@ -1588,6 +1591,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolAccountId, sec.srusd).marginBalance;
 
         srUsdSupplyBefore = IERC20TokenModule(sec.srusd).totalSupply();
+        sharePriceBefore = IPassivePoolProxy(sec.pool).getSharePrice(1);
 
         // auto-exchange the remaining amount (check that only the remaining part is AE)
         vm.prank(s.liquidator);
@@ -1602,6 +1606,8 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             0.001e30,
             30
         );
+
+        assertLe(sharePriceBefore, IPassivePoolProxy(sec.pool).getSharePrice(1));
 
         s.tbal2.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.rusd).marginBalance;
         s.tbal2.userBalanceSrusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.srusd).marginBalance;
@@ -1618,6 +1624,8 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertEq(s.tbal2.userBalanceSrusd, s.tbal1.userBalanceSrusd - int256(s.ae2.collateralAmountToLiquidator));
         assertEq(IERC20TokenModule(sec.srusd).totalSupply(), srUsdSupplyBefore - s.ae2.collateralAmountToLiquidator);
         assertEq(s.tbal2.liquidatorBalanceSrusd, 0);
+
+        assertEq(IPassivePoolProxy(sec.pool).getShareSupply(1), IERC20TokenModule(sec.srusd).balanceOf(sec.pool));
     }
 
     function check_AutoExchangeSrusd_WhenUserHasOnlySrusd() public {
