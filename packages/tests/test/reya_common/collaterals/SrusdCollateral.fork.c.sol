@@ -5,6 +5,8 @@ import "../DataTypes.sol";
 
 import { ICoreProxy, ParentCollateralConfig, MarginInfo, CollateralInfo } from "../../../src/interfaces/ICoreProxy.sol";
 
+import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
+
 import {
     IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
 } from "../../../src/interfaces/IPeripheryProxy.sol";
@@ -172,5 +174,30 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         executePeripheryWithdrawMA(user, userPk, 2, accountId, sec.srusd, amount, ethereumChainId);
 
         checkPoolHealth();
+    }
+
+    function check_transfer_srusdCollateral() public {
+        vm.prank(sec.pool);
+        IERC20TokenModule(sec.srusd).mint(sec.pool, 100e30);
+
+        vm.prank(sec.pool);
+        IERC20TokenModule(sec.srusd).mint(sec.periphery, 100e30);
+
+        vm.prank(sec.pool);
+        IERC20TokenModule(sec.srusd).mint(sec.core, 100e30);
+
+        (address user,) = makeAddrAndKey("user");
+
+        vm.prank(sec.pool);
+        vm.expectRevert(
+            abi.encodeWithSelector(IPassivePoolProxy.FeatureUnavailable.selector, keccak256(bytes("authorizedHolder")))
+        );
+        IERC20TokenModule(sec.srusd).mint(user, 100e30);
+
+        vm.prank(sec.core);
+        vm.expectRevert(
+            abi.encodeWithSelector(IPassivePoolProxy.FeatureUnavailable.selector, keccak256(bytes("authorizedHolder")))
+        );
+        IERC20TokenModule(sec.srusd).transfer(user, 100e30);
     }
 }

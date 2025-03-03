@@ -50,11 +50,10 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         checkPoolHealth();
     }
 
-    function checkFuzz_PoolDepositWithdraw(address user, address attacker) public {
-        uint256 amount = 100e6;
+    function checkFuzz_PoolDepositWithdraw(address user, address attacker, uint256 amount, uint256 minShares) public {
         deal(sec.usdc, sec.periphery, amount);
         DepositPassivePoolInputs memory inputs =
-            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: 0 });
+            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: minShares });
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
         vm.mockCall(
             dec.socketExecutionHelper[sec.usdc],
@@ -64,7 +63,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         IPeripheryProxy(sec.periphery).depositPassivePool(inputs);
 
         uint256 userSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user);
-        assert(userSharesAmount > 0);
+        assert(userSharesAmount >= minShares);
 
         vm.prank(attacker);
         vm.expectRevert();
@@ -75,6 +74,68 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         vm.prank(user);
         IPassivePoolProxy(sec.pool).removeLiquidity(
             sec.passivePoolId, userSharesAmount, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user })
+        );
+    }
+
+    function checkFuzz_PoolDepositWithdrawTokenized(
+        address user,
+        address attacker,
+        uint56 amount,
+        uint256 minShares
+    )
+        public
+    {
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(
+            keccak256(abi.encode(keccak256(bytes("tokenizedLiquidity")), sec.passivePoolId)), true
+        );
+
+        (address alice,) = makeAddrAndKey("alice");
+
+        uint256 sharePriceBefore = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+        deal(sec.rusd, alice, amount);
+        vm.prank(alice);
+        IERC20TokenModule(sec.rusd).approve(sec.pool, amount);
+        vm.prank(alice);
+        IPassivePoolProxy(sec.pool).addLiquidityTokenized(
+            sec.passivePoolId,
+            alice,
+            amount,
+            minShares,
+            ActionMetadata({ action: Action.StakeTokenized, onBehalfOf: alice })
+        );
+
+        uint256 aliceSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user);
+        assertEq(aliceSharesAmount, 0);
+        uint256 aliceSrusdAmount = IERC20TokenModule(sec.srusd).balanceOf(alice);
+        assertGe(aliceSrusdAmount, minShares);
+        assertEq(IERC20TokenModule(sec.usdc).balanceOf(alice), 0);
+
+        vm.prank(attacker);
+        vm.expectRevert();
+        IPassivePoolProxy(sec.pool).removeLiquidityTokenized(
+            sec.passivePoolId,
+            aliceSrusdAmount,
+            0,
+            ActionMetadata({ action: Action.UnstakeTokenized, onBehalfOf: attacker })
+        );
+
+        vm.prank(alice);
+        IERC20TokenModule(sec.srusd).approve(sec.pool, aliceSrusdAmount);
+        vm.prank(alice);
+        IPassivePoolProxy(sec.pool).removeLiquidityTokenized(
+            sec.passivePoolId,
+            aliceSrusdAmount,
+            0,
+            ActionMetadata({ action: Action.UnstakeTokenized, onBehalfOf: alice })
+        );
+
+        assertApproxEqAbsDecimal(IERC20TokenModule(sec.rusd).balanceOf(alice), amount, 0.001e6, 6);
+        assertEq(IERC20TokenModule(sec.srusd).balanceOf(alice), 0);
+
+        assertApproxEqAbsDecimal(
+            IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId), sharePriceBefore, 0.0001e18, 18
         );
     }
 

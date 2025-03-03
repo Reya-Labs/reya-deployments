@@ -12,4 +12,8 @@ contract SrusdCollateralForkTest is ReyaForkTest, SrusdCollateralForkCheck {
     function test_Cronos_srusd_view_functions() public {
         check_srusd_view_functions();
     }
+
+    function test_Cronos_srusd_transfer() public {
+        check_transfer_srusdCollateral();
+    }
 }

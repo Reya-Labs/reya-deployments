@@ -24,4 +24,8 @@ contract SrusdCollateralForkTest is ReyaForkTest, SrusdCollateralForkCheck {
     function test_trade_srusdCollateral_depositWithdraw() public {
         check_trade_srusdCollateral_depositWithdraw();
     }
+
+    function test_srusd_transfer() public {
+        check_transfer_srusdCollateral();
+    }
 }

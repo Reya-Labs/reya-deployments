@@ -16,7 +16,17 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         uint256 attackerSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, attacker);
         vm.assume(attackerSharesAmount == 0);
 
-        checkFuzz_PoolDepositWithdraw(user, attacker);
+        checkFuzz_PoolDepositWithdraw(user, attacker, 100e6, 15e30);
+    }
+
+    function testFuzz_Cronos_PoolDepositWithdrawTokenized(address attacker) public {
+        (address user,) = makeAddrAndKey("user");
+        vm.assume(attacker != user);
+
+        uint256 attackerSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, attacker);
+        vm.assume(attackerSharesAmount == 0);
+
+        checkFuzz_PoolDepositWithdrawTokenized(user, attacker, 100e6, 15e30);
     }
 
     function test_Cronos_PassivePoolWithWeth() public {
