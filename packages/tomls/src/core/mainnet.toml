@@ -10,6 +10,7 @@ include = [
     "configs/tokens/susde.toml",
     "configs/tokens/deusd.toml",
     "configs/tokens/sdeusd.toml",
+    "configs/tokens/srusd.toml",
     "configs/market_vol_configurators.toml",
     "configs/tokens/rselini.toml",
     "configs/tokens/ramber.toml",

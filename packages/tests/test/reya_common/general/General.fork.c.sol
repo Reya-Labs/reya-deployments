@@ -148,6 +148,8 @@ struct LocalState {
     uint256 maxDeviationRSELINI;
     uint256 meanPriceRAMBER;
     uint256 maxDeviationRAMBER;
+    uint256 meanPriceSRUSD;
+    uint256 maxDeviationSRUSD;
     uint256 meanPriceStableCoin;
     uint256 maxDeviationStableCoin;
     uint256[] meanPriceMarket;
@@ -505,6 +507,9 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
         ls.meanPriceRAMBER = 1.01e18;
         ls.maxDeviationRAMBER = 0.01e18;
+
+        ls.meanPriceSRUSD = 1.03e18;
+        ls.maxDeviationSRUSD = 0.015e18;
 
         ls.meanPriceStableCoin = 1e18;
         ls.maxDeviationStableCoin = 0.01e18;
@@ -1065,6 +1070,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.nodeIds.push(sec.ramberUsdcReyaLmNodeId);
         ls.meanPrices.push(ls.meanPriceRAMBER);
         ls.maxDeviations.push(ls.maxDeviationRAMBER);
+
+        ls.nodeIds.push(sec.srusdUsdcPoolNodeId);
+        ls.meanPrices.push(ls.meanPriceSRUSD);
+        ls.maxDeviations.push(ls.maxDeviationSRUSD);
     }
 
     function check_OracleNodePrices(bool flagCheckStaleness) public {
