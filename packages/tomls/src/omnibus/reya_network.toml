@@ -80,7 +80,8 @@ usdeSalt = "usde-main"
 susdeSalt = "susde-main"
 deusdSalt = "deusd-main"
 sdeusdSalt = "sdeusd-main"
-srusdSalt = "srusd-main"
+# deployed one before to test node registration issue
+srusdSalt = "srusd-main-2"
 rseliniSalt = "rselini-main"
 ramberSalt = "ramber-main"
 
