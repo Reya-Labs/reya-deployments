@@ -2,5 +2,7 @@
 target = ["OracleAdaptersProxy"]
 fromCall.func = "owner"
 func = "setConfiguration"
-args = [{ storkVerifyContract = "<%= settings.storkVerifyContract %>" }]
+args = [
+    { storkVerifyContract = "<%= settings.storkVerifyContract %>", passivePoolAddress = "<%= settings.passivePoolProxy %>" },
+]
 depends = ["invoke.upgrade_orders_gateway_proxy", "var.stork_contracts"]
