@@ -11,7 +11,8 @@ import {
     MarginInfo,
     CollateralConfig,
     ParentCollateralConfig,
-    GlobalCollateralConfig
+    GlobalCollateralConfig,
+    ManagePoolStakeCommand
 } from "../../src/interfaces/ICoreProxy.sol";
 
 import {
@@ -180,6 +181,26 @@ contract BaseReyaForkTest is StorageReyaForkTest {
                 sig: getEIP712SignatureForPeripheryCommands(accountId, commands, userPrivateKey, incrementedNonce)
             })
         );
+    }
+
+    function executePeripheryStakeAccount(
+        uint256 userPrivateKey,
+        uint256 incrementedNonce,
+        uint128 poolId,
+        uint256 amount,
+        uint256 minShares,
+        uint128 accountId
+    )
+        internal
+    {
+        Command_Periphery[] memory commands = new Command_Periphery[](1);
+        commands[0] = Command_Periphery({
+            commandType: uint8(CommandType.ManagePoolStake),
+            inputs: abi.encode(ManagePoolStakeCommand.Stake, abi.encode(poolId, amount, minShares)),
+            marketId: 0,
+            exchangeId: 0
+        });
+        executePeripheryCommands(accountId, commands, userPrivateKey, incrementedNonce);
     }
 
     function executePeripheryMatchOrder(

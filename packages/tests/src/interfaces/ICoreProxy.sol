@@ -800,6 +800,11 @@ struct ActionMetadata {
     address onBehalfOf;
 }
 
+enum ManagePoolStakeCommand {
+    Stake,
+    Unstake
+}
+
 interface ProtocolConfiguration {
     struct Data {
         address oracleManagerAddress;

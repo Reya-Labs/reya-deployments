@@ -85,11 +85,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     )
         public
     {
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(
-            keccak256(abi.encode(keccak256(bytes("tokenizedLiquidity")), sec.passivePoolId)), true
-        );
-
         (address alice,) = makeAddrAndKey("alice");
 
         vm.prank(sec.multisig);

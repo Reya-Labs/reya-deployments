@@ -84,7 +84,10 @@ depends = ["invoke.upgrade_passive_pool_proxy"]
 target = ["PassivePoolProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
-args = ["<%= keccak256(hexlify('tokenizedLiquidity')) %>", true]
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('tokenizedLiquidity')),settings.pool1RusdId])) %>",
+    true,
+]
 depends = ["invoke.upgrade_passive_pool_proxy"]
 
 [invoke.passive_pool_set_action_metadata_overwrite_access_periphery]
