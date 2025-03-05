@@ -1,0 +1,23 @@
+[invoke.srusd_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= contracts.SRUSDProxy.address %>",
+    { collateralAdapter = "<%= settings.srusdCollateralAdapter %>", withdrawalWindowSize = "<%= settings.srusdWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.srusdWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = [
+    'invoke.upgrade_core_proxy',
+    'invoke.upgrade_srusd_proxy',
+    'var.global_collateral_configs',
+]
+
+[invoke.srusd_auto_exchange_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), contracts.SRUSDProxy.address])) %>",
+    "<%= settings.passivePoolProxy %>",
+]
+depends = ["invoke.upgrade_core_proxy"]

@@ -18,7 +18,7 @@ import {
 } from "../../../src/interfaces/IPeripheryProxy.sol";
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 import { IAdapter } from "../../../src/interfaces/IAdapter.sol";
-import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
@@ -149,14 +149,14 @@ contract CamelotSwapForkCheck is BaseReyaForkTest {
         Command_Core[] memory commands = new Command_Core[](1);
         commands[0] = getCamelotSwapCommand(fromToken, fromTokenAmount, toToken, minToTokenAmount);
 
-        uint256 coreFromTokenBalanceBefore = IERC20TokenModule(fromToken).balanceOf(sec.core);
-        uint256 coreToTokenBalanceBefore = IERC20TokenModule(toToken).balanceOf(sec.core);
+        uint256 coreFromTokenBalanceBefore = ITokenProxy(fromToken).balanceOf(sec.core);
+        uint256 coreToTokenBalanceBefore = ITokenProxy(toToken).balanceOf(sec.core);
 
         vm.prank(alice);
         ICoreProxy(sec.core).execute(accountId, commands);
 
-        uint256 coreFromTokenBalanceAfter = IERC20TokenModule(fromToken).balanceOf(sec.core);
-        uint256 coreToTokenBalanceAfter = IERC20TokenModule(toToken).balanceOf(sec.core);
+        uint256 coreFromTokenBalanceAfter = ITokenProxy(fromToken).balanceOf(sec.core);
+        uint256 coreToTokenBalanceAfter = ITokenProxy(toToken).balanceOf(sec.core);
 
         assertEq(coreFromTokenBalanceBefore - coreFromTokenBalanceAfter, fromTokenAmount);
         assertGt(coreToTokenBalanceAfter - coreToTokenBalanceBefore, minToTokenAmount);

@@ -44,19 +44,27 @@ contract AutoExchangeForkTest is ReyaForkTest, AutoExchangeForkCheck {
         check_AutoExchangeSdeusd_WhenUserHasBothSdeusdAndRusd();
     }
 
-    function test_Cronos_AutoExchangeRSELINI_WhenUserHasOnlyRselini() public {
+    function test_AutoExchangeRSELINI_WhenUserHasOnlyRselini() public {
         check_AutoExchangeRselini_WhenUserHasOnlyRselini();
     }
 
-    function test_Cronos_AutoExchangeRSELINI_WhenUserHasBothRseliniAndRusd() public {
+    function test_AutoExchangeRSELINI_WhenUserHasBothRseliniAndRusd() public {
         check_AutoExchangeRselini_WhenUserHasBothRseliniAndRusd();
     }
 
-    function test_Cronos_AutoExchangeRAMBER_WhenUserHasOnlyRamber() public {
+    function test_AutoExchangeRAMBER_WhenUserHasOnlyRamber() public {
         check_AutoExchangeRamber_WhenUserHasOnlyRamber();
     }
 
-    function test_Cronos_AutoExchangeRAMBER_WhenUserHasBothRamberAndRusd() public {
+    function test_AutoExchangeRAMBER_WhenUserHasBothRamberAndRusd() public {
         check_AutoExchangeRamber_WhenUserHasBothRamberAndRusd();
+    }
+
+    function test_AutoExchangeSRUSD_WhenUserHasOnlySrusd() public {
+        check_AutoExchangeSrusd_WhenUserHasOnlySrusd();
+    }
+
+    function test_AutoExchangeSRUSD_WhenUserHasBothSrusdAndRusd() public {
+        check_AutoExchangeSrusd_WhenUserHasBothSrusdAndRusd();
     }
 }

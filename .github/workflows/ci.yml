@@ -28,12 +28,20 @@ jobs:
       - name: Lint Check
         run: "yarn lint:check"
       - name: Reya Network Cannon Simulation
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_network:simulate"
       - name: Reya Cronos Cannon Simulation
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_cronos:simulate"
       - name: Reya Network Cannon Test
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_network:test"
       - name: Reya Cronos Cannon Test
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_cronos:test"
       # TODO: Bring it back once Cannon fixes the issue
       # - name: Fuzzing Cannon Simulation

@@ -11,7 +11,8 @@ import {
     MarginInfo,
     CollateralConfig,
     ParentCollateralConfig,
-    GlobalCollateralConfig
+    GlobalCollateralConfig,
+    ManagePoolStakeCommand
 } from "../../src/interfaces/ICoreProxy.sol";
 
 import {
@@ -37,7 +38,7 @@ import { ISocketControllerWithPayload } from "../../src/interfaces/ISocketContro
 import { ud, UD60x18, ZERO as ZERO_ud } from "@prb/math/UD60x18.sol";
 import { SD59x18, ZERO as ZERO_sd, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 
-import { IERC20TokenModule } from "../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../src/interfaces/ITokenProxy.sol";
 
 struct LocalState {
     MarketConfigurationData marketConfig;
@@ -95,12 +96,12 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     }
 
     function depositNewMA(address user, address collateral, uint256 amount) internal returns (uint128 accountId) {
-        if (collateral == sec.rselini || collateral == sec.ramber) {
+        if (isLmToken(collateral) || collateral == sec.srusd) {
             deal(collateral, address(user), amount);
             vm.prank(user);
             accountId = ICoreProxy(sec.core).createAccount(user);
             vm.prank(user);
-            IERC20TokenModule(collateral).approve(sec.core, amount);
+            ITokenProxy(collateral).approve(sec.core, amount);
             vm.prank(user);
             ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: collateral, amount: amount });
         } else {
@@ -180,6 +181,26 @@ contract BaseReyaForkTest is StorageReyaForkTest {
                 sig: getEIP712SignatureForPeripheryCommands(accountId, commands, userPrivateKey, incrementedNonce)
             })
         );
+    }
+
+    function executePeripheryStakeAccount(
+        uint256 userPrivateKey,
+        uint256 incrementedNonce,
+        uint128 poolId,
+        uint256 amount,
+        uint256 minShares,
+        uint128 accountId
+    )
+        internal
+    {
+        Command_Periphery[] memory commands = new Command_Periphery[](1);
+        commands[0] = Command_Periphery({
+            commandType: uint8(CommandType.ManagePoolStake),
+            inputs: abi.encode(ManagePoolStakeCommand.Stake, abi.encode(poolId, amount, minShares)),
+            marketId: 0,
+            exchangeId: 0
+        });
+        executePeripheryCommands(accountId, commands, userPrivateKey, incrementedNonce);
     }
 
     function executePeripheryMatchOrder(

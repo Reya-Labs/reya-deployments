@@ -4,6 +4,6 @@
 
 ```
 yarn
-yarn reya_network:test
-yarn reya_cronos:test
+RPC_KEY=... yarn reya_network:test
+RPC_KEY=... yarn reya_cronos:test
 ```

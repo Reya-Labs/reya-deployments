@@ -2,7 +2,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 
-import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 
 import { IRUSDProxy } from "../../../src/interfaces/IRUSDProxy.sol";
 
@@ -11,33 +11,33 @@ contract RusdCollateralForkCheck is BaseReyaForkTest {
         (address user,) = makeAddrAndKey("user");
         uint256 amount = 10e6;
 
-        uint256 totalSupplyBefore = IERC20TokenModule(sec.usdc).totalSupply();
+        uint256 totalSupplyBefore = ITokenProxy(sec.usdc).totalSupply();
 
         // mint
         vm.prank(dec.socketController[sec.usdc]);
-        IERC20TokenModule(sec.usdc).mint(user, amount);
+        ITokenProxy(sec.usdc).mint(user, amount);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IERC20TokenModule(sec.usdc).mint(user, amount);
+        ITokenProxy(sec.usdc).mint(user, amount);
 
         vm.prank(user);
         vm.expectRevert();
-        IERC20TokenModule(sec.usdc).mint(user, amount);
+        ITokenProxy(sec.usdc).mint(user, amount);
 
         // burn
         vm.prank(dec.socketController[sec.usdc]);
-        IERC20TokenModule(sec.usdc).burn(user, amount);
+        ITokenProxy(sec.usdc).burn(user, amount);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IERC20TokenModule(sec.usdc).burn(user, amount);
+        ITokenProxy(sec.usdc).burn(user, amount);
 
         vm.prank(user);
         vm.expectRevert();
-        IERC20TokenModule(sec.usdc).burn(user, amount);
+        ITokenProxy(sec.usdc).burn(user, amount);
 
-        uint256 totalSupplyAfter = IERC20TokenModule(sec.usdc).totalSupply();
+        uint256 totalSupplyAfter = ITokenProxy(sec.usdc).totalSupply();
         assertEq(totalSupplyAfter, totalSupplyBefore);
     }
 
@@ -45,7 +45,7 @@ contract RusdCollateralForkCheck is BaseReyaForkTest {
         assertEq(IRUSDProxy(sec.rusd).getUnderlyingAsset(), sec.usdc);
 
         uint256 rusdTotalSupply = IRUSDProxy(sec.rusd).totalSupply();
-        uint256 usdcTotalSupply = IERC20TokenModule(sec.rusd).totalSupply();
+        uint256 usdcTotalSupply = ITokenProxy(sec.rusd).totalSupply();
         assert(rusdTotalSupply <= usdcTotalSupply);
 
         (address user,) = makeAddrAndKey("user");
@@ -53,7 +53,7 @@ contract RusdCollateralForkCheck is BaseReyaForkTest {
 
         deal(sec.usdc, user, amount);
         vm.prank(user);
-        IERC20TokenModule(sec.usdc).approve(sec.rusd, amount);
+        ITokenProxy(sec.usdc).approve(sec.rusd, amount);
         vm.prank(user);
         IRUSDProxy(sec.rusd).deposit(amount);
         assertEq(IRUSDProxy(sec.rusd).totalSupply(), rusdTotalSupply + amount);
@@ -63,7 +63,7 @@ contract RusdCollateralForkCheck is BaseReyaForkTest {
 
         deal(sec.usdc, sec.periphery, amount);
         vm.prank(sec.periphery);
-        IERC20TokenModule(sec.usdc).approve(sec.rusd, amount);
+        ITokenProxy(sec.usdc).approve(sec.rusd, amount);
         vm.prank(sec.periphery);
         IRUSDProxy(sec.rusd).depositTo(amount, user);
         assertEq(IRUSDProxy(sec.rusd).totalSupply(), rusdTotalSupply + amount);

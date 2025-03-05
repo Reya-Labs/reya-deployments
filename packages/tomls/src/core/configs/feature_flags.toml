@@ -117,6 +117,16 @@ args = [
 ]
 depends = ["invoke.upgrade_core_proxy"]
 
+[invoke.core_enable_ae_liquidator2_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.ae_liquidator2 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
 [invoke.core_enable_set_custom_im_multiplier]
 target = ["CoreProxy"]
 fromCall.func = "owner"
@@ -174,3 +184,10 @@ args = [
         "<%= settings.camelotSwapPublisherAdmin5 %>",
     ],
 ]
+
+[invoke.core_set_stake_pool_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('stakePool')) %>", true]
+depends = ["invoke.upgrade_core_proxy"]

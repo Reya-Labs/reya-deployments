@@ -70,6 +70,7 @@ include = [
     "tokens/susde.toml",
     "tokens/deusd.toml",
     "tokens/sdeusd.toml",
+    "tokens/srusd.toml",
     "tokens/rselini.toml",
     "tokens/ramber.toml",
 ]

@@ -19,7 +19,7 @@ import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol
 
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
-import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 
 import { sd, SD59x18, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
@@ -32,33 +32,33 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
         (user,) = makeAddrAndKey("user");
         uint256 amount = 10e18;
 
-        uint256 totalSupplyBefore = IERC20TokenModule(sec.weth).totalSupply();
+        uint256 totalSupplyBefore = ITokenProxy(sec.weth).totalSupply();
 
         // mint
         vm.prank(dec.socketController[sec.weth]);
-        IERC20TokenModule(sec.weth).mint(user, amount);
+        ITokenProxy(sec.weth).mint(user, amount);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IERC20TokenModule(sec.weth).mint(user, amount);
+        ITokenProxy(sec.weth).mint(user, amount);
 
         vm.prank(user);
         vm.expectRevert();
-        IERC20TokenModule(sec.weth).mint(user, amount);
+        ITokenProxy(sec.weth).mint(user, amount);
 
         // burn
         vm.prank(dec.socketController[sec.weth]);
-        IERC20TokenModule(sec.weth).burn(user, amount);
+        ITokenProxy(sec.weth).burn(user, amount);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IERC20TokenModule(sec.weth).burn(user, amount);
+        ITokenProxy(sec.weth).burn(user, amount);
 
         vm.prank(user);
         vm.expectRevert();
-        IERC20TokenModule(sec.weth).burn(user, amount);
+        ITokenProxy(sec.weth).burn(user, amount);
 
-        uint256 totalSupplyAfter = IERC20TokenModule(sec.weth).totalSupply();
+        uint256 totalSupplyAfter = ITokenProxy(sec.weth).totalSupply();
         assertEq(totalSupplyAfter, totalSupplyBefore);
     }
 
@@ -155,16 +155,16 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
             DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
         );
 
-        uint256 coreWethBalanceBefore = IERC20TokenModule(sec.weth).balanceOf(sec.core);
-        uint256 peripheryWethBalanceBefore = IERC20TokenModule(sec.weth).balanceOf(sec.periphery);
-        uint256 multisigWethBalanceBefore = IERC20TokenModule(sec.weth).balanceOf(sec.multisig);
+        uint256 coreWethBalanceBefore = ITokenProxy(sec.weth).balanceOf(sec.core);
+        uint256 peripheryWethBalanceBefore = ITokenProxy(sec.weth).balanceOf(sec.periphery);
+        uint256 multisigWethBalanceBefore = ITokenProxy(sec.weth).balanceOf(sec.multisig);
 
         amount = 5e18;
         executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.weth, amount, arbitrumChainId);
 
-        uint256 coreWethBalanceAfter = IERC20TokenModule(sec.weth).balanceOf(sec.core);
-        uint256 peripheryWethBalanceAfter = IERC20TokenModule(sec.weth).balanceOf(sec.periphery);
-        uint256 multisigWethBalanceAfter = IERC20TokenModule(sec.weth).balanceOf(sec.multisig);
+        uint256 coreWethBalanceAfter = ITokenProxy(sec.weth).balanceOf(sec.core);
+        uint256 peripheryWethBalanceAfter = ITokenProxy(sec.weth).balanceOf(sec.periphery);
+        uint256 multisigWethBalanceAfter = ITokenProxy(sec.weth).balanceOf(sec.multisig);
         uint256 withdrawStaticFees = IPeripheryProxy(sec.periphery).getTokenStaticWithdrawFee(
             sec.weth, dec.socketConnector[sec.weth][arbitrumChainId]
         );

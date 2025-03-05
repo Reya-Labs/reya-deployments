@@ -3,8 +3,10 @@ pragma solidity >=0.8.19 <0.9.0;
 import "forge-std/Test.sol";
 import { Script } from "forge-std/Script.sol";
 import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
-import { IERC20TokenModule } from "../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../src/interfaces/ITokenProxy.sol";
 import { IRUSDProxy } from "../../src/interfaces/IRUSDProxy.sol";
+
+import { Action, ActionMetadata } from "../../src/interfaces/ICoreProxy.sol";
 
 contract DistributeFunds is Script, Test {
     address private multisigEOA = 0x01A8e78B7ba1313A482630837c3978c6259aC1eA;
@@ -37,7 +39,7 @@ contract DistributeFunds is Script, Test {
         }
 
         vm.broadcast(multisigEOA);
-        IERC20TokenModule(usdc).approve(rusd, sumDeposits);
+        ITokenProxy(usdc).approve(rusd, sumDeposits);
         vm.broadcast(multisigEOA);
         IRUSDProxy(rusd).deposit(sumDeposits);
         vm.broadcast(multisigEOA);
@@ -49,7 +51,11 @@ contract DistributeFunds is Script, Test {
 
             vm.broadcast(multisigEOA);
             IPassivePoolProxy(pool).addLiquidity(
-                poolId, pendingTxs[i].wallet_address, pendingTxs[i].amount, pendingTxs[i].amount * 98 / 100 * 1e24
+                poolId,
+                pendingTxs[i].wallet_address,
+                pendingTxs[i].amount,
+                pendingTxs[i].amount * 98 / 100 * 1e24,
+                ActionMetadata({ action: Action.Stake, onBehalfOf: pendingTxs[i].wallet_address })
             );
 
             uint256 shareSupplyUserAfter =
