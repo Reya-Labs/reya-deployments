@@ -32,6 +32,8 @@ jobs:
       - name: Reya Cronos Cannon Simulation
         run: "yarn reya_cronos:simulate"
       - name: Reya Network Cannon Test
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_network:test"
       - name: Reya Cronos Cannon Test
         run: "yarn reya_cronos:test"
