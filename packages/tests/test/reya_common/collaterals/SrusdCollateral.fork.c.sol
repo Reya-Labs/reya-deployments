@@ -15,7 +15,7 @@ import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol
 
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
-import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 
 import { sd, SD59x18, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
@@ -25,33 +25,36 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         (address user,) = makeAddrAndKey("user");
         uint256 amount = 10e18;
 
-        uint256 totalSupplyBefore = IERC20TokenModule(sec.srusd).totalSupply();
+        vm.prank(sec.multisig);
+        ITokenProxy(sec.srusd).addToFeatureFlagAllowlist(keccak256(bytes("authorizedHolder")), user);
+
+        uint256 totalSupplyBefore = ITokenProxy(sec.srusd).totalSupply();
 
         // mint
         vm.prank(sec.pool);
-        IERC20TokenModule(sec.srusd).mint(user, amount);
+        ITokenProxy(sec.srusd).mint(user, amount);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IERC20TokenModule(sec.srusd).mint(user, amount);
+        ITokenProxy(sec.srusd).mint(user, amount);
 
         vm.prank(user);
         vm.expectRevert();
-        IERC20TokenModule(sec.srusd).mint(user, amount);
+        ITokenProxy(sec.srusd).mint(user, amount);
 
         // burn
         vm.prank(sec.pool);
-        IERC20TokenModule(sec.srusd).burn(user, amount);
+        ITokenProxy(sec.srusd).burn(user, amount);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IERC20TokenModule(sec.srusd).burn(user, amount);
+        ITokenProxy(sec.srusd).burn(user, amount);
 
         vm.prank(user);
         vm.expectRevert();
-        IERC20TokenModule(sec.srusd).burn(user, amount);
+        ITokenProxy(sec.srusd).burn(user, amount);
 
-        uint256 totalSupplyAfter = IERC20TokenModule(sec.srusd).totalSupply();
+        uint256 totalSupplyAfter = ITokenProxy(sec.srusd).totalSupply();
         assertEq(totalSupplyAfter, totalSupplyBefore);
     }
 
@@ -73,7 +76,7 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
             ICoreProxy(sec.core).getCollateralConfig(1, sec.srusd);
         SD59x18 srusdAmountInUSD = sd(int256(srusdAmount)).mul(sd(int256(srusdUsdcNodeOutput.price))).mul(
             UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut)))
-        );
+        ).div(sd(1e30));
 
         MarginInfo memory accountUsdNodeMarginInfo = ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId);
         assertApproxEqAbsDecimal(accountUsdNodeMarginInfo.marginBalance, srusdAmountInUSD.unwrap(), 0.000001e18, 18);
@@ -133,12 +136,12 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         // deposit new margin account
         uint128 accountId = depositNewMA(user, sec.srusd, amount);
 
-        uint256 coreSrusdBalanceBefore = IERC20TokenModule(sec.srusd).balanceOf(sec.core);
+        uint256 coreSrusdBalanceBefore = ITokenProxy(sec.srusd).balanceOf(sec.core);
 
         amount = 100e30;
         withdrawMA(accountId, sec.srusd, amount);
 
-        uint256 coreSrusdBalanceAfter = IERC20TokenModule(sec.srusd).balanceOf(sec.core);
+        uint256 coreSrusdBalanceAfter = ITokenProxy(sec.srusd).balanceOf(sec.core);
 
         assertEq(coreSrusdBalanceBefore - coreSrusdBalanceAfter, amount);
     }
@@ -178,13 +181,13 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
 
     function check_transfer_srusdCollateral() public {
         vm.prank(sec.pool);
-        IERC20TokenModule(sec.srusd).mint(sec.pool, 100e30);
+        ITokenProxy(sec.srusd).mint(sec.pool, 100e30);
 
         vm.prank(sec.pool);
-        IERC20TokenModule(sec.srusd).mint(sec.periphery, 100e30);
+        ITokenProxy(sec.srusd).mint(sec.periphery, 100e30);
 
         vm.prank(sec.pool);
-        IERC20TokenModule(sec.srusd).mint(sec.core, 100e30);
+        ITokenProxy(sec.srusd).mint(sec.core, 100e30);
 
         (address user,) = makeAddrAndKey("user");
 
@@ -192,12 +195,12 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         vm.expectRevert(
             abi.encodeWithSelector(IPassivePoolProxy.FeatureUnavailable.selector, keccak256(bytes("authorizedHolder")))
         );
-        IERC20TokenModule(sec.srusd).mint(user, 100e30);
+        ITokenProxy(sec.srusd).mint(user, 100e30);
 
         vm.prank(sec.core);
         vm.expectRevert(
             abi.encodeWithSelector(IPassivePoolProxy.FeatureUnavailable.selector, keccak256(bytes("authorizedHolder")))
         );
-        IERC20TokenModule(sec.srusd).transfer(user, 100e30);
+        ITokenProxy(sec.srusd).transfer(user, 100e30);
     }
 }

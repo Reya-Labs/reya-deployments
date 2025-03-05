@@ -37,7 +37,7 @@ import { ISocketControllerWithPayload } from "../../src/interfaces/ISocketContro
 import { ud, UD60x18, ZERO as ZERO_ud } from "@prb/math/UD60x18.sol";
 import { SD59x18, ZERO as ZERO_sd, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 
-import { IERC20TokenModule } from "../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../src/interfaces/ITokenProxy.sol";
 
 struct LocalState {
     MarketConfigurationData marketConfig;
@@ -100,7 +100,7 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             vm.prank(user);
             accountId = ICoreProxy(sec.core).createAccount(user);
             vm.prank(user);
-            IERC20TokenModule(collateral).approve(sec.core, amount);
+            ITokenProxy(collateral).approve(sec.core, amount);
             vm.prank(user);
             ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: collateral, amount: amount });
         } else {

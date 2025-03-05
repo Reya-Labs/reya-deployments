@@ -22,7 +22,7 @@ import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol
 
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
-import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 
 import { sd, SD59x18, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
@@ -52,7 +52,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         vm.assume(attacker != subscriber);
         vm.assume(attacker != address(0));
 
-        uint256 totalSupplyBefore = IERC20TokenModule(lmToken).totalSupply();
+        uint256 totalSupplyBefore = ITokenProxy(lmToken).totalSupply();
 
         (address user,) = makeAddrAndKey("user");
 
@@ -89,7 +89,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         // subscriber mints to attacker
         deal(sec.rusd, address(subscriber), 100e6);
         vm.prank(subscriber);
-        IERC20TokenModule(sec.rusd).approve(lmToken, 100e6);
+        ITokenProxy(sec.rusd).approve(lmToken, 100e6);
         vm.prank(subscriber);
         uint256 sharesOut = IShareTokenProxy(lmToken).subscribe(
             SubscriptionInputs({
@@ -102,7 +102,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         );
 
         vm.prank(custodian);
-        IERC20TokenModule(sec.rusd).transfer(lmToken, 100e6);
+        ITokenProxy(sec.rusd).transfer(lmToken, 100e6);
 
         // attacker cannot burn
         vm.prank(attacker);
@@ -113,7 +113,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         // user cannot burn
         vm.prank(attacker);
-        IERC20TokenModule(lmToken).transfer(user, 50e18);
+        ITokenProxy(lmToken).transfer(user, 50e18);
         vm.prank(user);
         vm.expectRevert();
         IShareTokenProxy(lmToken).redeem(
@@ -122,13 +122,13 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         // redeemer burns
         vm.prank(user);
-        IERC20TokenModule(lmToken).transfer(redeemer, 50e18);
+        ITokenProxy(lmToken).transfer(redeemer, 50e18);
         vm.prank(redeemer);
         IShareTokenProxy(lmToken).redeem(
             RedemptionInputs({ recipient: user, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
         );
 
-        uint256 totalSupplyAfter = IERC20TokenModule(lmToken).totalSupply();
+        uint256 totalSupplyAfter = ITokenProxy(lmToken).totalSupply();
         assertEq(totalSupplyAfter, totalSupplyBefore + sharesOut - 50e18);
     }
 
@@ -148,13 +148,13 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         // subscriber approve 100 rusd to LM token
         vm.prank(subscriber);
-        IERC20TokenModule(sec.rusd).approve(lmToken, 100e6);
+        ITokenProxy(sec.rusd).approve(lmToken, 100e6);
 
         s0.lmTokenTotalSupply = IShareTokenProxy(lmToken).totalSupply();
         s0.lmTokenRecipientBalance1 = IShareTokenProxy(lmToken).balanceOf(recipient1);
-        s0.rUsdSubscriberBalance = IERC20TokenModule(sec.rusd).balanceOf(subscriber);
-        s0.rUsdCustodianBalance = IERC20TokenModule(sec.rusd).balanceOf(custodian);
-        s0.rUsdRecipientBalance2 = IERC20TokenModule(sec.rusd).balanceOf(recipient2);
+        s0.rUsdSubscriberBalance = ITokenProxy(sec.rusd).balanceOf(subscriber);
+        s0.rUsdCustodianBalance = ITokenProxy(sec.rusd).balanceOf(custodian);
+        s0.rUsdRecipientBalance2 = ITokenProxy(sec.rusd).balanceOf(recipient2);
 
         // subscriber subscribes 100 rusd to rSelini and sends shares to custom recipient
         vm.prank(subscriber);
@@ -173,9 +173,9 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         // check balances after subscription
         s1.lmTokenTotalSupply = IShareTokenProxy(lmToken).totalSupply();
         s1.lmTokenRecipientBalance1 = IShareTokenProxy(lmToken).balanceOf(recipient1);
-        s1.rUsdSubscriberBalance = IERC20TokenModule(sec.rusd).balanceOf(subscriber);
-        s1.rUsdCustodianBalance = IERC20TokenModule(sec.rusd).balanceOf(custodian);
-        s1.rUsdRecipientBalance2 = IERC20TokenModule(sec.rusd).balanceOf(recipient2);
+        s1.rUsdSubscriberBalance = ITokenProxy(sec.rusd).balanceOf(subscriber);
+        s1.rUsdCustodianBalance = ITokenProxy(sec.rusd).balanceOf(custodian);
+        s1.rUsdRecipientBalance2 = ITokenProxy(sec.rusd).balanceOf(recipient2);
 
         assertEq(s1.lmTokenTotalSupply, s0.lmTokenTotalSupply + sharesOut);
         assertEq(s1.lmTokenRecipientBalance1, s0.lmTokenRecipientBalance1 + sharesOut);
@@ -185,15 +185,15 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         s0 = s1;
 
-        uint256 lmtokenRusdBalanceBefore = IERC20TokenModule(sec.rusd).balanceOf(lmToken);
+        uint256 lmtokenRusdBalanceBefore = ITokenProxy(sec.rusd).balanceOf(lmToken);
 
         // custodian sends 51 rusd back to LM token
         vm.prank(custodian);
-        IERC20TokenModule(sec.rusd).transfer(lmToken, 51e6);
+        ITokenProxy(sec.rusd).transfer(lmToken, 51e6);
 
         // recipient sends 50 LM tokens to redeemer
         vm.prank(recipient1);
-        IERC20TokenModule(lmToken).transfer(redeemer, 50e18);
+        ITokenProxy(lmToken).transfer(redeemer, 50e18);
 
         // redeemer redeems 50 shares from LM token
         vm.prank(redeemer);
@@ -206,16 +206,16 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         // check balances after redemption
         s1.lmTokenTotalSupply = IShareTokenProxy(lmToken).totalSupply();
         s1.lmTokenRecipientBalance1 = IShareTokenProxy(lmToken).balanceOf(recipient1);
-        s1.rUsdSubscriberBalance = IERC20TokenModule(sec.rusd).balanceOf(subscriber);
-        s1.rUsdCustodianBalance = IERC20TokenModule(sec.rusd).balanceOf(custodian);
-        s1.rUsdRecipientBalance2 = IERC20TokenModule(sec.rusd).balanceOf(recipient2);
+        s1.rUsdSubscriberBalance = ITokenProxy(sec.rusd).balanceOf(subscriber);
+        s1.rUsdCustodianBalance = ITokenProxy(sec.rusd).balanceOf(custodian);
+        s1.rUsdRecipientBalance2 = ITokenProxy(sec.rusd).balanceOf(recipient2);
 
         assertEq(s1.lmTokenTotalSupply, s0.lmTokenTotalSupply - 50e18);
         assertEq(s1.lmTokenRecipientBalance1, s0.lmTokenRecipientBalance1 - 50e18);
         assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance);
         assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 51e6);
         assertEq(s1.rUsdRecipientBalance2, s0.rUsdRecipientBalance2 + tokenOut);
-        assertEq(IERC20TokenModule(sec.rusd).balanceOf(lmToken), lmtokenRusdBalanceBefore + 51e6 - tokenOut);
+        assertEq(ITokenProxy(sec.rusd).balanceOf(lmToken), lmtokenRusdBalanceBefore + 51e6 - tokenOut);
     }
 
     function check_lmToken_view_functions(address lmToken, bytes32 lmTokenUsdcNodeId) private {
@@ -294,12 +294,12 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         // deposit new margin account
         uint128 accountId = depositNewMA(user, lmToken, amount);
 
-        uint256 coreLmTokenBalanceBefore = IERC20TokenModule(lmToken).balanceOf(sec.core);
+        uint256 coreLmTokenBalanceBefore = ITokenProxy(lmToken).balanceOf(sec.core);
 
         amount = 100e18;
         withdrawMA(accountId, lmToken, amount);
 
-        uint256 coreLmTokenBalanceAfter = IERC20TokenModule(lmToken).balanceOf(sec.core);
+        uint256 coreLmTokenBalanceAfter = ITokenProxy(lmToken).balanceOf(sec.core);
 
         assertEq(coreLmTokenBalanceBefore - coreLmTokenBalanceAfter, amount);
     }

@@ -3,7 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import "forge-std/Test.sol";
 import { Script } from "forge-std/Script.sol";
 import { ICoreProxy, Command, CommandType } from "../../src/interfaces/ICoreProxy.sol";
-import { IERC20TokenModule } from "../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../src/interfaces/ITokenProxy.sol";
 import { IRUSDProxy } from "../../src/interfaces/IRUSDProxy.sol";
 import { TransferInput } from "../../src/interfaces/IPeripheryProxy.sol";
 
@@ -21,7 +21,7 @@ contract CompensateAccount is Script, Test {
         uint256 rusdAmount = 1 * 1e6;
 
         vm.broadcast(refundEOA);
-        IERC20TokenModule(rusd).approve(core, rusdAmount);
+        ITokenProxy(rusd).approve(core, rusdAmount);
 
         vm.broadcast(refundEOA);
         ICoreProxy(core).deposit(toAccountId, rusd, rusdAmount);

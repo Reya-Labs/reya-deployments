@@ -13,7 +13,7 @@ import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol
 
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
-import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 
 import { sd, SD59x18, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
@@ -23,33 +23,33 @@ contract SdeusdCollateralForkCheck is BaseReyaForkTest {
         (address user,) = makeAddrAndKey("user");
         uint256 amount = 10e18;
 
-        uint256 totalSupplyBefore = IERC20TokenModule(sec.sdeusd).totalSupply();
+        uint256 totalSupplyBefore = ITokenProxy(sec.sdeusd).totalSupply();
 
         // mint
         vm.prank(dec.socketController[sec.sdeusd]);
-        IERC20TokenModule(sec.sdeusd).mint(user, amount);
+        ITokenProxy(sec.sdeusd).mint(user, amount);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IERC20TokenModule(sec.sdeusd).mint(user, amount);
+        ITokenProxy(sec.sdeusd).mint(user, amount);
 
         vm.prank(user);
         vm.expectRevert();
-        IERC20TokenModule(sec.sdeusd).mint(user, amount);
+        ITokenProxy(sec.sdeusd).mint(user, amount);
 
         // burn
         vm.prank(dec.socketController[sec.sdeusd]);
-        IERC20TokenModule(sec.sdeusd).burn(user, amount);
+        ITokenProxy(sec.sdeusd).burn(user, amount);
 
         vm.prank(attacker);
         vm.expectRevert();
-        IERC20TokenModule(sec.sdeusd).burn(user, amount);
+        ITokenProxy(sec.sdeusd).burn(user, amount);
 
         vm.prank(user);
         vm.expectRevert();
-        IERC20TokenModule(sec.sdeusd).burn(user, amount);
+        ITokenProxy(sec.sdeusd).burn(user, amount);
 
-        uint256 totalSupplyAfter = IERC20TokenModule(sec.sdeusd).totalSupply();
+        uint256 totalSupplyAfter = ITokenProxy(sec.sdeusd).totalSupply();
         assertEq(totalSupplyAfter, totalSupplyBefore);
     }
 
@@ -146,16 +146,16 @@ contract SdeusdCollateralForkCheck is BaseReyaForkTest {
             DepositNewMAInputs({ accountOwner: user, token: address(sec.sdeusd) })
         );
 
-        uint256 coreSdeusdBalanceBefore = IERC20TokenModule(sec.sdeusd).balanceOf(sec.core);
-        uint256 peripherySdeusdBalanceBefore = IERC20TokenModule(sec.sdeusd).balanceOf(sec.periphery);
-        uint256 multisigSdeusdBalanceBefore = IERC20TokenModule(sec.sdeusd).balanceOf(sec.multisig);
+        uint256 coreSdeusdBalanceBefore = ITokenProxy(sec.sdeusd).balanceOf(sec.core);
+        uint256 peripherySdeusdBalanceBefore = ITokenProxy(sec.sdeusd).balanceOf(sec.periphery);
+        uint256 multisigSdeusdBalanceBefore = ITokenProxy(sec.sdeusd).balanceOf(sec.multisig);
 
         amount = 100e18;
         executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.sdeusd, amount, ethereumChainId);
 
-        uint256 coreSdeusdBalanceAfter = IERC20TokenModule(sec.sdeusd).balanceOf(sec.core);
-        uint256 peripherySdeusdBalanceAfter = IERC20TokenModule(sec.sdeusd).balanceOf(sec.periphery);
-        uint256 multisigSdeusdBalanceAfter = IERC20TokenModule(sec.sdeusd).balanceOf(sec.multisig);
+        uint256 coreSdeusdBalanceAfter = ITokenProxy(sec.sdeusd).balanceOf(sec.core);
+        uint256 peripherySdeusdBalanceAfter = ITokenProxy(sec.sdeusd).balanceOf(sec.periphery);
+        uint256 multisigSdeusdBalanceAfter = ITokenProxy(sec.sdeusd).balanceOf(sec.multisig);
         uint256 withdrawStaticFees = IPeripheryProxy(sec.periphery).getTokenStaticWithdrawFee(
             sec.sdeusd, dec.socketConnector[sec.sdeusd][ethereumChainId]
         );

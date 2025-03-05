@@ -19,6 +19,8 @@ import { IOracleManagerProxy } from "../../../src/interfaces/IOracleManagerProxy
 import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
+import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
+
 contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant ethLeverage = 35e18;
     uint256 private constant btcLeverage = 40e18;
@@ -165,7 +167,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         }
 
         (user, userPk) = makeAddrAndKey("user");
-        uint256 amount = 1_000_000e18;
+        uint256 amount = 1_000_000 * 10 ** ITokenProxy(collateral).decimals();
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(1_000_000e18);
 

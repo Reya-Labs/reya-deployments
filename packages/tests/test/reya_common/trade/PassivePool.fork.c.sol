@@ -30,7 +30,7 @@ import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol
 
 import { ISocketExecutionHelper } from "../../../src/interfaces/ISocketExecutionHelper.sol";
 
-import { IERC20TokenModule } from "../../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
@@ -92,11 +92,14 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         (address alice,) = makeAddrAndKey("alice");
 
+        vm.prank(sec.multisig);
+        ITokenProxy(sec.srusd).addToFeatureFlagAllowlist(keccak256(bytes("authorizedHolder")), alice);
+
         uint256 sharePriceBefore = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
         deal(sec.rusd, alice, amount);
         vm.prank(alice);
-        IERC20TokenModule(sec.rusd).approve(sec.pool, amount);
+        ITokenProxy(sec.rusd).approve(sec.pool, amount);
         vm.prank(alice);
         IPassivePoolProxy(sec.pool).addLiquidityTokenized(
             sec.passivePoolId,
@@ -108,9 +111,9 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         uint256 aliceSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user);
         assertEq(aliceSharesAmount, 0);
-        uint256 aliceSrusdAmount = IERC20TokenModule(sec.srusd).balanceOf(alice);
+        uint256 aliceSrusdAmount = ITokenProxy(sec.srusd).balanceOf(alice);
         assertGe(aliceSrusdAmount, minShares);
-        assertEq(IERC20TokenModule(sec.usdc).balanceOf(alice), 0);
+        assertEq(ITokenProxy(sec.usdc).balanceOf(alice), 0);
 
         vm.prank(attacker);
         vm.expectRevert();
@@ -122,7 +125,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         );
 
         vm.prank(alice);
-        IERC20TokenModule(sec.srusd).approve(sec.pool, aliceSrusdAmount);
+        ITokenProxy(sec.srusd).approve(sec.pool, aliceSrusdAmount);
         vm.prank(alice);
         IPassivePoolProxy(sec.pool).removeLiquidityTokenized(
             sec.passivePoolId,
@@ -131,8 +134,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             ActionMetadata({ action: Action.UnstakeTokenized, onBehalfOf: alice })
         );
 
-        assertApproxEqAbsDecimal(IERC20TokenModule(sec.rusd).balanceOf(alice), amount, 0.001e6, 6);
-        assertEq(IERC20TokenModule(sec.srusd).balanceOf(alice), 0);
+        assertApproxEqAbsDecimal(ITokenProxy(sec.rusd).balanceOf(alice), amount, 0.001e6, 6);
+        assertEq(ITokenProxy(sec.srusd).balanceOf(alice), 0);
 
         assertApproxEqAbsDecimal(
             IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId), sharePriceBefore, 0.0001e18, 18
@@ -511,7 +514,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         // add 3000 rselini to the passive pool directly
         deal(sec.rselini, address(user), 3000e18);
         vm.prank(user);
-        IERC20TokenModule(sec.rselini).approve(sec.core, 3000e18);
+        ITokenProxy(sec.rselini).approve(sec.core, 3000e18);
         vm.prank(user);
         ICoreProxy(sec.core).deposit({
             accountId: sec.passivePoolAccountId,
@@ -582,7 +585,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         deal(sec.ramber, address(user), 3000e18);
         vm.prank(user);
-        IERC20TokenModule(sec.ramber).approve(sec.core, 3000e18);
+        ITokenProxy(sec.ramber).approve(sec.core, 3000e18);
         vm.prank(user);
         ICoreProxy(sec.core).deposit({
             accountId: sec.passivePoolAccountId,
@@ -653,7 +656,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
     //   deal(sec.srusd, address(user), 3000e30);
     //   vm.prank(user);
-    //   IERC20TokenModule(sec.srusd).approve(sec.core, 3000e30);
+    //   ITokenProxy(sec.srusd).approve(sec.core, 3000e30);
     //   vm.prank(user);
     //   ICoreProxy(sec.core).deposit({
     //       accountId: sec.passivePoolAccountId,
@@ -735,7 +738,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                 address tokenIn = allTokens[i];
                 address tokenOut = allTokens[j];
 
-                uint256 amountIn = 100_000_000 * (10 ** IERC20TokenModule(tokenIn).decimals());
+                uint256 amountIn = 100_000_000 * (10 ** ITokenProxy(tokenIn).decimals());
 
                 RebalanceAmounts memory rebalanceAmounts =
                     IPassivePoolProxy(sec.pool).getRebalanceAmounts(sec.passivePoolId, tokenIn, tokenOut, amountIn);
@@ -749,13 +752,13 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
                     if (isLmToken(tokenIn) && mintLmTokens) {
                         vm.prank(sec.poolRebalancer);
-                        IERC20TokenModule(tokenIn).mint(sec.poolRebalancer, rebalanceAmounts.amountIn);
+                        ITokenProxy(tokenIn).mint(sec.poolRebalancer, rebalanceAmounts.amountIn);
                     } else {
                         deal(tokenIn, sec.poolRebalancer, rebalanceAmounts.amountIn);
                     }
 
                     vm.prank(sec.poolRebalancer);
-                    IERC20TokenModule(tokenIn).approve(sec.pool, rebalanceAmounts.amountIn);
+                    ITokenProxy(tokenIn).approve(sec.pool, rebalanceAmounts.amountIn);
 
                     vm.prank(sec.poolRebalancer);
                     IPassivePoolProxy(sec.pool).triggerAutoRebalance(
@@ -925,11 +928,10 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                 if (amountsFuzz[i] == type(int256).min) {
                     amountsFuzz[i] += 1;
                 }
-                amounts[i] = (-1000 + int256((uint256(-amountsFuzz[i]) % 1000)))
-                    * int256(10 ** IERC20TokenModule(token).decimals());
-            } else {
                 amounts[i] =
-                    int256((uint256(amountsFuzz[i]) % 1000)) * int256(10 ** IERC20TokenModule(token).decimals());
+                    (-1000 + int256((uint256(-amountsFuzz[i]) % 1000))) * int256(10 ** ITokenProxy(token).decimals());
+            } else {
+                amounts[i] = int256((uint256(amountsFuzz[i]) % 1000)) * int256(10 ** ITokenProxy(token).decimals());
             }
         }
 
@@ -949,7 +951,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
                 deal(tokens[i], owner, amount);
                 vm.prank(owner);
-                IERC20TokenModule(tokens[i]).approve(sec.pool, amount);
+                ITokenProxy(tokens[i]).approve(sec.pool, amount);
                 vm.prank(owner);
                 IPassivePoolProxy(sec.pool).addLiquidityV2({
                     poolId: sec.passivePoolId,
@@ -965,7 +967,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                     amount = poolTokenBalance;
                 }
 
-                uint256 sharesAmount = amount * 99 / 100 * 10 ** (30 - IERC20TokenModule(tokens[i]).decimals());
+                uint256 sharesAmount = amount * 99 / 100 * 10 ** (30 - ITokenProxy(tokens[i]).decimals());
                 uint256 ownerSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, owner);
                 if (ownerSharesAmount < sharesAmount) {
                     sharesAmount = ownerSharesAmount;

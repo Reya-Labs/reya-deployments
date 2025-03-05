@@ -3,7 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import "forge-std/Test.sol";
 import { Script } from "forge-std/Script.sol";
 import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
-import { IERC20TokenModule } from "../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../src/interfaces/ITokenProxy.sol";
 import { IRUSDProxy } from "../../src/interfaces/IRUSDProxy.sol";
 
 import { Action, ActionMetadata } from "../../src/interfaces/ICoreProxy.sol";
@@ -39,7 +39,7 @@ contract DistributeFunds is Script, Test {
         }
 
         vm.broadcast(multisigEOA);
-        IERC20TokenModule(usdc).approve(rusd, sumDeposits);
+        ITokenProxy(usdc).approve(rusd, sumDeposits);
         vm.broadcast(multisigEOA);
         IRUSDProxy(rusd).deposit(sumDeposits);
         vm.broadcast(multisigEOA);
