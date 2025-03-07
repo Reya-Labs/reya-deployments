@@ -142,9 +142,7 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
 
         amount = 100e30;
         vm.prank(sec.multisig);
-        ITokenProxy(sec.srusd).addToFeatureFlagAllowlist(
-            keccak256(bytes("authorizedHolder")), user
-        );
+        ITokenProxy(sec.srusd).addToFeatureFlagAllowlist(keccak256(bytes("authorizedHolder")), user);
         withdrawMA(accountId, sec.srusd, amount);
 
         uint256 coreSrusdBalanceAfter = ITokenProxy(sec.srusd).balanceOf(sec.core);
@@ -180,10 +178,8 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         );
 
         amount = 100e18;
-         vm.prank(sec.multisig);
-        ITokenProxy(sec.srusd).addToFeatureFlagAllowlist(
-            keccak256(bytes("authorizedHolder")), user
-        );
+        vm.prank(sec.multisig);
+        ITokenProxy(sec.srusd).addToFeatureFlagAllowlist(keccak256(bytes("authorizedHolder")), user);
         withdrawMA(accountId, sec.srusd, amount);
 
         checkPoolHealth();
