@@ -8,6 +8,8 @@ import { IOracleManagerProxy, NodeOutput, NodeDefinition } from "../../../src/in
 import { IPassivePerpProxy, MarketConfigurationData } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import { IElixirSdeusd } from "../../../src/interfaces/IElixirSdeusd.sol";
 
+import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
+
 import { ud } from "@prb/math/UD60x18.sol";
 
 struct LocalState {
@@ -364,8 +366,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceGRASS);
         ls.maxDeviationMarket.push(ls.maxDeviationGRASS);
 
-        ls.meanPriceKNEIRO = 0.8e18;
-        ls.maxDeviationKNEIRO = 0.5e18;
+        ls.meanPriceKNEIRO = 0.3e18;
+        ls.maxDeviationKNEIRO = 0.15e18;
         ls.meanPriceMarket.push(ls.meanPriceKNEIRO);
         ls.maxDeviationMarket.push(ls.maxDeviationKNEIRO);
 
@@ -508,7 +510,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceRAMBER = 1.01e18;
         ls.maxDeviationRAMBER = 0.01e18;
 
-        ls.meanPriceSRUSD = 1.03e18;
+        ls.meanPriceSRUSD = (sec.destinationChainId == 1) ? 1.03e18 : 4.9e18;
         ls.maxDeviationSRUSD = 0.015e18;
 
         ls.meanPriceStableCoin = 1e18;
@@ -1153,5 +1155,9 @@ contract GeneralForkCheck is BaseReyaForkTest {
         uint256 originalSdeusdDeusdPrice = IElixirSdeusd(sec.elixirSdeusd).convertToAssets(1e18);
 
         assertLe(sdeusdDeusdOutput.price, originalSdeusdDeusdPrice);
+    }
+
+    function check_periphery_srusd_balance() public view {
+        assertEq(ITokenProxy(sec.srusd).balanceOf(sec.periphery), 0);
     }
 }

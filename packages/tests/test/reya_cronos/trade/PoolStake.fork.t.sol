@@ -7,4 +7,8 @@ contract PoolStakeForkTest is ReyaForkTest, PoolStakeForkCheck {
     function test_Cronos_StakeUnstakeCommand() public {
         check_StakeUnstakeCommand({ amount: 10e6, minShares: 2e30 });
     }
+
+    function test_Cronos_MoveLiquidity() public {
+        check_MoveLiquidity(10e6, 2e30);
+    }
 }

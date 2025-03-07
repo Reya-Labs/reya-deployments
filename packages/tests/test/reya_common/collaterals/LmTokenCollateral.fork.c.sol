@@ -189,7 +189,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         // custodian sends 51 rusd back to LM token
         vm.prank(custodian);
-        ITokenProxy(sec.rusd).transfer(lmToken, 51e6);
+        ITokenProxy(sec.rusd).transfer(lmToken, 52e6);
 
         // recipient sends 50 LM tokens to redeemer
         vm.prank(recipient1);
@@ -201,7 +201,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
             RedemptionInputs({ recipient: recipient2, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
         );
 
-        assertApproxEqAbsDecimal(tokenOut, 50e6, 1e6, 6);
+        assertApproxEqAbsDecimal(tokenOut, 51e6, 1e6, 6);
 
         // check balances after redemption
         s1.lmTokenTotalSupply = IShareTokenProxy(lmToken).totalSupply();
@@ -213,9 +213,9 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         assertEq(s1.lmTokenTotalSupply, s0.lmTokenTotalSupply - 50e18);
         assertEq(s1.lmTokenRecipientBalance1, s0.lmTokenRecipientBalance1 - 50e18);
         assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance);
-        assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 51e6);
+        assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 52e6);
         assertEq(s1.rUsdRecipientBalance2, s0.rUsdRecipientBalance2 + tokenOut);
-        assertEq(ITokenProxy(sec.rusd).balanceOf(lmToken), lmtokenRusdBalanceBefore + 51e6 - tokenOut);
+        assertEq(ITokenProxy(sec.rusd).balanceOf(lmToken), lmtokenRusdBalanceBefore + 52e6 - tokenOut);
     }
 
     function check_lmToken_view_functions(address lmToken, bytes32 lmTokenUsdcNodeId) private {

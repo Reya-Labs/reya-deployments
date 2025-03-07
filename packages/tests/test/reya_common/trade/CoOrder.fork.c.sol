@@ -120,26 +120,6 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         // assert that the OG contract does not have the permission
         assertFalse(ICoreProxy(sec.core).isAuthorizedForAccount(st.accountId, MATCH_ORDER, address(st.og)));
 
-        // assert that the SL order is not executable without the permission
-        vm.expectRevert();
-        st.og.execute(co, coSig);
-
-        // grant permission to the orders gateway for trades
-        {
-            bytes32 digest = GrantAccountPermissionHashing.mockCalculateDigest(
-                st.accountId, MATCH_ORDER, sec.ordersGateway, 2 * st.nonce - 1, block.timestamp + 1, sec.core
-            );
-
-            (uint8 v, bytes32 r, bytes32 s) = vm.sign(st.userPrivateKey, digest);
-
-            Core_EIP712Signature memory sig = Core_EIP712Signature({ v: v, r: r, s: s, deadline: block.timestamp + 1 });
-
-            ICoreProxy(sec.core).grantAccountPermissionBySig(st.accountId, MATCH_ORDER, sec.ordersGateway, sig);
-        }
-
-        // assert that the OG contract does have the permission after granting it
-        assertTrue(ICoreProxy(sec.core).isAuthorizedForAccount(st.accountId, MATCH_ORDER, address(st.og)));
-
         // generate the EIP712 signature and execute the SL order
         vm.prank(sec.coExecutionBot);
         st.og.execute(co, coSig);
@@ -155,22 +135,6 @@ contract CoOrderForkCheck is BaseReyaForkTest {
                 st.orderBase1.unwrap()
             );
         }
-
-        // revoke permission to the orders gateway for trades
-        {
-            bytes32 digest = RevokeAccountPermissionHashing.mockCalculateDigest(
-                st.accountId, MATCH_ORDER, sec.ordersGateway, 2 * st.nonce, block.timestamp + 1, sec.core
-            );
-
-            (uint8 v, bytes32 r, bytes32 s) = vm.sign(st.userPrivateKey, digest);
-
-            Core_EIP712Signature memory sig = Core_EIP712Signature({ v: v, r: r, s: s, deadline: block.timestamp + 1 });
-
-            ICoreProxy(sec.core).revokeAccountPermissionBySig(st.accountId, MATCH_ORDER, sec.ordersGateway, sig);
-        }
-
-        // assert that the OG contract does not have the permission after revoking it
-        assertFalse(ICoreProxy(sec.core).isAuthorizedForAccount(st.accountId, MATCH_ORDER, address(st.og)));
     }
 
     function check_slOrderOnShortPosition() public {

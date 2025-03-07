@@ -9,8 +9,9 @@ import { ICoreProxy } from "../../src/interfaces/ICoreProxy.sol";
 
 contract ReyaForkTest is StorageReyaForkTest {
     constructor() {
+        string memory rpcKey = vm.envString("RPC_KEY");
         // network
-        sec.REYA_RPC = "https://rpc.reya.network";
+        sec.REYA_RPC = string.concat("https://rpc.reya.network/", rpcKey);
         sec.MAINNET_RPC = "https://gateway.tenderly.co/public/mainnet";
 
         // other (external) chain id

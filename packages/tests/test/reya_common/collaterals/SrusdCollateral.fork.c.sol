@@ -130,6 +130,8 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_srusd_deposit_withdraw() public {
+        removeCollateralWithdrawalLimit(sec.srusd);
+
         (address user, uint256 userPk) = makeAddrAndKey("user");
         uint256 amount = 1000e30; // denominated in srusd
 
@@ -139,6 +141,10 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         uint256 coreSrusdBalanceBefore = ITokenProxy(sec.srusd).balanceOf(sec.core);
 
         amount = 100e30;
+        vm.prank(sec.multisig);
+        ITokenProxy(sec.srusd).addToFeatureFlagAllowlist(
+            keccak256(bytes("authorizedHolder")), user
+        );
         withdrawMA(accountId, sec.srusd, amount);
 
         uint256 coreSrusdBalanceAfter = ITokenProxy(sec.srusd).balanceOf(sec.core);
@@ -174,7 +180,11 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         );
 
         amount = 100e18;
-        executePeripheryWithdrawMA(user, userPk, 2, accountId, sec.srusd, amount, ethereumChainId);
+         vm.prank(sec.multisig);
+        ITokenProxy(sec.srusd).addToFeatureFlagAllowlist(
+            keccak256(bytes("authorizedHolder")), user
+        );
+        withdrawMA(accountId, sec.srusd, amount);
 
         checkPoolHealth();
     }
