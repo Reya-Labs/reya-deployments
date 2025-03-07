@@ -325,8 +325,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceLDO);
         ls.maxDeviationMarket.push(ls.maxDeviationLDO);
 
-        ls.meanPricePOL = 0.5e18;
-        ls.maxDeviationPOL = 0.25e18;
+        ls.meanPricePOL = 0.25e18;
+        ls.maxDeviationPOL = 0.12e18;
         ls.meanPriceMarket.push(ls.meanPricePOL);
         ls.maxDeviationMarket.push(ls.maxDeviationPOL);
 
