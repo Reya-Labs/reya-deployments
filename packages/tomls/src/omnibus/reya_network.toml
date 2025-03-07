@@ -2179,7 +2179,7 @@ cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled = "0.005"
 cp1Rusd_srusd_autoExchangeDustThresholdUnscaled = "0"
 cp1Rusd_srusd_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_srusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
-cp1Rusd_srusdParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_srusdParentConfig_priceHaircutUnscaled = "0.1"
 cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
 cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdUsdcPoolNodeId %>"
 # -----------------------------------------------
