@@ -68,3 +68,10 @@ fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.wbtcController %>"]
 depends = ["invoke.upgrade_wbtc_proxy"]
+
+[invoke.wbtc_authorized_holders_allow_all]
+target = ["WBTCProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('authorizedHolder')) %>", true]
+depends = ["invoke.upgrade_wbtc_proxy"]

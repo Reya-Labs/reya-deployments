@@ -11,7 +11,8 @@ import {
     MarginInfo,
     CollateralConfig,
     ParentCollateralConfig,
-    GlobalCollateralConfig
+    GlobalCollateralConfig,
+    ManagePoolStakeCommand
 } from "../../src/interfaces/ICoreProxy.sol";
 
 import {
@@ -20,7 +21,10 @@ import {
     Command as Command_Periphery,
     EIP712Signature,
     WithdrawMAInputs,
-    DepositNewMAInputs
+    DepositNewMAInputs,
+    DepositPassivePoolInputs,
+    DepositLiquidityToAccountInputs,
+    WithdrawLiquidityFromAccountInputs
 } from "../../src/interfaces/IPeripheryProxy.sol";
 
 import { IOracleManagerProxy, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
@@ -30,6 +34,7 @@ import { IPassivePerpProxy, MarketConfigurationData } from "../../src/interfaces
 import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
 
 import { CoreCommandHashing } from "../../src/utils/CoreCommandHashing.sol";
+import { PoolHashing } from "../../src/utils/PoolHashing.sol";
 
 import { ISocketExecutionHelper } from "../../src/interfaces/ISocketExecutionHelper.sol";
 import { ISocketControllerWithPayload } from "../../src/interfaces/ISocketControllerWithPayload.sol";
@@ -37,7 +42,7 @@ import { ISocketControllerWithPayload } from "../../src/interfaces/ISocketContro
 import { ud, UD60x18, ZERO as ZERO_ud } from "@prb/math/UD60x18.sol";
 import { SD59x18, ZERO as ZERO_sd, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 
-import { IERC20TokenModule } from "../../src/interfaces/IERC20TokenModule.sol";
+import { ITokenProxy } from "../../src/interfaces/ITokenProxy.sol";
 
 struct LocalState {
     MarketConfigurationData marketConfig;
@@ -95,12 +100,12 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     }
 
     function depositNewMA(address user, address collateral, uint256 amount) internal returns (uint128 accountId) {
-        if (collateral == sec.rselini || collateral == sec.ramber) {
+        if (isLmToken(collateral) || collateral == sec.srusd) {
             deal(collateral, address(user), amount);
             vm.prank(user);
             accountId = ICoreProxy(sec.core).createAccount(user);
             vm.prank(user);
-            IERC20TokenModule(collateral).approve(sec.core, amount);
+            ITokenProxy(collateral).approve(sec.core, amount);
             vm.prank(user);
             ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: collateral, amount: amount });
         } else {
@@ -151,7 +156,8 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         uint128 accountId,
         Command_Periphery[] memory commands,
         uint256 userPrivateKey,
-        uint256 incrementedNonce
+        uint256 incrementedNonce,
+        bytes memory extraData
     )
         internal
         view
@@ -159,10 +165,38 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     {
         uint256 deadline = block.timestamp + 3600; // one hour
         bytes32 digest = CoreCommandHashing.mockCalculateDigest(
-            address(sec.periphery), accountId, commands, incrementedNonce, deadline, keccak256(abi.encode()), sec.core
+            address(sec.periphery), accountId, commands, incrementedNonce, deadline, keccak256(extraData), sec.core
         );
         (uint8 sv, bytes32 sr, bytes32 ss) = vm.sign(userPrivateKey, digest);
         sig = EIP712Signature({ v: sv, r: sr, s: ss, deadline: deadline });
+    }
+
+    function getEIP712SignatureForPool(
+        address user,
+        uint256 userPrivateKey,
+        uint256 sharesAmount,
+        uint256 minOut,
+        uint256 incrementedNonce,
+        bytes memory extraData
+    )
+        internal
+        view
+        returns (EIP712Signature memory sig)
+    {
+        uint256 deadline = block.timestamp + 3600; // one hour
+        bytes32 digest = PoolHashing.mockCalculateDigest(
+            address(sec.periphery),
+            user,
+            sec.passivePoolId,
+            sharesAmount,
+            minOut,
+            incrementedNonce,
+            deadline,
+            extraData,
+            sec.pool
+        );
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, digest);
+        sig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
     }
 
     function executePeripheryCommands(
@@ -177,9 +211,55 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             PeripheryExecutionInputs({
                 accountId: accountId,
                 commands: commands,
-                sig: getEIP712SignatureForPeripheryCommands(accountId, commands, userPrivateKey, incrementedNonce)
+                sig: getEIP712SignatureForPeripheryCommands(
+                    accountId, commands, userPrivateKey, incrementedNonce, abi.encode()
+                )
             })
         );
+    }
+
+    function getNetDeposits(uint128 accountId, address collateral) internal view returns (int256) {
+        return ICoreProxy(sec.core).getCollateralInfo(accountId, collateral).netDeposits;
+    }
+
+    function executePeripheryStakeAccount(
+        uint256 userPrivateKey,
+        uint256 incrementedNonce,
+        uint128 poolId,
+        uint256 amount,
+        uint256 minShares,
+        uint128 accountId
+    )
+        internal
+    {
+        Command_Periphery[] memory commands = new Command_Periphery[](1);
+        commands[0] = Command_Periphery({
+            commandType: uint8(CommandType.ManagePoolStake),
+            inputs: abi.encode(ManagePoolStakeCommand.Stake, abi.encode(poolId, amount, minShares)),
+            marketId: 0,
+            exchangeId: 0
+        });
+        executePeripheryCommands(accountId, commands, userPrivateKey, incrementedNonce);
+    }
+
+    function executePeripheryUnstakeAccount(
+        uint256 userPrivateKey,
+        uint256 incrementedNonce,
+        uint128 poolId,
+        uint256 sharesAmount,
+        uint256 minOut,
+        uint128 accountId
+    )
+        internal
+    {
+        Command_Periphery[] memory commands = new Command_Periphery[](1);
+        commands[0] = Command_Periphery({
+            commandType: uint8(CommandType.ManagePoolStake),
+            inputs: abi.encode(ManagePoolStakeCommand.Unstake, abi.encode(poolId, sharesAmount, minOut)),
+            marketId: 0,
+            exchangeId: 0
+        });
+        executePeripheryCommands(accountId, commands, userPrivateKey, incrementedNonce);
     }
 
     function executePeripheryMatchOrder(
@@ -238,6 +318,77 @@ contract BaseReyaForkTest is StorageReyaForkTest {
 
         orderPrice = UD60x18.wrap(abi.decode(s.outputs[0], (uint256)));
         pSlippage = orderPrice.div(getMarketSpotPrice(marketId)).intoSD59x18().sub(UNIT_sd);
+    }
+
+    function executePeripheryAddLiquidity(address user, uint256 amount, uint256 minShares) internal {
+        deal(sec.usdc, sec.periphery, amount);
+        DepositPassivePoolInputs memory inputs =
+            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: minShares });
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
+        vm.mockCall(
+            dec.socketExecutionHelper[sec.usdc],
+            abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
+            abi.encode(amount)
+        );
+        IPeripheryProxy(sec.periphery).depositPassivePool(inputs);
+    }
+
+    function executePeripheryDepositLiquidityToAccount(
+        address user,
+        uint256 userPrivateKey,
+        uint256 incrementedNonce,
+        uint256 sharesAmount,
+        uint128 accountId
+    )
+        internal
+    {
+        IPeripheryProxy(sec.periphery).depositLiquidityToAccount(
+            DepositLiquidityToAccountInputs({
+                accountId: accountId,
+                poolId: sec.passivePoolId,
+                sharesAmount: sharesAmount,
+                sig: getEIP712SignatureForPool(
+                    user,
+                    userPrivateKey,
+                    sharesAmount,
+                    0,
+                    incrementedNonce,
+                    abi.encode("DepositLiquidityToAccount", accountId, sec.passivePoolId, sharesAmount)
+                )
+            })
+        );
+    }
+
+    function executePeripheryWithdrawLiquidityFromAccount(
+        address user,
+        uint256 userPrivateKey,
+        uint256 incrementedNonce,
+        uint256 sharesAmount,
+        uint128 accountId
+    )
+        internal
+    {
+        Command_Periphery[] memory commands = new Command_Periphery[](1);
+        commands[0] = Command_Periphery({
+            commandType: uint8(CommandType.Withdraw),
+            inputs: abi.encode(sec.srusd, sharesAmount),
+            marketId: 0,
+            exchangeId: 0
+        });
+        IPeripheryProxy(sec.periphery).withdrawLiquidityFromAccount(
+            WithdrawLiquidityFromAccountInputs({
+                accountId: accountId,
+                poolId: sec.passivePoolId,
+                sharesAmount: sharesAmount,
+                sig: getEIP712SignatureForPeripheryCommands(
+                    accountId,
+                    commands,
+                    userPrivateKey,
+                    incrementedNonce,
+                    abi.encode("WithdrawLiquidityFromAccount", accountId, sec.passivePoolId, sharesAmount)
+                )
+            })
+        );
     }
 
     function exposureToBase(uint128 marketId, SD59x18 exposure) internal view returns (SD59x18) {

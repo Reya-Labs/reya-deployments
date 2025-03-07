@@ -9,8 +9,9 @@ import { ICoreProxy } from "../../src/interfaces/ICoreProxy.sol";
 
 contract ReyaForkTest is StorageReyaForkTest {
     constructor() {
+        string memory rpcKey = vm.envString("RPC_KEY");
         // network
-        sec.REYA_RPC = "https://rpc.reya.network";
+        sec.REYA_RPC = string.concat("https://rpc.reya.network/", rpcKey);
         sec.MAINNET_RPC = "https://gateway.tenderly.co/public/mainnet";
 
         // other (external) chain id
@@ -45,6 +46,7 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.sdeusd = 0x4D3fEB76ab1C7eF40388Cd7a2066edacE1a2237D;
         sec.rselini = 0xb6A307Bb281BcA13d69792eAF5Db7c2BBe6De248;
         sec.ramber = 0x63FC3F743eE2e70e670864079978a1deB9c18b76;
+        sec.srusd = 0x162B78e827A8DB8173D13735C08c8D40Cb5cCdAB;
 
         // Elixir tokens on Mainnet (Ethereum)
         sec.elixirSdeusd = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326;
@@ -65,6 +67,7 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.ramberCustodian = 0xdd96e677939f0C78e2D671DD37abB44B49710a5A;
         sec.ramberSubscriber = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
         sec.ramberRedeemer = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
+        sec.aeLiquidator1 = 0x89520d105a125CC6165c6685de262c42113Df9c0;
 
         // node ids for spot prices
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
@@ -87,6 +90,8 @@ contract ReyaForkTest is StorageReyaForkTest {
 
         sec.rseliniUsdcReyaLmNodeId = 0x32cbf6a5839965f0e6439db08f6e9ec0250c2bc6af874f153616ed8d66dd139e;
         sec.ramberUsdcReyaLmNodeId = 0x42daefd962c3b559d6e382fcbc0e89e3fb7d87e836025141066e2f1f02fd5e99;
+
+        sec.srusdUsdcPoolNodeId = 0x70eeca40201e6ed672753a3458b44e9a22e35bcf08498f5e5620e08047a7ddac;
 
         // node ids for mark prices
         sec.ethUsdStorkMarkNodeId = 0xb9c41e6e69999c8e40c3a5646db91377fe753b3e16144822c73ea760809cf766;

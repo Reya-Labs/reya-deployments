@@ -11,3 +11,13 @@ depends = [
     'invoke.upgrade_weth_proxy',
     'var.global_collateral_configs',
 ]
+
+[invoke.weth_auto_exchange_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), contracts.WETHProxy.address])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy"]

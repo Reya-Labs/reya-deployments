@@ -68,3 +68,10 @@ fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.usdeController %>"]
 depends = ["invoke.upgrade_usde_proxy"]
+
+[invoke.usde_authorized_holders_allow_all]
+target = ["USDEProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('authorizedHolder')) %>", true]
+depends = ["invoke.upgrade_usde_proxy"]

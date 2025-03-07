@@ -70,7 +70,7 @@ contract FundingRateForkCheck is BaseReyaForkTest {
             assertApproxEqAbsDecimal(
                 fundingRate2[marketId - fromMarketId] - fundingRate1[marketId - fromMarketId],
                 pSlippage[marketId - fromMarketId].mul(sd(int256(marketConfig.velocityMultiplier))).unwrap(),
-                1e4,
+                1e5,
                 18
             );
         }

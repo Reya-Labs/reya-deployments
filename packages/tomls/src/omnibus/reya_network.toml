@@ -15,7 +15,7 @@ include = [
     "../oracle_adapters/mainnet.toml",
     "../share_token/mainnet.toml",
 ]
-version = "1.0.45"
+version = "1.0.46"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -41,14 +41,14 @@ rageTradeAccountId = "22262"
 zeuzAccountId = "46092"
 
 [var.cannonClonePackages]
-coreRouterPackage = "reya-core:1.0.14@router"
+coreRouterPackage = "reya-core:1.0.15@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
-tokensRouterPackage = "reya-tokens:1.0.0@router"
-passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.8@router"
+tokensRouterPackage = "reya-tokens:1.0.1@router"
+passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.9@router"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.24@router"
-peripheryRouterPackage = "reya-periphery:1.0.7@router"
+peripheryRouterPackage = "reya-periphery:1.0.8@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
@@ -80,6 +80,8 @@ usdeSalt = "usde-main"
 susdeSalt = "susde-main"
 deusdSalt = "deusd-main"
 sdeusdSalt = "sdeusd-main"
+# deployed one before to test node registration issue
+srusdSalt = "srusd-main-2"
 rseliniSalt = "rselini-main"
 ramberSalt = "ramber-main"
 
@@ -124,6 +126,7 @@ liquidator10 = "0x4d0AfCA2357F1797CF18c579171b71B427604933"
 
 [var.ae_liquidators]
 ae_liquidator1 = "0x89520d105a125CC6165c6685de262c42113Df9c0"
+ae_liquidator2 = "0xc656647754e72c2Db056712AC40dc04Ce6681a7D"
 
 [var.co_execution_bots]
 co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a"
@@ -291,6 +294,9 @@ storkAssetPairIdMEMark = "MEUSDMARK"
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
 reyaLmAssetPairIdAMBER = "REYALM#AMBERUSDC"
 
+[var.pool_asset_pair_ids]
+poolAssetPairIdSRUSD = "REYAPOOL#1"
+
 [var.stork_contracts]
 storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
 
@@ -390,6 +396,10 @@ deusdWithdrawalTvlPercentageLimitUnscaled = "1"
 sdeusdCollateralAdapter = "<%= AddressZero %>"
 sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.02"
+# -------------------------------------------------------------------
+srusdCollateralAdapter = "<%= AddressZero %>"
+srusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+srusdWithdrawalTvlPercentageLimitUnscaled = "0.02"
 # -------------------------------------------------------------------
 rseliniCollateralAdapter = "<%= AddressZero %>"
 rseliniWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
@@ -741,6 +751,8 @@ usdcDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 sdeusdDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-------------------------------------------------------------------------------
+srusdUsdcPoolMaxDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 seliniUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 amberUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -1994,7 +2006,7 @@ market62Me_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "62"
-cp1Rusd_maxCollaterals = "8"
+cp1Rusd_maxCollaterals = "9"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
 # -----------------------------------------------
@@ -2158,6 +2170,18 @@ cp1Rusd_sdeusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address 
 cp1Rusd_sdeusdParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_sdeusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdStork %>"
+# ------------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_srusd_capUnscaled = "<%= formatUnits(MaxUint256, parseInt(settings.srusdTokenDecimals)) %>"
+cp1Rusd_srusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_srusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_srusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_srusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_srusdParentConfig_priceHaircutUnscaled = "0.1"
+cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
+cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdUsdcPoolNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"

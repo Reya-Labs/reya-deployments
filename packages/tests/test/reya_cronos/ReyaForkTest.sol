@@ -12,8 +12,9 @@ import { ISocketExecutionHelper } from "../../src/interfaces/ISocketExecutionHel
 
 contract ReyaForkTest is BaseReyaForkTest {
     constructor() {
+        string memory rpcKey = vm.envString("RPC_KEY");
         // network
-        sec.REYA_RPC = "https://rpc.reya-cronos.gelato.digital";
+        sec.REYA_RPC = string.concat("https://rpc.reya-cronos.gelato.digital/", rpcKey);
         sec.MAINNET_RPC = "https://gateway.tenderly.co/public/sepolia";
 
         // other (external) chain id
@@ -48,6 +49,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.sdeusd = 0xbEB316680B6fcd2dC3aF1fC933B3A27a2513d89D;
         sec.rselini = 0xbA8ae4D2A147c54c3aBA123e8e01937AF505FC3c;
         sec.ramber = 0x125FD68Ec0ab65ce9606DeD99e8F19C286f9E534;
+        sec.srusd = 0xb9F531A54Fc0E9AdCa1b931d9533B4e49bB2fAD6;
 
         // Elixir tokens on Mainnet (Ethereum Sepolia)
         sec.elixirSdeusd = 0x97D3e518029c622015afa7aD20036EbEF60A7A4e;
@@ -68,6 +70,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.ramberCustodian = 0x45556408e543158f74403e882E3C8c23eCD9f732;
         sec.ramberSubscriber = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
         sec.ramberRedeemer = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
+        sec.aeLiquidator1 = 0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4;
 
         // node ids for spot prices
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
@@ -90,6 +93,8 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         sec.rseliniUsdcReyaLmNodeId = 0x8831605e4b3e4d533b9123c50106de11623f1188975d107029a4534bfd5acfd2;
         sec.ramberUsdcReyaLmNodeId = 0xa7feb4d88a1b9a17b11f5d24de36c942f2de2fd3a772b3a05b41f2fdfa45f770;
+
+        sec.srusdUsdcPoolNodeId = 0xc380c1273590e190bc15a196fdb2b5750abdd0eeb868cc8385dd384761e21ddb;
 
         // node ids for mark prices
         sec.ethUsdStorkMarkNodeId = 0x3f4c9f3d5efcbd98002f057a6c0acd0313aa63ab20334e611a30261b89acc1fa;
