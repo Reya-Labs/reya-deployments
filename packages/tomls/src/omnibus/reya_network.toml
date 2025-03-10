@@ -60,7 +60,7 @@ oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.7@router"
 shareTokensProxyPackage = "reya-share-tokens:1.0.0@proxy"
 shareTokensRouterPackage = "reya-share-tokens:1.0.2@router"
 sbtProxyPackage = "reya-sbt:1.0.0@proxy"
-sbtRouterPackage = "reya-sbt:1.0.0@router"
+sbtRouterPackage = "reya-sbt:1.0.1@router"
 
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
