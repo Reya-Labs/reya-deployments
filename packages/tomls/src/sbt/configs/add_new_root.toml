@@ -1,8 +1,0 @@
-[invoke.sbt_add_new_root]
-target = ["SbtProxy"]
-fromCall.func = "owner"
-func = "addNewRoot"
-args = [
-    "<%= settings.newRoot %>",
-]
-depends = ["invoke.upgrade_sbt_proxy"]
