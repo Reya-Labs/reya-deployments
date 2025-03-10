@@ -14,6 +14,7 @@ include = [
     "../orders_gateway/mainnet.toml",
     "../oracle_adapters/mainnet.toml",
     "../share_token/mainnet.toml",
+    "../sbt/mainnet.toml",
 ]
 version = "1.0.46"
 
