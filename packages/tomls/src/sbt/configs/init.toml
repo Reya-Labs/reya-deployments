@@ -3,6 +3,6 @@ target = ["SbtProxy"]
 fromCall.func = "owner"
 func = "initialize"
 args = [
-    { tokenName = "<%= settings.tokenName %>", tokenSymbol = "<%= settings.tokenSymbol %>" },
+    "<%= settings.tokenName %>", "<%= settings.tokenSymbol %>"
 ]
 depends = ["invoke.upgrade_sbt_proxy"]
