@@ -2243,8 +2243,6 @@ cp1Rusd_ramberParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_ramberParentConfig_oracleNodeId = "<%= settings.amberUsdcReyaLmNodeId %>"
 
 [var.sbt_config]
-# newRoot = 
-# badRoot = 
 tokenName = "Reya OG SBT"
 tokenSymbol = "REYAOGSBT"
 rootSubmitter = "0x3dEB6fbb801EB5400aBDFf7Cf706E79869E72D07"
