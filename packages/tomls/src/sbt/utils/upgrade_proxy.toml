@@ -10,12 +10,8 @@ target = ["<%= settings.sbtProxy %>"]
 abi = "<%= JSON.stringify(imports.reyaSbtRouter.contracts.OwnerUpgradeModule.abi) %>"
 fromCall.func = "owner"
 func = "upgradeTo"
-args = [
-    "<%= imports.reyaSbtRouter.contracts.SbtRouter.address %>",
-]
-factory.SbtProxy.abiOf = [
-    "reyaSbtRouter.SbtRouter",
-]
+args = ["<%= imports.reyaSbtRouter.contracts.SbtRouter.address %>"]
+factory.SbtProxy.abiOf = ["reyaSbtRouter.SbtRouter"]
 factory.SbtProxy.event = "Upgraded"
 factory.SbtProxy.arg = 0
 depends = ["var.upgrade_proxy_vars", "clone.reyaSbtRouter"]
