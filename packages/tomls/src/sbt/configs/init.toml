@@ -1,0 +1,8 @@
+[invoke.sbt_initialize]
+target = ["SbtProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    { tokenName = "<%= settings.tokenName %>", tokenSymbol = "<%= settings.tokenSymbol %>" },
+]
+depends = ["invoke.upgrade_sbt_proxy"]

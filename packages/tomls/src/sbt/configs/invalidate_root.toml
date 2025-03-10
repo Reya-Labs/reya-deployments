@@ -1,0 +1,8 @@
+[invoke.sbt_invalidate_root]
+target = ["SbtProxy"]
+fromCall.func = "owner"
+func = "invalidateRoot"
+args = [
+    "<%= settings.badRoot %>",
+]
+depends = ["invoke.upgrade_sbt_proxy"]

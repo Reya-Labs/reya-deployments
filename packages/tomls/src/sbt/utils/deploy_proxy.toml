@@ -1,0 +1,6 @@
+[clone.reyaSbtProxy]
+source = "<%= settings.sbtProxyPackage %>"
+target = "<%= settings.sbtProxyPackage %>"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.salt %>"
+depends = ["var.cannonClonePackages"]
