@@ -1,0 +1,21 @@
+[invoke.sbt_unpause]
+target = ["SbtProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_sbt_proxy"]
+
+[invoke.sbt_set_pausers]
+target = ["SbtProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_sbt_proxy"]
