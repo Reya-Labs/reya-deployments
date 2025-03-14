@@ -2244,5 +2244,5 @@ cp1Rusd_ramberParentConfig_oracleNodeId = "<%= settings.amberUsdcReyaLmNodeId %>
 
 [var.sbt_config]
 tokenName = "Reya OG SBT"
-tokenSymbol = "REYAOGSBT"
+tokenSymbol = "REYAOG"
 rootSubmitter = "0x3dEB6fbb801EB5400aBDFf7Cf706E79869E72D07"
