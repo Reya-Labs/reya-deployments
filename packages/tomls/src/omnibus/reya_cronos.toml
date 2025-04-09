@@ -411,7 +411,7 @@ deusdWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 sdeusdCollateralAdapter = "<%= AddressZero %>"
 sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.02"
+sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.2"
 # -------------------------------------------------------------------
 srusdCollateralAdapter = "<%= AddressZero %>"
 srusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
@@ -781,11 +781,11 @@ seliniUsdcReyaLmMaxStaleDuration = "0"
 amberUsdcReyaLmMaxStaleDuration = "0"
 
 [var.pool_1]
-pool1_quoteTokenTargetRatioUnscaled = "0.1"
+pool1_quoteTokenTargetRatioUnscaled = "0.3"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
-pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.8"
-pool1_RSELINITargetRatioPostQuoteUnscaled = "0.1"
-pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.1"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.7"
+pool1_RSELINITargetRatioPostQuoteUnscaled = "0.15"
+pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.15"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
