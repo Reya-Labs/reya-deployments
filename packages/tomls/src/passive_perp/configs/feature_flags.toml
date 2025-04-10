@@ -49,3 +49,10 @@ args = [
     false,
 ]
 depends = ["invoke.passive_perp_pause_ftm_market"]
+
+[invoke.passive_perp_fee_config]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('configureFees')) %>", "<%= settings.perpFeeConfigBot %>"]
+depends = ["invoke.upgrade_passive_perp_proxy"]

@@ -136,6 +136,12 @@ ae_liquidator2 = "0xc656647754e72c2Db056712AC40dc04Ce6681a7D"
 co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a"
 co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688"
 
+[var.fee_configuration_bots]
+perpFeeConfigBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+[var.set_main_account_id_bots]
+setMainAccountIdBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
 [var.match_order_publisher_admins]
 matchOrderPublisherAdmin1 = "<%= settings.pauser1 %>"
 matchOrderPublisherAdmin2 = "<%= settings.pauser2 %>"
@@ -413,6 +419,7 @@ ramberCollateralAdapter = "<%= AddressZero %>"
 ramberWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 ramberWithdrawalTvlPercentageLimitUnscaled = "0"
 
+# OLD
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.2"
 lotteryPotExchangeRebateUnscaled = "0.2"
@@ -549,6 +556,27 @@ market61Ip_tier200FeeUnscaled = "0.00045"
 market62Me_tier0FeeUnscaled = "0.0005"
 market62Me_tier100FeeUnscaled = "0.0001"
 market62Me_tier200FeeUnscaled = "0.00045"
+
+[var.fees_configs]
+takerFeeTier0Unscaled = "0.0005"
+makerFeeTier0Unscaled = "0.0005"
+takerFeeTier1Unscaled = "0.0005"
+makerFeeTier1Unscaled = "0.0005"
+takerFeeTier2Unscaled = "0.0005"
+makerFeeTier2Unscaled = "0.0005"
+takerFeeTier3Unscaled = "0.0005"
+makerFeeTier3Unscaled = "0.0005"
+takerFeeTier4Unscaled = "0.0005"
+makerFeeTier4Unscaled = "0.0005"
+takerFeeTier5Unscaled = "0.0005"
+makerFeeTier5Unscaled = "0.0005"
+takerFeeTier6Unscaled = "0.0001"
+makerFeeTier6Unscaled = "0.0001"
+ogDiscountUnscaled = "0.5"
+refereeDiscountUnscaled = "0.001"
+referrerRebateUnscaled = "0.001"
+affiliateReferrerRebateUnscaled = "0.001"
+
 
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
