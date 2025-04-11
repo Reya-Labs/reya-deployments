@@ -140,7 +140,7 @@ co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688"
 perpFeeConfigBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.set_main_account_id_bots]
-setMainAccountIdBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+setMainAccountIdBot = "0x286119f5cc1f99c9819cb8a7fb22eb49ca22c878"
 
 [var.match_order_publisher_admins]
 matchOrderPublisherAdmin1 = "<%= settings.pauser1 %>"
