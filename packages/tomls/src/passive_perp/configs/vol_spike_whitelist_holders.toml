@@ -1,0 +1,69 @@
+[invoke.set_account_owner_volatility_whitelist_status_1]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAccountOwnerVolatilityWhitelistStatus"
+args = ["<%= settings.institution1 %>", true]
+depends = [
+    "invoke.upgrade_passive_perp_proxy",
+    "invoke.passive_perp_fee_config_system_owner",
+]
+
+[invoke.set_account_owner_volatility_whitelist_status_2]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAccountOwnerVolatilityWhitelistStatus"
+args = ["<%= settings.institution2 %>", true]
+depends = [
+    "invoke.upgrade_passive_perp_proxy",
+    "invoke.passive_perp_fee_config_system_owner",
+]
+
+[invoke.set_account_owner_volatility_whitelist_status_3]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAccountOwnerVolatilityWhitelistStatus"
+args = ["<%= settings.institution3 %>", true]
+depends = [
+    "invoke.upgrade_passive_perp_proxy",
+    "invoke.passive_perp_fee_config_system_owner",
+]
+
+[invoke.set_account_owner_volatility_whitelist_status_4]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAccountOwnerVolatilityWhitelistStatus"
+args = ["<%= settings.institution4 %>", true]
+depends = [
+    "invoke.upgrade_passive_perp_proxy",
+    "invoke.passive_perp_fee_config_system_owner",
+]
+
+[invoke.set_account_owner_volatility_whitelist_status_5]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAccountOwnerVolatilityWhitelistStatus"
+args = ["<%= settings.institution5 %>", true]
+depends = [
+    "invoke.upgrade_passive_perp_proxy",
+    "invoke.passive_perp_fee_config_system_owner",
+]
+
+[invoke.set_account_owner_volatility_whitelist_status_6]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAccountOwnerVolatilityWhitelistStatus"
+args = ["<%= settings.institution6 %>", true]
+depends = [
+    "invoke.upgrade_passive_perp_proxy",
+    "invoke.passive_perp_fee_config_system_owner",
+]
+
+[invoke.set_account_owner_volatility_whitelist_status_7]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAccountOwnerVolatilityWhitelistStatus"
+args = ["<%= settings.institution7 %>", true]
+depends = [
+    "invoke.upgrade_passive_perp_proxy",
+    "invoke.passive_perp_fee_config_system_owner",
+]

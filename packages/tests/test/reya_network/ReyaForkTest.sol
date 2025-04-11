@@ -6,6 +6,7 @@ import { StorageReyaForkTest } from "../reya_common/StorageReyaForkTest.sol";
 import "../reya_common/DataTypes.sol";
 
 import { ICoreProxy } from "../../src/interfaces/ICoreProxy.sol";
+import { IOracleManagerProxy } from "../../src/interfaces/IOracleManagerProxy.sol";
 
 contract ReyaForkTest is StorageReyaForkTest {
     constructor() {
@@ -72,213 +73,491 @@ contract ReyaForkTest is StorageReyaForkTest {
         // node ids for spot prices
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
         sec.usdcUsdStorkNodeId = 0xc392c001dcf7749e4cdb7967e7ecac04628dea34555b1963bab626b9ef79d63f;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.rusdUsdNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.usdcUsdStorkNodeId, 10_000);
 
         sec.ethUsdStorkNodeId = 0xf7f69911b541015e987116388896c1b92743e0d07b7fbe4f247b441f132359e7;
         sec.ethUsdcStorkNodeId = 0x5b964bee06e9f94df6484d38dea687e67ec10326208bec16f89dfdb6cd95c6fc;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ethUsdStorkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ethUsdcStorkNodeId, 10_000);
 
         sec.usdeUsdStorkNodeId = 0xd9769cc38a8c1db7761cbb398785c85a4db42608b8ff2273b4146ccd73178851;
         sec.usdeUsdcStorkNodeId = 0xa17767ed077b64b1099fe31491143f856b9ebf5249c9fe23dab93b21a1689663;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.usdeUsdStorkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.usdeUsdcStorkNodeId, 10_000);
 
         sec.susdeUsdStorkNodeId = 0x5176edbcbb7126ba8fe024a930aaa5a88bfd8a5f0de4c823e19f439d5f6c5c59;
         sec.susdeUsdcStorkNodeId = 0x4886cf0e120ecc44a7218921cfdf8f5dc2ff36d70ecc6f2857031e572dad65e7;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.susdeUsdStorkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.susdeUsdcStorkNodeId, 10_000);
 
         sec.deusdUsdStorkNodeId = 0x8c8bdfa29a872e123ad1d84f4484ba7a66d901ef61b8d28e536e27c754f110a0;
         sec.deusdUsdcStorkNodeId = 0x82bb2b688e2f358bedf3718b141b7d7bbdac7a51d6347b46ee776bc2b444adee;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.deusdUsdStorkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.deusdUsdcStorkNodeId, 10_000);
 
         sec.sdeusdDeusdStorkNodeId = 0xa772de4b37974a3283055e04cd7eae5fc8bd330b44adb1aee9c1568cb7d37a03;
         sec.sdeusdUsdcStorkNodeId = 0xc938a9d958707db169635f9c5a82dd2bb3d0e635f92a75b4dd177dd514e034f0;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.sdeusdDeusdStorkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.sdeusdUsdcStorkNodeId, 10_000);
 
         sec.rseliniUsdcReyaLmNodeId = 0x32cbf6a5839965f0e6439db08f6e9ec0250c2bc6af874f153616ed8d66dd139e;
         sec.ramberUsdcReyaLmNodeId = 0x42daefd962c3b559d6e382fcbc0e89e3fb7d87e836025141066e2f1f02fd5e99;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.rseliniUsdcReyaLmNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ramberUsdcReyaLmNodeId, 10_000);
 
         sec.srusdUsdcPoolNodeId = 0x70eeca40201e6ed672753a3458b44e9a22e35bcf08498f5e5620e08047a7ddac;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.srusdUsdcPoolNodeId, 10_000);
 
         // node ids for mark prices
         sec.ethUsdStorkMarkNodeId = 0xb9c41e6e69999c8e40c3a5646db91377fe753b3e16144822c73ea760809cf766;
         sec.ethUsdcStorkMarkNodeId = 0x40439e329b13b4833aa09aa740bc44550b3c76f5c06bd46adc6e9647866c5709;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ethUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ethUsdcStorkMarkNodeId, 10_000);
 
         sec.btcUsdStorkMarkNodeId = 0xde139306051d73ac179d72c46ed0cd170073bbabe92a1efcea4d22236caed093;
         sec.btcUsdcStorkMarkNodeId = 0x0e29c9f656c1f2d92fb02d44fa9fcfc10601f19221cd988621560cdd88b3d151;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.btcUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.btcUsdcStorkMarkNodeId, 10_000);
 
         sec.solUsdStorkMarkNodeId = 0xfad4f2a6975b49ea023ca26d330982419a35465cbcf0d1e682f85376144aa43f;
         sec.solUsdcStorkMarkNodeId = 0x820a6b1245d59d02b24c182e63493f0713132c94988ad79567171863e7f9075f;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.solUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.solUsdcStorkMarkNodeId, 10_000);
 
         sec.arbUsdStorkMarkNodeId = 0xfc9c60fdc7d40695170b19f9271cda3ad52a157da3b45e18ccfafef198163187;
         sec.arbUsdcStorkMarkNodeId = 0xae5d0087b162322862cff9b6e23e12741f3622d8ac9ca985c8a4d6d4273318c9;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.arbUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.arbUsdcStorkMarkNodeId, 10_000);
 
         sec.opUsdStorkMarkNodeId = 0x15a1eaacb4f12717419b3cbe59a93cfca931906a24c1623ab0c4b50c1cf999d7;
         sec.opUsdcStorkMarkNodeId = 0xb544ba41664d16424513d1bc8c766a2733d506ce8302cec2864cce6a382dee7a;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.opUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.opUsdcStorkMarkNodeId, 10_000);
 
         sec.avaxUsdStorkMarkNodeId = 0xa4c0b1e4997123278c08e6c6d9c3ca436d64210c50ed91e3720624dfaf571561;
         sec.avaxUsdcStorkMarkNodeId = 0x84abcc151068e87abbdbedbff58cc5370cec0bf2368d3a3d9bde618594527b81;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.avaxUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.avaxUsdcStorkMarkNodeId, 10_000);
 
         sec.mkrUsdStorkMarkNodeId = 0xc753d4b14c94f35f735f1e6e30a62da94002ec46476e72fa535e5d8794aa1dca;
         sec.mkrUsdcStorkMarkNodeId = 0xeba87760f9cb5f50279ee91edc07a7cfeba3e95b3d7340414fd297f7992ba59b;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.mkrUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.mkrUsdcStorkMarkNodeId, 10_000);
 
         sec.linkUsdStorkMarkNodeId = 0x25136e48d9f8d70bd6bd230dded71c7591e1126012ed091ac3cf9c510ab5df60;
         sec.linkUsdcStorkMarkNodeId = 0xcca24f25e88cbcad721d42193404543b68cbdfbe123fc4f2e56decd2a68dee03;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.linkUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.linkUsdcStorkMarkNodeId, 10_000);
 
         sec.aaveUsdStorkMarkNodeId = 0x49b99ce5c7b69b53b7b526813c5f108c362bf5747fc980237e56e48a17f86224;
         sec.aaveUsdcStorkMarkNodeId = 0x384da5d8311ec136f6f82b8dfe36574394b1a7245771cbcfdf6aa411267cb96f;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.aaveUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.aaveUsdcStorkMarkNodeId, 10_000);
 
         sec.crvUsdStorkMarkNodeId = 0x2148a5686b179075a292bb965e6d919daa72fefed36320dc4713c7cdd60a6859;
         sec.crvUsdcStorkMarkNodeId = 0xf9084234a98e60f273c02d4ae7016519c4023ea465ccafad88fac94347b0ec35;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.crvUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.crvUsdcStorkMarkNodeId, 10_000);
 
         sec.uniUsdStorkMarkNodeId = 0x9dfccb2a42862c7f15df103018135c7dd725bde418de4aac5f240fac54a5a4ff;
         sec.uniUsdcStorkMarkNodeId = 0x71a2b4ab9766edca50373e43e54dcea91b2a43ebfe390c098b2a76ac75da8d64;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.uniUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.uniUsdcStorkMarkNodeId, 10_000);
 
         sec.suiUsdStorkMarkNodeId = 0xf008eaaa3e0402509ad4f3b1af50fbfa22fe0e93323494fe7861a67e5159c265;
         sec.suiUsdcStorkMarkNodeId = 0xd57d83e60236d812f95332675d5d7e798e5a929f4d911e23106657cc3acc8134;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.suiUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.suiUsdcStorkMarkNodeId, 10_000);
 
         sec.tiaUsdStorkMarkNodeId = 0xe3fb180343cdca5707cacfffff9ace4db609878670c00675fd75c08c61d61bfe;
         sec.tiaUsdcStorkMarkNodeId = 0xdae91df586e27be52fc11de817a577e19a1036ada4c3cfabb21457facd5cd5ec;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.tiaUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.tiaUsdcStorkMarkNodeId, 10_000);
 
         sec.seiUsdStorkMarkNodeId = 0x7d03e204b44462c2ba2664da04758c97941a8f90c98ddf217b71d00a88ba4c8b;
         sec.seiUsdcStorkMarkNodeId = 0x1150ce3e07d736c3f89a938e353a243d5b3779810823b730fcbb0bee5e274b15;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.seiUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.seiUsdcStorkMarkNodeId, 10_000);
 
         sec.zroUsdStorkMarkNodeId = 0x6602399812239046b927daa60cb212821193dcc372b6475a632188478639ac42;
         sec.zroUsdcStorkMarkNodeId = 0xb07dd2e530437506816bae10c8141d5033148ff94d44805cbe8fc501f51e6767;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.zroUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.zroUsdcStorkMarkNodeId, 10_000);
 
         sec.xrpUsdStorkMarkNodeId = 0x5ebae03e4fd611ef8093edb13ef47db09ab5b809b5420f032b7997b52ed3b72b;
         sec.xrpUsdcStorkMarkNodeId = 0x7d2cb40ff0c73da1c2cfd83d1f41715f95cf992d86bee60f14a045fe79c0462b;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.xrpUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.xrpUsdcStorkMarkNodeId, 10_000);
 
         sec.wifUsdStorkMarkNodeId = 0x922f80ca37a71468baa1659e4115e3f90ff2d64de604be51481e428aa3ee46a1;
         sec.wifUsdcStorkMarkNodeId = 0xa3ccfcee43c19cec007b006a66d1b366d21d099407a37d40af3c4f6856ee91b0;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wifUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wifUsdcStorkMarkNodeId, 10_000);
 
         sec.pepe1kUsdStorkMarkNodeId = 0x4a26454f03accc21ea55b84af70ae6e341f9db157f1640d60c95d3386f4af971;
         sec.pepe1kUsdcStorkMarkNodeId = 0xf9e4583c01139e4ac5b097da69a188c34a180f1dd34ce05d01cc740569492604;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.pepe1kUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.pepe1kUsdcStorkMarkNodeId, 10_000);
 
         sec.popcatUsdStorkMarkNodeId = 0x74d1cab0aaff7789f646c2550821dd5f69ea7c7f1a34156030536b8feb157603;
         sec.popcatUsdcStorkMarkNodeId = 0x877f87f0e83878498c00ce65d884d59cc64cf428b2c6282c60f5b3be8ef43846;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.popcatUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.popcatUsdcStorkMarkNodeId, 10_000);
 
         sec.dogeUsdStorkMarkNodeId = 0x62af2e85b91624b749eac4dc6fb0097068620e1f863a8e4e9d8790b99b989349;
         sec.dogeUsdcStorkMarkNodeId = 0x82fbad667884fb2e7696771e28b21b9becca3b00c6015708dd061eadbad527d2;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.dogeUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.dogeUsdcStorkMarkNodeId, 10_000);
 
         sec.kshibUsdStorkMarkNodeId = 0xc5233c69c0c0776f586556eb59f7e8585160a9d2ca0c7c890dea06914d981f15;
         sec.kshibUsdcStorkMarkNodeId = 0xdcd17b3db84c05f0579f84ff7e9390c4e27b02d9aa9be9ba3c02e1c08ac9345e;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.kshibUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.kshibUsdcStorkMarkNodeId, 10_000);
 
         sec.kbonkUsdStorkMarkNodeId = 0x4d22904b2194dcda3678655c03e7864bc139d1e72c8fe0d97d5cbbd366878e6d;
         sec.kbonkUsdcStorkMarkNodeId = 0xb7082b990c3aaf729ee79d955dda71b9477acc2886f69ab83ff5c03ee8515c31;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.kbonkUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.kbonkUsdcStorkMarkNodeId, 10_000);
 
         sec.aptUsdStorkMarkNodeId = 0x721791481417b236a89638a46e382cb92537af627b03d6889479d97a5a19d6d5;
         sec.aptUsdcStorkMarkNodeId = 0xff18e68f091641f547f4a83233d46f5f281aa75dcf7f86fe3c97b3c28ec959f0;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.aptUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.aptUsdcStorkMarkNodeId, 10_000);
 
         sec.bnbUsdStorkMarkNodeId = 0x9b33ca1b45555a913d05802d7049feb065c764e4bdb4ceaf1c9b99cf79a26d03;
         sec.bnbUsdcStorkMarkNodeId = 0x3e9c633aca82b237b167f5d8cc1e19d7b171f9dc786537e45b632d82d451ca6b;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.bnbUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.bnbUsdcStorkMarkNodeId, 10_000);
 
         sec.jtoUsdStorkMarkNodeId = 0x32a54d4f182c9c66fe9eb41ae9183ee32a528e7a23017a03d1c0eea7960a8258;
         sec.jtoUsdcStorkMarkNodeId = 0xc345cd85d636fb32f3faf336bef0d466d11a070e8fa84b6aa0a9b9ee4ff7aa0a;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.jtoUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.jtoUsdcStorkMarkNodeId, 10_000);
 
         sec.adaUsdStorkMarkNodeId = 0xf7d389c2344e4d30781f210071c3c13790aad268b969ab39fb86456cc979ecf0;
         sec.adaUsdcStorkMarkNodeId = 0xf0278ee390acbd3027eb50fbee07457257b55ab73083df390cc4768be43fc94d;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.adaUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.adaUsdcStorkMarkNodeId, 10_000);
 
         sec.ldoUsdStorkMarkNodeId = 0xc74d6ea960ef9615a436a880127dad288a043af043bcbcae6188736563658537;
         sec.ldoUsdcStorkMarkNodeId = 0x8ee41dbcf20673253d0f3a6d30acb60294d2973125b65ed79e1467a62ec035df;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ldoUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ldoUsdcStorkMarkNodeId, 10_000);
 
         sec.polUsdStorkMarkNodeId = 0x43087a65b16a825d10912d4ef0a56eaac2242dfb3158cf0321f3b35fc0c7f61a;
         sec.polUsdcStorkMarkNodeId = 0xfc1124aeb7b1a71720e58f1b87e99b733d0f177cf28fcf3ed1580aa6c1b13c90;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.polUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.polUsdcStorkMarkNodeId, 10_000);
 
         sec.nearUsdStorkMarkNodeId = 0x1cbed930dc4d277758237164b2f9c625b5d733bdd16b77268111b16b7b426fea;
         sec.nearUsdcStorkMarkNodeId = 0xdbd8543af7cc96fac35926c15ef5f13f89bc873721211493e112d4bc4f275cd2;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.nearUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.nearUsdcStorkMarkNodeId, 10_000);
 
         sec.ftmUsdStorkNodeId = 0x121a33532e703bfaa003a784b1f69bea1737c686136b15ab4eda8ec6a9142e1a;
         sec.ftmUsdcStorkNodeId = 0xdadaa29fe1e6f8959640a9222b3a7c6a0099bd778da90da5167d986f75b69a59;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ftmUsdStorkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ftmUsdcStorkNodeId, 10_000);
 
         sec.enaUsdStorkMarkNodeId = 0x4d06d4eaa2f04e517035af06b005157b38f2999e0e46510ef5d744d151111703;
         sec.enaUsdcStorkMarkNodeId = 0xe19227f2d63cb74d087e1679dce6a66d9ae137d83ded1d2d294c41fdd38f5912;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.enaUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.enaUsdcStorkMarkNodeId, 10_000);
 
         sec.eigenUsdStorkMarkNodeId = 0xaa8008f4443d8eb90fe63a6a3d90089d97195640eba8b60981be1d506221e86b;
         sec.eigenUsdcStorkMarkNodeId = 0x345d048d424bd2c4b3559601b73afd8e837f65196bd51b989781ae55e76f8c23;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.eigenUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.eigenUsdcStorkMarkNodeId, 10_000);
 
         sec.pendleUsdStorkMarkNodeId = 0xd37aa03141faf5205c7481cb853b7ef950483f8bdedfdb5a273a150427a3aef6;
         sec.pendleUsdcStorkMarkNodeId = 0x698c2bb8d74cf2c350cc8c1724bf14650cd7a7164d660e30da08c1cbd638dfb0;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.pendleUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.pendleUsdcStorkMarkNodeId, 10_000);
 
         sec.goatUsdStorkMarkNodeId = 0x7c9bba0499998bfc2c1f2a21eb5b8ee7dc5a865eaf4e6dff36fe6e987ffa279e;
         sec.goatUsdcStorkMarkNodeId = 0xad4473e51e15cde6fabacd8992f87f363d0a56b67260d55f20f42608b8c0e061;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.goatUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.goatUsdcStorkMarkNodeId, 10_000);
 
         sec.grassUsdStorkMarkNodeId = 0x79961b55ec036ab08cd00fc633f2e77d60cb67238e7694eaa16308b564341661;
         sec.grassUsdcStorkMarkNodeId = 0x3b63f7ee280b405050690d30fd3efeaa6ecfa6ba4b09b2f3ac7bb586a348a34b;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.grassUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.grassUsdcStorkMarkNodeId, 10_000);
 
         sec.kneiroUsdStorkMarkNodeId = 0x33a1175eff91f9d43b12a871a08186c5aa856506e9342b7cb8e51a948809076e;
         sec.kneiroUsdcStorkMarkNodeId = 0x20c07861bda3900f5ef4b9bdf206f2bc884dc592ef99fe3d75b604d2036c26d3;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.kneiroUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.kneiroUsdcStorkMarkNodeId, 10_000);
 
         sec.dotUsdStorkMarkNodeId = 0x489685d39110a930c5fa215e74e85b15151cad2d6da337b09ffead44dd5b7bba;
         sec.dotUsdcStorkMarkNodeId = 0x5099b862da19a97b29ea4ff3f243b52b1ea35f705a76bc4f5bd54e25006d2b12;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.dotUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.dotUsdcStorkMarkNodeId, 10_000);
 
         sec.ltcUsdStorkMarkNodeId = 0x611972e93ef84a3f07ad07ca26a2478d1c1bca55dc2543e3a7c285a0bcc51d8b;
         sec.ltcUsdcStorkMarkNodeId = 0x490da6b2048301e76697bf5b0d80d21ad8e2c2347e99fc1fb047b43288c547b3;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ltcUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ltcUsdcStorkMarkNodeId, 10_000);
 
         sec.pythUsdStorkMarkNodeId = 0x918270943e6a3b5e039d4bf00b36e05db55fcde5a4621d1b9a5b3036bb0e9bb9;
         sec.pythUsdcStorkMarkNodeId = 0x73f9cb8b7623659f3a9582e4d1a259e77344dc67d2142b2730de0e083c2e6f90;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.pythUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.pythUsdcStorkMarkNodeId, 10_000);
 
         sec.jupUsdStorkMarkNodeId = 0xfadcd2361bc98edbf20b9b1f78f22f5fb1df037dfa1347e0d58d018c0682915a;
         sec.jupUsdcStorkMarkNodeId = 0x1f434db51fab16e77a195d9bdc8846542d08e88025d4e7871b07046387bae466;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.jupUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.jupUsdcStorkMarkNodeId, 10_000);
 
         sec.penguUsdStorkMarkNodeId = 0xafb171b1f46d22bf1d53c343d923a371cf57effc18a23d79d09a4a2e5279f407;
         sec.penguUsdcStorkMarkNodeId = 0x6321236542711f17aa8ce3c055f7d2ccdb4b755c0eff0a1a31688fa1deaceaca;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.penguUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.penguUsdcStorkMarkNodeId, 10_000);
 
         sec.trumpUsdStorkMarkNodeId = 0x6095728f805c90386c21a61c37151752a0e8d2a4866e0fe6b4950d505b4a8538;
         sec.trumpUsdcStorkMarkNodeId = 0x651c42a2429609c6a02c1d7e99330f3c7ac8b81a31720d0a5c3937ac32261773;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.trumpUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.trumpUsdcStorkMarkNodeId, 10_000);
 
         sec.hypeUsdStorkMarkNodeId = 0xbaadee4b6755421f71b1eaa62ea45b59bba58fb766539b739c4711e6359c8b67;
         sec.hypeUsdcStorkMarkNodeId = 0xc576e5872e616b1b6d5784449f32e5af0df4ad1a403071af37baba053a5b3479;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.hypeUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.hypeUsdcStorkMarkNodeId, 10_000);
 
         sec.virtualUsdStorkMarkNodeId = 0x0b3254583f14da262359768068595971bc4a326acbac8f05b3bcec53f7fcc603;
         sec.virtualUsdcStorkMarkNodeId = 0x978f9a53112646ebb1344bed5eeb363eadb1fb907864832da126aa6dfca349a6;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.virtualUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.virtualUsdcStorkMarkNodeId, 10_000);
 
         sec.ai16zUsdStorkMarkNodeId = 0x8e98645bff30736409a1b816987bb7929d267bb5416bec04558f6fb724516244;
         sec.ai16zUsdcStorkMarkNodeId = 0xdec3427a0f3773074ae2cad7f77cf9bf54b96c8ed8a6c595f2a852840171eec0;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ai16zUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ai16zUsdcStorkMarkNodeId, 10_000);
 
         sec.aixbtUsdStorkMarkNodeId = 0x63d2a9f3409e87400c48928f9ab753ae007bfdaec861dcc89a34db935afb993b;
         sec.aixbtUsdcStorkMarkNodeId = 0xd270b9614f0e722b0941c8e309a8cc7e41391671c2e24702f50b47952eb27f78;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.aixbtUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.aixbtUsdcStorkMarkNodeId, 10_000);
 
         sec.sonicUsdStorkMarkNodeId = 0x5f0bfc7f1a7f24893e97be81242fc6ea9d24a1145b6fe26190ff79032f844cdf;
         sec.sonicUsdcStorkMarkNodeId = 0xba08544b817c8840bbd65560e0e856fc2de0f14de2c6fd0c0be68b5612bbb579;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.sonicUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.sonicUsdcStorkMarkNodeId, 10_000);
 
         sec.fartcoinUsdStorkMarkNodeId = 0x4711aa5e3bfbea19e597d3f6be67bb92dbbc2902ea485021eeb7752f35198730;
         sec.fartcoinUsdcStorkMarkNodeId = 0x99117cf6e8a768582ea5df10a2152e1613bb8eb4fbb5bf777cb8d9aa7c57d89f;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.fartcoinUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.fartcoinUsdcStorkMarkNodeId, 10_000);
 
         sec.griffainUsdStorkMarkNodeId = 0xe4469920fd7f3a76db1f84237a70fe131dad1f795a177d0cf417bcc00f6a1eee;
         sec.griffainUsdcStorkMarkNodeId = 0x20136f006a8e47c9f43e8d3362e22c2bc28396e0980a8870049d0d37778a03bd;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.griffainUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.griffainUsdcStorkMarkNodeId, 10_000);
 
         sec.wldUsdStorkMarkNodeId = 0xbc4a40bc3f3bc739736446801b49b16017419d32c51be2e9ae9b71346648d538;
         sec.wldUsdcStorkMarkNodeId = 0xca95fec2fb2ac6c2c99dbe209620a67973608ba5e1adc1a8fcbe7f339b576081;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wldUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wldUsdcStorkMarkNodeId, 10_000);
 
         sec.atomUsdStorkMarkNodeId = 0x27612d1d82b62dc14f0f65c27a800aba0df4f4497fee9f97e7ccf7e65b45b4bf;
         sec.atomUsdcStorkMarkNodeId = 0x743cf34170848af6d3e284cd3493821340fd9f57a2267015712880a0c3836519;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.atomUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.atomUsdcStorkMarkNodeId, 10_000);
 
         sec.apeUsdStorkMarkNodeId = 0xb4bf4e85e81a0975ef9b54d1baa3e939c5496776188d36abe0ff95049f551a8c;
         sec.apeUsdcStorkMarkNodeId = 0x56a34877fa74ad093273a29f1a861845473580739b6a3789dce0cacb31f7c75e;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.apeUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.apeUsdcStorkMarkNodeId, 10_000);
 
         sec.tonUsdStorkMarkNodeId = 0x81c6008219c52b16c7bba0934f3d3c6509a17a6c68502c0401dfec882f257f53;
         sec.tonUsdcStorkMarkNodeId = 0x0f33deaa70cde4fe4f722678305dd5f65b2d27565cfccadc867e894d620480c0;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.tonUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.tonUsdcStorkMarkNodeId, 10_000);
 
         sec.ondoUsdStorkMarkNodeId = 0x6d5f6de977b5905e6b8411cf51648bcd8c23481218b947451aad31a29825d1e6;
         sec.ondoUsdcStorkMarkNodeId = 0xfe7baf562adeaef4ebfb04a6ed1ee599f7a4a939afb87adfc7d8295556ec5253;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ondoUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ondoUsdcStorkMarkNodeId, 10_000);
 
         sec.trxUsdStorkMarkNodeId = 0xf9b6b7be713c9dafef906de707436d99fb4629039fafa9f9303d57814e7809fb;
         sec.trxUsdcStorkMarkNodeId = 0x2e58649840517ed71c07c34bd2d362117686862a2038915d696698780c373fe6;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.trxUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.trxUsdcStorkMarkNodeId, 10_000);
 
         sec.injUsdStorkMarkNodeId = 0x5c5168c58833f894a877a11290b4f30611761fe16078fbf8506e40a8ce3a9fed;
         sec.injUsdcStorkMarkNodeId = 0x0ffac0939debabb4b95ac3690fb11f18ec895ef3714348f6e6fa31fd2384870e;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.injUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.injUsdcStorkMarkNodeId, 10_000);
 
         sec.moveUsdStorkMarkNodeId = 0xc8a0c66533e534ba674eeb88be2419ed729c1f7486040e040121fea6c4776207;
         sec.moveUsdcStorkMarkNodeId = 0x41eedd0c7e99062ddc6b2236d832421f93bedb1a1c0a199d60d36a910505835a;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.moveUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.moveUsdcStorkMarkNodeId, 10_000);
 
         sec.beraUsdStorkMarkNodeId = 0x4062c06c9e7bbacfaaa64122dac852bf681e060ba1f270d7ae6d37b1fd9e8e83;
         sec.beraUsdcStorkMarkNodeId = 0x5e066410873633e2144d5d84f6103598c1fd58d8481c4b3f8ee27278613a100c;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.beraUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.beraUsdcStorkMarkNodeId, 10_000);
 
         sec.layerUsdStorkMarkNodeId = 0x2f73df82f135e40f91791306aed8e1ede704c034409a72aa92271c97ac2468be;
         sec.layerUsdcStorkMarkNodeId = 0x7e8c35128fcb04b662843e6db2359f97cca981fbe54f1f8a4b660d4b4fa93f6e;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.layerUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.layerUsdcStorkMarkNodeId, 10_000);
 
         sec.taoUsdStorkMarkNodeId = 0x311f98e0cbea124c7add927d760065acb846191e789f5adca7f336276681591f;
         sec.taoUsdcStorkMarkNodeId = 0x20ea080fd3e412b5866026e74975a51278ec526ddef595d29d332086c617fac0;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.taoUsdStorkMarkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.taoUsdcStorkMarkNodeId, 10_000);
 
         sec.ipUsdMarkNodeIdStork = 0x31a9c7ff27a8fe628657d3df8f65a095f07001a000cc24b144a31c41404ac214;
         sec.ipUsdcMarkNodeIdStork = 0xc6e576793b02473ea40dab35b5f23bbfe4dc56159940f5f6139f0e4e3822f8b3;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ipUsdMarkNodeIdStork, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ipUsdcMarkNodeIdStork, 10_000);
 
         sec.meUsdMarkNodeIdStork = 0xb63ceab97734e1c0e1753d7159b2b73f4fb9c575dbd9e679edc118b6249316a8;
         sec.meUsdcMarkNodeIdStork = 0x005ba8cf801945fe393812fff754d399e4718538bd78f83d490201a5eef466eb;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.meUsdMarkNodeIdStork, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.meUsdcMarkNodeIdStork, 10_000);
 
         // Socket variables
         dec.socketController[sec.usdc] = 0x1d43076909Ca139BFaC4EbB7194518bE3638fc76;

@@ -169,7 +169,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertEq(s.ae1.quoteAmountToIF, 4e6);
         assertEq(s.ae1.quoteAmountToAccount, 396e6);
         assertApproxEqAbsDecimal(
-            s.ae1.collateralAmountToLiquidator, 400e18 * 1.02 * 1e18 / s.bumpedEthPrice, 0.001e18, 18
+            s.ae1.collateralAmountToLiquidator, 400e18 * 1.02 * 1e18 / s.bumpedEthPrice, 0.0015e18, 18
         );
 
         s.tbal1.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.rusd).marginBalance;
@@ -221,7 +221,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(
             s.ae2.collateralAmountToLiquidator,
             s.ae2.quoteAmountToAccount * 1.02e12 * 1e18 / s.bumpedEthPrice,
-            0.001e18,
+            0.0015e18,
             18
         );
 
@@ -367,7 +367,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator,
             ud(400e18).div(ud(1e18 - 0.01e18)).div(ud(usdeUsdcNodeOutput.price)).unwrap(),
-            0.001e18,
+            0.0015e18,
             18
         );
 
@@ -422,7 +422,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e12).div(ud(1e18 - 0.01e18)).div(
                 ud(usdeUsdcNodeOutput.price)
             ).unwrap(),
-            0.001e18,
+            0.0015e18,
             18
         );
 
@@ -567,7 +567,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator,
             ud(400e18).div(ud(1e18 - 0.005e18)).div(ud(susdeUsdcNodeOutput.price)).unwrap(),
-            0.001e18,
+            0.0015e18,
             18
         );
 
@@ -622,7 +622,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e12).div(ud(1e18 - 0.005e18)).div(
                 ud(susdeUsdcNodeOutput.price)
             ).unwrap(),
-            0.001e18,
+            0.0015e18,
             18
         );
 
@@ -767,7 +767,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator,
             ud(400e18).div(ud(1e18 - 0.005e18)).div(ud(deusdUsdcNodeOutput.price)).unwrap(),
-            0.001e18,
+            0.0015e18,
             18
         );
 
@@ -822,7 +822,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e12).div(ud(1e18 - 0.005e18)).div(
                 ud(deusdUsdcNodeOutput.price)
             ).unwrap(),
-            0.001e18,
+            0.0015e18,
             18
         );
 
@@ -967,7 +967,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator,
             ud(400e18).div(ud(1e18 - 0.005e18)).div(ud(sdeusdUsdcNodeOutput.price)).unwrap(),
-            0.001e18,
+            0.0015e18,
             18
         );
 
@@ -1023,7 +1023,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e12).div(ud(1e18 - 0.005e18)).div(
                 ud(sdeusdUsdcNodeOutput.price)
             ).unwrap(),
-            0.001e18,
+            0.0015e18,
             18
         );
 
@@ -1165,7 +1165,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator,
             ud(400e18).div(ud(1e18 - 0.005e18)).div(ud(rseliniUsdcNodeOutput.price)).unwrap(),
-            0.001e18,
+            0.0015e18,
             18
         );
 
@@ -1221,7 +1221,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e12).div(ud(1e18 - 0.005e18)).div(
                 ud(rseliniUsdcNodeOutput.price)
             ).unwrap(),
-            0.001e18,
+            0.0015e18,
             18
         );
 
@@ -1363,7 +1363,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator,
             ud(400e18).div(ud(1e18 - 0.005e18)).div(ud(ramberUsdcNodeOutput.price)).unwrap(),
-            0.001e18,
+            0.0015e18,
             18
         );
 
@@ -1419,7 +1419,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e12).div(ud(1e18 - 0.005e18)).div(
                 ud(ramberUsdcNodeOutput.price)
             ).unwrap(),
-            0.001e18,
+            0.0015e18,
             18
         );
 

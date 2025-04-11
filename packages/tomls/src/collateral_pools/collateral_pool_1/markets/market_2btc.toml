@@ -123,20 +123,6 @@ depends = ["invoke.create_market_2btc"]
 # ]
 
 ##################################################
-# Market Tier Fees
-##################################################
-[invoke.market_2btc_set_tier0_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market2BtcId %>",
-    "0",
-    "<%= parseEther(settings.market2Btc_tier0FeeUnscaled) %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_2btc"]
-
-##################################################
 # Merge Market's Collateral Pool 
 ##################################################
 [invoke.market_2btc_merge_collateral_pool]

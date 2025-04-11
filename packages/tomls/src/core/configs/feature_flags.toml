@@ -191,3 +191,13 @@ fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
 args = ["<%= keccak256(hexlify('stakePool')) %>", true]
 depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_set_main_account_id_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('ownerMainAccountId')) %>",
+    "<%= settings.setMainAccountIdBot %>",
+]
+depends = ["invoke.upgrade_core_proxy"]

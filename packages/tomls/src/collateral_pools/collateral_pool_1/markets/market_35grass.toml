@@ -123,42 +123,6 @@ depends = [
 ]
 
 ##################################################
-# Market Tier Fees
-##################################################
-[invoke.market_35grass_set_tier0_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market35GrassId %>",
-    "0",
-    "<%= parseEther(settings.market35Grass_tier0FeeUnscaled) %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_35grass"]
-
-[invoke.market_35grass_set_tier100_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market35GrassId %>",
-    "100",
-    "<%= parseEther(settings.market35Grass_tier100FeeUnscaled) %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_35grass"]
-
-[invoke.market_35grass_set_tier200_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market35GrassId %>",
-    "200",
-    "<%= parseEther(settings.market35Grass_tier200FeeUnscaled) %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_35grass"]
-
-##################################################
 # Merge Market's Collateral Pool 
 ##################################################
 [invoke.market_35grass_merge_collateral_pool]
