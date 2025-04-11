@@ -84,8 +84,5 @@ depends = ["invoke.upgrade_passive_perp_proxy"]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('configureFees')) %>",
-    "<%= settings.owner %>",
-]
+args = ["<%= keccak256(hexlify('configureFees')) %>", "<%= settings.owner %>"]
 depends = ["invoke.upgrade_passive_perp_proxy"]
