@@ -123,20 +123,6 @@ depends = ["invoke.create_market_6avax"]
 # ]
 
 ##################################################
-# Market Tier Fees
-##################################################
-[invoke.market_6avax_set_tier0_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market6AvaxId %>",
-    "0",
-    "<%= parseEther(settings.market6Avax_tier0FeeUnscaled) %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_6avax"]
-
-##################################################
 # Merge Market's Collateral Pool 
 ##################################################
 [invoke.market_6avax_merge_collateral_pool]

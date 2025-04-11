@@ -123,20 +123,6 @@ depends = [
 ]
 
 ##################################################
-# Market Tier Fees
-##################################################
-[invoke.market_10crv_set_tier0_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market10CrvId %>",
-    "0",
-    "<%= parseEther(settings.market10Crv_tier0FeeUnscaled) %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_10crv"]
-
-##################################################
 # Merge Market's Collateral Pool 
 ##################################################
 [invoke.market_10crv_merge_collateral_pool]

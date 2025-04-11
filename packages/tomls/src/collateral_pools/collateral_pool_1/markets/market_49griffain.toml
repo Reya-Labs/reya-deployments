@@ -123,51 +123,6 @@ depends = [
 ]
 
 ##################################################
-# Market Tier Fees
-##################################################
-[invoke.market_49griffain_set_tier0_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market49GriffainId %>",
-    "0",
-    "<%= parseEther(settings.market49Griffain_tier0FeeUnscaled) %>",
-]
-depends = [
-    "invoke.upgrade_passive_perp_proxy",
-    "invoke.create_market_49griffain",
-]
-
-[invoke.market_49griffain_set_tier100_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market49GriffainId %>",
-    "100",
-    "<%= parseEther(settings.market49Griffain_tier100FeeUnscaled) %>",
-]
-depends = [
-    "invoke.upgrade_passive_perp_proxy",
-    "invoke.create_market_49griffain",
-]
-
-[invoke.market_49griffain_set_tier200_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market49GriffainId %>",
-    "200",
-    "<%= parseEther(settings.market49Griffain_tier200FeeUnscaled) %>",
-]
-depends = [
-    "invoke.upgrade_passive_perp_proxy",
-    "invoke.create_market_49griffain",
-]
-
-##################################################
 # Merge Market's Collateral Pool 
 ##################################################
 [invoke.market_49griffain_merge_collateral_pool]

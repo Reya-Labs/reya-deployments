@@ -129,17 +129,3 @@ depends = [
     "invoke.cp_1rusd_create_insurance_fund_account",
     "invoke.create_market_1eth",
 ]
-
-##################################################
-# Market Tier Fees
-##################################################
-[invoke.market_1eth_set_tier0_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market1EthId %>",
-    "0",
-    "<%= parseEther(settings.market1Eth_tier0FeeUnscaled) %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_1eth"]

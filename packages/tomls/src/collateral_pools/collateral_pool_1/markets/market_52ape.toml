@@ -123,42 +123,6 @@ depends = [
 ]
 
 ##################################################
-# Market Tier Fees
-##################################################
-[invoke.market_52ape_set_tier0_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market52ApeId %>",
-    "0",
-    "<%= parseEther(settings.market52Ape_tier0FeeUnscaled) %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_52ape"]
-
-[invoke.market_52ape_set_tier100_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market52ApeId %>",
-    "100",
-    "<%= parseEther(settings.market52Ape_tier100FeeUnscaled) %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_52ape"]
-
-[invoke.market_52ape_set_tier200_fee]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setTierFee"
-args = [
-    "<%= settings.market52ApeId %>",
-    "200",
-    "<%= parseEther(settings.market52Ape_tier200FeeUnscaled) %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy", "invoke.create_market_52ape"]
-
-##################################################
 # Merge Market's Collateral Pool 
 ##################################################
 [invoke.market_52ape_merge_collateral_pool]
