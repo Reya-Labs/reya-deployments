@@ -3,4 +3,5 @@ include = [
     "configs/feature_flags.toml",
     "configs/global_config.toml",
     "configs/fees.toml",
+    "configs/affiliates.toml",
 ]

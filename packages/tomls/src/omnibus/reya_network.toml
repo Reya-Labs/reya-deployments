@@ -448,6 +448,18 @@ refereeDiscountUnscaled = "0.1"
 referrerRebateUnscaled = "0.1"
 affiliateReferrerRebateUnscaled = "0.15"
 
+[var.affiliates]
+affiliate1 = "0xae173a960084903b1d278ff9e3a81ded82275556"
+affiliate2 = "0xdfc4396a485cdbcf5c4533dd8c3de0bbc9de84f2"
+affiliate3 = "0xfd7ca85a942c267901d8f77da22d415e2f839a78"
+affiliate4 = "0x86b8a239ccfcd9a0fed482297ae7751bfdc09f9b"
+affiliate5 = "0xd3753c5f2d2b224faed91e641c9334a36e4fd609"
+affiliate6 = "0xf2f0f587a907fec00eb95e41c6661d808a16abd9"
+affiliate7 = "0x00149275611587374b1c04ee86dab3c5f0e2f890"
+affiliate8 = "0x39d40af53816a0883213587337c9968046da5c92"
+affiliate9 = "0x8c9d6173cd7a77dd71e1a4e67c5cfeda424e6242"
+affiliate10 = "0x4e96895d17c151cd5071634bdd1ce765a8a6d511"
+
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
