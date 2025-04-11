@@ -567,7 +567,7 @@ contract CamelotSwapForkCheck is BaseReyaForkTest {
         commands[0] =
             getCamelotSwapCommand(sec.rusd, rusdAmount - takerFees / 1e12 * 1.01e18 / 1e18, sec.weth, minWethAmount);
         vm.prank(alice);
-        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.AccountBelowIM.selector, accountId, 0));
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.AccountBelowIM.selector, accountId, -4304.515671e18));
         ICoreProxy(sec.core).execute(accountId, commands);
     }
 }

@@ -481,7 +481,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceBERA);
         ls.maxDeviationMarket.push(ls.maxDeviationBERA);
 
-        ls.meanPriceLAYER = 0.65e18;
+        ls.meanPriceLAYER = 1.85e18;
         ls.maxDeviationLAYER = 0.3e18;
         ls.meanPriceMarket.push(ls.meanPriceLAYER);
         ls.maxDeviationMarket.push(ls.maxDeviationLAYER);
