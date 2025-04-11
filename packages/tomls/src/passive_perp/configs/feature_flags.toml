@@ -54,19 +54,28 @@ depends = ["invoke.passive_perp_pause_ftm_market"]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
-args = ["<%= keccak256(hexlify('configureFees')) %>", "<%= settings.setOgStatusBot %>"]
+args = [
+    "<%= keccak256(hexlify('configureFees')) %>",
+    "<%= settings.setOgStatusBot %>",
+]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
 [invoke.passive_perp_fee_config_2]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
-args = ["<%= keccak256(hexlify('configureFees')) %>", "<%= settings.setTierIdBot %>"]
+args = [
+    "<%= keccak256(hexlify('configureFees')) %>",
+    "<%= settings.setTierIdBot %>",
+]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
 [invoke.passive_perp_fee_config_3]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
-args = ["<%= keccak256(hexlify('configureFees')) %>", "<%= settings.setReferralMappingBot %>"]
+args = [
+    "<%= keccak256(hexlify('configureFees')) %>",
+    "<%= settings.setReferralMappingBot %>",
+]
 depends = ["invoke.upgrade_passive_perp_proxy"]

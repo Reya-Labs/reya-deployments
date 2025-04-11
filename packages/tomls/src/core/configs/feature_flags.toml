@@ -196,5 +196,8 @@ depends = ["invoke.upgrade_core_proxy"]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
-args = ["<%= keccak256(hexlify('ownerMainAccountId')) %>", "<%= settings.setMainAccountIdBot %>"]
+args = [
+    "<%= keccak256(hexlify('ownerMainAccountId')) %>",
+    "<%= settings.setMainAccountIdBot %>",
+]
 depends = ["invoke.upgrade_core_proxy"]

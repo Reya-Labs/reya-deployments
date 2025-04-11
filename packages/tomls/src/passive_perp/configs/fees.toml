@@ -54,7 +54,7 @@ fromCall.func = "owner"
 func = "setFeeTierParameters"
 args = [
     "0",
-    {takerFee = "<%= parseEther(settings.takerFeeTier0Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier0Unscaled) %>"},
+    { takerFee = "<%= parseEther(settings.takerFeeTier0Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier0Unscaled) %>" },
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -64,7 +64,7 @@ fromCall.func = "owner"
 func = "setFeeTierParameters"
 args = [
     "1",
-    {takerFee = "<%= parseEther(settings.takerFeeTier1Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier1Unscaled) %>"},
+    { takerFee = "<%= parseEther(settings.takerFeeTier1Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier1Unscaled) %>" },
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -74,7 +74,7 @@ fromCall.func = "owner"
 func = "setFeeTierParameters"
 args = [
     "2",
-    {takerFee = "<%= parseEther(settings.takerFeeTier2Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier2Unscaled) %>"},
+    { takerFee = "<%= parseEther(settings.takerFeeTier2Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier2Unscaled) %>" },
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -84,7 +84,7 @@ fromCall.func = "owner"
 func = "setFeeTierParameters"
 args = [
     "3",
-    {takerFee = "<%= parseEther(settings.takerFeeTier3Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier3Unscaled) %>"},
+    { takerFee = "<%= parseEther(settings.takerFeeTier3Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier3Unscaled) %>" },
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -94,7 +94,7 @@ fromCall.func = "owner"
 func = "setFeeTierParameters"
 args = [
     "4",
-    {takerFee = "<%= parseEther(settings.takerFeeTier4Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier4Unscaled) %>"},
+    { takerFee = "<%= parseEther(settings.takerFeeTier4Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier4Unscaled) %>" },
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -104,10 +104,9 @@ fromCall.func = "owner"
 func = "setFeeTierParameters"
 args = [
     "5",
-    {takerFee = "<%= parseEther(settings.takerFeeTier5Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier5Unscaled) %>"},
+    { takerFee = "<%= parseEther(settings.takerFeeTier5Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier5Unscaled) %>" },
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
-
 
 [invoke.passive_perp_set_tier6_parameters]
 target = ["PassivePerpProxy"]
@@ -115,14 +114,11 @@ fromCall.func = "owner"
 func = "setFeeTierParameters"
 args = [
     "6",
-    {takerFee = "<%= parseEther(settings.takerFeeTier6Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier6Unscaled) %>"},
+    { takerFee = "<%= parseEther(settings.takerFeeTier6Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier6Unscaled) %>" },
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
 [invoke.passive_perp_set_global_fee_parameters]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setFeeTierParameters"
 args = [
     {
         ogDiscount = "<%= parseEther(settings.ogDiscountUnscaled) %>",
@@ -130,5 +126,7 @@ args = [
         referrerRebate = "<%= parseEther(settings.referrerRebateUnscaled) %>"
         affiliateReferrerRebate = "<%= parseEther(settings.affiliateReferrerRebateUnscaled) %>"
     },
-]
+]target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeeTierParameters"
 depends = ["invoke.upgrade_passive_perp_proxy"]
