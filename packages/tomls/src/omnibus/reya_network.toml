@@ -460,6 +460,15 @@ affiliate8 = "0x39d40af53816a0883213587337c9968046da5c92"
 affiliate9 = "0x8c9d6173cd7a77dd71e1a4e67c5cfeda424e6242"
 affiliate10 = "0x4e96895d17c151cd5071634bdd1ce765a8a6d511"
 
+[var.institutions]
+institution1 = "0x5db89Ef54b7AebDEEf139f0CC28357f49F501aC6"
+institution2 = "0x9756B789798B43C18f54B4Ab902c589a60dEEDE1"
+institution3 = "0xD682b9FD7384e27008c1320658e1C899fAA67c8a"
+institution4 = "0xc0606cf230878678ee3d7F63aC2a1134b9575543"
+institution5 = "0xE3724710A787c3d854bc3D23873D75eABBA7b39B"
+institution6 = "0xc656647754e72c2Db056712AC40dc04Ce6681a7D"
+institution7 = "0x77bF733AFE60a204884A4121cDc50084785efaE7"
+
 [var.oracleNodeMaxStaleDuration]
 rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------

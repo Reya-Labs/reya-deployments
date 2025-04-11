@@ -4,4 +4,5 @@ include = [
     "configs/global_config.toml",
     "configs/fees.toml",
     "configs/affiliates.toml",
+    "configs/tier_100_holders.toml",
 ]
