@@ -17,32 +17,6 @@ interface IPassivePerpProxy {
         view
         returns (MarketVolatilityConfigurationData memory config);
 
-    function getReferrerAccountId(uint128 refereeAccountId)
-        external
-        view
-        returns (uint128 referrerAccountId);
-
-    function getReferrerRebateParameter(uint128 referrerAccountId)
-        external
-        view
-        returns (
-            /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-            uint256
-        );
-
-    function setAccountTier(
-        uint128 marketId,
-        uint128 accountId,
-        uint256 tierId
-    ) external;
-
-    function setAccountTierBySig(
-        uint128 marketId,
-        uint128 accountId,
-        uint256 tierId,
-        EIP712Signature memory signature
-    ) external;
-
     function setExchangeRebate(
         uint128 exchangeId,
         /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
@@ -68,43 +42,10 @@ interface IPassivePerpProxy {
         uint256 rebate
     ) external;
 
-    function setReferralMapping(
-        uint128 refereeAccountId,
-        uint128 referrerAccountId
-    ) external;
-
-    function setReferralMappingBySig(
-        uint128 refereeAccountId,
-        uint128 referrerAccountId,
-        EIP712Signature memory signature
-    ) external;
-
-    function setReferrerAccountTier(uint128 referrerAccountId, uint256 tierId)
-        external;
-
-    function setReferrerAccountTierBySig(
-        uint128 referrerAccountId,
-        uint256 tierId,
-        EIP712Signature memory signature
-    ) external;
-
-    function setReferrerTierRebateParameter(
-        uint256 tierId,
-        /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-        uint256 referrerRebateParameter
-    ) external;
-
     function setRiskBlockId(
         uint128 marketId,
         uint128 riskBlockId,
         uint256 riskMatrixIndex
-    ) external;
-
-    function setRebalancingDiscount(
-        uint128 marketId, 
-        uint256 tierId, 
-        /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-        uint256 discount
     ) external;
 
     error InvalidMarketConfiguration(
