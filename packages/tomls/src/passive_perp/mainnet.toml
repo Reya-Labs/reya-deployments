@@ -5,4 +5,5 @@ include = [
     "configs/fees.toml",
     "configs/affiliates.toml",
     "configs/tier_100_holders.toml",
+    "configs/vol_spike_whitelist_holders.toml",
 ]
