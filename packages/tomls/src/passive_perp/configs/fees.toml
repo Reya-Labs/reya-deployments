@@ -108,25 +108,21 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
-[invoke.passive_perp_set_tier6_parameters]
+[invoke.passive_perp_set_tier100_parameters]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setFeeTierParameters"
 args = [
-    "6",
-    { takerFee = "<%= parseEther(settings.takerFeeTier6Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier6Unscaled) %>" },
+    "100",
+    { takerFee = "<%= parseEther(settings.takerFeeTier100Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier100Unscaled) %>" },
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
 [invoke.passive_perp_set_global_fee_parameters]
-args = [
-    {
-        ogDiscount = "<%= parseEther(settings.ogDiscountUnscaled) %>",
-        refereeDiscount = "<%= parseEther(settings.refereeDiscounttUnscaled) %>",
-        referrerRebate = "<%= parseEther(settings.referrerRebateUnscaled) %>"
-        affiliateReferrerRebate = "<%= parseEther(settings.affiliateReferrerRebateUnscaled) %>"
-    },
-]target = ["PassivePerpProxy"]
+target = ["PassivePerpProxy"]
 fromCall.func = "owner"
-func = "setFeeTierParameters"
+func = "setGlobalFeeParameters"
+args = [
+    { ogDiscount = "<%= parseEther(settings.ogDiscountUnscaled) %>", refereeDiscount = "<%= parseEther(settings.refereeDiscountUnscaled) %>", referrerRebate = "<%= parseEther(settings.referrerRebateUnscaled) %>", affiliateReferrerRebate = "<%= parseEther(settings.affiliateReferrerRebateUnscaled) %>" },
+]
 depends = ["invoke.upgrade_passive_perp_proxy"]
