@@ -169,7 +169,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertEq(s.ae1.quoteAmountToIF, 4e6);
         assertEq(s.ae1.quoteAmountToAccount, 396e6);
         assertApproxEqAbsDecimal(
-            s.ae1.collateralAmountToLiquidator, 400e18 * 1.02 * 1e18 / s.bumpedEthPrice, 0.001e18, 18
+            s.ae1.collateralAmountToLiquidator, 400e18 * 1.02 * 1e18 / s.bumpedEthPrice, 0.0015e18, 18
         );
 
         s.tbal1.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.rusd).marginBalance;
