@@ -137,7 +137,9 @@ co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a"
 co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688"
 
 [var.fee_configuration_bots]
-perpFeeConfigBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"
+setTierIdBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
+setReferralMappingBot = "0xAdA667dCCF02CC78944cE8464fa5d722f2c73594"
 
 [var.set_main_account_id_bots]
 setMainAccountIdBot = "0x286119f5cc1f99c9819cb8a7fb22eb49ca22c878"
