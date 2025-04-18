@@ -16,7 +16,7 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/mainnet.toml",
 ]
-version = "1.0.48"
+version = "1.0.49"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -48,7 +48,7 @@ rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.9@router"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.27@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.28@router"
 peripheryRouterPackage = "reya-periphery:1.0.8@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
