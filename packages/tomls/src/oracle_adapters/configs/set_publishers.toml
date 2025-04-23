@@ -37,3 +37,13 @@ args = [
     "<%= settings.storkPublisher4 %>",
 ]
 depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_publisher5]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('publishers')) %>",
+    "<%= settings.storkPublisher5 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]

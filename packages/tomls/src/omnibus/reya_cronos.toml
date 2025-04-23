@@ -169,6 +169,7 @@ storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
 storkPublisher2 = "0xb91C675E0c0Ecfd4c16f97B110376C3C224061d8"
 storkPublisher3 = "0x51aa9e9c781f85a2c0636a835eb80114c4553098"
 storkPublisher4 = "0xf024a9aa110798e5cd0d698fba6523113eaa7fb2"
+storkPublisher5 = "0xf2e72022eb19352f488526e835c4b17248aa6c03"
 
 [var.stork_executors]
 storkExecutor1 = "0xA8F317B19AecCb2Ed9f335317A9bea59152aCF4d"
