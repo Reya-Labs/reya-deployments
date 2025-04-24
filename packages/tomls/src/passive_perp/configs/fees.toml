@@ -128,6 +128,16 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
+[invoke.passive_perp_set_tier101_parameters]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeeTierParameters"
+args = [
+    "101",
+    { takerFee = "<%= parseEther(settings.takerFeeTier101Unscaled) %>", makerFee = "<%= parseEther(settings.makerFeeTier101Unscaled) %>" },
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
 [invoke.passive_perp_set_global_fee_parameters]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
