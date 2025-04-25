@@ -16,7 +16,7 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/mainnet.toml",
 ]
-version = "1.0.49"
+version = "1.0.50"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -54,7 +54,7 @@ oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
-ordersGatewayRouterPackage = "reya-orders-gateway:1.0.7@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.8@router"
 oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
 oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.7@router"
 shareTokensProxyPackage = "reya-share-tokens:1.0.0@proxy"
