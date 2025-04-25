@@ -28,7 +28,7 @@ struct LocalState {
     UD60x18 orderPriceLimit1;
     bool isReduceOnly;
     // mark true if testing what happens if isReduceOnly is falsely set to true
-    bool isNotReduceOnlyImplicit; 
+    bool isNotReduceOnlyImplicit;
 }
 
 contract AdvancedOrderForkCheck is BaseReyaForkTest {
@@ -101,7 +101,6 @@ contract AdvancedOrderForkCheck is BaseReyaForkTest {
             });
             inputs[0] = AccountAdvancedOrders({ accountId: st.accountId, advancedOrders: advancedOrders });
         }
-        
 
         // assert that the OG contract does not have the permission
         assertFalse(ICoreProxy(sec.core).isAuthorizedForAccount(st.accountId, MATCH_ORDER, address(st.og)));
@@ -125,7 +124,6 @@ contract AdvancedOrderForkCheck is BaseReyaForkTest {
                 "check base after close order"
             );
         }
-        
     }
 
     function check_fullCloseOrderOnShortPosition() public {
@@ -255,7 +253,6 @@ contract AdvancedOrderForkCheck is BaseReyaForkTest {
             executeOrderAndTriggerAdvancedOrder();
         }
     }
-
 
     function check_NotReduceOnlyOrderThatExtendsLongIsSkipped() public {
         mockFreshPrices();

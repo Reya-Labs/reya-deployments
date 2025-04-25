@@ -4,7 +4,6 @@ import { ReyaForkTest } from "../ReyaForkTest.sol";
 import { AdvancedOrderForkCheck } from "../../reya_common/trade/AdvancedOrder.fork.c.sol";
 
 contract AdvancedOrderForkTest is ReyaForkTest, AdvancedOrderForkCheck {
-
     function test_Cronos_fullCloseOrderOnShortPosition() public {
         check_fullCloseOrderOnShortPosition();
     }
