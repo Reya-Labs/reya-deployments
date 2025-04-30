@@ -366,7 +366,7 @@ sdeusdExecutionHelper = "0xFaA0313F2a7a48Cc995e01ADC68cb3aAD130Bdaa"
 sdeusdEthereumSepoliaConnector = "0x596c0Bb29466cE75A4d1296657AE9275fD4b0912"
 
 [var.periphery_socket_withdraw_fees]
-usdcEthereumSepoliaWithdrawFeeUnscaled = "65"
+usdcEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 usdcArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
 usdcOptimismSepoliaWithdrawFeeUnscaled = "0.1"
 # -------------------------------------------------------------------

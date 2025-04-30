@@ -358,7 +358,7 @@ sdeusdExecutionHelper = "0x70c46c24f9f923F44278C3B5451986C175c39F73"
 sdeusdEthereumConnector = "0x2dc464B4f5Fd55ea19f0bdF71A8dc3584eeb64d7"
 
 [var.periphery_socket_withdraw_fees]
-usdcEthereumWithdrawFeeUnscaled = "65"
+usdcEthereumWithdrawFeeUnscaled = "5.0"
 usdcArbitrumWithdrawFeeUnscaled = "0.5"
 usdcOptimismWithdrawFeeUnscaled = "0.1"
 usdcPolygonWithdrawFeeUnscaled = "0.1"
