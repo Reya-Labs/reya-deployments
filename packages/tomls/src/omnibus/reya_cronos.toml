@@ -366,11 +366,11 @@ sdeusdExecutionHelper = "0xFaA0313F2a7a48Cc995e01ADC68cb3aAD130Bdaa"
 sdeusdEthereumSepoliaConnector = "0x596c0Bb29466cE75A4d1296657AE9275fD4b0912"
 
 [var.periphery_socket_withdraw_fees]
-usdcEthereumSepoliaWithdrawFeeUnscaled = "65"
+usdcEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 usdcArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
 usdcOptimismSepoliaWithdrawFeeUnscaled = "0.1"
 # -------------------------------------------------------------------
-wethEthereumSepoliaWithdrawFeeUnscaled = "0.02494612596258465"
+wethEthereumSepoliaWithdrawFeeUnscaled = "0.00415"
 wethArbitrumSepoliaWithdrawFeeUnscaled = "0.000191893276635266"
 wethOptimismSepoliaWithdrawFeeUnscaled = "0.000038378655327053"
 # -------------------------------------------------------------------
@@ -378,21 +378,21 @@ wbtcEthereumSepoliaWithdrawFeeUnscaled = "0.00096"
 wbtcArbitrumSepoliaWithdrawFeeUnscaled = "0.0000073"
 wbtcOptimismSepoliaWithdrawFeeUnscaled = "0.0000014"
 # -------------------------------------------------------------------
-wstethEthereumSepoliaWithdrawFeeUnscaled = "0.02494612596258465"
+wstethEthereumSepoliaWithdrawFeeUnscaled = "0.00415"
 wstethArbitrumSepoliaWithdrawFeeUnscaled = "0.000191893276635266"
 wstethOptimismSepoliaWithdrawFeeUnscaled = "0.000038378655327053"
 # -------------------------------------------------------------------
-usdeEthereumSepoliaWithdrawFeeUnscaled = "65"
+usdeEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 usdeArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
 usdeOptimismSepoliaWithdrawFeeUnscaled = "0.1"
 # -------------------------------------------------------------------
-susdeEthereumSepoliaWithdrawFeeUnscaled = "65"
+susdeEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 susdeArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
 susdeOptimismSepoliaWithdrawFeeUnscaled = "0.1"
 # -------------------------------------------------------------------
-deusdEthereumSepoliaWithdrawFeeUnscaled = "65"
+deusdEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 # -------------------------------------------------------------------
-sdeusdEthereumSepoliaWithdrawFeeUnscaled = "65"
+sdeusdEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
