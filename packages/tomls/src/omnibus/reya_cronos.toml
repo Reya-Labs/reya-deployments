@@ -143,8 +143,8 @@ co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688" # conditional o
 co_execution_bot3 = "0xf9E50a2584CFBD3d23468A395114461E5154fD61" # main API executor 1
 co_execution_bot4 = "0xdC9f85dE54543eddD2Cc61e63D5DD8DFFb0b2cF4" # main API executor 2
 co_execution_bot5 = "0xf5dD8F0D98138330F6b5927B019E5B94B3C1E919" # main API executor 3
-co_execution_bot6 = "<%= settings.co_execution_bot1 %>" # duplicated (free slot)
-co_execution_bot7 = "<%= settings.co_execution_bot1 %>" # duplicated (free slot)
+co_execution_bot6 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
+co_execution_bot7 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
 
 [var.fee_configuration_bots]
 setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"
