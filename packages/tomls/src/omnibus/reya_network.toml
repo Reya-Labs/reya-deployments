@@ -363,13 +363,13 @@ sdeusdExecutionHelper = "0x70c46c24f9f923F44278C3B5451986C175c39F73"
 sdeusdEthereumConnector = "0x2dc464B4f5Fd55ea19f0bdF71A8dc3584eeb64d7"
 
 [var.periphery_socket_withdraw_fees]
-usdcEthereumWithdrawFeeUnscaled = "65"
+usdcEthereumWithdrawFeeUnscaled = "5.0"
 usdcArbitrumWithdrawFeeUnscaled = "0.5"
 usdcOptimismWithdrawFeeUnscaled = "0.1"
 usdcPolygonWithdrawFeeUnscaled = "0.1"
 usdcBaseWithdrawFeeUnscaled = "0.1"
 # -------------------------------------------------------------------
-wethEthereumWithdrawFeeUnscaled = "0.02494612596258465"
+wethEthereumWithdrawFeeUnscaled = "0.00415"
 wethArbitrumWithdrawFeeUnscaled = "0.000191893276635266"
 wethOptimismWithdrawFeeUnscaled = "0.000038378655327053"
 wethPolygonWithdrawFeeUnscaled = "0.000038378655327053"
@@ -380,16 +380,16 @@ wbtcArbitrumWithdrawFeeUnscaled = "0.0000073"
 wbtcOptimismWithdrawFeeUnscaled = "0.0000014"
 wbtcPolygonWithdrawFeeUnscaled = "0.0000014"
 # -------------------------------------------------------------------
-usdeEthereumWithdrawFeeUnscaled = "65"
+usdeEthereumWithdrawFeeUnscaled = "5.0"
 # -------------------------------------------------------------------
-susdeEthereumWithdrawFeeUnscaled = "65"
+susdeEthereumWithdrawFeeUnscaled = "5.0"
 susdeArbitrumWithdrawFeeUnscaled = "0.5"
 susdeOptimismWithdrawFeeUnscaled = "0.1"
 susdeBaseWithdrawFeeUnscaled = "0.1"
 # -------------------------------------------------------------------
-deusdEthereumWithdrawFeeUnscaled = "65"
+deusdEthereumWithdrawFeeUnscaled = "5.0"
 # -------------------------------------------------------------------
-sdeusdEthereumWithdrawFeeUnscaled = "65"
+sdeusdEthereumWithdrawFeeUnscaled = "5.0"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -2001,10 +2001,10 @@ cp1Rusd_market54Ondo_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market55Trx_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market56Inj_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market57Move_riskMatrix00Unscaled = "0.002630"
-cp1Rusd_market58Bera_riskMatrix00Unscaled = "0.50636"
-cp1Rusd_market59Layer_riskMatrix00Unscaled = "0.50636"
+cp1Rusd_market58Bera_riskMatrix00Unscaled = "0.06574"
+cp1Rusd_market59Layer_riskMatrix00Unscaled = "0.06574"
 cp1Rusd_market60Tao_riskMatrix00Unscaled = "0.001479"
-cp1Rusd_market61Ip_riskMatrix00Unscaled = "0.50636"
+cp1Rusd_market61Ip_riskMatrix00Unscaled = "0.06574"
 cp1Rusd_market62Me_riskMatrix00Unscaled = "0.023669"
 
 # -----------------------------------------------
