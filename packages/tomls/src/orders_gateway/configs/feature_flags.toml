@@ -39,3 +39,53 @@ args = [
     "<%= settings.co_execution_bot2 %>",
 ]
 depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_execution_bot_3]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot3 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_execution_bot_4]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot4 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_execution_bot_5]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot5 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_execution_bot_6]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot6 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_execution_bot_7]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot7 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
