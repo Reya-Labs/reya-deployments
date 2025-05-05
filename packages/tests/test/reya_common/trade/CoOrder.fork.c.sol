@@ -177,6 +177,129 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         return (co, coSig);
     }
 
+    function executeOrderAndTriggerCoOrder2()
+        internal
+        returns (ConditionalOrderDetails memory, OG_EIP712Signature memory)
+    {
+        st.og = IOrdersGatewayProxy(sec.ordersGateway);
+        (st.user, st.userPrivateKey) = makeAddrAndKey("user");
+
+        // create and deposit into new margin account
+        st.accountId = createAccountAndDeposit();
+
+        // execute trade
+        if (st.coOrder1Type == 0 || st.coOrder1Type == 1) {
+            executeCoreMatchOrder({
+                marketId: st.orderMarketId1,
+                sender: st.user,
+                base: st.orderBase1,
+                priceLimit: st.orderPriceLimit1,
+                accountId: st.accountId
+            });
+
+            // check base before SL/TP order
+            assertEq(
+                IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base,
+                st.orderBase1.unwrap()
+            );
+        }
+
+        if (st.coOrder1Type == 3 || st.coOrder1Type == 4) {
+            executeCoreMatchOrder({
+                marketId: st.orderMarketId1,
+                sender: st.user,
+                base: st.prevPositionBase,
+                priceLimit: st.orderPriceLimit1,
+                accountId: st.accountId
+            });
+
+            // check base before SL/TP order
+            assertEq(
+                IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base,
+                st.prevPositionBase.unwrap(),
+                "previous position base"
+            );
+        }
+
+        if (st.coOrder1Type == 2) {
+            // check base before Limit order
+            assertEq(IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base, 0);
+        }
+
+        // build the conditional order and its signature
+        ConditionalOrderDetails memory co;
+        OG_EIP712Signature memory coSig;
+        {
+            // build the counterparty account ids
+            uint128[] memory counterpartyAccountIds = new uint128[](1);
+            counterpartyAccountIds[0] = sec.passivePoolAccountId;
+
+            bytes memory inputs;
+            if (st.coOrder1Type == 0 || st.coOrder1Type == 1) {
+                inputs = abi.encode(st.coOrder1IsLongOrder, st.coOrder1TriggerPrice, st.coOrder1PriceLimit);
+            }
+
+            if (st.coOrder1Type == 2) {
+                inputs = abi.encode(st.orderBase1, st.coOrder1TriggerPrice);
+            }
+
+            if (st.coOrder1Type == 3 || st.coOrder1Type == 4) {
+                inputs = abi.encode(st.orderBase1, st.coOrder1PriceLimit);
+            }
+
+            // build the conditional order input
+            co = ConditionalOrderDetails({
+                accountId: st.accountId,
+                marketId: st.orderMarketId1,
+                exchangeId: 0,
+                counterpartyAccountIds: counterpartyAccountIds,
+                orderType: st.coOrder1Type,
+                inputs: inputs,
+                signer: st.user,
+                nonce: st.nonce
+            });
+
+            bytes32 digest = ConditionalOrderHashing.mockCalculateDigest(co, block.timestamp + 1, sec.ordersGateway);
+
+            (uint8 v, bytes32 r, bytes32 s) = vm.sign(st.userPrivateKey, digest);
+
+            coSig = OG_EIP712Signature({ v: v, r: r, s: s, deadline: block.timestamp + 1 });
+        }
+
+        // // assert that the OG contract does not have the permission
+        assertFalse(ICoreProxy(sec.core).isAuthorizedForAccount(st.accountId, MATCH_ORDER, address(st.og)));
+
+        if (st.expectRevert) {
+            return (co, coSig);
+        }
+
+        // // generate the EIP712 signature and execute the SL order
+        // vm.prank(sec.coExecutionBot);
+        // st.og.execute(co, coSig);
+
+        // // check base after SL order
+        // if (st.coOrder1Type == 0 || st.coOrder1Type == 1) {
+        //     assertEq(IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base, 0);
+        // }
+
+        // if (st.coOrder1Type == 2) {
+        //     assertEq(
+        //         IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base,
+        //         st.orderBase1.unwrap()
+        //     );
+        // }
+
+        // if (st.coOrder1Type == 3 || st.coOrder1Type == 4) {
+        //     assertEq(
+        //         IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base,
+        //         st.orderBase1.unwrap() + st.prevPositionBase.unwrap(),
+        //         "balance post order"
+        //     );
+        // }
+
+        return (co, coSig);
+    }
+
     function check_slOrderOnShortPosition() public {
         mockFreshPrices();
 
@@ -465,6 +588,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
             st.coOrder1IsLongOrder = false;
             st.orderBase1 = sd(1e18);
             st.coOrder1PriceLimit = MAX_PRICE;
+            st.expectRevert = true;
 
             (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
 
@@ -492,6 +616,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
             st.coOrder1IsLongOrder = false;
             st.orderBase1 = sd(-1e18);
             st.coOrder1PriceLimit = MIN_PRICE;
+            st.expectRevert = true;
 
             (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
 
@@ -519,6 +644,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
             st.coOrder1IsLongOrder = false;
             st.orderBase1 = sd(-1.5e18);
             st.coOrder1PriceLimit = MIN_PRICE;
+            st.expectRevert = true;
 
             (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
 
@@ -546,6 +672,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
             st.coOrder1IsLongOrder = false;
             st.orderBase1 = sd(1.5e18);
             st.coOrder1PriceLimit = MAX_PRICE;
+            st.expectRevert = true;
 
             (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
 
