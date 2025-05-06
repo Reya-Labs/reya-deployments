@@ -3,6 +3,8 @@ include = [
     "configs/constants/rusd_usd.toml",
     "configs/constants/ftm_usd_closing.toml",
     "configs/constants/ftm_usdc_closing.toml",
+    "configs/constants/layer_usd_closing.toml",
+    "configs/constants/layer_usdc_closing.toml",
     "configs/stork/eth_usd.toml",
     "configs/stork/usde_usd.toml",
     "configs/stork/susde_usd.toml",
