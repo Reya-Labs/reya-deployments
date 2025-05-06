@@ -1855,7 +1855,7 @@ market58Bera_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_59Layer]
 market59Layer_riskMatrixIndex = "0"
-market59Layer_maxOpenBaseUnscaled = "120000"
+market59Layer_maxOpenBaseUnscaled = "0"
 market59Layer_velocityMultiplierUnscaled = "75"
 market59Layer_oracleNodeId = "<%= settings.layerUsdcNodeIdClosing %>"
 market59Layer_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
