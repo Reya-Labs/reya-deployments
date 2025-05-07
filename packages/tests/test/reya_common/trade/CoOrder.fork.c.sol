@@ -7,7 +7,7 @@ import {
     EIP712Signature as OG_EIP712Signature
 } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
 import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
-import { ICoreProxy, EIP712Signature as Core_EIP712Signature } from "../../../src/interfaces/ICoreProxy.sol";
+import { ICoreProxy, EIP712Signature as Core_EIP712Signature, Command as Command_Core, CommandType } from "../../../src/interfaces/ICoreProxy.sol";
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import { ConditionalOrderHashing } from "../../../src/utils/ConditionalOrderHashing.sol";
 import { GrantAccountPermissionHashing } from "../../../src/utils/GrantAccountPermissionHashing.sol";
@@ -559,5 +559,42 @@ contract CoOrderForkCheck is BaseReyaForkTest {
             vm.expectRevert();
             st.og.execute(co, sig);
         }
+    }
+
+    function check_specialOrderGatewayPermissionToExecuteInCore() public {
+        uint128[] memory counterpartyAccountIds = new uint128[](1);
+        counterpartyAccountIds[0] = sec.passivePoolAccountId;
+
+        (st.user, st.userPrivateKey) = makeAddrAndKey("user");
+        uint128 accountId = createAccountAndDeposit();
+
+        uint128 marketId = 1;
+
+        Command_Core[] memory commands = new Command_Core[](1);
+        commands[0] = Command_Core({
+            commandType: uint8(CommandType.MatchOrder),
+            inputs: abi.encode(counterpartyAccountIds, abi.encode(1e18, MAX_PRICE)),
+            marketId: marketId,
+            exchangeId: 1
+        });
+
+        mockFreshPrices();
+
+        ICoreProxy core = ICoreProxy(sec.core);
+
+        // it should not fail when sent from order gateway
+        vm.prank(sec.ordersGateway);
+        core.execute(accountId, commands);
+
+        // it should fail when sent from random address
+        vm.prank(address(277)); 
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                ICoreProxy.AccountPermissionDenied.selector,
+                accountId,
+                address(277)
+            )
+        );
+        core.execute(accountId, commands);
     }
 }

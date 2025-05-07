@@ -28,51 +28,55 @@ contract CoOrderForkTest is ReyaForkTest, CoOrderForkCheck {
         check_longLimitOrder_BTC();
     }
 
-    function test_Cronos_extendingLongMarketOrder() public {
+    function test_extendingLongMarketOrder() public {
         check_extendingLongMarketOrder();
     }
 
-    function test_Cronos_flippingLongMarketOrder() public {
+    function test_flippingLongMarketOrder() public {
         check_flippingLongMarketOrder();
     }
 
-    function test_Cronos_extendingShortMarketOrder() public {
+    function test_extendingShortMarketOrder() public {
         check_extendingShortMarketOrder();
     }
 
-    function test_Cronos_flippingShortMarketOrder() public {
+    function test_flippingShortMarketOrder() public {
         check_flippingShortMarketOrder();
     }
 
-    function test_Cronos_partialReduceLongMarketOrder() public {
+    function test_partialReduceLongMarketOrder() public {
         check_partialReduceLongMarketOrder();
     }
 
-    function test_Cronos_partialReduceShortMarketOrder() public {
+    function test_partialReduceShortMarketOrder() public {
         check_partialReduceShortMarketOrder();
     }
 
-    function test_Cronos_fullReduceShortMarketOrder() public {
+    function test_fullReduceShortMarketOrder() public {
         check_fullReduceShortMarketOrder();
     }
 
-    function test_Cronos_fullReduceLongMarketOrder() public {
+    function test_fullReduceLongMarketOrder() public {
         check_fullReduceLongMarketOrder();
     }
 
-    function test_Cronos_revertWhenExtendingLongReduceMarketOrder() public {
+    function test_revertWhenExtendingLongReduceMarketOrder() public {
         check_revertWhenExtendingLongReduceMarketOrder();
     }
 
-    function test_Cronos_revertWhenExtendingShortReduceMarketOrder() public {
+    function test_revertWhenExtendingShortReduceMarketOrder() public {
         check_revertWhenExtendingShortReduceMarketOrder();
     }
 
-    function test_Cronos_revertWhenFlipLongReduceMarketOrder() public {
+    function test_revertWhenFlipLongReduceMarketOrder() public {
         check_revertWhenFlipLongReduceMarketOrder();
     }
 
-    function test_Cronos_revertWhenFlipShortReduceMarketOrder() public {
+    function test_revertWhenFlipShortReduceMarketOrder() public {
         check_revertWhenFlipShortReduceMarketOrder();
+    }
+
+    function test_specialOrderGatewayPermissionToExecuteInCore() public {
+        check_specialOrderGatewayPermissionToExecuteInCore();
     }
 }

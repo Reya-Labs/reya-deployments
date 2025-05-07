@@ -75,4 +75,8 @@ contract CoOrderForkTest is ReyaForkTest, CoOrderForkCheck {
     function test_Cronos_revertWhenFlipShortReduceMarketOrder() public {
         check_revertWhenFlipShortReduceMarketOrder();
     }
+
+    function test_Cronos_specialOrderGatewayPermissionToExecuteInCore() public {
+        check_specialOrderGatewayPermissionToExecuteInCore();
+    }
 }
