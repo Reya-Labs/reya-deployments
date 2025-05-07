@@ -7,7 +7,12 @@ import {
     EIP712Signature as OG_EIP712Signature
 } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
 import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
-import { ICoreProxy, EIP712Signature as Core_EIP712Signature, Command as Command_Core, CommandType } from "../../../src/interfaces/ICoreProxy.sol";
+import {
+    ICoreProxy,
+    EIP712Signature as Core_EIP712Signature,
+    Command as Command_Core,
+    CommandType
+} from "../../../src/interfaces/ICoreProxy.sol";
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import { ConditionalOrderHashing } from "../../../src/utils/ConditionalOrderHashing.sol";
 import { GrantAccountPermissionHashing } from "../../../src/utils/GrantAccountPermissionHashing.sol";
@@ -587,14 +592,8 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         core.execute(accountId, commands);
 
         // it should fail when sent from random address
-        vm.prank(address(277)); 
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                ICoreProxy.AccountPermissionDenied.selector,
-                accountId,
-                address(277)
-            )
-        );
+        vm.prank(address(277));
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.AccountPermissionDenied.selector, accountId, address(277)));
         core.execute(accountId, commands);
     }
 }
