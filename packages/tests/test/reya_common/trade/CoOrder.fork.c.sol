@@ -569,7 +569,6 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_specialOrderGatewayPermissionToExecuteInCore() public {
         uint128[] memory counterpartyAccountIds = new uint128[](1);
         counterpartyAccountIds[0] = sec.passivePoolAccountId;
-
         (st.user, st.userPrivateKey) = makeAddrAndKey("user");
         uint128 accountId = createAccountAndDeposit();
 
