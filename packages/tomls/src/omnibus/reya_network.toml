@@ -875,8 +875,8 @@ market9Aave_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_10crv]
 market10Crv_riskMatrixIndex = "0"
-market10Crv_maxOpenBaseUnscaled = "248737"
-market10Crv_velocityMultiplierUnscaled = "2487376"
+market10Crv_maxOpenBaseUnscaled = "2487376"
+market10Crv_velocityMultiplierUnscaled = "150"
 market10Crv_oracleNodeId = "<%= settings.crvUsdcMarkNodeIdStork %>"
 market10Crv_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market10Crv_dutchConfig_lambdaUnscaled = "1"
