@@ -16,7 +16,7 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/testnet.toml",
 ]
-version = "1.0.49"
+version = "1.0.50"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -60,7 +60,7 @@ exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksProxyPackage = "reya-ranks:1.0.0@proxy"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
-ordersGatewayRouterPackage = "reya-orders-gateway:1.0.7@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.10@router"
 oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
 oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.7@router"
 shareTokensProxyPackage = "reya-share-tokens:1.0.0@proxy"
@@ -138,8 +138,13 @@ ae_liquidator1 = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
 ae_liquidator2 = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
 
 [var.co_execution_bots]
-co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a"
-co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688"
+co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a" # conditional order bot 1
+co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688" # conditional order bot 2
+co_execution_bot3 = "0xf9E50a2584CFBD3d23468A395114461E5154fD61" # main API executor 1
+co_execution_bot4 = "0xdC9f85dE54543eddD2Cc61e63D5DD8DFFb0b2cF4" # main API executor 2
+co_execution_bot5 = "0xf5dD8F0D98138330F6b5927B019E5B94B3C1E919" # main API executor 3
+co_execution_bot6 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
+co_execution_bot7 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
 
 [var.fee_configuration_bots]
 setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"

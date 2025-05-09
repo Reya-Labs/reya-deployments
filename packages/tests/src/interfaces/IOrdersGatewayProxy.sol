@@ -17,6 +17,16 @@ interface IOrdersGatewayProxy {
 
     function setConfiguration(Configuration.Data memory config) external;
 
+    function managePermissionBySig(
+        address owner,
+        address target,
+        bool permissionState,
+        EIP712Signature calldata sig
+    )
+        external;
+    
+    function managePermission(address target, bool permissionState) external;
+
     error Unauthorized(address addr);
 
     function canExecute(
@@ -60,7 +70,6 @@ interface IOrdersGatewayProxy {
         /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
         uint256 priceLimit
     );
-    error MatchOrderOutputsLengthMismatch(uint256 outputsLength);
     error NonceAlreadyUsed(
         ConditionalOrderDetails order,
         EIP712Signature signature
@@ -72,6 +81,8 @@ interface IOrdersGatewayProxy {
         EIP712Signature signature
     );
     error ZeroStopLossOrderSize(StopLossOrderDetails stopLossOrder);
+
+    error ReduceOnlyConditionFailed(uint128 marketId, uint128 accountId);
 
     function addToFeatureFlagAllowlist(bytes32 feature, address account)
         external;
@@ -172,6 +183,7 @@ interface IOrdersGatewayProxy {
         uint256 blockTimestamp
     );
     event UnorderedNonceUsed(uint128 accountId, uint256 nonce);
+    event OrdersGatewayPermissionUpdated(address owner, address target, bool permissionState, uint256 blockTimestamp);
 }
 
 interface Configuration {
