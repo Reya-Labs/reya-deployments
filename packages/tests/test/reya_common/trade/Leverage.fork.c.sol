@@ -40,7 +40,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant xrpLeverage = 15e18;
     uint256 private constant wifLeverage = 15e18;
     uint256 private constant pepe1kLeverage = 15e18;
-    uint256 private constant popcatLeverage = 5e18;
+    uint256 private constant popcatLeverage = 10e18;
     uint256 private constant dogeLeverage = 20e18;
     uint256 private constant kshibLeverage = 20e18;
     uint256 private constant kbonkLeverage = 15e18;
