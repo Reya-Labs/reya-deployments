@@ -719,7 +719,7 @@ pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.15"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
-market1Eth_maxOpenBaseUnscaled = "500"
+market1Eth_maxOpenBaseUnscaled = "2744"
 market1Eth_velocityMultiplierUnscaled = "1350"
 market1Eth_oracleNodeId = "<%= settings.ethUsdcMarkNodeIdStork %>"
 market1Eth_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1963,7 +1963,7 @@ cp1Rusd_maxCollaterals = "10"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
 # -----------------------------------------------
-cp1Rusd_market1Eth_riskMatrix00Unscaled = "0.000483"
+cp1Rusd_market1Eth_riskMatrix00Unscaled = "0.030769"
 cp1Rusd_market2Btc_riskMatrix00Unscaled = "0.000370"
 cp1Rusd_market3Sol_riskMatrix00Unscaled = "0.000947"
 cp1Rusd_market4Arb_riskMatrix00Unscaled = "0.001479"

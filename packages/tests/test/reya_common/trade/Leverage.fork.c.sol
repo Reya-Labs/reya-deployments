@@ -22,7 +22,7 @@ import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 
 contract LeverageForkCheck is BaseReyaForkTest {
-    uint256 private constant ethLeverage = 35e18;
+    uint256 private constant ethLeverage = 25e18;
     uint256 private constant btcLeverage = 40e18;
     uint256 private constant solLeverage = 25e18;
     uint256 private constant arbLeverage = 20e18;
