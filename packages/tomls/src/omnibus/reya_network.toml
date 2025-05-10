@@ -1060,7 +1060,7 @@ market18Pepe1k_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_19popcat]
 market19Popcat_riskMatrixIndex = "0"
-market19Popcat_maxOpenBaseUnscaled = "27489083"
+market19Popcat_maxOpenBaseUnscaled = "4107203"
 market19Popcat_velocityMultiplierUnscaled = "150"
 market19Popcat_oracleNodeId = "<%= settings.popcatUsdcMarkNodeIdStork %>"
 market19Popcat_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1080,7 +1080,7 @@ market19Popcat_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_20doge]
 market20Doge_riskMatrixIndex = "0"
-market20Doge_maxOpenBaseUnscaled = "353202676"
+market20Doge_maxOpenBaseUnscaled = "27489083"
 market20Doge_velocityMultiplierUnscaled = "150"
 market20Doge_oracleNodeId = "<%= settings.dogeUsdcMarkNodeIdStork %>"
 market20Doge_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1100,7 +1100,7 @@ market20Doge_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_21kshib]
 market21KShib_riskMatrixIndex = "0"
-market21KShib_maxOpenBaseUnscaled = "270595973"
+market21KShib_maxOpenBaseUnscaled = "353202676"
 market21KShib_velocityMultiplierUnscaled = "150"
 market21KShib_oracleNodeId = "<%= settings.kshibUsdcMarkNodeIdStork %>"
 market21KShib_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
