@@ -28,7 +28,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant arbLeverage = 20e18;
     uint256 private constant opLeverage = 20e18;
     uint256 private constant avaxLeverage = 20e18;
-    uint256 private constant mkrLeverage = 1e18;
+    uint256 private constant mkrLeverage = 25e18;
     uint256 private constant linkLeverage = 20e18;
     uint256 private constant aaveLeverage = 20e18;
     uint256 private constant crvLeverage = 15e18;
@@ -51,7 +51,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant ldoLeverage = 15e18;
     uint256 private constant polLeverage = 20e18;
     uint256 private constant nearLeverage = 20e18;
-    uint256 private constant ftmLeverage = 1e18;
+    uint256 private constant ftmLeverage = 20e18;
     uint256 private constant enaLeverage = 15e18;
     uint256 private constant eigenLeverage = 15e18;
     uint256 private constant pendleLeverage = 15e18;

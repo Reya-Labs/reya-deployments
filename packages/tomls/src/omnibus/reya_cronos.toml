@@ -16,7 +16,7 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/testnet.toml",
 ]
-version = "1.0.49"
+version = "1.0.50"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -60,7 +60,7 @@ exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksProxyPackage = "reya-ranks:1.0.0@proxy"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
-ordersGatewayRouterPackage = "reya-orders-gateway:1.0.7@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.10@router"
 oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
 oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.7@router"
 shareTokensProxyPackage = "reya-share-tokens:1.0.0@proxy"
@@ -138,8 +138,13 @@ ae_liquidator1 = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
 ae_liquidator2 = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
 
 [var.co_execution_bots]
-co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a"
-co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688"
+co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a" # conditional order bot 1
+co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688" # conditional order bot 2
+co_execution_bot3 = "0xf9E50a2584CFBD3d23468A395114461E5154fD61" # main API executor 1
+co_execution_bot4 = "0xdC9f85dE54543eddD2Cc61e63D5DD8DFFb0b2cF4" # main API executor 2
+co_execution_bot5 = "0xf5dD8F0D98138330F6b5927B019E5B94B3C1E919" # main API executor 3
+co_execution_bot6 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
+co_execution_bot7 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
 
 [var.fee_configuration_bots]
 setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"
@@ -366,11 +371,11 @@ sdeusdExecutionHelper = "0xFaA0313F2a7a48Cc995e01ADC68cb3aAD130Bdaa"
 sdeusdEthereumSepoliaConnector = "0x596c0Bb29466cE75A4d1296657AE9275fD4b0912"
 
 [var.periphery_socket_withdraw_fees]
-usdcEthereumSepoliaWithdrawFeeUnscaled = "65"
+usdcEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 usdcArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
 usdcOptimismSepoliaWithdrawFeeUnscaled = "0.1"
 # -------------------------------------------------------------------
-wethEthereumSepoliaWithdrawFeeUnscaled = "0.02494612596258465"
+wethEthereumSepoliaWithdrawFeeUnscaled = "0.00415"
 wethArbitrumSepoliaWithdrawFeeUnscaled = "0.000191893276635266"
 wethOptimismSepoliaWithdrawFeeUnscaled = "0.000038378655327053"
 # -------------------------------------------------------------------
@@ -378,21 +383,21 @@ wbtcEthereumSepoliaWithdrawFeeUnscaled = "0.00096"
 wbtcArbitrumSepoliaWithdrawFeeUnscaled = "0.0000073"
 wbtcOptimismSepoliaWithdrawFeeUnscaled = "0.0000014"
 # -------------------------------------------------------------------
-wstethEthereumSepoliaWithdrawFeeUnscaled = "0.02494612596258465"
+wstethEthereumSepoliaWithdrawFeeUnscaled = "0.00415"
 wstethArbitrumSepoliaWithdrawFeeUnscaled = "0.000191893276635266"
 wstethOptimismSepoliaWithdrawFeeUnscaled = "0.000038378655327053"
 # -------------------------------------------------------------------
-usdeEthereumSepoliaWithdrawFeeUnscaled = "65"
+usdeEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 usdeArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
 usdeOptimismSepoliaWithdrawFeeUnscaled = "0.1"
 # -------------------------------------------------------------------
-susdeEthereumSepoliaWithdrawFeeUnscaled = "65"
+susdeEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 susdeArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
 susdeOptimismSepoliaWithdrawFeeUnscaled = "0.1"
 # -------------------------------------------------------------------
-deusdEthereumSepoliaWithdrawFeeUnscaled = "65"
+deusdEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 # -------------------------------------------------------------------
-sdeusdEthereumSepoliaWithdrawFeeUnscaled = "65"
+sdeusdEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -1292,7 +1297,7 @@ market29Near_marketOrderMaxStaleDuration = "11"
 market29Near_priceSpreadUnscaled = "0"
 market29Near_volatilityIndexMultiplierUnscaled = "0"
 
-[var.market_29Ftm]
+[var.market_30Ftm]
 market30Ftm_riskMatrixIndex = "0"
 market30Ftm_maxOpenBaseUnscaled = "0"
 market30Ftm_velocityMultiplierUnscaled = "0"
@@ -1874,9 +1879,9 @@ market58Bera_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_59Layer]
 market59Layer_riskMatrixIndex = "0"
-market59Layer_maxOpenBaseUnscaled = "1948780"
-market59Layer_velocityMultiplierUnscaled = "75"
-market59Layer_oracleNodeId = "<%= settings.layerUsdcMarkNodeIdStork %>"
+market59Layer_maxOpenBaseUnscaled = "7000"
+market59Layer_velocityMultiplierUnscaled = "0"
+market59Layer_oracleNodeId = "<%= settings.layerUsdcNodeIdClosing %>"
 market59Layer_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market59Layer_dutchConfig_lambdaUnscaled = "1"
 market59Layer_dutchConfig_minBaseUnscaled = "0.11"
@@ -1888,7 +1893,7 @@ market59Layer_priceSpacingUnscaled = "<%= 1e-5 %>"
 market59Layer_depthFactorUnscaled = "5"
 market59Layer_maxExposureFactorUnscaled = "0.999"
 market59Layer_maxPSlippageUnscaled = "0.1"
-market59Layer_marketOrderMaxStaleDuration = "11"
+market59Layer_marketOrderMaxStaleDuration = "0"
 market59Layer_priceSpreadUnscaled = "0"
 market59Layer_volatilityIndexMultiplierUnscaled = "0"
 
@@ -1964,7 +1969,7 @@ cp1Rusd_market3Sol_riskMatrix00Unscaled = "0.000947"
 cp1Rusd_market4Arb_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market5Op_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market6Avax_riskMatrix00Unscaled = "0.001479"
-cp1Rusd_market7Mkr_riskMatrix00Unscaled = "1"
+cp1Rusd_market7Mkr_riskMatrix00Unscaled = "0.000947"
 cp1Rusd_market8Link_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market9Aave_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market10Crv_riskMatrix00Unscaled = "0.002630"
@@ -1987,7 +1992,7 @@ cp1Rusd_market26Ada_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market27Ldo_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market28Pol_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market29Near_riskMatrix00Unscaled = "0.001479"
-cp1Rusd_market30Ftm_riskMatrix00Unscaled = "1"
+cp1Rusd_market30Ftm_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market31Ena_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market32Eigen_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market33Pendle_riskMatrix00Unscaled = "0.002630"
