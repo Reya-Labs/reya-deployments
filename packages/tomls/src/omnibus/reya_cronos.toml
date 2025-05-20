@@ -402,7 +402,7 @@ sdeusdEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-rusdWithdrawalTvlPercentageLimitUnscaled = "0.2"
+rusdWithdrawalTvlPercentageLimitUnscaled = "0.07"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
@@ -426,7 +426,7 @@ deusdWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 sdeusdCollateralAdapter = "<%= AddressZero %>"
 sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.3"
+sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.01"
 # -------------------------------------------------------------------
 srusdCollateralAdapter = "<%= AddressZero %>"
 srusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
