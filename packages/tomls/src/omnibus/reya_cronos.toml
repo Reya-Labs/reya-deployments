@@ -93,6 +93,7 @@ sdeusdSalt = "sdeusd-main"
 srusdSalt = "srusd-main"
 rseliniSalt = "rselini-main"
 ramberSalt = "ramber-main"
+rhedgeSalt = "rhedge-main"
 
 [var.missing_vars]
 salt = ""
@@ -230,6 +231,10 @@ ramberMinter1 = "<%= settings.rebalancer3 %>"
 ramberSubscriber1 = "<%= settings.rebalancer3 %>"
 ramberRedeemer1 = "<%= settings.rebalancer3 %>"
 ramberCustodian1 = "0x45556408e543158f74403e882E3C8c23eCD9f732"
+rhedgeMinter1 = "<%= settings.rebalancer3 %>"
+rhedgeSubscriber1 = "<%= settings.rebalancer3 %>"
+rhedgeRedeemer1 = "<%= settings.rebalancer3 %>"
+rhedgeCustodian1 = "0x45556408e543158f74403e882E3C8c23eCD9f732"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -318,6 +323,7 @@ storkAssetPairIdMEMark = "MEUSDMARK"
 [var.reya_lm_asset_pair_ids]
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
 reyaLmAssetPairIdAMBER = "REYALM#AMBERUSDC"
+reyaLmAssetPairIdHEDGE = "REYALM#HEDGEUSDC"
 
 [var.pool_asset_pair_ids]
 poolAssetPairIdSRUSD = "REYAPOOL#1"
@@ -439,6 +445,10 @@ rseliniWithdrawalTvlPercentageLimitUnscaled = "0"
 ramberCollateralAdapter = "<%= AddressZero %>"
 ramberWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 ramberWithdrawalTvlPercentageLimitUnscaled = "0"
+# -------------------------------------------------------------------
+rhedgeCollateralAdapter = "<%= AddressZero %>"
+rhedgeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+rhedgeWithdrawalTvlPercentageLimitUnscaled = "0"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.2"
@@ -709,6 +719,7 @@ srusdUsdcPoolMaxDuration = "0"
 #------------------------------------------------------------------------------
 seliniUsdcReyaLmMaxStaleDuration = "0"
 amberUsdcReyaLmMaxStaleDuration = "0"
+hedgeUsdcReyaLmMaxStaleDuration = "0"
 
 [var.pool_1]
 pool1_quoteTokenTargetRatioUnscaled = "0.3"
@@ -716,6 +727,7 @@ pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
 pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.7"
 pool1_RSELINITargetRatioPostQuoteUnscaled = "0.15"
 pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.15"
+pool1_RHEDGETargetRatioPostQuoteUnscaled = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -1959,7 +1971,7 @@ market62Me_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "62"
-cp1Rusd_maxCollaterals = "10"
+cp1Rusd_maxCollaterals = "11"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
 # -----------------------------------------------
@@ -2171,6 +2183,18 @@ cp1Rusd_ramberParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address 
 cp1Rusd_ramberParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_ramberParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_ramberParentConfig_oracleNodeId = "<%= settings.amberUsdcReyaLmNodeId %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_rhedge_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_rhedge_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_rhedge_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_rhedge_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_rhedge_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_rhedgeParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_rhedgeParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_rhedgeParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_rhedgeParentConfig_oracleNodeId = "<%= settings.hedgeUsdcReyaLmNodeId %>"
 
 [var.sbt_config]
 tokenName = "Reya OG SBT"

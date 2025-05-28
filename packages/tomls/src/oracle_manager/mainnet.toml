@@ -142,4 +142,5 @@ include = [
     "configs/pool/srusd_usdc.toml",
     "configs/reyaLm/selini_usdc.toml",
     "configs/reyaLm/amber_usdc.toml",
+    "configs/reyaLm/hedge_usdc.toml",
 ]
