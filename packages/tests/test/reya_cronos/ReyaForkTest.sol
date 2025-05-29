@@ -7,6 +7,7 @@ import "../reya_common/DataTypes.sol";
 
 import { IPeripheryProxy, DepositPassivePoolInputs } from "../../src/interfaces/IPeripheryProxy.sol";
 import { ICoreProxy } from "../../src/interfaces/ICoreProxy.sol";
+import { IPassivePerpProxy } from "../../src/interfaces/IPassivePerpProxy.sol";
 
 import { ISocketExecutionHelper } from "../../src/interfaces/ISocketExecutionHelper.sol";
 import { IOracleManagerProxy } from "../../src/interfaces/IOracleManagerProxy.sol";
@@ -34,10 +35,6 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.oracleAdaptersProxy = payable(0xc501A2356703CD351703D68963c6F4136120f7CF);
         sec.exchangePass = 0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB;
         sec.accountNft = 0xeA13E7dA71E018160019A296Eca4184Ddc53aeB1;
-
-        // Camelot contracts
-        sec.camelotYakRouter = 0x0000000000000000000000000000000000000000;
-        sec.camelotSwapPublisher = 0xB02EF4e83F8E1f8853d1C0A208ea1569D1616a79;
 
         // Reya tokens
         sec.rusd = 0x9DE724e7b3facF87Ce39465D3D712717182e3e55;
@@ -630,5 +627,15 @@ contract ReyaForkTest is BaseReyaForkTest {
         // (*) allow anyone to publish match orders
         vm.prank(sec.multisig);
         ICoreProxy(sec.core).setFeatureFlagAllowAll(keccak256(bytes("matchOrderPublisher")), true);
+
+        // (*) unpause markets with IDs 17 and 62
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(
+            0x1e7fed13f60f1960fdaf304238873e3216743817f5d35b1b5ba1d877e2092be3, true
+        );
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(
+            0xd94fe6b0d28029e9b0bc2853dfd3d4ebeaf71dc48257f547d22f3fb421c01ee8, true
+        );
     }
 }

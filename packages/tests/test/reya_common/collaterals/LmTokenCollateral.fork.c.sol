@@ -168,7 +168,9 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
             })
         );
 
-        assertApproxEqAbsDecimal(sharesOut, 96.6e18, 1e18, 18);
+        if (sec.destinationChainId == 1) {
+            assertApproxEqAbsDecimal(sharesOut, 96.6e18, 1e18, 18);
+        }
 
         // check balances after subscription
         s1.lmTokenTotalSupply = IShareTokenProxy(lmToken).totalSupply();

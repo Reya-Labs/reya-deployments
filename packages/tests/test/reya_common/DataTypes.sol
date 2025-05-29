@@ -29,9 +29,6 @@ struct StaticEcosystem {
     address payable oracleAdaptersProxy;
     address exchangePass;
     address accountNft;
-    // Camelot contracts
-    address camelotYakRouter;
-    address camelotSwapPublisher;
     // Reya tokens
     address rusd;
     address usdc;
