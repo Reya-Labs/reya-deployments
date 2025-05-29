@@ -511,7 +511,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceRAMBER = 1.04e18;
         ls.maxDeviationRAMBER = 0.05e18;
 
-        ls.meanPriceSRUSD = (sec.destinationChainId == 1) ? 1.04e18 : 4.9e18;
+        ls.meanPriceSRUSD = (sec.destinationChainId == 1) ? 1.04e18 : 11.11e18;
         ls.maxDeviationSRUSD = 0.05e18;
 
         ls.meanPriceStableCoin = 1e18;
