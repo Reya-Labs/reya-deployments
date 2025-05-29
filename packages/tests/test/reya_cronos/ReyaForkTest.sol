@@ -35,10 +35,6 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.exchangePass = 0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB;
         sec.accountNft = 0xeA13E7dA71E018160019A296Eca4184Ddc53aeB1;
 
-        // Camelot contracts
-        sec.camelotYakRouter = 0x0000000000000000000000000000000000000000;
-        sec.camelotSwapPublisher = 0xB02EF4e83F8E1f8853d1C0A208ea1569D1616a79;
-
         // Reya tokens
         sec.rusd = 0x9DE724e7b3facF87Ce39465D3D712717182e3e55;
         sec.usdc = 0xfA27c7c6051344263533cc365274d9569b0272A8;
