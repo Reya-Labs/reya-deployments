@@ -47,6 +47,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.sdeusd = 0xbEB316680B6fcd2dC3aF1fC933B3A27a2513d89D;
         sec.rselini = 0xbA8ae4D2A147c54c3aBA123e8e01937AF505FC3c;
         sec.ramber = 0x125FD68Ec0ab65ce9606DeD99e8F19C286f9E534;
+        sec.rhedge = address(0);
         sec.srusd = 0xb9F531A54Fc0E9AdCa1b931d9533B4e49bB2fAD6;
 
         // Elixir tokens on Mainnet (Ethereum Sepolia)
@@ -68,6 +69,9 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.ramberCustodian = 0x45556408e543158f74403e882E3C8c23eCD9f732;
         sec.ramberSubscriber = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
         sec.ramberRedeemer = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
+        sec.rhedgeCustodian = address(0);
+        sec.rhedgeSubscriber = address(0);
+        sec.rhedgeRedeemer = address(0);
         sec.aeLiquidator1 = 0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4;
 
         // node ids for spot prices
@@ -115,10 +119,13 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         sec.rseliniUsdcReyaLmNodeId = 0x8831605e4b3e4d533b9123c50106de11623f1188975d107029a4534bfd5acfd2;
         sec.ramberUsdcReyaLmNodeId = 0xa7feb4d88a1b9a17b11f5d24de36c942f2de2fd3a772b3a05b41f2fdfa45f770;
+        sec.rhedgeUsdcReyaLmNodeId = bytes32(0);
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.rseliniUsdcReyaLmNodeId, 10_000);
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.ramberUsdcReyaLmNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.rhedgeUsdcReyaLmNodeId, 10_000);
 
         sec.srusdUsdcPoolNodeId = 0xc380c1273590e190bc15a196fdb2b5750abdd0eeb868cc8385dd384761e21ddb;
         vm.prank(sec.multisig);

@@ -30,6 +30,7 @@ struct TokenBalances {
     int256 userBalanceSdeusd;
     int256 userBalanceRselini;
     int256 userBalanceRamber;
+    int256 userBalanceRhedge;
     int256 userBalanceSrusd;
     int256 liquidatorBalanceWeth;
     int256 liquidatorBalanceRusd;
@@ -39,6 +40,7 @@ struct TokenBalances {
     int256 liquidatorBalanceSdeusd;
     int256 liquidatorBalanceRselini;
     int256 liquidatorBalanceRamber;
+    int256 liquidatorBalanceRhedge;
     int256 liquidatorBalanceSrusd;
 }
 
