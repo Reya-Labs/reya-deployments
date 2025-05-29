@@ -630,8 +630,12 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         // (*) unpause markets with IDs 17 and 62
         vm.prank(sec.multisig);
-        IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(0x1e7fed13f60f1960fdaf304238873e3216743817f5d35b1b5ba1d877e2092be3, true);
+        IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(
+            0x1e7fed13f60f1960fdaf304238873e3216743817f5d35b1b5ba1d877e2092be3, true
+        );
         vm.prank(sec.multisig);
-        IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(0xd94fe6b0d28029e9b0bc2853dfd3d4ebeaf71dc48257f547d22f3fb421c01ee8, true);
+        IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(
+            0xd94fe6b0d28029e9b0bc2853dfd3d4ebeaf71dc48257f547d22f3fb421c01ee8, true
+        );
     }
 }
