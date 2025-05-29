@@ -15,3 +15,12 @@ args = [
     { assetPairId = "<%= settings.reyaLmAssetPairIdAMBER %>", price = "<%= parseEther('1') %>", vestingPeriodInSeconds = "0" },
 ]
 depends = ["invoke.oracle_adapters_reya_lm_price_updater_owner"]
+
+[invoke.oracle_adapters_reya_lm_hedge_init_price]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "updateLmTokenPrice"
+args = [
+    { assetPairId = "<%= settings.reyaLmAssetPairIdHEDGE %>", price = "<%= parseEther('1') %>", vestingPeriodInSeconds = "0" },
+]
+depends = ["invoke.oracle_adapters_reya_lm_price_updater_owner"]
