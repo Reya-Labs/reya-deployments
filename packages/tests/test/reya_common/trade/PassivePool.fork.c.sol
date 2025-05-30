@@ -646,6 +646,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     function check_autoRebalance_differentTargets(bool partialAutoRebalance, bool mintLmTokens) public {
         removeCollateralCap(sec.rselini);
         removeCollateralCap(sec.ramber);
+        removeCollateralCap(sec.rhedge);
 
         vm.prank(sec.multisig);
         IPassivePoolProxy(sec.pool).setAllocationConfiguration(
