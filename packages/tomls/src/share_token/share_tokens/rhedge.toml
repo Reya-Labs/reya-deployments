@@ -1,0 +1,111 @@
+[var.rhedge_vars]
+rhedgeTokenName = "Reya Hedge LM"
+rhedgeTokenSymbol = "rHedge"
+rhedgeTokenDecimals = "18"
+
+[clone.rhedge]
+source = "<%= settings.shareTokensProxyPackage %>"
+target = "reya-share-tokens:1.0.0@rhedge"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.rhedgeSalt %>"
+depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_rhedge_proxy]
+target = ["rhedge.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = [
+    "<%= imports.reyaShareTokenRouter.contracts.ShareTokenRouter.address %>",
+]
+factory.RHEDGEProxy.abiOf = ["reyaShareTokenRouter.ShareTokenRouter"]
+factory.RHEDGEProxy.event = "Upgraded"
+factory.RHEDGEProxy.arg = 0
+depends = ["clone.rhedge"]
+
+[invoke.rhedge_initialize]
+target = ["RHEDGEProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.rhedgeTokenName %>",
+    "<%= settings.rhedgeTokenSymbol %>",
+    "<%= settings.rhedgeTokenDecimals %>",
+]
+depends = ["invoke.upgrade_rhedge_proxy"]
+
+[invoke.rhedge_unpause]
+target = ["RHEDGEProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_rhedge_proxy"]
+
+[invoke.rhedge_set_pausers]
+target = ["RHEDGEProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_rhedge_proxy"]
+
+[invoke.rhedge_global_config]
+target = ["RHEDGEProxy"]
+fromCall.func = "owner"
+func = "setGlobalConfiguration"
+args = [{ coreProxy = "<%= contracts.CoreProxy.address %>" }]
+depends = ["invoke.upgrade_rhedge_proxy"]
+
+[invoke.rhedge_enable_minter1]
+target = ["RHEDGEProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.rhedgeMinter1 %>"]
+
+[invoke.rhedge_enable_subscriber]
+target = ["RHEDGEProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subscription')) %>",
+    "<%= settings.rhedgeSubscriber1 %>",
+]
+depends = ["invoke.upgrade_rhedge_proxy"]
+
+[invoke.rhedge_enable_redeemer]
+target = ["RHEDGEProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('redemption')) %>",
+    "<%= settings.rhedgeRedeemer1 %>",
+]
+depends = ["invoke.upgrade_rhedge_proxy"]
+
+[invoke.rhedge_enable_custodian]
+target = ["RHEDGEProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('whitelistedCustodians')) %>",
+    "<%= settings.rhedgeCustodian1 %>",
+]
+depends = ["invoke.upgrade_rhedge_proxy"]
+
+[invoke.rhedge_enable_underlying_token]
+target = ["RHEDGEProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('whitelistedTokens')) %>",
+    "<%= settings.rUSDProxy %>",
+]
+depends = ["invoke.upgrade_rhedge_proxy"]

@@ -60,6 +60,14 @@ contract AutoExchangeForkTest is ReyaForkTest, AutoExchangeForkCheck {
         check_AutoExchangeRamber_WhenUserHasBothRamberAndRusd();
     }
 
+    function test_Cronos_AutoExchangeRHEDGE_WhenUserHasOnlyRhedge() public {
+        check_AutoExchangeRhedge_WhenUserHasOnlyRhedge();
+    }
+
+    function test_Cronos_AutoExchangeRHEDGE_WhenUserHasBothRhedgeAndRusd() public {
+        check_AutoExchangeRhedge_WhenUserHasBothRhedgeAndRusd();
+    }
+
     function test_Cronos_AutoExchangeSRUSD_WhenUserHasOnlySrusd() public {
         check_AutoExchangeSrusd_WhenUserHasOnlySrusd();
     }

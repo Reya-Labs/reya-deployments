@@ -50,11 +50,15 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
     }
 
     function test_PassivePoolWithRselini() public {
-        check_PassivePoolWithRselini();
+        check_PassivePoolWithLmToken(sec.rselini);
     }
 
     function test_PassivePoolWithRamber() public {
-        check_PassivePoolWithRamber();
+        check_PassivePoolWithLmToken(sec.ramber);
+    }
+
+    function test_PassivePoolWithRhedge() public {
+        check_PassivePoolWithLmToken(sec.rhedge);
     }
 
     function test_PassivePoolAutoRebalance_CurrentTargets() public {

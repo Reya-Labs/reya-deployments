@@ -105,3 +105,19 @@ depends = [
     "invoke.passive_pool_unpause_pool_1rusd",
     "invoke.upgrade_srusd_proxy",
 ]
+
+[invoke.passive_pool_set_target_ratio_post_quote_rhedge]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "setTargetRatioPostQuote"
+args = [
+    "<%= settings.pool1RusdId %>",
+    "<%= contracts.RHEDGEProxy.address %>",
+    "<%= parseEther(settings.pool1_RHEDGETargetRatioPostQuoteUnscaled) %>",
+]
+depends = [
+    "invoke.passive_pool_create_pool_1rusd",
+    "invoke.passive_pool_unpause_pool_1rusd",
+    "invoke.passive_pool_set_allocation_configuration_1rusd",
+    "invoke.cp_1rusd_set_rhedge_config",
+]

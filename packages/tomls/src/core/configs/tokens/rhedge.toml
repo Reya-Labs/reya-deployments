@@ -1,0 +1,23 @@
+[invoke.rhedge_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= contracts.RHEDGEProxy.address %>",
+    { collateralAdapter = "<%= settings.rhedgeCollateralAdapter %>", withdrawalWindowSize = "<%= settings.rhedgeWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.rhedgeWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = [
+    'invoke.upgrade_core_proxy',
+    'invoke.upgrade_rhedge_proxy',
+    'var.global_collateral_configs',
+]
+
+[invoke.rhedge_auto_exchange_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), contracts.RHEDGEProxy.address])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy"]

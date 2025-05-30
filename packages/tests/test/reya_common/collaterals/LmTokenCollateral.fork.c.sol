@@ -221,6 +221,8 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_lmToken_view_functions(address lmToken, bytes32 lmTokenUsdcNodeId) private {
+        removeCollateralCap(lmToken);
+
         (address user,) = makeAddrAndKey("user");
 
         uint256 lmTokenAmount = 1e18;
@@ -290,7 +292,10 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_lmToken_deposit_withdraw(address lmToken) private {
-        (address user, uint256 userPk) = makeAddrAndKey("user");
+        removeCollateralCap(lmToken);
+        removeCollateralWithdrawalLimit(lmToken);
+
+        (address user,) = makeAddrAndKey("user");
         uint256 amount = 1000e18; // denominated in lmToken
 
         // deposit new margin account
@@ -308,6 +313,8 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
     function check_trade_lmTokenCollateral_depositWithdraw(address lmToken) private {
         mockFreshPrices();
+        removeCollateralCap(lmToken);
+        removeCollateralWithdrawalLimit(lmToken);
 
         (address user, uint256 userPk) = makeAddrAndKey("user");
         uint256 amount = 3000e18; // denominated in lmToken
@@ -349,6 +356,10 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         checkFuzz_LmTokenMintBurn(sec.ramber, sec.ramberSubscriber, sec.ramberRedeemer, sec.ramberCustodian, attacker);
     }
 
+    function checkFuzz_rhedgeMintBurn(address attacker) public {
+        checkFuzz_LmTokenMintBurn(sec.rhedge, sec.rhedgeSubscriber, sec.rhedgeRedeemer, sec.rhedgeCustodian, attacker);
+    }
+
     function check_rseliniRedemptionAndSubscription() public {
         check_LmToken_RedemptionAndSubscription(
             sec.rselini, sec.rseliniSubscriber, sec.rseliniRedeemer, sec.rseliniCustodian
@@ -361,14 +372,22 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         );
     }
 
+    function check_rhedgeRedemptionAndSubscription() public {
+        check_LmToken_RedemptionAndSubscription(
+            sec.rhedge, sec.rhedgeSubscriber, sec.rhedgeRedeemer, sec.rhedgeCustodian
+        );
+    }
+
     function check_rselini_view_functions() public {
-        removeCollateralCap(sec.rselini);
         check_lmToken_view_functions(sec.rselini, sec.rseliniUsdcReyaLmNodeId);
     }
 
     function check_ramber_view_functions() public {
-        removeCollateralCap(sec.ramber);
         check_lmToken_view_functions(sec.ramber, sec.ramberUsdcReyaLmNodeId);
+    }
+
+    function check_rhedge_view_functions() public {
+        check_lmToken_view_functions(sec.rhedge, sec.rhedgeUsdcReyaLmNodeId);
     }
 
     function check_rselini_cap_exceeded() public {
@@ -379,27 +398,31 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         check_lmToken_cap_exceeded(sec.ramber);
     }
 
+    function check_rhedge_cap_exceeded() public {
+        check_lmToken_cap_exceeded(sec.rhedge);
+    }
+
     function check_rselini_deposit_withdraw() public {
-        removeCollateralCap(sec.rselini);
-        removeCollateralWithdrawalLimit(sec.rselini);
         check_lmToken_deposit_withdraw(sec.rselini);
     }
 
     function check_ramber_deposit_withdraw() public {
-        removeCollateralCap(sec.ramber);
-        removeCollateralWithdrawalLimit(sec.ramber);
         check_lmToken_deposit_withdraw(sec.ramber);
     }
 
+    function check_rhedge_deposit_withdraw() public {
+        check_lmToken_deposit_withdraw(sec.rhedge);
+    }
+
     function check_trade_rseliniCollateral_depositWithdraw() public {
-        removeCollateralCap(sec.rselini);
-        removeCollateralWithdrawalLimit(sec.rselini);
         check_trade_lmTokenCollateral_depositWithdraw(sec.rselini);
     }
 
     function check_trade_ramberCollateral_depositWithdraw() public {
-        removeCollateralCap(sec.ramber);
-        removeCollateralWithdrawalLimit(sec.ramber);
         check_trade_lmTokenCollateral_depositWithdraw(sec.ramber);
+    }
+
+    function check_trade_rhedgeCollateral_depositWithdraw() public {
+        check_trade_lmTokenCollateral_depositWithdraw(sec.rhedge);
     }
 }
