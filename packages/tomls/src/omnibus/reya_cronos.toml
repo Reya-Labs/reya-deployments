@@ -724,10 +724,10 @@ hedgeUsdcReyaLmMaxStaleDuration = "0"
 [var.pool_1]
 pool1_quoteTokenTargetRatioUnscaled = "0.3"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
-pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.7"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.6875"
 pool1_RSELINITargetRatioPostQuoteUnscaled = "0.15"
 pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.15"
-pool1_RHEDGETargetRatioPostQuoteUnscaled = "0"
+pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.0125"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"

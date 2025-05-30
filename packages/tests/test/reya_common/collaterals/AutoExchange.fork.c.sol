@@ -1637,4 +1637,6 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSrusd_WhenUserHasBothSrusdAndRusd() public {
         check_AutoExchange_srUSD(100e6);
     }
+
+    // todo-costin: restructure and add tests for rHedge
 }

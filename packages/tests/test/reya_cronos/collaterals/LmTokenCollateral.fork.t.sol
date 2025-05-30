@@ -13,12 +13,20 @@ contract LmTokenCollateralForkTest is ReyaForkTest, LmTokenCollateralForkCheck {
         checkFuzz_ramberMintBurn(attacker);
     }
 
+    function testFuzz_Cronos_rhedgeMintBurn(address attacker) public {
+        checkFuzz_rhedgeMintBurn(attacker);
+    }
+
     function test_Cronos_rseliniRedemptionAndSubscription() public {
         check_rseliniRedemptionAndSubscription();
     }
 
     function test_Cronos_ramberRedemptionAndSubscription() public {
         check_ramberRedemptionAndSubscription();
+    }
+
+    function test_Cronos_rhedgeRedemptionAndSubscription() public {
+        check_rhedgeRedemptionAndSubscription();
     }
 
     function test_Cronos_rselini_view_functions() public {
@@ -29,13 +37,9 @@ contract LmTokenCollateralForkTest is ReyaForkTest, LmTokenCollateralForkCheck {
         check_ramber_view_functions();
     }
 
-    // function test_Cronos_rselini_cap_exceeded() public {
-    //     check_rselini_cap_exceeded();
-    // }
-
-    // function test_Cronos_ramber_cap_exceeded() public {
-    //     check_ramber_cap_exceeded();
-    // }
+    function test_Cronos_rhedge_view_functions() public {
+        check_rhedge_view_functions();
+    }
 
     function test_Cronos_rselini_deposit_withdraw() public {
         check_rselini_deposit_withdraw();
@@ -45,11 +49,19 @@ contract LmTokenCollateralForkTest is ReyaForkTest, LmTokenCollateralForkCheck {
         check_ramber_deposit_withdraw();
     }
 
+    function test_Cronos_rhedge_deposit_withdraw() public {
+        check_rhedge_deposit_withdraw();
+    }
+
     function test_Cronos_trade_rseliniCollateral_depositWithdraw() public {
         check_trade_rseliniCollateral_depositWithdraw();
     }
 
     function test_Cronos_trade_ramberCollateral_depositWithdraw() public {
         check_trade_ramberCollateral_depositWithdraw();
+    }
+
+    function test_Cronos_trade_rhedgeCollateral_depositWithdraw() public {
+        check_trade_rhedgeCollateral_depositWithdraw();
     }
 }
