@@ -23,6 +23,7 @@ import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
 import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
+import { IOracleAdaptersProxy } from "../../../src/interfaces/IOracleAdaptersProxy.sol";
 
 import { sd, SD59x18, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
@@ -134,6 +135,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
     function check_LmToken_RedemptionAndSubscription(
         address lmToken,
+        bytes32 lmTokenOracleNodeId,
         address subscriber,
         address redeemer,
         address custodian
@@ -156,7 +158,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         s0.rUsdCustodianBalance = ITokenProxy(sec.rusd).balanceOf(custodian);
         s0.rUsdRecipientBalance2 = ITokenProxy(sec.rusd).balanceOf(recipient2);
 
-        // subscriber subscribes 100 rusd to rSelini and sends shares to custom recipient
+        // subscriber subscribes 100 rusd to lm token and sends shares to custom recipient
         vm.prank(subscriber);
         uint256 sharesOut = IShareTokenProxy(lmToken).subscribe(
             SubscriptionInputs({
@@ -168,9 +170,8 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
             })
         );
 
-        if (sec.destinationChainId == 1) {
-            assertApproxEqAbsDecimal(sharesOut, 96.6e18, 1e18, 18);
-        }
+        uint256 lmTokenPrice = IOracleManagerProxy(sec.oracleManager).process(lmTokenOracleNodeId).price;
+        assertApproxEqAbsDecimal(sharesOut, 100e18 * 1e18 / lmTokenPrice, 1e18, 18);
 
         // check balances after subscription
         s1.lmTokenTotalSupply = IShareTokenProxy(lmToken).totalSupply();
@@ -179,17 +180,23 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         s1.rUsdCustodianBalance = ITokenProxy(sec.rusd).balanceOf(custodian);
         s1.rUsdRecipientBalance2 = ITokenProxy(sec.rusd).balanceOf(recipient2);
 
+        if (custodian == subscriber) {
+            assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance);
+        }
+        else {
+            assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance - 100e6);
+            assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance + 100e6);
+        }
+
         assertEq(s1.lmTokenTotalSupply, s0.lmTokenTotalSupply + sharesOut);
         assertEq(s1.lmTokenRecipientBalance1, s0.lmTokenRecipientBalance1 + sharesOut);
-        assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance - 100e6);
-        assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance + 100e6);
         assertEq(s1.rUsdRecipientBalance2, s0.rUsdRecipientBalance2);
 
         s0 = s1;
 
         uint256 lmtokenRusdBalanceBefore = ITokenProxy(sec.rusd).balanceOf(lmToken);
 
-        // custodian sends 51 rusd back to LM token
+        // custodian sends 52 rusd back to LM token
         vm.prank(custodian);
         ITokenProxy(sec.rusd).transfer(lmToken, 52e6);
 
@@ -203,7 +210,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
             RedemptionInputs({ recipient: recipient2, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
         );
 
-        assertApproxEqAbsDecimal(tokenOut, 51e6, 1e6, 6);
+        assertApproxEqAbsDecimal(tokenOut, 50e6 * lmTokenPrice / 1e18, 1e6, 6);
 
         // check balances after redemption
         s1.lmTokenTotalSupply = IShareTokenProxy(lmToken).totalSupply();
@@ -212,10 +219,16 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         s1.rUsdCustodianBalance = ITokenProxy(sec.rusd).balanceOf(custodian);
         s1.rUsdRecipientBalance2 = ITokenProxy(sec.rusd).balanceOf(recipient2);
 
+        if (custodian == subscriber) {
+            assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 52e6);
+        }
+        else {
+            assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance);
+            assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 52e6);
+        }
+
         assertEq(s1.lmTokenTotalSupply, s0.lmTokenTotalSupply - 50e18);
         assertEq(s1.lmTokenRecipientBalance1, s0.lmTokenRecipientBalance1 - 50e18);
-        assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance);
-        assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 52e6);
         assertEq(s1.rUsdRecipientBalance2, s0.rUsdRecipientBalance2 + tokenOut);
         assertEq(ITokenProxy(sec.rusd).balanceOf(lmToken), lmtokenRusdBalanceBefore + 52e6 - tokenOut);
     }
@@ -362,19 +375,19 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
     function check_rseliniRedemptionAndSubscription() public {
         check_LmToken_RedemptionAndSubscription(
-            sec.rselini, sec.rseliniSubscriber, sec.rseliniRedeemer, sec.rseliniCustodian
+            sec.rselini, sec.rseliniUsdcReyaLmNodeId, sec.rseliniSubscriber, sec.rseliniRedeemer, sec.rseliniCustodian
         );
     }
 
     function check_ramberRedemptionAndSubscription() public {
         check_LmToken_RedemptionAndSubscription(
-            sec.ramber, sec.ramberSubscriber, sec.ramberRedeemer, sec.ramberCustodian
+            sec.ramber, sec.ramberUsdcReyaLmNodeId, sec.ramberSubscriber, sec.ramberRedeemer, sec.ramberCustodian
         );
     }
 
     function check_rhedgeRedemptionAndSubscription() public {
         check_LmToken_RedemptionAndSubscription(
-            sec.rhedge, sec.rhedgeSubscriber, sec.rhedgeRedeemer, sec.rhedgeCustodian
+            sec.rhedge, sec.rhedgeUsdcReyaLmNodeId, sec.rhedgeSubscriber, sec.rhedgeRedeemer, sec.rhedgeCustodian
         );
     }
 
