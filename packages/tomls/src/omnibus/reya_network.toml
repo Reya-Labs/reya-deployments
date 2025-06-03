@@ -229,7 +229,7 @@ ramberCustodian1 = "0xdd96e677939f0C78e2D671DD37abB44B49710a5A"
 rhedgeMinter1 = "<%= settings.rebalancer3 %>"
 rhedgeSubscriber1 = "<%= settings.rebalancer3 %>"
 rhedgeRedeemer1 = "<%= settings.rebalancer3 %>"
-rhedgeCustodian1 = "0xdd96e677939f0C78e2D671DD37abB44B49710a5A"
+rhedgeCustodian1 = "<%= settings.rebalancer3 %>"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -703,12 +703,12 @@ amberUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 hedgeUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 
 [var.pool_1]
-pool1_quoteTokenTargetRatioUnscaled = "0.3"
+pool1_quoteTokenTargetRatioUnscaled = "0.1"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
-pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.7"
-pool1_RSELINITargetRatioPostQuoteUnscaled = "0.15"
-pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.15"
-pool1_RHEDGETargetRatioPostQuoteUnscaled = "0"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.744"
+pool1_RSELINITargetRatioPostQuoteUnscaled = "0.1275"
+pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.1275"
+pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.001"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"

@@ -16,7 +16,7 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/testnet.toml",
 ]
-version = "1.0.50"
+version = "1.0.51"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -722,12 +722,12 @@ amberUsdcReyaLmMaxStaleDuration = "0"
 hedgeUsdcReyaLmMaxStaleDuration = "0"
 
 [var.pool_1]
-pool1_quoteTokenTargetRatioUnscaled = "0.3"
+pool1_quoteTokenTargetRatioUnscaled = "0.1"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
-pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.6875"
-pool1_RSELINITargetRatioPostQuoteUnscaled = "0.15"
-pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.15"
-pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.0125"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.744"
+pool1_RSELINITargetRatioPostQuoteUnscaled = "0.1275"
+pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.1275"
+pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.001"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
