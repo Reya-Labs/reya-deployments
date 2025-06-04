@@ -182,8 +182,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         if (custodian == subscriber) {
             assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance);
-        }
-        else {
+        } else {
             assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance - 100e6);
             assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance + 100e6);
         }
@@ -221,8 +220,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         if (custodian == subscriber) {
             assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 52e6);
-        }
-        else {
+        } else {
             assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance);
             assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 52e6);
         }
