@@ -278,9 +278,9 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         assertEq(accountLmTokenCollateralInfo.realBalance, int256(lmTokenAmount));
     }
 
-    function check_lmToken_cap_exceeded(address lmToken) private {
+    function check_lmToken_cap_exceeded(address lmToken, uint256 cap) private {
         (address user, uint256 userPk) = makeAddrAndKey("user");
-        uint256 amount = 2_000_001e18; // denominated in lmToken
+        uint256 amount = cap + 1e18; // denominated in lmToken
         uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(10_000e18);
@@ -292,11 +292,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector,
-                1,
-                lmToken,
-                2_000_000e18,
-                collateralPoolLmTokenBalance + amount
+                ICoreProxy.CollateralCapExceeded.selector, 1, lmToken, cap, collateralPoolLmTokenBalance + amount
             )
         );
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
@@ -402,15 +398,15 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_rselini_cap_exceeded() public {
-        check_lmToken_cap_exceeded(sec.rselini);
+        check_lmToken_cap_exceeded(sec.rselini, 2_000_000e18);
     }
 
     function check_ramber_cap_exceeded() public {
-        check_lmToken_cap_exceeded(sec.ramber);
+        check_lmToken_cap_exceeded(sec.ramber, 2_000_000e18);
     }
 
     function check_rhedge_cap_exceeded() public {
-        check_lmToken_cap_exceeded(sec.rhedge);
+        check_lmToken_cap_exceeded(sec.rhedge, 10_000e18);
     }
 
     function check_rselini_deposit_withdraw() public {
