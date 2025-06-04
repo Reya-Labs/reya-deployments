@@ -43,7 +43,6 @@ contract PoolStakeForkCheck is BaseReyaForkTest {
         removeCollateralWithdrawalLimit(sec.srusd);
 
         sharesAmount = uint256(getNetDeposits(accountId, sec.srusd));
-        executePeripheryWithdrawLiquidityFromAccount(user, userPrivateKey, 1, sharesAmount, accountId);
 
         assertEq(getNetDeposits(accountId, sec.srusd), 0);
         assertEq(getNetDeposits(accountId, sec.rusd), 10e6);

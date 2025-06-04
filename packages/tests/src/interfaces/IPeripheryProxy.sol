@@ -194,10 +194,6 @@ interface IPeripheryProxy {
 
     function withdraw(WithdrawInputs memory inputs) external payable;
 
-    function withdrawLiquidityFromAccount(
-        WithdrawLiquidityFromAccountInputs memory inputs
-    ) external;
-
     function withdrawMA(WithdrawMAInputs memory inputs) external;
 
     function withdrawPassivePool(WithdrawPassivePoolInputs memory inputs)
