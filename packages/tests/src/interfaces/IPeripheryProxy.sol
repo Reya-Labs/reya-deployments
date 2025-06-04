@@ -186,12 +186,6 @@ interface IPeripheryProxy {
     function transferFromMAToMA(TransferFromMAToMAInputs memory inputs)
         external;
 
-    function transferFromMAToPool(TransferFromMAToPoolInputs memory inputs)
-        external;
-
-    function transferFromPoolToMA(TransferFromPoolToMAInputs memory inputs)
-        external;
-
     function withdraw(WithdrawInputs memory inputs) external payable;
 
     function withdrawMA(WithdrawMAInputs memory inputs) external;
@@ -284,15 +278,6 @@ struct TransferFromMAToPoolInputs {
     uint128 poolId;
     uint256 minShares;
     address receiver;
-}
-
-struct TransferFromPoolToMAInputs {
-    address owner;
-    EIP712Signature sig;
-    uint256 sharesAmount;
-    uint128 poolId;
-    uint256 minOut;
-    uint128 accountId;
 }
 
 struct WithdrawInputs {
