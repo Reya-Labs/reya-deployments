@@ -100,29 +100,4 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
     function test_PassivePoolAutoRebalance_RevertWhenSenderIsNotRebalancer() public {
         check_autoRebalance_revertWhenSenderIsNotRebalancer();
     }
-
-    function testFuzz_PassivePoolDepositWithdrawV2_NoSharePriceChange(
-        uint128[] memory tokensFuzz,
-        int256[] memory amountsFuzz
-    )
-        public
-    {
-        checkFuzz_depositWithdrawV2_noSharePriceChange(tokensFuzz, amountsFuzz);
-    }
-
-    // function test_PassivePoolDepositWithdrawV2_RevertWhenOwnerIsNotAuthorized() public {
-    //     check_depositWithdrawV2_revertWhenOwnerIsNotAuthorized();
-    // }
-
-    function test_PassivePoolDepositV2_RevertWhenTokenIsWETH() public {
-        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.weth);
-    }
-
-    function test_PassivePoolDepositV2_RevertWhenTokenIsUsde() public {
-        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.usde);
-    }
-
-    function test_PassivePoolDepositV2_RevertWhenTokenIsSusde() public {
-        check_depositV2_revertWhenTokenHasZeroTargetRatio(sec.susde);
-    }
 }

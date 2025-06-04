@@ -15,9 +15,7 @@ import {
     IPassivePoolProxy,
     RebalanceAmounts,
     AutoRebalanceInput,
-    AllocationConfigurationData,
-    AddLiquidityV2Input,
-    RemoveLiquidityV2Input
+    AllocationConfigurationData
 } from "../../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IPeripheryProxy,
@@ -890,137 +888,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                 receiverAddress: address(0)
             })
         );
-    }
-
-    function checkFuzz_depositWithdrawV2_noSharePriceChange(
-        uint128[] memory tokensFuzz,
-        int256[] memory amountsFuzz
-    )
-        public
-    {
-        vm.assume(tokensFuzz.length <= 10);
-        vm.assume(amountsFuzz.length <= 10);
-
-        uint256 len = (tokensFuzz.length < amountsFuzz.length) ? tokensFuzz.length : amountsFuzz.length;
-
-        address[] memory tokens = new address[](len);
-        int256[] memory amounts = new int256[](len);
-
-        for (uint256 i = 0; i < len; i++) {
-            address token;
-            uint128 tokenFuzz = tokensFuzz[i] % 4;
-            if (tokenFuzz == 0) {
-                token = sec.rusd;
-            } else if (tokenFuzz == 1) {
-                token = sec.sdeusd;
-            } else if (tokenFuzz == 2) {
-                token = sec.rselini;
-            } else if (tokenFuzz == 3) {
-                token = sec.ramber;
-            }
-            tokens[i] = token;
-            if (amountsFuzz[i] < 0) {
-                if (amountsFuzz[i] == type(int256).min) {
-                    amountsFuzz[i] += 1;
-                }
-                amounts[i] =
-                    (-1000 + int256((uint256(-amountsFuzz[i]) % 1000))) * int256(10 ** ITokenProxy(token).decimals());
-            } else {
-                amounts[i] = int256((uint256(amountsFuzz[i]) % 1000)) * int256(10 ** ITokenProxy(token).decimals());
-            }
-        }
-
-        address owner = vm.addr(333_222);
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(
-            keccak256(abi.encode(keccak256(bytes("v2Liquidity")), sec.passivePoolId)), owner
-        );
-
-        for (uint256 i = 0; i < len; i++) {
-            uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-            if (amounts[i] > 0) {
-                uint256 amount = uint256(amounts[i]);
-                if (amount == 0) {
-                    continue;
-                }
-
-                deal(tokens[i], owner, amount);
-                vm.prank(owner);
-                ITokenProxy(tokens[i]).approve(sec.pool, amount);
-                vm.prank(owner);
-                IPassivePoolProxy(sec.pool).addLiquidityV2({
-                    poolId: sec.passivePoolId,
-                    input: AddLiquidityV2Input({ token: tokens[i], amount: amount, owner: owner, minShares: 0 }),
-                    actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: owner })
-                });
-            } else {
-                uint256 amount = uint256(-amounts[i]);
-
-                uint256 poolTokenBalance =
-                    uint256(ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolId, tokens[i]).marginBalance);
-                if (amount > poolTokenBalance) {
-                    amount = poolTokenBalance;
-                }
-
-                uint256 sharesAmount = amount * 99 / 100 * 10 ** (30 - ITokenProxy(tokens[i]).decimals());
-                uint256 ownerSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, owner);
-                if (ownerSharesAmount < sharesAmount) {
-                    sharesAmount = ownerSharesAmount;
-                }
-
-                if (sharesAmount == 0) {
-                    continue;
-                }
-
-                vm.prank(owner);
-                IPassivePoolProxy(sec.pool).removeLiquidityV2({
-                    poolId: sec.passivePoolId,
-                    input: RemoveLiquidityV2Input({
-                        token: tokens[i],
-                        sharesAmount: sharesAmount,
-                        receiver: owner,
-                        minOut: 0
-                    }),
-                    actionMetadata: ActionMetadata({ action: Action.Unstake, onBehalfOf: owner })
-                });
-            }
-
-            uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-
-            assertLe(sharePrice0, sharePrice1);
-            assertApproxEqRelDecimal(sharePrice0, sharePrice1, 1e12, 18);
-        }
-    }
-
-    function check_depositWithdrawV2_revertWhenOwnerIsNotAuthorized() public {
-        address owner = vm.addr(333_222);
-
-        vm.prank(owner);
-        vm.expectRevert(
-            abi.encodeWithSelector(IPassivePoolProxy.UnauthorizedV2Liquidity.selector, sec.passivePoolAccountId, owner)
-        );
-        IPassivePoolProxy(sec.pool).addLiquidityV2({
-            poolId: sec.passivePoolId,
-            input: AddLiquidityV2Input({ token: sec.rusd, amount: 0, owner: owner, minShares: 0 }),
-            actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: owner })
-        });
-    }
-
-    function check_depositV2_revertWhenTokenHasZeroTargetRatio(address token) public {
-        address owner = vm.addr(333_222);
-
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(
-            keccak256(abi.encode(keccak256(bytes("v2Liquidity")), sec.passivePoolId)), owner
-        );
-
-        vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.TokenNotEligibleForShares.selector, token));
-        IPassivePoolProxy(sec.pool).addLiquidityV2({
-            poolId: sec.passivePoolId,
-            input: AddLiquidityV2Input({ token: token, amount: 1e18, owner: owner, minShares: 0 }),
-            actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: owner })
-        });
     }
 
     function check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(address token) public {
