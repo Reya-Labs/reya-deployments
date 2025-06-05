@@ -23,6 +23,7 @@ import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
 import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
+import { IOracleAdaptersProxy } from "../../../src/interfaces/IOracleAdaptersProxy.sol";
 
 import { sd, SD59x18, UNIT as UNIT_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
@@ -134,6 +135,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
     function check_LmToken_RedemptionAndSubscription(
         address lmToken,
+        bytes32 lmTokenOracleNodeId,
         address subscriber,
         address redeemer,
         address custodian
@@ -156,7 +158,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         s0.rUsdCustodianBalance = ITokenProxy(sec.rusd).balanceOf(custodian);
         s0.rUsdRecipientBalance2 = ITokenProxy(sec.rusd).balanceOf(recipient2);
 
-        // subscriber subscribes 100 rusd to rSelini and sends shares to custom recipient
+        // subscriber subscribes 100 rusd to lm token and sends shares to custom recipient
         vm.prank(subscriber);
         uint256 sharesOut = IShareTokenProxy(lmToken).subscribe(
             SubscriptionInputs({
@@ -168,9 +170,8 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
             })
         );
 
-        if (sec.destinationChainId == 1) {
-            assertApproxEqAbsDecimal(sharesOut, 96.6e18, 1e18, 18);
-        }
+        uint256 lmTokenPrice = IOracleManagerProxy(sec.oracleManager).process(lmTokenOracleNodeId).price;
+        assertApproxEqAbsDecimal(sharesOut, 100e18 * 1e18 / lmTokenPrice, 1e18, 18);
 
         // check balances after subscription
         s1.lmTokenTotalSupply = IShareTokenProxy(lmToken).totalSupply();
@@ -179,17 +180,22 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         s1.rUsdCustodianBalance = ITokenProxy(sec.rusd).balanceOf(custodian);
         s1.rUsdRecipientBalance2 = ITokenProxy(sec.rusd).balanceOf(recipient2);
 
+        if (custodian == subscriber) {
+            assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance);
+        } else {
+            assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance - 100e6);
+            assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance + 100e6);
+        }
+
         assertEq(s1.lmTokenTotalSupply, s0.lmTokenTotalSupply + sharesOut);
         assertEq(s1.lmTokenRecipientBalance1, s0.lmTokenRecipientBalance1 + sharesOut);
-        assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance - 100e6);
-        assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance + 100e6);
         assertEq(s1.rUsdRecipientBalance2, s0.rUsdRecipientBalance2);
 
         s0 = s1;
 
         uint256 lmtokenRusdBalanceBefore = ITokenProxy(sec.rusd).balanceOf(lmToken);
 
-        // custodian sends 51 rusd back to LM token
+        // custodian sends 52 rusd back to LM token
         vm.prank(custodian);
         ITokenProxy(sec.rusd).transfer(lmToken, 52e6);
 
@@ -203,7 +209,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
             RedemptionInputs({ recipient: recipient2, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
         );
 
-        assertApproxEqAbsDecimal(tokenOut, 51e6, 1e6, 6);
+        assertApproxEqAbsDecimal(tokenOut, 50e6 * lmTokenPrice / 1e18, 1e6, 6);
 
         // check balances after redemption
         s1.lmTokenTotalSupply = IShareTokenProxy(lmToken).totalSupply();
@@ -212,15 +218,22 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         s1.rUsdCustodianBalance = ITokenProxy(sec.rusd).balanceOf(custodian);
         s1.rUsdRecipientBalance2 = ITokenProxy(sec.rusd).balanceOf(recipient2);
 
+        if (custodian == subscriber) {
+            assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 52e6);
+        } else {
+            assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance);
+            assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 52e6);
+        }
+
         assertEq(s1.lmTokenTotalSupply, s0.lmTokenTotalSupply - 50e18);
         assertEq(s1.lmTokenRecipientBalance1, s0.lmTokenRecipientBalance1 - 50e18);
-        assertEq(s1.rUsdSubscriberBalance, s0.rUsdSubscriberBalance);
-        assertEq(s1.rUsdCustodianBalance, s0.rUsdCustodianBalance - 52e6);
         assertEq(s1.rUsdRecipientBalance2, s0.rUsdRecipientBalance2 + tokenOut);
         assertEq(ITokenProxy(sec.rusd).balanceOf(lmToken), lmtokenRusdBalanceBefore + 52e6 - tokenOut);
     }
 
     function check_lmToken_view_functions(address lmToken, bytes32 lmTokenUsdcNodeId) private {
+        removeCollateralCap(lmToken);
+
         (address user,) = makeAddrAndKey("user");
 
         uint256 lmTokenAmount = 1e18;
@@ -265,9 +278,9 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         assertEq(accountLmTokenCollateralInfo.realBalance, int256(lmTokenAmount));
     }
 
-    function check_lmToken_cap_exceeded(address lmToken) private {
+    function check_lmToken_cap_exceeded(address lmToken, uint256 cap) private {
         (address user, uint256 userPk) = makeAddrAndKey("user");
-        uint256 amount = 2_000_001e18; // denominated in lmToken
+        uint256 amount = cap + 1e18; // denominated in lmToken
         uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(10_000e18);
@@ -279,18 +292,17 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector,
-                1,
-                lmToken,
-                2_000_000e18,
-                collateralPoolLmTokenBalance + amount
+                ICoreProxy.CollateralCapExceeded.selector, 1, lmToken, cap, collateralPoolLmTokenBalance + amount
             )
         );
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
     }
 
     function check_lmToken_deposit_withdraw(address lmToken) private {
-        (address user, uint256 userPk) = makeAddrAndKey("user");
+        removeCollateralCap(lmToken);
+        removeCollateralWithdrawalLimit(lmToken);
+
+        (address user,) = makeAddrAndKey("user");
         uint256 amount = 1000e18; // denominated in lmToken
 
         // deposit new margin account
@@ -308,6 +320,8 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
     function check_trade_lmTokenCollateral_depositWithdraw(address lmToken) private {
         mockFreshPrices();
+        removeCollateralCap(lmToken);
+        removeCollateralWithdrawalLimit(lmToken);
 
         (address user, uint256 userPk) = makeAddrAndKey("user");
         uint256 amount = 3000e18; // denominated in lmToken
@@ -349,57 +363,73 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         checkFuzz_LmTokenMintBurn(sec.ramber, sec.ramberSubscriber, sec.ramberRedeemer, sec.ramberCustodian, attacker);
     }
 
+    function checkFuzz_rhedgeMintBurn(address attacker) public {
+        checkFuzz_LmTokenMintBurn(sec.rhedge, sec.rhedgeSubscriber, sec.rhedgeRedeemer, sec.rhedgeCustodian, attacker);
+    }
+
     function check_rseliniRedemptionAndSubscription() public {
         check_LmToken_RedemptionAndSubscription(
-            sec.rselini, sec.rseliniSubscriber, sec.rseliniRedeemer, sec.rseliniCustodian
+            sec.rselini, sec.rseliniUsdcReyaLmNodeId, sec.rseliniSubscriber, sec.rseliniRedeemer, sec.rseliniCustodian
         );
     }
 
     function check_ramberRedemptionAndSubscription() public {
         check_LmToken_RedemptionAndSubscription(
-            sec.ramber, sec.ramberSubscriber, sec.ramberRedeemer, sec.ramberCustodian
+            sec.ramber, sec.ramberUsdcReyaLmNodeId, sec.ramberSubscriber, sec.ramberRedeemer, sec.ramberCustodian
+        );
+    }
+
+    function check_rhedgeRedemptionAndSubscription() public {
+        check_LmToken_RedemptionAndSubscription(
+            sec.rhedge, sec.rhedgeUsdcReyaLmNodeId, sec.rhedgeSubscriber, sec.rhedgeRedeemer, sec.rhedgeCustodian
         );
     }
 
     function check_rselini_view_functions() public {
-        removeCollateralCap(sec.rselini);
         check_lmToken_view_functions(sec.rselini, sec.rseliniUsdcReyaLmNodeId);
     }
 
     function check_ramber_view_functions() public {
-        removeCollateralCap(sec.ramber);
         check_lmToken_view_functions(sec.ramber, sec.ramberUsdcReyaLmNodeId);
     }
 
+    function check_rhedge_view_functions() public {
+        check_lmToken_view_functions(sec.rhedge, sec.rhedgeUsdcReyaLmNodeId);
+    }
+
     function check_rselini_cap_exceeded() public {
-        check_lmToken_cap_exceeded(sec.rselini);
+        check_lmToken_cap_exceeded(sec.rselini, 2_000_000e18);
     }
 
     function check_ramber_cap_exceeded() public {
-        check_lmToken_cap_exceeded(sec.ramber);
+        check_lmToken_cap_exceeded(sec.ramber, 2_000_000e18);
+    }
+
+    function check_rhedge_cap_exceeded() public {
+        check_lmToken_cap_exceeded(sec.rhedge, 10_000e18);
     }
 
     function check_rselini_deposit_withdraw() public {
-        removeCollateralCap(sec.rselini);
-        removeCollateralWithdrawalLimit(sec.rselini);
         check_lmToken_deposit_withdraw(sec.rselini);
     }
 
     function check_ramber_deposit_withdraw() public {
-        removeCollateralCap(sec.ramber);
-        removeCollateralWithdrawalLimit(sec.ramber);
         check_lmToken_deposit_withdraw(sec.ramber);
     }
 
+    function check_rhedge_deposit_withdraw() public {
+        check_lmToken_deposit_withdraw(sec.rhedge);
+    }
+
     function check_trade_rseliniCollateral_depositWithdraw() public {
-        removeCollateralCap(sec.rselini);
-        removeCollateralWithdrawalLimit(sec.rselini);
         check_trade_lmTokenCollateral_depositWithdraw(sec.rselini);
     }
 
     function check_trade_ramberCollateral_depositWithdraw() public {
-        removeCollateralCap(sec.ramber);
-        removeCollateralWithdrawalLimit(sec.ramber);
         check_trade_lmTokenCollateral_depositWithdraw(sec.ramber);
+    }
+
+    function check_trade_rhedgeCollateral_depositWithdraw() public {
+        check_trade_lmTokenCollateral_depositWithdraw(sec.rhedge);
     }
 }

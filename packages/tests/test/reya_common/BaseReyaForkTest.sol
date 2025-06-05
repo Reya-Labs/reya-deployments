@@ -96,7 +96,7 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     }
 
     function isLmToken(address collateral) internal view returns (bool) {
-        return collateral == sec.rselini || collateral == sec.ramber;
+        return collateral == sec.rselini || collateral == sec.ramber || collateral == sec.rhedge;
     }
 
     function depositNewMA(address user, address collateral, uint256 amount) internal returns (uint128 accountId) {
