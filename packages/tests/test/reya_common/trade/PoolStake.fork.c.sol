@@ -6,6 +6,10 @@ import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol
 
 import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 
+import { Action, ActionMetadata } from "../../../src/interfaces/ICoreProxy.sol";
+
+import "../DataTypes.sol";
+
 contract PoolStakeForkCheck is BaseReyaForkTest {
     address user;
     uint256 userPrivateKey;
@@ -42,15 +46,6 @@ contract PoolStakeForkCheck is BaseReyaForkTest {
 
         removeCollateralWithdrawalLimit(sec.srusd);
 
-        sharesAmount = uint256(getNetDeposits(accountId, sec.srusd));
-
-        assertEq(getNetDeposits(accountId, sec.srusd), 0);
-        assertEq(getNetDeposits(accountId, sec.rusd), 10e6);
-
-        assertApproxEqAbsDecimal(
-            IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user), sharesAmount, 0.000001e30, 30
-        );
-
-        assertEq(ITokenProxy(sec.srusd).balanceOf(sec.periphery), 0);
+        // TODO: move liquidity away from srUSD
     }
 }

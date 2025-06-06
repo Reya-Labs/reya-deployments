@@ -23,8 +23,7 @@ import {
     WithdrawMAInputs,
     DepositNewMAInputs,
     DepositPassivePoolInputs,
-    DepositLiquidityToAccountInputs,
-    WithdrawLiquidityFromAccountInputs
+    DepositLiquidityToAccountInputs
 } from "../../src/interfaces/IPeripheryProxy.sol";
 
 import { IOracleManagerProxy, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
