@@ -80,9 +80,6 @@ interface IPeripheryProxy {
     function depositPassivePool(DepositPassivePoolInputs memory inputs)
         external;
 
-    function depositPassivePoolV2(DepositPassivePoolInputsV2 memory inputs)
-        external;
-
     error CallerIsNotExecutionHelper(address caller, address token);
     error FailedApproval(address spender, uint256 value);
     error FeatureUnavailable(bytes32 which);
@@ -189,24 +186,11 @@ interface IPeripheryProxy {
     function transferFromMAToMA(TransferFromMAToMAInputs memory inputs)
         external;
 
-    function transferFromMAToPool(TransferFromMAToPoolInputs memory inputs)
-        external;
-
-    function transferFromPoolToMA(TransferFromPoolToMAInputs memory inputs)
-        external;
-
     function withdraw(WithdrawInputs memory inputs) external payable;
-
-    function withdrawLiquidityFromAccount(
-        WithdrawLiquidityFromAccountInputs memory inputs
-    ) external;
 
     function withdrawMA(WithdrawMAInputs memory inputs) external;
 
     function withdrawPassivePool(WithdrawPassivePoolInputs memory inputs)
-        external;
-
-    function withdrawPassivePoolV2(WithdrawPassivePoolInputsV2 memory inputs)
         external;
 
     error NotEnoughFees(uint256 tokenAmount, uint256 tokenFees);
@@ -255,13 +239,6 @@ struct DepositPassivePoolInputs {
     uint256 minShares;
 }
 
-struct DepositPassivePoolInputsV2 {
-    uint128 poolId;
-    address owner;
-    address token;
-    uint256 minShares;
-}
-
 struct Command {
     uint8 commandType;
     bytes inputs;
@@ -303,15 +280,6 @@ struct TransferFromMAToPoolInputs {
     address receiver;
 }
 
-struct TransferFromPoolToMAInputs {
-    address owner;
-    EIP712Signature sig;
-    uint256 sharesAmount;
-    uint128 poolId;
-    uint256 minOut;
-    uint128 accountId;
-}
-
 struct WithdrawInputs {
     uint256 tokenAmount;
     address token;
@@ -339,18 +307,6 @@ struct WithdrawMAInputs {
 
 struct WithdrawPassivePoolInputs {
     address owner;
-    uint128 poolId;
-    uint256 sharesAmount;
-    uint256 minOut;
-    EIP712Signature sig;
-    uint256 socketMsgGasLimit;
-    uint256 chainId;
-    address receiver;
-}
-
-struct WithdrawPassivePoolInputsV2 {
-    address owner;
-    address token;
     uint128 poolId;
     uint256 sharesAmount;
     uint256 minOut;
