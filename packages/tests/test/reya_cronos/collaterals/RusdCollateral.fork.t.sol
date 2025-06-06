@@ -6,6 +6,7 @@ import { RusdCollateralForkCheck } from "../../reya_common/collaterals/RusdColla
 contract RusdCollateralForkTest is ReyaForkTest, RusdCollateralForkCheck {
     function testFuzz_Cronos_USDCMintBurn(address attacker) public {
         vm.assume(attacker != dec.socketController[sec.usdc]);
+        vm.assume(attacker != sec.multisig);
         checkFuzz_USDCMintBurn(attacker);
     }
 

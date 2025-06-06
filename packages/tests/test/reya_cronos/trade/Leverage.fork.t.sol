@@ -5,2234 +5,286 @@ import { LeverageForkCheck } from "../../reya_common/trade/Leverage.fork.c.sol";
 
 contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
     function test_Cronos_trade_rusdCollateral_leverage_eth() public {
-        check_trade_rusdCollateral_leverage_eth();
+        check_trade_leverage(1, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_btc() public {
-        check_trade_rusdCollateral_leverage_btc();
+        check_trade_leverage(2, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_sol() public {
-        check_trade_rusdCollateral_leverage_sol();
+        check_trade_leverage(3, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_arb() public {
-        check_trade_rusdCollateral_leverage_arb();
+        check_trade_leverage(4, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_op() public {
-        check_trade_rusdCollateral_leverage_op();
+        check_trade_leverage(5, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_avax() public {
-        check_trade_rusdCollateral_leverage_avax();
+        check_trade_leverage(6, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_mkr() public {
-        check_trade_rusdCollateral_leverage_mkr();
+        check_trade_leverage(7, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_link() public {
-        check_trade_rusdCollateral_leverage_link();
+        check_trade_leverage(8, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_aave() public {
-        check_trade_rusdCollateral_leverage_aave();
+        check_trade_leverage(9, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_crv() public {
-        check_trade_rusdCollateral_leverage_crv();
+        check_trade_leverage(10, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_uni() public {
-        check_trade_rusdCollateral_leverage_uni();
+        check_trade_leverage(11, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_sui() public {
-        check_trade_rusdCollateral_leverage_sui();
+        check_trade_leverage(12, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_tia() public {
-        check_trade_rusdCollateral_leverage_tia();
+        check_trade_leverage(13, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_sei() public {
-        check_trade_rusdCollateral_leverage_sei();
+        check_trade_leverage(14, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_zro() public {
-        check_trade_rusdCollateral_leverage_zro();
+        check_trade_leverage(15, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_xrp() public {
-        check_trade_rusdCollateral_leverage_xrp();
+        check_trade_leverage(16, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_wif() public {
-        check_trade_rusdCollateral_leverage_wif();
+        check_trade_leverage(17, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_pepe1k() public {
-        check_trade_rusdCollateral_leverage_pepe1k();
+        check_trade_leverage(18, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_popcat() public {
-        check_trade_rusdCollateral_leverage_popcat();
+        check_trade_leverage(19, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_doge() public {
-        check_trade_rusdCollateral_leverage_doge();
+        check_trade_leverage(20, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_kshib() public {
-        check_trade_rusdCollateral_leverage_kshib();
+        check_trade_leverage(21, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_kbonk() public {
-        check_trade_rusdCollateral_leverage_kbonk();
+        check_trade_leverage(22, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_apt() public {
-        check_trade_rusdCollateral_leverage_apt();
+        check_trade_leverage(23, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_bnb() public {
-        check_trade_rusdCollateral_leverage_bnb();
+        check_trade_leverage(24, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_jto() public {
-        check_trade_rusdCollateral_leverage_jto();
+        check_trade_leverage(25, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_ada() public {
-        check_trade_rusdCollateral_leverage_ada();
+        check_trade_leverage(26, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_ldo() public {
-        check_trade_rusdCollateral_leverage_ldo();
+        check_trade_leverage(27, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_pol() public {
-        check_trade_rusdCollateral_leverage_pol();
+        check_trade_leverage(28, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_near() public {
-        check_trade_rusdCollateral_leverage_near();
+        check_trade_leverage(29, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_ftm() public {
-        check_trade_rusdCollateral_leverage_ftm();
+        check_trade_leverage(30, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_ena() public {
-        check_trade_rusdCollateral_leverage_ena();
+        check_trade_leverage(31, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_eigen() public {
-        check_trade_rusdCollateral_leverage_eigen();
+        check_trade_leverage(32, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_pendle() public {
-        check_trade_rusdCollateral_leverage_pendle();
+        check_trade_leverage(33, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_goat() public {
-        check_trade_rusdCollateral_leverage_goat();
+        check_trade_leverage(34, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_grass() public {
-        check_trade_rusdCollateral_leverage_grass();
+        check_trade_leverage(35, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_kneiro() public {
-        check_trade_rusdCollateral_leverage_kneiro();
+        check_trade_leverage(36, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_dot() public {
-        check_trade_rusdCollateral_leverage_dot();
+        check_trade_leverage(37, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_ltc() public {
-        check_trade_rusdCollateral_leverage_ltc();
+        check_trade_leverage(38, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_pyth() public {
-        check_trade_rusdCollateral_leverage_pyth();
+        check_trade_leverage(39, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_jup() public {
-        check_trade_rusdCollateral_leverage_jup();
+        check_trade_leverage(40, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_pengu() public {
-        check_trade_rusdCollateral_leverage_pengu();
+        check_trade_leverage(41, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_trump() public {
-        check_trade_rusdCollateral_leverage_trump();
+        check_trade_leverage(42, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_hype() public {
-        check_trade_rusdCollateral_leverage_hype();
+        check_trade_leverage(43, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_virtual() public {
-        check_trade_rusdCollateral_leverage_virtual();
+        check_trade_leverage(44, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_ai16z() public {
-        check_trade_rusdCollateral_leverage_ai16z();
+        check_trade_leverage(45, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_aixbt() public {
-        check_trade_rusdCollateral_leverage_aixbt();
+        check_trade_leverage(46, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_sonic() public {
-        check_trade_rusdCollateral_leverage_sonic();
+        check_trade_leverage(47, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_fartcoin() public {
-        check_trade_rusdCollateral_leverage_fartcoin();
+        check_trade_leverage(48, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_griffain() public {
-        check_trade_rusdCollateral_leverage_griffain();
+        check_trade_leverage(49, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_wld() public {
-        check_trade_rusdCollateral_leverage_wld();
+        check_trade_leverage(50, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_atom() public {
-        check_trade_rusdCollateral_leverage_atom();
+        check_trade_leverage(51, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_ape() public {
-        check_trade_rusdCollateral_leverage_ape();
+        check_trade_leverage(52, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_ton() public {
-        check_trade_rusdCollateral_leverage_ton();
+        check_trade_leverage(53, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_ondo() public {
-        check_trade_rusdCollateral_leverage_ondo();
+        check_trade_leverage(54, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_trx() public {
-        check_trade_rusdCollateral_leverage_trx();
+        check_trade_leverage(55, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_inj() public {
-        check_trade_rusdCollateral_leverage_inj();
+        check_trade_leverage(56, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_move() public {
-        check_trade_rusdCollateral_leverage_move();
+        check_trade_leverage(57, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_bera() public {
-        check_trade_rusdCollateral_leverage_bera();
+        check_trade_leverage(58, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_layer() public {
-        check_trade_rusdCollateral_leverage_layer();
+        check_trade_leverage(59, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_tao() public {
-        check_trade_rusdCollateral_leverage_tao();
+        check_trade_leverage(60, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_ip() public {
-        check_trade_rusdCollateral_leverage_ip();
+        check_trade_leverage(61, sec.usdc);
     }
 
     function test_Cronos_trade_rusdCollateral_leverage_me() public {
-        check_trade_rusdCollateral_leverage_me();
+        check_trade_leverage(62, sec.usdc);
     }
 
     function test_Cronos_trade_wethCollateral_leverage_eth() public {
-        check_trade_wethCollateral_leverage_eth();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_btc() public {
-        check_trade_wethCollateral_leverage_btc();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_sol() public {
-        check_trade_wethCollateral_leverage_sol();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_arb() public {
-        check_trade_wethCollateral_leverage_arb();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_op() public {
-        check_trade_wethCollateral_leverage_op();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_avax() public {
-        check_trade_wethCollateral_leverage_avax();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_mkr() public {
-        check_trade_wethCollateral_leverage_mkr();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_link() public {
-        check_trade_wethCollateral_leverage_link();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_aave() public {
-        check_trade_wethCollateral_leverage_aave();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_crv() public {
-        check_trade_wethCollateral_leverage_crv();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_uni() public {
-        check_trade_wethCollateral_leverage_uni();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_sui() public {
-        check_trade_wethCollateral_leverage_sui();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_tia() public {
-        check_trade_wethCollateral_leverage_tia();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_sei() public {
-        check_trade_wethCollateral_leverage_sei();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_zro() public {
-        check_trade_wethCollateral_leverage_zro();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_xrp() public {
-        check_trade_wethCollateral_leverage_xrp();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_wif() public {
-        check_trade_wethCollateral_leverage_wif();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_pepe1k() public {
-        check_trade_wethCollateral_leverage_pepe1k();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_popcat() public {
-        check_trade_wethCollateral_leverage_popcat();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_doge() public {
-        check_trade_wethCollateral_leverage_doge();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_kshib() public {
-        check_trade_wethCollateral_leverage_kshib();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_kbonk() public {
-        check_trade_wethCollateral_leverage_kbonk();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_apt() public {
-        check_trade_wethCollateral_leverage_apt();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_bnb() public {
-        check_trade_wethCollateral_leverage_bnb();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_jto() public {
-        check_trade_wethCollateral_leverage_jto();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_ada() public {
-        check_trade_wethCollateral_leverage_ada();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_ldo() public {
-        check_trade_wethCollateral_leverage_ldo();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_pol() public {
-        check_trade_wethCollateral_leverage_pol();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_near() public {
-        check_trade_wethCollateral_leverage_near();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_ftm() public {
-        check_trade_wethCollateral_leverage_ftm();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_ena() public {
-        check_trade_wethCollateral_leverage_ena();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_eigen() public {
-        check_trade_wethCollateral_leverage_eigen();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_pendle() public {
-        check_trade_wethCollateral_leverage_pendle();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_goat() public {
-        check_trade_wethCollateral_leverage_goat();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_grass() public {
-        check_trade_wethCollateral_leverage_grass();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_kneiro() public {
-        check_trade_wethCollateral_leverage_kneiro();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_dot() public {
-        check_trade_wethCollateral_leverage_dot();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_ltc() public {
-        check_trade_wethCollateral_leverage_ltc();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_pyth() public {
-        check_trade_wethCollateral_leverage_pyth();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_jup() public {
-        check_trade_wethCollateral_leverage_jup();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_pengu() public {
-        check_trade_wethCollateral_leverage_pengu();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_trump() public {
-        check_trade_wethCollateral_leverage_trump();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_hype() public {
-        check_trade_wethCollateral_leverage_hype();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_virtual() public {
-        check_trade_wethCollateral_leverage_virtual();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_ai16z() public {
-        check_trade_wethCollateral_leverage_ai16z();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_aixbt() public {
-        check_trade_wethCollateral_leverage_aixbt();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_sonic() public {
-        check_trade_wethCollateral_leverage_sonic();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_fartcoin() public {
-        check_trade_wethCollateral_leverage_fartcoin();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_griffain() public {
-        check_trade_wethCollateral_leverage_griffain();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_wld() public {
-        check_trade_wethCollateral_leverage_wld();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_atom() public {
-        check_trade_wethCollateral_leverage_atom();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_ape() public {
-        check_trade_wethCollateral_leverage_ape();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_ton() public {
-        check_trade_wethCollateral_leverage_ton();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_ondo() public {
-        check_trade_wethCollateral_leverage_ondo();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_trx() public {
-        check_trade_wethCollateral_leverage_trx();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_inj() public {
-        check_trade_wethCollateral_leverage_inj();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_move() public {
-        check_trade_wethCollateral_leverage_move();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_bera() public {
-        check_trade_wethCollateral_leverage_bera();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_layer() public {
-        check_trade_wethCollateral_leverage_layer();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_tao() public {
-        check_trade_wethCollateral_leverage_tao();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_ip() public {
-        check_trade_wethCollateral_leverage_ip();
-    }
-
-    function test_Cronos_trade_wethCollateral_leverage_me() public {
-        check_trade_wethCollateral_leverage_me();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_eth() public {
-        check_trade_usdeCollateral_leverage_eth();
+        check_trade_leverage(1, sec.weth);
     }
 
     function test_Cronos_trade_usdeCollateral_leverage_btc() public {
-        check_trade_usdeCollateral_leverage_btc();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_sol() public {
-        check_trade_usdeCollateral_leverage_sol();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_arb() public {
-        check_trade_usdeCollateral_leverage_arb();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_op() public {
-        check_trade_usdeCollateral_leverage_op();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_avax() public {
-        check_trade_usdeCollateral_leverage_avax();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_mkr() public {
-        check_trade_usdeCollateral_leverage_mkr();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_link() public {
-        check_trade_usdeCollateral_leverage_link();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_aave() public {
-        check_trade_usdeCollateral_leverage_aave();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_crv() public {
-        check_trade_usdeCollateral_leverage_crv();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_uni() public {
-        check_trade_usdeCollateral_leverage_uni();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_sui() public {
-        check_trade_usdeCollateral_leverage_sui();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_tia() public {
-        check_trade_usdeCollateral_leverage_tia();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_sei() public {
-        check_trade_usdeCollateral_leverage_sei();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_zro() public {
-        check_trade_usdeCollateral_leverage_zro();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_xrp() public {
-        check_trade_usdeCollateral_leverage_xrp();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_wif() public {
-        check_trade_usdeCollateral_leverage_wif();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_pepe1k() public {
-        check_trade_usdeCollateral_leverage_pepe1k();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_popcat() public {
-        check_trade_usdeCollateral_leverage_popcat();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_doge() public {
-        check_trade_usdeCollateral_leverage_doge();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_kshib() public {
-        check_trade_usdeCollateral_leverage_kshib();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_kbonk() public {
-        check_trade_usdeCollateral_leverage_kbonk();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_apt() public {
-        check_trade_usdeCollateral_leverage_apt();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_bnb() public {
-        check_trade_usdeCollateral_leverage_bnb();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_jto() public {
-        check_trade_usdeCollateral_leverage_jto();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_ada() public {
-        check_trade_usdeCollateral_leverage_ada();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_ldo() public {
-        check_trade_usdeCollateral_leverage_ldo();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_pol() public {
-        check_trade_usdeCollateral_leverage_pol();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_near() public {
-        check_trade_usdeCollateral_leverage_near();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_ftm() public {
-        check_trade_usdeCollateral_leverage_ftm();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_ena() public {
-        check_trade_usdeCollateral_leverage_ena();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_eigen() public {
-        check_trade_usdeCollateral_leverage_eigen();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_pendle() public {
-        check_trade_usdeCollateral_leverage_pendle();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_goat() public {
-        check_trade_usdeCollateral_leverage_goat();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_grass() public {
-        check_trade_usdeCollateral_leverage_grass();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_kneiro() public {
-        check_trade_usdeCollateral_leverage_kneiro();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_dot() public {
-        check_trade_usdeCollateral_leverage_dot();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_ltc() public {
-        check_trade_usdeCollateral_leverage_ltc();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_pyth() public {
-        check_trade_usdeCollateral_leverage_pyth();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_jup() public {
-        check_trade_usdeCollateral_leverage_jup();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_pengu() public {
-        check_trade_usdeCollateral_leverage_pengu();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_trump() public {
-        check_trade_usdeCollateral_leverage_trump();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_hype() public {
-        check_trade_usdeCollateral_leverage_hype();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_virtual() public {
-        check_trade_usdeCollateral_leverage_virtual();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_ai16z() public {
-        check_trade_usdeCollateral_leverage_ai16z();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_aixbt() public {
-        check_trade_usdeCollateral_leverage_aixbt();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_sonic() public {
-        check_trade_usdeCollateral_leverage_sonic();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_fartcoin() public {
-        check_trade_usdeCollateral_leverage_fartcoin();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_griffain() public {
-        check_trade_usdeCollateral_leverage_griffain();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_wld() public {
-        check_trade_usdeCollateral_leverage_wld();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_atom() public {
-        check_trade_usdeCollateral_leverage_atom();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_ape() public {
-        check_trade_usdeCollateral_leverage_ape();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_ton() public {
-        check_trade_usdeCollateral_leverage_ton();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_ondo() public {
-        check_trade_usdeCollateral_leverage_ondo();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_trx() public {
-        check_trade_usdeCollateral_leverage_trx();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_inj() public {
-        check_trade_usdeCollateral_leverage_inj();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_move() public {
-        check_trade_usdeCollateral_leverage_move();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_bera() public {
-        check_trade_usdeCollateral_leverage_bera();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_layer() public {
-        check_trade_usdeCollateral_leverage_layer();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_tao() public {
-        check_trade_usdeCollateral_leverage_tao();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_ip() public {
-        check_trade_usdeCollateral_leverage_ip();
-    }
-
-    function test_Cronos_trade_usdeCollateral_leverage_me() public {
-        check_trade_usdeCollateral_leverage_me();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_eth() public {
-        check_trade_susdeCollateral_leverage_eth();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_btc() public {
-        check_trade_susdeCollateral_leverage_btc();
+        check_trade_leverage(2, sec.usde);
     }
 
     function test_Cronos_trade_susdeCollateral_leverage_sol() public {
-        check_trade_susdeCollateral_leverage_sol();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_arb() public {
-        check_trade_susdeCollateral_leverage_arb();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_op() public {
-        check_trade_susdeCollateral_leverage_op();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_avax() public {
-        check_trade_susdeCollateral_leverage_avax();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_mkr() public {
-        check_trade_susdeCollateral_leverage_mkr();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_link() public {
-        check_trade_susdeCollateral_leverage_link();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_aave() public {
-        check_trade_susdeCollateral_leverage_aave();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_crv() public {
-        check_trade_susdeCollateral_leverage_crv();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_uni() public {
-        check_trade_susdeCollateral_leverage_uni();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_sui() public {
-        check_trade_susdeCollateral_leverage_sui();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_tia() public {
-        check_trade_susdeCollateral_leverage_tia();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_sei() public {
-        check_trade_susdeCollateral_leverage_sei();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_zro() public {
-        check_trade_susdeCollateral_leverage_zro();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_xrp() public {
-        check_trade_susdeCollateral_leverage_xrp();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_wif() public {
-        check_trade_susdeCollateral_leverage_wif();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_pepe1k() public {
-        check_trade_susdeCollateral_leverage_pepe1k();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_popcat() public {
-        check_trade_susdeCollateral_leverage_popcat();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_doge() public {
-        check_trade_susdeCollateral_leverage_doge();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_kshib() public {
-        check_trade_susdeCollateral_leverage_kshib();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_kbonk() public {
-        check_trade_susdeCollateral_leverage_kbonk();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_apt() public {
-        check_trade_susdeCollateral_leverage_apt();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_bnb() public {
-        check_trade_susdeCollateral_leverage_bnb();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_jto() public {
-        check_trade_susdeCollateral_leverage_jto();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_ada() public {
-        check_trade_susdeCollateral_leverage_ada();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_ldo() public {
-        check_trade_susdeCollateral_leverage_ldo();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_pol() public {
-        check_trade_susdeCollateral_leverage_pol();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_near() public {
-        check_trade_susdeCollateral_leverage_near();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_ftm() public {
-        check_trade_susdeCollateral_leverage_ftm();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_ena() public {
-        check_trade_susdeCollateral_leverage_ena();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_eigen() public {
-        check_trade_susdeCollateral_leverage_eigen();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_pendle() public {
-        check_trade_susdeCollateral_leverage_pendle();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_goat() public {
-        check_trade_susdeCollateral_leverage_goat();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_grass() public {
-        check_trade_susdeCollateral_leverage_grass();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_kneiro() public {
-        check_trade_susdeCollateral_leverage_kneiro();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_dot() public {
-        check_trade_susdeCollateral_leverage_dot();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_ltc() public {
-        check_trade_susdeCollateral_leverage_ltc();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_pyth() public {
-        check_trade_susdeCollateral_leverage_pyth();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_jup() public {
-        check_trade_susdeCollateral_leverage_jup();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_pengu() public {
-        check_trade_susdeCollateral_leverage_pengu();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_trump() public {
-        check_trade_susdeCollateral_leverage_trump();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_hype() public {
-        check_trade_susdeCollateral_leverage_hype();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_virtual() public {
-        check_trade_susdeCollateral_leverage_virtual();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_ai16z() public {
-        check_trade_susdeCollateral_leverage_ai16z();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_aixbt() public {
-        check_trade_susdeCollateral_leverage_aixbt();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_sonic() public {
-        check_trade_susdeCollateral_leverage_sonic();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_fartcoin() public {
-        check_trade_susdeCollateral_leverage_fartcoin();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_griffain() public {
-        check_trade_susdeCollateral_leverage_griffain();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_wld() public {
-        check_trade_susdeCollateral_leverage_wld();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_atom() public {
-        check_trade_susdeCollateral_leverage_atom();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_ape() public {
-        check_trade_susdeCollateral_leverage_ape();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_ton() public {
-        check_trade_susdeCollateral_leverage_ton();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_ondo() public {
-        check_trade_susdeCollateral_leverage_ondo();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_trx() public {
-        check_trade_susdeCollateral_leverage_trx();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_inj() public {
-        check_trade_susdeCollateral_leverage_inj();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_move() public {
-        check_trade_susdeCollateral_leverage_move();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_bera() public {
-        check_trade_susdeCollateral_leverage_bera();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_layer() public {
-        check_trade_susdeCollateral_leverage_layer();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_tao() public {
-        check_trade_susdeCollateral_leverage_tao();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_ip() public {
-        check_trade_susdeCollateral_leverage_ip();
-    }
-
-    function test_Cronos_trade_susdeCollateral_leverage_me() public {
-        check_trade_susdeCollateral_leverage_me();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_eth() public {
-        check_trade_deusdCollateral_leverage_eth();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_btc() public {
-        check_trade_deusdCollateral_leverage_btc();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_sol() public {
-        check_trade_deusdCollateral_leverage_sol();
+        check_trade_leverage(3, sec.susde);
     }
 
     function test_Cronos_trade_deusdCollateral_leverage_arb() public {
-        check_trade_deusdCollateral_leverage_arb();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_op() public {
-        check_trade_deusdCollateral_leverage_op();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_avax() public {
-        check_trade_deusdCollateral_leverage_avax();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_mkr() public {
-        check_trade_deusdCollateral_leverage_mkr();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_link() public {
-        check_trade_deusdCollateral_leverage_link();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_aave() public {
-        check_trade_deusdCollateral_leverage_aave();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_crv() public {
-        check_trade_deusdCollateral_leverage_crv();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_uni() public {
-        check_trade_deusdCollateral_leverage_uni();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_sui() public {
-        check_trade_deusdCollateral_leverage_sui();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_tia() public {
-        check_trade_deusdCollateral_leverage_tia();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_sei() public {
-        check_trade_deusdCollateral_leverage_sei();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_zro() public {
-        check_trade_deusdCollateral_leverage_zro();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_xrp() public {
-        check_trade_deusdCollateral_leverage_xrp();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_wif() public {
-        check_trade_deusdCollateral_leverage_wif();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_pepe1k() public {
-        check_trade_deusdCollateral_leverage_pepe1k();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_popcat() public {
-        check_trade_deusdCollateral_leverage_popcat();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_doge() public {
-        check_trade_deusdCollateral_leverage_doge();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_kshib() public {
-        check_trade_deusdCollateral_leverage_kshib();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_kbonk() public {
-        check_trade_deusdCollateral_leverage_kbonk();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_apt() public {
-        check_trade_deusdCollateral_leverage_apt();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_bnb() public {
-        check_trade_deusdCollateral_leverage_bnb();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_jto() public {
-        check_trade_deusdCollateral_leverage_jto();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_ada() public {
-        check_trade_deusdCollateral_leverage_ada();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_ldo() public {
-        check_trade_deusdCollateral_leverage_ldo();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_pol() public {
-        check_trade_deusdCollateral_leverage_pol();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_near() public {
-        check_trade_deusdCollateral_leverage_near();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_ftm() public {
-        check_trade_deusdCollateral_leverage_ftm();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_ena() public {
-        check_trade_deusdCollateral_leverage_ena();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_eigen() public {
-        check_trade_deusdCollateral_leverage_eigen();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_pendle() public {
-        check_trade_deusdCollateral_leverage_pendle();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_goat() public {
-        check_trade_deusdCollateral_leverage_goat();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_grass() public {
-        check_trade_deusdCollateral_leverage_grass();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_kneiro() public {
-        check_trade_deusdCollateral_leverage_kneiro();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_dot() public {
-        check_trade_deusdCollateral_leverage_dot();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_ltc() public {
-        check_trade_deusdCollateral_leverage_ltc();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_pyth() public {
-        check_trade_deusdCollateral_leverage_pyth();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_jup() public {
-        check_trade_deusdCollateral_leverage_jup();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_pengu() public {
-        check_trade_deusdCollateral_leverage_pengu();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_trump() public {
-        check_trade_deusdCollateral_leverage_trump();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_hype() public {
-        check_trade_deusdCollateral_leverage_hype();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_virtual() public {
-        check_trade_deusdCollateral_leverage_virtual();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_ai16z() public {
-        check_trade_deusdCollateral_leverage_ai16z();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_aixbt() public {
-        check_trade_deusdCollateral_leverage_aixbt();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_sonic() public {
-        check_trade_deusdCollateral_leverage_sonic();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_fartcoin() public {
-        check_trade_deusdCollateral_leverage_fartcoin();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_griffain() public {
-        check_trade_deusdCollateral_leverage_griffain();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_wld() public {
-        check_trade_deusdCollateral_leverage_wld();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_atom() public {
-        check_trade_deusdCollateral_leverage_atom();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_ape() public {
-        check_trade_deusdCollateral_leverage_ape();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_ton() public {
-        check_trade_deusdCollateral_leverage_ton();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_ondo() public {
-        check_trade_deusdCollateral_leverage_ondo();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_trx() public {
-        check_trade_deusdCollateral_leverage_trx();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_inj() public {
-        check_trade_deusdCollateral_leverage_inj();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_move() public {
-        check_trade_deusdCollateral_leverage_move();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_bera() public {
-        check_trade_deusdCollateral_leverage_bera();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_layer() public {
-        check_trade_deusdCollateral_leverage_layer();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_tao() public {
-        check_trade_deusdCollateral_leverage_tao();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_ip() public {
-        check_trade_deusdCollateral_leverage_ip();
-    }
-
-    function test_Cronos_trade_deusdCollateral_leverage_me() public {
-        check_trade_deusdCollateral_leverage_me();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_eth() public {
-        check_trade_sdeusdCollateral_leverage_eth();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_btc() public {
-        check_trade_sdeusdCollateral_leverage_btc();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_sol() public {
-        check_trade_sdeusdCollateral_leverage_sol();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_arb() public {
-        check_trade_sdeusdCollateral_leverage_arb();
+        check_trade_leverage(4, sec.deusd);
     }
 
     function test_Cronos_trade_sdeusdCollateral_leverage_op() public {
-        check_trade_sdeusdCollateral_leverage_op();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_avax() public {
-        check_trade_sdeusdCollateral_leverage_avax();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_mkr() public {
-        check_trade_sdeusdCollateral_leverage_mkr();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_link() public {
-        check_trade_sdeusdCollateral_leverage_link();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_aave() public {
-        check_trade_sdeusdCollateral_leverage_aave();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_crv() public {
-        check_trade_sdeusdCollateral_leverage_crv();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_uni() public {
-        check_trade_sdeusdCollateral_leverage_uni();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_sui() public {
-        check_trade_sdeusdCollateral_leverage_sui();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_tia() public {
-        check_trade_sdeusdCollateral_leverage_tia();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_sei() public {
-        check_trade_sdeusdCollateral_leverage_sei();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_zro() public {
-        check_trade_sdeusdCollateral_leverage_zro();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_xrp() public {
-        check_trade_sdeusdCollateral_leverage_xrp();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_wif() public {
-        check_trade_sdeusdCollateral_leverage_wif();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_pepe1k() public {
-        check_trade_sdeusdCollateral_leverage_pepe1k();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_popcat() public {
-        check_trade_sdeusdCollateral_leverage_popcat();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_doge() public {
-        check_trade_sdeusdCollateral_leverage_doge();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_kshib() public {
-        check_trade_sdeusdCollateral_leverage_kshib();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_kbonk() public {
-        check_trade_sdeusdCollateral_leverage_kbonk();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_apt() public {
-        check_trade_sdeusdCollateral_leverage_apt();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_bnb() public {
-        check_trade_sdeusdCollateral_leverage_bnb();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_jto() public {
-        check_trade_sdeusdCollateral_leverage_jto();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_ada() public {
-        check_trade_sdeusdCollateral_leverage_ada();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_ldo() public {
-        check_trade_sdeusdCollateral_leverage_ldo();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_pol() public {
-        check_trade_sdeusdCollateral_leverage_pol();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_near() public {
-        check_trade_sdeusdCollateral_leverage_near();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_ftm() public {
-        check_trade_sdeusdCollateral_leverage_ftm();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_ena() public {
-        check_trade_sdeusdCollateral_leverage_ena();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_eigen() public {
-        check_trade_sdeusdCollateral_leverage_eigen();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_pendle() public {
-        check_trade_sdeusdCollateral_leverage_pendle();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_goat() public {
-        check_trade_sdeusdCollateral_leverage_goat();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_grass() public {
-        check_trade_sdeusdCollateral_leverage_grass();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_kneiro() public {
-        check_trade_sdeusdCollateral_leverage_kneiro();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_dot() public {
-        check_trade_sdeusdCollateral_leverage_dot();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_ltc() public {
-        check_trade_sdeusdCollateral_leverage_ltc();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_pyth() public {
-        check_trade_sdeusdCollateral_leverage_pyth();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_jup() public {
-        check_trade_sdeusdCollateral_leverage_jup();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_pengu() public {
-        check_trade_sdeusdCollateral_leverage_pengu();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_trump() public {
-        check_trade_sdeusdCollateral_leverage_trump();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_hype() public {
-        check_trade_sdeusdCollateral_leverage_hype();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_virtual() public {
-        check_trade_sdeusdCollateral_leverage_virtual();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_ai16z() public {
-        check_trade_sdeusdCollateral_leverage_ai16z();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_aixbt() public {
-        check_trade_sdeusdCollateral_leverage_aixbt();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_sonic() public {
-        check_trade_sdeusdCollateral_leverage_sonic();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_fartcoin() public {
-        check_trade_sdeusdCollateral_leverage_fartcoin();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_griffain() public {
-        check_trade_sdeusdCollateral_leverage_griffain();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_wld() public {
-        check_trade_sdeusdCollateral_leverage_wld();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_atom() public {
-        check_trade_sdeusdCollateral_leverage_atom();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_ape() public {
-        check_trade_sdeusdCollateral_leverage_ape();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_ton() public {
-        check_trade_sdeusdCollateral_leverage_ton();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_ondo() public {
-        check_trade_sdeusdCollateral_leverage_ondo();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_trx() public {
-        check_trade_sdeusdCollateral_leverage_trx();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_inj() public {
-        check_trade_sdeusdCollateral_leverage_inj();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_move() public {
-        check_trade_sdeusdCollateral_leverage_move();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_bera() public {
-        check_trade_sdeusdCollateral_leverage_bera();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_layer() public {
-        check_trade_sdeusdCollateral_leverage_layer();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_tao() public {
-        check_trade_sdeusdCollateral_leverage_tao();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_ip() public {
-        check_trade_sdeusdCollateral_leverage_ip();
-    }
-
-    function test_Cronos_trade_sdeusdCollateral_leverage_me() public {
-        check_trade_sdeusdCollateral_leverage_me();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_eth() public {
-        check_trade_rseliniCollateral_leverage_eth();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_btc() public {
-        check_trade_rseliniCollateral_leverage_btc();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_sol() public {
-        check_trade_rseliniCollateral_leverage_sol();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_arb() public {
-        check_trade_rseliniCollateral_leverage_arb();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_op() public {
-        check_trade_rseliniCollateral_leverage_op();
+        check_trade_leverage(5, sec.sdeusd);
     }
 
     function test_Cronos_trade_rseliniCollateral_leverage_avax() public {
-        check_trade_rseliniCollateral_leverage_avax();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_mkr() public {
-        check_trade_rseliniCollateral_leverage_mkr();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_link() public {
-        check_trade_rseliniCollateral_leverage_link();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_aave() public {
-        check_trade_rseliniCollateral_leverage_aave();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_crv() public {
-        check_trade_rseliniCollateral_leverage_crv();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_uni() public {
-        check_trade_rseliniCollateral_leverage_uni();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_sui() public {
-        check_trade_rseliniCollateral_leverage_sui();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_tia() public {
-        check_trade_rseliniCollateral_leverage_tia();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_sei() public {
-        check_trade_rseliniCollateral_leverage_sei();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_zro() public {
-        check_trade_rseliniCollateral_leverage_zro();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_xrp() public {
-        check_trade_rseliniCollateral_leverage_xrp();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_wif() public {
-        check_trade_rseliniCollateral_leverage_wif();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_pepe1k() public {
-        check_trade_rseliniCollateral_leverage_pepe1k();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_popcat() public {
-        check_trade_rseliniCollateral_leverage_popcat();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_doge() public {
-        check_trade_rseliniCollateral_leverage_doge();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_kshib() public {
-        check_trade_rseliniCollateral_leverage_kshib();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_kbonk() public {
-        check_trade_rseliniCollateral_leverage_kbonk();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_apt() public {
-        check_trade_rseliniCollateral_leverage_apt();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_bnb() public {
-        check_trade_rseliniCollateral_leverage_bnb();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_jto() public {
-        check_trade_rseliniCollateral_leverage_jto();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_ada() public {
-        check_trade_rseliniCollateral_leverage_ada();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_ldo() public {
-        check_trade_rseliniCollateral_leverage_ldo();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_pol() public {
-        check_trade_rseliniCollateral_leverage_pol();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_near() public {
-        check_trade_rseliniCollateral_leverage_near();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_ftm() public {
-        check_trade_rseliniCollateral_leverage_ftm();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_ena() public {
-        check_trade_rseliniCollateral_leverage_ena();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_eigen() public {
-        check_trade_rseliniCollateral_leverage_eigen();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_pendle() public {
-        check_trade_rseliniCollateral_leverage_pendle();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_goat() public {
-        check_trade_rseliniCollateral_leverage_goat();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_grass() public {
-        check_trade_rseliniCollateral_leverage_grass();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_kneiro() public {
-        check_trade_rseliniCollateral_leverage_kneiro();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_dot() public {
-        check_trade_rseliniCollateral_leverage_dot();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_ltc() public {
-        check_trade_rseliniCollateral_leverage_ltc();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_pyth() public {
-        check_trade_rseliniCollateral_leverage_pyth();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_jup() public {
-        check_trade_rseliniCollateral_leverage_jup();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_pengu() public {
-        check_trade_rseliniCollateral_leverage_pengu();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_trump() public {
-        check_trade_rseliniCollateral_leverage_trump();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_hype() public {
-        check_trade_rseliniCollateral_leverage_hype();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_virtual() public {
-        check_trade_rseliniCollateral_leverage_virtual();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_ai16z() public {
-        check_trade_rseliniCollateral_leverage_ai16z();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_aixbt() public {
-        check_trade_rseliniCollateral_leverage_aixbt();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_sonic() public {
-        check_trade_rseliniCollateral_leverage_sonic();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_fartcoin() public {
-        check_trade_rseliniCollateral_leverage_fartcoin();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_griffain() public {
-        check_trade_rseliniCollateral_leverage_griffain();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_wld() public {
-        check_trade_rseliniCollateral_leverage_wld();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_atom() public {
-        check_trade_rseliniCollateral_leverage_atom();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_ape() public {
-        check_trade_rseliniCollateral_leverage_ape();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_ton() public {
-        check_trade_rseliniCollateral_leverage_ton();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_ondo() public {
-        check_trade_rseliniCollateral_leverage_ondo();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_trx() public {
-        check_trade_rseliniCollateral_leverage_trx();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_inj() public {
-        check_trade_rseliniCollateral_leverage_inj();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_move() public {
-        check_trade_rseliniCollateral_leverage_move();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_bera() public {
-        check_trade_rseliniCollateral_leverage_bera();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_layer() public {
-        check_trade_rseliniCollateral_leverage_layer();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_tao() public {
-        check_trade_rseliniCollateral_leverage_tao();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_ip() public {
-        check_trade_rseliniCollateral_leverage_ip();
-    }
-
-    function test_Cronos_trade_rseliniCollateral_leverage_me() public {
-        check_trade_rseliniCollateral_leverage_me();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_eth() public {
-        check_trade_ramberCollateral_leverage_eth();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_btc() public {
-        check_trade_ramberCollateral_leverage_btc();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_sol() public {
-        check_trade_ramberCollateral_leverage_sol();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_arb() public {
-        check_trade_ramberCollateral_leverage_arb();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_op() public {
-        check_trade_ramberCollateral_leverage_op();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_avax() public {
-        check_trade_ramberCollateral_leverage_avax();
+        check_trade_leverage(6, sec.rselini);
     }
 
     function test_Cronos_trade_ramberCollateral_leverage_mkr() public {
-        check_trade_ramberCollateral_leverage_mkr();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_link() public {
-        check_trade_ramberCollateral_leverage_link();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_aave() public {
-        check_trade_ramberCollateral_leverage_aave();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_crv() public {
-        check_trade_ramberCollateral_leverage_crv();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_uni() public {
-        check_trade_ramberCollateral_leverage_uni();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_sui() public {
-        check_trade_ramberCollateral_leverage_sui();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_tia() public {
-        check_trade_ramberCollateral_leverage_tia();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_sei() public {
-        check_trade_ramberCollateral_leverage_sei();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_zro() public {
-        check_trade_ramberCollateral_leverage_zro();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_xrp() public {
-        check_trade_ramberCollateral_leverage_xrp();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_wif() public {
-        check_trade_ramberCollateral_leverage_wif();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_pepe1k() public {
-        check_trade_ramberCollateral_leverage_pepe1k();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_popcat() public {
-        check_trade_ramberCollateral_leverage_popcat();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_doge() public {
-        check_trade_ramberCollateral_leverage_doge();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_kshib() public {
-        check_trade_ramberCollateral_leverage_kshib();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_kbonk() public {
-        check_trade_ramberCollateral_leverage_kbonk();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_apt() public {
-        check_trade_ramberCollateral_leverage_apt();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_bnb() public {
-        check_trade_ramberCollateral_leverage_bnb();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_jto() public {
-        check_trade_ramberCollateral_leverage_jto();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_ada() public {
-        check_trade_ramberCollateral_leverage_ada();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_ldo() public {
-        check_trade_ramberCollateral_leverage_ldo();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_pol() public {
-        check_trade_ramberCollateral_leverage_pol();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_near() public {
-        check_trade_ramberCollateral_leverage_near();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_ftm() public {
-        check_trade_ramberCollateral_leverage_ftm();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_ena() public {
-        check_trade_ramberCollateral_leverage_ena();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_eigen() public {
-        check_trade_ramberCollateral_leverage_eigen();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_pendle() public {
-        check_trade_ramberCollateral_leverage_pendle();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_goat() public {
-        check_trade_ramberCollateral_leverage_goat();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_grass() public {
-        check_trade_ramberCollateral_leverage_grass();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_kneiro() public {
-        check_trade_ramberCollateral_leverage_kneiro();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_dot() public {
-        check_trade_ramberCollateral_leverage_dot();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_ltc() public {
-        check_trade_ramberCollateral_leverage_ltc();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_pyth() public {
-        check_trade_ramberCollateral_leverage_pyth();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_jup() public {
-        check_trade_ramberCollateral_leverage_jup();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_pengu() public {
-        check_trade_ramberCollateral_leverage_pengu();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_trump() public {
-        check_trade_ramberCollateral_leverage_trump();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_hype() public {
-        check_trade_ramberCollateral_leverage_hype();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_virtual() public {
-        check_trade_ramberCollateral_leverage_virtual();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_ai16z() public {
-        check_trade_ramberCollateral_leverage_ai16z();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_aixbt() public {
-        check_trade_ramberCollateral_leverage_aixbt();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_sonic() public {
-        check_trade_ramberCollateral_leverage_sonic();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_fartcoin() public {
-        check_trade_ramberCollateral_leverage_fartcoin();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_griffain() public {
-        check_trade_ramberCollateral_leverage_griffain();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_wld() public {
-        check_trade_ramberCollateral_leverage_wld();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_atom() public {
-        check_trade_ramberCollateral_leverage_atom();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_ape() public {
-        check_trade_ramberCollateral_leverage_ape();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_ton() public {
-        check_trade_ramberCollateral_leverage_ton();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_ondo() public {
-        check_trade_ramberCollateral_leverage_ondo();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_trx() public {
-        check_trade_ramberCollateral_leverage_trx();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_inj() public {
-        check_trade_ramberCollateral_leverage_inj();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_move() public {
-        check_trade_ramberCollateral_leverage_move();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_bera() public {
-        check_trade_ramberCollateral_leverage_bera();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_layer() public {
-        check_trade_ramberCollateral_leverage_layer();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_tao() public {
-        check_trade_ramberCollateral_leverage_tao();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_ip() public {
-        check_trade_ramberCollateral_leverage_ip();
-    }
-
-    function test_Cronos_trade_ramberCollateral_leverage_me() public {
-        check_trade_ramberCollateral_leverage_me();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_eth() public {
-        check_trade_srusdCollateral_leverage_eth();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_btc() public {
-        check_trade_srusdCollateral_leverage_btc();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_sol() public {
-        check_trade_srusdCollateral_leverage_sol();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_arb() public {
-        check_trade_srusdCollateral_leverage_arb();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_op() public {
-        check_trade_srusdCollateral_leverage_op();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_avax() public {
-        check_trade_srusdCollateral_leverage_avax();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_mkr() public {
-        check_trade_srusdCollateral_leverage_mkr();
+        check_trade_leverage(7, sec.ramber);
     }
 
     function test_Cronos_trade_srusdCollateral_leverage_link() public {
-        check_trade_srusdCollateral_leverage_link();
+        check_trade_leverage(8, sec.srusd);
     }
 
-    function test_Cronos_trade_srusdCollateral_leverage_aave() public {
-        check_trade_srusdCollateral_leverage_aave();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_crv() public {
-        check_trade_srusdCollateral_leverage_crv();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_uni() public {
-        check_trade_srusdCollateral_leverage_uni();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_sui() public {
-        check_trade_srusdCollateral_leverage_sui();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_tia() public {
-        check_trade_srusdCollateral_leverage_tia();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_sei() public {
-        check_trade_srusdCollateral_leverage_sei();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_zro() public {
-        check_trade_srusdCollateral_leverage_zro();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_xrp() public {
-        check_trade_srusdCollateral_leverage_xrp();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_wif() public {
-        check_trade_srusdCollateral_leverage_wif();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_pepe1k() public {
-        check_trade_srusdCollateral_leverage_pepe1k();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_popcat() public {
-        check_trade_srusdCollateral_leverage_popcat();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_doge() public {
-        check_trade_srusdCollateral_leverage_doge();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_kshib() public {
-        check_trade_srusdCollateral_leverage_kshib();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_kbonk() public {
-        check_trade_srusdCollateral_leverage_kbonk();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_apt() public {
-        check_trade_srusdCollateral_leverage_apt();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_bnb() public {
-        check_trade_srusdCollateral_leverage_bnb();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_jto() public {
-        check_trade_srusdCollateral_leverage_jto();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_ada() public {
-        check_trade_srusdCollateral_leverage_ada();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_ldo() public {
-        check_trade_srusdCollateral_leverage_ldo();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_pol() public {
-        check_trade_srusdCollateral_leverage_pol();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_near() public {
-        check_trade_srusdCollateral_leverage_near();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_ftm() public {
-        check_trade_srusdCollateral_leverage_ftm();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_ena() public {
-        check_trade_srusdCollateral_leverage_ena();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_eigen() public {
-        check_trade_srusdCollateral_leverage_eigen();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_pendle() public {
-        check_trade_srusdCollateral_leverage_pendle();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_goat() public {
-        check_trade_srusdCollateral_leverage_goat();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_grass() public {
-        check_trade_srusdCollateral_leverage_grass();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_kneiro() public {
-        check_trade_srusdCollateral_leverage_kneiro();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_dot() public {
-        check_trade_srusdCollateral_leverage_dot();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_ltc() public {
-        check_trade_srusdCollateral_leverage_ltc();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_pyth() public {
-        check_trade_srusdCollateral_leverage_pyth();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_jup() public {
-        check_trade_srusdCollateral_leverage_jup();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_pengu() public {
-        check_trade_srusdCollateral_leverage_pengu();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_trump() public {
-        check_trade_srusdCollateral_leverage_trump();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_hype() public {
-        check_trade_srusdCollateral_leverage_hype();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_virtual() public {
-        check_trade_srusdCollateral_leverage_virtual();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_ai16z() public {
-        check_trade_srusdCollateral_leverage_ai16z();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_aixbt() public {
-        check_trade_srusdCollateral_leverage_aixbt();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_sonic() public {
-        check_trade_srusdCollateral_leverage_sonic();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_fartcoin() public {
-        check_trade_srusdCollateral_leverage_fartcoin();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_griffain() public {
-        check_trade_srusdCollateral_leverage_griffain();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_wld() public {
-        check_trade_srusdCollateral_leverage_wld();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_atom() public {
-        check_trade_srusdCollateral_leverage_atom();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_ape() public {
-        check_trade_srusdCollateral_leverage_ape();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_ton() public {
-        check_trade_srusdCollateral_leverage_ton();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_ondo() public {
-        check_trade_srusdCollateral_leverage_ondo();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_trx() public {
-        check_trade_srusdCollateral_leverage_trx();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_inj() public {
-        check_trade_srusdCollateral_leverage_inj();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_move() public {
-        check_trade_srusdCollateral_leverage_move();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_bera() public {
-        check_trade_srusdCollateral_leverage_bera();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_layer() public {
-        check_trade_srusdCollateral_leverage_layer();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_tao() public {
-        check_trade_srusdCollateral_leverage_tao();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_ip() public {
-        check_trade_srusdCollateral_leverage_ip();
-    }
-
-    function test_Cronos_trade_srusdCollateral_leverage_me() public {
-        check_trade_srusdCollateral_leverage_me();
+    function test_Cronos_trade_rhedgeCollateral_leverage_aave() public {
+        check_trade_leverage(9, sec.rhedge);
     }
 }

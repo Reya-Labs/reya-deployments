@@ -39,9 +39,11 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     function setUp() public {
         removeCollateralCap(sec.rselini);
         removeCollateralCap(sec.ramber);
+        removeCollateralCap(sec.rhedge);
 
         removeCollateralWithdrawalLimit(sec.rselini);
         removeCollateralWithdrawalLimit(sec.ramber);
+        removeCollateralWithdrawalLimit(sec.rhedge);
     }
 
     function check_PoolHealth() public {
@@ -490,32 +492,28 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         executePeripheryWithdrawMA(user, userPk, 1, accountId, sec.sdeusd, 100e18, sec.destinationChainId);
     }
 
-    function check_PassivePoolWithRselini() public {
+    function check_PassivePoolWithLmToken(address lmToken) public {
         mockFreshPrices();
 
         (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, sec.rselini);
+            ICoreProxy(sec.core).getCollateralConfig(1, lmToken);
 
         vm.prank(sec.multisig);
         collateralConfig.cap = type(uint256).max;
-        ICoreProxy(sec.core).setCollateralConfig(1, sec.rselini, collateralConfig, parentCollateralConfig);
+        ICoreProxy(sec.core).setCollateralConfig(1, lmToken, collateralConfig, parentCollateralConfig);
 
-        (address user, uint256 userPk) = makeAddrAndKey("user");
+        (address user,) = makeAddrAndKey("user");
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
-        // add 3000 rselini to the passive pool directly
-        deal(sec.rselini, address(user), 3000e18);
+        // add 3000 LM tokens to the passive pool directly
+        deal(lmToken, address(user), 3000e18);
         vm.prank(user);
-        ITokenProxy(sec.rselini).approve(sec.core, 3000e18);
+        ITokenProxy(lmToken).approve(sec.core, 3000e18);
         vm.prank(user);
-        ICoreProxy(sec.core).deposit({
-            accountId: sec.passivePoolAccountId,
-            collateral: address(sec.rselini),
-            amount: 3000e18
-        });
+        ICoreProxy(sec.core).deposit({ accountId: sec.passivePoolAccountId, collateral: lmToken, amount: 3000e18 });
 
-        // check that the new 3000 rselini does not influence the share price
+        // check that the new 3000 lmToken does not influence the share price
         uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
         assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
 
@@ -541,8 +539,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         );
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
-        // create new account and deposit 33000 rselini in it
-        uint128 accountId = depositNewMA(user, sec.rselini, 33_000e18);
+        // create new account and deposit 33000 LM tokens in it
+        uint128 accountId = depositNewMA(user, lmToken, 33_000e18);
 
         // user executes short trade on ETH
         executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });
@@ -556,152 +554,9 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             accountId: accountId
         });
 
-        // withdraw 100 reselini from account
-        withdrawMA(accountId, sec.rselini, 100e18);
+        // withdraw 100 LM tokens from account
+        withdrawMA(accountId, lmToken, 100e18);
     }
-
-    function check_PassivePoolWithRamber() public {
-        mockFreshPrices();
-
-        (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, sec.ramber);
-
-        vm.prank(sec.multisig);
-        collateralConfig.cap = type(uint256).max;
-        ICoreProxy(sec.core).setCollateralConfig(1, sec.ramber, collateralConfig, parentCollateralConfig);
-
-        (address user, uint256 userPk) = makeAddrAndKey("user");
-
-        uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-
-        // add 3000 ramber to the passive pool directly
-
-        deal(sec.ramber, address(user), 3000e18);
-        vm.prank(user);
-        ITokenProxy(sec.ramber).approve(sec.core, 3000e18);
-        vm.prank(user);
-        ICoreProxy(sec.core).deposit({
-            accountId: sec.passivePoolAccountId,
-            collateral: address(sec.ramber),
-            amount: 3000e18
-        });
-
-        // check that the new 3000 ramber does not influence the share price
-        uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-        assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
-
-        // make sure that the passive pool deposit works
-        deal(sec.usdc, sec.periphery, 10e6);
-        vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        vm.mockCall(
-            dec.socketExecutionHelper[sec.usdc],
-            abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
-            abi.encode(10e6)
-        );
-
-        IPeripheryProxy(sec.periphery).depositPassivePool(
-            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: 0 })
-        );
-
-        uint256 sharesIn = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user);
-
-        // make sure that the passive pool withdrawal works
-        vm.prank(user);
-        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(
-            sec.passivePoolId, sharesIn, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user })
-        );
-        assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
-
-        // create new account and deposit 33000 ramber in it
-        uint128 accountId = depositNewMA(user, sec.ramber, 33_000e18);
-
-        // user executes short trade on ETH
-        executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });
-
-        // user closes the short trade on ETH and goes same long
-        executeCoreMatchOrder({
-            marketId: 1,
-            sender: user,
-            base: sd(20e18),
-            priceLimit: ud(type(uint256).max),
-            accountId: accountId
-        });
-
-        // withdraw 100 ramber from account
-        withdrawMA(accountId, sec.ramber, 100e18);
-    }
-
-    //     function check_PassivePoolWithSrusd() public {
-    //   mockFreshPrices();
-
-    //   (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
-    //       ICoreProxy(sec.core).getCollateralConfig(1, sec.srusd);
-
-    //   vm.prank(sec.multisig);
-    //   collateralConfig.cap = type(uint256).max;
-    //   ICoreProxy(sec.core).setCollateralConfig(1, sec.srusd, collateralConfig, parentCollateralConfig);
-
-    //   (address user, uint256 userPk) = makeAddrAndKey("user");
-
-    //   uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-
-    //   // add 3000 srusd to the passive pool directly
-
-    //   deal(sec.srusd, address(user), 3000e30);
-    //   vm.prank(user);
-    //   ITokenProxy(sec.srusd).approve(sec.core, 3000e30);
-    //   vm.prank(user);
-    //   ICoreProxy(sec.core).deposit({
-    //       accountId: sec.passivePoolAccountId,
-    //       collateral: address(sec.srusd),
-    //       amount: 3000e30
-    //   });
-
-    //   // check that the new 3000 srusd does not influence the share price
-    //   uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-    //   assertApproxEqRelDecimal(sharePrice1, sharePrice0, 0.005e18, 18);
-
-    //   // make sure that the passive pool deposit works
-    //   deal(sec.usdc, sec.periphery, 10e6);
-    //   vm.prank(dec.socketExecutionHelper[sec.usdc]);
-    //   vm.mockCall(
-    //       dec.socketExecutionHelper[sec.usdc],
-    //       abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
-    //       abi.encode(10e6)
-    //   );
-
-    //   IPeripheryProxy(sec.periphery).depositPassivePool(
-    //       DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: 0 })
-    //   );
-
-    //   uint256 sharesIn = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user);
-
-    //   // make sure that the passive pool withdrawal works
-    //   vm.prank(user);
-    //   uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(
-    //       sec.passivePoolId, sharesIn, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user })
-    //   );
-    //   assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
-
-    //   // create new account and deposit 33000 srusd in it
-    //   uint128 accountId = depositNewMA(user, sec.srusd, 33_000e30);
-
-    //   // user executes short trade on ETH
-    //   executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId
-    // });
-
-    //   // user closes the short trade on ETH and goes same long
-    //   executeCoreMatchOrder({
-    //       marketId: 1,
-    //       sender: user,
-    //       base: sd(20e18),
-    //       priceLimit: ud(type(uint256).max),
-    //       accountId: accountId
-    //   });
-
-    //   // withdraw 100 srusd from account
-    //   withdrawMA(accountId, sec.srusd, 100e30);
-    // }
 
     function autoRebalancePool(bool partialAutoRebalance, bool mintLmTokens) internal {
         removeCollateralWithdrawalLimit(sec.rusd);
@@ -709,9 +564,11 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         removeCollateralWithdrawalLimit(sec.sdeusd);
         removeCollateralWithdrawalLimit(sec.rselini);
         removeCollateralWithdrawalLimit(sec.ramber);
+        removeCollateralWithdrawalLimit(sec.rhedge);
 
         removeCollateralCap(sec.rselini);
         removeCollateralCap(sec.ramber);
+        removeCollateralCap(sec.rhedge);
 
         address quoteToken = sec.rusd;
         address[] memory supportingTokens = IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
@@ -787,6 +644,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     function check_autoRebalance_differentTargets(bool partialAutoRebalance, bool mintLmTokens) public {
         removeCollateralCap(sec.rselini);
         removeCollateralCap(sec.ramber);
+        removeCollateralCap(sec.rhedge);
 
         vm.prank(sec.multisig);
         IPassivePoolProxy(sec.pool).setAllocationConfiguration(
@@ -798,7 +656,11 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         vm.prank(sec.multisig);
         IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.rselini, 0.2e18);
         vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.ramber, 1e18 - 0.454545e18 - 0.2e18);
+        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.ramber, 0.2e18);
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(
+            sec.passivePoolId, sec.rhedge, 1e18 - 0.454545e18 - 0.2e18 - 0.2e18
+        );
 
         autoRebalancePool(partialAutoRebalance, mintLmTokens);
     }
