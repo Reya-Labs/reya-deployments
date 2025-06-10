@@ -23,8 +23,7 @@ import {
     WithdrawMAInputs,
     DepositNewMAInputs,
     DepositPassivePoolInputs,
-    DepositLiquidityToAccountInputs,
-    WithdrawLiquidityFromAccountInputs
+    DepositLiquidityToAccountInputs
 } from "../../src/interfaces/IPeripheryProxy.sol";
 
 import { IOracleManagerProxy, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
@@ -354,38 +353,6 @@ contract BaseReyaForkTest is StorageReyaForkTest {
                     0,
                     incrementedNonce,
                     abi.encode("DepositLiquidityToAccount", accountId, sec.passivePoolId, sharesAmount)
-                )
-            })
-        );
-    }
-
-    function executePeripheryWithdrawLiquidityFromAccount(
-        address user,
-        uint256 userPrivateKey,
-        uint256 incrementedNonce,
-        uint256 sharesAmount,
-        uint128 accountId
-    )
-        internal
-    {
-        Command_Periphery[] memory commands = new Command_Periphery[](1);
-        commands[0] = Command_Periphery({
-            commandType: uint8(CommandType.Withdraw),
-            inputs: abi.encode(sec.srusd, sharesAmount),
-            marketId: 0,
-            exchangeId: 0
-        });
-        IPeripheryProxy(sec.periphery).withdrawLiquidityFromAccount(
-            WithdrawLiquidityFromAccountInputs({
-                accountId: accountId,
-                poolId: sec.passivePoolId,
-                sharesAmount: sharesAmount,
-                sig: getEIP712SignatureForPeripheryCommands(
-                    accountId,
-                    commands,
-                    userPrivateKey,
-                    incrementedNonce,
-                    abi.encode("WithdrawLiquidityFromAccount", accountId, sec.passivePoolId, sharesAmount)
                 )
             })
         );
