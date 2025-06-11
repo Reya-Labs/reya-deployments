@@ -30,35 +30,35 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
     }
 
     function test_PassivePoolWithWeth() public {
-        check_PassivePoolWithWeth();
+        check_PassivePoolWithToken(sec.weth);
     }
 
     function test_PassivePoolWithUsde() public {
-        check_PassivePoolWithUsde();
+        check_PassivePoolWithToken(sec.usde);
     }
 
     function test_PassivePoolWithSusde() public {
-        check_PassivePoolWithSusde();
+        check_PassivePoolWithToken(sec.susde);
     }
 
     function test_PassivePoolWithDeusd() public {
-        check_PassivePoolWithDeusd();
+        check_PassivePoolWithToken(sec.deusd);
     }
 
     function test_PassivePoolWithSdeusd() public {
-        check_PassivePoolWithSdeusd();
+        check_PassivePoolWithToken(sec.sdeusd);
     }
 
     function test_PassivePoolWithRselini() public {
-        check_PassivePoolWithLmToken(sec.rselini);
+        check_PassivePoolWithToken(sec.rselini);
     }
 
     function test_PassivePoolWithRamber() public {
-        check_PassivePoolWithLmToken(sec.ramber);
+        check_PassivePoolWithToken(sec.ramber);
     }
 
     function test_PassivePoolWithRhedge() public {
-        check_PassivePoolWithLmToken(sec.rhedge);
+        check_PassivePoolWithToken(sec.rhedge);
     }
 
     function test_PassivePoolAutoRebalance_CurrentTargets() public {
