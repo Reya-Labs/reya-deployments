@@ -107,9 +107,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         // attacker cannot burn
         vm.prank(attacker);
-        vm.expectRevert(
-            abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, keccak256(bytes("redemption")))
-        );
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, keccak256(bytes("redemption"))));
         IShareTokenProxy(lmToken).redeem(
             RedemptionInputs({ recipient: attacker, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
         );
@@ -118,9 +116,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         vm.prank(attacker);
         ITokenProxy(lmToken).transfer(user, 50e18);
         vm.prank(user);
-        vm.expectRevert(
-            abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, keccak256(bytes("redemption")))
-        );
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, keccak256(bytes("redemption"))));
         IShareTokenProxy(lmToken).redeem(
             RedemptionInputs({ recipient: user, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
         );

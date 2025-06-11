@@ -22,20 +22,10 @@ import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 
 struct TokenBalances {
-    int256 userBalanceWeth;
     int256 userBalanceRusd;
-    int256 userBalanceUsde;
-    int256 userBalanceSusde;
-    int256 userBalanceDeusd;
-    int256 userBalanceSdeusd;
     int256 userBalanceToken;
     int256 userBalanceSrusd;
-    int256 liquidatorBalanceWeth;
     int256 liquidatorBalanceRusd;
-    int256 liquidatorBalanceUsde;
-    int256 liquidatorBalanceSusde;
-    int256 liquidatorBalanceDeusd;
-    int256 liquidatorBalanceSdeusd;
     int256 liquidatorBalanceToken;
     int256 liquidatorBalanceSrusd;
 }
@@ -87,16 +77,12 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         }
 
         // deposit rUSD into liquidator's account
-        if (token == sec.srusd) {
-            s.liquidatorAccountId = 0;
-        } else {
-            deal(sec.usdc, address(sec.periphery), 10_000e6);
-            mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], 10_000e6);
-            vm.prank(dec.socketExecutionHelper[sec.usdc]);
-            s.liquidatorAccountId = IPeripheryProxy(sec.periphery).depositNewMA(
-                DepositNewMAInputs({ accountOwner: s.liquidator, token: address(sec.usdc) })
-            );
-        }
+        deal(sec.usdc, address(sec.periphery), 10_000e6);
+        mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], 10_000e6);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
+        s.liquidatorAccountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: s.liquidator, token: address(sec.usdc) })
+        );
 
         // user executes short trade on ETH
         (UD60x18 orderPrice,) = executeCoreMatchOrder({
@@ -120,20 +106,16 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             vm.expectRevert(
                 abi.encodeWithSelector(ICoreProxy.AccountNotEligibleForAutoExchange.selector, s.userAccountId, sec.rusd)
             );
-            
-            if (token == sec.srusd) {
-                IPassivePoolProxy(sec.pool).triggerStakedAssetAutoExchange(1, s.userAccountId);
-            } else {
-                ICoreProxy(sec.core).triggerAutoExchange(
-                    TriggerAutoExchangeInput({
-                        accountId: s.userAccountId,
-                        liquidatorAccountId: s.liquidatorAccountId,
-                        requestedQuoteAmount: 400e6,
-                        collateral: token,
-                        inCollateral: sec.rusd
-                    })
-                );
-            }
+
+            ICoreProxy(sec.core).triggerAutoExchange(
+                TriggerAutoExchangeInput({
+                    accountId: s.userAccountId,
+                    liquidatorAccountId: s.liquidatorAccountId,
+                    requestedQuoteAmount: 400e6,
+                    collateral: token,
+                    inCollateral: sec.rusd
+                })
+            );
         }
 
         // price moves by 600 USD
@@ -158,25 +140,20 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             ICoreProxy(sec.core).getTokenMarginInfo(s.liquidatorAccountId, token).marginBalance;
 
         assertLt(s.tbal0.userBalanceRusd, -400e6);
-
         assertGt(ICoreProxy(sec.core).getNodeMarginInfo(s.userAccountId, sec.rusd).initialDelta, 0);
 
         // auto-exchange 400 rUSD
         vm.prank(s.liquidator);
 
-        if (token == sec.srusd) {
-            s.ae1 = IPassivePoolProxy(sec.pool).triggerStakedAssetAutoExchange(1, s.userAccountId);
-        } else {
-            s.ae1 = ICoreProxy(sec.core).triggerAutoExchange(
-                TriggerAutoExchangeInput({
-                    accountId: s.userAccountId,
-                    liquidatorAccountId: s.liquidatorAccountId,
-                    requestedQuoteAmount: 400e6,
-                    collateral: token,
-                    inCollateral: sec.rusd
-                })
-            );
-        }
+        s.ae1 = ICoreProxy(sec.core).triggerAutoExchange(
+            TriggerAutoExchangeInput({
+                accountId: s.userAccountId,
+                liquidatorAccountId: s.liquidatorAccountId,
+                requestedQuoteAmount: 400e6,
+                collateral: token,
+                inCollateral: sec.rusd
+            })
+        );
 
         assertEq(s.ae1.quoteAmountToIF, 4e6);
         assertEq(s.ae1.quoteAmountToAccount, 396e6);
@@ -199,8 +176,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertEq(s.tbal1.liquidatorBalanceRusd, s.tbal0.liquidatorBalanceRusd - 400e6);
         assertEq(s.tbal1.userBalanceToken, s.tbal0.userBalanceToken - int256(s.ae1.collateralAmountToLiquidator));
         assertEq(
-            s.tbal1.liquidatorBalanceToken,
-            s.tbal0.liquidatorBalanceToken + int256(s.ae1.collateralAmountToLiquidator)
+            s.tbal1.liquidatorBalanceToken, s.tbal0.liquidatorBalanceToken + int256(s.ae1.collateralAmountToLiquidator)
         );
 
         // unwind the short trade (check that it's possible to perform trade even though rUSD balance is below 0 as long
@@ -222,19 +198,15 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
         // auto-exchange the remaining amount (check that only the remaining part is AE)
         vm.prank(s.liquidator);
-        if (token == sec.srusd) {
-            s.ae2 = IPassivePoolProxy(sec.pool).triggerStakedAssetAutoExchange(1, s.userAccountId);
-        } else {
-            s.ae2 = ICoreProxy(sec.core).triggerAutoExchange(
-                TriggerAutoExchangeInput({
-                    accountId: s.userAccountId,
-                    liquidatorAccountId: s.liquidatorAccountId,
-                    requestedQuoteAmount: 400e6,
-                    collateral: token,
-                    inCollateral: sec.rusd
-                })
-            );
-        }
+        s.ae2 = ICoreProxy(sec.core).triggerAutoExchange(
+            TriggerAutoExchangeInput({
+                accountId: s.userAccountId,
+                liquidatorAccountId: s.liquidatorAccountId,
+                requestedQuoteAmount: 400e6,
+                collateral: token,
+                inCollateral: sec.rusd
+            })
+        );
 
         assertLt(s.ae2.quoteAmountToAccount, 220e6);
 
@@ -262,8 +234,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         );
         assertEq(s.tbal2.userBalanceToken, s.tbal1.userBalanceToken - int256(s.ae2.collateralAmountToLiquidator));
         assertEq(
-            s.tbal2.liquidatorBalanceToken,
-            s.tbal1.liquidatorBalanceToken + int256(s.ae2.collateralAmountToLiquidator)
+            s.tbal2.liquidatorBalanceToken, s.tbal1.liquidatorBalanceToken + int256(s.ae2.collateralAmountToLiquidator)
         );
     }
 
@@ -590,13 +561,27 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     }
 
     function check_AutoExchangeSrusd_WhenUserHasOnlySrusd() public {
-        check_AutoExchange_srUSD({
+        check_AutoExchange_srUSD({ userInitialRusdBalance: 0 });
+    }
+
+    function check_AutoExchangeSrusd_WhenUserHasBothSrusdAndRusd() public {
+        check_AutoExchange_srUSD({ userInitialRusdBalance: 100e6 });
+    }
+
+    function check_AutoExchangeWsteth_WhenUserHasOnlyWsteth() public {
+        check_AutoExchange({
+            token: sec.wsteth,
+            tokenUsdcNodeId: sec.wstethUsdcStorkNodeId,
+            tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 0
         });
     }
 
-    function check_AutoExchangeSrusd_WhenUserHasBothSrusdAndRusd() public {
-        check_AutoExchange_srUSD({
+    function check_AutoExchangeWsteth_WhenUserHasBothWstethAndRusd() public {
+        check_AutoExchange({
+            token: sec.wsteth,
+            tokenUsdcNodeId: sec.wstethUsdcStorkNodeId,
+            tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 100e6
         });
     }

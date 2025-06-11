@@ -93,4 +93,21 @@ contract UsualCollateralForkTest is ReyaForkTest, UsualCollateralForkCheck {
     function test_Cronos_trade_weth_DepositWithdraw() public {
         check_trade_weth_DepositWithdraw();
     }
+
+    function testFuzz_Cronos_wsteth_MintBurn(address attacker) public {
+        vm.assume(attacker != dec.socketController[sec.wsteth]);
+        checkFuzz_wsteth_MintBurn(attacker);
+    }
+
+    function test_Cronos_wsteth_ViewFunctions() public {
+        check_wsteth_ViewFunctions();
+    }
+
+    function test_Cronos_wsteth_DepositWithdraw() public {
+        check_wsteth_DepositWithdraw();
+    }
+
+    function test_Cronos_trade_wsteth_DepositWithdraw() public {
+        check_trade_wsteth_DepositWithdraw();
+    }
 }

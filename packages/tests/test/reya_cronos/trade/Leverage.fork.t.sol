@@ -287,4 +287,8 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
     function test_Cronos_trade_rhedgeCollateral_leverage_aave() public {
         check_trade_leverage(9, sec.rhedge);
     }
+
+    function test_Cronos_trade_wstethCollateral_leverage_crv() public {
+        check_trade_leverage(10, sec.wsteth);
+    }
 }

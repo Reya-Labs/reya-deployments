@@ -73,7 +73,7 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         check_autoRebalance_revertWhenSenderIsNotRebalancer();
     }
 
-    function test_Cronos_SetTokenTargetRatio_RevertWhenWSTETH() public {
-        check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(0xDF52410A19298FE168c900513e762adaD00C42b1);
+    function test_Cronos_SetTokenTargetRatio_RevertWhenNotSupportingToken() public {
+        check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(vm.addr(10));
     }
 }

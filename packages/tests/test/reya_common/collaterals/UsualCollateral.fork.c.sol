@@ -79,11 +79,9 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         vm.prank(user);
         ICoreProxy(sec.core).activateFirstMarketForAccount(accountId, 1);
 
-        NodeOutput.Data memory tokenUsdcNodeOutput =
-            IOracleManagerProxy(sec.oracleManager).process(tokenStorkNodeId);
+        NodeOutput.Data memory tokenUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(tokenStorkNodeId);
 
-        (, ParentCollateralConfig memory parentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, token);
+        (, ParentCollateralConfig memory parentCollateralConfig,) = ICoreProxy(sec.core).getCollateralConfig(1, token);
         SD59x18 tokenAmountInUSD = sd(int256(tokenAmount)).mul(sd(int256(tokenUsdcNodeOutput.price))).mul(
             UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut)))
         );
@@ -128,17 +126,12 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         deal(token, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[token], amount);
         vm.prank(dec.socketExecutionHelper[token]);
-        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
-            DepositNewMAInputs({ accountOwner: user, token: token })
-        );
+        uint128 accountId =
+            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: token }));
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector,
-                1,
-                token,
-                50_000_000e18,
-                collateralPoolTokenBalance + amount
+                ICoreProxy.CollateralCapExceeded.selector, 1, token, 50_000_000e18, collateralPoolTokenBalance + amount
             )
         );
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
@@ -154,9 +147,8 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         deal(token, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[token], amount);
         vm.prank(dec.socketExecutionHelper[token]);
-        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
-            DepositNewMAInputs({ accountOwner: user, token: token })
-        );
+        uint128 accountId =
+            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: token }));
 
         s.coreTokenBalance0 = ITokenProxy(token).balanceOf(sec.core);
         s.peripheryTokenBalance0 = ITokenProxy(token).balanceOf(sec.periphery);
@@ -192,9 +184,8 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         deal(token, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[token], amount);
         vm.prank(dec.socketExecutionHelper[token]);
-        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
-            DepositNewMAInputs({ accountOwner: user, token: token })
-        );
+        uint128 accountId =
+            IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: token }));
 
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
 
@@ -316,5 +307,25 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
 
     function check_trade_weth_DepositWithdraw() public {
         check_trade_UsualCollateral_DepositWithdraw(sec.weth);
+    }
+
+    function checkFuzz_wsteth_MintBurn(address attacker) public {
+        checkFuzz_UsualCollateral_MintBurn(sec.wsteth, attacker);
+    }
+
+    function check_wsteth_ViewFunctions() public {
+        check_UsualCollateral_ViewFunctions(sec.wsteth, sec.wstethUsdcStorkNodeId);
+    }
+
+    function check_wsteth_CapExceeded() public {
+        check_UsualCollateral_CapExceeded(sec.wsteth);
+    }
+
+    function check_wsteth_DepositWithdraw() public {
+        check_UsualCollateral_DepositWithdraw(sec.wsteth);
+    }
+
+    function check_trade_wsteth_DepositWithdraw() public {
+        check_trade_UsualCollateral_DepositWithdraw(sec.wsteth);
     }
 }

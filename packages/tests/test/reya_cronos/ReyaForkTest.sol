@@ -625,7 +625,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         dec.socketConnector[sec.wsteth][ethereumSepoliaChainId] = 0x767f02881891453218f4144EbFd2F39b5C8d3B59;
         dec.socketConnector[sec.wsteth][arbitrumSepoliaChainId] = 0x424a422558986C95a8E0E578e4443Afe5358c238;
         dec.socketConnector[sec.wsteth][optimismSepoliaChainId] = 0x5BD8C70073575F30E060c4751672A3d462CdAc8a;
-    
+
         // create fork
         try vm.activeFork() { }
         catch {
