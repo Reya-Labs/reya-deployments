@@ -49,6 +49,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.ramber = 0x125FD68Ec0ab65ce9606DeD99e8F19C286f9E534;
         sec.rhedge = 0xFB9eeD7a6F3100dB35c94B214917a0A64AEC1a97;
         sec.srusd = 0xb9F531A54Fc0E9AdCa1b931d9533B4e49bB2fAD6;
+        sec.wsteth = 0xDF52410A19298FE168c900513e762adaD00C42b1;
 
         // Elixir tokens on Mainnet (Ethereum Sepolia)
         sec.elixirSdeusd = 0x97D3e518029c622015afa7aD20036EbEF60A7A4e;
@@ -102,6 +103,13 @@ contract ReyaForkTest is BaseReyaForkTest {
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.susdeUsdStorkNodeId, 10_000);
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.susdeUsdcStorkNodeId, 10_000);
+
+        sec.wstethUsdStorkNodeId = 0x435559595373b3ee357aeadd75c5cc059cf42a4ca65a0e16370b44268d368609;
+        sec.wstethUsdcStorkNodeId = 0x12a06740d009d5b9ef52aed0b7ee139ba9d38635f993c99f71c76b9747e0451c;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wstethUsdStorkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wstethUsdcStorkNodeId, 10_000);
 
         sec.deusdUsdStorkNodeId = 0x466cc622a5f9a753472566bcbdf38ce938ee1d0a87a3fa8ae073ad714b60f89d;
         sec.deusdUsdcStorkNodeId = 0x6b346cf521e6a90d532adf6a9413c0634c37ebcae8c7786de0d163ad26be8cbe;
@@ -612,6 +620,12 @@ contract ReyaForkTest is BaseReyaForkTest {
         dec.socketExecutionHelper[sec.sdeusd] = 0xFaA0313F2a7a48Cc995e01ADC68cb3aAD130Bdaa;
         dec.socketConnector[sec.sdeusd][ethereumSepoliaChainId] = 0x596c0Bb29466cE75A4d1296657AE9275fD4b0912;
 
+        dec.socketController[sec.wsteth] = 0x7C43B88F6AefFD221816436357FB1510c62EF513;
+        dec.socketExecutionHelper[sec.wsteth] = 0xA2687d5ff962eF398965680D0200831c484d2C3C;
+        dec.socketConnector[sec.wsteth][ethereumSepoliaChainId] = 0x767f02881891453218f4144EbFd2F39b5C8d3B59;
+        dec.socketConnector[sec.wsteth][arbitrumSepoliaChainId] = 0x424a422558986C95a8E0E578e4443Afe5358c238;
+        dec.socketConnector[sec.wsteth][optimismSepoliaChainId] = 0x5BD8C70073575F30E060c4751672A3d462CdAc8a;
+    
         // create fork
         try vm.activeFork() { }
         catch {

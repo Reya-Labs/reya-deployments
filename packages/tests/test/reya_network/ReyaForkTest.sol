@@ -45,6 +45,7 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.ramber = 0x63FC3F743eE2e70e670864079978a1deB9c18b76;
         sec.rhedge = 0x3ee6f82498d4e40DB33bac3adDABd8b41eCa1c9c;
         sec.srusd = 0x162B78e827A8DB8173D13735C08c8D40Cb5cCdAB;
+        sec.wsteth = 0x7ae54d5a9e5a975DFC3261d915f8151dCcA76bE0;
 
         // Elixir tokens on Mainnet (Ethereum)
         sec.elixirSdeusd = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326;
@@ -98,6 +99,13 @@ contract ReyaForkTest is StorageReyaForkTest {
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.susdeUsdStorkNodeId, 10_000);
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.susdeUsdcStorkNodeId, 10_000);
+
+        sec.wstethUsdStorkNodeId = bytes32(0); // todo: complete
+        sec.wstethUsdcStorkNodeId = bytes32(0); // todo: complete
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wstethUsdStorkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wstethUsdcStorkNodeId, 10_000);
 
         sec.deusdUsdStorkNodeId = 0x8c8bdfa29a872e123ad1d84f4484ba7a66d901ef61b8d28e536e27c754f110a0;
         sec.deusdUsdcStorkNodeId = 0x82bb2b688e2f358bedf3718b141b7d7bbdac7a51d6347b46ee776bc2b444adee;
@@ -604,6 +612,14 @@ contract ReyaForkTest is StorageReyaForkTest {
         dec.socketController[sec.sdeusd] = 0xCDb4A30CEBbf9d8C14e4e96fDe6EA7E40c6f3f5B;
         dec.socketExecutionHelper[sec.sdeusd] = 0x70c46c24f9f923F44278C3B5451986C175c39F73;
         dec.socketConnector[sec.sdeusd][ethereumChainId] = 0x2dc464B4f5Fd55ea19f0bdF71A8dc3584eeb64d7;
+
+        dec.socketController[sec.wsteth] = address(0); // todo: complete
+        dec.socketExecutionHelper[sec.wsteth] = address(0); // todo: complete
+        dec.socketConnector[sec.wsteth][ethereumChainId] = address(0); // todo: complete
+        dec.socketConnector[sec.wsteth][arbitrumChainId] = address(0); // todo: complete
+        dec.socketConnector[sec.wsteth][optimismChainId] = address(0); // todo: complete
+        dec.socketConnector[sec.wsteth][polygonChainId] = address(0); // todo: complete
+        dec.socketConnector[sec.wsteth][baseChainId] = address(0); // todo: complete
 
         // create fork
         try vm.activeFork() { }
