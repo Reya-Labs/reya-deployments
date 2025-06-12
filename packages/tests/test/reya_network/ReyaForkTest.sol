@@ -6,7 +6,7 @@ import { StorageReyaForkTest } from "../reya_common/StorageReyaForkTest.sol";
 import "../reya_common/DataTypes.sol";
 
 import { ICoreProxy } from "../../src/interfaces/ICoreProxy.sol";
-import { IOracleManagerProxy } from "../../src/interfaces/IOracleManagerProxy.sol";
+import { IOracleManagerProxy, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
 
 contract ReyaForkTest is StorageReyaForkTest {
     constructor() {
@@ -100,12 +100,12 @@ contract ReyaForkTest is StorageReyaForkTest {
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.susdeUsdcStorkNodeId, 10_000);
 
-        sec.wstethUsdStorkNodeId = bytes32(0); // todo: complete
-        sec.wstethUsdcStorkNodeId = bytes32(0); // todo: complete
-        // vm.prank(sec.multisig);
-        // IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wstethUsdStorkNodeId, 10_000);
-        // vm.prank(sec.multisig);
-        // IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wstethUsdcStorkNodeId, 10_000);
+        sec.wstethUsdStorkNodeId = 0x6a09001e7d22ee8604c7992c2b9928f1601d43dbf3fee5fd0bb66cf0227ed574;
+        sec.wstethUsdcStorkNodeId = 0x8cbdd3b2d3a31f8bb94718be500cf1c754c9cf248d58fafa5cf555b96383b41e;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wstethUsdStorkNodeId, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wstethUsdcStorkNodeId, 10_000);
 
         sec.deusdUsdStorkNodeId = 0x8c8bdfa29a872e123ad1d84f4484ba7a66d901ef61b8d28e536e27c754f110a0;
         sec.deusdUsdcStorkNodeId = 0x82bb2b688e2f358bedf3718b141b7d7bbdac7a51d6347b46ee776bc2b444adee;
@@ -613,13 +613,9 @@ contract ReyaForkTest is StorageReyaForkTest {
         dec.socketExecutionHelper[sec.sdeusd] = 0x70c46c24f9f923F44278C3B5451986C175c39F73;
         dec.socketConnector[sec.sdeusd][ethereumChainId] = 0x2dc464B4f5Fd55ea19f0bdF71A8dc3584eeb64d7;
 
-        dec.socketController[sec.wsteth] = address(0); // todo: complete
-        dec.socketExecutionHelper[sec.wsteth] = address(0); // todo: complete
-        dec.socketConnector[sec.wsteth][ethereumChainId] = address(0); // todo: complete
-        dec.socketConnector[sec.wsteth][arbitrumChainId] = address(0); // todo: complete
-        dec.socketConnector[sec.wsteth][optimismChainId] = address(0); // todo: complete
-        dec.socketConnector[sec.wsteth][polygonChainId] = address(0); // todo: complete
-        dec.socketConnector[sec.wsteth][baseChainId] = address(0); // todo: complete
+        dec.socketController[sec.wsteth] = 0x454bd326Fb446702C22E1b5097942dA1c9852aAC;
+        dec.socketExecutionHelper[sec.wsteth] = 0x8d422bb223EDe166A6Ca821Fb472e07B446a243b;
+        dec.socketConnector[sec.wsteth][ethereumChainId] = 0x880997ed94Dd2098395D2b3ECDb1c93026894106;
 
         // create fork
         try vm.activeFork() { }
@@ -631,5 +627,18 @@ contract ReyaForkTest is StorageReyaForkTest {
         // (*) allow anyone to publish match orders
         vm.prank(sec.multisig);
         ICoreProxy(sec.core).setFeatureFlagAllowAll(keccak256(bytes("matchOrderPublisher")), true);
+
+        // todo: remove this
+        vm.mockCall(
+            sec.oracleManager,
+            abi.encodeCall(IOracleManagerProxy.process, (sec.wstethUsdcStorkNodeId)),
+            abi.encode(NodeOutput.Data({ price: 3400e18, timestamp: block.timestamp }))
+        );
+
+        vm.mockCall(
+            sec.oracleManager,
+            abi.encodeCall(IOracleManagerProxy.process, (sec.wstethUsdStorkNodeId)),
+            abi.encode(NodeOutput.Data({ price: 3400e18, timestamp: block.timestamp }))
+        );
     }
 }

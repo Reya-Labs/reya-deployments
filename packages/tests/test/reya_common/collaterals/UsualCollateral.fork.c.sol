@@ -65,6 +65,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_UsualCollateral_ViewFunctions(address token, bytes32 tokenStorkNodeId) private {
+        removeCollateralCap(token);
         (address user,) = makeAddrAndKey("user");
 
         uint256 tokenAmount = 1e18;
@@ -113,7 +114,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         assertEq(accountTokenCollateralInfo.realBalance, int256(tokenAmount));
     }
 
-    function check_UsualCollateral_CapExceeded(address token) private {
+    function check_UsualCollateral_CapExceeded(address token, uint256 tokenCap) private {
         (address user, uint256 userPk) = makeAddrAndKey("user");
         uint256 amount = 50_000_001e18; // denominated in token
         uint128 marketId = 1; // eth
@@ -131,7 +132,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector, 1, token, 50_000_000e18, collateralPoolTokenBalance + amount
+                ICoreProxy.CollateralCapExceeded.selector, 1, token, tokenCap, collateralPoolTokenBalance + amount
             )
         );
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
@@ -173,6 +174,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     function check_trade_UsualCollateral_DepositWithdraw(address token) private {
         mockFreshPrices();
         removeCollateralWithdrawalLimit(token);
+        removeCollateralCap(token);
 
         (address user, uint256 userPk) = makeAddrAndKey("user");
         uint256 amount = 3000e18; // denominated in token
@@ -214,7 +216,8 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_deusd_CapExceeded() public {
-        check_UsualCollateral_CapExceeded(sec.deusd);
+        // note: this test is not relevant as cap is not set for this token
+        // check_UsualCollateral_CapExceeded(sec.deusd);
     }
 
     function check_deusd_DepositWithdraw() public {
@@ -234,7 +237,8 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_sdeusd_CapExceeded() public {
-        check_UsualCollateral_CapExceeded(sec.sdeusd);
+        // note: this test is not relevant as cap is not set for this token
+        // check_UsualCollateral_CapExceeded(sec.sdeusd);
     }
 
     function check_sdeusd_DepositWithdraw() public {
@@ -254,7 +258,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_susde_CapExceeded() public {
-        check_UsualCollateral_CapExceeded(sec.susde);
+        check_UsualCollateral_CapExceeded(sec.susde, 500_000e18);
     }
 
     function check_susde_DepositWithdraw() public {
@@ -274,7 +278,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_usde_CapExceeded() public {
-        check_UsualCollateral_CapExceeded(sec.usde);
+        check_UsualCollateral_CapExceeded(sec.usde, 1000e18);
     }
 
     function check_usde_DepositWithdraw() public {
@@ -298,7 +302,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_weth_CapExceeded() public {
-        check_UsualCollateral_CapExceeded(sec.weth);
+        check_UsualCollateral_CapExceeded(sec.weth, 0.5e18);
     }
 
     function check_weth_DepositWithdraw() public {
@@ -318,7 +322,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_wsteth_CapExceeded() public {
-        check_UsualCollateral_CapExceeded(sec.wsteth);
+        check_UsualCollateral_CapExceeded(sec.wsteth, 10e18);
     }
 
     function check_wsteth_DepositWithdraw() public {
