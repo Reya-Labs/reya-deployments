@@ -627,18 +627,5 @@ contract ReyaForkTest is StorageReyaForkTest {
         // (*) allow anyone to publish match orders
         vm.prank(sec.multisig);
         ICoreProxy(sec.core).setFeatureFlagAllowAll(keccak256(bytes("matchOrderPublisher")), true);
-
-        // todo: remove this
-        vm.mockCall(
-            sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.wstethUsdcStorkNodeId)),
-            abi.encode(NodeOutput.Data({ price: 3400e18, timestamp: block.timestamp }))
-        );
-
-        vm.mockCall(
-            sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.wstethUsdStorkNodeId)),
-            abi.encode(NodeOutput.Data({ price: 3400e18, timestamp: block.timestamp }))
-        );
     }
 }
