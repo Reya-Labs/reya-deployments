@@ -9,4 +9,5 @@ include = [
     "configs/tokens/susde.toml",
     "configs/tokens/deusd.toml",
     "configs/tokens/sdeusd.toml",
+    "configs/tokens/wsteth.toml",
 ]

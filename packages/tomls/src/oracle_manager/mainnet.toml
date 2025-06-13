@@ -143,4 +143,6 @@ include = [
     "configs/reyaLm/selini_usdc.toml",
     "configs/reyaLm/amber_usdc.toml",
     "configs/reyaLm/hedge_usdc.toml",
+    "configs/stork/wsteth_usd.toml",
+    "configs/stork/wsteth_usdc.toml",
 ]
