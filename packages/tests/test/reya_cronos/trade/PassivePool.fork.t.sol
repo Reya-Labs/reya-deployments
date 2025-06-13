@@ -73,6 +73,10 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         check_autoRebalance_revertWhenSenderIsNotRebalancer();
     }
 
+    function testFuzz_Cronos_DepositWithdraw_NoSharePriceChange(int256[] memory amountsFuzz) public {
+        checkFuzz_depositWithdraw_noSharePriceChange(amountsFuzz);
+    }
+
     function test_Cronos_SetTokenTargetRatio_RevertWhenWSTETH() public {
         check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(0xDF52410A19298FE168c900513e762adaD00C42b1);
     }

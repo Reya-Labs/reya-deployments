@@ -101,6 +101,10 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         check_sharePriceChangesWhenAssetPriceChanges();
     }
 
+    function testFuzz_PassivePoolDepositWithdraw_NoSharePriceChange(int256[] memory amountsFuzz) public {
+        checkFuzz_depositWithdraw_noSharePriceChange(amountsFuzz);
+    }
+
     function test_PassivePoolAutoRebalance_RevertWhenSenderIsNotRebalancer() public {
         check_autoRebalance_revertWhenSenderIsNotRebalancer();
     }

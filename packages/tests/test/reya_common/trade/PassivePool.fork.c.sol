@@ -752,6 +752,84 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         );
     }
 
+    function checkFuzz_depositWithdraw_noSharePriceChange(int256[] memory amountsFuzz) public {
+        vm.assume(amountsFuzz.length <= 10);
+
+        int256[] memory amounts = new int256[](amountsFuzz.length);
+        address token = sec.rusd;
+
+        for (uint256 i = 0; i < amountsFuzz.length; i++) {
+            if (amountsFuzz[i] < 0) {
+                if (amountsFuzz[i] == type(int256).min) {
+                    amountsFuzz[i] += 1;
+                }
+                amounts[i] =
+                    (-1000 + int256((uint256(-amountsFuzz[i]) % 1000))) * int256(10 ** ITokenProxy(token).decimals());
+            } else {
+                amounts[i] = int256((uint256(amountsFuzz[i]) % 1000)) * int256(10 ** ITokenProxy(token).decimals());
+            }
+        }
+
+        address owner = vm.addr(333_222);
+        vm.prank(sec.multisig);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(
+            keccak256(abi.encode(keccak256(bytes("v2Liquidity")), sec.passivePoolId)), owner
+        );
+
+        for (uint256 i = 0; i < amountsFuzz.length; i++) {
+            uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+            if (amounts[i] > 0) {
+                uint256 amount = uint256(amounts[i]);
+                if (amount == 0) {
+                    continue;
+                }
+
+                deal(token, owner, amount);
+                vm.prank(owner);
+                ITokenProxy(token).approve(sec.pool, amount);
+                vm.prank(owner);
+                IPassivePoolProxy(sec.pool).addLiquidity({
+                    poolId: sec.passivePoolId,
+                    owner: owner,
+                    amount: amount,
+                    minShares: 0,
+                    actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: owner })
+                });
+            } else {
+                uint256 amount = uint256(-amounts[i]);
+
+                uint256 poolTokenBalance =
+                    uint256(ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolId, token).marginBalance);
+                if (amount > poolTokenBalance) {
+                    amount = poolTokenBalance;
+                }
+
+                uint256 sharesAmount = amount * 99 / 100 * 10 ** (30 - ITokenProxy(token).decimals());
+                uint256 ownerSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, owner);
+                if (ownerSharesAmount < sharesAmount) {
+                    sharesAmount = ownerSharesAmount;
+                }
+
+                if (sharesAmount == 0) {
+                    continue;
+                }
+
+                vm.prank(owner);
+                IPassivePoolProxy(sec.pool).removeLiquidity({
+                    poolId: sec.passivePoolId,
+                    sharesAmount: sharesAmount,
+                    minOut: 0,
+                    actionMetadata: ActionMetadata({ action: Action.Unstake, onBehalfOf: owner })
+                });
+            }
+
+            uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+            assertLe(sharePrice0, sharePrice1);
+            assertApproxEqRelDecimal(sharePrice0, sharePrice1, 1e12, 18);
+        }
+    }
+
     function check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(address token) public {
         vm.prank(sec.multisig);
         vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.TokenNotSupportingCollateral.selector, token));
