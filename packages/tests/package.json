@@ -5,7 +5,6 @@
   "private": true,
   "scripts": {
     "build": "forge build",
-    "test": "forge test",
     "lint:check": "yarn lint:sol:check",
     "lint:write": "yarn lint:sol:write",
     "lint:sol:check": "forge fmt --check && yarn solhint \"{src,test}/**/*.sol\"",
