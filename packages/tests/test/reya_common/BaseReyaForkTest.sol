@@ -276,19 +276,6 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         executePeripheryCommands(accountId, commands, userPrivateKey, incrementedNonce);
     }
 
-    function convertCoreCommandToPeripheryCommand(Command_Core memory command)
-        internal
-        pure
-        returns (Command_Periphery memory)
-    {
-        return Command_Periphery({
-            commandType: command.commandType,
-            inputs: command.inputs,
-            marketId: command.marketId,
-            exchangeId: command.exchangeId
-        });
-    }
-
     function executeCoreMatchOrder(
         uint128 marketId,
         address sender,
