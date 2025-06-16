@@ -194,8 +194,8 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             extraData,
             sec.pool
         );
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, digest);
-        sig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
+        (uint8 vv, bytes32 rr, bytes32 ss) = vm.sign(userPrivateKey, digest);
+        sig = EIP712Signature({ v: vv, r: rr, s: ss, deadline: deadline });
     }
 
     function executePeripheryCommands(
