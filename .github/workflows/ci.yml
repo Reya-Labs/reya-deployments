@@ -43,7 +43,4 @@ jobs:
         env:
           RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_cronos:test"
-      # TODO: Bring it back once Cannon fixes the issue
-      # - name: Fuzzing Cannon Simulation
-      #   run: "yarn fuzzing:cicd"
   

@@ -194,8 +194,8 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             extraData,
             sec.pool
         );
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, digest);
-        sig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
+        (uint8 vv, bytes32 rr, bytes32 ss) = vm.sign(userPrivateKey, digest);
+        sig = EIP712Signature({ v: vv, r: rr, s: ss, deadline: deadline });
     }
 
     function executePeripheryCommands(
@@ -274,19 +274,6 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         Command_Periphery[] memory commands = new Command_Periphery[](1);
         commands[0] = getMatchOrderPeripheryCommand(marketId, base, priceLimit);
         executePeripheryCommands(accountId, commands, userPrivateKey, incrementedNonce);
-    }
-
-    function convertCoreCommandToPeripheryCommand(Command_Core memory command)
-        internal
-        pure
-        returns (Command_Periphery memory)
-    {
-        return Command_Periphery({
-            commandType: command.commandType,
-            inputs: command.inputs,
-            marketId: command.marketId,
-            exchangeId: command.exchangeId
-        });
     }
 
     function executeCoreMatchOrder(

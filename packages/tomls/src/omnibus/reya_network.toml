@@ -249,6 +249,7 @@ storkAssetPairIdSUSDE = "SUSDEUSD"
 storkAssetPairIdDEUSD = "DEUSDUSD"
 storkAssetPairIdSDEUSDDEUSD = "SDEUSDDEUSD"
 storkAssetPairIdFTM = "FTMUSD"
+storkAssetPairIdWSTETH = "WSTETHUSD"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
@@ -367,6 +368,10 @@ deusdEthereumConnector = "0x65ce0D9c5bbF43ee7A6011B3D077DD2FeA6b2726"
 sdeusdController = "0xCDb4A30CEBbf9d8C14e4e96fDe6EA7E40c6f3f5B"
 sdeusdExecutionHelper = "0x70c46c24f9f923F44278C3B5451986C175c39F73"
 sdeusdEthereumConnector = "0x2dc464B4f5Fd55ea19f0bdF71A8dc3584eeb64d7"
+# -------------------------------------------------------------------
+wstethController = "0x454bd326Fb446702C22E1b5097942dA1c9852aAC"
+wstethExecutionHelper = "0x8d422bb223EDe166A6Ca821Fb472e07B446a243b"
+wstethEthereumConnector = "0x880997ed94Dd2098395D2b3ECDb1c93026894106"
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumWithdrawFeeUnscaled = "5.0"
@@ -396,6 +401,8 @@ susdeBaseWithdrawFeeUnscaled = "0.1"
 deusdEthereumWithdrawFeeUnscaled = "5.0"
 # -------------------------------------------------------------------
 sdeusdEthereumWithdrawFeeUnscaled = "5.0"
+# -------------------------------------------------------------------
+wstethEthereumWithdrawFeeUnscaled = "0.00415"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -437,6 +444,10 @@ ramberWithdrawalTvlPercentageLimitUnscaled = "0"
 rhedgeCollateralAdapter = "<%= AddressZero %>"
 rhedgeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rhedgeWithdrawalTvlPercentageLimitUnscaled = "0"
+# -------------------------------------------------------------------
+wstethCollateralAdapter = "<%= AddressZero %>"
+wstethWithdrawalWindowSize = "1"
+wstethWithdrawalTvlPercentageLimitUnscaled = "1"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.2"
@@ -514,6 +525,9 @@ opUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 avaxUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 avaxUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+wstethUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+wstethUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 mkrUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 mkrUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -1952,7 +1966,7 @@ market62Me_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "62"
-cp1Rusd_maxCollaterals = "10"
+cp1Rusd_maxCollaterals = "11"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
 # -----------------------------------------------
@@ -2164,6 +2178,18 @@ cp1Rusd_rhedgeParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address 
 cp1Rusd_rhedgeParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_rhedgeParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_rhedgeParentConfig_oracleNodeId = "<%= settings.hedgeUsdcReyaLmNodeId %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_wsteth_capUnscaled = "0"                                                    # todo: configure
+cp1Rusd_wsteth_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_wsteth_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_wsteth_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_wsteth_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_wstethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_wstethParentConfig_priceHaircutUnscaled = "0"                               # todo: configure
+cp1Rusd_wstethParentConfig_autoExchangeDiscountUnscaled = "0"                       # todo: configure
+cp1Rusd_wstethParentConfig_oracleNodeId = "<%= settings.wstethUsdcNodeIdStork %>"
 
 [var.sbt_config]
 tokenName = "Reya OG SBT"

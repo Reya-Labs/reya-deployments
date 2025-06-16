@@ -5,12 +5,7 @@ import { WethCollateralForkCheck } from "../../reya_common/collaterals/WethColla
 import "../../reya_common/DataTypes.sol";
 
 contract WethCollateralForkTest is ReyaForkTest, WethCollateralForkCheck {
-    function testFuzz_Cronos_WETHMintBurn(address attacker) public {
-        vm.assume(attacker != dec.socketController[sec.weth]);
-        checkFuzz_WETHMintBurn(attacker);
-    }
-
-    function test_Cronos_weth_view_functions() public {
-        check_weth_view_functions();
+    function test_Cronos_WethTradeWithWethCollateral() public {
+        check_WethTradeWithWethCollateral();
     }
 }

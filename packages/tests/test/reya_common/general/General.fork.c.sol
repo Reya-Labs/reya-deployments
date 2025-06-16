@@ -142,6 +142,8 @@ struct LocalState {
     uint256 maxDeviationME;
     uint256 meanPriceSUSDE;
     uint256 maxDeviationSUSDE;
+    uint256 meanPriceWSTETH;
+    uint256 maxDeviationWSTETH;
     uint256 meanPriceDEUSD;
     uint256 maxDeviationDEUSD;
     uint256 meanPriceSDEUSD;
@@ -506,6 +508,9 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
         ls.meanPriceSUSDE = 1.17e18;
         ls.maxDeviationSUSDE = 0.05e18;
+
+        ls.meanPriceWSTETH = 3430e18;
+        ls.maxDeviationWSTETH = 2000e18;
 
         if (sec.destinationChainId == 1) {
             ls.meanPriceSRUSD = 1.04e18;
@@ -1068,6 +1073,14 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.nodeIds.push(sec.susdeUsdcStorkNodeId);
         ls.meanPrices.push(ls.meanPriceSUSDE);
         ls.maxDeviations.push(ls.maxDeviationSUSDE);
+
+        ls.nodeIds.push(sec.wstethUsdStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceWSTETH);
+        ls.maxDeviations.push(ls.maxDeviationWSTETH);
+
+        ls.nodeIds.push(sec.wstethUsdcStorkNodeId);
+        ls.meanPrices.push(ls.meanPriceWSTETH);
+        ls.maxDeviations.push(ls.maxDeviationWSTETH);
 
         ls.nodeIds.push(sec.deusdUsdStorkNodeId);
         ls.meanPrices.push(ls.meanPriceStableCoin);

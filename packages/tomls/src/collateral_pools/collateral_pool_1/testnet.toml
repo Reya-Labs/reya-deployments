@@ -1,1 +1,1 @@
-include = ["mainnet.toml", "tokens/wsteth.toml"]
+include = ["mainnet.toml"]
