@@ -369,32 +369,44 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
     function check_rseliniRedemptionAndSubscription() public {
         check_LmToken_RedemptionAndSubscription(
-            sec.rselini, sec.rseliniUsdcReyaLmNodeId, sec.rseliniSubscriber, sec.rseliniRedeemer, sec.rseliniCustodian
+            sec.rselini,
+            dec.oracleNodes["rseliniUsdcReyaLm"],
+            sec.rseliniSubscriber,
+            sec.rseliniRedeemer,
+            sec.rseliniCustodian
         );
     }
 
     function check_ramberRedemptionAndSubscription() public {
         check_LmToken_RedemptionAndSubscription(
-            sec.ramber, sec.ramberUsdcReyaLmNodeId, sec.ramberSubscriber, sec.ramberRedeemer, sec.ramberCustodian
+            sec.ramber,
+            dec.oracleNodes["ramberUsdcReyaLm"],
+            sec.ramberSubscriber,
+            sec.ramberRedeemer,
+            sec.ramberCustodian
         );
     }
 
     function check_rhedgeRedemptionAndSubscription() public {
         check_LmToken_RedemptionAndSubscription(
-            sec.rhedge, sec.rhedgeUsdcReyaLmNodeId, sec.rhedgeSubscriber, sec.rhedgeRedeemer, sec.rhedgeCustodian
+            sec.rhedge,
+            dec.oracleNodes["rhedgeUsdcReyaLm"],
+            sec.rhedgeSubscriber,
+            sec.rhedgeRedeemer,
+            sec.rhedgeCustodian
         );
     }
 
     function check_rselini_view_functions() public {
-        check_lmToken_view_functions(sec.rselini, sec.rseliniUsdcReyaLmNodeId);
+        check_lmToken_view_functions(sec.rselini, dec.oracleNodes["rseliniUsdcReyaLm"]);
     }
 
     function check_ramber_view_functions() public {
-        check_lmToken_view_functions(sec.ramber, sec.ramberUsdcReyaLmNodeId);
+        check_lmToken_view_functions(sec.ramber, dec.oracleNodes["ramberUsdcReyaLm"]);
     }
 
     function check_rhedge_view_functions() public {
-        check_lmToken_view_functions(sec.rhedge, sec.rhedgeUsdcReyaLmNodeId);
+        check_lmToken_view_functions(sec.rhedge, dec.oracleNodes["rhedgeUsdcReyaLm"]);
     }
 
     function check_rselini_cap_exceeded() public {

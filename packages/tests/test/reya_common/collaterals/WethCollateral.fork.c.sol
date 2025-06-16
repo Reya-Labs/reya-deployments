@@ -63,7 +63,8 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
         // compute fees paid in rUSD
         uint256 fees = 0;
         {
-            uint256 currentPrice = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdStorkMarkNodeId).price;
+            uint256 currentPrice =
+                IOracleManagerProxy(sec.oracleManager).process(dec.oracleNodes["ethUsdStorkMark"]).price;
             fees = 10e6 * currentPrice / 1e18 * 0.001e18 / 1e18;
         }
 
@@ -83,13 +84,13 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
         for (uint256 i = 0; i < 4; i++) {
             vm.mockCall(
                 sec.oracleManager,
-                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
+                abi.encodeCall(IOracleManagerProxy.process, (dec.oracleNodes["ethUsdcStork"])),
                 abi.encode(NodeOutput.Data({ price: randomPrices[i], timestamp: block.timestamp }))
             );
 
             vm.mockCall(
                 sec.oracleManager,
-                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkMarkNodeId)),
+                abi.encodeCall(IOracleManagerProxy.process, (dec.oracleNodes["ethUsdcStorkMark"])),
                 abi.encode(NodeOutput.Data({ price: randomPrices[i], timestamp: block.timestamp }))
             );
 
