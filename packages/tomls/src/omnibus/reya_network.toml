@@ -2181,14 +2181,14 @@ cp1Rusd_rhedgeParentConfig_oracleNodeId = "<%= settings.hedgeUsdcReyaLmNodeId %>
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_wsteth_capUnscaled = "0"                                                   # todo: configure
+cp1Rusd_wsteth_capUnscaled = "0"                                                    # todo: configure
 cp1Rusd_wsteth_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_wsteth_autoExchangeInsuranceFeeUnscaled = "0"
 cp1Rusd_wsteth_autoExchangeDustThresholdUnscaled = "0"
 cp1Rusd_wsteth_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_wstethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
-cp1Rusd_wstethParentConfig_priceHaircutUnscaled = "0"                           # todo: configure
-cp1Rusd_wstethParentConfig_autoExchangeDiscountUnscaled = "0"                    # todo: configure
+cp1Rusd_wstethParentConfig_priceHaircutUnscaled = "0"                               # todo: configure
+cp1Rusd_wstethParentConfig_autoExchangeDiscountUnscaled = "0"                       # todo: configure
 cp1Rusd_wstethParentConfig_oracleNodeId = "<%= settings.wstethUsdcNodeIdStork %>"
 
 [var.sbt_config]
