@@ -70,7 +70,7 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         ICoreProxy(sec.core).activateFirstMarketForAccount(accountId, 1);
 
         NodeOutput.Data memory srusdUsdcNodeOutput =
-            IOracleManagerProxy(sec.oracleManager).process(sec.srusdUsdcPoolNodeId);
+            IOracleManagerProxy(sec.oracleManager).process(dec.oracleNodes["srusdUsdcPool"]);
 
         (, ParentCollateralConfig memory parentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.srusd);
@@ -132,7 +132,7 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
     function check_srusd_deposit_withdraw() public {
         removeCollateralWithdrawalLimit(sec.srusd);
 
-        (address user, uint256 userPk) = makeAddrAndKey("user");
+        (address user,) = makeAddrAndKey("user");
         uint256 amount = 1000e30; // denominated in srusd
 
         // deposit new margin account

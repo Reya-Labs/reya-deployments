@@ -212,7 +212,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_deusd_ViewFunctions() public {
-        check_UsualCollateral_ViewFunctions(sec.deusd, sec.deusdUsdcStorkNodeId);
+        check_UsualCollateral_ViewFunctions(sec.deusd, dec.oracleNodes["deusdUsdcStork"]);
     }
 
     function check_deusd_CapExceeded() public {
@@ -233,7 +233,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_sdeusd_ViewFunctions() public {
-        check_UsualCollateral_ViewFunctions(sec.sdeusd, sec.sdeusdUsdcStorkNodeId);
+        check_UsualCollateral_ViewFunctions(sec.sdeusd, dec.oracleNodes["sdeusdUsdcStork"]);
     }
 
     function check_sdeusd_CapExceeded() public {
@@ -254,7 +254,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_susde_ViewFunctions() public {
-        check_UsualCollateral_ViewFunctions(sec.susde, sec.susdeUsdcStorkNodeId);
+        check_UsualCollateral_ViewFunctions(sec.susde, dec.oracleNodes["susdeUsdcStork"]);
     }
 
     function check_susde_CapExceeded() public {
@@ -274,7 +274,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_usde_ViewFunctions() public {
-        check_UsualCollateral_ViewFunctions(sec.usde, sec.usdeUsdcStorkNodeId);
+        check_UsualCollateral_ViewFunctions(sec.usde, dec.oracleNodes["usdeUsdcStork"]);
     }
 
     function check_usde_CapExceeded() public {
@@ -298,7 +298,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_weth_ViewFunctions() public {
-        check_UsualCollateral_ViewFunctions(sec.weth, sec.ethUsdcStorkNodeId);
+        check_UsualCollateral_ViewFunctions(sec.weth, dec.oracleNodes["ethUsdcStork"]);
     }
 
     function check_weth_CapExceeded() public {
@@ -318,7 +318,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_wsteth_ViewFunctions() public {
-        check_UsualCollateral_ViewFunctions(sec.wsteth, sec.wstethUsdcStorkNodeId);
+        check_UsualCollateral_ViewFunctions(sec.wsteth, dec.oracleNodes["wstethUsdcStork"]);
     }
 
     function check_wsteth_CapExceeded() public {
