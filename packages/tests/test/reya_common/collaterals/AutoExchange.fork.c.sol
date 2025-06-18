@@ -122,12 +122,12 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         s.bumpedEthPrice = orderPrice.unwrap() + 600e18;
         vm.mockCall(
             sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
+            abi.encodeCall(IOracleManagerProxy.process, (dec.oracleNodes["ethUsdcStork"])),
             abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
         );
         vm.mockCall(
             sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkMarkNodeId)),
+            abi.encodeCall(IOracleManagerProxy.process, (dec.oracleNodes["ethUsdcStorkMark"])),
             abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
         );
 
@@ -285,12 +285,12 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         s.bumpedEthPrice = orderPrice.unwrap() + 600e18;
         vm.mockCall(
             sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
+            abi.encodeCall(IOracleManagerProxy.process, (dec.oracleNodes["ethUsdcStork"])),
             abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
         );
         vm.mockCall(
             sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkMarkNodeId)),
+            abi.encodeCall(IOracleManagerProxy.process, (dec.oracleNodes["ethUsdcStorkMark"])),
             abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
         );
 
@@ -329,7 +329,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertEq(s.ae1.quoteAmountToIF, 4e6);
         assertEq(s.ae1.quoteAmountToAccount, 396e6);
         NodeOutput.Data memory srusdUsdcNodeOutput =
-            IOracleManagerProxy(sec.oracleManager).process(sec.srusdUsdcPoolNodeId);
+            IOracleManagerProxy(sec.oracleManager).process(dec.oracleNodes["srusdUsdcPool"]);
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator, ud(400e30).div(ud(srusdUsdcNodeOutput.price)).unwrap(), 0.001e30, 30
         );
@@ -362,12 +362,12 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         mockFreshPrices();
         vm.mockCall(
             sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
+            abi.encodeCall(IOracleManagerProxy.process, (dec.oracleNodes["ethUsdcStork"])),
             abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
         );
         vm.mockCall(
             sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkMarkNodeId)),
+            abi.encodeCall(IOracleManagerProxy.process, (dec.oracleNodes["ethUsdcStorkMark"])),
             abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
         );
 
@@ -419,7 +419,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeWeth_WhenUserHasOnlyWeth() public {
         check_AutoExchange({
             token: sec.weth,
-            tokenUsdcNodeId: sec.ethUsdcStorkNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["ethUsdcStork"],
             tokenAeDiscount: 0.02e18,
             userInitialRusdBalance: 0
         });
@@ -428,7 +428,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeWeth_WhenUserHasBothWethAndRusd() public {
         check_AutoExchange({
             token: sec.weth,
-            tokenUsdcNodeId: sec.ethUsdcStorkNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["ethUsdcStork"],
             tokenAeDiscount: 0.02e18,
             userInitialRusdBalance: 100e6
         });
@@ -437,7 +437,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeUSDe_WhenUserHasOnlyUsde() public {
         check_AutoExchange({
             token: sec.usde,
-            tokenUsdcNodeId: sec.usdeUsdcStorkNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["usdeUsdcStork"],
             tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 0
         });
@@ -446,7 +446,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeUSDe_WhenUserHasBothUsdeAndRusd() public {
         check_AutoExchange({
             token: sec.usde,
-            tokenUsdcNodeId: sec.usdeUsdcStorkNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["usdeUsdcStork"],
             tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 100e6
         });
@@ -455,7 +455,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSUSDe_WhenUserHasOnlySusde() public {
         check_AutoExchange({
             token: sec.susde,
-            tokenUsdcNodeId: sec.susdeUsdcStorkNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["susdeUsdcStork"],
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
         });
@@ -464,7 +464,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSUSDe_WhenUserHasBothSusdeAndRusd() public {
         check_AutoExchange({
             token: sec.susde,
-            tokenUsdcNodeId: sec.susdeUsdcStorkNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["susdeUsdcStork"],
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
         });
@@ -473,7 +473,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeDeusd_WhenUserHasOnlyDeusd() public {
         check_AutoExchange({
             token: sec.deusd,
-            tokenUsdcNodeId: sec.deusdUsdcStorkNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["deusdUsdcStork"],
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
         });
@@ -482,7 +482,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeDeusd_WhenUserHasBothDeusdAndRusd() public {
         check_AutoExchange({
             token: sec.deusd,
-            tokenUsdcNodeId: sec.deusdUsdcStorkNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["deusdUsdcStork"],
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
         });
@@ -491,7 +491,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSdeusd_WhenUserHasOnlySdeusd() public {
         check_AutoExchange({
             token: sec.sdeusd,
-            tokenUsdcNodeId: sec.sdeusdUsdcStorkNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["sdeusdUsdcStork"],
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
         });
@@ -500,7 +500,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSdeusd_WhenUserHasBothSdeusdAndRusd() public {
         check_AutoExchange({
             token: sec.sdeusd,
-            tokenUsdcNodeId: sec.sdeusdUsdcStorkNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["sdeusdUsdcStork"],
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
         });
@@ -509,7 +509,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRselini_WhenUserHasOnlyRselini() public {
         check_AutoExchange({
             token: sec.rselini,
-            tokenUsdcNodeId: sec.rseliniUsdcReyaLmNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["rseliniUsdcReyaLm"],
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
         });
@@ -518,7 +518,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRselini_WhenUserHasBothRseliniAndRusd() public {
         check_AutoExchange({
             token: sec.rselini,
-            tokenUsdcNodeId: sec.rseliniUsdcReyaLmNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["rseliniUsdcReyaLm"],
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
         });
@@ -527,7 +527,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRamber_WhenUserHasOnlyRamber() public {
         check_AutoExchange({
             token: sec.ramber,
-            tokenUsdcNodeId: sec.ramberUsdcReyaLmNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["ramberUsdcReyaLm"],
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
         });
@@ -536,7 +536,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRamber_WhenUserHasBothRamberAndRusd() public {
         check_AutoExchange({
             token: sec.ramber,
-            tokenUsdcNodeId: sec.ramberUsdcReyaLmNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["ramberUsdcReyaLm"],
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
         });
@@ -545,7 +545,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRhedge_WhenUserHasOnlyRhedge() public {
         check_AutoExchange({
             token: sec.rhedge,
-            tokenUsdcNodeId: sec.rhedgeUsdcReyaLmNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["rhedgeUsdcReyaLm"],
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
         });
@@ -554,7 +554,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRhedge_WhenUserHasBothRhedgeAndRusd() public {
         check_AutoExchange({
             token: sec.rhedge,
-            tokenUsdcNodeId: sec.rhedgeUsdcReyaLmNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["rhedgeUsdcReyaLm"],
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
         });
@@ -571,7 +571,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeWsteth_WhenUserHasOnlyWsteth() public {
         check_AutoExchange({
             token: sec.wsteth,
-            tokenUsdcNodeId: sec.wstethUsdcStorkNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["wstethUsdcStork"],
             tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 0
         });
@@ -580,7 +580,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeWsteth_WhenUserHasBothWstethAndRusd() public {
         check_AutoExchange({
             token: sec.wsteth,
-            tokenUsdcNodeId: sec.wstethUsdcStorkNodeId,
+            tokenUsdcNodeId: dec.oracleNodes["wstethUsdcStork"],
             tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 100e6
         });

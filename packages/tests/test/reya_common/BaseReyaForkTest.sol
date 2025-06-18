@@ -471,4 +471,15 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     function lastMarketId() internal view returns (uint128) {
         return ICoreProxy(sec.core).getLastCreatedMarketId();
     }
+
+    function addOracleNode(string memory oracleName, bytes32 oracleNodeId, uint128 marketId) public {
+        dec.marketNodeNames[marketId] = oracleName;
+        addOracleNode(oracleName, oracleNodeId);
+    }
+
+    function addOracleNode(string memory oracleName, bytes32 oracleNodeId) public {
+        dec.oracleNodes[oracleName] = oracleNodeId;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(oracleNodeId, 10_000);
+    }
 }
