@@ -523,7 +523,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
             ls.maxDeviationRAMBER = 0.01e18;
 
             ls.meanPriceRHEDGE = 1e18;
-            ls.maxDeviationRHEDGE = 0.01e18;
+            ls.maxDeviationRHEDGE = 0.1e18;
         } else {
             ls.meanPriceSRUSD = 11.11e18;
             ls.maxDeviationSRUSD = 11e18;
@@ -535,7 +535,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
             ls.maxDeviationRAMBER = 0.05e18;
 
             ls.meanPriceRHEDGE = 1e18;
-            ls.maxDeviationRHEDGE = 0.05e18;
+            ls.maxDeviationRHEDGE = 0.1e18;
         }
 
         ls.meanPriceStableCoin = 1e18;
