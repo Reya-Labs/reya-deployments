@@ -314,6 +314,7 @@ storkAssetPairIdLAYERMark = "LAYERUSDMARK"
 storkAssetPairIdTAOMark = "TAOUSDMARK"
 storkAssetPairIdIPMark = "IPUSDMARK"
 storkAssetPairIdMEMark = "MEUSDMARK"
+storkAssetPairIdPUMPMark = "PUMPUSDMARK"
 
 [var.reya_lm_asset_pair_ids]
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
@@ -696,6 +697,9 @@ ipUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #-----------------------------------------------------------------------------------
 meUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 meUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+pumpUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+pumpUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 usdeUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 usdeUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -1964,8 +1968,28 @@ market62Me_marketOrderMaxStaleDuration = "11"
 market62Me_priceSpreadUnscaled = "0"
 market62Me_volatilityIndexMultiplierUnscaled = "0"
 
+[var.market_63Pump]
+market63Pump_riskMatrixIndex = "0"
+market63Pump_maxOpenBaseUnscaled = "0"
+market63Pump_velocityMultiplierUnscaled = "75"
+market63Pump_oracleNodeId = "<%= settings.pumpUsdcMarkNodeIdStork %>"
+market63Pump_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market63Pump_dutchConfig_lambdaUnscaled = "1"
+market63Pump_dutchConfig_minBaseUnscaled = "0.11"
+market63Pump_slippageParams_phiUnscaled = "0"
+market63Pump_slippageParams_betaUnscaled = "0"
+market63Pump_minimumOrderBaseUnscaled = "1"
+market63Pump_baseSpacingUnscaled = "0.1"
+market63Pump_priceSpacingUnscaled = "<%= 1e-4 %>"
+market63Pump_depthFactorUnscaled = "3"
+market63Pump_maxExposureFactorUnscaled = "0.999"
+market63Pump_maxPSlippageUnscaled = "0.1"
+market63Pump_marketOrderMaxStaleDuration = "11"
+market63Pump_priceSpreadUnscaled = "0"
+market63Pump_volatilityIndexMultiplierUnscaled = "0"
+
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "62"
+cp1Rusd_maxMarkets = "63"
 cp1Rusd_maxCollaterals = "11"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
@@ -2032,6 +2056,7 @@ cp1Rusd_market59Layer_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market60Tao_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market61Ip_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market62Me_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market63Pump_riskMatrix00Unscaled = "0.002630"
 
 # -----------------------------------------------
 cp1Rusd_imMultiplierUnscaled = "1.3"

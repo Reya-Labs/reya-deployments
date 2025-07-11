@@ -1,0 +1,148 @@
+#####################################
+# Create Market
+#####################################
+[invoke.create_market_63pump]
+target = ["PassivePerpProxy"]
+abi = "<%= JSON.stringify(contracts.PassivePerpProxy.abi.concat({'type':'event','name':'MarketDataUpdated','inputs':[{'name':'marketData','type':'tuple','indexed':false,'internalType':'struct Market.Data','components':[{'name':'id','type':'uint128','internalType':'uint128'},{'name':'passivePoolId','type':'uint128','internalType':'uint128'},{'name':'poolAccountId','type':'uint128','internalType':'uint128'},{'name':'quoteToken','type':'address','internalType':'address'},{'name':'quoteTokenDecimals','type':'uint8','internalType':'uint8'},{'name':'lastFundingVelocity','type':'int256','internalType':'SD59x18'},{'name':'lastFundingRate','type':'int256','internalType':'SD59x18'},{'name':'lastFundingTimestamp','type':'uint256','internalType':'uint256'},{'name':'lastMTM','type':'tuple','internalType':'struct PriceData','components':[{'name':'price','type':'uint256','internalType':'UD60x18'},{'name':'timestamp','type':'uint256','internalType':'uint256'}]},{'name':'longTrackers','type':'tuple','internalType':'struct FundingAndADLTrackers','components':[{'name':'fundingValue','type':'int256','internalType':'SD59x18'},{'name':'baseMultiplier','type':'uint256','internalType':'UD60x18'},{'name':'adlUnwindPrice','type':'uint256','internalType':'UD60x18'}]},{'name':'shortTrackers','type':'tuple','internalType':'struct FundingAndADLTrackers','components':[{'name':'fundingValue','type':'int256','internalType':'SD59x18'},{'name':'baseMultiplier','type':'uint256','internalType':'UD60x18'},{'name':'adlUnwindPrice','type':'uint256','internalType':'UD60x18'}]},{'name':'openInterest','type':'uint256','internalType':'UD60x18'}]},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "owner"
+func = "createMarket"
+args = ["Market PUMP", "<%= settings.pool1RusdId %>"]
+var.market_63pump.event = "MarketDataUpdated"
+var.market_63pump.arg = 0
+depends = [
+    "invoke.core_register_instrument_passive_perp",
+    "invoke.passive_pool_create_pool_1rusd",
+    "invoke.create_market_62me",
+]
+
+[var.market_63pump_vars]
+market63PumpId = "<%= (String(settings.market_63pump.id) === '63') ? settings.market_63pump.id : parseUnits('0', 'assert market_63pump_vars failed') %>"
+depends = ["invoke.create_market_63pump"]
+
+##################################################
+# Market's Collateral Pool Feature Flags
+##################################################
+[invoke.market_63pump_unpause_cp]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market63PumpId %>"]
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market63PumpId])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy", "var.market_63pump_vars"]
+
+[invoke.market_63pump_set_pausers_cp]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market63PumpId %>"]
+func = "setDeniers"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market63PumpId])) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_core_proxy", "var.market_63pump_vars"]
+
+##################################################
+# Market Feature Flags
+##################################################
+[invoke.market_63pump_unpause_market]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market63PumpId])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy", "var.market_63pump_vars"]
+
+[invoke.market_63pump_set_pausers_market]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market63PumpId])) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_core_proxy", "var.market_63pump_vars"]
+
+#####################################
+# Market Configuration
+#####################################
+[invoke.market_63pump_set_market_config]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setMarketConfiguration"
+args = [
+    "<%= settings.market63PumpId %>",
+    { riskMatrixIndex = "<%= settings.market63Pump_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market63Pump_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market63Pump_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market63Pump_oracleNodeId %>", mtmWindow = "<%= settings.market63Pump_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market63Pump_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market63Pump_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market63Pump_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market63Pump_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market63Pump_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market63Pump_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market63Pump_priceSpacingUnscaled) %>", depthFactor = "<%= parseEther(settings.market63Pump_depthFactorUnscaled) %>", maxExposureFactor = "<%= parseEther(settings.market63Pump_maxExposureFactorUnscaled) %>", maxPSlippage = "<%= parseEther(settings.market63Pump_maxPSlippageUnscaled) %>", marketOrderMaxStaleDuration = "<%= settings.market63Pump_marketOrderMaxStaleDuration %>", priceSpread = "<%= parseEther(settings.market63Pump_priceSpreadUnscaled) %>", volatilityIndexMultiplier = "<%= parseEther(settings.market63Pump_volatilityIndexMultiplierUnscaled) %>" },
+]
+depends = ["invoke.create_market_63pump"]
+
+#####################################
+# Market's Collateral Pool Limits
+#####################################
+[invoke.market_63pump_set_cp_limits]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market63PumpId %>"]
+func = "setCollateralPoolLimits"
+args = [
+    "<%= settings.market63PumpId %>",
+    { maxMarkets = "1", maxCollaterals = "1" },
+]
+depends = ["invoke.create_market_63pump"]
+
+##################################################
+# Market's Collateral Pool Insurance Fund
+##################################################
+[invoke.market_63pump_insurance_fund_config]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market63PumpId %>"]
+func = "configureCollateralPoolInsuranceFund"
+args = [
+    "<%= settings.market63PumpId %>",
+    # reusing params from CP 1 since this CP will get merged
+    { accountId = "<%= settings.cp1Rusd_insuranceFundAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_insuranceFund_liquidationFeeUnscaled) %>" },
+]
+depends = [
+    "invoke.cp_1rusd_create_insurance_fund_account",
+    "invoke.create_market_63pump",
+]
+
+##################################################
+# Merge Market's Collateral Pool 
+##################################################
+[invoke.market_63pump_merge_collateral_pool]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "mergeCollateralPools"
+args = ["<%= settings.market1EthId %>", "<%= settings.market63PumpId %>"]
+depends = [
+    "invoke.market_1eth_unpause_cp",
+    "invoke.market_1eth_set_pausers_cp",
+    "invoke.market_1eth_unpause_market",
+    "invoke.market_1eth_set_pausers_market",
+    "invoke.market_1eth_set_market_config",
+    "invoke.market_1eth_set_cp_limits",
+    "invoke.market_1eth_insurance_fund_config",
+    "invoke.market_63pump_unpause_cp",
+    "invoke.market_63pump_set_pausers_cp",
+    "invoke.market_63pump_unpause_market",
+    "invoke.market_63pump_set_pausers_market",
+    "invoke.market_63pump_set_market_config",
+    "invoke.market_63pump_set_cp_limits",
+    "invoke.market_63pump_insurance_fund_config",
+]
