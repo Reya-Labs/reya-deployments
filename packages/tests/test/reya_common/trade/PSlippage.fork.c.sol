@@ -795,6 +795,10 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         trade_slippage_helper({ marketId: 62, eps: ud(0.002e18), isLong: true, iterations: 9 });
     }
 
+    function check_trade_slippage_pump_long() public {
+        trade_slippage_helper({ marketId: 63, eps: ud(0.002e18), isLong: true, iterations: 9 });
+    }
+
     function check_trade_slippage_eth_short() public {
         trade_slippage_helper({ marketId: 1, eps: ud(0.001e18), isLong: false, iterations: 4 });
     }
@@ -1041,5 +1045,9 @@ contract PSlippageForkCheck is BaseReyaForkTest {
 
     function check_trade_slippage_me_short() public {
         trade_slippage_helper({ marketId: 62, eps: ud(0.001e18), isLong: false, iterations: 9 });
+    }
+
+    function check_trade_slippage_pump_short() public {
+        trade_slippage_helper({ marketId: 63, eps: ud(0.001e18), isLong: false, iterations: 9 });
     }
 }

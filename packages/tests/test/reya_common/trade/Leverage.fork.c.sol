@@ -84,6 +84,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant taoLeverage = 20e18;
     uint256 private constant ipLeverage = 15e18;
     uint256 private constant meLeverage = 15e18;
+    uint256 private constant pumpLeverage = 3e18;
 
     address private user;
     uint256 private userPk;
@@ -156,6 +157,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         expectedLeverage.push(taoLeverage);
         expectedLeverage.push(ipLeverage);
         expectedLeverage.push(meLeverage);
+        expectedLeverage.push(pumpLeverage);
     }
 
     function check_trade_leverage(uint128 marketId, address collateral) internal {
