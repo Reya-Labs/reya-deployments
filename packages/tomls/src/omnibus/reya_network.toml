@@ -1971,7 +1971,7 @@ market62Me_volatilityIndexMultiplierUnscaled = "0"
 [var.market_63Pump]
 market63Pump_riskMatrixIndex = "0"
 market63Pump_maxOpenBaseUnscaled = "9500000"
-market63Pump_velocityMultiplierUnscaled = "20"
+market63Pump_velocityMultiplierUnscaled = "0"
 market63Pump_oracleNodeId = "<%= settings.pumpUsdcMarkNodeIdStork %>"
 market63Pump_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market63Pump_dutchConfig_lambdaUnscaled = "1"
