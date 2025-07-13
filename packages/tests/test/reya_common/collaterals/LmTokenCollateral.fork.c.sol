@@ -406,7 +406,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_rhedge_cap_exceeded() public {
-        check_lmToken_cap_exceeded(sec.rhedge, 15_162e18);
+        check_lmToken_cap_exceeded(sec.rhedge, 50_000e18);
     }
 
     function check_rselini_deposit_withdraw() public {
