@@ -721,7 +721,7 @@ amberUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 hedgeUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 
 [var.pool_1]
-pool1_quoteTokenTargetRatioUnscaled = "0.15"
+pool1_quoteTokenTargetRatioUnscaled = "0.04"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
 pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.738"
 pool1_RSELINITargetRatioPostQuoteUnscaled = "0.1275"
