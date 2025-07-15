@@ -333,7 +333,7 @@ usdcExecutionHelper = "0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa"
 usdcEthereumConnector = "0x807B2e8724cDf346c87EEFF4E309bbFCb8681eC1"
 usdcArbitrumConnector = "0x3F19417872BC9F5037Bc0D40cE7389D05Cf847Ad"
 usdcOptimismConnector = "0x321C2Bd69819a43C340b55db40F7c8Eb3334cDe0"
-usdcPolygonConnector = "0x54CAA0946dA179425e1abB169C020004284d64D3"
+usdcPolygonConnector = "0x2aF7a52C1fe0Ef66af0a65d32c6ab4112Db393ED"
 usdcBaseConnector = "0x3694Ab37011764fA64A648C2d5d6aC0E9cD5F98e"
 # -------------------------------------------------------------------
 wethController = "0xF0E49Dafc687b5ccc8B31b67d97B5985D1cAC4CB"
