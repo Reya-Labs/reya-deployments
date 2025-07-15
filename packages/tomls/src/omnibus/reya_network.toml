@@ -16,7 +16,7 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/mainnet.toml",
 ]
-version = "1.0.55"
+version = "1.0.56"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -428,7 +428,7 @@ deusdWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 sdeusdCollateralAdapter = "<%= AddressZero %>"
 sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.01"
+sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # -------------------------------------------------------------------
 srusdCollateralAdapter = "<%= AddressZero %>"
 srusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
@@ -721,12 +721,12 @@ amberUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 hedgeUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 
 [var.pool_1]
-pool1_quoteTokenTargetRatioUnscaled = "0.04"
+pool1_quoteTokenTargetRatioUnscaled = "0.15"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
-pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.738"
-pool1_RSELINITargetRatioPostQuoteUnscaled = "0.1275"
-pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.1275"
-pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.007"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.7"
+pool1_RSELINITargetRatioPostQuoteUnscaled = "0.14"
+pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.14"
+pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.02"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
