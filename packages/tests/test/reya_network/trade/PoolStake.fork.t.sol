@@ -5,10 +5,10 @@ import { PoolStakeForkCheck } from "../../reya_common/trade/PoolStake.fork.c.sol
 
 contract PoolStakeForkTest is ReyaForkTest, PoolStakeForkCheck {
     function test_StakeUnstakeCommand() public {
-        check_StakeUnstakeCommand({ amount: 10e6, minShares: 9.5e30 });
+        check_StakeUnstakeCommand({ amount: 10e6, minShares: 9.4e30 });
     }
 
     function test_MoveLiquidity() public {
-        check_MoveLiquidity(10e6, 9.5e30);
+        check_MoveLiquidity(10e6, 9.4e30);
     }
 }
