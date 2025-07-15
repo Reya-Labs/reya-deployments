@@ -1,3 +1,6 @@
+-- Here are two SQL queries for:
+-- 1. querying the ratio of rUSD of the passive pool with respect to the current TVL.
+-- 2. querying the ratios of the other collateral assets of the passive pool with respect to the current TVL, excluding rUSD.
 WITH 
 ab AS (
     SELECT * FROM account_balances WHERE account_id = 2
