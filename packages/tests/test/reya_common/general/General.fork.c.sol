@@ -326,7 +326,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceADA);
         ls.maxDeviationMarket.push(ls.maxDeviationADA);
 
-        ls.meanPriceLDO = 0.7e18;
+        ls.meanPriceLDO = 1.1e18;
         ls.maxDeviationLDO = ls.meanPriceLDO / 2;
         ls.meanPriceMarket.push(ls.meanPriceLDO);
         ls.maxDeviationMarket.push(ls.maxDeviationLDO);
