@@ -583,7 +583,7 @@ contract ReyaForkTest is StorageReyaForkTest {
         dec.socketConnector[sec.usdc][ethereumChainId] = 0x807B2e8724cDf346c87EEFF4E309bbFCb8681eC1;
         dec.socketConnector[sec.usdc][arbitrumChainId] = 0x3F19417872BC9F5037Bc0D40cE7389D05Cf847Ad;
         dec.socketConnector[sec.usdc][optimismChainId] = 0x321C2Bd69819a43C340b55db40F7c8Eb3334cDe0;
-        dec.socketConnector[sec.usdc][polygonChainId] = 0x54CAA0946dA179425e1abB169C020004284d64D3;
+        dec.socketConnector[sec.usdc][polygonChainId] = 0x2aF7a52C1fe0Ef66af0a65d32c6ab4112Db393ED;
         dec.socketConnector[sec.usdc][baseChainId] = 0x3694Ab37011764fA64A648C2d5d6aC0E9cD5F98e;
 
         dec.socketController[sec.weth] = 0xF0E49Dafc687b5ccc8B31b67d97B5985D1cAC4CB;
