@@ -137,6 +137,7 @@ liquidator10 = "0x45556408e543158f74403e882E3C8c23eCD9f732"
 [var.ae_liquidators]
 ae_liquidator1 = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
 ae_liquidator2 = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
+ae_liquidator3 = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
 
 [var.co_execution_bots]
 co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a" # conditional order bot 1
