@@ -256,6 +256,26 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(63, sec.usdc);
     }
 
+    function test_trade_rusdCollateral_leverage_morpho() public {
+        check_trade_leverage(64, sec.usdc);
+    }
+
+    function test_trade_rusdCollateral_leverage_syrup() public {
+        check_trade_leverage(65, sec.usdc);
+    }
+
+    function test_trade_rusdCollateral_leverage_aero() public {
+        check_trade_leverage(66, sec.usdc);
+    }
+
+    function test_trade_rusdCollateral_leverage_kaito() public {
+        check_trade_leverage(67, sec.usdc);
+    }
+
+    function test_trade_rusdCollateral_leverage_zora() public {
+        check_trade_leverage(68, sec.usdc);
+    }
+
     function test_trade_wethCollateral_leverage_eth() public {
         check_trade_leverage(1, sec.weth);
     }

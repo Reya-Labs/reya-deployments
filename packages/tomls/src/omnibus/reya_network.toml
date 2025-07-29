@@ -316,6 +316,11 @@ storkAssetPairIdTAOMark = "TAOUSDMARK"
 storkAssetPairIdIPMark = "IPUSDMARK"
 storkAssetPairIdMEMark = "MEUSDMARK"
 storkAssetPairIdPUMPMark = "PUMPUSDMARK"
+storkAssetPairIdMORPHOMark = "MORPHOUSDMARK"
+storkAssetPairIdSYRUPMark = "SYRUPUSDMARK"
+storkAssetPairIdAEROMark = "AEROUSDMARK"
+storkAssetPairIdKAITOMark = "KAITOUSDMARK"
+storkAssetPairIdZORAMark = "ZORAUSDMARK"
 
 [var.reya_lm_asset_pair_ids]
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
@@ -701,6 +706,21 @@ meUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 pumpUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 pumpUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+morphoUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+morphoUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+syrupUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+syrupUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+aeroUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+aeroUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+kaitoUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+kaitoUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+zoraUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+zoraUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 usdeUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 usdeUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -1989,6 +2009,107 @@ market63Pump_marketOrderMaxStaleDuration = "11"
 market63Pump_priceSpreadUnscaled = "0"
 market63Pump_volatilityIndexMultiplierUnscaled = "0"
 
+[var.market_64Morpho]
+market64Morpho_riskMatrixIndex = "0"
+market64Morpho_maxOpenBaseUnscaled = "17500000"
+market64Morpho_velocityMultiplierUnscaled = "20"
+market64Morpho_oracleNodeId = "<%= settings.morphoUsdcMarkNodeIdStork %>"
+market64Morpho_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market64Morpho_dutchConfig_lambdaUnscaled = "1"
+market64Morpho_dutchConfig_minBaseUnscaled = "0.11"
+market64Morpho_slippageParams_phiUnscaled = "0"
+market64Morpho_slippageParams_betaUnscaled = "0"
+market64Morpho_minimumOrderBaseUnscaled = "1"
+market64Morpho_baseSpacingUnscaled = "0.1"
+market64Morpho_priceSpacingUnscaled = "<%= 1e-6 %>"
+market64Morpho_depthFactorUnscaled = "0.75"
+market64Morpho_maxExposureFactorUnscaled = "0.999"
+market64Morpho_maxPSlippageUnscaled = "0.1"
+market64Morpho_marketOrderMaxStaleDuration = "11"
+market64Morpho_priceSpreadUnscaled = "0"
+market64Morpho_volatilityIndexMultiplierUnscaled = "0"
+
+[var.market_65Syrup]
+market65Syrup_riskMatrixIndex = "0"
+market65Syrup_maxOpenBaseUnscaled = "17500000"
+market65Syrup_velocityMultiplierUnscaled = "20"
+market65Syrup_oracleNodeId = "<%= settings.syrupUsdcMarkNodeIdStork %>
+market65Syrup_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>
+market65Syrup_dutchConfig_lambdaUnscaled = "1"
+market65Syrup_dutchConfig_minBaseUnscaled = "0.11"
+market65Syrup_slippageParams_phiUnscaled = "0"
+market65Syrup_slippageParams_betaUnscaled = "0"
+market65Syrup_minimumOrderBaseUnscaled = "1"
+market65Syrup_baseSpacingUnscaled = "0.1"
+market65Syrup_priceSpacingUnscaled = "<%= 1e-6 %>
+market65Syrup_depthFactorUnscaled = "0.75"
+market65Syrup_maxExposureFactorUnscaled = "0.999"
+market65Syrup_maxPSlippageUnscaled = "0.1"
+market65Syrup_marketOrderMaxStaleDuration = "11"
+market65Syrup_priceSpreadUnscaled = "0"
+market65Syrup_volatilityIndexMultiplierUnscaled = "0"
+
+[var.market_66Aero]
+market66Aero_riskMatrixIndex = "0"
+market66Aero_maxOpenBaseUnscaled = "17500000"
+market66Aero_velocityMultiplierUnscaled = "20"
+market66Aero_oracleNodeId = "<%= settings.aeroUsdcMarkNodeIdStork %>
+market66Aero_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>
+market66Aero_dutchConfig_lambdaUnscaled = "1"
+market66Aero_dutchConfig_minBaseUnscaled = "0.11"
+market66Aero_slippageParams_phiUnscaled = "0"
+market66Aero_slippageParams_betaUnscaled = "0"
+market66Aero_minimumOrderBaseUnscaled = "1"
+market66Aero_baseSpacingUnscaled = "0.1"
+market66Aero_priceSpacingUnscaled = "<%= 1e-6 %>
+market66Aero_depthFactorUnscaled = "0.75"
+market66Aero_maxExposureFactorUnscaled = "0.999"
+market66Aero_maxPSlippageUnscaled = "0.1"
+market66Aero_marketOrderMaxStaleDuration = "11"
+market66Aero_priceSpreadUnscaled = "0"
+market66Aero_volatilityIndexMultiplierUnscaled = "0"
+
+[var.market_67Kaito]
+market67Kaito_riskMatrixIndex = "0"
+market67Kaito_maxOpenBaseUnscaled = "17500000"
+market67Kaito_velocityMultiplierUnscaled = "20"
+market67Kaito_oracleNodeId = "<%= settings.kaitoUsdcMarkNodeIdStork %>
+market67Kaito_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>
+market67Kaito_dutchConfig_lambdaUnscaled = "1"
+market67Kaito_dutchConfig_minBaseUnscaled = "0.11"
+market67Kaito_slippageParams_phiUnscaled = "0"
+market67Kaito_slippageParams_betaUnscaled = "0"
+market67Kaito_minimumOrderBaseUnscaled = "1"
+market67Kaito_baseSpacingUnscaled = "0.1"
+market67Kaito_priceSpacingUnscaled = "<%= 1e-6 %>
+market67Kaito_depthFactorUnscaled = "0.75"
+market67Kaito_maxExposureFactorUnscaled = "0.999"
+market67Kaito_maxPSlippageUnscaled = "0.1"
+market67Kaito_marketOrderMaxStaleDuration = "11"
+market67Kaito_priceSpreadUnscaled = "0"
+market67Kaito_volatilityIndexMultiplierUnscaled = "0"
+
+[var.market_68Zora]
+market68Zora_riskMatrixIndex = "0"
+market68Zora_maxOpenBaseUnscaled = "17500000"
+market68Zora_velocityMultiplierUnscaled = "20"
+market68Zora_oracleNodeId = "<%= settings.zoraUsdcMarkNodeIdStork %>
+market68Zora_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>
+market68Zora_dutchConfig_lambdaUnscaled = "1"
+market68Zora_dutchConfig_minBaseUnscaled = "0.11"
+market68Zora_slippageParams_phiUnscaled = "0"
+market68Zora_slippageParams_betaUnscaled = "0"
+market68Zora_minimumOrderBaseUnscaled = "1"
+market68Zora_baseSpacingUnscaled = "0.1"
+market68Zora_priceSpacingUnscaled = "<%= 1e-6 %>
+market68Zora_depthFactorUnscaled = "0.75"
+market68Zora_maxExposureFactorUnscaled = "0.999"
+market68Zora_maxPSlippageUnscaled = "0.1"
+market68Zora_marketOrderMaxStaleDuration = "11"
+market68Zora_priceSpreadUnscaled = "0"
+market68Zora_volatilityIndexMultiplierUnscaled = "0"
+
+
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "63"
 cp1Rusd_maxCollaterals = "11"
@@ -2058,6 +2179,11 @@ cp1Rusd_market60Tao_riskMatrix00Unscaled = "0.001479"
 cp1Rusd_market61Ip_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market62Me_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market63Pump_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market64Morpho_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market65Syrup_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market66Aero_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market67Kaito_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market68Zora_riskMatrix00Unscaled = "0.06575"
 
 # -----------------------------------------------
 cp1Rusd_imMultiplierUnscaled = "1.3"

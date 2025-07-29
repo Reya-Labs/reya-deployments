@@ -589,6 +589,41 @@ contract ReyaForkTest is BaseReyaForkTest {
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.pumpUsdcMarkNodeIdStork, 10_000);
 
+        sec.morphoUsdMarkNodeIdStork = bytes32(0);
+        sec.morphoUsdcMarkNodeIdStork = bytes32(0);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.morphoUsdMarkNodeIdStork, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.morphoUsdcMarkNodeIdStork, 10_000);
+
+        sec.syrupUsdMarkNodeIdStork = bytes32(0);
+        sec.syrupUsdcMarkNodeIdStork = bytes32(0);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.syrupUsdMarkNodeIdStork, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.syrupUsdcMarkNodeIdStork, 10_000);
+
+        sec.aeroUsdMarkNodeIdStork = bytes32(0);
+        sec.aeroUsdcMarkNodeIdStork = bytes32(0);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.aeroUsdMarkNodeIdStork, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.aeroUsdcMarkNodeIdStork, 10_000);
+
+        sec.kaitoUsdMarkNodeIdStork = bytes32(0);
+        sec.kaitoUsdcMarkNodeIdStork = bytes32(0);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.kaitoUsdMarkNodeIdStork, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.kaitoUsdcMarkNodeIdStork, 10_000);
+
+        sec.zoraUsdMarkNodeIdStork = bytes32(0);
+        sec.zoraUsdcMarkNodeIdStork = bytes32(0);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.zoraUsdMarkNodeIdStork, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.zoraUsdcMarkNodeIdStork, 10_000);
+
         // Socket variables
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
         dec.socketExecutionHelper[sec.usdc] = 0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE;
