@@ -23,6 +23,9 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         (address user,) = makeAddrAndKey("user");
         vm.assume(attacker != user);
 
+        address whitelistedAddress = 0xC6fB022962e1426F4e0ec9D2F8861c57926E9f72;
+        vm.assume(attacker != whitelistedAddress);
+
         uint256 attackerSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, attacker);
         vm.assume(attackerSharesAmount == 0);
 

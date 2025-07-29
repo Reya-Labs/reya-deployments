@@ -46,6 +46,7 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.rhedge = 0x3ee6f82498d4e40DB33bac3adDABd8b41eCa1c9c;
         sec.srusd = 0x162B78e827A8DB8173D13735C08c8D40Cb5cCdAB;
         sec.wsteth = 0x7ae54d5a9e5a975DFC3261d915f8151dCcA76bE0;
+        sec.setTierIdBot = 0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6;
 
         // Elixir tokens on Mainnet (Ethereum)
         sec.elixirSdeusd = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326;

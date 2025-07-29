@@ -86,3 +86,15 @@ fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = ["<%= keccak256(hexlify('configureFees')) %>", "<%= settings.owner %>"]
 depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.market_1eth_enabled_zero_fee_option]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAdmins"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market1EthId])) %>",
+    [
+        "<%= settings.setTierIdBot %>",
+    ],
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
