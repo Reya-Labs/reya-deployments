@@ -2033,15 +2033,15 @@ market64Morpho_volatilityIndexMultiplierUnscaled = "0"
 market65Syrup_riskMatrixIndex = "0"
 market65Syrup_maxOpenBaseUnscaled = "17500000"
 market65Syrup_velocityMultiplierUnscaled = "20"
-market65Syrup_oracleNodeId = "<%= settings.syrupUsdcMarkNodeIdStork %>
-market65Syrup_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>
+market65Syrup_oracleNodeId = "<%= settings.syrupUsdcMarkNodeIdStork %>"
+market65Syrup_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market65Syrup_dutchConfig_lambdaUnscaled = "1"
 market65Syrup_dutchConfig_minBaseUnscaled = "0.11"
 market65Syrup_slippageParams_phiUnscaled = "0"
 market65Syrup_slippageParams_betaUnscaled = "0"
 market65Syrup_minimumOrderBaseUnscaled = "1"
 market65Syrup_baseSpacingUnscaled = "0.1"
-market65Syrup_priceSpacingUnscaled = "<%= 1e-6 %>
+market65Syrup_priceSpacingUnscaled = "<%= 1e-6 %>"
 market65Syrup_depthFactorUnscaled = "0.75"
 market65Syrup_maxExposureFactorUnscaled = "0.999"
 market65Syrup_maxPSlippageUnscaled = "0.1"
@@ -2053,15 +2053,15 @@ market65Syrup_volatilityIndexMultiplierUnscaled = "0"
 market66Aero_riskMatrixIndex = "0"
 market66Aero_maxOpenBaseUnscaled = "17500000"
 market66Aero_velocityMultiplierUnscaled = "20"
-market66Aero_oracleNodeId = "<%= settings.aeroUsdcMarkNodeIdStork %>
-market66Aero_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>
+market66Aero_oracleNodeId = "<%= settings.aeroUsdcMarkNodeIdStork %>"
+market66Aero_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market66Aero_dutchConfig_lambdaUnscaled = "1"
 market66Aero_dutchConfig_minBaseUnscaled = "0.11"
 market66Aero_slippageParams_phiUnscaled = "0"
 market66Aero_slippageParams_betaUnscaled = "0"
 market66Aero_minimumOrderBaseUnscaled = "1"
 market66Aero_baseSpacingUnscaled = "0.1"
-market66Aero_priceSpacingUnscaled = "<%= 1e-6 %>
+market66Aero_priceSpacingUnscaled = "<%= 1e-6 %>"
 market66Aero_depthFactorUnscaled = "0.75"
 market66Aero_maxExposureFactorUnscaled = "0.999"
 market66Aero_maxPSlippageUnscaled = "0.1"
@@ -2073,15 +2073,15 @@ market66Aero_volatilityIndexMultiplierUnscaled = "0"
 market67Kaito_riskMatrixIndex = "0"
 market67Kaito_maxOpenBaseUnscaled = "17500000"
 market67Kaito_velocityMultiplierUnscaled = "20"
-market67Kaito_oracleNodeId = "<%= settings.kaitoUsdcMarkNodeIdStork %>
-market67Kaito_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>
+market67Kaito_oracleNodeId = "<%= settings.kaitoUsdcMarkNodeIdStork %>"
+market67Kaito_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market67Kaito_dutchConfig_lambdaUnscaled = "1"
 market67Kaito_dutchConfig_minBaseUnscaled = "0.11"
 market67Kaito_slippageParams_phiUnscaled = "0"
 market67Kaito_slippageParams_betaUnscaled = "0"
 market67Kaito_minimumOrderBaseUnscaled = "1"
 market67Kaito_baseSpacingUnscaled = "0.1"
-market67Kaito_priceSpacingUnscaled = "<%= 1e-6 %>
+market67Kaito_priceSpacingUnscaled = "<%= 1e-6 %>"
 market67Kaito_depthFactorUnscaled = "0.75"
 market67Kaito_maxExposureFactorUnscaled = "0.999"
 market67Kaito_maxPSlippageUnscaled = "0.1"
@@ -2093,15 +2093,15 @@ market67Kaito_volatilityIndexMultiplierUnscaled = "0"
 market68Zora_riskMatrixIndex = "0"
 market68Zora_maxOpenBaseUnscaled = "17500000"
 market68Zora_velocityMultiplierUnscaled = "20"
-market68Zora_oracleNodeId = "<%= settings.zoraUsdcMarkNodeIdStork %>
-market68Zora_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>
+market68Zora_oracleNodeId = "<%= settings.zoraUsdcMarkNodeIdStork %>"
+market68Zora_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market68Zora_dutchConfig_lambdaUnscaled = "1"
 market68Zora_dutchConfig_minBaseUnscaled = "0.11"
 market68Zora_slippageParams_phiUnscaled = "0"
 market68Zora_slippageParams_betaUnscaled = "0"
 market68Zora_minimumOrderBaseUnscaled = "1"
 market68Zora_baseSpacingUnscaled = "0.1"
-market68Zora_priceSpacingUnscaled = "<%= 1e-6 %>
+market68Zora_priceSpacingUnscaled = "<%= 1e-6 %>"
 market68Zora_depthFactorUnscaled = "0.75"
 market68Zora_maxExposureFactorUnscaled = "0.999"
 market68Zora_maxPSlippageUnscaled = "0.1"
@@ -2109,9 +2109,8 @@ market68Zora_marketOrderMaxStaleDuration = "11"
 market68Zora_priceSpreadUnscaled = "0"
 market68Zora_volatilityIndexMultiplierUnscaled = "0"
 
-
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "63"
+cp1Rusd_maxMarkets = "68"
 cp1Rusd_maxCollaterals = "11"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
@@ -2333,14 +2332,14 @@ cp1Rusd_rhedgeParentConfig_oracleNodeId = "<%= settings.hedgeUsdcReyaLmNodeId %>
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_wsteth_capUnscaled = "225"                                                  # todo: configure
+cp1Rusd_wsteth_capUnscaled = "225"
 cp1Rusd_wsteth_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_wsteth_autoExchangeInsuranceFeeUnscaled = "0"
 cp1Rusd_wsteth_autoExchangeDustThresholdUnscaled = "0"
 cp1Rusd_wsteth_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_wstethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
 cp1Rusd_wstethParentConfig_priceHaircutUnscaled = "0.10"
-cp1Rusd_wstethParentConfig_autoExchangeDiscountUnscaled = "0.02"                    # todo: configure
+cp1Rusd_wstethParentConfig_autoExchangeDiscountUnscaled = "0.02"
 cp1Rusd_wstethParentConfig_oracleNodeId = "<%= settings.wstethUsdcNodeIdStork %>"
 
 [var.sbt_config]

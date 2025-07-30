@@ -589,36 +589,36 @@ contract ReyaForkTest is BaseReyaForkTest {
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.pumpUsdcMarkNodeIdStork, 10_000);
 
-        sec.morphoUsdMarkNodeIdStork = bytes32(0);
-        sec.morphoUsdcMarkNodeIdStork = bytes32(0);
+        sec.morphoUsdMarkNodeIdStork = 0x699392cebf37e2500e14a7cbad54fc7ae2f570930457bbf4e72354a30f738047;
+        sec.morphoUsdcMarkNodeIdStork = 0xbe88e544892eb03fdad7f2d1140a3f556775ef7bbabe4da623bfb963cdd20cea;
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.morphoUsdMarkNodeIdStork, 10_000);
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.morphoUsdcMarkNodeIdStork, 10_000);
 
-        sec.syrupUsdMarkNodeIdStork = bytes32(0);
-        sec.syrupUsdcMarkNodeIdStork = bytes32(0);
+        sec.syrupUsdMarkNodeIdStork = 0x3b777e5a60ea1dd694226967f00f3184b64357657a2208dce62192946e99cc11;
+        sec.syrupUsdcMarkNodeIdStork = 0xcd01e77046da17263279ad95b0fd7aad13a860a8dac6783da8dced7ea28b7668;
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.syrupUsdMarkNodeIdStork, 10_000);
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.syrupUsdcMarkNodeIdStork, 10_000);
 
-        sec.aeroUsdMarkNodeIdStork = bytes32(0);
-        sec.aeroUsdcMarkNodeIdStork = bytes32(0);
+        sec.aeroUsdMarkNodeIdStork = 0x0667dc694be98bc6f0fa21920a4b5f706e37f0bf469dda61101988cab4f12d58;
+        sec.aeroUsdcMarkNodeIdStork = 0x2254751e98de2c6a6995583467b45855da56b0648dd774b7ed634b2c25f3c3b7;
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.aeroUsdMarkNodeIdStork, 10_000);
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.aeroUsdcMarkNodeIdStork, 10_000);
 
-        sec.kaitoUsdMarkNodeIdStork = bytes32(0);
-        sec.kaitoUsdcMarkNodeIdStork = bytes32(0);
+        sec.kaitoUsdMarkNodeIdStork = 0xd235f8756a7eef30cccc6b3cfbe4c3f59003202e2f59453315ff25bc70b54f8f;
+        sec.kaitoUsdcMarkNodeIdStork = 0x60ff2f24b73a84a40d798042ec653279fba4cfe87bc1f9f88f01fd1d2f725fe0;
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.kaitoUsdMarkNodeIdStork, 10_000);
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.kaitoUsdcMarkNodeIdStork, 10_000);
 
-        sec.zoraUsdMarkNodeIdStork = bytes32(0);
-        sec.zoraUsdcMarkNodeIdStork = bytes32(0);
+        sec.zoraUsdMarkNodeIdStork = 0xd5ce52aad6b86aaa17674000fbccb274d806ec365b2456f5a6e10d062e657640;
+        sec.zoraUsdcMarkNodeIdStork = 0x0b7179bfa70d8222d66269db095744b693bb325991de7dea122d65f14ce9921b;
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.zoraUsdMarkNodeIdStork, 10_000);
         vm.prank(sec.multisig);

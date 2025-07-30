@@ -1,45 +1,45 @@
 #####################################
 # Create Market
 #####################################
-[invoke.create_market_63morpho]
+[invoke.create_market_64morpho]
 target = ["PassivePerpProxy"]
 abi = "<%= JSON.stringify(contracts.PassivePerpProxy.abi.concat({'type':'event','name':'MarketDataUpdated','inputs':[{'name':'marketData','type':'tuple','indexed':false,'internalType':'struct Market.Data','components':[{'name':'id','type':'uint128','internalType':'uint128'},{'name':'passivePoolId','type':'uint128','internalType':'uint128'},{'name':'poolAccountId','type':'uint128','internalType':'uint128'},{'name':'quoteToken','type':'address','internalType':'address'},{'name':'quoteTokenDecimals','type':'uint8','internalType':'uint8'},{'name':'lastFundingVelocity','type':'int256','internalType':'SD59x18'},{'name':'lastFundingRate','type':'int256','internalType':'SD59x18'},{'name':'lastFundingTimestamp','type':'uint256','internalType':'uint256'},{'name':'lastMTM','type':'tuple','internalType':'struct PriceData','components':[{'name':'price','type':'uint256','internalType':'UD60x18'},{'name':'timestamp','type':'uint256','internalType':'uint256'}]},{'name':'longTrackers','type':'tuple','internalType':'struct FundingAndADLTrackers','components':[{'name':'fundingValue','type':'int256','internalType':'SD59x18'},{'name':'baseMultiplier','type':'uint256','internalType':'UD60x18'},{'name':'adlUnwindPrice','type':'uint256','internalType':'UD60x18'}]},{'name':'shortTrackers','type':'tuple','internalType':'struct FundingAndADLTrackers','components':[{'name':'fundingValue','type':'int256','internalType':'SD59x18'},{'name':'baseMultiplier','type':'uint256','internalType':'UD60x18'},{'name':'adlUnwindPrice','type':'uint256','internalType':'UD60x18'}]},{'name':'openInterest','type':'uint256','internalType':'UD60x18'}]},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
 fromCall.func = "owner"
 func = "createMarket"
 args = ["Market MORPHO", "<%= settings.pool1RusdId %>"]
-var.market_63morpho.event = "MarketDataUpdated"
-var.market_63morpho.arg = 0
+var.market_64morpho.event = "MarketDataUpdated"
+var.market_64morpho.arg = 0
 depends = [
     "invoke.core_register_instrument_passive_perp",
     "invoke.passive_pool_create_pool_1rusd",
-    "invoke.create_market_62me",
+    "invoke.create_market_63pump",
 ]
 
-[var.market_63morpho_vars]
-market63MorphoId = "<%= (String(settings.market_63morpho.id) === '63') ? settings.market_63morpho.id : parseUnits('0', 'assert market_63morpho_vars failed') %>"
-depends = ["invoke.create_market_63morpho"]
+[var.market_64morpho_vars]
+market64MorphoId = "<%= (String(settings.market_64morpho.id) === '64') ? settings.market_64morpho.id : parseUnits('0', 'assert market_64morpho_vars failed') %>"
+depends = ["invoke.create_market_64morpho"]
 
 ##################################################
 # Market's Collateral Pool Feature Flags
 ##################################################
-[invoke.market_63morpho_unpause_cp]
+[invoke.market_64morpho_unpause_cp]
 target = ["CoreProxy"]
 fromCall.func = "getCollateralPoolOwner"
-fromCall.args = ["<%= settings.market63MorphoId %>"]
+fromCall.args = ["<%= settings.market64MorphoId %>"]
 func = "setFeatureFlagAllowAll"
 args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market63MorphoId])) %>",
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market64MorphoId])) %>",
     true,
 ]
-depends = ["invoke.upgrade_core_proxy", "var.market_63morpho_vars"]
+depends = ["invoke.upgrade_core_proxy", "var.market_64morpho_vars"]
 
-[invoke.market_63morpho_set_pausers_cp]
+[invoke.market_64morpho_set_pausers_cp]
 target = ["CoreProxy"]
 fromCall.func = "getCollateralPoolOwner"
-fromCall.args = ["<%= settings.market63MorphoId %>"]
+fromCall.args = ["<%= settings.market64MorphoId %>"]
 func = "setDeniers"
 args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market63MorphoId])) %>",
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market64MorphoId])) %>",
     [
         "<%= settings.pauser1 %>",
         "<%= settings.pauser2 %>",
@@ -47,27 +47,27 @@ args = [
         "<%= settings.pauser4 %>",
     ],
 ]
-depends = ["invoke.upgrade_core_proxy", "var.market_63morpho_vars"]
+depends = ["invoke.upgrade_core_proxy", "var.market_64morpho_vars"]
 
 ##################################################
 # Market Feature Flags
 ##################################################
-[invoke.market_63morpho_unpause_market]
+[invoke.market_64morpho_unpause_market]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
 args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market63MorphoId])) %>",
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market64MorphoId])) %>",
     true,
 ]
-depends = ["invoke.upgrade_core_proxy", "var.market_63morpho_vars"]
+depends = ["invoke.upgrade_core_proxy", "var.market_64morpho_vars"]
 
-[invoke.market_63morpho_set_pausers_market]
+[invoke.market_64morpho_set_pausers_market]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setDeniers"
 args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market63MorphoId])) %>",
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market64MorphoId])) %>",
     [
         "<%= settings.pauser1 %>",
         "<%= settings.pauser2 %>",
@@ -75,61 +75,61 @@ args = [
         "<%= settings.pauser4 %>",
     ],
 ]
-depends = ["invoke.upgrade_core_proxy", "var.market_63morpho_vars"]
+depends = ["invoke.upgrade_core_proxy", "var.market_64morpho_vars"]
 
 #####################################
 # Market Configuration
 #####################################
-[invoke.market_63morpho_set_market_config]
+[invoke.market_64morpho_set_market_config]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setMarketConfiguration"
 args = [
-    "<%= settings.market63MorphoId %>",
-    { riskMatrixIndex = "<%= settings.market63Morpho_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market63Morpho_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market63Morpho_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market63Morpho_oracleNodeId %>", mtmWindow = "<%= settings.market63Morpho_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market63Morpho_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market63Morpho_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market63Morpho_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market63Morpho_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market63Morpho_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market63Morpho_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market63Morpho_priceSpacingUnscaled) %>", depthFactor = "<%= parseEther(settings.market63Morpho_depthFactorUnscaled) %>", maxExposureFactor = "<%= parseEther(settings.market63Morpho_maxExposureFactorUnscaled) %>", maxPSlippage = "<%= parseEther(settings.market63Morpho_maxPSlippageUnscaled) %>", marketOrderMaxStaleDuration = "<%= settings.market63Morpho_marketOrderMaxStaleDuration %>", priceSpread = "<%= parseEther(settings.market63Morpho_priceSpreadUnscaled) %>", volatilityIndexMultiplier = "<%= parseEther(settings.market63Morpho_volatilityIndexMultiplierUnscaled) %>" },
+    "<%= settings.market64MorphoId %>",
+    { riskMatrixIndex = "<%= settings.market64Morpho_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market64Morpho_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market64Morpho_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market64Morpho_oracleNodeId %>", mtmWindow = "<%= settings.market64Morpho_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market64Morpho_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market64Morpho_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market64Morpho_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market64Morpho_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market64Morpho_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market64Morpho_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market64Morpho_priceSpacingUnscaled) %>", depthFactor = "<%= parseEther(settings.market64Morpho_depthFactorUnscaled) %>", maxExposureFactor = "<%= parseEther(settings.market64Morpho_maxExposureFactorUnscaled) %>", maxPSlippage = "<%= parseEther(settings.market64Morpho_maxPSlippageUnscaled) %>", marketOrderMaxStaleDuration = "<%= settings.market64Morpho_marketOrderMaxStaleDuration %>", priceSpread = "<%= parseEther(settings.market64Morpho_priceSpreadUnscaled) %>", volatilityIndexMultiplier = "<%= parseEther(settings.market64Morpho_volatilityIndexMultiplierUnscaled) %>" },
 ]
-depends = ["invoke.create_market_63morpho"]
+depends = ["invoke.create_market_64morpho"]
 
 #####################################
 # Market's Collateral Pool Limits
 #####################################
-[invoke.market_63morpho_set_cp_limits]
+[invoke.market_64morpho_set_cp_limits]
 target = ["CoreProxy"]
 fromCall.func = "getCollateralPoolOwner"
-fromCall.args = ["<%= settings.market63MorphoId %>"]
+fromCall.args = ["<%= settings.market64MorphoId %>"]
 func = "setCollateralPoolLimits"
 args = [
-    "<%= settings.market63MorphoId %>",
+    "<%= settings.market64MorphoId %>",
     { maxMarkets = "1", maxCollaterals = "1" },
 ]
-depends = ["invoke.create_market_63morpho"]
+depends = ["invoke.create_market_64morpho"]
 
 ##################################################
 # Market's Collateral Pool Insurance Fund
 ##################################################
-[invoke.market_63morpho_insurance_fund_config]
+[invoke.market_64morpho_insurance_fund_config]
 target = ["CoreProxy"]
 fromCall.func = "getCollateralPoolOwner"
-fromCall.args = ["<%= settings.market63MorphoId %>"]
+fromCall.args = ["<%= settings.market64MorphoId %>"]
 func = "configureCollateralPoolInsuranceFund"
 args = [
-    "<%= settings.market63MorphoId %>",
+    "<%= settings.market64MorphoId %>",
     # reusing params from CP 1 since this CP will get merged
     { accountId = "<%= settings.cp1Rusd_insuranceFundAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_insuranceFund_liquidationFeeUnscaled) %>" },
 ]
 depends = [
     "invoke.cp_1rusd_create_insurance_fund_account",
-    "invoke.create_market_63morpho",
+    "invoke.create_market_64morpho",
 ]
 
 ##################################################
 # Merge Market's Collateral Pool 
 ##################################################
-[invoke.market_63morpho_merge_collateral_pool]
+[invoke.market_64morpho_merge_collateral_pool]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "mergeCollateralPools"
-args = ["<%= settings.market1EthId %>", "<%= settings.market63MorphoId %>"]
+args = ["<%= settings.market1EthId %>", "<%= settings.market64MorphoId %>"]
 depends = [
     "invoke.market_1eth_unpause_cp",
     "invoke.market_1eth_set_pausers_cp",
@@ -138,11 +138,11 @@ depends = [
     "invoke.market_1eth_set_market_config",
     "invoke.market_1eth_set_cp_limits",
     "invoke.market_1eth_insurance_fund_config",
-    "invoke.market_63morpho_unpause_cp",
-    "invoke.market_63morpho_set_pausers_cp",
-    "invoke.market_63morpho_unpause_market",
-    "invoke.market_63morpho_set_pausers_market",
-    "invoke.market_63morpho_set_market_config",
-    "invoke.market_63morpho_set_cp_limits",
-    "invoke.market_63morpho_insurance_fund_config",
+    "invoke.market_64morpho_unpause_cp",
+    "invoke.market_64morpho_set_pausers_cp",
+    "invoke.market_64morpho_unpause_market",
+    "invoke.market_64morpho_set_pausers_market",
+    "invoke.market_64morpho_set_market_config",
+    "invoke.market_64morpho_set_cp_limits",
+    "invoke.market_64morpho_insurance_fund_config",
 ]
