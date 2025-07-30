@@ -85,11 +85,11 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant ipLeverage = 15e18;
     uint256 private constant meLeverage = 15e18;
     uint256 private constant pumpLeverage = 3e18;
-    uint256 private constant morphoLeverage = 3e18;
-    uint256 private constant syrupLeverage = 3e18;
-    uint256 private constant aeroLeverage = 3e18;
-    uint256 private constant kaitoLeverage = 3e18;
-    uint256 private constant zoraLeverage = 3e18;
+    uint256 private constant morphoLeverage = 10e18;
+    uint256 private constant syrupLeverage = 5e18;
+    uint256 private constant aeroLeverage = 15e18;
+    uint256 private constant kaitoLeverage = 10e18;
+    uint256 private constant zoraLeverage = 5e18;
 
     address private user;
     uint256 private userPk;
