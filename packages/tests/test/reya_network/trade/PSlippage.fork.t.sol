@@ -256,6 +256,26 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
 //     check_trade_slippage_pump_long();
 // }
 
+// function test_trade_slippage_morpho_long() public {
+//     check_trade_slippage_morpho_long();
+// }
+
+// function test_trade_slippage_syrup_long() public {
+//     check_trade_slippage_syrup_long();
+// }
+
+// function test_trade_slippage_aero_long() public {
+//     check_trade_slippage_aero_long();
+// }
+
+// function test_trade_slippage_kaito_long() public {
+//     check_trade_slippage_kaito_long();
+// }
+
+// function test_trade_slippage_zora_long() public {
+//     check_trade_slippage_zora_long();
+// }
+
 // function test_trade_slippage_eth_short() public {
 //     check_trade_slippage_eth_short();
 // }
@@ -506,5 +526,25 @@ contract PSlippageForkTest is ReyaForkTest, PSlippageForkCheck {
 
 // function test_trade_slippage_pump_short() public {
 //     check_trade_slippage_pump_short();
+// }
+
+// function test_trade_slippage_morpho_short() public {
+//     check_trade_slippage_morpho_short();
+// }
+
+// function test_trade_slippage_syrup_short() public {
+//     check_trade_slippage_syrup_short();
+// }
+
+// function test_trade_slippage_aero_short() public {
+//     check_trade_slippage_aero_short();
+// }
+
+// function test_trade_slippage_kaito_short() public {
+//     check_trade_slippage_kaito_short();
+// }
+
+// function test_trade_slippage_zora_short() public {
+//     check_trade_slippage_zora_short();
 // }
 }
