@@ -276,6 +276,10 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(68, sec.usdc);
     }
 
+    function test_Cronos_trade_rusdCollateral_leverage_prove() public {
+        check_trade_leverage(69, sec.usdc);
+    }
+
     function test_Cronos_trade_wethCollateral_leverage_eth() public {
         check_trade_leverage(1, sec.weth);
     }

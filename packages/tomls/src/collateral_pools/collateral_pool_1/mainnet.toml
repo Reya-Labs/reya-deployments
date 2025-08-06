@@ -67,6 +67,7 @@ include = [
     "markets/market_66aero.toml",
     "markets/market_67kaito.toml",
     "markets/market_68zora.toml",
+    "markets/market_69prove.toml",
     "risk/risk_matrix.toml",
     "risk/risk_multipliers.toml",
     "risk/liquidations.toml",
@@ -156,4 +157,5 @@ depends = [
     "invoke.market_66aero_merge_collateral_pool",
     "invoke.market_67kaito_merge_collateral_pool",
     "invoke.market_68zora_merge_collateral_pool",
+    "invoke.market_69prove_merge_collateral_pool",
 ]
