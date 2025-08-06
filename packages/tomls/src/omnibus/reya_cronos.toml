@@ -2121,7 +2121,7 @@ market68Zora_volatilityIndexMultiplierUnscaled = "0"
 [var.market_69Prove]
 market69Prove_riskMatrixIndex = "0"
 market69Prove_maxOpenBaseUnscaled = "50000"
-market69Prove_velocityMultiplierUnscaled = "20"
+market69Prove_velocityMultiplierUnscaled = "5"
 market69Prove_oracleNodeId = "<%= settings.proveUsdcMarkNodeIdStork %>"
 market69Prove_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market69Prove_dutchConfig_lambdaUnscaled = "1"
