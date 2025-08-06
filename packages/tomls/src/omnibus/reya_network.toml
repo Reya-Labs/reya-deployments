@@ -15,8 +15,9 @@ include = [
     "../oracle_adapters/mainnet.toml",
     "../share_token/mainnet.toml",
     "../sbt/mainnet.toml",
+    "../rotations/mainnet.toml",
 ]
-version = "1.0.62"
+version = "1.0.63"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -142,6 +143,12 @@ co_execution_bot4 = "0xA50Aa11999f86f29badEc3fcD3aBa8AbBe153Ba2" # main API exec
 co_execution_bot5 = "0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4" # ops API executor 1
 co_execution_bot6 = "0xbf59e78614F97fDbA523238AefDbe64E2efb28C3" # ops API executor 2
 co_execution_bot7 = "0xbAF944384b46eB8609c3A5C7894028cE60c15354" # staging API executor
+
+d06082025_co_execution_bot_1 = "" # conditional order bot 1
+d06082025_co_execution_bot_2 = "" # conditional order bot 2
+d06082025_co_execution_bot_3 = "" # main API executor 1
+d06082025_co_execution_bot_4 = "" # main API executor 2
+d06082025_co_execution_bot_5 = "" # staging API executor
 
 [var.fee_configuration_bots]
 setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"
