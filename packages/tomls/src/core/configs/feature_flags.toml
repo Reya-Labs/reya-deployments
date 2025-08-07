@@ -186,13 +186,7 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(hexlify('camelotSwapPublisher')) %>",
-    [
-        "<%= settings.camelotSwapPublisherAdmin1 %>",
-        "<%= settings.camelotSwapPublisherAdmin2 %>",
-        "<%= settings.camelotSwapPublisherAdmin3 %>",
-        "<%= settings.camelotSwapPublisherAdmin4 %>",
-        "<%= settings.camelotSwapPublisherAdmin5 %>",
-    ],
+    [],
 ]
 
 [invoke.core_set_stake_pool_access]
@@ -209,5 +203,15 @@ func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('ownerMainAccountId')) %>",
     "<%= settings.setMainAccountIdBot %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_remove_camelot_swap_publisher]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('camelotSwapPublisher')) %>",
+    "<%= settings.camelotSwapPublisher %>",
 ]
 depends = ["invoke.upgrade_core_proxy"]

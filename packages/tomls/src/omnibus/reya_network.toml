@@ -114,11 +114,17 @@ pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
 [var.rebalancers]
-rebalancer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+# -----------------------------------------------
+# Rotation notes: these addresses are either external integrators or safes that do not need rotation
+# -----------------------------------------------
+rebalancer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556" # deprecated
 rebalancer2 = "0x25E028A45a6012763A76145d7CEEa3587015e990"
 rebalancer3 = "0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed"
 
 [var.liquidators]
+# -----------------------------------------------
+# Rotation notes: all these addresses need rotation
+# -----------------------------------------------
 liquidator1 = "0x7Cef71c72d97Ac8CbE4bB9aB091C3bCDB7c1CB56"
 liquidator2 = "0xb7335ad22b33afF74F07cA77b0945A3A242A7956"
 liquidator3 = "0x64b8466c45436DCd2Bd7A43c580DEFe33AAB4D6C"
@@ -130,12 +136,26 @@ liquidator8 = "0x8DA6DD4675e96F706F45BB9566Be31eB050ED652"
 liquidator9 = "0xffA24D284111E58E2142dc74e4FB08a398D97c45"
 liquidator10 = "0x4d0AfCA2357F1797CF18c579171b71B427604933"
 
+d06082025_liquidator1 = ""
+d06082025_liquidator2 = ""
+
 [var.ae_liquidators]
+# -----------------------------------------------
+# Rotation notes: 
+#  - The following addresses are external integrators and do not need rotation:
+#    - 0xc656647754e72c2Db056712AC40dc04Ce6681a7D
+#    - 0x9afe15992448b33bda6d5851383e643ce007cb5a
+# -----------------------------------------------
 ae_liquidator1 = "0x89520d105a125CC6165c6685de262c42113Df9c0"
 ae_liquidator2 = "0xc656647754e72c2Db056712AC40dc04Ce6681a7D"
 ae_liquidator3 = "0x9afe15992448b33bda6d5851383e643ce007cb5a"
 
+d06082025_ae_liquidator1 = ""
+
 [var.co_execution_bots]
+# -----------------------------------------------
+# Rotation notes: all these addresses need rotation
+# -----------------------------------------------
 co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a" # conditional order bot 1
 co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688" # conditional order bot 2
 co_execution_bot3 = "0x10eE819bc1E25cd2Eb3CE023724209f6f56Ef103" # main API executor 1
@@ -151,29 +171,52 @@ d06082025_co_execution_bot_4 = "0xBFc59d4Ce80C0A173d6dA68Ecb103b9eC533e3aa" # ma
 d06082025_co_execution_bot_5 = "0x3A7C7A9240EE4dA5fC85e5a4abF852F98bd00041" # staging API executor
 
 [var.fee_configuration_bots]
+# -----------------------------------------------
+# Rotation notes: all these addresses need rotation
+# -----------------------------------------------
 setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"
 setTierIdBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 setReferralMappingBot = "0xAdA667dCCF02CC78944cE8464fa5d722f2c73594"
 
+d06082025_setOgStatusBot = ""
+d06082025_setTierIdBot = ""
+d06082025_setReferralMappingBot = ""
+
 [var.set_main_account_id_bots]
+# -----------------------------------------------
+# Rotation notes: all these addresses need rotation
+# -----------------------------------------------
 setMainAccountIdBot = "0x286119f5cc1f99c9819cb8a7fb22eb49ca22c878"
 
+d06082025_setMainAccountIdBot = ""
+
 [var.match_order_publisher_admins]
+# -----------------------------------------------
+# Rotation notes: The pausers are external safes and do not need rotation
+# -----------------------------------------------
 matchOrderPublisherAdmin1 = "<%= settings.pauser1 %>"
 matchOrderPublisherAdmin2 = "<%= settings.pauser2 %>"
 matchOrderPublisherAdmin3 = "<%= settings.pauser3 %>"
 matchOrderPublisherAdmin4 = "<%= settings.pauser4 %>"
-matchOrderPublisherAdmin5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+# matchOrderPublisherAdmin5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556" # deprecated
+
+matchOrderPublisherAdmin5 = "" # subject to the rotation 06082025
 
 [var.camelot_swap_publisher_settings]
-camelotSwapPublisher = "0xE32519ca0e751C754c8E1378846B5cd95A1CB66a"
-camelotSwapPublisherAdmin1 = "<%= settings.matchOrderPublisherAdmin1 %>"
-camelotSwapPublisherAdmin2 = "<%= settings.matchOrderPublisherAdmin2 %>"
-camelotSwapPublisherAdmin3 = "<%= settings.matchOrderPublisherAdmin3 %>"
-camelotSwapPublisherAdmin4 = "<%= settings.matchOrderPublisherAdmin4 %>"
-camelotSwapPublisherAdmin5 = "<%= settings.matchOrderPublisherAdmin5 %>"
+# -----------------------------------------------
+# Rotation notes: all these addresses have been deprecated and do not need rotation
+# -----------------------------------------------
+camelotSwapPublisher = "0xE32519ca0e751C754c8E1378846B5cd95A1CB66a" # deprecated
+camelotSwapPublisherAdmin1 = "<%= settings.matchOrderPublisherAdmin1 %>" # deprecated
+camelotSwapPublisherAdmin2 = "<%= settings.matchOrderPublisherAdmin2 %>" # deprecated
+camelotSwapPublisherAdmin3 = "<%= settings.matchOrderPublisherAdmin3 %>" # deprecated
+camelotSwapPublisherAdmin4 = "<%= settings.matchOrderPublisherAdmin4 %>" # deprecated
+camelotSwapPublisherAdmin5 = "<%= settings.matchOrderPublisherAdmin5 %>" # deprecated
 
 [var.stork_publishers]
+# -----------------------------------------------
+# Rotation notes: these are external publisher owned by Stork and do not need rotation
+# -----------------------------------------------
 storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
 storkPublisher2 = "0xb91C675E0c0Ecfd4c16f97B110376C3C224061d8"
 storkPublisher3 = "0x51aa9e9c781f85a2c0636a835eb80114c4553098"
