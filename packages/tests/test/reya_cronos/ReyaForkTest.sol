@@ -74,7 +74,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.rhedgeSubscriber = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
         sec.rhedgeRedeemer = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
         sec.aeLiquidator1 = 0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4;
-        sec.setTierIdBot = 0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6;
+        sec.marketZeroFeeBot = 0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6;
 
         // node ids for spot prices
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;

@@ -177,11 +177,11 @@ d06082025_co_execution_bot_5 = "0x3A7C7A9240EE4dA5fC85e5a4abF852F98bd00041" # st
 setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"        # deprecated
 setTierIdBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 setReferralMappingBot = "0xAdA667dCCF02CC78944cE8464fa5d722f2c73594"
-# setMarketZeroFeeBot = "<%= settings.setTierIdBot %>"
+# setMarketZeroFeeBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 
 d06082025_setTierIdBot = ""
 d06082025_setReferralMappingBot = ""
-setMarketZeroFeeBot = "<%= settings.d06082025_setTierIdBot %>"
+setMarketZeroFeeBot = ""
 
 [var.set_main_account_id_bots]
 setMainAccountIdBot = "0x286119f5cc1f99c9819cb8a7fb22eb49ca22c878" # deprecated 
