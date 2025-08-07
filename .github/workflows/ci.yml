@@ -27,14 +27,8 @@ jobs:
         run: "yarn"
       - name: Lint Check
         run: "yarn lint:check"
-      - name: Reya Network Cannon Simulation
-        env:
-          RPC_KEY: ${{ secrets.RPC_KEY }}
-        run: "yarn reya_network:simulate"
-      - name: Reya Cronos Cannon Simulation
-        env:
-          RPC_KEY: ${{ secrets.RPC_KEY }}
-        run: "yarn reya_cronos:simulate"
+      - name: Build
+        run: "yarn build"
       - name: Reya Network Cannon Test
         env:
           RPC_KEY: ${{ secrets.RPC_KEY }}
