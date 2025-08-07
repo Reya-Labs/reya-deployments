@@ -27,6 +27,8 @@ jobs:
         run: "yarn"
       - name: Lint Check
         run: "yarn lint:check"
+      - name: Build
+        run: "yarn build"
       - name: Reya Network Cannon Test
         env:
           RPC_KEY: ${{ secrets.RPC_KEY }}

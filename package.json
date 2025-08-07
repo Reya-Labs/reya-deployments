@@ -11,6 +11,7 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "lerna run build --scope=@reya-deployments/tests",
     "lint:check": "lerna run lint:check",
     "lint:write": "lerna run lint:write",
     "reya_network:simulate": "lerna run reya_network:simulate --scope=@reya-deployments/tomls",
