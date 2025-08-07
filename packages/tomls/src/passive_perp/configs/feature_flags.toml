@@ -94,7 +94,7 @@ func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market1EthId])) %>",
     [
-        "<%= settings.setTierIdBot %>",
+        "<%= settings.setMarketZeroFeeBot %>",
     ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
@@ -106,7 +106,7 @@ func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market69ProveId])) %>",
     [
-        "<%= settings.setTierIdBot %>",
+        "<%= settings.setMarketZeroFeeBot %>",
     ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
@@ -118,7 +118,7 @@ func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market64MorphoId])) %>",
     [
-        "<%= settings.setTierIdBot %>",
+        "<%= settings.setMarketZeroFeeBot %>",
     ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
@@ -130,7 +130,7 @@ func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market65SyrupId])) %>",
     [
-        "<%= settings.setTierIdBot %>",
+        "<%= settings.setMarketZeroFeeBot %>",
     ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
@@ -142,7 +142,7 @@ func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market66AeroId])) %>",
     [
-        "<%= settings.setTierIdBot %>",
+        "<%= settings.setMarketZeroFeeBot %>",
     ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
@@ -154,7 +154,7 @@ func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market67KaitoId])) %>",
     [
-        "<%= settings.setTierIdBot %>",
+        "<%= settings.setMarketZeroFeeBot %>",
     ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
@@ -166,7 +166,7 @@ func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market68ZoraId])) %>",
     [
-        "<%= settings.setTierIdBot %>",
+        "<%= settings.setMarketZeroFeeBot %>",
     ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]

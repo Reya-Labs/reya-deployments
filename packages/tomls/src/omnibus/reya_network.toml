@@ -118,8 +118,8 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 # Rotation notes: these addresses are either external integrators or safes that do not need rotation
 # -----------------------------------------------
 rebalancer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556" # deprecated
-rebalancer2 = "0x25E028A45a6012763A76145d7CEEa3587015e990"
-rebalancer3 = "0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed"
+rebalancer2 = "0x25E028A45a6012763A76145d7CEEa3587015e990" # external rebalancer
+rebalancer3 = "0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed" # multisig safe
 
 [var.liquidators]
 # -----------------------------------------------
@@ -136,8 +136,7 @@ liquidator8 = "0x8DA6DD4675e96F706F45BB9566Be31eB050ED652"
 liquidator9 = "0xffA24D284111E58E2142dc74e4FB08a398D97c45"
 liquidator10 = "0x4d0AfCA2357F1797CF18c579171b71B427604933"
 
-d06082025_liquidator1 = ""
-d06082025_liquidator2 = ""
+# TODO: rotate
 
 [var.ae_liquidators]
 # -----------------------------------------------
@@ -147,10 +146,10 @@ d06082025_liquidator2 = ""
 #    - 0x9afe15992448b33bda6d5851383e643ce007cb5a
 # -----------------------------------------------
 ae_liquidator1 = "0x89520d105a125CC6165c6685de262c42113Df9c0"
-ae_liquidator2 = "0xc656647754e72c2Db056712AC40dc04Ce6681a7D"
-ae_liquidator3 = "0x9afe15992448b33bda6d5851383e643ce007cb5a"
+ae_liquidator2 = "0xc656647754e72c2Db056712AC40dc04Ce6681a7D" # external AE bot
+ae_liquidator3 = "0x9afe15992448b33bda6d5851383e643ce007cb5a" # external AE bot
 
-d06082025_ae_liquidator1 = ""
+# TODO: rotate
 
 [var.co_execution_bots]
 # -----------------------------------------------
@@ -172,23 +171,20 @@ d06082025_co_execution_bot_5 = "0x3A7C7A9240EE4dA5fC85e5a4abF852F98bd00041" # st
 
 [var.fee_configuration_bots]
 # -----------------------------------------------
-# Rotation notes: all these addresses need rotation
+# Rotation notes: 
+#   - "setOgStatusBot" does not need rotate; it's deprecated as it's not used anymore. It served for one-time migration.
 # -----------------------------------------------
-setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"
+setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"        # deprecated
 setTierIdBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 setReferralMappingBot = "0xAdA667dCCF02CC78944cE8464fa5d722f2c73594"
+# setMarketZeroFeeBot = "<%= settings.setTierIdBot %>"
 
-d06082025_setOgStatusBot = ""
 d06082025_setTierIdBot = ""
 d06082025_setReferralMappingBot = ""
+setMarketZeroFeeBot = "<%= settings.d06082025_setTierIdBot %>"
 
 [var.set_main_account_id_bots]
-# -----------------------------------------------
-# Rotation notes: all these addresses need rotation
-# -----------------------------------------------
-setMainAccountIdBot = "0x286119f5cc1f99c9819cb8a7fb22eb49ca22c878"
-
-d06082025_setMainAccountIdBot = ""
+setMainAccountIdBot = "0x286119f5cc1f99c9819cb8a7fb22eb49ca22c878" # deprecated 
 
 [var.match_order_publisher_admins]
 # -----------------------------------------------
@@ -206,7 +202,7 @@ matchOrderPublisherAdmin5 = "" # subject to the rotation 06082025
 # -----------------------------------------------
 # Rotation notes: all these addresses have been deprecated and do not need rotation
 # -----------------------------------------------
-camelotSwapPublisher = "0xE32519ca0e751C754c8E1378846B5cd95A1CB66a" # deprecated
+camelotSwapPublisher = "0xE32519ca0e751C754c8E1378846B5cd95A1CB66a"      # deprecated
 camelotSwapPublisherAdmin1 = "<%= settings.matchOrderPublisherAdmin1 %>" # deprecated
 camelotSwapPublisherAdmin2 = "<%= settings.matchOrderPublisherAdmin2 %>" # deprecated
 camelotSwapPublisherAdmin3 = "<%= settings.matchOrderPublisherAdmin3 %>" # deprecated
@@ -225,6 +221,9 @@ storkPublisher5 = "0xf2e72022eb19352f488526e835c4b17248aa6c03"
 storkPublisherAggregate = "0x0a803F9b1CCe32e2773e0d2e98b37E0775cA5d44"
 
 [var.stork_executors]
+# -----------------------------------------------
+# Rotation notes: all these addresses need rotation
+# -----------------------------------------------
 storkExecutor1 = "0x460709Fc45340055d68f8CECa5e66c99e11BA7A5"
 storkExecutor2 = "0x8f6f7BaD792fFBD018B2C71Cec830F9fca8657D0"
 storkExecutor3 = "0x58245Bf2efF760dF0E98c28B07bF33C45787ef58"
@@ -246,7 +245,14 @@ storkExecutor18 = "0xf9E50a2584CFBD3d23468A395114461E5154fD61"
 storkExecutor19 = "0xdC9f85dE54543eddD2Cc61e63D5DD8DFFb0b2cF4"
 storkExecutor20 = "0xf5dD8F0D98138330F6b5927B019E5B94B3C1E919"
 
+d06082025_storkExecutor1 = "" # heartbeat 
+d06082025_storkExecutor2 = "" # volatility
+d06082025_storkExecutor3 = "" # fallback
+
 [var.market_vol_configurators]
+# -----------------------------------------------
+# Rotation notes: all these addresses need rotation
+# -----------------------------------------------
 marketVolConfigurator1 = "<%= settings.storkExecutor1 %>"
 marketVolConfigurator2 = "<%= settings.storkExecutor2 %>"
 marketVolConfigurator3 = "<%= settings.storkExecutor3 %>"
@@ -268,7 +274,12 @@ marketVolConfigurator18 = "<%= settings.storkExecutor18 %>"
 marketVolConfigurator19 = "<%= settings.storkExecutor19 %>"
 marketVolConfigurator20 = "<%= settings.storkExecutor20 %>"
 
+d06082025_marketVolConfigurator1 = ""
+
 [var.share_token_roles]
+# -----------------------------------------------
+# Rotation notes: all these addresses are multisig safes and do not need rotation
+# -----------------------------------------------
 rseliniMinter1 = "<%= settings.rebalancer3 %>"
 rseliniSubscriber1 = "<%= settings.rebalancer3 %>"
 rseliniRedeemer1 = "<%= settings.rebalancer3 %>"

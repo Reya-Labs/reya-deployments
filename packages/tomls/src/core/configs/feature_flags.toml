@@ -184,10 +184,7 @@ depends = ["invoke.upgrade_core_proxy"]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setAdmins"
-args = [
-    "<%= keccak256(hexlify('camelotSwapPublisher')) %>",
-    [],
-]
+args = ["<%= keccak256(hexlify('camelotSwapPublisher')) %>", []]
 
 [invoke.core_set_stake_pool_access]
 target = ["CoreProxy"]
