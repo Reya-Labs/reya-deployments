@@ -159,12 +159,12 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
-[invoke.market_68morpho_enabled_zero_fee_option]
+[invoke.market_68zora_enabled_zero_fee_option]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setAdmins"
 args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market68MorphoId])) %>",
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market68ZoraId])) %>",
     [
         "<%= settings.setTierIdBot %>",
     ],
