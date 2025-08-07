@@ -27,15 +27,6 @@ jobs:
         run: "yarn"
       - name: Lint Check
         run: "yarn lint:check"
-      - name: Debug RPC_KEY
-        run: |
-          if [ -z "$RPC_KEY" ]; then
-            echo "RPC_KEY is not set or empty"
-          else
-            echo "RPC_KEY is set"
-          fi
-        env:
-          RPC_KEY: ${{ secrets.RPC_KEY }}
       - name: Reya Network Cannon Test
         env:
           RPC_KEY: ${{ secrets.RPC_KEY }}
