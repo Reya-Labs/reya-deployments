@@ -163,11 +163,11 @@ co_execution_bot5 = "0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4" # ops API execu
 co_execution_bot6 = "0xbf59e78614F97fDbA523238AefDbe64E2efb28C3" # ops API executor 2
 co_execution_bot7 = "0xbAF944384b46eB8609c3A5C7894028cE60c15354" # staging API executor
 
-d06082025_co_execution_bot_1 = "0x575E8D65C5827B76A8956D0f7b1F0c3a67d88056" # conditional order bot 1
-d06082025_co_execution_bot_2 = "0xC89A802E2059f8b8Ac8cC830e5CADC0b82Af9670" # conditional order bot 2
-d06082025_co_execution_bot_3 = "0xF37DCc5Ac8B2dB1F025b72406D2CBaDd3b209cC9" # main API executor 1
-d06082025_co_execution_bot_4 = "0xBFc59d4Ce80C0A173d6dA68Ecb103b9eC533e3aa" # main API executor 2
-d06082025_co_execution_bot_5 = "0x3A7C7A9240EE4dA5fC85e5a4abF852F98bd00041" # staging API executor
+d06082025_co_execution_bot_1 = "0xd933f2FcA9Be1A8Fb0Db05cb63570c62930e8d61" # conditional order bot 1
+d06082025_co_execution_bot_2 = "0xd0a8780853999Ff5Cd0fe852217467d3de160EEb" # conditional order bot 2
+d06082025_co_execution_bot_3 = "0xb5Cd25E984Daa87a7DcdfaA7fd4c4e97AE0A95B8" # main API executor 1
+d06082025_co_execution_bot_4 = "0xa4d537B5C310CEF9514e7255Fca1268A2B80d67D" # main API executor 2
+d06082025_co_execution_bot_5 = "0xdDfD9f70972742bE561eFb89E9CF5BEF848729F8" # staging API executor
 
 [var.fee_configuration_bots]
 # -----------------------------------------------
@@ -179,9 +179,9 @@ setTierIdBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 setReferralMappingBot = "0xAdA667dCCF02CC78944cE8464fa5d722f2c73594"
 # setMarketZeroFeeBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 
-d06082025_setTierIdBot = ""
-d06082025_setReferralMappingBot = ""
-setMarketZeroFeeBot = ""
+d06082025_setTierIdBot = "0xc99a112E3dA3AACbaEA357fec8fc64802B4804Af"
+d06082025_setReferralMappingBot = "0x3964296c2d089160B2833407CBF638a48CEDAcc7"
+setMarketZeroFeeBot = "0xdD69B419f0d7a1E15192ac8DBAa0Fc63b25f8A11"
 
 [var.set_main_account_id_bots]
 setMainAccountIdBot = "0x286119f5cc1f99c9819cb8a7fb22eb49ca22c878" # deprecated 
@@ -196,7 +196,7 @@ matchOrderPublisherAdmin3 = "<%= settings.pauser3 %>"
 matchOrderPublisherAdmin4 = "<%= settings.pauser4 %>"
 # matchOrderPublisherAdmin5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556" # deprecated
 
-matchOrderPublisherAdmin5 = "" # subject to the rotation 06082025
+matchOrderPublisherAdmin5 = "0xDD5B5126621095eA2Db2d2319EAE7dB9d8B3B605" # subject to the rotation 06082025
 
 [var.camelot_swap_publisher_settings]
 # -----------------------------------------------
@@ -245,9 +245,9 @@ storkExecutor18 = "0xf9E50a2584CFBD3d23468A395114461E5154fD61"
 storkExecutor19 = "0xdC9f85dE54543eddD2Cc61e63D5DD8DFFb0b2cF4"
 storkExecutor20 = "0xf5dD8F0D98138330F6b5927B019E5B94B3C1E919"
 
-d06082025_storkExecutor1 = "" # heartbeat 
-d06082025_storkExecutor2 = "" # volatility
-d06082025_storkExecutor3 = "" # fallback
+d06082025_storkExecutor1 = "0x942C8b975877D3201BAa385497a1037DAD3f336f" # heartbeat 
+d06082025_storkExecutor2 = "0xe5476044f3F2a601748816f7177A72bf1aa3f2E1" # volatility
+d06082025_storkExecutor3 = "0x53ca123CbE4e7a4dD093302E0EfDab2a28b55a4f" # fallback
 
 [var.market_vol_configurators]
 # -----------------------------------------------
@@ -274,7 +274,7 @@ marketVolConfigurator18 = "<%= settings.storkExecutor18 %>"
 marketVolConfigurator19 = "<%= settings.storkExecutor19 %>"
 marketVolConfigurator20 = "<%= settings.storkExecutor20 %>"
 
-d06082025_marketVolConfigurator1 = ""
+d06082025_marketVolConfigurator1 = "0xAEFE6157392807bf9d0f7fC239b62172A35B8c5F"
 
 [var.share_token_roles]
 # -----------------------------------------------
