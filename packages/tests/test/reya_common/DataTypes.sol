@@ -63,7 +63,7 @@ struct StaticEcosystem {
     address rhedgeSubscriber;
     address rhedgeRedeemer;
     address aeLiquidator1;
-    address setTierIdBot;
+    address marketZeroFeeBot;
     // node ids for spot prices
     bytes32 rusdUsdNodeId;
     bytes32 usdcUsdStorkNodeId;
