@@ -89,16 +89,6 @@ depends = ["invoke.upgrade_orders_gateway_proxy"]
 # -----------------------------------------------
 # Granting permissions for configuring fees
 # -----------------------------------------------
-[invoke.passive_perp_enable_access_d06082025_setOgStatusBot]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('configureFees')) %>",
-    "<%= settings.d06082025_setOgStatusBot %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy"]
-
 [invoke.passive_perp_enable_access_d06082025_setTierIdBot]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -118,16 +108,6 @@ args = [
     "<%= settings.d06082025_setReferralMappingBot %>",
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
-
-[invoke.core_enable_access_d06082025_setMainAccountIdBot]
-target = ["CoreProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('ownerMainAccountId')) %>",
-    "<%= settings.d06082025_setMainAccountIdBot %>",
-]
-depends = ["invoke.upgrade_core_proxy"]
 
 # -----------------------------------------------
 # Granting permissions for Stork price updaters
