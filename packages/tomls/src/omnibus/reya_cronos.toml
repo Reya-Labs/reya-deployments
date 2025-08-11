@@ -327,6 +327,7 @@ storkAssetPairIdAEROMark = "AEROUSDMARK"
 storkAssetPairIdKAITOMark = "KAITOUSDMARK"
 storkAssetPairIdZORAMark = "ZORAUSDMARK"
 storkAssetPairIdPROVEMark = "PROVEUSDMARK"
+storkAssetPairIdPAXGMark = "PAXGUSDMARK"
 
 [var.reya_lm_asset_pair_ids]
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
@@ -733,6 +734,9 @@ zoraUsdcMarkMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
 proveUsdMarkMaxStaleDurationStork = "0"
 proveUsdcMarkMaxStaleDurationStork = "0"
+#------------------------------------------------------------------------------
+paxgUsdMarkMaxStaleDurationStork = "0"
+paxgUsdcMarkMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDurationStork = "0"
 susdeUsdcMaxStaleDurationStork = "0"
@@ -2138,8 +2142,28 @@ market69Prove_marketOrderMaxStaleDuration = "11"
 market69Prove_priceSpreadUnscaled = "0"
 market69Prove_volatilityIndexMultiplierUnscaled = "0"
 
+[var.market_70Paxg]
+market70Paxg_riskMatrixIndex = "0"
+market70Paxg_maxOpenBaseUnscaled = "50000"
+market70Paxg_velocityMultiplierUnscaled = "5"
+market70Paxg_oracleNodeId = "<%= settings.paxgUsdcMarkNodeIdStork %>"
+market70Paxg_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market70Paxg_dutchConfig_lambdaUnscaled = "1"
+market70Paxg_dutchConfig_minBaseUnscaled = "0.11"
+market70Paxg_slippageParams_phiUnscaled = "0"
+market70Paxg_slippageParams_betaUnscaled = "0"
+market70Paxg_minimumOrderBaseUnscaled = "1"
+market70Paxg_baseSpacingUnscaled = "0.1"
+market70Paxg_priceSpacingUnscaled = "<%= 1e-5 %>"
+market70Paxg_depthFactorUnscaled = "0.75"
+market70Paxg_maxExposureFactorUnscaled = "0.999"
+market70Paxg_maxPSlippageUnscaled = "0.1"
+market70Paxg_marketOrderMaxStaleDuration = "11"
+market70Paxg_priceSpreadUnscaled = "0"
+market70Paxg_volatilityIndexMultiplierUnscaled = "0"
+
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "69"
+cp1Rusd_maxMarkets = "70"
 cp1Rusd_maxCollaterals = "11"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
@@ -2213,6 +2237,7 @@ cp1Rusd_market66Aero_riskMatrix00Unscaled = "0.002630"
 cp1Rusd_market67Kaito_riskMatrix00Unscaled = "0.005917"
 cp1Rusd_market68Zora_riskMatrix00Unscaled = "0.023669"
 cp1Rusd_market69Prove_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market70Paxg_riskMatrix00Unscaled = "0.06575"
 
 # -----------------------------------------------
 cp1Rusd_imMultiplierUnscaled = "1.3"

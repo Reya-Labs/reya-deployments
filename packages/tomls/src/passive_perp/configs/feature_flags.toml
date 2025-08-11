@@ -99,18 +99,6 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
-[invoke.market_69prove_enabled_zero_fee_option]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setAdmins"
-args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market69ProveId])) %>",
-    [
-        "<%= settings.setTierIdBot %>",
-    ],
-]
-depends = ["invoke.upgrade_passive_perp_proxy"]
-
 [invoke.market_64morpho_enabled_zero_fee_option]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -165,6 +153,30 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market68ZoraId])) %>",
+    [
+        "<%= settings.setTierIdBot %>",
+    ],
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.market_69prove_enabled_zero_fee_option]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAdmins"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market69ProveId])) %>",
+    [
+        "<%= settings.setTierIdBot %>",
+    ],
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.market_70paxg_enabled_zero_fee_option]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAdmins"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market70PaxgId])) %>",
     [
         "<%= settings.setTierIdBot %>",
     ],
