@@ -719,3 +719,115 @@ args = [
     "<%= settings.marketVolConfigurator20 %>",
 ]
 depends = ["invoke.upgrade_core_proxy"]
+
+# -----------------------------------------------
+# Revoking permissions for liquidators
+# -----------------------------------------------
+[invoke.core_proxy_remove_access_liquidator1_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator1 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator2_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator2 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator3_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator3 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator4_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator4 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator5_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator5 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator6_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator6 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator7_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator7 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator8_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator8 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator9_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator9 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator10_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.liquidator10 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+# -----------------------------------------------
+# Revoking permissions for ae liquidators
+# -----------------------------------------------
+[invoke.core_proxy_remove_access_ae_liquidator1_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.passive_pool_remove_staked_quote_auto_exchange_access_1]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('stakedAssetAutoExchange')),settings.pool1RusdId])) %>",
+    "<%= settings.ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+# -----------------------------------------------
+# Revoking permissions from OG status bot
+# -----------------------------------------------
+[invoke.passive_perp_disable_access_setOgStatusBot]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureFees')) %>",
+    "<%= settings.setOgStatusBot %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]

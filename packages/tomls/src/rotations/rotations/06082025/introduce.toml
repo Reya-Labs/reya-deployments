@@ -11,16 +11,6 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_pool_proxy"]
 
-[invoke.passive_perp_disable_access_setOgStatusBot]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "removeFromFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('configureFees')) %>",
-    "<%= settings.setOgStatusBot %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy"]
-
 [invoke.core_disable_access_setMainAccountIdBot]
 target = ["CoreProxy"]
 fromCall.func = "owner"
@@ -185,3 +175,117 @@ args = [
     "<%= settings.d06082025_marketVolConfigurator1 %>",
 ]
 depends = ["invoke.upgrade_core_proxy"]
+
+# -----------------------------------------------
+# Granting permissions for auto-exchange margin account
+# -----------------------------------------------
+[invoke.core_proxy_enable_multicall_access_d06082025_ae_liquidator1]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.d06082025_ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.passive_pool_enable_staked_quote_auto_exchange_access_d06082025_ae_liquidator1]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('stakedAssetAutoExchange')),settings.pool1RusdId])) %>",
+    "<%= settings.d06082025_ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.core_proxy_enable_admin_permission_d06082025_ae_liquidator1]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantAccountPermission"
+args = [
+    "<%= settings.aeMarginAccountId1 %>",
+    "<%= keccak256(hexlify('ADMIN')) %>",
+    "<%= settings.d06082025_ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+# -----------------------------------------------
+# Granting permissions for liquidator margin account
+# -----------------------------------------------
+[invoke.core_proxy_enable_multicall_acccess_d06082025_liquidator1]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.d06082025_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_enable_dutch_liquidation_permission_d06082025_liquidator1]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantAccountPermission"
+args = [
+    "<%= settings.liquidatorMarginAccountId1 %>",
+    "<%= keccak256(hexlify('DUTCH_LIQUIDATION')) %>",
+    "<%= settings.d06082025_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_enable_match_order_permission_d06082025_liquidator1]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantAccountPermission"
+args = [
+    "<%= settings.liquidatorMarginAccountId1 %>",
+    "<%= keccak256(hexlify('MATCH_ORDER')) %>",
+    "<%= settings.d06082025_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_enable_multicall_acccess_d06082025_liquidator2]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.d06082025_liquidator2 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_enable_dutch_liquidation_permission_d06082025_liquidator2]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantAccountPermission"
+args = [
+    "<%= settings.liquidatorMarginAccountId1 %>",
+    "<%= keccak256(hexlify('DUTCH_LIQUIDATION')) %>",
+    "<%= settings.d06082025_liquidator2 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_enable_match_order_permission_d06082025_liquidator2]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "grantAccountPermission"
+args = [
+    "<%= settings.liquidatorMarginAccountId1 %>",
+    "<%= keccak256(hexlify('MATCH_ORDER')) %>",
+    "<%= settings.d06082025_liquidator2 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+# -----------------------------------------------
+# Granting permissions for OG status bot
+# -----------------------------------------------
+[invoke.passive_perp_enable_access_d06082025_setOgStatusBot]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureFees')) %>",
+    "<%= settings.d06082025_setOgStatusBot %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]

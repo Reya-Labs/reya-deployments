@@ -136,7 +136,8 @@ liquidator8 = "0x8DA6DD4675e96F706F45BB9566Be31eB050ED652"
 liquidator9 = "0xffA24D284111E58E2142dc74e4FB08a398D97c45"
 liquidator10 = "0x4d0AfCA2357F1797CF18c579171b71B427604933"
 
-# TODO: rotate
+d06082025_liquidator1 = "0x84d17e2E153FE902Ac5b5d9c877F18DF3b9C6E56"
+d06082025_liquidator2 = "0xb776c97866FAeaBe752A2260ceCe8c19153EEbFc"
 
 [var.ae_liquidators]
 # -----------------------------------------------
@@ -149,7 +150,7 @@ ae_liquidator1 = "0x89520d105a125CC6165c6685de262c42113Df9c0"
 ae_liquidator2 = "0xc656647754e72c2Db056712AC40dc04Ce6681a7D" # external AE bot
 ae_liquidator3 = "0x9afe15992448b33bda6d5851383e643ce007cb5a" # external AE bot
 
-# TODO: rotate
+d06082025_ae_liquidator1 = "0x8836cf32426cb26353698B105ab89fb87f52Fc34"
 
 [var.co_execution_bots]
 # -----------------------------------------------
@@ -171,14 +172,14 @@ d06082025_co_execution_bot_5 = "0xdDfD9f70972742bE561eFb89E9CF5BEF848729F8" # st
 
 [var.fee_configuration_bots]
 # -----------------------------------------------
-# Rotation notes: 
-#   - "setOgStatusBot" does not need rotate; it's deprecated as it's not used anymore. It served for one-time migration.
+# Rotation notes: all these addresses need rotation
 # -----------------------------------------------
-setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"        # deprecated
+setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"
 setTierIdBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 setReferralMappingBot = "0xAdA667dCCF02CC78944cE8464fa5d722f2c73594"
 # setMarketZeroFeeBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 
+d06082025_setOgStatusBot = "0x23ADf7BA3f9d2a8D9F4b34b65aFC4aDb0fC85c46"
 d06082025_setTierIdBot = "0xc99a112E3dA3AACbaEA357fec8fc64802B4804Af"
 d06082025_setReferralMappingBot = "0x3964296c2d089160B2833407CBF638a48CEDAcc7"
 setMarketZeroFeeBot = "0xdD69B419f0d7a1E15192ac8DBAa0Fc63b25f8A11"
@@ -275,6 +276,10 @@ marketVolConfigurator19 = "<%= settings.storkExecutor19 %>"
 marketVolConfigurator20 = "<%= settings.storkExecutor20 %>"
 
 d06082025_marketVolConfigurator1 = "0xAEFE6157392807bf9d0f7fC239b62172A35B8c5F"
+
+[var.operational_margin_accounts]
+liquidatorMarginAccountId1 = 109371
+aeMarginAccountId1 = 109372
 
 [var.share_token_roles]
 # -----------------------------------------------
