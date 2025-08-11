@@ -224,6 +224,8 @@ struct StaticEcosystem {
     bytes32 zoraUsdcMarkNodeIdStork;
     bytes32 proveUsdMarkNodeIdStork;
     bytes32 proveUsdcMarkNodeIdStork;
+    bytes32 paxgUsdMarkNodeIdStork;
+    bytes32 paxgUsdcMarkNodeIdStork;
 }
 
 struct DynamicEcosystem {
