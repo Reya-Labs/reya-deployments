@@ -16,7 +16,7 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/mainnet.toml",
 ]
-version = "1.0.64"
+version = "1.0.65"
 
 [var.chain_ids]
 ethereumChainId = "1"
