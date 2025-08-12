@@ -2145,7 +2145,7 @@ market69Prove_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_70Paxg]
 market70Paxg_riskMatrixIndex = "0"
-market70Paxg_maxOpenBaseUnscaled = "640"
+market70Paxg_maxOpenBaseUnscaled = "160"
 market70Paxg_velocityMultiplierUnscaled = "0.075"
 market70Paxg_oracleNodeId = "<%= settings.paxgUsdcMarkNodeIdStork %>"
 market70Paxg_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
