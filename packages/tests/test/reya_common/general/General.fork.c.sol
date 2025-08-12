@@ -9,6 +9,7 @@ import { IPassivePerpProxy, MarketConfigurationData } from "../../../src/interfa
 import { IElixirSdeusd } from "../../../src/interfaces/IElixirSdeusd.sol";
 
 import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
+import { uintToString, bytes32ToHexString } from "../../../src/utils/ToString.sol";
 
 import { ud } from "@prb/math/UD60x18.sol";
 
@@ -210,398 +211,398 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(0);
         ls.maxDeviationMarket.push(0);
 
-        ls.meanPriceETH = 3663e18;
+        ls.meanPriceETH = 4244 * 1e18;
         ls.maxDeviationETH = ls.meanPriceETH / 2;
         ls.meanPriceMarket.push(ls.meanPriceETH);
         ls.maxDeviationMarket.push(ls.maxDeviationETH);
 
-        ls.meanPriceBTC = 118_000e18;
+        ls.meanPriceBTC = 118_000 * 1e18;
         ls.maxDeviationBTC = ls.meanPriceBTC / 2;
         ls.meanPriceMarket.push(ls.meanPriceBTC);
         ls.maxDeviationMarket.push(ls.maxDeviationBTC);
 
-        ls.meanPriceSOL = 193e18;
+        ls.meanPriceSOL = 193 * 1e18;
         ls.maxDeviationSOL = ls.meanPriceSOL / 2;
         ls.meanPriceMarket.push(ls.meanPriceSOL);
         ls.maxDeviationMarket.push(ls.maxDeviationSOL);
 
-        ls.meanPriceARB = 0.4e18;
+        ls.meanPriceARB = 0.4 * 1e18;
         ls.maxDeviationARB = ls.meanPriceARB / 2;
         ls.meanPriceMarket.push(ls.meanPriceARB);
         ls.maxDeviationMarket.push(ls.maxDeviationARB);
 
-        ls.meanPriceOP = 0.7e18;
+        ls.meanPriceOP = 0.76 * 1e18;
         ls.maxDeviationOP = ls.meanPriceOP / 2;
         ls.meanPriceMarket.push(ls.meanPriceOP);
         ls.maxDeviationMarket.push(ls.maxDeviationOP);
 
-        ls.meanPriceAVAX = 25e18;
+        ls.meanPriceAVAX = 25 * 1e18;
         ls.maxDeviationAVAX = ls.meanPriceAVAX / 2;
         ls.meanPriceMarket.push(ls.meanPriceAVAX);
         ls.maxDeviationMarket.push(ls.maxDeviationAVAX);
 
-        ls.meanPriceMKR = 2000e18;
+        ls.meanPriceMKR = 2000 * 1e18;
         ls.maxDeviationMKR = ls.meanPriceMKR / 2;
         ls.meanPriceMarket.push(ls.meanPriceMKR);
         ls.maxDeviationMarket.push(ls.maxDeviationMKR);
 
-        ls.meanPriceLINK = 18.5e18;
+        ls.meanPriceLINK = 18.5 * 1e18;
         ls.maxDeviationLINK = ls.meanPriceLINK / 2;
         ls.meanPriceMarket.push(ls.meanPriceLINK);
         ls.maxDeviationMarket.push(ls.maxDeviationLINK);
 
-        ls.meanPriceAAVE = 296e18;
+        ls.meanPriceAAVE = 296 * 1e18;
         ls.maxDeviationAAVE = ls.meanPriceAAVE / 2;
         ls.meanPriceMarket.push(ls.meanPriceAAVE);
         ls.maxDeviationMarket.push(ls.maxDeviationAAVE);
 
-        ls.meanPriceCRV = 0.95e18;
+        ls.meanPriceCRV = 0.95 * 1e18;
         ls.maxDeviationCRV = ls.meanPriceCRV / 2;
         ls.meanPriceMarket.push(ls.meanPriceCRV);
         ls.maxDeviationMarket.push(ls.maxDeviationCRV);
 
-        ls.meanPriceUNI = 10.1e18;
+        ls.meanPriceUNI = 10.1 * 1e18;
         ls.maxDeviationUNI = ls.meanPriceUNI / 2;
         ls.meanPriceMarket.push(ls.meanPriceUNI);
         ls.maxDeviationMarket.push(ls.maxDeviationUNI);
 
-        ls.meanPriceSUI = 3.85e18;
+        ls.meanPriceSUI = 3.85 * 1e18;
         ls.maxDeviationSUI = ls.meanPriceSUI / 2;
         ls.meanPriceMarket.push(ls.meanPriceSUI);
         ls.maxDeviationMarket.push(ls.maxDeviationSUI);
 
-        ls.meanPriceTIA = 2.05e18;
+        ls.meanPriceTIA = 2.05 * 1e18;
         ls.maxDeviationTIA = ls.meanPriceTIA / 2;
         ls.meanPriceMarket.push(ls.meanPriceTIA);
         ls.maxDeviationMarket.push(ls.maxDeviationTIA);
 
-        ls.meanPriceSEI = 0.33e18;
+        ls.meanPriceSEI = 0.33 * 1e18;
         ls.maxDeviationSEI = ls.meanPriceSEI / 2;
         ls.meanPriceMarket.push(ls.meanPriceSEI);
         ls.maxDeviationMarket.push(ls.maxDeviationSEI);
 
-        ls.meanPriceZRO = 2.11e18;
+        ls.meanPriceZRO = 2.11 * 1e18;
         ls.maxDeviationZRO = ls.meanPriceZRO / 2;
         ls.meanPriceMarket.push(ls.meanPriceZRO);
         ls.maxDeviationMarket.push(ls.maxDeviationZRO);
 
-        ls.meanPriceXRP = 3.36e18;
+        ls.meanPriceXRP = 3.36 * 1e18;
         ls.maxDeviationXRP = ls.meanPriceXRP / 2;
         ls.meanPriceMarket.push(ls.meanPriceXRP);
         ls.maxDeviationMarket.push(ls.maxDeviationXRP);
 
-        ls.meanPriceWIF = 1.21e18;
+        ls.meanPriceWIF = 1.21 * 1e18;
         ls.maxDeviationWIF = ls.meanPriceWIF / 2;
         ls.meanPriceMarket.push(ls.meanPriceWIF);
         ls.maxDeviationMarket.push(ls.maxDeviationWIF);
 
-        ls.meanPrice1000PEPE = 0.01e18;
+        ls.meanPrice1000PEPE = 0.01 * 1e18;
         ls.maxDeviation1000PEPE = ls.meanPrice1000PEPE / 2;
         ls.meanPriceMarket.push(ls.meanPrice1000PEPE);
         ls.maxDeviationMarket.push(ls.maxDeviation1000PEPE);
 
-        ls.meanPricePOPCAT = 0.42e18;
+        ls.meanPricePOPCAT = 0.42 * 1e18;
         ls.maxDeviationPOPCAT = ls.meanPricePOPCAT / 2;
         ls.meanPriceMarket.push(ls.meanPricePOPCAT);
         ls.maxDeviationMarket.push(ls.maxDeviationPOPCAT);
 
-        ls.meanPriceDOGE = 0.25e18;
+        ls.meanPriceDOGE = 0.25 * 1e18;
         ls.maxDeviationDOGE = ls.meanPriceDOGE / 2;
         ls.meanPriceMarket.push(ls.meanPriceDOGE);
         ls.maxDeviationMarket.push(ls.maxDeviationDOGE);
 
-        ls.meanPriceKSHIB = 0.013e18;
+        ls.meanPriceKSHIB = 0.013 * 1e18;
         ls.maxDeviationKSHIB = ls.meanPriceKSHIB / 2;
         ls.meanPriceMarket.push(ls.meanPriceKSHIB);
         ls.maxDeviationMarket.push(ls.maxDeviationKSHIB);
 
-        ls.meanPriceKBONK = 0.034e18;
+        ls.meanPriceKBONK = 0.034 * 1e18;
         ls.maxDeviationKBONK = ls.meanPriceKBONK / 2;
         ls.meanPriceMarket.push(ls.meanPriceKBONK);
         ls.maxDeviationMarket.push(ls.maxDeviationKBONK);
 
-        ls.meanPriceAPT = 5.6e18;
+        ls.meanPriceAPT = 5.6 * 1e18;
         ls.maxDeviationAPT = ls.meanPriceAPT / 2;
         ls.meanPriceMarket.push(ls.meanPriceAPT);
         ls.maxDeviationMarket.push(ls.maxDeviationAPT);
 
-        ls.meanPriceBNB = 791e18;
+        ls.meanPriceBNB = 791 * 1e18;
         ls.maxDeviationBNB = ls.meanPriceBNB / 2;
         ls.meanPriceMarket.push(ls.meanPriceBNB);
         ls.maxDeviationMarket.push(ls.maxDeviationBNB);
 
-        ls.meanPriceJTO = 1.9e18;
+        ls.meanPriceJTO = 1.9 * 1e18;
         ls.maxDeviationJTO = ls.meanPriceJTO / 2;
         ls.meanPriceMarket.push(ls.meanPriceJTO);
         ls.maxDeviationMarket.push(ls.maxDeviationJTO);
 
-        ls.meanPriceADA = 0.58e18;
+        ls.meanPriceADA = 0.58 * 1e18;
         ls.maxDeviationADA = ls.meanPriceADA / 2;
         ls.meanPriceMarket.push(ls.meanPriceADA);
         ls.maxDeviationMarket.push(ls.maxDeviationADA);
 
-        ls.meanPriceLDO = 1.1e18;
+        ls.meanPriceLDO = 1.1 * 1e18;
         ls.maxDeviationLDO = ls.meanPriceLDO / 2;
         ls.meanPriceMarket.push(ls.meanPriceLDO);
         ls.maxDeviationMarket.push(ls.maxDeviationLDO);
 
-        ls.meanPricePOL = 0.23e18;
+        ls.meanPricePOL = 0.23 * 1e18;
         ls.maxDeviationPOL = ls.meanPricePOL / 2;
         ls.meanPriceMarket.push(ls.meanPricePOL);
         ls.maxDeviationMarket.push(ls.maxDeviationPOL);
 
-        ls.meanPriceNEAR = 2.84e18;
+        ls.meanPriceNEAR = 2.84 * 1e18;
         ls.maxDeviationNEAR = ls.meanPriceNEAR / 2;
         ls.meanPriceMarket.push(ls.meanPriceNEAR);
         ls.maxDeviationMarket.push(ls.maxDeviationNEAR);
 
         // deprecated
-        ls.meanPriceFTM = 0e18;
+        ls.meanPriceFTM = 0;
         ls.maxDeviationFTM = ls.meanPriceFTM / 2;
         ls.meanPriceMarket.push(ls.meanPriceFTM);
         ls.maxDeviationMarket.push(ls.maxDeviationFTM);
 
-        ls.meanPriceENA = 0.45e18;
+        ls.meanPriceENA = 0.8 * 1e18;
         ls.maxDeviationENA = ls.meanPriceENA / 2;
         ls.meanPriceMarket.push(ls.meanPriceENA);
         ls.maxDeviationMarket.push(ls.maxDeviationENA);
 
-        ls.meanPriceEIGEN = 1.39e18;
+        ls.meanPriceEIGEN = 1.39 * 1e18;
         ls.maxDeviationEIGEN = ls.meanPriceEIGEN / 2;
         ls.meanPriceMarket.push(ls.meanPriceEIGEN);
         ls.maxDeviationMarket.push(ls.maxDeviationEIGEN);
 
-        ls.meanPricePENDLE = 4.55e18;
+        ls.meanPricePENDLE = 4.55 * 1e18;
         ls.maxDeviationPENDLE = ls.meanPricePENDLE / 2;
         ls.meanPriceMarket.push(ls.meanPricePENDLE);
         ls.maxDeviationMarket.push(ls.maxDeviationPENDLE);
 
-        ls.meanPriceGOAT = 0.14e18;
+        ls.meanPriceGOAT = 0.14 * 1e18;
         ls.maxDeviationGOAT = ls.meanPriceGOAT / 2;
         ls.meanPriceMarket.push(ls.meanPriceGOAT);
         ls.maxDeviationMarket.push(ls.maxDeviationGOAT);
 
-        ls.meanPriceGRASS = 1.14e18;
+        ls.meanPriceGRASS = 1.14 * 1e18;
         ls.maxDeviationGRASS = ls.meanPriceGRASS / 2;
         ls.meanPriceMarket.push(ls.meanPriceGRASS);
         ls.maxDeviationMarket.push(ls.maxDeviationGRASS);
 
-        ls.meanPriceKNEIRO = 0.51e18;
+        ls.meanPriceKNEIRO = 0.51 * 1e18;
         ls.maxDeviationKNEIRO = ls.meanPriceKNEIRO / 2;
         ls.meanPriceMarket.push(ls.meanPriceKNEIRO);
         ls.maxDeviationMarket.push(ls.maxDeviationKNEIRO);
 
-        ls.meanPriceDOT = 4.26e18;
+        ls.meanPriceDOT = 4.26 * 1e18;
         ls.maxDeviationDOT = ls.meanPriceDOT / 2;
         ls.meanPriceMarket.push(ls.meanPriceDOT);
         ls.maxDeviationMarket.push(ls.maxDeviationDOT);
 
-        ls.meanPriceLTC = 114e18;
+        ls.meanPriceLTC = 114 * 1e18;
         ls.maxDeviationLTC = ls.meanPriceLTC / 2;
         ls.meanPriceMarket.push(ls.meanPriceLTC);
         ls.maxDeviationMarket.push(ls.maxDeviationLTC);
 
-        ls.meanPricePYTH = 0.13e18;
+        ls.meanPricePYTH = 0.13 * 1e18;
         ls.maxDeviationPYTH = ls.meanPricePYTH / 2;
         ls.meanPriceMarket.push(ls.meanPricePYTH);
         ls.maxDeviationMarket.push(ls.maxDeviationPYTH);
 
-        ls.meanPriceJUP = 0.58e18;
+        ls.meanPriceJUP = 0.58 * 1e18;
         ls.maxDeviationJUP = ls.meanPriceJUP / 2;
         ls.meanPriceMarket.push(ls.meanPriceJUP);
         ls.maxDeviationMarket.push(ls.maxDeviationJUP);
 
-        ls.meanPricePENGU = 0.04e18;
+        ls.meanPricePENGU = 0.04 * 1e18;
         ls.maxDeviationPENGU = ls.meanPricePENGU / 2;
         ls.meanPriceMarket.push(ls.meanPricePENGU);
         ls.maxDeviationMarket.push(ls.maxDeviationPENGU);
 
-        ls.meanPriceTRUMP = 10.4e18;
+        ls.meanPriceTRUMP = 10.4 * 1e18;
         ls.maxDeviationTRUMP = ls.meanPriceTRUMP / 2;
         ls.meanPriceMarket.push(ls.meanPriceTRUMP);
         ls.maxDeviationMarket.push(ls.maxDeviationTRUMP);
 
-        ls.meanPriceHYPE = 43e18;
+        ls.meanPriceHYPE = 43 * 1e18;
         ls.maxDeviationHYPE = ls.meanPriceHYPE / 2;
         ls.meanPriceMarket.push(ls.meanPriceHYPE);
         ls.maxDeviationMarket.push(ls.maxDeviationHYPE);
 
-        ls.meanPriceVIRTUAL = 1.78e18;
+        ls.meanPriceVIRTUAL = 1.78 * 1e18;
         ls.maxDeviationVIRTUAL = ls.meanPriceVIRTUAL / 2;
         ls.meanPriceMarket.push(ls.meanPriceVIRTUAL);
         ls.maxDeviationMarket.push(ls.maxDeviationVIRTUAL);
 
-        ls.meanPriceAI16Z = 0.2e18;
+        ls.meanPriceAI16Z = 0.2 * 1e18;
         ls.maxDeviationAI16Z = ls.meanPriceAI16Z / 2;
         ls.meanPriceMarket.push(ls.meanPriceAI16Z);
         ls.maxDeviationMarket.push(ls.maxDeviationAI16Z);
 
-        ls.meanPriceAIXBT = 0.16e18;
+        ls.meanPriceAIXBT = 0.16 * 1e18;
         ls.maxDeviationAIXBT = ls.meanPriceAIXBT / 2;
         ls.meanPriceMarket.push(ls.meanPriceAIXBT);
         ls.maxDeviationMarket.push(ls.maxDeviationAIXBT);
 
-        ls.meanPriceSONIC = 0.35e18;
+        ls.meanPriceSONIC = 0.35 * 1e18;
         ls.maxDeviationSONIC = ls.meanPriceSONIC / 2;
         ls.meanPriceMarket.push(ls.meanPriceSONIC);
         ls.maxDeviationMarket.push(ls.maxDeviationSONIC);
 
-        ls.meanPriceFARTCOIN = 1.6e18;
+        ls.meanPriceFARTCOIN = 1.6 * 1e18;
         ls.maxDeviationFARTCOIN = ls.meanPriceFARTCOIN / 2;
         ls.meanPriceMarket.push(ls.meanPriceFARTCOIN);
         ls.maxDeviationMarket.push(ls.maxDeviationFARTCOIN);
 
-        ls.meanPriceGRIFFAIN = 0.05e18;
+        ls.meanPriceGRIFFAIN = 0.05 * 1e18;
         ls.maxDeviationGRIFFAIN = ls.meanPriceGRIFFAIN / 2;
         ls.meanPriceMarket.push(ls.meanPriceGRIFFAIN);
         ls.maxDeviationMarket.push(ls.maxDeviationGRIFFAIN);
 
-        ls.meanPriceWLD = 1.24e18;
+        ls.meanPriceWLD = 1.24 * 1e18;
         ls.maxDeviationWLD = ls.meanPriceWLD / 2;
         ls.meanPriceMarket.push(ls.meanPriceWLD);
         ls.maxDeviationMarket.push(ls.maxDeviationWLD);
 
-        ls.meanPriceATOM = 4.8e18;
+        ls.meanPriceATOM = 4.8 * 1e18;
         ls.maxDeviationATOM = ls.meanPriceATOM / 2;
         ls.meanPriceMarket.push(ls.meanPriceATOM);
         ls.maxDeviationMarket.push(ls.maxDeviationATOM);
 
-        ls.meanPriceAPE = 0.7e18;
+        ls.meanPriceAPE = 0.7 * 1e18;
         ls.maxDeviationAPE = ls.meanPriceAPE / 2;
         ls.meanPriceMarket.push(ls.meanPriceAPE);
         ls.maxDeviationMarket.push(ls.maxDeviationAPE);
 
-        ls.meanPriceTON = 3.21e18;
+        ls.meanPriceTON = 3.21 * 1e18;
         ls.maxDeviationTON = ls.meanPriceTON / 2;
         ls.meanPriceMarket.push(ls.meanPriceTON);
         ls.maxDeviationMarket.push(ls.maxDeviationTON);
 
-        ls.meanPriceONDO = 1.05e18;
+        ls.meanPriceONDO = 1.05 * 1e18;
         ls.maxDeviationONDO = ls.meanPriceONDO / 2;
         ls.meanPriceMarket.push(ls.meanPriceONDO);
         ls.maxDeviationMarket.push(ls.maxDeviationONDO);
 
-        ls.meanPriceTRX = 0.31e18;
+        ls.meanPriceTRX = 0.31 * 1e18;
         ls.maxDeviationTRX = ls.meanPriceTRX / 2;
         ls.meanPriceMarket.push(ls.meanPriceTRX);
         ls.maxDeviationMarket.push(ls.maxDeviationTRX);
 
-        ls.meanPriceINJ = 14e18;
+        ls.meanPriceINJ = 14 * 1e18;
         ls.maxDeviationINJ = ls.meanPriceINJ / 2;
         ls.meanPriceMarket.push(ls.meanPriceINJ);
         ls.maxDeviationMarket.push(ls.maxDeviationINJ);
 
-        ls.meanPriceMOVE = 0.17e18;
+        ls.meanPriceMOVE = 0.17 * 1e18;
         ls.maxDeviationMOVE = ls.meanPriceMOVE / 2;
         ls.meanPriceMarket.push(ls.meanPriceMOVE);
         ls.maxDeviationMarket.push(ls.maxDeviationMOVE);
 
-        ls.meanPriceBERA = 2.44e18;
+        ls.meanPriceBERA = 2.44 * 1e18;
         ls.maxDeviationBERA = ls.meanPriceBERA / 2;
         ls.meanPriceMarket.push(ls.meanPriceBERA);
         ls.maxDeviationMarket.push(ls.maxDeviationBERA);
 
         // market is currently closed
-        ls.meanPriceLAYER = 0.9e18;
+        ls.meanPriceLAYER = 0.9 * 1e18;
         ls.maxDeviationLAYER = ls.meanPriceLAYER / 2;
         ls.meanPriceMarket.push(ls.meanPriceLAYER);
         ls.maxDeviationMarket.push(ls.maxDeviationLAYER);
 
-        ls.meanPriceTAO = 427e18;
+        ls.meanPriceTAO = 427 * 1e18;
         ls.maxDeviationTAO = ls.meanPriceTAO / 2;
         ls.meanPriceMarket.push(ls.meanPriceTAO);
         ls.maxDeviationMarket.push(ls.maxDeviationTAO);
 
-        ls.meanPriceIP = 4.6e18;
+        ls.meanPriceIP = 4.6 * 1e18;
         ls.maxDeviationIP = ls.meanPriceIP / 2;
         ls.meanPriceMarket.push(ls.meanPriceIP);
         ls.maxDeviationMarket.push(ls.maxDeviationIP);
 
-        ls.meanPriceME = 0.93e18;
+        ls.meanPriceME = 0.93 * 1e18;
         ls.maxDeviationME = ls.meanPriceME / 2;
         ls.meanPriceMarket.push(ls.meanPriceME);
         ls.maxDeviationMarket.push(ls.maxDeviationME);
 
-        ls.meanPricePUMP = 0.004e18;
+        ls.meanPricePUMP = 0.004 * 1e18;
         ls.maxDeviationPUMP = ls.meanPricePUMP / 2;
         ls.meanPriceMarket.push(ls.meanPricePUMP);
         ls.maxDeviationMarket.push(ls.maxDeviationPUMP);
 
-        ls.meanPriceMORPHO = 1.76e18;
+        ls.meanPriceMORPHO = 2.04 * 1e18;
         ls.maxDeviationMORPHO = ls.meanPriceMORPHO / 2;
         ls.meanPriceMarket.push(ls.meanPriceMORPHO);
         ls.maxDeviationMarket.push(ls.maxDeviationMORPHO);
 
-        ls.meanPriceSYRUP = 0.44e18;
+        ls.meanPriceSYRUP = 0.44 * 1e18;
         ls.maxDeviationSYRUP = ls.meanPriceSYRUP / 2;
         ls.meanPriceMarket.push(ls.meanPriceSYRUP);
         ls.maxDeviationMarket.push(ls.maxDeviationSYRUP);
 
-        ls.meanPriceAERO = 0.8e18;
+        ls.meanPriceAERO = 1.11 * 1e18;
         ls.maxDeviationAERO = ls.meanPriceAERO / 2;
         ls.meanPriceMarket.push(ls.meanPriceAERO);
         ls.maxDeviationMarket.push(ls.maxDeviationAERO);
 
-        ls.meanPriceKAITO = 1.22e18;
+        ls.meanPriceKAITO = 1.22 * 1e18;
         ls.maxDeviationKAITO = ls.meanPriceKAITO / 2;
         ls.meanPriceMarket.push(ls.meanPriceKAITO);
         ls.maxDeviationMarket.push(ls.maxDeviationKAITO);
 
-        ls.meanPriceZORA = 0.08e18;
+        ls.meanPriceZORA = 0.12 * 1e18;
         ls.maxDeviationZORA = ls.meanPriceZORA / 2;
         ls.meanPriceMarket.push(ls.meanPriceZORA);
         ls.maxDeviationMarket.push(ls.maxDeviationZORA);
 
-        ls.meanPricePROVE = 0.87e18;
+        ls.meanPricePROVE = 1.67 * 1e18;
         ls.maxDeviationPROVE = ls.meanPricePROVE / 2;
         ls.meanPriceMarket.push(ls.meanPricePROVE);
         ls.maxDeviationMarket.push(ls.maxDeviationPROVE);
 
-        ls.meanPricePAXG = 3350e18;
+        ls.meanPricePAXG = 3350 * 1e18;
         ls.maxDeviationPAXG = ls.meanPricePAXG / 2;
         ls.meanPriceMarket.push(ls.meanPricePAXG);
         ls.maxDeviationMarket.push(ls.maxDeviationPAXG);
 
-        ls.meanPriceSUSDE = 1.17e18;
-        ls.maxDeviationSUSDE = 0.05e18;
+        ls.meanPriceSUSDE = 1.17 * 1e18;
+        ls.maxDeviationSUSDE = 0.05 * 1e18;
 
-        ls.meanPriceWSTETH = 4406e18;
+        ls.meanPriceWSTETH = 4406 * 1e18;
         ls.maxDeviationWSTETH = ls.meanPriceWSTETH / 2;
 
         if (sec.destinationChainId == 1) {
-            ls.meanPriceSRUSD = 1.05e18;
-            ls.maxDeviationSRUSD = 0.05e18;
+            ls.meanPriceSRUSD = 1.07 * 1e18;
+            ls.maxDeviationSRUSD = 0.02 * 1e18;
 
-            ls.meanPriceRSELINI = 1.06e18;
-            ls.maxDeviationRSELINI = 0.01e18;
+            ls.meanPriceRSELINI = 1.07 * 1e18;
+            ls.maxDeviationRSELINI = 0.02 * 1e18;
 
-            ls.meanPriceRAMBER = 1.06e18;
-            ls.maxDeviationRAMBER = 0.01e18;
+            ls.meanPriceRAMBER = 1.07 * 1e18;
+            ls.maxDeviationRAMBER = 0.02 * 1e18;
 
-            ls.meanPriceRHEDGE = 1e18;
-            ls.maxDeviationRHEDGE = 0.2e18;
+            ls.meanPriceRHEDGE = 1 * 1e18;
+            ls.maxDeviationRHEDGE = 0.3 * 1e18;
         } else {
-            ls.meanPriceSRUSD = 11.11e18;
-            ls.maxDeviationSRUSD = 11e18;
+            ls.meanPriceSRUSD = 11.11 * 1e18;
+            ls.maxDeviationSRUSD = 11 * 1e18;
 
-            ls.meanPriceRSELINI = 1e18;
-            ls.maxDeviationRSELINI = 0.05e18;
+            ls.meanPriceRSELINI = 1 * 1e18;
+            ls.maxDeviationRSELINI = 0.9 * 1e18;
 
-            ls.meanPriceRAMBER = 1e18;
-            ls.maxDeviationRAMBER = 0.05e18;
+            ls.meanPriceRAMBER = 1 * 1e18;
+            ls.maxDeviationRAMBER = 0.9 * 1e18;
 
-            ls.meanPriceRHEDGE = 1e18;
-            ls.maxDeviationRHEDGE = 0.1e18;
+            ls.meanPriceRHEDGE = 1 * 1e18;
+            ls.maxDeviationRHEDGE = 0.9 * 1e18;
         }
 
-        ls.meanPriceStableCoin = 1e18;
-        ls.maxDeviationStableCoin = 0.01e18;
+        ls.meanPriceStableCoin = 1 * 1e18;
+        ls.maxDeviationStableCoin = 0.01 * 1e18;
 
-        ls.meanPriceSDEUSD = 1.03e18;
-        ls.maxDeviationSDEUSD = 0.05e18;
+        ls.meanPriceSDEUSD = 1.06 * 1e18;
+        ls.maxDeviationSDEUSD = 0.05 * 1e18;
 
         ls.nodeIds.push(sec.rusdUsdNodeId);
-        ls.meanPrices.push(1e18);
+        ls.meanPrices.push(1 * 1e18);
         ls.maxDeviations.push(0);
 
         ls.nodeIds.push(sec.usdcUsdStorkNodeId);
@@ -1235,37 +1236,58 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviations.push(ls.maxDeviationSRUSD);
     }
 
-    function check_OracleNodePrices(bool flagCheckStaleness) public {
+    function check_OracleNodePriceValues() public {
+        setupOracleNodePriceParams();
+        string memory mismatches;
+
+        for (uint256 i = 0; i < ls.nodeIds.length; i++) {
+            NodeOutput.Data memory nodeOutput = IOracleManagerProxy(sec.oracleManager).process(ls.nodeIds[i]);
+
+            int256 dPrice = int256(nodeOutput.price) - int256(ls.meanPrices[i]);
+            int256 maxdPrice = int256(ls.maxDeviations[i]);
+
+            if (!(-maxdPrice <= dPrice && dPrice <= maxdPrice)) {
+                if (bytes(mismatches).length == 0) {
+                    mismatches = string.concat(
+                        "Prices do not match for the following node IDs: ", bytes32ToHexString(ls.nodeIds[i])
+                    );
+                } else {
+                    mismatches = string.concat(mismatches, ", ", bytes32ToHexString(ls.nodeIds[i]));
+                }
+            }
+        }
+
+        vm.assertEq(bytes(mismatches).length, 0, mismatches);
+    }
+
+    function check_OracleNodePriceStaleness() public {
         setupOracleNodePriceParams();
 
         for (uint256 i = 0; i < ls.nodeIds.length; i++) {
             NodeOutput.Data memory nodeOutput = IOracleManagerProxy(sec.oracleManager).process(ls.nodeIds[i]);
             NodeDefinition.Data memory nodeDefinition = IOracleManagerProxy(sec.oracleManager).getNode(ls.nodeIds[i]);
 
-            assertLe(nodeOutput.timestamp, block.timestamp);
-            assertApproxEqAbsDecimal(nodeOutput.price, ls.meanPrices[i], ls.maxDeviations[i], 18);
-
-            // note: in the case of it is not one minute staleness for all oracle nodes, create individual values,
-            // similar to meanPrices
-            if (flagCheckStaleness) {
-                uint256 max_stale_duration = 0;
-                if (nodeDefinition.nodeType == 1) {
-                    // it can be 60 or 90 depending on redstone/stork
-                    max_stale_duration = nodeDefinition.maxStaleDuration;
-                    assert(max_stale_duration == 60 || max_stale_duration == 90);
-                } else if (nodeDefinition.nodeType == 2 || nodeDefinition.nodeType == 5) {
-                    max_stale_duration = 90;
-                } else if (nodeDefinition.nodeType == 3 || nodeDefinition.nodeType == 4) {
-                    max_stale_duration = ONE_MINUTE_IN_SECONDS;
-                }
-                assertLe(block.timestamp - max_stale_duration, nodeOutput.timestamp);
-                assertEq(nodeDefinition.maxStaleDuration, max_stale_duration);
+            uint256 max_stale_duration = 0;
+            if (nodeDefinition.nodeType == 1) {
+                // it can be 60 or 90 depending on redstone/stork
+                max_stale_duration = nodeDefinition.maxStaleDuration;
+                assert(max_stale_duration == 60 || max_stale_duration == 90);
+            } else if (nodeDefinition.nodeType == 2 || nodeDefinition.nodeType == 5) {
+                max_stale_duration = 90;
+            } else if (nodeDefinition.nodeType == 3 || nodeDefinition.nodeType == 4) {
+                max_stale_duration = ONE_MINUTE_IN_SECONDS;
             }
+
+            assertLe(nodeOutput.timestamp, block.timestamp);
+            assertLe(block.timestamp - max_stale_duration, nodeOutput.timestamp);
+            assertEq(nodeDefinition.maxStaleDuration, max_stale_duration);
         }
     }
 
     function check_marketsPrices() public {
         setupOracleNodePriceParams();
+        string memory mismatches;
+
         for (uint128 i = lastMarketId(); i >= 1; i--) {
             // FTM and LAYER are currently out of circuit
             bool inactiveMarket = i == 30 || i == 59;
@@ -1279,21 +1301,45 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
             NodeOutput.Data memory nodeOutput = IOracleManagerProxy(sec.oracleManager).process(nodeId);
 
-            assertApproxEqAbsDecimal(nodeOutput.price, ls.meanPriceMarket[i], ls.maxDeviationMarket[i], 18);
+            int256 dPrice = int256(nodeOutput.price) - int256(ls.meanPriceMarket[i]);
+            int256 maxdPrice = int256(ls.maxDeviationMarket[i]);
+
+            if (!(-maxdPrice <= dPrice && dPrice <= maxdPrice)) {
+                if (bytes(mismatches).length == 0) {
+                    mismatches = string.concat("Prices do not match for the following market IDs: ", uintToString(i));
+                } else {
+                    mismatches = string.concat(mismatches, ", ", uintToString(i));
+                }
+            }
         }
+
+        vm.assertEq(bytes(mismatches).length, 0, mismatches);
     }
 
     function check_marketsOrderMaxStaleDuration(uint256 orderMaxStaleDuration) public view {
+        string memory mismatches;
         for (uint128 i = lastMarketId(); i >= 1; i--) {
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
 
             // FTM and LAYER are currently out of circuit
             bool inactiveMarket = i == 30 || i == 59;
 
-            if (!inactiveMarket) {
-                assertEq(marketConfig.marketOrderMaxStaleDuration, orderMaxStaleDuration);
+            if (inactiveMarket) {
+                continue;
+            }
+
+            if (!(marketConfig.marketOrderMaxStaleDuration == orderMaxStaleDuration)) {
+                if (bytes(mismatches).length == 0) {
+                    mismatches = string.concat(
+                        "Staleness durations do not match for the following market IDs: ", uintToString(i)
+                    );
+                } else {
+                    mismatches = string.concat(mismatches, ", ", uintToString(i));
+                }
             }
         }
+
+        vm.assertEq(bytes(mismatches).length, 0, mismatches);
     }
 
     function check_sdeusd_price() public view {
