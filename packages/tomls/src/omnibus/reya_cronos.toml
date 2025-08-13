@@ -166,11 +166,11 @@ matchOrderPublisherAdmin5 = "0xFF095BF9d6034C0680Ca2Ee51aE1e22b3d301414"
 
 [var.camelot_swap_publisher_settings]
 camelotSwapPublisher = "0xB02EF4e83F8E1f8853d1C0A208ea1569D1616a79"
-camelotSwapPublisherAdmin1 = "<%= settings.matchOrderPublisherAdmin1 %>"
-camelotSwapPublisherAdmin2 = "<%= settings.matchOrderPublisherAdmin2 %>"
-camelotSwapPublisherAdmin3 = "<%= settings.matchOrderPublisherAdmin3 %>"
-camelotSwapPublisherAdmin4 = "<%= settings.matchOrderPublisherAdmin4 %>"
-camelotSwapPublisherAdmin5 = "<%= settings.matchOrderPublisherAdmin5 %>"
+# camelotSwapPublisherAdmin1 = "<%= settings.matchOrderPublisherAdmin1 %>" # deprecated
+# camelotSwapPublisherAdmin2 = "<%= settings.matchOrderPublisherAdmin2 %>" # deprecated
+# camelotSwapPublisherAdmin3 = "<%= settings.matchOrderPublisherAdmin3 %>" # deprecated
+# camelotSwapPublisherAdmin4 = "<%= settings.matchOrderPublisherAdmin4 %>" # deprecated
+# camelotSwapPublisherAdmin5 = "<%= settings.matchOrderPublisherAdmin5 %>" # deprecated
 
 [var.stork_publishers]
 storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
