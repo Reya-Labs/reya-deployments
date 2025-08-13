@@ -74,7 +74,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.rhedgeSubscriber = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
         sec.rhedgeRedeemer = 0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E;
         sec.aeLiquidator1 = 0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4;
-        sec.marketZeroFeeBot = 0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6;
+        sec.setMarketZeroFeeBot = 0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6;
 
         // node ids for spot prices
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
@@ -630,6 +630,13 @@ contract ReyaForkTest is BaseReyaForkTest {
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.proveUsdMarkNodeIdStork, 10_000);
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.proveUsdcMarkNodeIdStork, 10_000);
+
+        sec.paxgUsdMarkNodeIdStork = 0x2e6591ec8e9fb9861d789658211823dbda7b3aa3360ad9f5fc13a139bb87232d;
+        sec.paxgUsdcMarkNodeIdStork = 0x18337cb0109e2c6d07e67a2c5d96d08e654489215a7dadac0353f8b017442002;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.paxgUsdMarkNodeIdStork, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.paxgUsdcMarkNodeIdStork, 10_000);
 
         // Socket variables
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;

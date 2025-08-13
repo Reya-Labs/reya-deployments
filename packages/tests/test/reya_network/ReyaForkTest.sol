@@ -46,7 +46,7 @@ contract ReyaForkTest is StorageReyaForkTest {
         sec.rhedge = 0x3ee6f82498d4e40DB33bac3adDABd8b41eCa1c9c;
         sec.srusd = 0x162B78e827A8DB8173D13735C08c8D40Cb5cCdAB;
         sec.wsteth = 0x7ae54d5a9e5a975DFC3261d915f8151dCcA76bE0;
-        sec.marketZeroFeeBot = 0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6;
+        sec.setMarketZeroFeeBot = 0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6;
 
         // Elixir tokens on Mainnet (Ethereum)
         sec.elixirSdeusd = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326;
@@ -619,6 +619,13 @@ contract ReyaForkTest is StorageReyaForkTest {
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.proveUsdMarkNodeIdStork, 10_000);
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.proveUsdcMarkNodeIdStork, 10_000);
+
+        sec.paxgUsdMarkNodeIdStork = 0xf53e2d7fc32a83164d22703c65031f2cb7cc2dc4bbec72cda54e76ee99e27ec4;
+        sec.paxgUsdcMarkNodeIdStork = 0xe76c38205ce53de9c2a589dafe0ccb2df6b27592627feb2e0dc542dcb1acf60f;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.paxgUsdMarkNodeIdStork, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.paxgUsdcMarkNodeIdStork, 10_000);
 
         // Socket variables
         dec.socketController[sec.usdc] = 0x1d43076909Ca139BFaC4EbB7194518bE3638fc76;

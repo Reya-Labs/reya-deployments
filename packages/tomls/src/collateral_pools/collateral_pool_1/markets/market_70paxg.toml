@@ -1,45 +1,45 @@
 #####################################
 # Create Market
 #####################################
-[invoke.create_market_69prove]
+[invoke.create_market_70paxg]
 target = ["PassivePerpProxy"]
 abi = "<%= JSON.stringify(contracts.PassivePerpProxy.abi.concat({'type':'event','name':'MarketDataUpdated','inputs':[{'name':'marketData','type':'tuple','indexed':false,'internalType':'struct Market.Data','components':[{'name':'id','type':'uint128','internalType':'uint128'},{'name':'passivePoolId','type':'uint128','internalType':'uint128'},{'name':'poolAccountId','type':'uint128','internalType':'uint128'},{'name':'quoteToken','type':'address','internalType':'address'},{'name':'quoteTokenDecimals','type':'uint8','internalType':'uint8'},{'name':'lastFundingVelocity','type':'int256','internalType':'SD59x18'},{'name':'lastFundingRate','type':'int256','internalType':'SD59x18'},{'name':'lastFundingTimestamp','type':'uint256','internalType':'uint256'},{'name':'lastMTM','type':'tuple','internalType':'struct PriceData','components':[{'name':'price','type':'uint256','internalType':'UD60x18'},{'name':'timestamp','type':'uint256','internalType':'uint256'}]},{'name':'longTrackers','type':'tuple','internalType':'struct FundingAndADLTrackers','components':[{'name':'fundingValue','type':'int256','internalType':'SD59x18'},{'name':'baseMultiplier','type':'uint256','internalType':'UD60x18'},{'name':'adlUnwindPrice','type':'uint256','internalType':'UD60x18'}]},{'name':'shortTrackers','type':'tuple','internalType':'struct FundingAndADLTrackers','components':[{'name':'fundingValue','type':'int256','internalType':'SD59x18'},{'name':'baseMultiplier','type':'uint256','internalType':'UD60x18'},{'name':'adlUnwindPrice','type':'uint256','internalType':'UD60x18'}]},{'name':'openInterest','type':'uint256','internalType':'UD60x18'}]},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
 fromCall.func = "owner"
 func = "createMarket"
-args = ["Market PROVE", "<%= settings.pool1RusdId %>"]
-var.market_69prove.event = "MarketDataUpdated"
-var.market_69prove.arg = 0
+args = ["Market PAXG", "<%= settings.pool1RusdId %>"]
+var.market_70paxg.event = "MarketDataUpdated"
+var.market_70paxg.arg = 0
 depends = [
     "invoke.core_register_instrument_passive_perp",
     "invoke.passive_pool_create_pool_1rusd",
-    "invoke.create_market_68zora",
+    "invoke.create_market_69prove",
 ]
 
-[var.market_69prove_vars]
-market69ProveId = "<%= (String(settings.market_69prove.id) === '69') ? settings.market_69prove.id : parseUnits('0', 'assert market_69prove_vars failed') %>"
-depends = ["invoke.create_market_69prove"]
+[var.market_70paxg_vars]
+market70PaxgId = "<%= (String(settings.market_70paxg.id) === '70') ? settings.market_70paxg.id : parseUnits('0', 'assert market_70paxg_vars failed') %>"
+depends = ["invoke.create_market_70paxg"]
 
 ##################################################
 # Market's Collateral Pool Feature Flags
 ##################################################
-[invoke.market_69prove_unpause_cp]
+[invoke.market_70paxg_unpause_cp]
 target = ["CoreProxy"]
 fromCall.func = "getCollateralPoolOwner"
-fromCall.args = ["<%= settings.market69ProveId %>"]
+fromCall.args = ["<%= settings.market70PaxgId %>"]
 func = "setFeatureFlagAllowAll"
 args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market69ProveId])) %>",
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market70PaxgId])) %>",
     true,
 ]
-depends = ["invoke.upgrade_core_proxy", "var.market_69prove_vars"]
+depends = ["invoke.upgrade_core_proxy", "var.market_70paxg_vars"]
 
-[invoke.market_69prove_set_pausers_cp]
+[invoke.market_70paxg_set_pausers_cp]
 target = ["CoreProxy"]
 fromCall.func = "getCollateralPoolOwner"
-fromCall.args = ["<%= settings.market69ProveId %>"]
+fromCall.args = ["<%= settings.market70PaxgId %>"]
 func = "setDeniers"
 args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market69ProveId])) %>",
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market70PaxgId])) %>",
     [
         "<%= settings.pauser1 %>",
         "<%= settings.pauser2 %>",
@@ -47,27 +47,27 @@ args = [
         "<%= settings.pauser4 %>",
     ],
 ]
-depends = ["invoke.upgrade_core_proxy", "var.market_69prove_vars"]
+depends = ["invoke.upgrade_core_proxy", "var.market_70paxg_vars"]
 
 ##################################################
 # Market Feature Flags
 ##################################################
-[invoke.market_69prove_unpause_market]
+[invoke.market_70paxg_unpause_market]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
 args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market69ProveId])) %>",
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market70PaxgId])) %>",
     true,
 ]
-depends = ["invoke.upgrade_core_proxy", "var.market_69prove_vars"]
+depends = ["invoke.upgrade_core_proxy", "var.market_70paxg_vars"]
 
-[invoke.market_69prove_set_pausers_market]
+[invoke.market_70paxg_set_pausers_market]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setDeniers"
 args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market69ProveId])) %>",
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market70PaxgId])) %>",
     [
         "<%= settings.pauser1 %>",
         "<%= settings.pauser2 %>",
@@ -75,73 +75,73 @@ args = [
         "<%= settings.pauser4 %>",
     ],
 ]
-depends = ["invoke.upgrade_core_proxy", "var.market_69prove_vars"]
+depends = ["invoke.upgrade_core_proxy", "var.market_70paxg_vars"]
 
-[invoke.market_69prove_enabled_zero_fee_option]
+[invoke.market_70paxg_enabled_zero_fee_option]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setAdmins"
 args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market69ProveId])) %>",
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market70PaxgId])) %>",
     [
         "<%= settings.setMarketZeroFeeBot %>",
     ],
 ]
-depends = ["invoke.upgrade_passive_perp_proxy", "var.market_69prove_vars"]
+depends = ["invoke.upgrade_passive_perp_proxy", "var.market_70paxg_vars"]
 
 #####################################
 # Market Configuration
 #####################################
-[invoke.market_69prove_set_market_config]
+[invoke.market_70paxg_set_market_config]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setMarketConfiguration"
 args = [
-    "<%= settings.market69ProveId %>",
-    { riskMatrixIndex = "<%= settings.market69Prove_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market69Prove_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market69Prove_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market69Prove_oracleNodeId %>", mtmWindow = "<%= settings.market69Prove_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market69Prove_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market69Prove_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market69Prove_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market69Prove_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market69Prove_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market69Prove_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market69Prove_priceSpacingUnscaled) %>", depthFactor = "<%= parseEther(settings.market69Prove_depthFactorUnscaled) %>", maxExposureFactor = "<%= parseEther(settings.market69Prove_maxExposureFactorUnscaled) %>", maxPSlippage = "<%= parseEther(settings.market69Prove_maxPSlippageUnscaled) %>", marketOrderMaxStaleDuration = "<%= settings.market69Prove_marketOrderMaxStaleDuration %>", priceSpread = "<%= parseEther(settings.market69Prove_priceSpreadUnscaled) %>", volatilityIndexMultiplier = "<%= parseEther(settings.market69Prove_volatilityIndexMultiplierUnscaled) %>" },
+    "<%= settings.market70PaxgId %>",
+    { riskMatrixIndex = "<%= settings.market70Paxg_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market70Paxg_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market70Paxg_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market70Paxg_oracleNodeId %>", mtmWindow = "<%= settings.market70Paxg_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market70Paxg_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market70Paxg_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market70Paxg_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market70Paxg_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market70Paxg_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market70Paxg_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market70Paxg_priceSpacingUnscaled) %>", depthFactor = "<%= parseEther(settings.market70Paxg_depthFactorUnscaled) %>", maxExposureFactor = "<%= parseEther(settings.market70Paxg_maxExposureFactorUnscaled) %>", maxPSlippage = "<%= parseEther(settings.market70Paxg_maxPSlippageUnscaled) %>", marketOrderMaxStaleDuration = "<%= settings.market70Paxg_marketOrderMaxStaleDuration %>", priceSpread = "<%= parseEther(settings.market70Paxg_priceSpreadUnscaled) %>", volatilityIndexMultiplier = "<%= parseEther(settings.market70Paxg_volatilityIndexMultiplierUnscaled) %>" },
 ]
-depends = ["invoke.create_market_69prove"]
+depends = ["invoke.create_market_70paxg"]
 
 #####################################
 # Market's Collateral Pool Limits
 #####################################
-[invoke.market_69prove_set_cp_limits]
+[invoke.market_70paxg_set_cp_limits]
 target = ["CoreProxy"]
 fromCall.func = "getCollateralPoolOwner"
-fromCall.args = ["<%= settings.market69ProveId %>"]
+fromCall.args = ["<%= settings.market70PaxgId %>"]
 func = "setCollateralPoolLimits"
 args = [
-    "<%= settings.market69ProveId %>",
+    "<%= settings.market70PaxgId %>",
     { maxMarkets = "1", maxCollaterals = "1" },
 ]
-depends = ["invoke.create_market_69prove"]
+depends = ["invoke.create_market_70paxg"]
 
 ##################################################
 # Market's Collateral Pool Insurance Fund
 ##################################################
-[invoke.market_69prove_insurance_fund_config]
+[invoke.market_70paxg_insurance_fund_config]
 target = ["CoreProxy"]
 fromCall.func = "getCollateralPoolOwner"
-fromCall.args = ["<%= settings.market69ProveId %>"]
+fromCall.args = ["<%= settings.market70PaxgId %>"]
 func = "configureCollateralPoolInsuranceFund"
 args = [
-    "<%= settings.market69ProveId %>",
+    "<%= settings.market70PaxgId %>",
     # reusing params from CP 1 since this CP will get merged
     { accountId = "<%= settings.cp1Rusd_insuranceFundAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_insuranceFund_liquidationFeeUnscaled) %>" },
 ]
 depends = [
     "invoke.cp_1rusd_create_insurance_fund_account",
-    "invoke.create_market_69prove",
+    "invoke.create_market_70paxg",
 ]
 
 ##################################################
 # Merge Market's Collateral Pool 
 ##################################################
-[invoke.market_69prove_merge_collateral_pool]
+[invoke.market_70paxg_merge_collateral_pool]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "mergeCollateralPools"
-args = ["<%= settings.market1EthId %>", "<%= settings.market69ProveId %>"]
+args = ["<%= settings.market1EthId %>", "<%= settings.market70PaxgId %>"]
 depends = [
     "invoke.market_1eth_unpause_cp",
     "invoke.market_1eth_set_pausers_cp",
@@ -150,11 +150,11 @@ depends = [
     "invoke.market_1eth_set_market_config",
     "invoke.market_1eth_set_cp_limits",
     "invoke.market_1eth_insurance_fund_config",
-    "invoke.market_69prove_unpause_cp",
-    "invoke.market_69prove_set_pausers_cp",
-    "invoke.market_69prove_unpause_market",
-    "invoke.market_69prove_set_pausers_market",
-    "invoke.market_69prove_set_market_config",
-    "invoke.market_69prove_set_cp_limits",
-    "invoke.market_69prove_insurance_fund_config",
+    "invoke.market_70paxg_unpause_cp",
+    "invoke.market_70paxg_set_pausers_cp",
+    "invoke.market_70paxg_unpause_market",
+    "invoke.market_70paxg_set_pausers_market",
+    "invoke.market_70paxg_set_market_config",
+    "invoke.market_70paxg_set_cp_limits",
+    "invoke.market_70paxg_insurance_fund_config",
 ]

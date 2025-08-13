@@ -63,7 +63,7 @@ struct StaticEcosystem {
     address rhedgeSubscriber;
     address rhedgeRedeemer;
     address aeLiquidator1;
-    address marketZeroFeeBot;
+    address setMarketZeroFeeBot;
     // node ids for spot prices
     bytes32 rusdUsdNodeId;
     bytes32 usdcUsdStorkNodeId;
@@ -224,6 +224,8 @@ struct StaticEcosystem {
     bytes32 zoraUsdcMarkNodeIdStork;
     bytes32 proveUsdMarkNodeIdStork;
     bytes32 proveUsdcMarkNodeIdStork;
+    bytes32 paxgUsdMarkNodeIdStork;
+    bytes32 paxgUsdcMarkNodeIdStork;
 }
 
 struct DynamicEcosystem {

@@ -46,8 +46,12 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     }
 
     function test_OracleManager() public {
-        check_OracleNodePrices(false);
+        check_OracleNodePriceValues();
     }
+
+    // function test_OracleNodePriceStaleness() public {
+    //     check_OracleNodePriceStaleness();
+    // }
 
     function test_MarketsPrices() public {
         check_marketsPrices();
