@@ -76,6 +76,18 @@ args = [
 ]
 depends = ["invoke.upgrade_core_proxy", "var.market_1eth_vars"]
 
+[invoke.market_1eth_enabled_zero_fee_option]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAdmins"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market1EthId])) %>",
+    [
+        "<%= settings.setMarketZeroFeeBot %>",
+    ],
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
 #####################################
 # Market Configuration
 #####################################
