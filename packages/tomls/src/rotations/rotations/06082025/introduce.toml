@@ -11,6 +11,16 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_pool_proxy"]
 
+[invoke.passive_pool_remove_rebalancer_4]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('autoRebalance')),settings.pool1RusdId])) %>",
+    "<%= settings.rebalancer4 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
 [invoke.core_disable_access_setMainAccountIdBot]
 target = ["CoreProxy"]
 fromCall.func = "owner"
