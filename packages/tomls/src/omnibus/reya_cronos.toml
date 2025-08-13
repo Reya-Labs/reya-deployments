@@ -2138,6 +2138,29 @@ market69Prove_marketOrderMaxStaleDuration = "11"
 market69Prove_priceSpreadUnscaled = "0"
 market69Prove_volatilityIndexMultiplierUnscaled = "0"
 
+<<<<<<< Updated upstream
+=======
+[var.market_70Paxg]
+market70Paxg_riskMatrixIndex = "0"
+market70Paxg_maxOpenBaseUnscaled = "160"
+market70Paxg_velocityMultiplierUnscaled = "0.75"
+market70Paxg_oracleNodeId = "<%= settings.paxgUsdcMarkNodeIdStork %>"
+market70Paxg_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market70Paxg_dutchConfig_lambdaUnscaled = "1"
+market70Paxg_dutchConfig_minBaseUnscaled = "0.11"
+market70Paxg_slippageParams_phiUnscaled = "0"
+market70Paxg_slippageParams_betaUnscaled = "0"
+market70Paxg_minimumOrderBaseUnscaled = "0.01"
+market70Paxg_baseSpacingUnscaled = "0.001"
+market70Paxg_priceSpacingUnscaled = "<%= 1e-2 %>"
+market70Paxg_depthFactorUnscaled = "0.75"
+market70Paxg_maxExposureFactorUnscaled = "0.999"
+market70Paxg_maxPSlippageUnscaled = "0.1"
+market70Paxg_marketOrderMaxStaleDuration = "11"
+market70Paxg_priceSpreadUnscaled = "0"
+market70Paxg_volatilityIndexMultiplierUnscaled = "0"
+
+>>>>>>> Stashed changes
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "69"
 cp1Rusd_maxCollaterals = "11"
