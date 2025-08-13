@@ -51,11 +51,7 @@ contract OrderForkCheck is BaseReyaForkTest {
         removeMarketsOILimit();
         mockFreshPrices();
 
-<<<<<<< HEAD
-        vm.prank(sec.marketZeroFeeBot);
-=======
         vm.prank(sec.setMarketZeroFeeBot);
->>>>>>> main
         IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(getMarketZeroFeesFeatureFlagId(marketId), true);
 
         (address user,) = makeAddrAndKey("user");
