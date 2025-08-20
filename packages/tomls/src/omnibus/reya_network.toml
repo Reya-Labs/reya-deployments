@@ -417,7 +417,7 @@ wstethEthereumWithdrawFeeUnscaled = "0.00415"
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-rusdWithdrawalTvlPercentageLimitUnscaled = "0.2"
+rusdWithdrawalTvlPercentageLimitUnscaled = "0.4"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
