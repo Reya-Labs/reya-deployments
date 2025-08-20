@@ -31,6 +31,21 @@ interface IOracleAdaptersProxy {
     error UnauthorizedPublisher(address unathorizedPublisher);
 
     error FeatureUnavailable(bytes32 which);
+
+    function getFeatureFlagAllowAll(bytes32 feature)
+        external
+        view
+        returns (bool);
+
+    function getFeatureFlagAllowlist(bytes32 feature)
+        external
+        view
+        returns (address[] memory);
+
+    function getFeatureFlagDenyAll(bytes32 feature)
+        external
+        view
+        returns (bool);
 }
 
 struct StorkSignedPayload {

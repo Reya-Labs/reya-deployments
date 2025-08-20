@@ -1,0 +1,833 @@
+# -----------------------------------------------
+# Revoking permissions for the Orders Gateway executions
+# -----------------------------------------------
+[invoke.orders_gateway_disable_access_co_execution_bot_1]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot1 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_disable_access_co_execution_bot_2]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot2 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_disable_access_co_execution_bot_3]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot3 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_disable_access_co_execution_bot_4]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot4 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_disable_access_co_execution_bot_5]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot5 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_disable_access_co_execution_bot_6]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot6 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_disable_access_co_execution_bot_7]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot7 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+# -----------------------------------------------
+# Revoking permissions for configuring fees
+# -----------------------------------------------
+[invoke.passive_perp_disable_access_setTierIdBot]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureFees')) %>",
+    "<%= settings.setTierIdBot %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_disable_access_setReferralMappingBot]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureFees')) %>",
+    "<%= settings.setReferralMappingBot %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+# -----------------------------------------------
+# Revoking permissions for Stork price updaters
+# -----------------------------------------------
+[invoke.oracle_adapters_disable_access_stork_executor1]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor1 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor2]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor2 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor3]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor3 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor4]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor4 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor5]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor5 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor6]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor6 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor7]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor7 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor8]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor8 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor9]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor9 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor10]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor10 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor11]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor11 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor12]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor12 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor13]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor13 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor14]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor14 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor15]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor15 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor16]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor16 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor17]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor17 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor18]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor18 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor19]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor19 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_access_stork_executor20]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.storkExecutor20 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor1]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor1 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor2]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor2 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor3]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor3 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor4]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor4 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor5]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor5 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor6]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor6 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor7]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor7 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor8]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor8 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor9]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor9 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor10]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor10 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor11]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor11 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor12]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor12 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor13]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor13 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor14]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor14 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor15]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor15 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor16]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor16 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor17]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor17 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor18]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor18 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor19]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor19 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_disable_subsecond_access_stork_executor20]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.storkExecutor20 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+# -----------------------------------------------
+# Revoking permissions for market volatility configurators
+# -----------------------------------------------
+[invoke.core_proxy_remove_access_marketVolConfigurator1]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator2]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator2 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator3]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator3 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator4]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator4 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator5]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator5 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator6]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator6 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator7]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator7 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator8]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator8 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator9]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator9 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator10]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator10 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator11]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator11 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator12]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator12 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator13]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator13 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator14]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator14 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator15]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator15 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator16]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator16 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator17]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator17 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator18]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator18 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator19]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator19 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_marketVolConfigurator20]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeConfigurationPermission"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= keccak256(hexlify('CP_PP_MARKET_VOLATILITY_CONFIGURATOR')) %>",
+    "<%= settings.marketVolConfigurator20 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+# -----------------------------------------------
+# Revoking permissions for liquidators
+# -----------------------------------------------
+[invoke.core_proxy_remove_access_liquidator1_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator1 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator2_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator2 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator3_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator3 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator4_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator4 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator5_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator5 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator6_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator6 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator7_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator7 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator8_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator8 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator9_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('multicall')) %>", "<%= settings.liquidator9 %>"]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_remove_access_liquidator10_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.liquidator10 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+# -----------------------------------------------
+# Revoking permissions for ae liquidators
+# -----------------------------------------------
+[invoke.core_proxy_remove_access_ae_liquidator1_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.passive_pool_remove_staked_quote_auto_exchange_access_1]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('stakedAssetAutoExchange')),settings.pool1RusdId])) %>",
+    "<%= settings.ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+# -----------------------------------------------
+# Revoking permissions from OG status bot
+# -----------------------------------------------
+[invoke.passive_perp_disable_access_setOgStatusBot]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureFees')) %>",
+    "<%= settings.setOgStatusBot %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
