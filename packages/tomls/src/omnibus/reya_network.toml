@@ -2230,7 +2230,7 @@ market70Paxg_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_71Yzy]
 market71Yzy_riskMatrixIndex = "0"
-market71Yzy_maxOpenBaseUnscaled = "160"
+market71Yzy_maxOpenBaseUnscaled = "100000"
 market71Yzy_velocityMultiplierUnscaled = "5"
 market71Yzy_oracleNodeId = "<%= settings.yzyUsdcMarkNodeIdStork %>"
 market71Yzy_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
