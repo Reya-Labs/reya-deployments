@@ -1,0 +1,49 @@
+[invoke.oracle_manager_register_node_yzy_usd_mark_stork]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_STORK_OFFCHAIN_LOOKUP %>",
+    "<%= defaultAbiCoder.encode(['address','string'], [contracts.OracleAdaptersProxy.address, settings.storkAssetPairIdYZYMark]) %>",
+    [
+    ],
+]
+var.yzyUsdMarkNodeIdStork.event = "NodeRegistered"
+var.yzyUsdMarkNodeIdStork.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]
+
+[invoke.oracle_manager_yzy_usd_mark_stork_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.yzyUsdMarkNodeIdStork %>",
+    "<%= settings.yzyUsdMarkMaxStaleDurationStork %>",
+]
+depends = ["invoke.oracle_manager_register_node_yzy_usd_mark_stork"]
+
+[invoke.oracle_manager_register_node_yzy_usdc_mark_stork]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_DIV_REDUCER %>",
+    "0x",
+    [
+        "<%= settings.yzyUsdMarkNodeIdStork %>",
+        "<%= settings.usdcUsdNodeIdStork %>",
+    ],
+]
+var.yzyUsdcMarkNodeIdStork.event = "NodeRegistered"
+var.yzyUsdcMarkNodeIdStork.arg = 0
+depends = ["invoke.oracle_manager_yzy_usd_mark_stork_max_stale_duration"]
+
+[invoke.oracle_manager_yzy_usdc_mark_stork_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.yzyUsdcMarkNodeIdStork %>",
+    "<%= settings.yzyUsdcMarkMaxStaleDurationStork %>",
+]
+depends = ["invoke.oracle_manager_register_node_yzy_usdc_mark_stork"]
