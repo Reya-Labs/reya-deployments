@@ -69,6 +69,7 @@ include = [
     "markets/market_68zora.toml",
     "markets/market_69prove.toml",
     "markets/market_70paxg.toml",
+    "markets/market_71yzy.toml",
     "risk/risk_matrix.toml",
     "risk/risk_multipliers.toml",
     "risk/liquidations.toml",
@@ -160,4 +161,5 @@ depends = [
     "invoke.market_68zora_merge_collateral_pool",
     "invoke.market_69prove_merge_collateral_pool",
     "invoke.market_70paxg_merge_collateral_pool",
+    "invoke.market_71yzy_merge_collateral_pool",
 ]
