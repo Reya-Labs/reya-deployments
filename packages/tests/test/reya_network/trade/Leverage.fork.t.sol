@@ -288,6 +288,10 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(71, sec.usdc);
     }
 
+    function test_trade_rusdCollateral_leverage_xpl() public {
+        check_trade_leverage(72, sec.usdc);
+    }
+
     function test_trade_wethCollateral_leverage_eth() public {
         check_trade_leverage(1, sec.weth);
     }
