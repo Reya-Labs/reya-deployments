@@ -228,6 +228,8 @@ struct StaticEcosystem {
     bytes32 paxgUsdcMarkNodeIdStork;
     bytes32 yzyUsdMarkNodeIdStork;
     bytes32 yzyUsdcMarkNodeIdStork;
+    bytes32 xplUsdMarkNodeIdStork;
+    bytes32 xplUsdcMarkNodeIdStork;
 }
 
 struct DynamicEcosystem {
