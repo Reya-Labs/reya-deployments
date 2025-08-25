@@ -1,0 +1,49 @@
+[invoke.oracle_manager_register_node_wlfi_usd_mark_stork]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_STORK_OFFCHAIN_LOOKUP %>",
+    "<%= defaultAbiCoder.encode(['address','string'], [contracts.OracleAdaptersProxy.address, settings.storkAssetPairIdWLFIMark]) %>",
+    [
+    ],
+]
+var.wlfiUsdMarkNodeIdStork.event = "NodeRegistered"
+var.wlfiUsdMarkNodeIdStork.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]
+
+[invoke.oracle_manager_wlfi_usd_mark_stork_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.wlfiUsdMarkNodeIdStork %>",
+    "<%= settings.wlfiUsdMarkMaxStaleDurationStork %>",
+]
+depends = ["invoke.oracle_manager_register_node_wlfi_usd_mark_stork"]
+
+[invoke.oracle_manager_register_node_wlfi_usdc_mark_stork]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_DIV_REDUCER %>",
+    "0x",
+    [
+        "<%= settings.wlfiUsdMarkNodeIdStork %>",
+        "<%= settings.usdcUsdNodeIdStork %>",
+    ],
+]
+var.wlfiUsdcMarkNodeIdStork.event = "NodeRegistered"
+var.wlfiUsdcMarkNodeIdStork.arg = 0
+depends = ["invoke.oracle_manager_wlfi_usd_mark_stork_max_stale_duration"]
+
+[invoke.oracle_manager_wlfi_usdc_mark_stork_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.wlfiUsdcMarkNodeIdStork %>",
+    "<%= settings.wlfiUsdcMarkMaxStaleDurationStork %>",
+]
+depends = ["invoke.oracle_manager_register_node_wlfi_usdc_mark_stork"]
