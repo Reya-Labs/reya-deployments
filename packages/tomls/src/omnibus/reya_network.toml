@@ -392,6 +392,7 @@ storkAssetPairIdPROVEMark = "PROVEUSDMARK"
 storkAssetPairIdPAXGMark = "PAXGUSDMARK"
 storkAssetPairIdYZYMark = "YZYUSDMARK"
 storkAssetPairIdXPLMark = "XPLUSDMARK"
+storkAssetPairIdWLFIMark = "WLFIUSDMARK"
 
 [var.reya_lm_asset_pair_ids]
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
@@ -804,6 +805,9 @@ yzyUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 xplUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 xplUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+wlfiUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+wlfiUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 usdeUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 usdeUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -2272,8 +2276,28 @@ market72Xpl_marketOrderMaxStaleDuration = "11"
 market72Xpl_priceSpreadUnscaled = "0"
 market72Xpl_volatilityIndexMultiplierUnscaled = "0"
 
+[var.market_73Wlfi]
+market73Wlfi_riskMatrixIndex = "0"
+market73Wlfi_maxOpenBaseUnscaled = "200000"
+market73Wlfi_velocityMultiplierUnscaled = "5"
+market73Wlfi_oracleNodeId = "<%= settings.wlfiUsdcMarkNodeIdStork %>"
+market73Wlfi_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market73Wlfi_dutchConfig_lambdaUnscaled = "1"
+market73Wlfi_dutchConfig_minBaseUnscaled = "0.11"
+market73Wlfi_slippageParams_phiUnscaled = "0"
+market73Wlfi_slippageParams_betaUnscaled = "0"
+market73Wlfi_minimumOrderBaseUnscaled = "1"
+market73Wlfi_baseSpacingUnscaled = "0.1"
+market73Wlfi_priceSpacingUnscaled = "<%= 1e-4 %>"
+market73Wlfi_depthFactorUnscaled = "0.75"
+market73Wlfi_maxExposureFactorUnscaled = "0.999"
+market73Wlfi_maxPSlippageUnscaled = "0.1"
+market73Wlfi_marketOrderMaxStaleDuration = "11"
+market73Wlfi_priceSpreadUnscaled = "0"
+market73Wlfi_volatilityIndexMultiplierUnscaled = "0"
+
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "72"
+cp1Rusd_maxMarkets = "73"
 cp1Rusd_maxCollaterals = "11"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"

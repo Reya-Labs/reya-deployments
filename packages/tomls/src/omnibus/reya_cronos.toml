@@ -331,6 +331,7 @@ storkAssetPairIdPROVEMark = "PROVEUSDMARK"
 storkAssetPairIdPAXGMark = "PAXGUSDMARK"
 storkAssetPairIdYZYMark = "YZYUSDMARK"
 storkAssetPairIdXPLMark = "XPLUSDMARK"
+storkAssetPairIdWLFIMark = "WLFIUSDMARK"
 
 [var.reya_lm_asset_pair_ids]
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
@@ -746,6 +747,9 @@ yzyUsdcMarkMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
 xplUsdMarkMaxStaleDurationStork = "0"
 xplUsdcMarkMaxStaleDurationStork = "0"
+#------------------------------------------------------------------------------
+wlfiUsdMarkMaxStaleDurationStork = "0"
+wlfiUsdcMarkMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDurationStork = "0"
 susdeUsdcMaxStaleDurationStork = "0"
@@ -2211,8 +2215,28 @@ market72Xpl_marketOrderMaxStaleDuration = "11"
 market72Xpl_priceSpreadUnscaled = "0"
 market72Xpl_volatilityIndexMultiplierUnscaled = "0"
 
+[var.market_73Wlfi]
+market73Wlfi_riskMatrixIndex = "0"
+market73Wlfi_maxOpenBaseUnscaled = "200000"
+market73Wlfi_velocityMultiplierUnscaled = "5"
+market73Wlfi_oracleNodeId = "<%= settings.wlfiUsdcMarkNodeIdStork %>"
+market73Wlfi_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market73Wlfi_dutchConfig_lambdaUnscaled = "1"
+market73Wlfi_dutchConfig_minBaseUnscaled = "0.11"
+market73Wlfi_slippageParams_phiUnscaled = "0"
+market73Wlfi_slippageParams_betaUnscaled = "0"
+market73Wlfi_minimumOrderBaseUnscaled = "1"
+market73Wlfi_baseSpacingUnscaled = "0.1"
+market73Wlfi_priceSpacingUnscaled = "<%= 1e-4 %>"
+market73Wlfi_depthFactorUnscaled = "0.75"
+market73Wlfi_maxExposureFactorUnscaled = "0.999"
+market73Wlfi_maxPSlippageUnscaled = "0.1"
+market73Wlfi_marketOrderMaxStaleDuration = "11"
+market73Wlfi_priceSpreadUnscaled = "0"
+market73Wlfi_volatilityIndexMultiplierUnscaled = "0"
+
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "72"
+cp1Rusd_maxMarkets = "73"
 cp1Rusd_maxCollaterals = "11"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
@@ -2289,6 +2313,7 @@ cp1Rusd_market69Prove_riskMatrix00Unscaled = "0.06575"
 cp1Rusd_market70Paxg_riskMatrix00Unscaled = "0.00005917"
 cp1Rusd_market71Yzy_riskMatrix00Unscaled = "0.06575"
 cp1Rusd_market72Xpl_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market73Wlfi_riskMatrix00Unscaled = "0.06575"
 
 # -----------------------------------------------
 cp1Rusd_imMultiplierUnscaled = "1.3"
