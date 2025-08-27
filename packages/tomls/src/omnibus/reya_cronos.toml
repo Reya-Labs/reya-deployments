@@ -468,7 +468,7 @@ passivePoolExchangeRebateUnscaled = "0.2"
 lotteryPotExchangeRebateUnscaled = "0.2"
 rageTradeExchangeRebateUnscaled = "0.2"
 zeuzExchangeRebateUnscaled = "0.2"
-pool1RusdRebateUnscaled = "0.5"
+pool1RusdRebateUnscaled = "0.3125"
 
 [var.fees_configs]
 takerFeeTier0Unscaled = "0.00040"
