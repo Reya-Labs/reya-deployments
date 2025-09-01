@@ -648,6 +648,13 @@ contract ReyaForkTest is StorageReyaForkTest {
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wlfiUsdcMarkNodeIdStork, 10_000);
 
+        sec.lineaUsdMarkNodeIdStork = 0xc4ae9933a147966f829bb421bcc5b62ce46d1bc4ed17ade4366c4ee36b8d633c;
+        sec.lineaUsdcMarkNodeIdStork = 0xae60c4ea62b7f410895a867f307546f484c3e6231b6c2fb5e84f7233df98c013;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.lineaUsdMarkNodeIdStork, 10_000);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.lineaUsdcMarkNodeIdStork, 10_000);
+
         // Socket variables
         dec.socketController[sec.usdc] = 0x1d43076909Ca139BFaC4EbB7194518bE3638fc76;
         dec.socketExecutionHelper[sec.usdc] = 0x9ca48cAF8AD2B081a0b633d6FCD803076F719fEa;
