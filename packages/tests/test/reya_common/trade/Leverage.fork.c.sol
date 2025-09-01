@@ -95,6 +95,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
     uint256 private constant yzyLeverage = 3e18;
     uint256 private constant xplLeverage = 3e18;
     uint256 private constant wlfiLeverage = 3e18;
+    uint256 private constant lineaLeverage = 3e18;
 
     address private user;
     uint256 private userPk;
@@ -178,6 +179,7 @@ contract LeverageForkCheck is BaseReyaForkTest {
         expectedLeverage.push(yzyLeverage);
         expectedLeverage.push(xplLeverage);
         expectedLeverage.push(wlfiLeverage);
+        expectedLeverage.push(lineaLeverage);
     }
 
     function check_trade_leverage(uint128 marketId, address collateral) internal {

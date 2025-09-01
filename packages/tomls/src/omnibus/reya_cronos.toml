@@ -16,7 +16,7 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/testnet.toml",
 ]
-version = "1.0.63"
+version = "1.0.64"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -332,6 +332,7 @@ storkAssetPairIdPAXGMark = "PAXGUSDMARK"
 storkAssetPairIdYZYMark = "YZYUSDMARK"
 storkAssetPairIdXPLMark = "XPLUSDMARK"
 storkAssetPairIdWLFIMark = "WLFIUSDMARK"
+storkAssetPairIdLINEAMark = "LINEAUSDMARK"
 
 [var.reya_lm_asset_pair_ids]
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
@@ -750,6 +751,9 @@ xplUsdcMarkMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
 wlfiUsdMarkMaxStaleDurationStork = "0"
 wlfiUsdcMarkMaxStaleDurationStork = "0"
+#------------------------------------------------------------------------------
+lineaUsdMarkMaxStaleDurationStork = "0"
+lineaUsdcMarkMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
 susdeUsdMaxStaleDurationStork = "0"
 susdeUsdcMaxStaleDurationStork = "0"
@@ -2235,8 +2239,28 @@ market73Wlfi_marketOrderMaxStaleDuration = "11"
 market73Wlfi_priceSpreadUnscaled = "0"
 market73Wlfi_volatilityIndexMultiplierUnscaled = "0"
 
+[var.market_74Linea]
+market74Linea_riskMatrixIndex = "0"
+market74Linea_maxOpenBaseUnscaled = "2000000"
+market74Linea_velocityMultiplierUnscaled = "5"
+market74Linea_oracleNodeId = "<%= settings.lineaUsdcMarkNodeIdStork %>"
+market74Linea_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market74Linea_dutchConfig_lambdaUnscaled = "1"
+market74Linea_dutchConfig_minBaseUnscaled = "0.11"
+market74Linea_slippageParams_phiUnscaled = "0"
+market74Linea_slippageParams_betaUnscaled = "0"
+market74Linea_minimumOrderBaseUnscaled = "1"
+market74Linea_baseSpacingUnscaled = "0.1"
+market74Linea_priceSpacingUnscaled = "<%= 1e-6 %>"
+market74Linea_depthFactorUnscaled = "0.75"
+market74Linea_maxExposureFactorUnscaled = "0.999"
+market74Linea_maxPSlippageUnscaled = "0.1"
+market74Linea_marketOrderMaxStaleDuration = "11"
+market74Linea_priceSpreadUnscaled = "0"
+market74Linea_volatilityIndexMultiplierUnscaled = "0"
+
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "73"
+cp1Rusd_maxMarkets = "74"
 cp1Rusd_maxCollaterals = "11"
 # -----------------------------------------------
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
@@ -2314,6 +2338,7 @@ cp1Rusd_market70Paxg_riskMatrix00Unscaled = "0.00005917"
 cp1Rusd_market71Yzy_riskMatrix00Unscaled = "0.06575"
 cp1Rusd_market72Xpl_riskMatrix00Unscaled = "0.06575"
 cp1Rusd_market73Wlfi_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market74Linea_riskMatrix00Unscaled = "0.06575"
 
 # -----------------------------------------------
 cp1Rusd_imMultiplierUnscaled = "1.3"
