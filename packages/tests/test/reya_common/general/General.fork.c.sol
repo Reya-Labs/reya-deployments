@@ -440,7 +440,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceVIRTUAL);
         ls.maxDeviationMarket.push(ls.maxDeviationVIRTUAL);
 
-        ls.meanPriceAI16Z = 0.2 * 1e18;
+        ls.meanPriceAI16Z = 0.1 * 1e18;
         ls.maxDeviationAI16Z = ls.meanPriceAI16Z / 2;
         ls.meanPriceMarket.push(ls.meanPriceAI16Z);
         ls.maxDeviationMarket.push(ls.maxDeviationAI16Z);
@@ -455,7 +455,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceSONIC);
         ls.maxDeviationMarket.push(ls.maxDeviationSONIC);
 
-        ls.meanPriceFARTCOIN = 1.6 * 1e18;
+        ls.meanPriceFARTCOIN = 0.75 * 1e18;
         ls.maxDeviationFARTCOIN = ls.meanPriceFARTCOIN / 2;
         ls.meanPriceMarket.push(ls.meanPriceFARTCOIN);
         ls.maxDeviationMarket.push(ls.maxDeviationFARTCOIN);
@@ -521,7 +521,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceTAO);
         ls.maxDeviationMarket.push(ls.maxDeviationTAO);
 
-        ls.meanPriceIP = 4.6 * 1e18;
+        ls.meanPriceIP = 7.6 * 1e18;
         ls.maxDeviationIP = ls.meanPriceIP / 2;
         ls.meanPriceMarket.push(ls.meanPriceIP);
         ls.maxDeviationMarket.push(ls.maxDeviationIP);
@@ -571,12 +571,12 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPricePAXG);
         ls.maxDeviationMarket.push(ls.maxDeviationPAXG);
 
-        ls.meanPriceYZY = 1.12 * 1e18;
+        ls.meanPriceYZY = 0.5 * 1e18;
         ls.maxDeviationYZY = ls.meanPriceYZY / 2;
         ls.meanPriceMarket.push(ls.meanPriceYZY);
         ls.maxDeviationMarket.push(ls.maxDeviationYZY);
 
-        ls.meanPriceXPL = 0.47 * 1e18;
+        ls.meanPriceXPL = 0.73 * 1e18;
         ls.maxDeviationXPL = ls.meanPriceXPL / 2;
         ls.meanPriceMarket.push(ls.meanPriceXPL);
         ls.maxDeviationMarket.push(ls.maxDeviationXPL);
@@ -586,7 +586,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceWLFI);
         ls.maxDeviationMarket.push(ls.maxDeviationWLFI);
 
-        ls.meanPriceLINEA = 0.5 * 1e18;
+        ls.meanPriceLINEA = 0.05 * 1e18;
         ls.maxDeviationLINEA = ls.meanPriceLINEA / 2;
         ls.meanPriceMarket.push(ls.meanPriceLINEA);
         ls.maxDeviationMarket.push(ls.maxDeviationLINEA);
