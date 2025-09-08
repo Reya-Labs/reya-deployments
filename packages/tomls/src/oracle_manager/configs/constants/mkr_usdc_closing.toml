@@ -1,0 +1,15 @@
+[invoke.oracle_manager_register_node_mkr_usdc_closing]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_DIV_REDUCER %>",
+    "0x",
+    [
+        "<%= settings.mkrUsdNodeIdClosing %>",
+        "<%= settings.usdcUsdNodeIdStork %>",
+    ],
+]
+var.mkrUsdcNodeIdClosing.event = "NodeRegistered"
+var.mkrUsdcNodeIdClosing.arg = 0
+depends = ["invoke.oracle_manager_register_node_mkr_usd_closing"]
