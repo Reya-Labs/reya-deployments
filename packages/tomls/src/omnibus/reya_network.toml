@@ -962,7 +962,7 @@ market6Avax_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_7mkr]
 market7Mkr_riskMatrixIndex = "0"
-market7Mkr_maxOpenBaseUnscaled = "4.5"
+market7Mkr_maxOpenBaseUnscaled = "0"
 market7Mkr_velocityMultiplierUnscaled = "10000"
 market7Mkr_oracleNodeId = "<%= settings.mkrUsdcNodeIdClosing %>"
 market7Mkr_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
