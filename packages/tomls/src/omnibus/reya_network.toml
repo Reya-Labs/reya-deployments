@@ -32,6 +32,7 @@ passivePoolExchangeFeeCollectorOwner = "0x93701b8f4e212B4eC058AF375894DB4B64b4f7
 lotteryPotExchangeFeeCollectorOwner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 rageTradeExchangeFeeCollectorOwner = "0x507c7777837b85ede1e67f5a4554ddd7e58b1f87"
 zeuzExchangeFeeCollectorOwner = "0x51D53305e5e64C8f147FaE561856c6d5a351d97f"
+progCompExchangeFeeCollectorOwner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.external_contracts]
@@ -41,6 +42,7 @@ camelotYakRouter = "0x2b59Eb03865D18d8B62a5956BBbFaE352fc1C148"
 lotteryPotAccountId = "20092"
 rageTradeAccountId = "22262"
 zeuzAccountId = "46092"
+progCompAccountId = "110684"
 
 [var.cannonClonePackages]
 coreRouterPackage = "reya-core:1.0.17@router"
