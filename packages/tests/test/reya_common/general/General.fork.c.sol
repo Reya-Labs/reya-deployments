@@ -1349,8 +1349,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         string memory mismatches;
 
         for (uint128 i = lastMarketId(); i >= 1; i--) {
-            // FTM and LAYER are currently out of circuit
-            bool inactiveMarket = i == 30 || i == 59;
+            // FTM, LAYER and MKR are currently out of circuit
+            bool inactiveMarket = i == 30 || i == 59 || i == 7;
 
             if (inactiveMarket) {
                 continue;
@@ -1381,8 +1381,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         for (uint128 i = lastMarketId(); i >= 1; i--) {
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
 
-            // FTM and LAYER are currently out of circuit
-            bool inactiveMarket = i == 30 || i == 59;
+            // FTM, LAYER and MKR are currently out of circuit
+            bool inactiveMarket = i == 30 || i == 59 || i == 7;
 
             if (inactiveMarket) {
                 continue;
