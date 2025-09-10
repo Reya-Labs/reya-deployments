@@ -17,7 +17,7 @@ include = [
     "../sbt/mainnet.toml",
     "../rotations/mainnet.toml",
 ]
-version = "1.0.76"
+version = "1.0.77"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -2537,7 +2537,7 @@ cp1Rusd_ramberParentConfig_oracleNodeId = "<%= settings.amberUsdcReyaLmNodeId %>
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_rhedge_capUnscaled = "100000"
+cp1Rusd_rhedge_capUnscaled = "126000"
 cp1Rusd_rhedge_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_rhedge_autoExchangeInsuranceFeeUnscaled = "0.005"
 cp1Rusd_rhedge_autoExchangeDustThresholdUnscaled = "0"
