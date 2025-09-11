@@ -98,42 +98,25 @@ contract OrderForkCheck is BaseReyaForkTest {
         uint128 accountId = depositNewMA(user, sec.usdc, amount);
 
         {
-
             CollateralInfo memory preOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
-            executeCoreMatchOrder({
-                marketId: 1,
-                sender: user,
-                base: base,
-                priceLimit: priceLimit,
-                accountId: accountId
-            });
+            executeCoreMatchOrder({ marketId: 1, sender: user, base: base, priceLimit: priceLimit, accountId: accountId });
 
             CollateralInfo memory postOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
             int256 paidFees = preOrderBalance.realBalance - postOrderBalance.realBalance;
             assertEq(paidFees, 0);
-
         }
 
         {
-
             CollateralInfo memory preOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
-            executeCoreMatchOrder({
-                marketId: 2,
-                sender: user,
-                base: base,
-                priceLimit: priceLimit,
-                accountId: accountId
-            });
+            executeCoreMatchOrder({ marketId: 2, sender: user, base: base, priceLimit: priceLimit, accountId: accountId });
 
             CollateralInfo memory postOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
             int256 paidFees = preOrderBalance.realBalance - postOrderBalance.realBalance;
             assertEq(paidFees, 0);
-
         }
-
     }
 }
