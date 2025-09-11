@@ -521,7 +521,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceTAO);
         ls.maxDeviationMarket.push(ls.maxDeviationTAO);
 
-        ls.meanPriceIP = 7.6 * 1e18;
+        ls.meanPriceIP = 10.9 * 1e18;
         ls.maxDeviationIP = ls.meanPriceIP / 2;
         ls.meanPriceMarket.push(ls.meanPriceIP);
         ls.maxDeviationMarket.push(ls.maxDeviationIP);
@@ -586,7 +586,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceWLFI);
         ls.maxDeviationMarket.push(ls.maxDeviationWLFI);
 
-        ls.meanPriceLINEA = 0.05 * 1e18;
+        ls.meanPriceLINEA = 0.023 * 1e18;
         ls.maxDeviationLINEA = ls.meanPriceLINEA / 2;
         ls.meanPriceMarket.push(ls.meanPriceLINEA);
         ls.maxDeviationMarket.push(ls.maxDeviationLINEA);
@@ -1349,8 +1349,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         string memory mismatches;
 
         for (uint128 i = lastMarketId(); i >= 1; i--) {
-            // FTM and LAYER are currently out of circuit
-            bool inactiveMarket = i == 30 || i == 59;
+            // FTM, LAYER and MKR are currently out of circuit
+            bool inactiveMarket = i == 30 || i == 59 || i == 7;
 
             if (inactiveMarket) {
                 continue;
@@ -1381,8 +1381,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         for (uint128 i = lastMarketId(); i >= 1; i--) {
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
 
-            // FTM and LAYER are currently out of circuit
-            bool inactiveMarket = i == 30 || i == 59;
+            // FTM, LAYER and MKR are currently out of circuit
+            bool inactiveMarket = i == 30 || i == 59 || i == 7;
 
             if (inactiveMarket) {
                 continue;
