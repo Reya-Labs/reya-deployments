@@ -586,7 +586,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceWLFI);
         ls.maxDeviationMarket.push(ls.maxDeviationWLFI);
 
-        ls.meanPriceLINEA = 0.05 * 1e18;
+        ls.meanPriceLINEA = 0.023 * 1e18;
         ls.maxDeviationLINEA = ls.meanPriceLINEA / 2;
         ls.meanPriceMarket.push(ls.meanPriceLINEA);
         ls.maxDeviationMarket.push(ls.maxDeviationLINEA);
