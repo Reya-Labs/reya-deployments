@@ -779,14 +779,6 @@ pool1_RSELINITargetRatioPostQuoteUnscaled = "0.1275"
 pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.1275"
 pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.007"
 
-[var.pool_1]
-pool1_quoteTokenTargetRatioUnscaled = "0.09"
-pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
-pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.7"
-pool1_RSELINITargetRatioPostQuoteUnscaled = "0.14"
-pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.14"
-pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.02"
-
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
 market1Eth_maxOpenBaseUnscaled = "2744"
