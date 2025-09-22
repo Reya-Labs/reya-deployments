@@ -16,9 +16,10 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/mainnet.toml",
     "../rotations/mainnet.toml",
+    "../vltz/mainnet.toml",
 ]
 
-version = "1.0.82"
+version = "1.0.83"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -65,6 +66,8 @@ shareTokensProxyPackage = "reya-share-tokens:1.0.0@proxy"
 shareTokensRouterPackage = "reya-share-tokens:1.0.2@router"
 sbtProxyPackage = "reya-sbt:1.0.0@proxy"
 sbtRouterPackage = "reya-sbt:1.0.2@router"
+vltzProxyPackage = "reya-vltz:1.0.0@proxy"
+vltzRouterPackage = "reya-vltz:1.0.2@router"
 
 [var.account_nft_vars]
 accountNftId = "<%= formatBytes32String('accountNFT') %>"
@@ -109,6 +112,7 @@ oracleManagerProxy = "0xC67316Ed17E0C793041CFE12F674af250a294aab"
 exchangePassProxy = "0x76e3f2667aC55d502e26e59C5A6B46e7079217c7"
 ranksProxy = "0x4Ab90747A2E8dEC7C378D591b80B9f2f8f78351F"
 sbtProxy = "<%= imports.reyaSbtProxy.contracts.InitialProxy.address %>"
+vltzProxy = "<%= imports.reyaVltzProxy.contracts.InitialProxy.address %>"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
@@ -2566,3 +2570,9 @@ cp1Rusd_wstethParentConfig_oracleNodeId = "<%= settings.wstethUsdcNodeIdStork %>
 tokenName = "Reya OG SBT"
 tokenSymbol = "REYAOG"
 rootSubmitter = "0x3dEB6fbb801EB5400aBDFf7Cf706E79869E72D07"
+
+[var.vltz_config]
+vltzTokenName = "Voltz"
+vltzTokenSymbol = "$VLTZ"
+vltzRootSubmitter = "0xD632B261b3532F1932880fc4F510423261BF7F36"
+vltzTokenDecimals = "18"
