@@ -16,7 +16,7 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/testnet.toml",
 ]
-version = "1.0.67"
+version = "1.0.68"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -62,7 +62,7 @@ exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksProxyPackage = "reya-ranks:1.0.0@proxy"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
-ordersGatewayRouterPackage = "reya-orders-gateway:1.0.10@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.11@router"
 oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
 oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.8@router"
 shareTokensProxyPackage = "reya-share-tokens:1.0.0@proxy"
