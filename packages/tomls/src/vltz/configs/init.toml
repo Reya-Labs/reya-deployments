@@ -2,5 +2,5 @@
 target = ["VltzProxy"]
 fromCall.func = "owner"
 func = "initialize"
-args = ["<%= settings.vltzTokenName %>", "<%= settings.vltzTokenSymbol %>", "<%= settings.vltzTokenDecimals %>]
+args = ["<%= settings.vltzTokenName %>", "<%= settings.vltzTokenSymbol %>", "<%= settings.vltzTokenDecimals %>"]
 depends = ["invoke.upgrade_vltz_proxy"]
