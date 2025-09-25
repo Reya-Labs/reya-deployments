@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.83"
+version = "1.0.84"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -52,7 +52,7 @@ rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.10@router"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.32@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.33@router"
 peripheryRouterPackage = "reya-periphery:1.0.9@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
@@ -562,6 +562,7 @@ ogDiscountUnscaled = "0.3"
 refereeDiscountUnscaled = "0.1"
 referrerRebateUnscaled = "0.1"
 affiliateReferrerRebateUnscaled = "0.15"
+vltzFeeDiscountUnscaled = "0.1"
 
 [var.affiliates]
 affiliate1 = "0xae173a960084903b1d278ff9e3a81ded82275556"
