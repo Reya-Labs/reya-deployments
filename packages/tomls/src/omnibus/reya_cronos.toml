@@ -16,7 +16,7 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/testnet.toml",
 ]
-version = "1.0.68"
+version = "1.0.69"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -52,7 +52,7 @@ tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.10@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.32@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.33@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.0.9@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
@@ -496,6 +496,7 @@ ogDiscountUnscaled = "0.3"
 refereeDiscountUnscaled = "0.1"
 referrerRebateUnscaled = "0.1"
 affiliateReferrerRebateUnscaled = "0.15"
+vltzFeeDiscountUnscaled = "0.1"
 
 [var.affiliates]
 affiliate1 = "0xae173a960084903b1d278ff9e3a81ded82275556"
