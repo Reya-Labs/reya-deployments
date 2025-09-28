@@ -197,3 +197,73 @@ args = [
     "<%= settings.storkExecutor20 %>",
 ]
 depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_co_execution_bot1]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.co_execution_bot1 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_co_execution_bot2]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.co_execution_bot2 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_co_execution_bot3]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.co_execution_bot3 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_co_execution_bot4]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.co_execution_bot4 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_co_execution_bot5]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.co_execution_bot5 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_co_execution_bot6]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.co_execution_bot6 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_co_execution_bot7]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.co_execution_bot7 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
