@@ -9,7 +9,7 @@ include = [
 ]
 
 [var.wallet_addresses]
-owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 
 [var.cannonClonePackages]
 vltzProxyPackage = "reya-vltz:1.0.0@proxy"

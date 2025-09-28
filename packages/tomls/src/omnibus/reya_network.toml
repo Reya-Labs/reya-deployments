@@ -109,7 +109,6 @@ oracleManagerProxy = "0xC67316Ed17E0C793041CFE12F674af250a294aab"
 exchangePassProxy = "0x76e3f2667aC55d502e26e59C5A6B46e7079217c7"
 ranksProxy = "0x4Ab90747A2E8dEC7C378D591b80B9f2f8f78351F"
 sbtProxy = "<%= imports.reyaSbtProxy.contracts.InitialProxy.address %>"
-vltzProxy = "<%= imports.reyaVltzProxy.contracts.InitialProxy.address %>"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
