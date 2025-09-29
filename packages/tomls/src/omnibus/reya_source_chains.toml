@@ -13,7 +13,7 @@ owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
 
 [var.cannonClonePackages]
 vltzProxyPackage = "reya-vltz:1.0.0@proxy"
-vltzRouterPackage = "reya-vltz:1.0.0@router"
+vltzRouterPackage = "reya-vltz:1.0.1@router"
 
 [var.upgrade_proxy_vars]
 vltzProxy = "<%= imports.reyaVltzProxy.contracts.InitialProxy.address %>"
