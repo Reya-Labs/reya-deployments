@@ -3,9 +3,9 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 import { ICoreProxy, CollateralInfo } from "../../../src/interfaces/ICoreProxy.sol";
-import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
+import { IPassivePerpProxy, GlobalFeeParameters } from "../../../src/interfaces/IPassivePerpProxy.sol";
 
-import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
+import { sd, SD59x18, UNIT as ONE_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
 contract OrderForkCheck is BaseReyaForkTest {
@@ -47,6 +47,51 @@ contract OrderForkCheck is BaseReyaForkTest {
         CollateralInfo memory postOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
         int256 expectedFees = orderPrice.intoSD59x18().mul(base).mul(sd(BASIC_TIER_FEE_PERCENTAGE)).unwrap() / 1e12;
+        int256 paidFees = preOrderBalance.realBalance - postOrderBalance.realBalance;
+        assertApproxEqAbs(paidFees, expectedFees, 0.0001e6);
+    }
+
+    function check_MatchOrder_FeeDiscounts(uint128 marketId, bool ogDiscount, bool vltzDiscount) internal {
+        removeMarketsOILimit();
+        mockFreshPrices();
+
+        IPassivePerpProxy perp = IPassivePerpProxy(sec.perp);
+
+        vm.prank(sec.setMarketZeroFeeBot);
+        perp.setFeatureFlagAllowAll(getMarketZeroFeesFeatureFlagId(marketId), false);
+
+        (address user,) = makeAddrAndKey("user");
+        uint256 amount = 1_000_000e6;
+        SD59x18 base = sd(1e18);
+        UD60x18 priceLimit = ud(1_000_000e18);
+
+        // deposit new margin account
+        uint128 accountId = depositNewMA(user, sec.usdc, amount);
+
+        vm.prank(sec.multisig);
+        GlobalFeeParameters memory config = perp.getGlobalFeeParameters();
+        config.ogDiscount = ogDiscount ? 0.2e18 : 0;
+        config.vltzDiscount = vltzDiscount ? 0.1e18 : 0;
+        perp.setGlobalFeeParameters(config);
+
+        vm.prank(sec.multisig);
+       perp.setAccountOwnerVltzStatus(accountId, true);
+       perp.setAccountOwnerOgStatusFeeConfig(accountId, true);
+
+        CollateralInfo memory preOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
+
+        (UD60x18 orderPrice,) = executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
+        });
+
+        CollateralInfo memory postOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
+        SD59x18 fee = sd(BASIC_TIER_FEE_PERCENTAGE).mul(ONE_sd.minus(sd(0.2e18))).mul(ONE_sd.minus(sd(0.2e18)));
+
+        int256 expectedFees = orderPrice.intoSD59x18().mul(base).mul(fee).unwrap() / 1e12;
         int256 paidFees = preOrderBalance.realBalance - postOrderBalance.realBalance;
         assertApproxEqAbs(paidFees, expectedFees, 0.0001e6);
     }
