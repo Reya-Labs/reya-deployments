@@ -75,8 +75,8 @@ contract OrderForkCheck is BaseReyaForkTest {
         perp.setGlobalFeeParameters(config);
 
         vm.prank(sec.multisig);
-       perp.setAccountOwnerVltzStatus(user, true);
-       perp.setAccountOwnerOgStatusFeeConfig(user, true);
+        perp.setAccountOwnerVltzStatusFeeConfig(user, true);
+        perp.setAccountOwnerOgStatusFeeConfig(user, true);
 
         CollateralInfo memory preOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 

@@ -419,7 +419,7 @@ interface IPassivePerpProxy {
 
     function setGlobalFeeParameters(GlobalFeeParameters memory params) external;
     function setAccountOwnerOgStatusFeeConfig(address accountOwner, bool ogStatus) external;
-    function setAccountOwnerVltzStatus(address accountOwner, bool isVltzOwner) external;
+    function setAccountOwnerVltzStatusFeeConfig(address accountOwner, bool vltzStatus) external;
 }
 
 interface GlobalConfiguration {
