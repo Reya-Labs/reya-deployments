@@ -75,8 +75,8 @@ contract OrderForkCheck is BaseReyaForkTest {
         perp.setGlobalFeeParameters(config);
 
         vm.prank(sec.multisig);
-       perp.setAccountOwnerVltzStatus(accountId, true);
-       perp.setAccountOwnerOgStatusFeeConfig(accountId, true);
+       perp.setAccountOwnerVltzStatus(user, true);
+       perp.setAccountOwnerOgStatusFeeConfig(user, true);
 
         CollateralInfo memory preOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
@@ -89,7 +89,7 @@ contract OrderForkCheck is BaseReyaForkTest {
         });
 
         CollateralInfo memory postOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
-        SD59x18 fee = sd(BASIC_TIER_FEE_PERCENTAGE).mul(ONE_sd.minus(sd(0.2e18))).mul(ONE_sd.minus(sd(0.2e18)));
+        SD59x18 fee = sd(BASIC_TIER_FEE_PERCENTAGE).mul(ONE_sd.sub(sd(0.2e18))).mul(ONE_sd.sub(sd(0.2e18)));
 
         int256 expectedFees = orderPrice.intoSD59x18().mul(base).mul(fee).unwrap() / 1e12;
         int256 paidFees = preOrderBalance.realBalance - postOrderBalance.realBalance;

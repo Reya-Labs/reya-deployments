@@ -16,7 +16,7 @@ contract ReyaForkTest is BaseReyaForkTest {
     constructor() {
         string memory rpcKey = vm.envString("RPC_KEY");
         // network
-        sec.REYA_RPC = string.concat("https://rpc.reya-cronos.gelato.digital/263e76b89da84d478fd2b6e8783a1cfe", rpcKey);
+        sec.REYA_RPC = string.concat("https://rpc.reya-cronos.gelato.digital/", rpcKey);
         sec.MAINNET_RPC = "https://gateway.tenderly.co/public/sepolia";
 
         // other (external) chain id
