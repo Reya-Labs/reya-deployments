@@ -143,6 +143,6 @@ target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setGlobalFeeParameters"
 args = [
-    { ogDiscount = "<%= parseEther(settings.ogDiscountUnscaled) %>", refereeDiscount = "<%= parseEther(settings.refereeDiscountUnscaled) %>", referrerRebate = "<%= parseEther(settings.referrerRebateUnscaled) %>", affiliateReferrerRebate = "<%= parseEther(settings.affiliateReferrerRebateUnscaled) %>" },
+    { ogDiscount = "<%= parseEther(settings.ogDiscountUnscaled) %>", refereeDiscount = "<%= parseEther(settings.refereeDiscountUnscaled) %>", referrerRebate = "<%= parseEther(settings.referrerRebateUnscaled) %>", affiliateReferrerRebate = "<%= parseEther(settings.affiliateReferrerRebateUnscaled) %>", vltzDiscount = "<%= parseEther(settings.vltzDiscountUnscaled) %>" },
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]

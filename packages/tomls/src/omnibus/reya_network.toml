@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.84"
+version = "1.0.85"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -52,13 +52,13 @@ rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.10@router"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.32@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.33@router"
 peripheryRouterPackage = "reya-periphery:1.0.9@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
-ordersGatewayRouterPackage = "reya-orders-gateway:1.0.10@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.11@router"
 oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
 oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.8@router"
 shareTokensProxyPackage = "reya-share-tokens:1.0.0@proxy"
@@ -562,6 +562,7 @@ ogDiscountUnscaled = "0.3"
 refereeDiscountUnscaled = "0.1"
 referrerRebateUnscaled = "0.1"
 affiliateReferrerRebateUnscaled = "0.15"
+vltzDiscountUnscaled = "0.1"
 
 [var.affiliates]
 affiliate1 = "0xae173a960084903b1d278ff9e3a81ded82275556"

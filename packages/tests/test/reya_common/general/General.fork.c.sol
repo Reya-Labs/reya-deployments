@@ -495,7 +495,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceTRX);
         ls.maxDeviationMarket.push(ls.maxDeviationTRX);
 
-        ls.meanPriceINJ = 14 * 1e18;
+        ls.meanPriceINJ = 12.35 * 1e18;
         ls.maxDeviationINJ = ls.meanPriceINJ / 2;
         ls.meanPriceMarket.push(ls.meanPriceINJ);
         ls.maxDeviationMarket.push(ls.maxDeviationINJ);
@@ -511,7 +511,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviationMarket.push(ls.maxDeviationBERA);
 
         // market is currently closed
-        ls.meanPriceLAYER = 0.9 * 1e18;
+        ls.meanPriceLAYER = 0.41 * 1e18;
         ls.maxDeviationLAYER = ls.meanPriceLAYER / 2;
         ls.meanPriceMarket.push(ls.meanPriceLAYER);
         ls.maxDeviationMarket.push(ls.maxDeviationLAYER);
@@ -556,12 +556,12 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceKAITO);
         ls.maxDeviationMarket.push(ls.maxDeviationKAITO);
 
-        ls.meanPriceZORA = 0.12 * 1e18;
+        ls.meanPriceZORA = 0.048 * 1e18;
         ls.maxDeviationZORA = ls.meanPriceZORA / 2;
         ls.meanPriceMarket.push(ls.meanPriceZORA);
         ls.maxDeviationMarket.push(ls.maxDeviationZORA);
 
-        ls.meanPricePROVE = 1.67 * 1e18;
+        ls.meanPricePROVE = 0.69 * 1e18;
         ls.maxDeviationPROVE = ls.meanPricePROVE / 2;
         ls.meanPriceMarket.push(ls.meanPricePROVE);
         ls.maxDeviationMarket.push(ls.maxDeviationPROVE);
@@ -604,10 +604,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
             ls.meanPriceRSELINI = 1.07 * 1e18;
             ls.maxDeviationRSELINI = 0.02 * 1e18;
 
-            ls.meanPriceRAMBER = 1.07 * 1e18;
+            ls.meanPriceRAMBER = 1.09 * 1e18;
             ls.maxDeviationRAMBER = 0.02 * 1e18;
 
-            ls.meanPriceRHEDGE = 1 * 1e18;
+            ls.meanPriceRHEDGE = 0.59 * 1e18;
             ls.maxDeviationRHEDGE = 0.3 * 1e18;
         } else {
             ls.meanPriceSRUSD = 11.11 * 1e18;
