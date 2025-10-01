@@ -604,10 +604,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
             ls.meanPriceRSELINI = 1.07 * 1e18;
             ls.maxDeviationRSELINI = 0.02 * 1e18;
 
-            ls.meanPriceRAMBER = 1.07 * 1e18;
+            ls.meanPriceRAMBER = 1.09 * 1e18;
             ls.maxDeviationRAMBER = 0.02 * 1e18;
 
-            ls.meanPriceRHEDGE = 1.3 * 1e18;
+            ls.meanPriceRHEDGE = 0.59 * 1e18;
             ls.maxDeviationRHEDGE = 0.3 * 1e18;
         } else {
             ls.meanPriceSRUSD = 11.11 * 1e18;
