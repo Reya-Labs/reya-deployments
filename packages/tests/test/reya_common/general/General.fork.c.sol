@@ -334,7 +334,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceAPT);
         ls.maxDeviationMarket.push(ls.maxDeviationAPT);
 
-        ls.meanPriceBNB = 791 * 1e18;
+        ls.meanPriceBNB = 1200 * 1e18;
         ls.maxDeviationBNB = ls.meanPriceBNB / 2;
         ls.meanPriceMarket.push(ls.meanPriceBNB);
         ls.maxDeviationMarket.push(ls.maxDeviationBNB);
