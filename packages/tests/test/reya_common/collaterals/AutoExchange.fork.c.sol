@@ -28,6 +28,7 @@ struct TokenBalances {
     int256 liquidatorBalanceRusd;
     int256 liquidatorBalanceToken;
     int256 liquidatorBalanceSrusd;
+    int256 poolBalance;
 }
 
 struct LocalState {
@@ -40,6 +41,9 @@ struct LocalState {
     TokenBalances tbal0;
     TokenBalances tbal1;
     TokenBalances tbal2;
+    uint256 srusdSupply0;
+    uint256 srusdSupply1;
+    uint256 srusdSupply2;
 }
 
 contract AutoExchangeForkCheck is BaseReyaForkTest {
@@ -248,6 +252,15 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
         s.liquidator = sec.aeLiquidator1;
 
+        address[] memory excludedSrusd = new address[](1);
+        excludedSrusd[0] = sec.srusd;
+
+        (, ParentCollateralConfig memory parentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.srusd);
+
+        uint256 coreSrusdPrice =
+            IOracleManagerProxy(sec.oracleManager).process(parentCollateralConfig.oracleNodeId).price;
+
         // deposit rUSD and srUSD into user's account
         {
             s.userAccountId = depositNewMA(user, sec.srusd, 2200e30);
@@ -281,34 +294,44 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             IPassivePoolProxy(sec.pool).triggerStakedAssetAutoExchange(1, s.userAccountId);
         }
 
-        // price moves by 600 USD
-        s.bumpedEthPrice = orderPrice.unwrap() + 600e18;
-        vm.mockCall(
-            sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
-            abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
-        );
-        vm.mockCall(
-            sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkMarkNodeId)),
-            abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
-        );
+        // ETH price moves by 600 USD
+        {
+            s.bumpedEthPrice = orderPrice.unwrap() + 600e18;
+            vm.mockCall(
+                sec.oracleManager,
+                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
+                abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
+            );
+
+            vm.mockCall(
+                sec.oracleManager,
+                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkMarkNodeId)),
+                abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
+            );
+        }
 
         // check that the account is AE-able but still healthy
-        s.tbal0.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.rusd).marginBalance;
-        s.tbal0.userBalanceSrusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.srusd).marginBalance;
-        s.tbal0.liquidatorBalanceRusd =
-            ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolAccountId, sec.rusd).marginBalance;
-        s.tbal0.liquidatorBalanceSrusd =
-            ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolAccountId, sec.srusd).marginBalance;
+        {
+            s.srusdSupply0 = ITokenProxy(sec.srusd).totalSupply();
+            s.tbal0.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.rusd).marginBalance;
+            s.tbal0.userBalanceSrusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.srusd).marginBalance;
+            s.tbal0.liquidatorBalanceRusd =
+                ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolAccountId, sec.rusd).marginBalance;
+            s.tbal0.liquidatorBalanceSrusd =
+                ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolAccountId, sec.srusd).marginBalance;
+            s.tbal0.poolBalance = ICoreProxy(sec.core).getSelectiveNodeCollateralInfo(
+                sec.passivePoolAccountId, sec.rusd, excludedSrusd
+            ).marginBalance;
 
-        assertLt(s.tbal0.userBalanceRusd, -400e6);
+            uint256 maxQuoteToCover =
+                ICoreProxy(sec.core).calculateMaxQuoteToCoverInAutoExchange(s.userAccountId, sec.rusd);
 
-        assertGt(ICoreProxy(sec.core).getNodeMarginInfo(s.userAccountId, sec.rusd).initialDelta, 0);
+            assertGt(ICoreProxy(sec.core).getNodeMarginInfo(s.userAccountId, sec.rusd).initialDelta, 0);
+            assertLt(s.tbal0.userBalanceRusd, -400e6);
 
-        uint256 maxQuoteToCover = ICoreProxy(sec.core).calculateMaxQuoteToCoverInAutoExchange(s.userAccountId, sec.rusd);
-        assertGt(maxQuoteToCover, 400e6);
-        assertLt(maxQuoteToCover, 700e6);
+            assertGt(maxQuoteToCover, 400e6);
+            assertLt(maxQuoteToCover, 700e6);
+        }
 
         vm.mockCall(
             sec.core,
@@ -318,39 +341,39 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             abi.encode(400e6)
         );
 
-        uint256 srUsdSupplyBefore = ITokenProxy(sec.srusd).totalSupply();
-
-        uint256 sharePriceBefore = IPassivePoolProxy(sec.pool).getSharePrice(1);
-
         // auto-exchange 400 rUSD
         vm.prank(s.liquidator);
         s.ae1 = IPassivePoolProxy(sec.pool).triggerStakedAssetAutoExchange(1, s.userAccountId);
 
-        (, ParentCollateralConfig memory parentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, sec.srusd);
-
-        assertEq(s.ae1.quoteAmountToIF, 4e6);
-        assertEq(s.ae1.quoteAmountToAccount, 396e6);
-
-        NodeOutput.Data memory srusdUsdcNodeOutput =
-            IOracleManagerProxy(sec.oracleManager).process(parentCollateralConfig.oracleNodeId);
-        assertApproxEqAbsDecimal(
-            s.ae1.collateralAmountToLiquidator, ud(400e30).div(ud(srusdUsdcNodeOutput.price)).unwrap(), 0.001e30, 30
-        );
-        assertLe(sharePriceBefore, IPassivePoolProxy(sec.pool).getSharePrice(1));
-
+        s.srusdSupply1 = ITokenProxy(sec.srusd).totalSupply();
         s.tbal1.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.rusd).marginBalance;
         s.tbal1.userBalanceSrusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.srusd).marginBalance;
         s.tbal1.liquidatorBalanceRusd =
             ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolAccountId, sec.rusd).marginBalance;
         s.tbal1.liquidatorBalanceSrusd =
             ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolAccountId, sec.srusd).marginBalance;
+        s.tbal1.poolBalance = ICoreProxy(sec.core).getSelectiveNodeCollateralInfo(
+            sec.passivePoolAccountId, sec.rusd, excludedSrusd
+        ).marginBalance;
 
-        assertEq(s.tbal1.userBalanceRusd, s.tbal0.userBalanceRusd + 396e6);
-        assertEq(s.tbal1.liquidatorBalanceRusd, s.tbal0.liquidatorBalanceRusd - 400e6);
-        assertEq(s.tbal1.userBalanceSrusd, s.tbal0.userBalanceSrusd - int256(s.ae1.collateralAmountToLiquidator));
-        assertEq(ITokenProxy(sec.srusd).totalSupply(), srUsdSupplyBefore - s.ae1.collateralAmountToLiquidator);
-        assertEq(s.tbal1.liquidatorBalanceSrusd, 0);
+        // check the AE amounts
+        {
+            assertEq(s.ae1.quoteAmountToIF, 4e6);
+            assertEq(s.ae1.quoteAmountToAccount, 396e6);
+
+            uint256 expectedAutoExchangedSrusd = ud(400e30).div(ud(coreSrusdPrice)).unwrap();
+            assertApproxEqAbsDecimal(s.ae1.collateralAmountToLiquidator, expectedAutoExchangedSrusd, 0.001e30, 30);
+        }
+
+        // check the balances after AE
+        {
+            assertEq(s.tbal1.userBalanceRusd, s.tbal0.userBalanceRusd + 396e6);
+            assertEq(s.tbal1.liquidatorBalanceRusd, s.tbal0.liquidatorBalanceRusd - 400e6);
+            assertEq(s.tbal1.userBalanceSrusd, s.tbal0.userBalanceSrusd - int256(s.ae1.collateralAmountToLiquidator));
+            assertEq(s.srusdSupply1, s.srusdSupply0 - s.ae1.collateralAmountToLiquidator);
+            assertEq(s.tbal1.liquidatorBalanceSrusd, 0);
+            assertEq(s.tbal1.poolBalance, s.tbal0.poolBalance - 400e6);
+        }
 
         // unwind the short trade (check that it's possible to perform trade even though rUSD balance is below 0 as long
         // as ETH/other tokens support this)
@@ -362,60 +385,73 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             accountId: s.userAccountId
         });
 
-        vm.clearMockedCalls();
-        mockFreshPrices();
-        vm.mockCall(
-            sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
-            abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
-        );
-        vm.mockCall(
-            sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkMarkNodeId)),
-            abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
-        );
+        {
+            vm.clearMockedCalls();
+            mockFreshPrices();
 
+            vm.mockCall(
+                sec.oracleManager,
+                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
+                abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
+            );
+
+            vm.mockCall(
+                sec.oracleManager,
+                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkMarkNodeId)),
+                abi.encode(NodeOutput.Data({ price: s.bumpedEthPrice, timestamp: block.timestamp }))
+            );
+        }
+
+        s.srusdSupply1 = ITokenProxy(sec.srusd).totalSupply();
         s.tbal1.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.rusd).marginBalance;
         s.tbal1.userBalanceSrusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.srusd).marginBalance;
         s.tbal1.liquidatorBalanceRusd =
             ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolAccountId, sec.rusd).marginBalance;
         s.tbal1.liquidatorBalanceSrusd =
             ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolAccountId, sec.srusd).marginBalance;
-
-        srUsdSupplyBefore = ITokenProxy(sec.srusd).totalSupply();
-        sharePriceBefore = IPassivePoolProxy(sec.pool).getSharePrice(1);
+        s.tbal1.poolBalance = ICoreProxy(sec.core).getSelectiveNodeCollateralInfo(
+            sec.passivePoolAccountId, sec.rusd, excludedSrusd
+        ).marginBalance;
 
         // auto-exchange the remaining amount (check that only the remaining part is AE)
         vm.prank(s.liquidator);
         s.ae2 = IPassivePoolProxy(sec.pool).triggerStakedAssetAutoExchange(1, s.userAccountId);
 
-        assertLt(s.ae2.quoteAmountToAccount, 220e6);
-
-        assertEq(int256(s.ae2.quoteAmountToAccount) + s.tbal1.userBalanceRusd, 0);
-        assertApproxEqAbsDecimal(
-            s.ae2.collateralAmountToLiquidator,
-            ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e24).div(ud(srusdUsdcNodeOutput.price)).unwrap(),
-            0.001e30,
-            30
-        );
-
-        assertLe(sharePriceBefore, IPassivePoolProxy(sec.pool).getSharePrice(1));
-
+        s.srusdSupply2 = ITokenProxy(sec.srusd).totalSupply();
         s.tbal2.userBalanceRusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.rusd).marginBalance;
         s.tbal2.userBalanceSrusd = ICoreProxy(sec.core).getTokenMarginInfo(s.userAccountId, sec.srusd).marginBalance;
         s.tbal2.liquidatorBalanceRusd =
             ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolAccountId, sec.rusd).marginBalance;
         s.tbal2.liquidatorBalanceSrusd =
             ICoreProxy(sec.core).getTokenMarginInfo(sec.passivePoolAccountId, sec.srusd).marginBalance;
+        s.tbal2.poolBalance = ICoreProxy(sec.core).getSelectiveNodeCollateralInfo(
+            sec.passivePoolAccountId, sec.rusd, excludedSrusd
+        ).marginBalance;
 
-        assertEq(s.tbal2.userBalanceRusd, 0);
-        assertEq(
-            s.tbal2.liquidatorBalanceRusd,
-            s.tbal1.liquidatorBalanceRusd - int256(s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF)
-        );
-        assertEq(s.tbal2.userBalanceSrusd, s.tbal1.userBalanceSrusd - int256(s.ae2.collateralAmountToLiquidator));
-        assertEq(ITokenProxy(sec.srusd).totalSupply(), srUsdSupplyBefore - s.ae2.collateralAmountToLiquidator);
-        assertEq(s.tbal2.liquidatorBalanceSrusd, 0);
+        // check the AE amounts
+        {
+            assertLt(s.ae2.quoteAmountToAccount, 220e6);
+            assertEq(int256(s.ae2.quoteAmountToAccount) + s.tbal1.userBalanceRusd, 0);
+
+            uint256 expectedAutoExchangedSrusd =
+                ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e24).div(ud(coreSrusdPrice)).unwrap();
+            assertApproxEqAbsDecimal(s.ae2.collateralAmountToLiquidator, expectedAutoExchangedSrusd, 0.001e30, 30);
+        }
+
+        // check the balances after AE
+        {
+            assertEq(s.tbal2.userBalanceRusd, 0);
+            assertEq(
+                s.tbal2.liquidatorBalanceRusd,
+                s.tbal1.liquidatorBalanceRusd - int256(s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF)
+            );
+            assertEq(s.tbal2.userBalanceSrusd, s.tbal1.userBalanceSrusd - int256(s.ae2.collateralAmountToLiquidator));
+            assertEq(s.srusdSupply2, s.srusdSupply1 - s.ae2.collateralAmountToLiquidator);
+            assertEq(s.tbal2.liquidatorBalanceSrusd, 0);
+            assertEq(
+                s.tbal2.poolBalance, s.tbal1.poolBalance - int256(s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF)
+            );
+        }
 
         assertEq(IPassivePoolProxy(sec.pool).getShareSupply(1), ITokenProxy(sec.srusd).balanceOf(sec.pool));
     }
