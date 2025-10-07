@@ -70,7 +70,7 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         ICoreProxy(sec.core).activateFirstMarketForAccount(accountId, 1);
 
         NodeOutput.Data memory srusdUsdcNodeOutput =
-            IOracleManagerProxy(sec.oracleManager).process(sec.srusdUsdcPoolNodeId);
+            IOracleManagerProxy(sec.oracleManager).process(sec.srusdRusd_RRStorkNodeId);
 
         (, ParentCollateralConfig memory parentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.srusd);
