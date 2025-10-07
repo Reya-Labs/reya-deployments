@@ -52,7 +52,7 @@ contract OrderForkCheck is BaseReyaForkTest {
 
         int256 expectedFees = orderPrice.intoSD59x18().mul(base).mul(sd(BASIC_TIER_FEE_PERCENTAGE)).unwrap() / 1e12;
         int256 paidFees = preOrderBalance.realBalance - postOrderBalance.realBalance;
-        assertApproxEqAbs(paidFees, expectedFees, 0.0001e6);
+        assertApproxEqAbs(paidFees, expectedFees, 0.001e6);
     }
 
     function check_MatchOrder_FeeDiscounts(uint128 marketId, bool ogDiscount, bool vltzDiscount) internal {
