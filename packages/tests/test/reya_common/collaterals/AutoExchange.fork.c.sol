@@ -329,7 +329,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertEq(s.ae1.quoteAmountToIF, 4e6);
         assertEq(s.ae1.quoteAmountToAccount, 396e6);
         NodeOutput.Data memory srusdUsdcNodeOutput =
-            IOracleManagerProxy(sec.oracleManager).process(sec.srusdUsdcPoolNodeId);
+            IOracleManagerProxy(sec.oracleManager).process(sec.srusdRusd_RRStorkNodeId);
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator, ud(400e30).div(ud(srusdUsdcNodeOutput.price)).unwrap(), 0.001e30, 30
         );

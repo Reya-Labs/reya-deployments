@@ -19,6 +19,7 @@ include = [
     "configs/stork/usdc_deusd.toml",
     "configs/stork/sdeusd_deusd.toml",
     "configs/stork/usdc_usd.toml",
+    "configs/stork/srusd_rusd_rr.toml",
     "configs/storkMark/eth_usd.toml",
     "configs/storkMark/btc_usd.toml",
     "configs/storkMark/sol_usd.toml",

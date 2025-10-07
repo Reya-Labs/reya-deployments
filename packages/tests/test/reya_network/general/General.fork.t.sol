@@ -72,4 +72,8 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     function test_PeripherySrusdBalance() public view {
         check_periphery_srusd_balance();
     }
+
+    function test_srUSD_feeds() public view {
+        check_srUSD_feeds();
+    }
 }
