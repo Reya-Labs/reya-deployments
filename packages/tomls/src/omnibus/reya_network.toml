@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.86"
+version = "1.0.87"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -321,6 +321,7 @@ storkAssetPairIdDEUSD = "DEUSDUSD"
 storkAssetPairIdSDEUSDDEUSD = "SDEUSDDEUSD"
 storkAssetPairIdFTM = "FTMUSD"
 storkAssetPairIdWSTETH = "WSTETHUSD"
+storkAssetPairIdSRUSDRUSD_RR = "SRUSDRUSD_RR"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
@@ -829,6 +830,8 @@ usdcDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 sdeusdDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-------------------------------------------------------------------------------
+srusdRusd_RRMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #-------------------------------------------------------------------------------
 srusdUsdcPoolMaxDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
@@ -2513,7 +2516,7 @@ cp1Rusd_srusd_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_srusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
 cp1Rusd_srusdParentConfig_priceHaircutUnscaled = "0.1"
 cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
-cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdUsdcPoolNodeId %>"
+cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdRusd_RRNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"

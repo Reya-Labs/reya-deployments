@@ -16,7 +16,8 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/testnet.toml",
 ]
-version = "1.0.71"
+
+version = "1.0.72"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -29,7 +30,7 @@ passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD822755
 lotteryPotExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 rageTradeExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 zeuzExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-progCompExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+progCompExchangeFeeCollectorOwner = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.external_contracts]
@@ -259,6 +260,7 @@ storkAssetPairIdSUSDE = "SUSDEUSD"
 storkAssetPairIdDEUSD = "DEUSDUSD"
 storkAssetPairIdSDEUSDDEUSD = "SDEUSDDEUSD"
 storkAssetPairIdFTM = "FTMUSD"
+storkAssetPairIdSRUSDRUSD_RR = "SRUSDRUSD_RR"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
@@ -768,6 +770,8 @@ usdcDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #-------------------------------------------------------------------------------
+srusdRusd_RRMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-------------------------------------------------------------------------------
 srusdUsdcPoolMaxDuration = "0"
 #------------------------------------------------------------------------------
 seliniUsdcReyaLmMaxStaleDuration = "0"
@@ -904,7 +908,7 @@ market6Avax_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_7mkr]
 market7Mkr_riskMatrixIndex = "0"
-market7Mkr_maxOpenBaseUnscaled = "0"
+market7Mkr_maxOpenBaseUnscaled = "1000"
 market7Mkr_velocityMultiplierUnscaled = "10000"
 market7Mkr_oracleNodeId = "<%= settings.mkrUsdcNodeIdClosing %>"
 market7Mkr_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
