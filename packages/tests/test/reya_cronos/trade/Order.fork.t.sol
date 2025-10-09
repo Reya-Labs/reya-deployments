@@ -19,4 +19,8 @@ contract OrderForkTest is ReyaForkTest, OrderForkCheck {
     function test_Cronos_MatchOrder_OgAndVltzFeeDiscounts_SOL_market() public {
         check_MatchOrder_FeeDiscounts(3, true, true);
     }
+
+    function test_Cronos_MatchOrder_CachedPoolNodeMarginInfo() public {
+        check_MatchOrder_CachedPoolNodeMarginInfo();
+    }
 }
