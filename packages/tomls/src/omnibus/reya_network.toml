@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.85"
+version = "1.0.88"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -52,7 +52,7 @@ rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.10@router"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.33@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.35@router"
 peripheryRouterPackage = "reya-periphery:1.0.9@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
@@ -321,6 +321,7 @@ storkAssetPairIdDEUSD = "DEUSDUSD"
 storkAssetPairIdSDEUSDDEUSD = "SDEUSDDEUSD"
 storkAssetPairIdFTM = "FTMUSD"
 storkAssetPairIdWSTETH = "WSTETHUSD"
+storkAssetPairIdSRUSDRUSD_RR = "SRUSDRUSD_RR"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
@@ -490,7 +491,7 @@ wstethEthereumWithdrawFeeUnscaled = "0.00415"
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-rusdWithdrawalTvlPercentageLimitUnscaled = "0.7"
+rusdWithdrawalTvlPercentageLimitUnscaled = "0.4"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
@@ -531,6 +532,9 @@ rhedgeWithdrawalTvlPercentageLimitUnscaled = "0"
 wstethCollateralAdapter = "<%= AddressZero %>"
 wstethWithdrawalWindowSize = "1"
 wstethWithdrawalTvlPercentageLimitUnscaled = "1"
+
+[var.pool_node_margin_info]
+maxCacheDurationForPoolNodeMarginInfo = "60"
 
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.2"
@@ -829,6 +833,8 @@ usdcDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 sdeusdDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-------------------------------------------------------------------------------
+srusdRusd_RRMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #-------------------------------------------------------------------------------
 srusdUsdcPoolMaxDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
@@ -2513,7 +2519,7 @@ cp1Rusd_srusd_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_srusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
 cp1Rusd_srusdParentConfig_priceHaircutUnscaled = "0.1"
 cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
-cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdUsdcPoolNodeId %>"
+cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdRusd_RRNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"

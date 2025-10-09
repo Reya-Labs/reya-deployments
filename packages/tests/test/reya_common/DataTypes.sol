@@ -79,6 +79,7 @@ struct StaticEcosystem {
     bytes32 deusdUsdcStorkNodeId;
     bytes32 sdeusdDeusdStorkNodeId;
     bytes32 sdeusdUsdcStorkNodeId;
+    bytes32 srusdRusd_RRStorkNodeId;
     bytes32 rseliniUsdcReyaLmNodeId;
     bytes32 ramberUsdcReyaLmNodeId;
     bytes32 rhedgeUsdcReyaLmNodeId;

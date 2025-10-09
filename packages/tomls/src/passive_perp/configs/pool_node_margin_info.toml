@@ -1,0 +1,10 @@
+[invoke.passive_perp_set_max_cache_duration_for_pool_node_margin_info]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setMaxCacheDurationForPoolNodeMarginInfo"
+args = [
+    "<%= settings.pool1RusdAccountId %>",
+    "<%= contracts.RUSDProxy.address %>",
+    "<%= settings.maxCacheDurationForPoolNodeMarginInfo %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]

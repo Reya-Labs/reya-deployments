@@ -78,6 +78,10 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         check_periphery_srusd_balance();
     }
 
+    function test_srUSD_feeds() public view {
+        check_srUSD_feeds();
+    }
+
     function test_gas_trade() public {
         uint256 srUSDPrice = 1085646432105633776;
         bytes32 nodeId = IOracleManagerProxy(sec.oracleManager).registerNode(3, abi.encode(srUSDPrice), new bytes32[](0));

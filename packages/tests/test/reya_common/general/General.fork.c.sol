@@ -11,6 +11,8 @@ import { IElixirSdeusd } from "../../../src/interfaces/IElixirSdeusd.sol";
 import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 import { uintToString, bytes32ToHexString } from "../../../src/utils/ToString.sol";
 
+import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
+
 import { ud } from "@prb/math/UD60x18.sol";
 
 struct LocalState {
@@ -334,7 +336,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceAPT);
         ls.maxDeviationMarket.push(ls.maxDeviationAPT);
 
-        ls.meanPriceBNB = 791 * 1e18;
+        ls.meanPriceBNB = 1200 * 1e18;
         ls.maxDeviationBNB = ls.meanPriceBNB / 2;
         ls.meanPriceMarket.push(ls.meanPriceBNB);
         ls.maxDeviationMarket.push(ls.maxDeviationBNB);
@@ -1279,6 +1281,11 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(ls.meanPriceSDEUSD);
         ls.maxDeviations.push(ls.maxDeviationSDEUSD);
 
+        // Stork is connected to mainnet
+        ls.nodeIds.push(sec.srusdRusd_RRStorkNodeId);
+        ls.meanPrices.push(1.07 * 1e18);
+        ls.maxDeviations.push(0.02 * 1e18);
+
         ls.nodeIds.push(sec.rseliniUsdcReyaLmNodeId);
         ls.meanPrices.push(ls.meanPriceRSELINI);
         ls.maxDeviations.push(ls.maxDeviationRSELINI);
@@ -1428,5 +1435,19 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
     function check_periphery_srusd_balance() public view {
         assertEq(ITokenProxy(sec.srusd).balanceOf(sec.periphery), 0);
+    }
+
+    function check_srUSD_feeds() public view {
+        uint256 poolSRUSDPrice = IPassivePoolProxy(sec.pool).getSharePrice(1);
+
+        NodeOutput.Data memory liveSRUSDFeed = IOracleManagerProxy(sec.oracleManager).process(sec.srusdUsdcPoolNodeId);
+
+        NodeOutput.Data memory storkSRUSDFeed =
+            IOracleManagerProxy(sec.oracleManager).process(sec.srusdRusd_RRStorkNodeId);
+
+        assertEq(liveSRUSDFeed.price, poolSRUSDPrice, "liveSRUSDFeed.price");
+        assertEq(liveSRUSDFeed.timestamp, block.timestamp, "liveSRUSDFeed.timestamp");
+
+        assertApproxEqAbs(storkSRUSDFeed.price, poolSRUSDPrice, 0.001e18, "storkSRUSDFeed.price");
     }
 }

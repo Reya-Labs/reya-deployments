@@ -6,4 +6,5 @@ include = [
     "configs/affiliates.toml",
     "configs/tier_100_holders.toml",
     "configs/vol_spike_whitelist_holders.toml",
+    "configs/pool_node_margin_info.toml",
 ]
