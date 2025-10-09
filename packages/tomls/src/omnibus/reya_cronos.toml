@@ -468,6 +468,9 @@ rhedgeCollateralAdapter = "<%= AddressZero %>"
 rhedgeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rhedgeWithdrawalTvlPercentageLimitUnscaled = "0"
 
+[var.pool_node_margin_info]
+maxCacheDurationForPoolNodeMarginInfo = "60"
+
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.2"
 lotteryPotExchangeRebateUnscaled = "0.2"
