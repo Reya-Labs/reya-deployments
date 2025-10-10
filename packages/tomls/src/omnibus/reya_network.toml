@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.88"
+version = "1.0.89"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -491,7 +491,7 @@ wstethEthereumWithdrawFeeUnscaled = "0.00415"
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-rusdWithdrawalTvlPercentageLimitUnscaled = "0.4"
+rusdWithdrawalTvlPercentageLimitUnscaled = "0.7"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
