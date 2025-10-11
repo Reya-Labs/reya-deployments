@@ -115,7 +115,7 @@ func = "configureCollateralPoolInsuranceFund"
 args = [
     "<%= settings.market47SonicId %>",
     # reusing params from CP 1 since this CP will get merged
-    { accountId = "<%= settings.cp1Rusd_insuranceFundAccountId %>", liquidationFee = "150000000000000000" },
+    { accountId = "<%= settings.cp1Rusd_insuranceFundAccountId %>", liquidationFee = "<%= parseEther(settings.default_insuranceFund_liquidationFeeUnscaled) %>" },
 ]
 depends = [
     "invoke.cp_1rusd_create_insurance_fund_account",

@@ -2334,6 +2334,7 @@ market74Linea_volatilityIndexMultiplierUnscaled = "0"
 cp1Rusd_maxMarkets = "74"
 cp1Rusd_maxCollaterals = "11"
 # -----------------------------------------------
+default_insuranceFund_liquidationFeeUnscaled = "0.15"
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
 # -----------------------------------------------
 cp1Rusd_market1Eth_riskMatrix00Unscaled = "0.000947"
