@@ -9,14 +9,14 @@ include = [
 ]
 
 [var.wallet_addresses]
-owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
+owner = "0x0F575355D19F5056415e382CEEEcffE0Fe8433a9"
 
 [var.cannonClonePackages]
-vltzProxyPackage = "reya-vltz:1.0.0@proxy"
-vltzRouterPackage = "reya-vltz:1.0.1@router"
+vltzProxyPackage = "reya-vltz-prod:1.0.0@proxy"
+vltzRouterPackage = "reya-vltz-prod:1.0.1@router"
 
 [var.upgrade_proxy_vars]
-vltzProxy = "<%= imports.reyaVltzProxy.contracts.InitialProxy.address %>"
+vltzProxy = "<%= imports.reyaVltzProdProxy.contracts.InitialProxy.address %>"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
@@ -30,4 +30,4 @@ vltzTokenName = "Voltz"
 vltzTokenSymbol = "$VLTZ"
 vltzRootSubmitter = "0x0F575355D19F5056415e382CEEEcffE0Fe8433a9"
 vltzTokenDecimals = "18"
-vltzRoot = "0x7dcce9f32d27e47e125f808191c2e75a34e35f6b241c01a687d34df390f5f506"
+vltzRoot = "0x2055f18a8e96ea548a78552f33632989ab0afa5706e530b10bd24c8bfcdafe71"
