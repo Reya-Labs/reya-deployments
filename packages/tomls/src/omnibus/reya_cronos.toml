@@ -16,7 +16,8 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/testnet.toml",
 ]
-version = "1.0.69"
+
+version = "1.0.74"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -29,7 +30,7 @@ passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD822755
 lotteryPotExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 rageTradeExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 zeuzExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-progCompExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+progCompExchangeFeeCollectorOwner = "0xF39f72E8E8D16833601C3f1ac33835ca5C69f6E4"
 ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.external_contracts]
@@ -52,7 +53,7 @@ tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.10@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.32@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.35@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.0.9@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
@@ -259,6 +260,7 @@ storkAssetPairIdSUSDE = "SUSDEUSD"
 storkAssetPairIdDEUSD = "DEUSDUSD"
 storkAssetPairIdSDEUSDDEUSD = "SDEUSDDEUSD"
 storkAssetPairIdFTM = "FTMUSD"
+storkAssetPairIdSRUSDRUSD_RR = "SRUSDRUSD_RR"
 
 [var.stork_asset_pair_ids_mark]
 storkAssetPairIdETHMark = "ETHUSDMARK"
@@ -424,7 +426,7 @@ sdeusdEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-rusdWithdrawalTvlPercentageLimitUnscaled = "0.55"
+rusdWithdrawalTvlPercentageLimitUnscaled = "0.4"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
@@ -466,6 +468,9 @@ rhedgeCollateralAdapter = "<%= AddressZero %>"
 rhedgeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rhedgeWithdrawalTvlPercentageLimitUnscaled = "0"
 
+[var.pool_node_margin_info]
+maxCacheDurationForPoolNodeMarginInfo = "60"
+
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.2"
 lotteryPotExchangeRebateUnscaled = "0.2"
@@ -496,6 +501,7 @@ ogDiscountUnscaled = "0.3"
 refereeDiscountUnscaled = "0.1"
 referrerRebateUnscaled = "0.1"
 affiliateReferrerRebateUnscaled = "0.15"
+vltzDiscountUnscaled = "0.1"
 
 [var.affiliates]
 affiliate1 = "0xae173a960084903b1d278ff9e3a81ded82275556"
@@ -767,6 +773,8 @@ usdcDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 sdeusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #-------------------------------------------------------------------------------
+srusdRusd_RRMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#-------------------------------------------------------------------------------
 srusdUsdcPoolMaxDuration = "0"
 #------------------------------------------------------------------------------
 seliniUsdcReyaLmMaxStaleDuration = "0"
@@ -804,7 +812,7 @@ market1Eth_volatilityIndexMultiplierUnscaled = "0"
 [var.market_2btc]
 market2Btc_riskMatrixIndex = "0"
 market2Btc_maxOpenBaseUnscaled = "52"
-market2Btc_velocityMultiplierUnscaled = "50"
+market2Btc_velocityMultiplierUnscaled = "10"
 market2Btc_oracleNodeId = "<%= settings.btcUsdcMarkNodeIdStork %>"
 market2Btc_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market2Btc_dutchConfig_lambdaUnscaled = "1"
@@ -814,7 +822,7 @@ market2Btc_slippageParams_betaUnscaled = "0"
 market2Btc_minimumOrderBaseUnscaled = "0.001"
 market2Btc_baseSpacingUnscaled = "0.0001"
 market2Btc_priceSpacingUnscaled = "0.001"
-market2Btc_depthFactorUnscaled = "50"
+market2Btc_depthFactorUnscaled = "10"
 market2Btc_maxExposureFactorUnscaled = "0.999"
 market2Btc_maxPSlippageUnscaled = "0.1"
 market2Btc_marketOrderMaxStaleDuration = "11"
@@ -903,7 +911,7 @@ market6Avax_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_7mkr]
 market7Mkr_riskMatrixIndex = "0"
-market7Mkr_maxOpenBaseUnscaled = "0"
+market7Mkr_maxOpenBaseUnscaled = "1000"
 market7Mkr_velocityMultiplierUnscaled = "10000"
 market7Mkr_oracleNodeId = "<%= settings.mkrUsdcNodeIdClosing %>"
 market7Mkr_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -2265,7 +2273,7 @@ market74Linea_volatilityIndexMultiplierUnscaled = "0"
 cp1Rusd_maxMarkets = "74"
 cp1Rusd_maxCollaterals = "11"
 # -----------------------------------------------
-cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.15"
+cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
 # -----------------------------------------------
 cp1Rusd_market1Eth_riskMatrix00Unscaled = "0.000947"
 cp1Rusd_market2Btc_riskMatrix00Unscaled = "0.000370"

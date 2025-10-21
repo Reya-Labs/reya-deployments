@@ -11,4 +11,16 @@ contract OrderForkTest is ReyaForkTest, OrderForkCheck {
     function test_MatchOrder_ZeroFees_ETH_market() public {
         check_MatchOrder_ZeroFees(1);
     }
+
+    function test_MatchOrder_VltzFeeDiscounts_SOL_market() public {
+        check_MatchOrder_FeeDiscounts(3, false, true);
+    }
+
+    function test_MatchOrder_OgAndVltzFeeDiscounts_SOL_market() public {
+        check_MatchOrder_FeeDiscounts(3, true, true);
+    }
+
+    function test_MatchOrder_CachedPoolNodeMarginInfo() public {
+        check_MatchOrder_CachedPoolNodeMarginInfo();
+    }
 }

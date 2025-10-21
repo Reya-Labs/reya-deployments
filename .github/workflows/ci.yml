@@ -1,7 +1,6 @@
 name: Reya Deployments CI/CD
 on:
   pull_request:
-    types: [ready_for_review]
     branches:
       - main
   push:
@@ -19,6 +18,8 @@ jobs:
           persist-credentials: false
       - name: "Install Foundry"
         uses: "foundry-rs/foundry-toolchain@v1"
+        with:
+          version: v1.2.3
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
