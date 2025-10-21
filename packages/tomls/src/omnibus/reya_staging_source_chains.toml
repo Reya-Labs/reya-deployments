@@ -16,6 +16,9 @@ vltzRouterPackage = "reya-vltz:1.0.1@router"
 [var.upgrade_proxy_vars]
 vltzProxy = "<%= imports.reyaVltzProxy.contracts.InitialProxy.address %>"
 
+[var.initial_proxy_vars]
+envSalt = "main"
+
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
 pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"

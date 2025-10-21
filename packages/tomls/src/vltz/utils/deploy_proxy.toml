@@ -2,5 +2,5 @@
 source = "<%= settings.vltzProxyPackage %>"
 target = "<%= settings.vltzProxyPackage %>"
 options.owner = "<%= settings.owner %>"
-options.salt = "<%= settings.salt %>"
+options.salt = "<%= settings.envSalt %>"
 depends = ["var.cannonClonePackages"]

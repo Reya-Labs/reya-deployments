@@ -10,11 +10,14 @@ include = ["../vltz/mainnet.toml"]
 owner = "0x0F575355D19F5056415e382CEEEcffE0Fe8433a9"
 
 [var.cannonClonePackages]
-vltzProxyPackage = "reya-vltz-prod:1.0.0@proxy"
-vltzRouterPackage = "reya-vltz-prod:1.0.1@router"
+vltzProxyPackage = "reya-vltz:1.0.0@proxy"
+vltzRouterPackage = "reya-vltz:1.0.1@router"
 
 [var.upgrade_proxy_vars]
-vltzProxy = "<%= imports.reyaVltzProdProxy.contracts.InitialProxy.address %>"
+vltzProxy = "<%= imports.reyaVltzProxy.contracts.InitialProxy.address %>"
+
+[var.initial_proxy_vars]
+envSalt = "prod"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
