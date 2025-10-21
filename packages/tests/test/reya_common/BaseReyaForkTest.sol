@@ -471,4 +471,35 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     function lastMarketId() internal view returns (uint128) {
         return ICoreProxy(sec.core).getLastCreatedMarketId();
     }
+
+    function isMarketActive(uint128 marketId) internal view returns (bool) {
+        bytes32 flagId = keccak256(abi.encode(keccak256(bytes("marketEnabled")), marketId));
+        bool isPaused = IPassivePerpProxy(sec.perp).getFeatureFlagDenyAll(flagId);
+
+        return !isPaused;
+    }
+
+    function getActiveMarkets() internal view returns (uint128[] memory) {
+        uint128 lastMarketIdd = lastMarketId();
+        bool[] memory isActive = new bool[](lastMarketIdd);
+
+        uint256 noActiveMarkets = 0;
+        for (uint128 i = 0; i < lastMarketIdd; i++) {
+            isActive[i] = isMarketActive(i + 1);
+            if (isActive[i]) {
+                noActiveMarkets += 1;
+            }
+        }
+
+        uint128[] memory activeMarkets = new uint128[](noActiveMarkets);
+        uint256 activeMarketsIndex = 0;
+        for (uint128 i = 0; i < lastMarketIdd; i++) {
+            if (isActive[i]) {
+                activeMarkets[activeMarketsIndex] = i + 1;
+                activeMarketsIndex += 1;
+            }
+        }
+
+        return activeMarkets;
+    }
 }
