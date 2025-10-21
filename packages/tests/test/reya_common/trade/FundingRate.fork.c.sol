@@ -35,12 +35,12 @@ contract FundingRateForkCheck is BaseReyaForkTest {
         );
 
         (, SD59x18 pSlippage) = executeCoreMatchOrder({
-                marketId: marketId,
-                sender: user,
-                base: sd(-1e18),
-                priceLimit: ud(0),
-                accountId: accountId
-            });
+            marketId: marketId,
+            sender: user,
+            base: sd(-1e18),
+            priceLimit: ud(0),
+            accountId: accountId
+        });
 
         int256 fundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId);
         vm.warp(block.timestamp + 86_400);
@@ -48,10 +48,7 @@ contract FundingRateForkCheck is BaseReyaForkTest {
 
         MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
         assertApproxEqAbsDecimal(
-            fundingRate2 - fundingRate1,
-            pSlippage.mul(sd(int256(marketConfig.velocityMultiplier))).unwrap(),
-            1e5,
-            18
+            fundingRate2 - fundingRate1, pSlippage.mul(sd(int256(marketConfig.velocityMultiplier))).unwrap(), 1e5, 18
         );
     }
 }
