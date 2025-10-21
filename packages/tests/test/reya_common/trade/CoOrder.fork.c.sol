@@ -185,7 +185,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_slOrderOnShortPosition(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.orderBase1 = sd(-1e18);
         st.orderPriceLimit1 = MIN_PRICE;
@@ -201,7 +201,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_slOrderOnLongPosition(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.orderBase1 = sd(1e18);
         st.orderPriceLimit1 = MAX_PRICE;
@@ -217,7 +217,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_tpOrderOnShortPosition(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.orderBase1 = sd(-1e18);
         st.orderPriceLimit1 = MIN_PRICE;
@@ -233,7 +233,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_tpOrderOnLongPosition(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.orderBase1 = sd(1e18);
         st.orderPriceLimit1 = MAX_PRICE;
@@ -249,7 +249,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_shortLimitOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.orderBase1 = sd(-1e18);
         st.orderPriceLimit1 = MIN_PRICE; // irrelevant
@@ -265,7 +265,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_longLimitOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.orderBase1 = sd(1e18);
         st.coOrder1Type = 2;
@@ -277,7 +277,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_extendingLongMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.prevPositionBase = sd(1e18);
         st.orderPriceLimit1 = MAX_PRICE; // irrelevant
@@ -292,7 +292,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_extendingShortMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.prevPositionBase = sd(-1e18);
         st.orderPriceLimit1 = MIN_PRICE;
@@ -307,7 +307,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_flippingLongMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.prevPositionBase = sd(1e18);
         st.orderPriceLimit1 = MAX_PRICE;
@@ -322,7 +322,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_flippingShortMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.prevPositionBase = sd(-1e18);
         st.orderPriceLimit1 = MIN_PRICE; // irrelevant
@@ -338,7 +338,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_partialReduceLongMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.prevPositionBase = sd(2e18);
         st.orderPriceLimit1 = MAX_PRICE;
@@ -353,7 +353,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_partialReduceShortMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.prevPositionBase = sd(-2e18);
         st.orderPriceLimit1 = MIN_PRICE;
@@ -368,7 +368,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_fullReduceLongMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.prevPositionBase = sd(1e18);
         st.orderPriceLimit1 = MAX_PRICE;
@@ -383,7 +383,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_fullReduceShortMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
 
         st.orderMarketId1 = marketId;
         st.prevPositionBase = sd(-1e18);
@@ -400,7 +400,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_revertWhenExtendingLongReduceMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
 
         st.orderMarketId1 = marketId;
         st.prevPositionBase = sd(1e18);
@@ -424,7 +424,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_revertWhenExtendingShortReduceMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
 
         st.orderMarketId1 = marketId;
         st.prevPositionBase = sd(-1e18);
@@ -448,7 +448,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_revertWhenFlipLongReduceMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
 
         st.orderMarketId1 = marketId;
         st.prevPositionBase = sd(1e18);
@@ -472,7 +472,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
     function check_revertWhenFlipShortReduceMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        st.nonce = 1;
+        st.nonce = marketId;
         st.orderMarketId1 = marketId;
         st.prevPositionBase = sd(-1e18);
         st.orderPriceLimit1 = MIN_PRICE;
