@@ -2,7 +2,5 @@
 target = ["VltzProxy"]
 fromCall.func = "owner"
 func = "updateRoot"
-args = [
-    "<%= settings.vltzRoot %>",
-]
+args = ["<%= settings.vltzRoot %>"]
 depends = ["invoke.vltz_set_root_updater"]

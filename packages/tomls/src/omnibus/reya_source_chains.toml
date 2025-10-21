@@ -4,9 +4,7 @@ description = "Reya Source Chains"
 privateSourceCode = true
 version = "1.0.0"
 
-include = [
-    "../vltz/mainnet.toml",
-]
+include = ["../vltz/mainnet.toml"]
 
 [var.wallet_addresses]
 owner = "0x0F575355D19F5056415e382CEEEcffE0Fe8433a9"
@@ -23,7 +21,6 @@ pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
 pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
 pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
-
 
 [var.vltz_config]
 vltzTokenName = "Voltz"

@@ -4,9 +4,7 @@ description = "Reya Staging Source Chains"
 privateSourceCode = true
 version = "1.0.0"
 
-include = [
-    "../vltz/testnet.toml",
-]
+include = ["../vltz/testnet.toml"]
 
 [var.wallet_addresses]
 owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
