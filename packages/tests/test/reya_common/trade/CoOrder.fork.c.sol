@@ -182,31 +182,27 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         return (co, coSig);
     }
 
-    function check_slOrderOnShortPosition() public {
+    function check_slOrderOnShortPosition(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+        st.nonce = 1;
+        st.orderMarketId1 = marketId;
+        st.orderBase1 = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
 
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
+        st.coOrder1Type = 0;
+        st.coOrder1IsLongOrder = true;
+        st.coOrder1TriggerPrice = MIN_PRICE;
+        st.coOrder1PriceLimit = MAX_PRICE;
 
-            st.orderMarketId1 = i;
-            st.orderBase1 = sd(-1e18);
-            st.orderPriceLimit1 = MIN_PRICE;
-
-            st.coOrder1Type = 0;
-            st.coOrder1IsLongOrder = true;
-            st.coOrder1TriggerPrice = MIN_PRICE;
-            st.coOrder1PriceLimit = MAX_PRICE;
-
-            executeOrderAndTriggerCoOrder();
-        }
+        executeOrderAndTriggerCoOrder();
     }
 
-    function check_slOrderOnLongPosition_BTC() public {
+    function check_slOrderOnLongPosition(uint128 marketId) public {
         mockFreshPrices();
 
-        st.orderMarketId1 = 2;
+        st.nonce = 1;
+        st.orderMarketId1 = marketId;
         st.orderBase1 = sd(1e18);
         st.orderPriceLimit1 = MAX_PRICE;
 
@@ -215,36 +211,30 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1TriggerPrice = MAX_PRICE;
         st.coOrder1PriceLimit = MIN_PRICE;
 
+        executeOrderAndTriggerCoOrder();
+    }
+
+    function check_tpOrderOnShortPosition(uint128 marketId) public {
+        mockFreshPrices();
+
         st.nonce = 1;
+        st.orderMarketId1 = marketId;
+        st.orderBase1 = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
+
+        st.coOrder1Type = 1;
+        st.coOrder1IsLongOrder = true;
+        st.coOrder1TriggerPrice = MAX_PRICE;
+        st.coOrder1PriceLimit = MAX_PRICE;
 
         executeOrderAndTriggerCoOrder();
     }
 
-    function check_tpOrderOnShortPosition() public {
+    function check_tpOrderOnLongPosition(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
-
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
-
-            st.orderMarketId1 = i;
-            st.orderBase1 = sd(-1e18);
-            st.orderPriceLimit1 = MIN_PRICE;
-
-            st.coOrder1Type = 1;
-            st.coOrder1IsLongOrder = true;
-            st.coOrder1TriggerPrice = MAX_PRICE;
-            st.coOrder1PriceLimit = MAX_PRICE;
-
-            executeOrderAndTriggerCoOrder();
-        }
-    }
-
-    function check_tpOrderOnLongPosition_BTC() public {
-        mockFreshPrices();
-
-        st.orderMarketId1 = 2;
+        st.nonce = 1;
+        st.orderMarketId1 = marketId;
         st.orderBase1 = sd(1e18);
         st.orderPriceLimit1 = MAX_PRICE;
 
@@ -253,317 +243,253 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1TriggerPrice = MIN_PRICE;
         st.coOrder1PriceLimit = MIN_PRICE;
 
+        executeOrderAndTriggerCoOrder();
+    }
+
+    function check_shortLimitOrder(uint128 marketId) public {
+        mockFreshPrices();
+
         st.nonce = 1;
+        st.orderMarketId1 = marketId;
+        st.orderBase1 = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE; // irrelevant
+
+        st.coOrder1Type = 2;
+        st.coOrder1IsLongOrder = false; // irrelevant
+        st.coOrder1TriggerPrice = MIN_PRICE;
+        st.coOrder1PriceLimit = MIN_PRICE; //irrelevant
 
         executeOrderAndTriggerCoOrder();
     }
 
-    function check_shortLimitOrder() public {
+    function check_longLimitOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
-
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
-
-            st.orderMarketId1 = i;
-            st.orderBase1 = sd(-1e18);
-            st.orderPriceLimit1 = MIN_PRICE; // irrelevant
-
-            st.coOrder1Type = 2;
-            st.coOrder1IsLongOrder = false; // irrelevant
-            st.coOrder1TriggerPrice = MIN_PRICE;
-            st.coOrder1PriceLimit = MIN_PRICE; //irrelevant
-
-            executeOrderAndTriggerCoOrder();
-        }
-    }
-
-    function check_longLimitOrder_BTC() public {
-        mockFreshPrices();
-
-        st.orderMarketId1 = 2;
+        st.nonce = 1;
+        st.orderMarketId1 = marketId;
         st.orderBase1 = sd(1e18);
         st.coOrder1Type = 2;
         st.coOrder1TriggerPrice = MAX_PRICE;
 
+        executeOrderAndTriggerCoOrder();
+    }
+
+    function check_extendingLongMarketOrder(uint128 marketId) public {
+        mockFreshPrices();
+
         st.nonce = 1;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(1e18);
+        st.orderPriceLimit1 = MAX_PRICE; // irrelevant
+
+        st.coOrder1Type = 3;
+        st.orderBase1 = sd(1e18);
+        st.coOrder1PriceLimit = MAX_PRICE; //irrelevant
 
         executeOrderAndTriggerCoOrder();
     }
 
-    function check_extendingLongMarketOrder() public {
+    function check_extendingShortMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+        st.nonce = 1;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
 
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
+        st.coOrder1Type = 3;
+        st.orderBase1 = sd(-1e18);
+        st.coOrder1PriceLimit = MIN_PRICE;
 
-            st.orderMarketId1 = i;
-            st.prevPositionBase = sd(1e18);
-            st.orderPriceLimit1 = MAX_PRICE; // irrelevant
-
-            st.coOrder1Type = 3;
-            st.orderBase1 = sd(1e18);
-            st.coOrder1PriceLimit = MAX_PRICE; //irrelevant
-
-            executeOrderAndTriggerCoOrder();
-        }
+        executeOrderAndTriggerCoOrder();
     }
 
-    function check_extendingShortMarketOrder() public {
+    function check_flippingLongMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+        st.nonce = 1;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(1e18);
+        st.orderPriceLimit1 = MAX_PRICE;
 
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
+        st.coOrder1Type = 3;
+        st.orderBase1 = sd(-1.5e18);
+        st.coOrder1PriceLimit = MIN_PRICE;
 
-            st.orderMarketId1 = i;
-            st.prevPositionBase = sd(-1e18);
-            st.orderPriceLimit1 = MIN_PRICE;
-
-            st.coOrder1Type = 3;
-            st.orderBase1 = sd(-1e18);
-            st.coOrder1PriceLimit = MIN_PRICE;
-
-            executeOrderAndTriggerCoOrder();
-        }
+        executeOrderAndTriggerCoOrder();
     }
 
-    function check_flippingLongMarketOrder() public {
+    function check_flippingShortMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+        st.nonce = 1;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE; // irrelevant
 
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
+        st.coOrder1Type = 3;
+        st.coOrder1IsLongOrder = false; // irrelevant
+        st.orderBase1 = sd(1.5e18);
+        st.coOrder1PriceLimit = MAX_PRICE; //irrelevant
 
-            st.orderMarketId1 = i;
-            st.prevPositionBase = sd(1e18);
-            st.orderPriceLimit1 = MAX_PRICE;
-
-            st.coOrder1Type = 3;
-            st.orderBase1 = sd(-1.5e18);
-            st.coOrder1PriceLimit = MIN_PRICE;
-
-            executeOrderAndTriggerCoOrder();
-        }
+        executeOrderAndTriggerCoOrder();
     }
 
-    function check_flippingShortMarketOrder() public {
+    function check_partialReduceLongMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+        st.nonce = 1;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(2e18);
+        st.orderPriceLimit1 = MAX_PRICE;
 
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
+        st.coOrder1Type = 4;
+        st.orderBase1 = sd(-1.5e18);
+        st.coOrder1PriceLimit = MIN_PRICE;
 
-            st.orderMarketId1 = i;
-            st.prevPositionBase = sd(-1e18);
-            st.orderPriceLimit1 = MIN_PRICE; // irrelevant
-
-            st.coOrder1Type = 3;
-            st.coOrder1IsLongOrder = false; // irrelevant
-            st.orderBase1 = sd(1.5e18);
-            st.coOrder1PriceLimit = MAX_PRICE; //irrelevant
-
-            executeOrderAndTriggerCoOrder();
-        }
+        executeOrderAndTriggerCoOrder();
     }
 
-    function check_partialReduceLongMarketOrder() public {
+    function check_partialReduceShortMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+        st.nonce = 1;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(-2e18);
+        st.orderPriceLimit1 = MIN_PRICE;
 
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
+        st.coOrder1Type = 4;
+        st.orderBase1 = sd(1.5e18);
+        st.coOrder1PriceLimit = MAX_PRICE;
 
-            st.orderMarketId1 = i;
-            st.prevPositionBase = sd(2e18);
-            st.orderPriceLimit1 = MAX_PRICE;
-
-            st.coOrder1Type = 4;
-            st.orderBase1 = sd(-1.5e18);
-            st.coOrder1PriceLimit = MIN_PRICE;
-
-            executeOrderAndTriggerCoOrder();
-        }
+        executeOrderAndTriggerCoOrder();
     }
 
-    function check_partialReduceShortMarketOrder() public {
+    function check_fullReduceLongMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+        st.nonce = 1;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(1e18);
+        st.orderPriceLimit1 = MAX_PRICE;
 
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
+        st.coOrder1Type = 4;
+        st.orderBase1 = sd(-1e18);
+        st.coOrder1PriceLimit = MIN_PRICE;
 
-            st.orderMarketId1 = i;
-            st.prevPositionBase = sd(-2e18);
-            st.orderPriceLimit1 = MIN_PRICE;
-
-            st.coOrder1Type = 4;
-            st.orderBase1 = sd(1.5e18);
-            st.coOrder1PriceLimit = MAX_PRICE;
-
-            executeOrderAndTriggerCoOrder();
-        }
+        executeOrderAndTriggerCoOrder();
     }
 
-    function check_fullReduceLongMarketOrder() public {
+    function check_fullReduceShortMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+        st.nonce = 1;
 
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
 
-            st.orderMarketId1 = i;
-            st.prevPositionBase = sd(1e18);
-            st.orderPriceLimit1 = MAX_PRICE;
+        st.coOrder1Type = 4;
+        st.coOrder1IsLongOrder = false;
+        st.orderBase1 = sd(1e18);
+        st.coOrder1PriceLimit = MAX_PRICE;
 
-            st.coOrder1Type = 4;
-            st.orderBase1 = sd(-1e18);
-            st.coOrder1PriceLimit = MIN_PRICE;
-
-            executeOrderAndTriggerCoOrder();
-        }
+        executeOrderAndTriggerCoOrder();
     }
 
-    function check_fullReduceShortMarketOrder() public {
+    function check_revertWhenExtendingLongReduceMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+        st.nonce = 1;
 
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(1e18);
+        st.orderPriceLimit1 = MAX_PRICE;
 
-            st.orderMarketId1 = i;
-            st.prevPositionBase = sd(-1e18);
-            st.orderPriceLimit1 = MIN_PRICE;
+        st.coOrder1Type = 4;
+        st.coOrder1IsLongOrder = false;
+        st.orderBase1 = sd(1e18);
+        st.coOrder1PriceLimit = MAX_PRICE;
+        st.expectRevert = true;
 
-            st.coOrder1Type = 4;
-            st.coOrder1IsLongOrder = false;
-            st.orderBase1 = sd(1e18);
-            st.coOrder1PriceLimit = MAX_PRICE;
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
 
-            executeOrderAndTriggerCoOrder();
-        }
+        st.og = IOrdersGatewayProxy(sec.ordersGateway);
+
+        vm.prank(sec.coExecutionBot);
+        vm.expectRevert();
+        st.og.execute(co, sig);
     }
 
-    function check_revertWhenExtendingLongReduceMarketOrder() public {
+    function check_revertWhenExtendingShortReduceMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+        st.nonce = 1;
 
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
 
-            st.orderMarketId1 = i;
-            st.prevPositionBase = sd(1e18);
-            st.orderPriceLimit1 = MAX_PRICE;
+        st.coOrder1Type = 4;
+        st.coOrder1IsLongOrder = false;
+        st.orderBase1 = sd(-1e18);
+        st.coOrder1PriceLimit = MIN_PRICE;
+        st.expectRevert = true;
 
-            st.coOrder1Type = 4;
-            st.coOrder1IsLongOrder = false;
-            st.orderBase1 = sd(1e18);
-            st.coOrder1PriceLimit = MAX_PRICE;
-            st.expectRevert = true;
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
 
-            (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
+        st.og = IOrdersGatewayProxy(sec.ordersGateway);
 
-            st.og = IOrdersGatewayProxy(sec.ordersGateway);
-
-            vm.prank(sec.coExecutionBot);
-            vm.expectRevert();
-            st.og.execute(co, sig);
-        }
+        vm.prank(sec.coExecutionBot);
+        vm.expectRevert();
+        st.og.execute(co, sig);
     }
 
-    function check_revertWhenExtendingShortReduceMarketOrder() public {
+    function check_revertWhenFlipLongReduceMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+        st.nonce = 1;
 
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(1e18);
+        st.orderPriceLimit1 = MAX_PRICE;
 
-            st.orderMarketId1 = i;
-            st.prevPositionBase = sd(-1e18);
-            st.orderPriceLimit1 = MIN_PRICE;
+        st.coOrder1Type = 4;
+        st.coOrder1IsLongOrder = false;
+        st.orderBase1 = sd(-1.5e18);
+        st.coOrder1PriceLimit = MIN_PRICE;
+        st.expectRevert = true;
 
-            st.coOrder1Type = 4;
-            st.coOrder1IsLongOrder = false;
-            st.orderBase1 = sd(-1e18);
-            st.coOrder1PriceLimit = MIN_PRICE;
-            st.expectRevert = true;
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
 
-            (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
+        st.og = IOrdersGatewayProxy(sec.ordersGateway);
 
-            st.og = IOrdersGatewayProxy(sec.ordersGateway);
-
-            vm.prank(sec.coExecutionBot);
-            vm.expectRevert();
-            st.og.execute(co, sig);
-        }
+        vm.prank(sec.coExecutionBot);
+        vm.expectRevert();
+        st.og.execute(co, sig);
     }
 
-    function check_revertWhenFlipLongReduceMarketOrder() public {
+    function check_revertWhenFlipShortReduceMarketOrder(uint128 marketId) public {
         mockFreshPrices();
 
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
+        st.nonce = 1;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
 
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
+        st.coOrder1Type = 4;
+        st.coOrder1IsLongOrder = false;
+        st.orderBase1 = sd(1.5e18);
+        st.coOrder1PriceLimit = MAX_PRICE;
+        st.expectRevert = true;
 
-            st.orderMarketId1 = i;
-            st.prevPositionBase = sd(1e18);
-            st.orderPriceLimit1 = MAX_PRICE;
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
 
-            st.coOrder1Type = 4;
-            st.coOrder1IsLongOrder = false;
-            st.orderBase1 = sd(-1.5e18);
-            st.coOrder1PriceLimit = MIN_PRICE;
-            st.expectRevert = true;
+        st.og = IOrdersGatewayProxy(sec.ordersGateway);
 
-            (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
-
-            st.og = IOrdersGatewayProxy(sec.ordersGateway);
-
-            vm.prank(sec.coExecutionBot);
-            vm.expectRevert();
-            st.og.execute(co, sig);
-        }
-    }
-
-    function check_revertWhenFlipShortReduceMarketOrder() public {
-        mockFreshPrices();
-
-        uint128 lastMarketId = ICoreProxy(sec.core).getLastCreatedMarketId();
-
-        for (uint128 i = 1; i <= lastMarketId; i++) {
-            st.nonce = i;
-
-            st.orderMarketId1 = i;
-            st.prevPositionBase = sd(-1e18);
-            st.orderPriceLimit1 = MIN_PRICE;
-
-            st.coOrder1Type = 4;
-            st.coOrder1IsLongOrder = false;
-            st.orderBase1 = sd(1.5e18);
-            st.coOrder1PriceLimit = MAX_PRICE;
-            st.expectRevert = true;
-
-            (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
-
-            st.og = IOrdersGatewayProxy(sec.ordersGateway);
-
-            vm.prank(sec.coExecutionBot);
-            vm.expectRevert();
-            st.og.execute(co, sig);
-        }
+        vm.prank(sec.coExecutionBot);
+        vm.expectRevert();
+        st.og.execute(co, sig);
     }
 
     function check_specialOrderGatewayPermissionToExecuteInCore() public {

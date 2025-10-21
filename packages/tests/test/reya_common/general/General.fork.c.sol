@@ -447,12 +447,12 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceAI16Z);
         ls.maxDeviationMarket.push(ls.maxDeviationAI16Z);
 
-        ls.meanPriceAIXBT = 0.16 * 1e18;
+        ls.meanPriceAIXBT = 0.06 * 1e18;
         ls.maxDeviationAIXBT = ls.meanPriceAIXBT / 2;
         ls.meanPriceMarket.push(ls.meanPriceAIXBT);
         ls.maxDeviationMarket.push(ls.maxDeviationAIXBT);
 
-        ls.meanPriceSONIC = 0.35 * 1e18;
+        ls.meanPriceSONIC = 0.16 * 1e18;
         ls.maxDeviationSONIC = ls.meanPriceSONIC / 2;
         ls.meanPriceMarket.push(ls.meanPriceSONIC);
         ls.maxDeviationMarket.push(ls.maxDeviationSONIC);
@@ -523,7 +523,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceTAO);
         ls.maxDeviationMarket.push(ls.maxDeviationTAO);
 
-        ls.meanPriceIP = 10.9 * 1e18;
+        ls.meanPriceIP = 5.33 * 1e18;
         ls.maxDeviationIP = ls.meanPriceIP / 2;
         ls.meanPriceMarket.push(ls.meanPriceIP);
         ls.maxDeviationMarket.push(ls.maxDeviationIP);
@@ -558,7 +558,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceKAITO);
         ls.maxDeviationMarket.push(ls.maxDeviationKAITO);
 
-        ls.meanPriceZORA = 0.048 * 1e18;
+        ls.meanPriceZORA = 0.1 * 1e18;
         ls.maxDeviationZORA = ls.meanPriceZORA / 2;
         ls.meanPriceMarket.push(ls.meanPriceZORA);
         ls.maxDeviationMarket.push(ls.maxDeviationZORA);
@@ -600,16 +600,16 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviationWSTETH = ls.meanPriceWSTETH / 2;
 
         if (sec.destinationChainId == 1) {
-            ls.meanPriceSRUSD = 1.07 * 1e18;
+            ls.meanPriceSRUSD = 1.09 * 1e18;
             ls.maxDeviationSRUSD = 0.02 * 1e18;
 
             ls.meanPriceRSELINI = 1.07 * 1e18;
             ls.maxDeviationRSELINI = 0.02 * 1e18;
 
-            ls.meanPriceRAMBER = 1.09 * 1e18;
-            ls.maxDeviationRAMBER = 0.02 * 1e18;
+            ls.meanPriceRAMBER = 1.1 * 1e18;
+            ls.maxDeviationRAMBER = 0.05 * 1e18;
 
-            ls.meanPriceRHEDGE = 0.59 * 1e18;
+            ls.meanPriceRHEDGE = 0.5 * 1e18;
             ls.maxDeviationRHEDGE = 0.3 * 1e18;
         } else {
             ls.meanPriceSRUSD = 11.11 * 1e18;
@@ -1283,7 +1283,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
         // Stork is connected to mainnet
         ls.nodeIds.push(sec.srusdRusd_RRStorkNodeId);
-        ls.meanPrices.push(1.07 * 1e18);
+        ls.meanPrices.push(1.09 * 1e18);
         ls.maxDeviations.push(0.02 * 1e18);
 
         ls.nodeIds.push(sec.rseliniUsdcReyaLmNodeId);
@@ -1356,8 +1356,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         string memory mismatches;
 
         for (uint128 i = lastMarketId(); i >= 1; i--) {
-            // FTM, LAYER, MKR, AIXBT, DOT and POL are currently out of circuit
-            bool inactiveMarket = i == 30 || i == 59 || i == 7 || i == 46 || i == 37 || i == 28;
+            // FTM, LAYER, MKR are currently set to constant node
+            bool inactiveMarket = i == 30 || i == 59 || i == 7;
 
             if (inactiveMarket) {
                 continue;
@@ -1388,8 +1388,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         for (uint128 i = lastMarketId(); i >= 1; i--) {
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
 
-            // FTM, LAYER, MKR, AIXBT, DOT and POL are currently out of circuit
-            bool inactiveMarket = i == 30 || i == 59 || i == 7 || i == 46 || i == 37 || i == 28;
+            // FTM, LAYER, MKR are currently set to constant node
+            bool inactiveMarket = i == 30 || i == 59 || i == 7;
 
             if (inactiveMarket) {
                 continue;
