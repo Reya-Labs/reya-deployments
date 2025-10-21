@@ -18,19 +18,11 @@ contract FundingRateForkCheck is BaseReyaForkTest {
         IPassivePerpProxy(sec.perp).setMarketConfiguration(marketId, marketConfig);
     }
 
-    function check_FundingVelocity() public {
+    function check_FundingVelocity(uint128 marketId) public {
         mockFreshPrices();
         removeMarketsOILimit();
 
-        uint128 fromMarketId = 1;
-        uint128 toMarketId = lastMarketId();
-
-        // lower price spacing such that order price is not significantly
-        // affected by price rounding. this was we can compute p slippage
-        // more accurately
-        for (uint128 marketId = fromMarketId; marketId <= toMarketId; marketId += 1) {
-            setPriceSpacing({ marketId: marketId, newPriceSpacing: 1 });
-        }
+        setPriceSpacing({ marketId: marketId, newPriceSpacing: 1 });
 
         (address user,) = makeAddrAndKey("user");
 
@@ -42,37 +34,21 @@ contract FundingRateForkCheck is BaseReyaForkTest {
             DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) })
         );
 
-        SD59x18[] memory pSlippage = new SD59x18[](toMarketId - fromMarketId + 1);
-        for (uint128 marketId = fromMarketId; marketId <= toMarketId; marketId += 1) {
-            (, pSlippage[marketId - fromMarketId]) = executeCoreMatchOrder({
-                marketId: marketId,
-                sender: user,
-                base: sd(-1e18),
-                priceLimit: ud(0),
-                accountId: accountId
-            });
-        }
+        (, SD59x18 pSlippage) = executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: sd(-1e18),
+            priceLimit: ud(0),
+            accountId: accountId
+        });
 
-        int256[] memory fundingRate1 = new int256[](toMarketId - fromMarketId + 1);
-        for (uint128 marketId = fromMarketId; marketId <= toMarketId; marketId += 1) {
-            fundingRate1[marketId - fromMarketId] = IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId);
-        }
-
+        int256 fundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId);
         vm.warp(block.timestamp + 86_400);
+        int256 fundingRate2 = IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId);
 
-        int256[] memory fundingRate2 = new int256[](toMarketId - fromMarketId + 1);
-        for (uint128 marketId = fromMarketId; marketId <= toMarketId; marketId += 1) {
-            fundingRate2[marketId - fromMarketId] = IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId);
-        }
-
-        for (uint128 marketId = fromMarketId; marketId <= toMarketId; marketId += 1) {
-            MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
-            assertApproxEqAbsDecimal(
-                fundingRate2[marketId - fromMarketId] - fundingRate1[marketId - fromMarketId],
-                pSlippage[marketId - fromMarketId].mul(sd(int256(marketConfig.velocityMultiplier))).unwrap(),
-                1e5,
-                18
-            );
-        }
+        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+        assertApproxEqAbsDecimal(
+            fundingRate2 - fundingRate1, pSlippage.mul(sd(int256(marketConfig.velocityMultiplier))).unwrap(), 1e5, 18
+        );
     }
 }

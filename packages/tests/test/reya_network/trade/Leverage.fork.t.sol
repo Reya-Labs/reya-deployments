@@ -112,9 +112,10 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(27, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_pol() public {
-        check_trade_leverage(28, sec.usdc);
-    }
+    // note: market paused
+    // function test_trade_rusdCollateral_leverage_pol() public {
+    //     check_trade_leverage(28, sec.usdc);
+    // }
 
     function test_trade_rusdCollateral_leverage_near() public {
         check_trade_leverage(29, sec.usdc);
@@ -148,9 +149,10 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(36, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_dot() public {
-        check_trade_leverage(37, sec.usdc);
-    }
+    // note: market paused
+    // function test_trade_rusdCollateral_leverage_dot() public {
+    //     check_trade_leverage(37, sec.usdc);
+    // }
 
     function test_trade_rusdCollateral_leverage_ltc() public {
         check_trade_leverage(38, sec.usdc);
@@ -184,9 +186,10 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(45, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_aixbt() public {
-        check_trade_leverage(46, sec.usdc);
-    }
+    // note: market paused
+    // function test_trade_rusdCollateral_leverage_aixbt() public {
+    //     check_trade_leverage(46, sec.usdc);
+    // }
 
     function test_trade_rusdCollateral_leverage_sonic() public {
         check_trade_leverage(47, sec.usdc);

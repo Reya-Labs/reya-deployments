@@ -319,6 +319,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_autoRebalance_maxExposure() public {
+        vm.warp(block.timestamp + 90);
         (uint256 maxExposureShort0, uint256 maxExposureLong0) =
             IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
 
@@ -334,6 +335,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_autoRebalance_instantaneousPrice() public {
+        vm.warp(block.timestamp + 90);
+
         uint128 marketId = 1;
         int256 baseDelta = 10_000e18;
 
@@ -346,6 +349,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
     }
 
     function check_sharePriceChangesWhenAssetPriceChanges() public {
+        vm.warp(block.timestamp + 90);
         autoRebalancePool(false, false);
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);

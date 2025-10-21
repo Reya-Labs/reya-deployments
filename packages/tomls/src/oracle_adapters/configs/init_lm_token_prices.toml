@@ -24,7 +24,7 @@ fromCall.func = "owner"
 func = "setLmTokenPriceConfiguration"
 args = [
     "<%= settings.reyaLmAssetPairIdHEDGE %>",
-    { priceLowerBound = "<%= parseEther('0.5') %>", priceUpperBound = "<%= parseEther('1.5') %>" },
+    { priceLowerBound = "<%= parseEther('0.25') %>", priceUpperBound = "<%= parseEther('1.5') %>" },
 ]
 depends = ["invoke.oracle_adapters_reya_lm_price_updater_owner"]
 

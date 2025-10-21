@@ -76,4 +76,29 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     function test_srUSD_feeds() public view {
         check_srUSD_feeds();
     }
+
+    function test_ActiveMarkets() public view {
+        uint128[] memory activeMarkets = getActiveMarkets();
+        uint128 lastMarketIdd = lastMarketId();
+
+        uint128[] memory pausedMarkets = new uint128[](3);
+        pausedMarkets[0] = 28;
+        pausedMarkets[1] = 37;
+        pausedMarkets[2] = 46;
+
+        assertEq(activeMarkets.length, lastMarketIdd - pausedMarkets.length);
+
+        uint128 a = 0;
+        uint128 b = 0;
+
+        for (uint256 i = 1; i <= lastMarketIdd; i++) {
+            if (b < pausedMarkets.length && pausedMarkets[b] == i) {
+                b++;
+                continue;
+            }
+
+            assertEq(activeMarkets[a], i);
+            a++;
+        }
+    }
 }
