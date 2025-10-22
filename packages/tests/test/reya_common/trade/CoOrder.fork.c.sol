@@ -17,8 +17,13 @@ import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol
 import { ConditionalOrderHashing } from "../../../src/utils/ConditionalOrderHashing.sol";
 import { GrantAccountPermissionHashing } from "../../../src/utils/GrantAccountPermissionHashing.sol";
 import { RevokeAccountPermissionHashing } from "../../../src/utils/RevokeAccountPermissionHashing.sol";
+import {
+    StorkSignedPayload,
+    StorkPricePayload,
+    IOracleAdaptersProxy
+} from "../../../src/interfaces/IOracleAdaptersProxy.sol";
 
-import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
+import { sd, SD59x18, ZERO as ZERO_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
 struct LocalState {
@@ -35,7 +40,6 @@ struct LocalState {
     UD60x18 coOrder1TriggerPrice;
     UD60x18 coOrder1PriceLimit; // irrelevant for Limit order
     uint8 coOrder1Type;
-    bool expectRevert;
 }
 
 contract CoOrderForkCheck is BaseReyaForkTest {
@@ -59,34 +63,15 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         );
     }
 
-    function executeOrderAndTriggerCoOrder()
-        internal
-        returns (ConditionalOrderDetails memory, OG_EIP712Signature memory)
-    {
+    function buildCoOrder() internal returns (ConditionalOrderDetails memory, OG_EIP712Signature memory) {
         st.og = IOrdersGatewayProxy(sec.ordersGateway);
         (st.user, st.userPrivateKey) = makeAddrAndKey("user");
 
         // create and deposit into new margin account
         st.accountId = createAccountAndDeposit();
 
-        // execute trade
-        if (st.coOrder1Type == 0 || st.coOrder1Type == 1) {
-            executeCoreMatchOrder({
-                marketId: st.orderMarketId1,
-                sender: st.user,
-                base: st.orderBase1,
-                priceLimit: st.orderPriceLimit1,
-                accountId: st.accountId
-            });
-
-            // check base before SL/TP order
-            assertEq(
-                IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base,
-                st.orderBase1.unwrap()
-            );
-        }
-
-        if (st.coOrder1Type == 3 || st.coOrder1Type == 4) {
+        // reach the desired previous position base
+        if (st.prevPositionBase.abs().gt(ZERO_sd)) {
             executeCoreMatchOrder({
                 marketId: st.orderMarketId1,
                 sender: st.user,
@@ -95,83 +80,69 @@ contract CoOrderForkCheck is BaseReyaForkTest {
                 accountId: st.accountId
             });
 
-            // check base before SL/TP order
             assertEq(
                 IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base,
-                st.prevPositionBase.unwrap(),
-                "previous position base"
+                st.prevPositionBase.unwrap()
             );
         }
 
-        if (st.coOrder1Type == 2) {
-            // check base before Limit order
-            assertEq(IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base, 0);
-        }
-
         // build the conditional order and its signature
-        ConditionalOrderDetails memory co;
-        OG_EIP712Signature memory coSig;
-        {
-            // build the counterparty account ids
-            uint128[] memory counterpartyAccountIds = new uint128[](1);
-            counterpartyAccountIds[0] = sec.passivePoolAccountId;
 
-            bytes memory inputs;
-            if (st.coOrder1Type == 0 || st.coOrder1Type == 1) {
-                inputs = abi.encode(st.coOrder1IsLongOrder, st.coOrder1TriggerPrice, st.coOrder1PriceLimit);
-            }
+        uint128[] memory counterpartyAccountIds = new uint128[](1);
+        counterpartyAccountIds[0] = sec.passivePoolAccountId;
 
-            if (st.coOrder1Type == 2) {
-                inputs = abi.encode(st.orderBase1, st.coOrder1TriggerPrice);
-            }
-
-            if (st.coOrder1Type == 3 || st.coOrder1Type == 4) {
-                inputs = abi.encode(st.orderBase1, st.coOrder1PriceLimit);
-            }
-
-            // build the conditional order input
-            co = ConditionalOrderDetails({
-                accountId: st.accountId,
-                marketId: st.orderMarketId1,
-                exchangeId: 0,
-                counterpartyAccountIds: counterpartyAccountIds,
-                orderType: st.coOrder1Type,
-                inputs: inputs,
-                signer: st.user,
-                nonce: st.nonce
-            });
-
-            bytes32 digest = ConditionalOrderHashing.mockCalculateDigest(co, block.timestamp + 1, sec.ordersGateway);
-
-            (uint8 v, bytes32 r, bytes32 s) = vm.sign(st.userPrivateKey, digest);
-
-            coSig = OG_EIP712Signature({ v: v, r: r, s: s, deadline: block.timestamp + 1 });
+        bytes memory inputs;
+        if (st.coOrder1Type == 0) {
+            inputs = abi.encode(st.coOrder1IsLongOrder, st.coOrder1TriggerPrice, st.coOrder1PriceLimit);
+        } else if (st.coOrder1Type == 1) {
+            inputs = abi.encode(st.coOrder1IsLongOrder, st.coOrder1TriggerPrice, st.coOrder1PriceLimit);
+        } else if (st.coOrder1Type == 2) {
+            inputs = abi.encode(st.orderBase1, st.coOrder1TriggerPrice);
+        } else if (st.coOrder1Type == 3) {
+            inputs = abi.encode(st.orderBase1, st.coOrder1PriceLimit);
+        } else if (st.coOrder1Type == 4) {
+            inputs = abi.encode(st.orderBase1, st.coOrder1PriceLimit);
+        } else if (st.coOrder1Type == 5) {
+            inputs = abi.encode();
+        } else {
+            revert("Invalid order type");
         }
 
-        // assert that the OG contract does not have the permission
+        // build the conditional order input
+        ConditionalOrderDetails memory co = ConditionalOrderDetails({
+            accountId: st.accountId,
+            marketId: st.orderMarketId1,
+            exchangeId: 0,
+            counterpartyAccountIds: counterpartyAccountIds,
+            orderType: st.coOrder1Type,
+            inputs: inputs,
+            signer: st.user,
+            nonce: st.nonce
+        });
+
+        bytes32 digest = ConditionalOrderHashing.mockCalculateDigest(co, block.timestamp + 1, sec.ordersGateway);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(st.userPrivateKey, digest);
+        OG_EIP712Signature memory coSig = OG_EIP712Signature({ v: v, r: r, s: s, deadline: block.timestamp + 1 });
+
+        return (co, coSig);
+    }
+
+    function executeCoOrder() internal returns (ConditionalOrderDetails memory, OG_EIP712Signature memory) {
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory coSig) = buildCoOrder();
+
+        // assert that the OG contract does not have the permission (it does not need it)
         assertFalse(ICoreProxy(sec.core).isAuthorizedForAccount(st.accountId, MATCH_ORDER, address(st.og)));
-
-        if (st.expectRevert) {
-            return (co, coSig);
-        }
 
         // generate the EIP712 signature and execute the SL order
         vm.prank(sec.coExecutionBot);
         st.og.execute(co, coSig);
 
-        // check base after SL order
-        if (st.coOrder1Type == 0 || st.coOrder1Type == 1) {
+        // check base after orders
+        if (st.coOrder1Type == 0 || st.coOrder1Type == 1 || st.coOrder1Type == 5) {
             assertEq(IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base, 0);
         }
 
-        if (st.coOrder1Type == 2) {
-            assertEq(
-                IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base,
-                st.orderBase1.unwrap()
-            );
-        }
-
-        if (st.coOrder1Type == 3 || st.coOrder1Type == 4) {
+        if (st.coOrder1Type == 2 || st.coOrder1Type == 3 || st.coOrder1Type == 4) {
             assertEq(
                 IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(st.orderMarketId1, st.accountId).base,
                 st.orderBase1.unwrap() + st.prevPositionBase.unwrap(),
@@ -187,7 +158,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
 
         st.nonce = marketId;
         st.orderMarketId1 = marketId;
-        st.orderBase1 = sd(-1e18);
+        st.prevPositionBase = sd(-1e18);
         st.orderPriceLimit1 = MIN_PRICE;
 
         st.coOrder1Type = 0;
@@ -195,7 +166,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1TriggerPrice = MIN_PRICE;
         st.coOrder1PriceLimit = MAX_PRICE;
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_slOrderOnLongPosition(uint128 marketId) public {
@@ -203,7 +174,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
 
         st.nonce = marketId;
         st.orderMarketId1 = marketId;
-        st.orderBase1 = sd(1e18);
+        st.prevPositionBase = sd(1e18);
         st.orderPriceLimit1 = MAX_PRICE;
 
         st.coOrder1Type = 0;
@@ -211,7 +182,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1TriggerPrice = MAX_PRICE;
         st.coOrder1PriceLimit = MIN_PRICE;
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_tpOrderOnShortPosition(uint128 marketId) public {
@@ -219,7 +190,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
 
         st.nonce = marketId;
         st.orderMarketId1 = marketId;
-        st.orderBase1 = sd(-1e18);
+        st.prevPositionBase = sd(-1e18);
         st.orderPriceLimit1 = MIN_PRICE;
 
         st.coOrder1Type = 1;
@@ -227,7 +198,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1TriggerPrice = MAX_PRICE;
         st.coOrder1PriceLimit = MAX_PRICE;
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_tpOrderOnLongPosition(uint128 marketId) public {
@@ -235,7 +206,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
 
         st.nonce = marketId;
         st.orderMarketId1 = marketId;
-        st.orderBase1 = sd(1e18);
+        st.prevPositionBase = sd(1e18);
         st.orderPriceLimit1 = MAX_PRICE;
 
         st.coOrder1Type = 1;
@@ -243,7 +214,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1TriggerPrice = MIN_PRICE;
         st.coOrder1PriceLimit = MIN_PRICE;
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_shortLimitOrder(uint128 marketId) public {
@@ -259,7 +230,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1TriggerPrice = MIN_PRICE;
         st.coOrder1PriceLimit = MIN_PRICE; //irrelevant
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_longLimitOrder(uint128 marketId) public {
@@ -271,7 +242,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1Type = 2;
         st.coOrder1TriggerPrice = MAX_PRICE;
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_extendingLongMarketOrder(uint128 marketId) public {
@@ -286,7 +257,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.orderBase1 = sd(1e18);
         st.coOrder1PriceLimit = MAX_PRICE; //irrelevant
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_extendingShortMarketOrder(uint128 marketId) public {
@@ -301,7 +272,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.orderBase1 = sd(-1e18);
         st.coOrder1PriceLimit = MIN_PRICE;
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_flippingLongMarketOrder(uint128 marketId) public {
@@ -316,7 +287,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.orderBase1 = sd(-1.5e18);
         st.coOrder1PriceLimit = MIN_PRICE;
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_flippingShortMarketOrder(uint128 marketId) public {
@@ -332,7 +303,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.orderBase1 = sd(1.5e18);
         st.coOrder1PriceLimit = MAX_PRICE; //irrelevant
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_partialReduceLongMarketOrder(uint128 marketId) public {
@@ -347,7 +318,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.orderBase1 = sd(-1.5e18);
         st.coOrder1PriceLimit = MIN_PRICE;
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_partialReduceShortMarketOrder(uint128 marketId) public {
@@ -362,7 +333,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.orderBase1 = sd(1.5e18);
         st.coOrder1PriceLimit = MAX_PRICE;
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_fullReduceLongMarketOrder(uint128 marketId) public {
@@ -377,7 +348,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.orderBase1 = sd(-1e18);
         st.coOrder1PriceLimit = MIN_PRICE;
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_fullReduceShortMarketOrder(uint128 marketId) public {
@@ -394,7 +365,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.orderBase1 = sd(1e18);
         st.coOrder1PriceLimit = MAX_PRICE;
 
-        executeOrderAndTriggerCoOrder();
+        executeCoOrder();
     }
 
     function check_revertWhenExtendingLongReduceMarketOrder(uint128 marketId) public {
@@ -410,9 +381,8 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1IsLongOrder = false;
         st.orderBase1 = sd(1e18);
         st.coOrder1PriceLimit = MAX_PRICE;
-        st.expectRevert = true;
 
-        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = buildCoOrder();
 
         st.og = IOrdersGatewayProxy(sec.ordersGateway);
 
@@ -434,9 +404,8 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1IsLongOrder = false;
         st.orderBase1 = sd(-1e18);
         st.coOrder1PriceLimit = MIN_PRICE;
-        st.expectRevert = true;
 
-        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = buildCoOrder();
 
         st.og = IOrdersGatewayProxy(sec.ordersGateway);
 
@@ -458,9 +427,8 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1IsLongOrder = false;
         st.orderBase1 = sd(-1.5e18);
         st.coOrder1PriceLimit = MIN_PRICE;
-        st.expectRevert = true;
 
-        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = buildCoOrder();
 
         st.og = IOrdersGatewayProxy(sec.ordersGateway);
 
@@ -481,9 +449,8 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1IsLongOrder = false;
         st.orderBase1 = sd(1.5e18);
         st.coOrder1PriceLimit = MAX_PRICE;
-        st.expectRevert = true;
 
-        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = buildCoOrder();
 
         st.og = IOrdersGatewayProxy(sec.ordersGateway);
 
@@ -520,5 +487,110 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         vm.prank(address(277));
         vm.expectRevert(abi.encodeWithSelector(ICoreProxy.AccountPermissionDenied.selector, accountId, address(277)));
         core.execute(accountId, commands);
+    }
+
+    function check_fullReduceLongOrder(uint128 marketId) public {
+        mockFreshPrices();
+
+        st.nonce = marketId;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(1e18);
+        st.orderPriceLimit1 = MAX_PRICE;
+
+        st.coOrder1Type = 5;
+        executeCoOrder();
+    }
+
+    function check_fullReduceShortOrder(uint128 marketId) public {
+        mockFreshPrices();
+
+        st.nonce = marketId;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
+
+        st.coOrder1Type = 5;
+        executeCoOrder();
+    }
+
+    function check_batchExecute() public {
+        mockFreshPrices();
+
+        uint128 marketId = 1;
+        st.nonce = marketId;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(2e18);
+        st.orderPriceLimit1 = MAX_PRICE;
+
+        st.coOrder1Type = 4;
+        st.orderBase1 = sd(-1.5e18);
+        st.coOrder1PriceLimit = MIN_PRICE;
+
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = buildCoOrder();
+
+        st.og = IOrdersGatewayProxy(sec.ordersGateway);
+
+        ConditionalOrderDetails[] memory coList = new ConditionalOrderDetails[](1);
+        coList[0] = co;
+
+        OG_EIP712Signature[] memory sigList = new OG_EIP712Signature[](1);
+        sigList[0] = sig;
+
+        vm.prank(sec.coExecutionBot);
+        (bytes[] memory outputs) = st.og.batchExecute(coList, sigList);
+
+        assertEq(outputs.length, 1);
+        assertGt(outputs[0].length, 0);
+    }
+
+    function check_updatePricesAndBatchExecute() public {
+        mockFreshPrices();
+
+        uint128 marketId = 1;
+        st.nonce = marketId;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(2e18);
+        st.orderPriceLimit1 = MAX_PRICE;
+
+        st.coOrder1Type = 4;
+        st.orderBase1 = sd(-1.5e18);
+        st.coOrder1PriceLimit = MIN_PRICE;
+
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = buildCoOrder();
+
+        st.og = IOrdersGatewayProxy(sec.ordersGateway);
+
+        ConditionalOrderDetails[] memory coList = new ConditionalOrderDetails[](1);
+        coList[0] = co;
+
+        OG_EIP712Signature[] memory sigList = new OG_EIP712Signature[](1);
+        sigList[0] = sig;
+
+        (address futurePublisher, uint256 futurePublisherPK) = makeAddrAndKey("futurePublisher");
+
+        // create a StorkPricePayload and sign it
+        StorkSignedPayload memory storkSignedPayload =
+            createSignedPricePayload(futurePublisher, futurePublisherPK, block.timestamp);
+
+        // authorize the publisher
+        vm.prank(sec.multisig);
+        IOracleAdaptersProxy(sec.oracleAdaptersProxy).addToFeatureFlagAllowlist(
+            keccak256(bytes("publishers")), futurePublisher
+        );
+
+        bytes[] memory signedOffchainDataArray = new bytes[](1);
+        signedOffchainDataArray[0] = abi.encode(storkSignedPayload);
+
+        vm.prank(sec.coExecutionBot);
+        (bytes[] memory outputs) = st.og.updatePricesAndBatchExecute(signedOffchainDataArray, coList, sigList);
+
+        assertEq(outputs.length, 1);
+        assertGt(outputs[0].length, 0);
+
+        StorkPricePayload memory existingPricePayload =
+            IOracleAdaptersProxy(sec.oracleAdaptersProxy).getLatestPricePayload("ETH/USD");
+        assertEq(existingPricePayload.assetPairId, "ETH/USD");
+        assertEq(existingPricePayload.timestamp, block.timestamp);
+        assertEq(existingPricePayload.price, 3000e18);
     }
 }

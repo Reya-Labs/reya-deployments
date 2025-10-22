@@ -8,6 +8,14 @@ interface IOrdersGatewayProxy {
         EIP712Signature[] memory signatures
     ) external returns (bytes[] memory outputs);
 
+    function updatePricesAndBatchExecute(
+        bytes[] calldata signedOffchainDataArray,
+        ConditionalOrderDetails[] memory orders,
+        EIP712Signature[] calldata signatures
+    )
+        external
+        returns (bytes[] memory outputs);
+
     error FeatureUnavailable(bytes32 which);
 
     function getConfiguration()

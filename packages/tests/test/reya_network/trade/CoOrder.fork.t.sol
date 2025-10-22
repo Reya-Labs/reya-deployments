@@ -130,7 +130,29 @@ contract CoOrderForkTest is ReyaForkTest, CoOrderForkCheck {
         }
     }
 
+    function test_fullReduceLongOrder() public {
+        uint128[] memory activeMarkets = getActiveMarkets();
+        for (uint256 i = 0; i < activeMarkets.length; i++) {
+            check_fullReduceLongOrder(activeMarkets[i]);
+        }
+    }
+
+    function test_fullReduceShortOrder() public {
+        uint128[] memory activeMarkets = getActiveMarkets();
+        for (uint256 i = 0; i < activeMarkets.length; i++) {
+            check_fullReduceShortOrder(activeMarkets[i]);
+        }
+    }
+
     function test_specialOrderGatewayPermissionToExecuteInCore() public {
         check_specialOrderGatewayPermissionToExecuteInCore();
+    }
+
+    function test_batchExecute() public {
+        check_batchExecute();
+    }
+
+    function test_updatePricesAndBatchExecute() public {
+        check_updatePricesAndBatchExecute();
     }
 }
