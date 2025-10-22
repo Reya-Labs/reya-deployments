@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.91"
+version = "1.0.92"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -398,6 +398,7 @@ storkAssetPairIdYZYMark = "YZYUSDMARK"
 storkAssetPairIdXPLMark = "XPLUSDMARK"
 storkAssetPairIdWLFIMark = "WLFIUSDMARK"
 storkAssetPairIdLINEAMark = "LINEAUSDMARK"
+storkAssetPairIdMEGAMark = "MEGAUSDMARK"
 
 [var.reya_lm_asset_pair_ids]
 reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
@@ -820,6 +821,9 @@ wlfiUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 lineaUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 lineaUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+#------------------------------------------------------------------------------
+megaUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+megaUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 usdeUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 usdeUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
@@ -2330,8 +2334,28 @@ market74Linea_marketOrderMaxStaleDuration = "11"
 market74Linea_priceSpreadUnscaled = "0"
 market74Linea_volatilityIndexMultiplierUnscaled = "0"
 
+[var.market_75Mega]
+market75Mega_riskMatrixIndex = "0"
+market75Mega_maxOpenBaseUnscaled = "2000000"
+market75Mega_velocityMultiplierUnscaled = "2"
+market75Mega_oracleNodeId = "<%= settings.megaUsdcMarkNodeIdStork %>"
+market75Mega_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market75Mega_dutchConfig_lambdaUnscaled = "1"
+market75Mega_dutchConfig_minBaseUnscaled = "0.11"
+market75Mega_slippageParams_phiUnscaled = "0"
+market75Mega_slippageParams_betaUnscaled = "0"
+market75Mega_minimumOrderBaseUnscaled = "1"
+market75Mega_baseSpacingUnscaled = "0.1"
+market75Mega_priceSpacingUnscaled = "<%= 1e-6 %>"
+market75Mega_depthFactorUnscaled = "0.25"
+market75Mega_maxExposureFactorUnscaled = "0.999"
+market75Mega_maxPSlippageUnscaled = "0.1"
+market75Mega_marketOrderMaxStaleDuration = "11"
+market75Mega_priceSpreadUnscaled = "0"
+market75Mega_volatilityIndexMultiplierUnscaled = "0"
+
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "74"
+cp1Rusd_maxMarkets = "75"
 cp1Rusd_maxCollaterals = "11"
 # -----------------------------------------------
 default_insuranceFund_liquidationFeeUnscaled = "0.15"
@@ -2411,6 +2435,7 @@ cp1Rusd_market71Yzy_riskMatrix00Unscaled = "0.06575"
 cp1Rusd_market72Xpl_riskMatrix00Unscaled = "0.06575"
 cp1Rusd_market73Wlfi_riskMatrix00Unscaled = "0.06575"
 cp1Rusd_market74Linea_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market75Mega_riskMatrix00Unscaled = "0.06575"
 
 # -----------------------------------------------
 cp1Rusd_imMultiplierUnscaled = "1.3"
