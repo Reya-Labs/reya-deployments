@@ -489,6 +489,30 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         core.execute(accountId, commands);
     }
 
+    function check_fullReduceLongOrder(uint128 marketId) public {
+        mockFreshPrices();
+
+        st.nonce = marketId;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(1e18);
+        st.orderPriceLimit1 = MAX_PRICE;
+
+        st.coOrder1Type = 5;
+        executeCoOrder();
+    }
+
+    function check_fullReduceShortOrder(uint128 marketId) public {
+        mockFreshPrices();
+
+        st.nonce = marketId;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(-1e18);
+        st.orderPriceLimit1 = MIN_PRICE;
+
+        st.coOrder1Type = 5;
+        executeCoOrder();
+    }
+
     function check_batchExecute() public {
         mockFreshPrices();
 
