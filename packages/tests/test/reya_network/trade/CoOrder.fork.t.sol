@@ -133,4 +133,12 @@ contract CoOrderForkTest is ReyaForkTest, CoOrderForkCheck {
     function test_specialOrderGatewayPermissionToExecuteInCore() public {
         check_specialOrderGatewayPermissionToExecuteInCore();
     }
+
+    function test_batchExecute() public {
+        check_batchExecute();
+    }
+
+    function test_updatePricesAndBatchExecute() public {
+        check_updatePricesAndBatchExecute();
+    }
 }

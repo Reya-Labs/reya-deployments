@@ -17,6 +17,11 @@ import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol
 import { ConditionalOrderHashing } from "../../../src/utils/ConditionalOrderHashing.sol";
 import { GrantAccountPermissionHashing } from "../../../src/utils/GrantAccountPermissionHashing.sol";
 import { RevokeAccountPermissionHashing } from "../../../src/utils/RevokeAccountPermissionHashing.sol";
+import {
+    StorkSignedPayload,
+    StorkPricePayload,
+    IOracleAdaptersProxy
+} from "../../../src/interfaces/IOracleAdaptersProxy.sol";
 
 import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
@@ -35,7 +40,7 @@ struct LocalState {
     UD60x18 coOrder1TriggerPrice;
     UD60x18 coOrder1PriceLimit; // irrelevant for Limit order
     uint8 coOrder1Type;
-    bool expectRevert;
+    bool noExecution;
 }
 
 contract CoOrderForkCheck is BaseReyaForkTest {
@@ -151,7 +156,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         // assert that the OG contract does not have the permission
         assertFalse(ICoreProxy(sec.core).isAuthorizedForAccount(st.accountId, MATCH_ORDER, address(st.og)));
 
-        if (st.expectRevert) {
+        if (st.noExecution) {
             return (co, coSig);
         }
 
@@ -410,7 +415,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1IsLongOrder = false;
         st.orderBase1 = sd(1e18);
         st.coOrder1PriceLimit = MAX_PRICE;
-        st.expectRevert = true;
+        st.noExecution = true;
 
         (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
 
@@ -434,7 +439,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1IsLongOrder = false;
         st.orderBase1 = sd(-1e18);
         st.coOrder1PriceLimit = MIN_PRICE;
-        st.expectRevert = true;
+        st.noExecution = true;
 
         (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
 
@@ -458,7 +463,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1IsLongOrder = false;
         st.orderBase1 = sd(-1.5e18);
         st.coOrder1PriceLimit = MIN_PRICE;
-        st.expectRevert = true;
+        st.noExecution = true;
 
         (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
 
@@ -481,7 +486,7 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         st.coOrder1IsLongOrder = false;
         st.orderBase1 = sd(1.5e18);
         st.coOrder1PriceLimit = MAX_PRICE;
-        st.expectRevert = true;
+        st.noExecution = true;
 
         (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
 
@@ -520,5 +525,88 @@ contract CoOrderForkCheck is BaseReyaForkTest {
         vm.prank(address(277));
         vm.expectRevert(abi.encodeWithSelector(ICoreProxy.AccountPermissionDenied.selector, accountId, address(277)));
         core.execute(accountId, commands);
+    }
+
+    function check_batchExecute() public {
+        mockFreshPrices();
+
+        uint128 marketId = 1;
+        st.nonce = marketId;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(2e18);
+        st.orderPriceLimit1 = MAX_PRICE;
+
+        st.coOrder1Type = 4;
+        st.orderBase1 = sd(-1.5e18);
+        st.coOrder1PriceLimit = MIN_PRICE;
+        st.noExecution = true;
+
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
+
+        st.og = IOrdersGatewayProxy(sec.ordersGateway);
+
+        ConditionalOrderDetails[] memory coList = new ConditionalOrderDetails[](1);
+        coList[0] = co;
+
+        OG_EIP712Signature[] memory sigList = new OG_EIP712Signature[](1);
+        sigList[0] = sig;
+
+        vm.prank(sec.coExecutionBot);
+        (bytes[] memory outputs) = st.og.batchExecute(coList, sigList);
+
+        assertEq(outputs.length, 1);
+        assertGt(outputs[0].length, 0);
+    }
+
+    function check_updatePricesAndBatchExecute() public {
+        mockFreshPrices();
+
+        uint128 marketId = 1;
+        st.nonce = marketId;
+        st.orderMarketId1 = marketId;
+        st.prevPositionBase = sd(2e18);
+        st.orderPriceLimit1 = MAX_PRICE;
+
+        st.coOrder1Type = 4;
+        st.orderBase1 = sd(-1.5e18);
+        st.coOrder1PriceLimit = MIN_PRICE;
+        st.noExecution = true;
+
+        (ConditionalOrderDetails memory co, OG_EIP712Signature memory sig) = executeOrderAndTriggerCoOrder();
+
+        st.og = IOrdersGatewayProxy(sec.ordersGateway);
+
+        ConditionalOrderDetails[] memory coList = new ConditionalOrderDetails[](1);
+        coList[0] = co;
+
+        OG_EIP712Signature[] memory sigList = new OG_EIP712Signature[](1);
+        sigList[0] = sig;
+
+        (address futurePublisher, uint256 futurePublisherPK) = makeAddrAndKey("futurePublisher");
+
+        // create a StorkPricePayload and sign it
+        StorkSignedPayload memory storkSignedPayload =
+            createSignedPricePayload(futurePublisher, futurePublisherPK, block.timestamp);
+
+        // authorize the publisher
+        vm.prank(sec.multisig);
+        IOracleAdaptersProxy(sec.oracleAdaptersProxy).addToFeatureFlagAllowlist(
+            keccak256(bytes("publishers")), futurePublisher
+        );
+
+        bytes[] memory signedOffchainDataArray = new bytes[](1);
+        signedOffchainDataArray[0] = abi.encode(storkSignedPayload);
+
+        vm.prank(sec.coExecutionBot);
+        (bytes[] memory outputs) = st.og.updatePricesAndBatchExecute(signedOffchainDataArray, coList, sigList);
+
+        assertEq(outputs.length, 1);
+        assertGt(outputs[0].length, 0);
+
+        StorkPricePayload memory existingPricePayload =
+            IOracleAdaptersProxy(sec.oracleAdaptersProxy).getLatestPricePayload("ETH/USD");
+        assertEq(existingPricePayload.assetPairId, "ETH/USD");
+        assertEq(existingPricePayload.timestamp, block.timestamp);
+        assertEq(existingPricePayload.price, 3000e18);
     }
 }

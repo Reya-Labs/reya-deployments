@@ -1,0 +1,19 @@
+[invoke.oracle_adapters_set_orders_gateway_subsecond_executor]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= contracts.OrdersGatewayProxy.address %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_set_orders_gateway_executor]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= contracts.OrdersGatewayProxy.address %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]

@@ -26,6 +26,10 @@ import {
     DepositLiquidityToAccountInputs
 } from "../../src/interfaces/IPeripheryProxy.sol";
 
+import {
+    IOracleAdaptersProxy, StorkSignedPayload, StorkPricePayload
+} from "../../src/interfaces/IOracleAdaptersProxy.sol";
+
 import { IOracleManagerProxy, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
 
 import { IPassivePerpProxy, MarketConfigurationData } from "../../src/interfaces/IPassivePerpProxy.sol";
@@ -501,5 +505,41 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         }
 
         return activeMarkets;
+    }
+
+    function calculatePricePayloadDigest(
+        address oraclePubKey,
+        StorkPricePayload memory pricePayload
+    )
+        internal
+        pure
+        returns (bytes32)
+    {
+        bytes32 hashedMessage = keccak256(
+            abi.encodePacked(oraclePubKey, pricePayload.assetPairId, pricePayload.timestamp, pricePayload.price)
+        );
+        bytes32 digest = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", hashedMessage));
+        return digest;
+    }
+
+    function createSignedPricePayload(
+        address publisher,
+        uint256 publisherPK,
+        uint256 timestamp
+    )
+        internal
+        pure
+        returns (StorkSignedPayload memory)
+    {
+        StorkPricePayload memory pricePayload =
+            StorkPricePayload({ assetPairId: "ETH/USD", timestamp: timestamp, price: 3000e18 });
+
+        bytes32 digest = calculatePricePayloadDigest(publisher, pricePayload);
+        (uint8 vv, bytes32 rr, bytes32 ss) = vm.sign(publisherPK, digest);
+
+        StorkSignedPayload memory storkSignedPayload =
+            StorkSignedPayload({ oraclePubKey: publisher, pricePayload: pricePayload, r: rr, s: ss, v: vv });
+
+        return storkSignedPayload;
     }
 }

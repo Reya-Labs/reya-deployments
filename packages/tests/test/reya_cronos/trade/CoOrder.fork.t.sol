@@ -133,4 +133,12 @@ contract CoOrderForkTest is ReyaForkTest, CoOrderForkCheck {
     function test_Cronos_specialOrderGatewayPermissionToExecuteInCore() public {
         check_specialOrderGatewayPermissionToExecuteInCore();
     }
+
+    function test_Cronos_batchExecute() public {
+        check_batchExecute();
+    }
+
+    function test_Cronos_updatePricesAndBatchExecute() public {
+        check_updatePricesAndBatchExecute();
+    }
 }

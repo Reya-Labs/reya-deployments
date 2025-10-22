@@ -8,4 +8,5 @@ include = [
     "configs/set_sub_second_executors.toml",
     "configs/allow_all_executors.toml",
     "configs/init_lm_token_prices.toml",
+    "configs/set_standalone_executors.toml",
 ]
