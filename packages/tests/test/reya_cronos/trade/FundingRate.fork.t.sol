@@ -299,4 +299,8 @@ contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
     function test_Cronos_FundingVelocity_linea() public {
         check_FundingVelocity(74);
     }
+
+    function test_Cronos_FundingVelocity_mega() public {
+        check_FundingVelocity(75);
+    }
 }

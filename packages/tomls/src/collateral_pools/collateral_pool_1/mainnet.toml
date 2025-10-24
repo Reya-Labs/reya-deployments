@@ -73,6 +73,7 @@ include = [
     "markets/market_72xpl.toml",
     "markets/market_73wlfi.toml",
     "markets/market_74linea.toml",
+    "markets/market_75mega.toml",
     "risk/risk_matrix.toml",
     "risk/risk_multipliers.toml",
     "risk/liquidations.toml",
@@ -168,4 +169,5 @@ depends = [
     "invoke.market_72xpl_merge_collateral_pool",
     "invoke.market_73wlfi_merge_collateral_pool",
     "invoke.market_74linea_merge_collateral_pool",
+    "invoke.market_75mega_merge_collateral_pool",
 ]
