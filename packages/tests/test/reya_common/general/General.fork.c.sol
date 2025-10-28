@@ -439,7 +439,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceHYPE);
         ls.maxDeviationMarket.push(ls.maxDeviationHYPE);
 
-        ls.meanPriceVIRTUAL = 0.73 * 1e18;
+        ls.meanPriceVIRTUAL = 1.5 * 1e18;
         ls.maxDeviationVIRTUAL = ls.meanPriceVIRTUAL / 2;
         ls.meanPriceMarket.push(ls.meanPriceVIRTUAL);
         ls.maxDeviationMarket.push(ls.maxDeviationVIRTUAL);

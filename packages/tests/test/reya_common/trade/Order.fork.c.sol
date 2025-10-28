@@ -218,21 +218,4 @@ contract OrderForkCheck is BaseReyaForkTest {
         assertEq(status, CacheStatus.VALID);
         assertEq(postOrderPoolNodeMarginInfo, preOrderPoolNodeMarginInfo);
     }
-
-    function assertEq(MarginInfo memory a, MarginInfo memory b) private pure {
-        assertEq(a.collateral, b.collateral);
-        assertEq(a.marginBalance, b.marginBalance);
-        assertEq(a.realBalance, b.realBalance);
-        assertEq(a.initialDelta, b.initialDelta);
-        assertEq(a.maintenanceDelta, b.maintenanceDelta);
-        assertEq(a.liquidationDelta, b.liquidationDelta);
-        assertEq(a.dutchDelta, b.dutchDelta);
-        assertEq(a.adlDelta, b.adlDelta);
-        assertEq(a.initialBufferDelta, b.initialBufferDelta);
-        assertEq(a.liquidationMarginRequirement, b.liquidationMarginRequirement);
-    }
-
-    function assertEq(CacheStatus a, CacheStatus b) private pure {
-        assertEq(uint256(a), uint256(b));
-    }
 }

@@ -32,7 +32,7 @@ import {
 
 import { IOracleManagerProxy, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
 
-import { IPassivePerpProxy, MarketConfigurationData } from "../../src/interfaces/IPassivePerpProxy.sol";
+import { IPassivePerpProxy, MarketConfigurationData, CacheStatus } from "../../src/interfaces/IPassivePerpProxy.sol";
 
 import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
 
@@ -541,5 +541,22 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             StorkSignedPayload({ oraclePubKey: publisher, pricePayload: pricePayload, r: rr, s: ss, v: vv });
 
         return storkSignedPayload;
+    }
+
+    function assertEq(MarginInfo memory a, MarginInfo memory b) internal pure {
+        assertEq(a.collateral, b.collateral);
+        assertEq(a.marginBalance, b.marginBalance);
+        assertEq(a.realBalance, b.realBalance);
+        assertEq(a.initialDelta, b.initialDelta);
+        assertEq(a.maintenanceDelta, b.maintenanceDelta);
+        assertEq(a.liquidationDelta, b.liquidationDelta);
+        assertEq(a.dutchDelta, b.dutchDelta);
+        assertEq(a.adlDelta, b.adlDelta);
+        assertEq(a.initialBufferDelta, b.initialBufferDelta);
+        assertEq(a.liquidationMarginRequirement, b.liquidationMarginRequirement);
+    }
+
+    function assertEq(CacheStatus a, CacheStatus b) internal pure {
+        assertEq(uint256(a), uint256(b));
     }
 }
