@@ -429,18 +429,21 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         assertGtDecimal(s.sharePrice.unwrap(), 0.99e18, 18);
     }
 
+    function mockFreshPrice(bytes32 nodeId, uint256 price) internal {
+        vm.mockCall(
+            sec.oracleManager,
+            abi.encodeCall(IOracleManagerProxy.process, (nodeId)),
+            abi.encode(NodeOutput.Data({ price: price, timestamp: block.timestamp }))
+        );
+    }
+
     function mockFreshPrices() internal {
         for (uint128 i = 1; i <= lastMarketId(); i++) {
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
             bytes32 nodeId = marketConfig.oracleNodeId;
 
             NodeOutput.Data memory output = IOracleManagerProxy(sec.oracleManager).process(nodeId);
-
-            vm.mockCall(
-                sec.oracleManager,
-                abi.encodeCall(IOracleManagerProxy.process, (nodeId)),
-                abi.encode(NodeOutput.Data({ price: output.price, timestamp: block.timestamp }))
-            );
+            mockFreshPrice(nodeId, output.price);
         }
     }
 
