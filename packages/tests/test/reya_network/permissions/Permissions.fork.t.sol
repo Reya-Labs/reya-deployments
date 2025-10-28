@@ -140,7 +140,7 @@ contract PermissionsForkTest is ReyaForkTest {
         bytes32 flagId = keccak256(bytes("subSecondExecutors"));
         address[] memory allowlist = IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowlist(flagId);
 
-        address[] memory expectedAllowlist = new address[](30);
+        address[] memory expectedAllowlist = new address[](31);
         expectedAllowlist[0] = 0x460709Fc45340055d68f8CECa5e66c99e11BA7A5;
         expectedAllowlist[1] = 0x7B2240556Fd593D09C8F3915328629A8fA916613;
         expectedAllowlist[2] = 0x9f57C8e4A8Cd5e66A81C7DF7079ff797428a7C92;
@@ -171,6 +171,7 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[27] = 0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4;
         expectedAllowlist[28] = 0xbf59e78614F97fDbA523238AefDbe64E2efb28C3;
         expectedAllowlist[29] = 0xbAF944384b46eB8609c3A5C7894028cE60c15354;
+        expectedAllowlist[30] = 0xfc8c96bE87Da63CeCddBf54abFA7B13ee8044739;
 
         assertEq(allowlist, expectedAllowlist);
     }

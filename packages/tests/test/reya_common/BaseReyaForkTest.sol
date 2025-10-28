@@ -32,7 +32,7 @@ import {
 
 import { IOracleManagerProxy, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
 
-import { IPassivePerpProxy, MarketConfigurationData } from "../../src/interfaces/IPassivePerpProxy.sol";
+import { IPassivePerpProxy, MarketConfigurationData, CacheStatus } from "../../src/interfaces/IPassivePerpProxy.sol";
 
 import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
 
@@ -429,18 +429,21 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         assertGtDecimal(s.sharePrice.unwrap(), 0.99e18, 18);
     }
 
+    function mockFreshPrice(bytes32 nodeId, uint256 price) internal {
+        vm.mockCall(
+            sec.oracleManager,
+            abi.encodeCall(IOracleManagerProxy.process, (nodeId)),
+            abi.encode(NodeOutput.Data({ price: price, timestamp: block.timestamp }))
+        );
+    }
+
     function mockFreshPrices() internal {
         for (uint128 i = 1; i <= lastMarketId(); i++) {
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
             bytes32 nodeId = marketConfig.oracleNodeId;
 
             NodeOutput.Data memory output = IOracleManagerProxy(sec.oracleManager).process(nodeId);
-
-            vm.mockCall(
-                sec.oracleManager,
-                abi.encodeCall(IOracleManagerProxy.process, (nodeId)),
-                abi.encode(NodeOutput.Data({ price: output.price, timestamp: block.timestamp }))
-            );
+            mockFreshPrice(nodeId, output.price);
         }
     }
 
@@ -541,5 +544,22 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             StorkSignedPayload({ oraclePubKey: publisher, pricePayload: pricePayload, r: rr, s: ss, v: vv });
 
         return storkSignedPayload;
+    }
+
+    function assertEq(MarginInfo memory a, MarginInfo memory b) internal pure {
+        assertEq(a.collateral, b.collateral);
+        assertEq(a.marginBalance, b.marginBalance);
+        assertEq(a.realBalance, b.realBalance);
+        assertEq(a.initialDelta, b.initialDelta);
+        assertEq(a.maintenanceDelta, b.maintenanceDelta);
+        assertEq(a.liquidationDelta, b.liquidationDelta);
+        assertEq(a.dutchDelta, b.dutchDelta);
+        assertEq(a.adlDelta, b.adlDelta);
+        assertEq(a.initialBufferDelta, b.initialBufferDelta);
+        assertEq(a.liquidationMarginRequirement, b.liquidationMarginRequirement);
+    }
+
+    function assertEq(CacheStatus a, CacheStatus b) internal pure {
+        assertEq(uint256(a), uint256(b));
     }
 }
