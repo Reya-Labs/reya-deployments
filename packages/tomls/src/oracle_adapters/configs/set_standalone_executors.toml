@@ -3,7 +3,7 @@ target = ["OracleAdaptersProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
-    "<%= keccak256(hexlify('executors')) %>",
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
     "<%= contracts.OrdersGatewayProxy.address %>",
 ]
 depends = ["invoke.upgrade_oracle_adapters_proxy"]
