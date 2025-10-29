@@ -815,7 +815,7 @@ market1Eth_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_2btc]
 market2Btc_riskMatrixIndex = "0"
-market2Btc_maxOpenBaseUnscaled = "52"
+market2Btc_maxOpenBaseUnscaled = "90"
 market2Btc_velocityMultiplierUnscaled = "10"
 market2Btc_oracleNodeId = "<%= settings.btcUsdcMarkNodeIdStork %>"
 market2Btc_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
