@@ -10,7 +10,7 @@ target = ["<%= settings.vltzProxy %>"]
 abi = "<%= JSON.stringify(imports.reyaVltzRouter.contracts.OwnerUpgradeModule.abi) %>"
 fromCall.func = "owner"
 func = "upgradeTo"
-args = ["<%= imports.reyaVltzRouter.contracts.VltzRouter.address %>"]
+args = ["<%= settings.vltzRouterAddress %>"]
 factory.VltzProxy.abiOf = ["reyaVltzRouter.VltzRouter"]
 factory.VltzProxy.event = "Upgraded"
 factory.VltzProxy.arg = 0

@@ -1,8 +1,8 @@
 name = "reya-source-chains"
 preset = "main"
 description = "Reya Source Chains"
-privateSourceCode = true
-version = "1.0.0"
+privateSourceCode = false
+version = "1.0.5"
 
 include = ["../vltz/mainnet.toml"]
 
@@ -10,14 +10,16 @@ include = ["../vltz/mainnet.toml"]
 owner = "0x0F575355D19F5056415e382CEEEcffE0Fe8433a9"
 
 [var.cannonClonePackages]
-vltzProxyPackage = "reya-vltz:1.0.0@proxy"
-vltzRouterPackage = "reya-vltz:1.0.1@router"
+vltzProxyPackage = "reya-vltz:1.0.3@proxy"
+vltzRouterPackage = "reya-vltz:1.0.4@router"
 
 [var.upgrade_proxy_vars]
 vltzProxy = "<%= imports.reyaVltzProxy.contracts.InitialProxy.address %>"
+# Note: this is the latest router address, to be updated every time there is a router upgrade
+vltzRouterAddress = "0xcbb6e9a7e8b01893762ee8750f77ab632acfe4f3"
 
 [var.initial_proxy_vars]
-envSalt = "prod"
+envSalt = "prodTokenVltz"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
