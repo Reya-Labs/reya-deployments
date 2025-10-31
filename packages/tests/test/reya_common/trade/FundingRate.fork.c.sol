@@ -34,13 +34,15 @@ contract FundingRateForkCheck is BaseReyaForkTest {
             DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) })
         );
 
-        (, SD59x18 pSlippage) = executeCoreMatchOrder({
+        executeCoreMatchOrder({
             marketId: marketId,
             sender: user,
             base: sd(-1e18),
             priceLimit: ud(0),
             accountId: accountId
         });
+
+        SD59x18 pSlippage = sd(IPassivePerpProxy(sec.perp).getPSlippage(marketId));
 
         int256 fundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId);
         vm.warp(block.timestamp + 86_400);

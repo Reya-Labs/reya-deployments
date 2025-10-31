@@ -5,6 +5,8 @@ pragma solidity ^0.8.4;
 import { MarginInfo } from "./ICoreProxy.sol";
 
 interface IPassivePerpProxy {
+    function getPSlippage(uint128 marketId) external view returns (int256);
+
     function createMarket(string memory name, uint128 passivePoolId)
         external
         returns (uint128 id);
