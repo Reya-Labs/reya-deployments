@@ -306,8 +306,12 @@ contract BaseReyaForkTest is StorageReyaForkTest {
 
         (s.outputs,) = ICoreProxy(sec.core).execute(accountId, commands);
 
+        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+
         orderPrice = UD60x18.wrap(abi.decode(s.outputs[0], (uint256)));
-        pSlippage = orderPrice.div(getMarketSpotPrice(marketId)).intoSD59x18().sub(UNIT_sd);
+        pSlippage = orderPrice.div(getMarketSpotPrice(marketId)).intoSD59x18().sub(UNIT_sd).sub(
+            ud(marketConfig.priceSpread).intoSD59x18()
+        );
     }
 
     function executePeripheryAddLiquidity(address user, uint256 amount, uint256 minShares) internal {
