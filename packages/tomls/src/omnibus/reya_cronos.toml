@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.80"
+version = "1.0.81"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -795,7 +795,7 @@ pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.007"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
-market1Eth_maxOpenBaseUnscaled = "2744"
+market1Eth_maxOpenBaseUnscaled = "4500"
 market1Eth_velocityMultiplierUnscaled = "35"
 market1Eth_oracleNodeId = "<%= settings.ethUsdcMarkNodeIdStork %>"
 market1Eth_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -815,7 +815,7 @@ market1Eth_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_2btc]
 market2Btc_riskMatrixIndex = "0"
-market2Btc_maxOpenBaseUnscaled = "90"
+market2Btc_maxOpenBaseUnscaled = "150"
 market2Btc_velocityMultiplierUnscaled = "10"
 market2Btc_oracleNodeId = "<%= settings.btcUsdcMarkNodeIdStork %>"
 market2Btc_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
