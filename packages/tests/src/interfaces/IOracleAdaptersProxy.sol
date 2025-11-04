@@ -3,6 +3,32 @@
 pragma solidity ^0.8.4;
 
 interface IOracleAdaptersProxy {
+    /**
+     * @notice Sets the new share price for a given asset pair id
+     * Note that the price of the asset pair will start from 1.
+     * @param input The input data.
+     */
+    function updateLmTokenPrice(UpdateLmTokenPriceInput memory input) external;
+
+    /**
+     * @notice Sets the new share price configuration for a given asset pair id
+     * @param assetPairId The asset pair id
+     * @param config The configuration data
+     */
+    function setLmTokenPriceConfiguration(
+        string memory assetPairId,
+        LmTokenPriceConfigurationData memory config
+    ) external;
+
+    /**
+     * @notice Returns the share price configuration for a given asset pair id
+     * @param assetPairId The asset pair id
+     * @return The configuration data
+     */
+    function getLmTokenPriceConfiguration(
+        string memory assetPairId
+    ) external view returns (LmTokenPriceConfigurationData memory);
+
     function setConfiguration(Configuration memory config) external;
 
     function getConfiguration() external pure returns (Configuration memory);
@@ -15,11 +41,9 @@ interface IOracleAdaptersProxy {
         string memory assetPairId
     ) external view returns (StorkPricePayload memory);
 
-    function addToFeatureFlagAllowlist(bytes32 feature, address account)
-        external;
+    function addToFeatureFlagAllowlist(bytes32 feature, address account) external;
 
-    function removeFromFeatureFlagAllowlist(bytes32 feature, address account)
-        external;
+    function removeFromFeatureFlagAllowlist(bytes32 feature, address account) external;
 
     error StorkPayloadSignatureInvalid(StorkSignedPayload storkSignedPayload);
 
@@ -32,20 +56,11 @@ interface IOracleAdaptersProxy {
 
     error FeatureUnavailable(bytes32 which);
 
-    function getFeatureFlagAllowAll(bytes32 feature)
-        external
-        view
-        returns (bool);
+    function getFeatureFlagAllowAll(bytes32 feature) external view returns (bool);
 
-    function getFeatureFlagAllowlist(bytes32 feature)
-        external
-        view
-        returns (address[] memory);
+    function getFeatureFlagAllowlist(bytes32 feature) external view returns (address[] memory);
 
-    function getFeatureFlagDenyAll(bytes32 feature)
-        external
-        view
-        returns (bool);
+    function getFeatureFlagDenyAll(bytes32 feature) external view returns (bool);
 }
 
 struct StorkSignedPayload {
@@ -64,4 +79,15 @@ struct StorkPricePayload {
 
 struct Configuration {
     address storkVerifyContract;
+}
+
+struct UpdateLmTokenPriceInput {
+    string assetPairId;
+    uint256 price;
+    uint256 vestingPeriodInSeconds;
+}
+
+struct LmTokenPriceConfigurationData {
+    uint256 priceLowerBound;
+    uint256 priceUpperBound;
 }

@@ -1,0 +1,13 @@
+[invoke.oracle_manager_register_node_sdeusd_usdc_closing]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_CONSTANT %>",
+    "<%= defaultAbiCoder.encode(['uint256'], ['1068966036300082784']) %>",
+    [
+    ],
+]
+var.sdeusdUsdcNodeIdClosing.event = "NodeRegistered"
+var.sdeusdUsdcNodeIdClosing.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]
