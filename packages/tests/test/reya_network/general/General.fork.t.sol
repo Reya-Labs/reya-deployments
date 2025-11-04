@@ -8,6 +8,21 @@ import { IPeripheryProxy, GlobalConfiguration } from "../../../src/interfaces/IP
 import { IOracleManagerProxy, NodeOutput, NodeDefinition } from "../../../src/interfaces/IOracleManagerProxy.sol";
 import { IOracleAdaptersProxy, StorkPricePayload } from "../../../src/interfaces/IOracleAdaptersProxy.sol";
 import { IAggregatorV3Interface } from "../../../src/interfaces/IAggregatorV3Interface.sol";
+import {
+    IPassivePoolProxy,
+    RebalanceAmounts,
+    AutoRebalanceInput,
+    AllocationConfigurationData
+} from "../../../src/interfaces/IPassivePoolProxy.sol";
+import { IShareTokenProxy } from "../../../src/interfaces/IShareTokenProxy.sol";
+import { console2 } from "forge-std/console2.sol";
+import {
+    CollateralConfig,
+    ParentCollateralConfig,
+    ICoreProxy,
+    GlobalCollateralConfig
+} from "../../../src/interfaces/ICoreProxy.sol";
+import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 
 contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     function testFuzz_ProxiesOwnerAndUpgrades(address attacker) public {
@@ -100,5 +115,74 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
             assertEq(activeMarkets[a], i);
             a++;
         }
+    }
+
+    function test_rebalance_rhedge() public {
+        // mainnet
+        address lmMultisig = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
+
+        deal(sec.rusd, address(this), 10e11);
+        ITokenProxy(sec.rusd).approve(sec.core, 10e11);
+        ICoreProxy(sec.core).deposit({ accountId: 2, collateral: sec.rusd, amount: 10e11 });
+
+        // vm.prank(sec.multisig);
+        // IPassivePoolProxy(sec.pool).setAllocationConfiguration(
+        //     1, AllocationConfigurationData({ quoteTokenTargetRatio: 0.4e18 })
+        // );
+
+        // vm.prank(ownerMultisig);
+        // IPassivePoolProxy(pool).setTargetRatioPostQuote(1, rhedge, 0.002e18);
+
+        // vm.prank(sec.multisig);
+        // IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(1, sec.sdeusd, 0);
+
+        // vm.prank(sec.multisig);
+        // IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(1, sec.rhedge, 0.8e18);
+
+        // vm.prank(sec.multisig);
+        // IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(1, sec.rselini, 0.1e18);
+
+        // vm.prank(sec.multisig);
+        // IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(1, sec.ramber, 0.1e18);
+
+        // vm.prank(sec.multisig);
+        // ICoreProxy(sec.core).setGlobalCollateralConfig(sec.sdeusd, GlobalCollateralConfig({
+        //     collateralAdapter: address(0),
+        //     withdrawalWindowSize: 86400,
+        //     withdrawalTvlPercentageLimit: 1e18
+        // }));
+
+        uint256 rhedgeAmount = 39_676_607 * 1e18;
+        // {
+        //     (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
+        //     ICoreProxy(sec.core).getCollateralConfig(1, sec.rhedge);
+
+        //     vm.prank(sec.multisig);
+        //     collateralConfig.cap = collateralConfig.cap + rhedgeAmount;
+        //     console2.log("cap: ", collateralConfig.cap);
+        //     ICoreProxy(sec.core).setCollateralConfig(1, sec.rhedge, collateralConfig, parentCollateralConfig);
+        // }
+
+        vm.prank(lmMultisig);
+        IShareTokenProxy(sec.rhedge).mint(0x25E028A45a6012763A76145d7CEEa3587015e990, rhedgeAmount);
+
+        vm.prank(0x25E028A45a6012763A76145d7CEEa3587015e990);
+        IShareTokenProxy(sec.rhedge).approve(sec.pool, rhedgeAmount);
+
+        vm.prank(0x25E028A45a6012763A76145d7CEEa3587015e990);
+        RebalanceAmounts memory amounts = IPassivePoolProxy(sec.pool).triggerAutoRebalance(
+            1,
+            AutoRebalanceInput({
+                tokenIn: sec.rhedge,
+                amountIn: rhedgeAmount,
+                tokenOut: sec.sdeusd,
+                minPrice: 0,
+                receiverAddress: 0x25E028A45a6012763A76145d7CEEa3587015e990
+            })
+        );
+
+        console2.log(amounts.amountIn);
+        console2.log(amounts.amountOut);
+        console2.log(amounts.priceInToOut);
     }
 }
