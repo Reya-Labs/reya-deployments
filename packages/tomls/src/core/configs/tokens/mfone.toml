@@ -1,0 +1,23 @@
+[invoke.mfone_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= contracts.MFONEProxy.address %>",
+    { collateralAdapter = "<%= settings.mfoneCollateralAdapter %>", withdrawalWindowSize = "<%= settings.mfoneWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.mfoneWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = [
+    'invoke.upgrade_core_proxy',
+    'invoke.upgrade_mfone_proxy',
+    'var.global_collateral_configs',
+]
+
+[invoke.mfone_auto_exchange_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), contracts.MFONEProxy.address])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy"]
