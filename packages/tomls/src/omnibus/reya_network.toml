@@ -513,7 +513,7 @@ deusdWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 sdeusdCollateralAdapter = "<%= AddressZero %>"
 sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-sdeusdWithdrawalTvlPercentageLimitUnscaled = "1"
+sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
 # -------------------------------------------------------------------
 srusdCollateralAdapter = "<%= AddressZero %>"
 srusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
@@ -850,10 +850,10 @@ hedgeUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 [var.pool_1]
 pool1_quoteTokenTargetRatioUnscaled = "0.09"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
-pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0"
-pool1_RSELINITargetRatioPostQuoteUnscaled = "0.1"
-pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.1"
-pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.8"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.7"
+pool1_RSELINITargetRatioPostQuoteUnscaled = "0.14"
+pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.14"
+pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.02"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -2574,7 +2574,7 @@ cp1Rusd_ramberParentConfig_oracleNodeId = "<%= settings.amberUsdcReyaLmNodeId %>
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_rhedge_capUnscaled = "40500000"
+cp1Rusd_rhedge_capUnscaled = "500000"
 cp1Rusd_rhedge_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_rhedge_autoExchangeInsuranceFeeUnscaled = "0.005"
 cp1Rusd_rhedge_autoExchangeDustThresholdUnscaled = "0"
