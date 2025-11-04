@@ -1,0 +1,23 @@
+[invoke.oracle_manager_register_node_rusd_usd]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "registerNode"
+args = [
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_CONSTANT %>",
+    "<%= defaultAbiCoder.encode(['uint256'], [parseEther('1')]) %>",
+    [
+    ],
+]
+var.mfoneUsdNodeId.event = "NodeRegistered"
+var.mfoneUsdNodeId.arg = 0
+depends = ["invoke.upgrade_oracle_manager_proxy"]
+
+[invoke.oracle_manager_mfone_usd_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.mfoneUsdNodeId %>",
+    "<%= settings.mfoneUsdMaxStaleDuration %>",
+]
+depends = ["invoke.oracle_manager_register_node_mfone_usd"]
