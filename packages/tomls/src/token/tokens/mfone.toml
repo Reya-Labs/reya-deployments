@@ -1,0 +1,77 @@
+[var.mfone_vars]
+mfoneTokenName = "Midas Fasanara ONE"
+mfoneTokenSymbol = "mF-ONE"
+mfoneTokenDecimals = "18"
+
+[clone.mfone]
+source = "<%= settings.tokensProxyPackage %>"
+target = "reya-tokens:1.0.0@mfone"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.mfoneSalt %>"
+depends = ["var.initial_proxy_vars", "var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_mfone_proxy]
+target = ["mfone.InitialProxy"]
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaTokenRouter.contracts.TokenRouter.address %>"]
+factory.MFONEProxy.abiOf = ["reyaTokenRouter.TokenRouter"]
+factory.MFONEProxy.event = "Upgraded"
+factory.MFONEProxy.arg = 0
+depends = ["clone.mfone"]
+
+[invoke.mfone_initialize]
+target = ["MFONEProxy"]
+fromCall.func = "owner"
+func = "initialize"
+args = [
+    "<%= settings.mfoneTokenName %>",
+    "<%= settings.mfoneTokenSymbol %>",
+    "<%= settings.mfoneTokenDecimals %>",
+]
+depends = ["invoke.upgrade_mfone_proxy"]
+
+[invoke.mfone_unpause]
+target = ["MFONEProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_mfone_proxy"]
+
+[invoke.mfone_set_pausers]
+target = ["MFONEProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_mfone_proxy"]
+
+# [invoke.mfone_mint_permission]
+# target = ["MFONEProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = ["<%= keccak256(hexlify('mint')) %>", "<%= settings.mfoneController %>"]
+# depends = ["invoke.upgrade_mfone_proxy"]
+
+# [invoke.mfone_burn_permission]
+# target = ["MFONEProxy"]
+# fromCall.func = "owner"
+# func = "addToFeatureFlagAllowlist"
+# args = ["<%= keccak256(hexlify('burn')) %>", "<%= settings.mfoneController %>"]
+# depends = ["invoke.upgrade_mfone_proxy"]
+
+# [invoke.mfone_authorized_holders_allow_all]
+# target = ["MFONEProxy"]
+# fromCall.func = "owner"
+# func = "setFeatureFlagAllowAll"
+# args = ["<%= keccak256(hexlify('authorizedHolder')) %>", true]
+# depends = ["invoke.upgrade_mfone_proxy"]

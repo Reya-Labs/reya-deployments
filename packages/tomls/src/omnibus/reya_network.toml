@@ -92,6 +92,7 @@ srusdSalt = "srusd-main-2"
 rseliniSalt = "rselini-main"
 ramberSalt = "ramber-main"
 rhedgeSalt = "rhedge-main"
+mfoneSalt = "mfone-main"
 
 [var.missing_vars]
 salt = ""
