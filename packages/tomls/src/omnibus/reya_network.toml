@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.99"
+version = "1.0.100"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -512,7 +512,7 @@ deusdWithdrawalWindowSize = "1"
 deusdWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 sdeusdCollateralAdapter = "<%= AddressZero %>"
-sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+sdeusdWithdrawalWindowSize = "1"
 sdeusdWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 srusdCollateralAdapter = "<%= AddressZero %>"
@@ -851,9 +851,9 @@ hedgeUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 pool1_quoteTokenTargetRatioUnscaled = "0"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
 pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0"
-pool1_RSELINITargetRatioPostQuoteUnscaled = "0.84"
-pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.14"
-pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.02"
+pool1_RSELINITargetRatioPostQuoteUnscaled = "1"
+pool1_RAMBERTargetRatioPostQuoteUnscaled = "0"
+pool1_RHEDGETargetRatioPostQuoteUnscaled = "0"
 
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
