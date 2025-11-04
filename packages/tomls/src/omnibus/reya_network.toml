@@ -513,7 +513,7 @@ deusdWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 sdeusdCollateralAdapter = "<%= AddressZero %>"
 sdeusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-sdeusdWithdrawalTvlPercentageLimitUnscaled = "0.15"
+sdeusdWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 srusdCollateralAdapter = "<%= AddressZero %>"
 srusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
@@ -848,10 +848,10 @@ amberUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 hedgeUsdcReyaLmMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 
 [var.pool_1]
-pool1_quoteTokenTargetRatioUnscaled = "0.09"
+pool1_quoteTokenTargetRatioUnscaled = "0"
 pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
-pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0.7"
-pool1_RSELINITargetRatioPostQuoteUnscaled = "0.14"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0"
+pool1_RSELINITargetRatioPostQuoteUnscaled = "0.84"
 pool1_RAMBERTargetRatioPostQuoteUnscaled = "0.14"
 pool1_RHEDGETargetRatioPostQuoteUnscaled = "0.02"
 
@@ -2534,7 +2534,7 @@ cp1Rusd_sdeusd_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_sdeusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
 cp1Rusd_sdeusdParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_sdeusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
-cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdStork %>"
+cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdClosing %>"
 # ------------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
@@ -2550,7 +2550,7 @@ cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdRusd_RRNodeIdStork %
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_rselini_capUnscaled = "2000000"
+cp1Rusd_rselini_capUnscaled = "12525209"
 cp1Rusd_rselini_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_rselini_autoExchangeInsuranceFeeUnscaled = "0.005"
 cp1Rusd_rselini_autoExchangeDustThresholdUnscaled = "0"
