@@ -395,6 +395,10 @@ deusdEthereumSepoliaConnector = "0x5878357eB1d12f2a3F36D299C9eF6dd3A6B4d29a"
 sdeusdController = "0x8b798242936f528F53c6c93f045D808367CD01fD"
 sdeusdExecutionHelper = "0xFaA0313F2a7a48Cc995e01ADC68cb3aAD130Bdaa"
 sdeusdEthereumSepoliaConnector = "0x596c0Bb29466cE75A4d1296657AE9275fD4b0912"
+# -------------------------------------------------------------------
+mfoneController = ""
+mfoneExecutionHelper = ""
+mfoneEthereumConnector = ""
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumSepoliaWithdrawFeeUnscaled = "5.0"
@@ -424,6 +428,8 @@ susdeOptimismSepoliaWithdrawFeeUnscaled = "0.1"
 deusdEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 # -------------------------------------------------------------------
 sdeusdEthereumSepoliaWithdrawFeeUnscaled = "5.0"
+# -------------------------------------------------------------------
+mfoneEthereumWithdrawFeeUnscaled = "5.0"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -469,6 +475,10 @@ ramberWithdrawalTvlPercentageLimitUnscaled = "0"
 rhedgeCollateralAdapter = "<%= AddressZero %>"
 rhedgeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rhedgeWithdrawalTvlPercentageLimitUnscaled = "0"
+# -------------------------------------------------------------------
+mfoneCollateralAdapter = "<%= AddressZero %>"
+mfoneWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+mfoneWithdrawalTvlPercentageLimitUnscaled = "0"
 
 [var.pool_node_margin_info]
 maxCacheDurationForPoolNodeMarginInfo = "60"
@@ -2534,6 +2544,18 @@ cp1Rusd_rhedgeParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address 
 cp1Rusd_rhedgeParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_rhedgeParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_rhedgeParentConfig_oracleNodeId = "<%= settings.hedgeUsdcReyaLmNodeId %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_mfone_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_mfone_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_mfone_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_mfone_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_mfone_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_mfoneParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_mfoneParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_mfoneParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_mfoneParentConfig_oracleNodeId = "<%= settings.mfoneUsdcNodeId %>"
 
 [var.sbt_config]
 tokenName = "Reya OG SBT"

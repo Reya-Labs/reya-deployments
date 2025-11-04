@@ -16,4 +16,5 @@ include = [
     "configs/tokens/ramber.toml",
     "configs/tokens/rhedge.toml",
     "configs/tokens/wsteth.toml",
+    "configs/tokens/mfone.toml",
 ]

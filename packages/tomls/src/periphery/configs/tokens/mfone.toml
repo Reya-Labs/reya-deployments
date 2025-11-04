@@ -1,0 +1,57 @@
+#####################################
+# Controller
+#####################################
+[invoke.periphery_set_mfoneController]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenController"
+args = [
+    "<%= contracts.MFoneProxy.address %>",
+    "<%= settings.mfoneController %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_mfone_proxy"]
+
+#####################################
+# Execution Helper
+#####################################
+[invoke.periphery_set_mfoneExecutionHelper]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenExecutionHelper"
+args = [
+    "<%= contracts.MFONEProxy.address %>",
+    "<%= settings.mfoneExecutionHelper %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_mfone_proxy"]
+
+#####################################
+# Connectors
+#####################################
+[invoke.periphery_set_mfoneEthereumConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= contracts.MFONEProxy.address %>",
+    "<%= settings.ethereumChainId %>",
+    "<%= settings.mfoneEthereumConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_mfone_proxy"]
+
+#####################################
+# Static Withdraw Fees
+#####################################
+[invoke.periphery_set_mfone_ethereum_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= contracts.MFONEProxy.address %>",
+    "<%= settings.mfoneEthereumConnector %>",
+    "<%= parseUnits(settings.mfoneEthereumWithdrawFeeUnscaled, parseInt(settings.mfoneTokenDecimals)) %>",
+]
+depends = [
+    "invoke.upgrade_periphery_proxy",
+    "invoke.upgrade_mfone_proxy",
+    "var.mfone_vars",
+]
