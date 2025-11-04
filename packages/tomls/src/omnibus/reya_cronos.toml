@@ -2555,7 +2555,7 @@ cp1Rusd_mfone_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_mfoneParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
 cp1Rusd_mfoneParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_mfoneParentConfig_autoExchangeDiscountUnscaled = "0.005"
-cp1Rusd_mfoneParentConfig_oracleNodeId = "<%= settings.mfoneUsdNodeId %>"
+cp1Rusd_mfoneParentConfig_oracleNodeId = "<%= settings.mfoneUsdcNodeId %>"
 
 [var.sbt_config]
 tokenName = "Reya OG SBT"
