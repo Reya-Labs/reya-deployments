@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.97"
+version = "1.0.98"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -92,6 +92,7 @@ srusdSalt = "srusd-main-2"
 rseliniSalt = "rselini-main"
 ramberSalt = "ramber-main"
 rhedgeSalt = "rhedge-main"
+mfoneSalt = "mfone-main"
 
 [var.missing_vars]
 salt = ""
