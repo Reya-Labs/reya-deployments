@@ -2,7 +2,7 @@ name = "reya-source-chains"
 preset = "main"
 description = "Reya Source Chains"
 privateSourceCode = false
-version = "1.0.5"
+version = "1.0.6"
 
 include = ["../vltz/mainnet.toml"]
 
@@ -32,4 +32,4 @@ vltzTokenName = "Voltz"
 vltzTokenSymbol = "$VLTZ"
 vltzRootSubmitter = "0x0F575355D19F5056415e382CEEEcffE0Fe8433a9"
 vltzTokenDecimals = "18"
-vltzRoot = "0x2055f18a8e96ea548a78552f33632989ab0afa5706e530b10bd24c8bfcdafe71"
+vltzRoot = "0xa81f579eba2f17fc815a156ae5d5d4fa3a129df2933a2678a55a0c1113741f5f"
