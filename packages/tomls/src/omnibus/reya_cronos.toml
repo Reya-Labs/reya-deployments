@@ -1675,7 +1675,7 @@ market44Virtual_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_45Ai16z]
 market45Ai16z_riskMatrixIndex = "0"
-market45Ai16z_maxOpenBaseUnscaled = "4980122"
+market45Ai16z_maxOpenBaseUnscaled = "43000"
 market45Ai16z_velocityMultiplierUnscaled = "75"
 market45Ai16z_oracleNodeId = "<%= settings.ai16zUsdcMarkNodeIdStork %>"
 market45Ai16z_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
