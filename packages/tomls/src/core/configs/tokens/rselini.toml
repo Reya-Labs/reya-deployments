@@ -21,3 +21,27 @@ args = [
     true,
 ]
 depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.rselini_rusd_create_spot_market]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'SpotMarketInfoUpdated','inputs':[{'name':'eventSequenceNumber','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'spotMarketId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'baseToken','type':'address','indexed':false,'internalType':'address'},{'name':'quoteToken','type':'address','indexed':false,'internalType':'address'},{'name':'symbol','type':'string','indexed':false,'internalType':'string'},{'name':'config','type':'tuple','indexed':false,'internalType':'struct SpotMarketConfig','components':[{'name':'oracleDeviation','type':'uint256','internalType':'UD60x18'},{'name':'minimumOrderBase','type':'uint256','internalType':'UD60x18'},{'name':'baseSpacing','type':'uint256','internalType':'UD60x18'},{'name':'priceSpacing','type':'uint256','internalType':'UD60x18'}]},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "owner"
+func = "createSpotMarket"
+args = [
+    "<%= contracts.RSELINIProxy.address %>",
+    "<%= contracts.RUSDProxy.address %>",
+    "RSELINI/RUSD"
+]
+var.rseliniRusdSpotMarketId.event = "SpotMarketInfoUpdated"
+var.rseliniRusdSpotMarketId.arg = 1
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.rselini_rusd_configure_spot_market]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setSpotMarketConfiguration"
+args = [
+    "<%= settings.rseliniRusdSpotMarketId %>",
+    { oracleDeviation = "<%= parseEther(settings.rseliniRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.rseliniRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.rseliniRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.rseliniRusdSpot_priceSpacingUnscaled) %>"}
+]
+depends = ["invoke.upgrade_core_proxy", "invoke.rselini_rusd_create_spot_market"]

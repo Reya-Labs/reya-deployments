@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.107"
+version = "1.0.108"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -46,7 +46,7 @@ zeuzAccountId = "46092"
 progCompAccountId = "110684"
 
 [var.cannonClonePackages]
-coreRouterPackage = "reya-core:1.0.17@router"
+coreRouterPackage = "reya-core:1.0.18@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
@@ -58,7 +58,7 @@ oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
-ordersGatewayRouterPackage = "reya-orders-gateway:1.0.12@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.13@router"
 oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
 oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.8@router"
 shareTokensProxyPackage = "reya-share-tokens:1.0.0@proxy"

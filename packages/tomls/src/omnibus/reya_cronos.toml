@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.88"
+version = "1.0.89"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -44,7 +44,7 @@ progCompAccountId = "8038"
 
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.17@router"
+coreRouterPackage = "reya-core:1.0.18@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
@@ -63,7 +63,7 @@ exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksProxyPackage = "reya-ranks:1.0.0@proxy"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
-ordersGatewayRouterPackage = "reya-orders-gateway:1.0.12@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.13@router"
 oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
 oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.8@router"
 shareTokensProxyPackage = "reya-share-tokens:1.0.0@proxy"
@@ -2533,6 +2533,58 @@ cp1Rusd_rhedgeParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address 
 cp1Rusd_rhedgeParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_rhedgeParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_rhedgeParentConfig_oracleNodeId = "<%= settings.hedgeUsdcReyaLmNodeId %>"
+
+[var.spotMarkets]
+deusdRusdSpot_oracleDeviationUnscaled = "0"
+deusdRusdSpot_minimumOrderBaseUnscaled = "0"
+deusdRusdSpot_baseSpacingUnscaled = "0"
+deusdRusdSpot_priceSpacingUnscaled = "0"
+# -----------------------------------------------
+ramberRusdSpot_oracleDeviationUnscaled = "0"
+ramberRusdSpot_minimumOrderBaseUnscaled = "0"
+ramberRusdSpot_baseSpacingUnscaled = "0"
+ramberRusdSpot_priceSpacingUnscaled = "0"
+# -----------------------------------------------
+rhedgeRusdSpot_oracleDeviationUnscaled = "0"
+rhedgeRusdSpot_minimumOrderBaseUnscaled = "0"
+rhedgeRusdSpot_baseSpacingUnscaled = "0"
+rhedgeRusdSpot_priceSpacingUnscaled = "0"
+# -----------------------------------------------
+rseliniRusdSpot_oracleDeviationUnscaled = "0"
+rseliniRusdSpot_minimumOrderBaseUnscaled = "0"
+rseliniRusdSpot_baseSpacingUnscaled = "0"
+rseliniRusdSpot_priceSpacingUnscaled = "0"
+# -----------------------------------------------
+sdeusdRusdSpot_oracleDeviationUnscaled = "0"
+sdeusdRusdSpot_minimumOrderBaseUnscaled = "0"
+sdeusdRusdSpot_baseSpacingUnscaled = "0"
+sdeusdRusdSpot_priceSpacingUnscaled = "0"
+# -----------------------------------------------
+srusdRusdSpot_oracleDeviationUnscaled = "0"
+srusdRusdSpot_minimumOrderBaseUnscaled = "0"
+srusdRusdSpot_baseSpacingUnscaled = "0"
+srusdRusdSpot_priceSpacingUnscaled = "0"
+# -----------------------------------------------
+susdeRusdSpot_oracleDeviationUnscaled = "0"
+susdeRusdSpot_minimumOrderBaseUnscaled = "0"
+susdeRusdSpot_baseSpacingUnscaled = "0"
+susdeRusdSpot_priceSpacingUnscaled = "0"
+# -----------------------------------------------
+usdeRusdSpot_oracleDeviationUnscaled = "0"
+usdeRusdSpot_minimumOrderBaseUnscaled = "0"
+usdeRusdSpot_baseSpacingUnscaled = "0"
+usdeRusdSpot_priceSpacingUnscaled = "0"
+# -----------------------------------------------
+wethRusdSpot_oracleDeviationUnscaled = "0"
+wethRusdSpot_minimumOrderBaseUnscaled = "0"
+wethRusdSpot_baseSpacingUnscaled = "0"
+wethRusdSpot_priceSpacingUnscaled = "0"
+# -----------------------------------------------
+wstethRusdSpot_oracleDeviationUnscaled = "0"
+wstethRusdSpot_minimumOrderBaseUnscaled = "0"
+wstethRusdSpot_baseSpacingUnscaled = "0"
+wstethRusdSpot_priceSpacingUnscaled = "0"
+
 
 [var.sbt_config]
 tokenName = "Reya OG SBT"
