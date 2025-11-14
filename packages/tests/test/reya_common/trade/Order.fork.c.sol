@@ -8,6 +8,7 @@ import { IPassivePerpProxy, GlobalFeeParameters, CacheStatus } from "../../../sr
 import { sd, SD59x18, UNIT as ONE_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
+
 contract OrderForkCheck is BaseReyaForkTest {
     int256 private constant BASIC_TIER_FEE_PERCENTAGE = 0.0004e18;
 
@@ -217,5 +218,61 @@ contract OrderForkCheck is BaseReyaForkTest {
 
         assertEq(status, CacheStatus.VALID);
         assertEq(postOrderPoolNodeMarginInfo, preOrderPoolNodeMarginInfo);
+    }
+
+    function check_MatchOrder_Spread() internal {
+        removeMarketsOILimit();
+        mockFreshPrices();
+
+        (address bot,) = makeAddrAndKey("bot");
+        (address user,) = makeAddrAndKey("user");
+
+        // set fee parameters
+
+        GlobalFeeParameters memory config = IPassivePerpProxy(sec.perp).getGlobalFeeParameters();
+        config.spreadDiscount = 0.5e18;
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setGlobalFeeParameters(config);
+
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(getFeeConfigFeatureFlagId(), bot);
+
+        vm.prank(bot);
+        IPassivePerpProxy(sec.perp).setPremiumStatusFeeConfig(user, true);
+
+        uint256 amount = 1_000_000e6;
+        SD59x18 base = sd(1e18);
+        SD59x18 reverseBase = sd(-1e18);
+        UD60x18 priceLimit = ud(1_000_000e18);
+
+        // deposit new margin account
+        uint128 accountId = depositNewMA(user, sec.usdc, amount);
+
+        (UD60x18 orderPrice,) = executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
+        });
+
+        // reverse the trade
+        executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: reverseBase,
+            priceLimit: priceLimit,
+            accountId: accountId,
+        });
+
+        (UD60x18 orderPrice2,) = executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
+        });
+
+        assertEq(orderPrice, orderPrice2);
     }
 }
