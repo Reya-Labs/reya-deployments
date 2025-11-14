@@ -3,11 +3,15 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 import { ICoreProxy, CollateralInfo, MarginInfo } from "../../../src/interfaces/ICoreProxy.sol";
-import { IPassivePerpProxy, GlobalFeeParameters, CacheStatus } from "../../../src/interfaces/IPassivePerpProxy.sol";
+import {
+    IPassivePerpProxy,
+    GlobalFeeParameters,
+    CacheStatus,
+    MarketConfigurationData
+} from "../../../src/interfaces/IPassivePerpProxy.sol";
 
 import { sd, SD59x18, UNIT as ONE_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
-
 
 contract OrderForkCheck is BaseReyaForkTest {
     int256 private constant BASIC_TIER_FEE_PERCENTAGE = 0.0004e18;
@@ -220,7 +224,8 @@ contract OrderForkCheck is BaseReyaForkTest {
         assertEq(postOrderPoolNodeMarginInfo, preOrderPoolNodeMarginInfo);
     }
 
-    function check_MatchOrder_Spread() internal {
+    function check_MatchOrder_Spread(uint128 marketId) internal {
+        // todo: p2: also change the market-level spread here and make sure works as expected
         removeMarketsOILimit();
         mockFreshPrices();
 
@@ -230,7 +235,7 @@ contract OrderForkCheck is BaseReyaForkTest {
         // set fee parameters
 
         GlobalFeeParameters memory config = IPassivePerpProxy(sec.perp).getGlobalFeeParameters();
-        config.spreadDiscount = 0.5e18;
+        config.spreadDiscount = 1e18;
         vm.prank(sec.multisig);
         IPassivePerpProxy(sec.perp).setGlobalFeeParameters(config);
 
@@ -238,7 +243,7 @@ contract OrderForkCheck is BaseReyaForkTest {
         IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(getFeeConfigFeatureFlagId(), bot);
 
         vm.prank(bot);
-        IPassivePerpProxy(sec.perp).setPremiumStatusFeeConfig(user, true);
+        IPassivePerpProxy(sec.perp).setAccountOwnerPremiumStatusFeeConfig(user, true);
 
         uint256 amount = 1_000_000e6;
         SD59x18 base = sd(1e18);
@@ -262,7 +267,7 @@ contract OrderForkCheck is BaseReyaForkTest {
             sender: user,
             base: reverseBase,
             priceLimit: priceLimit,
-            accountId: accountId,
+            accountId: accountId
         });
 
         (UD60x18 orderPrice2,) = executeCoreMatchOrder({
@@ -273,6 +278,9 @@ contract OrderForkCheck is BaseReyaForkTest {
             accountId: accountId
         });
 
-        assertEq(orderPrice, orderPrice2);
+        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+        uint256 orderPrice2WithSpread =
+            orderPrice2.mul(ONE_sd.add(SD59x18.wrap(int256(marketConfig.priceSpread))).intoUD60x18()).unwrap();
+        assertApproxEqAbs(orderPrice.unwrap(), orderPrice2WithSpread, 0.001e6);
     }
 }
