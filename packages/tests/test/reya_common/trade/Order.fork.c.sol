@@ -243,7 +243,7 @@ contract OrderForkCheck is BaseReyaForkTest {
         IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(getFeeConfigFeatureFlagId(), bot);
 
         vm.prank(bot);
-        IPassivePerpProxy(sec.perp).setAccountOwnerNonToxicStatusFeeConfig(user, true);
+        IPassivePerpProxy(sec.perp).setAccountOwnerPremiumStatusFeeConfig(user, true);
 
         uint256 amount = 1_000_000e6;
         SD59x18 base = sd(1e18);

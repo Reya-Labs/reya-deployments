@@ -422,7 +422,7 @@ interface IPassivePerpProxy {
     function setGlobalFeeParameters(GlobalFeeParameters memory params) external;
     function setAccountOwnerOgStatusFeeConfig(address accountOwner, bool ogStatus) external;
     function setAccountOwnerVltzStatusFeeConfig(address accountOwner, bool vltzStatus) external;
-    function setAccountOwnerNonToxicStatusFeeConfig(address accountOwner, bool nonToxicStatus) external;
+    function setAccountOwnerPremiumStatusFeeConfig(address accountOwner, bool premiumStatus) external;
 
     function setMaxCacheDurationForPoolNodeMarginInfo(
         uint128 poolAccountId,
