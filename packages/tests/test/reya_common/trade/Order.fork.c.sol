@@ -258,7 +258,7 @@ contract OrderForkCheck is BaseReyaForkTest {
         // execute without spread discount
         // note, setting to false is redundunt but doing for test
         vm.prank(bot);
-        IPassivePerpProxy(sec.perp).setAccountOwnerPremiumStatusFeeConfig(user, false);
+        IPassivePerpProxy(sec.perp).setAccountOwnerSpreadDiscountStatusFeeConfig(user, false);
 
         (UD60x18 orderPrice,) = executeCoreMatchOrder({
             marketId: marketId,
@@ -279,7 +279,7 @@ contract OrderForkCheck is BaseReyaForkTest {
 
         // execute with spread discount
         vm.prank(bot);
-        IPassivePerpProxy(sec.perp).setAccountOwnerPremiumStatusFeeConfig(user, true);
+        IPassivePerpProxy(sec.perp).setAccountOwnerSpreadDiscountStatusFeeConfig(user, true);
 
         (UD60x18 orderPrice2,) = executeCoreMatchOrder({
             marketId: marketId,
