@@ -503,6 +503,7 @@ refereeDiscountUnscaled = "0.1"
 referrerRebateUnscaled = "0.1"
 affiliateReferrerRebateUnscaled = "0.15"
 vltzDiscountUnscaled = "0.1"
+spreadDiscountUnscaled = "1.0"
 
 [var.affiliates]
 affiliate1 = "0xae173a960084903b1d278ff9e3a81ded82275556"
