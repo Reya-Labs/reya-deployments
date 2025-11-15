@@ -224,13 +224,18 @@ contract OrderForkCheck is BaseReyaForkTest {
         assertEq(postOrderPoolNodeMarginInfo, preOrderPoolNodeMarginInfo);
     }
 
-    function check_MatchOrder_Spread(uint128 marketId) internal {
-        // todo: p2: also change the market-level spread here and make sure works as expected
+    function check_MatchOrder_Spread(uint128 marketId, uint256 precision) internal {
         removeMarketsOILimit();
         mockFreshPrices();
 
         (address bot,) = makeAddrAndKey("bot");
         (address user,) = makeAddrAndKey("user");
+
+        // set market level price spread to a large value (100bp)
+        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+        marketConfig.priceSpread = 0.01e18;
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setMarketConfiguration(marketId, marketConfig);
 
         // set fee parameters
 
@@ -284,10 +289,8 @@ contract OrderForkCheck is BaseReyaForkTest {
             accountId: accountId
         });
 
-        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
-
         uint256 orderPrice2WithSpread =
             orderPrice2.mul(ONE_sd.add(SD59x18.wrap(int256(marketConfig.priceSpread))).intoUD60x18()).unwrap();
-        assertApproxEqAbs(orderPrice.unwrap(), orderPrice2WithSpread, 0.001e18);
+        assertApproxEqAbs(orderPrice.unwrap(), orderPrice2WithSpread, precision);
     }
 }
