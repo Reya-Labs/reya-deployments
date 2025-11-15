@@ -3,7 +3,12 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
 import { ICoreProxy, CollateralInfo, MarginInfo } from "../../../src/interfaces/ICoreProxy.sol";
-import { IPassivePerpProxy, GlobalFeeParameters, CacheStatus } from "../../../src/interfaces/IPassivePerpProxy.sol";
+import {
+    IPassivePerpProxy,
+    GlobalFeeParameters,
+    CacheStatus,
+    MarketConfigurationData
+} from "../../../src/interfaces/IPassivePerpProxy.sol";
 
 import { sd, SD59x18, UNIT as ONE_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
@@ -217,5 +222,75 @@ contract OrderForkCheck is BaseReyaForkTest {
 
         assertEq(status, CacheStatus.VALID);
         assertEq(postOrderPoolNodeMarginInfo, preOrderPoolNodeMarginInfo);
+    }
+
+    function check_MatchOrder_Spread(uint128 marketId, uint256 precision) internal {
+        removeMarketsOILimit();
+        mockFreshPrices();
+
+        (address bot,) = makeAddrAndKey("bot");
+        (address user,) = makeAddrAndKey("user");
+
+        // set market level price spread to a large value (100bp)
+        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+        marketConfig.priceSpread = 0.01e18;
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setMarketConfiguration(marketId, marketConfig);
+
+        // set fee parameters
+
+        GlobalFeeParameters memory config = IPassivePerpProxy(sec.perp).getGlobalFeeParameters();
+        config.spreadDiscount = 1e18;
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setGlobalFeeParameters(config);
+
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(getFeeConfigFeatureFlagId(), bot);
+
+        uint256 amount = 1_000_000e6;
+        SD59x18 base = sd(1e18);
+        SD59x18 reverseBase = sd(-1e18);
+        UD60x18 priceLimit = ud(1_000_000e18);
+
+        // deposit new margin account
+        uint128 accountId = depositNewMA(user, sec.usdc, amount);
+
+        // execute without spread discount
+        // note, setting to false is redundunt but doing for test
+        vm.prank(bot);
+        IPassivePerpProxy(sec.perp).setAccountOwnerSpreadDiscountStatusFeeConfig(user, false);
+
+        (UD60x18 orderPrice,) = executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
+        });
+
+        // reverse the trade
+        executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: reverseBase,
+            priceLimit: ud(0),
+            accountId: accountId
+        });
+
+        // execute with spread discount
+        vm.prank(bot);
+        IPassivePerpProxy(sec.perp).setAccountOwnerSpreadDiscountStatusFeeConfig(user, true);
+
+        (UD60x18 orderPrice2,) = executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
+        });
+
+        uint256 orderPrice2WithSpread =
+            orderPrice2.mul(ONE_sd.add(SD59x18.wrap(int256(marketConfig.priceSpread))).intoUD60x18()).unwrap();
+        assertApproxEqAbs(orderPrice.unwrap(), orderPrice2WithSpread, precision);
     }
 }
