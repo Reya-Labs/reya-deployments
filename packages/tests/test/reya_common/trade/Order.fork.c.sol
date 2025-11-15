@@ -242,9 +242,6 @@ contract OrderForkCheck is BaseReyaForkTest {
         vm.prank(sec.multisig);
         IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(getFeeConfigFeatureFlagId(), bot);
 
-        vm.prank(bot);
-        IPassivePerpProxy(sec.perp).setAccountOwnerPremiumStatusFeeConfig(user, true);
-
         uint256 amount = 1_000_000e6;
         SD59x18 base = sd(1e18);
         SD59x18 reverseBase = sd(-1e18);
@@ -252,6 +249,11 @@ contract OrderForkCheck is BaseReyaForkTest {
 
         // deposit new margin account
         uint128 accountId = depositNewMA(user, sec.usdc, amount);
+
+        // execute without spread discount
+        // note, setting to false is redundunt but doing for test
+        vm.prank(bot);
+        IPassivePerpProxy(sec.perp).setAccountOwnerPremiumStatusFeeConfig(user, false);
 
         (UD60x18 orderPrice,) = executeCoreMatchOrder({
             marketId: marketId,
@@ -266,9 +268,13 @@ contract OrderForkCheck is BaseReyaForkTest {
             marketId: marketId,
             sender: user,
             base: reverseBase,
-            priceLimit: priceLimit,
+            priceLimit: ud(0),
             accountId: accountId
         });
+
+        // execute with spread discount
+        vm.prank(bot);
+        IPassivePerpProxy(sec.perp).setAccountOwnerPremiumStatusFeeConfig(user, true);
 
         (UD60x18 orderPrice2,) = executeCoreMatchOrder({
             marketId: marketId,
@@ -279,8 +285,9 @@ contract OrderForkCheck is BaseReyaForkTest {
         });
 
         MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+
         uint256 orderPrice2WithSpread =
             orderPrice2.mul(ONE_sd.add(SD59x18.wrap(int256(marketConfig.priceSpread))).intoUD60x18()).unwrap();
-        assertApproxEqAbs(orderPrice.unwrap(), orderPrice2WithSpread, 0.001e6);
+        assertApproxEqAbs(orderPrice.unwrap(), orderPrice2WithSpread, 0.001e18);
     }
 }
