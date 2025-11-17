@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.92"
+version = "1.0.93"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
