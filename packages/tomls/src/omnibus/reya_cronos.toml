@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.96"
+version = "1.0.97"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -811,7 +811,7 @@ market1Eth_depthFactorUnscaled = "25"
 market1Eth_maxExposureFactorUnscaled = "0.999"
 market1Eth_maxPSlippageUnscaled = "0.1"
 market1Eth_marketOrderMaxStaleDuration = "11"
-market1Eth_priceSpreadUnscaled = "0.00003"
+market1Eth_priceSpreadUnscaled = "0.000035"
 market1Eth_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_2btc]
@@ -1647,7 +1647,7 @@ market43Hype_slippageParams_betaUnscaled = "0"
 market43Hype_minimumOrderBaseUnscaled = "1"
 market43Hype_baseSpacingUnscaled = "0.1"
 market43Hype_priceSpacingUnscaled = "<%= 1e-3 %>"
-market43Hype_depthFactorUnscaled = "4"
+market43Hype_depthFactorUnscaled = "2"
 market43Hype_maxExposureFactorUnscaled = "0.999"
 market43Hype_maxPSlippageUnscaled = "0.1"
 market43Hype_marketOrderMaxStaleDuration = "11"
