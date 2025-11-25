@@ -44,7 +44,7 @@ progCompAccountId = "8038"
 
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.18@router"
+coreRouterPackage = "reya-core:1.0.20@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
@@ -2257,7 +2257,7 @@ market73Wlfi_volatilityIndexMultiplierUnscaled = "0"
 [var.market_74Linea]
 market74Linea_riskMatrixIndex = "0"
 market74Linea_maxOpenBaseUnscaled = "2000000"
-market74Linea_depthFactorUnscaled = "3.9"
+market74Linea_velocityMultiplierUnscaled = "26.4"
 market74Linea_oracleNodeId = "<%= settings.lineaUsdcMarkNodeIdStork %>"
 market74Linea_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market74Linea_dutchConfig_lambdaUnscaled = "1"
