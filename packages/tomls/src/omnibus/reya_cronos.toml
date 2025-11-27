@@ -151,6 +151,9 @@ co_execution_bot5 = "0xf5dD8F0D98138330F6b5927B019E5B94B3C1E919" # main API exec
 co_execution_bot6 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
 co_execution_bot7 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
 
+[var.matching_engine_publishers]
+matching_engine_publisher1 = "0x89340FA8559968c2ADe406C6CcAd6C74F892472d"
+
 [var.fee_configuration_bots]
 setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"
 setTierIdBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
