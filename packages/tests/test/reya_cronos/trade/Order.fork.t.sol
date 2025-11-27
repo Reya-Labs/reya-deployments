@@ -23,4 +23,12 @@ contract OrderForkTest is ReyaForkTest, OrderForkCheck {
     function test_Cronos_MatchOrder_CachedPoolNodeMarginInfo() public {
         check_MatchOrder_CachedPoolNodeMarginInfo();
     }
+
+    function test_Cronos_MatchOrder_Spread_ETH_market() public {
+        check_MatchOrder_Spread(1, 0.004e18);
+    }
+
+    function test_Cronos_MatchOrder_Spread_BTC_market() public {
+        check_MatchOrder_Spread(2, 0.02e18);
+    }
 }
