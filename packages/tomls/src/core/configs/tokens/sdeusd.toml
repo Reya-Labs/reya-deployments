@@ -42,6 +42,6 @@ fromCall.func = "owner"
 func = "setSpotMarketConfiguration"
 args = [
     "<%= settings.sdeusdRusdSpotMarketId %>",
-    { oracleDeviation = "<%= parseEther(settings.sdeusdRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.sdeusdRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.sdeusdRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.sdeusdRusdSpot_priceSpacingUnscaled) %>"}
+    { oracleDeviation = "<%= parseEther(settings.sdeusdRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.sdeusdRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.sdeusdRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.sdeusdRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.sdeusdRusdSpot_oracleNodeId %>" }
 ]
 depends = ["invoke.upgrade_core_proxy", "invoke.i_sdeusd_rusd_create_spot_market"]
