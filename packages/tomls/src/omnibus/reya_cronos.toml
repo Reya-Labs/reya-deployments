@@ -44,7 +44,7 @@ progCompAccountId = "8038"
 
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.21@router"
+coreRouterPackage = "reya-core:1.0.22@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
