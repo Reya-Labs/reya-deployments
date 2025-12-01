@@ -1,0 +1,7 @@
+[invoke.reya_set_admin_for_blacklisting]
+target = ["<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"]
+abi = "<%= JSON.stringify(imports.reyaTokenImplementation.contracts.ReyaOFT.abi) %>"
+fromCall.func = "owner"
+func = "setAdmins"
+args = ["<%= keccak256(hexlify('blacklist')) %>", ["<%= settings.blacklistingAdmin %>"]]
+depends = ["invoke.reya_token_initialize"]

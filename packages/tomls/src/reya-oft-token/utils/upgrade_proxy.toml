@@ -1,0 +1,46 @@
+[pull.reyaTokenImplementation]
+source = "<%= settings.reyaTokenImplementationPackage %>"
+chainId = 89346162
+depends = ["var.cannonClonePackages"]
+
+# Upgrades implementation of ReyaTokenProxy to point to the new
+# router implementation.
+[invoke.upgrade_reya_token_proxy]
+target = ["<%= settings.reyaTokenProxyAdmin %>"]
+abi = "[{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"proxy\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"upgradeAndCall\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"}]"
+fromCall.func = "owner"
+func = "upgradeAndCall"
+args = ["<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>", "<%= imports.reyaTokenImplementation.contracts.ReyaOFT.address %>", "0x"]
+depends = ["var.upgrade_proxy_vars", "pull.reyaTokenProxy", "pull.reyaTokenImplementation"]
+
+[invoke.reya_token_initialize]
+target = ["<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"]
+abi = "<%= JSON.stringify(imports.reyaTokenImplementation.contracts.ReyaOFT.abi) %>"
+fromCall.func = "owner"
+func = "initialize"
+args = ["<%= settings.tokenName %>", "<%= settings.tokenSymbol %>", "<%= settings.owner %>"]
+depends = ["invoke.upgrade_reya_token_proxy"]
+
+[invoke.reya_token_unpause]
+target = ["<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"]
+abi = "<%= JSON.stringify(imports.reyaTokenImplementation.contracts.ReyaOFT.abi) %>"
+fromCall.func = "owner"
+func = "unpause"
+args = []
+depends = ["invoke.upgrade_reya_token_proxy", "invoke.reya_token_initialize"]
+
+[invoke.reya_token_set_pausers]
+target = ["<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"]
+abi = "<%= JSON.stringify(imports.reyaTokenImplementation.contracts.ReyaOFT.abi) %>"
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.reya_token_initialize"]

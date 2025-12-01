@@ -1,0 +1,22 @@
+# Variable mapping for Reya -> Ethereum
+# Reya is SOURCE, Ethereum is DESTINATION
+
+[var.layerzero_source_config]
+sourceEndpointAddress = "<%= settings.reyaEndpointAddress %>"
+sourceOAppAddress = "<%= settings.reyaOAppAddress %>"
+sourceSendLibAddress = "<%= settings.reyaSendLibAddress %>"
+sourceReceiveLibAddress = "<%= settings.reyaReceiveLibAddress %>"
+sourceEid = "<%= settings.reyaEid %>"
+sourceExecutorAddress = "<%= settings.reyaExecutorAddress %>"
+sourceLzRequiredDVN1 = "<%= settings.reyaLzRequiredDVN1 %>"
+sourceLzConfirmations = "<%= settings.reyaLzConfirmations %>"
+
+[var.layerzero_destination_config]
+destinationEndpointAddress = "<%= settings.ethereumEndpointAddress %>"
+destinationOAppAddress = "<%= settings.ethereumOAppAddress %>"
+destinationSendLibAddress = "<%= settings.ethereumSendLibAddress %>"
+destinationReceiveLibAddress = "<%= settings.ethereumReceiveLibAddress %>"
+destinationEid = "<%= settings.ethereumEid %>"
+destinationExecutorAddress = "<%= settings.ethereumExecutorAddress %>"
+destinationLzRequiredDVN1 = "<%= settings.ethereumLzRequiredDVN1 %>"
+destinationLzConfirmations = "<%= settings.ethereumLzConfirmations %>"

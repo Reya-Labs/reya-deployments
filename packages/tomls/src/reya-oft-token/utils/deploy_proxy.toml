@@ -1,0 +1,4 @@
+[pull.reyaTokenProxy]
+source = "<%= settings.reyaTokenProxyPackage %>"
+chainId = 89346162
+depends = ["var.cannonClonePackages"]

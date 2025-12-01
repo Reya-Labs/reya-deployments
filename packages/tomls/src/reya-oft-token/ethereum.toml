@@ -1,0 +1,12 @@
+include = [
+    "utils/deploy_proxy.toml",
+    "utils/upgrade_proxy.toml",
+    "configs/feature_flags.toml",
+    # Ethereum as Source -> Reya as Destination
+    "configs/lz_connections/reya_to_ethereum_vars.toml",
+    "configs/lz_connections/shared/destination_receive_config.toml"
+    # Reya as Source -> Ethereum as Destination
+    "configs/lz_connections/ethereum_to_reya_vars.toml",
+    "configs/lz_connections/shared/destination_receive_config.toml",
+    "configs/lz_connections/shared/peer_config.toml"
+]

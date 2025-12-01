@@ -1,0 +1,14 @@
+# Generic Peer Configuration
+# Set peer connection from source to destination
+# This file is reused for both directions with different variable mappings
+
+[invoke.lz_set_peer]
+target = ["<%= settings.chainAOAppAddress %>"]
+abi = "[{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"eid\",\"type\":\"uint32\"},{\"internalType\":\"bytes32\",\"name\":\"peer\",\"type\":\"bytes32\"}],\"name\":\"setPeer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
+fromCall.func = "owner"
+func = "setPeer"
+args = [
+    "<%= settings.chainBEid %>",
+    "<%= bytes32(settings.chainBOAppAddress) %>"
+]
+depends = ["invoke.lz_set_destination_receive_config"]
