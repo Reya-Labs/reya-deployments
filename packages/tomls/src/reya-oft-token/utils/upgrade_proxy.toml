@@ -1,6 +1,5 @@
 [pull.reyaTokenImplementation]
 source = "<%= settings.reyaTokenImplementationPackage %>"
-chainId = 89346162
 depends = ["var.cannonClonePackages"]
 
 # Upgrades implementation of ReyaTokenProxy to point to the new

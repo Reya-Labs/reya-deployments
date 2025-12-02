@@ -8,20 +8,20 @@
 [invoke.lz_set_source_send_library]
 target = ["<%= settings.chainAEndpointAddress %>"]
 abi = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oapp\",\"type\":\"address\"},{\"internalType\":\"uint32\",\"name\":\"eid\",\"type\":\"uint32\"},{\"internalType\":\"address\",\"name\":\"newLib\",\"type\":\"address\"}],\"name\":\"setSendLibrary\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
-fromCall.func = "owner"
+from = "<%= settings.owner %>"
 func = "setSendLibrary"
 args = [
     "<%= settings.chainAOAppAddress %>",
     "<%= settings.chainBEid %>",
     "<%= settings.chainASendLibAddress %>"
 ]
-depends = ["invoke.reya_token_initialize"] #, "var.layerzero_chainA_config", "var.layerzero_chainB_config"]
+depends = ["invoke.reya_token_initialize"]
 
 # Set Receive Library (Destination -> Source)
 [invoke.lz_set_source_receive_library]
 target = ["<%= settings.chainAEndpointAddress %>"]
 abi = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oapp\",\"type\":\"address\"},{\"internalType\":\"uint32\",\"name\":\"eid\",\"type\":\"uint32\"},{\"internalType\":\"address\",\"name\":\"newLib\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"gracePeriod\",\"type\":\"uint256\"}],\"name\":\"setReceiveLibrary\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
-fromCall.func = "owner"
+from = "<%= settings.owner %>"
 func = "setReceiveLibrary"
 args = [
     "<%= settings.chainAOAppAddress %>",
@@ -37,14 +37,15 @@ depends = ["invoke.lz_set_source_send_library"]
 [invoke.lz_set_source_send_config]
 target = ["<%= settings.chainAEndpointAddress %>"]
 abi = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oapp\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"lib\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint32\",\"name\":\"eid\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"configType\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"config\",\"type\":\"bytes\"}],\"internalType\":\"struct SetConfigParam[]\",\"name\":\"params\",\"type\":\"tuple[]\"}],\"name\":\"setConfig\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
-fromCall.func = "owner"
+from = "<%= settings.owner %>"
 func = "setConfig"
 args = [
     "<%= settings.chainAOAppAddress %>",
     "<%= settings.chainASendLibAddress %>",
     [
-        {eid = "<%= settings.chainBEid %>", configType = 1, config = "<%= defaultAbiCoder.encode(['uint32', 'address'],[settings.lzMaxMessageSize, settings.chainBExecutorAddress]) %>"},
-        {eid = "<%= settings.chainBEid %>", configType = 2, config = "<%= defaultAbiCoder.encode(['uint64', 'uint8', 'uint8', 'uint8', 'address[]', 'address[]'],[settings.chainBLzConfirmations, settings.lzRequiredDVNCount, settings.lzOptionalDVNCount, settings.lzOptionalDVNThreshold, [settings.chainBLzRequiredDVN1], []]) %>"}
+        {eid = "<%= settings.chainBEid %>", configType = 1, config = "0x0000000000000000000000000000000000000000000000000000000000002710000000000000000000000000<%= settings.chainAExecutorAddress.slice(2) %>"},
+        {eid = "<%= settings.chainBEid %>", configType = 2, config = "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000<%= settings.chainBLzConfirmations %>000000000000000000000000000000000000000000000000000000000000000<%= settings.lzRequiredDVNCount %>000000000000000000000000000000000000000000000000000000000000000<%= settings.lzOptionalDVNCount %>000000000000000000000000000000000000000000000000000000000000000<%= settings.lzOptionalDVNThreshold %>00000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000<%= settings.lzRequiredDVNCount %>000000000000000000000000<%= settings.chainALzRequiredDVN1.slice(2) %>0000000000000000000000000000000000000000000000000000000000000000"}
     ]
 ]
-depends = ["invoke.lz_set_source_receive_library"] #, "var.layerzero_chainA_config", "var.layerzero_chainB_config"]
+depends = ["invoke.lz_set_source_receive_library", "var.lz_common_config", "var.layerzero_chainA_config", "var.layerzero_chainB_config"]
+

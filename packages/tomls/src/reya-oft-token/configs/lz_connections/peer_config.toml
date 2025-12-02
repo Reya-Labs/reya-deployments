@@ -5,10 +5,10 @@
 [invoke.lz_set_peer]
 target = ["<%= settings.chainAOAppAddress %>"]
 abi = "[{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"eid\",\"type\":\"uint32\"},{\"internalType\":\"bytes32\",\"name\":\"peer\",\"type\":\"bytes32\"}],\"name\":\"setPeer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
-fromCall.func = "owner"
+from = "<%= settings.owner %>"
 func = "setPeer"
 args = [
     "<%= settings.chainBEid %>",
-    "<%= bytes32(settings.chainBOAppAddress) %>"
+    "<%= hexZeroPad(settings.chainBOAppAddress, 32) %>"
 ]
 depends = ["invoke.lz_set_destination_receive_config"]

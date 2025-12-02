@@ -1,0 +1,14 @@
+# Configure chainA endpoint to receive messages from chainB
+[invoke.lz_set_destination_receive_config]
+target = ["<%= settings.chainAEndpointAddress %>"]
+abi = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oapp\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"lib\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint32\",\"name\":\"eid\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"configType\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"config\",\"type\":\"bytes\"}],\"internalType\":\"struct SetConfigParam[]\",\"name\":\"params\",\"type\":\"tuple[]\"}],\"name\":\"setConfig\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
+from = "<%= settings.owner %>"
+func = "setConfig"
+args = [
+    "<%= settings.chainAOAppAddress %>",
+    "<%= settings.chainAReceiveLibAddress %>",
+    [
+        {eid = "<%= settings.chainBEid %>", configType = 2, config = "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000<%= settings.chainAConfirmations %>000000000000000000000000000000000000000000000000000000000000000<%= settings.lzRequiredDVNCount %>000000000000000000000000000000000000000000000000000000000000000<%= settings.lzOptionalDVNCount %>000000000000000000000000000000000000000000000000000000000000000<%= settings.lzOptionalDVNThreshold %>00000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000<%= settings.lzRequiredDVNCount %>000000000000000000000000<%= settings.chainALzRequiredDVN1.slice(2) %>0000000000000000000000000000000000000000000000000000000000000000"}
+    ]
+]
+depends = ["invoke.lz_set_source_send_config"]
