@@ -62,9 +62,9 @@ chainASendLibAddress = "0xcc1ae8Cf5D3904Cef3360A9532B477529b177cCE"
 chainAReceiveLibAddress = "0xdAf00F5eE2158dD58E0d3857851c432E34A3A851"
 chainAEid = "40161"
 chainAExecutorAddress = "0x718B92b5CB0a5552039B593faF724D182A881eDA"
-chainALzRequiredDVN1 = "0x530fBe405189204EF459Fa4B767167e4d41E3a37"
+chainALzRequiredDVN1 = "0x8eebf8b423b73bfca51a1db4b7354aa0bfca9193"
 chainALzConfirmations = "1"
-chainAOAppAddress = "<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"
+chainAOAppAddress = "<%= settings.reyaTokenProxy %>"
 
 # REYA addresses
 [var.layerzero_chainB_config]
@@ -74,5 +74,5 @@ chainBReceiveLibAddress = "0xcF1B0F4106B0324F96fEfcC31bA9498caa80701C"
 chainBEid = "40319"
 chainBExecutorAddress = "0x701f3927871EfcEa1235dB722f9E608aE120d243" 
 chainBLzRequiredDVN1 = "0xF49d162484290EAeAd7bb8C2c7E3a6f8f52e32d6"
-chainBConfirmations = "1"
+chainBLzConfirmations = "1"
 chainBOAppAddress = "0x71733775441c54134b38B0D41eC8d6F880625D2c"

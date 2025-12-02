@@ -33,7 +33,22 @@ depends = ["invoke.lz_set_source_send_library"]
 
 ################################# Set Send Configuration #######################################
 
+# ABI encoding constants for UlnConfig struct
+[var.uln_config_encoding]
+tupleOffset = "0000000000000000000000000000000000000000000000000000000000000020"  # 32 bytes: offset to tuple start
+requiredDVNsOffset = "00000000000000000000000000000000000000000000000000000000000000c0"  # 192 bytes: offset to requiredDVNs array
+optionalDVNsOffset = "0000000000000000000000000000000000000000000000000000000000000100"  # 256 bytes: offset to optionalDVNs array
+optionalDVNsLength = "0000000000000000000000000000000000000000000000000000000000000000"  # 0: no optional DVNs
+addressPadding = "000000000000000000000000"  # 12 bytes: left-padding for 20-byte address to 32 bytes
+
 # On Source Endpoint, set Destination DVN and Executor config for outbound messages
+# UlnConfig struct encoding:
+# - tupleOffset: offset to tuple start
+# - confirmations (uint64), requiredDVNCount (uint8), optionalDVNCount (uint8), optionalDVNThreshold (uint8)
+# - requiredDVNsOffset: offset to requiredDVNs array (192 bytes from tuple start)
+# - optionalDVNsOffset: offset to optionalDVNs array (256 bytes from tuple start)
+# - requiredDVNs.length, requiredDVNs[0] (address padded to 32 bytes)
+# - optionalDVNsLength (0 in this case)
 [invoke.lz_set_source_send_config]
 target = ["<%= settings.chainAEndpointAddress %>"]
 abi = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oapp\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"lib\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint32\",\"name\":\"eid\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"configType\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"config\",\"type\":\"bytes\"}],\"internalType\":\"struct SetConfigParam[]\",\"name\":\"params\",\"type\":\"tuple[]\"}],\"name\":\"setConfig\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
@@ -44,8 +59,7 @@ args = [
     "<%= settings.chainASendLibAddress %>",
     [
         {eid = "<%= settings.chainBEid %>", configType = 1, config = "0x0000000000000000000000000000000000000000000000000000000000002710000000000000000000000000<%= settings.chainAExecutorAddress.slice(2) %>"},
-        {eid = "<%= settings.chainBEid %>", configType = 2, config = "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000<%= settings.chainBLzConfirmations %>000000000000000000000000000000000000000000000000000000000000000<%= settings.lzRequiredDVNCount %>000000000000000000000000000000000000000000000000000000000000000<%= settings.lzOptionalDVNCount %>000000000000000000000000000000000000000000000000000000000000000<%= settings.lzOptionalDVNThreshold %>00000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000<%= settings.lzRequiredDVNCount %>000000000000000000000000<%= settings.chainALzRequiredDVN1.slice(2) %>0000000000000000000000000000000000000000000000000000000000000000"}
+        {eid = "<%= settings.chainBEid %>", configType = 2, config = "0x<%= settings.tupleOffset %><%= hexZeroPad(settings.chainBLzConfirmations, 32).slice(2) %><%= hexZeroPad(settings.lzRequiredDVNCount, 32).slice(2) %><%= hexZeroPad(settings.lzOptionalDVNCount, 32).slice(2) %><%= hexZeroPad(settings.lzOptionalDVNThreshold, 32).slice(2) %><%= settings.requiredDVNsOffset %><%= settings.optionalDVNsOffset %><%= hexZeroPad(settings.lzRequiredDVNCount, 32).slice(2) %><%= settings.addressPadding %><%= settings.chainALzRequiredDVN1.slice(2) %><%= settings.optionalDVNsLength %>"}
     ]
 ]
-depends = ["invoke.lz_set_source_receive_library", "var.lz_common_config", "var.layerzero_chainA_config", "var.layerzero_chainB_config"]
-
+depends = ["invoke.lz_set_source_receive_library", "var.uln_config_encoding", "var.lz_common_config", "var.layerzero_chainA_config", "var.layerzero_chainB_config"]
