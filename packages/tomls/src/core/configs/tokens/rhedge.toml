@@ -21,3 +21,30 @@ args = [
     true,
 ]
 depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.b_rhedge_rusd_create_spot_market]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'SpotMarketInfoUpdated','inputs':[{'name':'eventSequenceNumber','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'spotMarketId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'baseToken','type':'address','indexed':false,'internalType':'address'},{'name':'quoteToken','type':'address','indexed':false,'internalType':'address'},{'name':'symbol','type':'string','indexed':false,'internalType':'string'},{'name':'config','type':'tuple','indexed':false,'internalType':'struct SpotMarketConfig','components':[{'name':'oracleDeviation','type':'uint256','internalType':'UD60x18'},{'name':'minimumOrderBase','type':'uint256','internalType':'UD60x18'},{'name':'baseSpacing','type':'uint256','internalType':'UD60x18'},{'name':'priceSpacing','type':'uint256','internalType':'UD60x18'},{'name':'oracleNodeId','type':'bytes32','internalType':'bytes32'}]},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "owner"
+func = "createSpotMarket"
+args = [
+    "<%= contracts.RHEDGEProxy.address %>",
+    "<%= contracts.RUSDProxy.address %>",
+    "RHEDGERUSD",
+]
+var.rhedgeRusdSpotMarketId.event = "SpotMarketInfoUpdated"
+var.rhedgeRusdSpotMarketId.arg = 1
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.rhedge_rusd_configure_spot_market]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setSpotMarketConfiguration"
+args = [
+    "<%= settings.rhedgeRusdSpotMarketId %>",
+    { oracleDeviation = "<%= parseEther(settings.rhedgeRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.rhedgeRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.rhedgeRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.rhedgeRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.rhedgeRusdSpot_oracleNodeId %>" },
+]
+depends = [
+    "invoke.upgrade_core_proxy",
+    "invoke.b_rhedge_rusd_create_spot_market",
+]

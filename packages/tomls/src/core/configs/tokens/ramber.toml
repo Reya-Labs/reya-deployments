@@ -21,3 +21,30 @@ args = [
     true,
 ]
 depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.d_ramber_rusd_create_spot_market]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'SpotMarketInfoUpdated','inputs':[{'name':'eventSequenceNumber','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'spotMarketId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'baseToken','type':'address','indexed':false,'internalType':'address'},{'name':'quoteToken','type':'address','indexed':false,'internalType':'address'},{'name':'symbol','type':'string','indexed':false,'internalType':'string'},{'name':'config','type':'tuple','indexed':false,'internalType':'struct SpotMarketConfig','components':[{'name':'oracleDeviation','type':'uint256','internalType':'UD60x18'},{'name':'minimumOrderBase','type':'uint256','internalType':'UD60x18'},{'name':'baseSpacing','type':'uint256','internalType':'UD60x18'},{'name':'priceSpacing','type':'uint256','internalType':'UD60x18'},{'name':'oracleNodeId','type':'bytes32','internalType':'bytes32'}]},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "owner"
+func = "createSpotMarket"
+args = [
+    "<%= contracts.RAMBERProxy.address %>",
+    "<%= contracts.RUSDProxy.address %>",
+    "RAMBERRUSD",
+]
+var.ramberRusdSpotMarketId.event = "SpotMarketInfoUpdated"
+var.ramberRusdSpotMarketId.arg = 1
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.ramber_rusd_configure_spot_market]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setSpotMarketConfiguration"
+args = [
+    "<%= settings.ramberRusdSpotMarketId %>",
+    { oracleDeviation = "<%= parseEther(settings.ramberRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.ramberRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.ramberRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.ramberRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.ramberRusdSpot_oracleNodeId %>" },
+]
+depends = [
+    "invoke.upgrade_core_proxy",
+    "invoke.d_ramber_rusd_create_spot_market",
+]
