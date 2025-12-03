@@ -46,7 +46,6 @@ args = [
 ]
 depends = ["invoke.upgrade_core_proxy", "invoke.e_weth_rusd_create_spot_market"]
 
-# todo: move away from hardcoded spot market id
 [invoke.weth_rusd_enable_spot_market]
 target = ["CoreProxy"]
 fromCall.func = "owner"
