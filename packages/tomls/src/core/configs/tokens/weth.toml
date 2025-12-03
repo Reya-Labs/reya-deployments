@@ -30,7 +30,7 @@ func = "createSpotMarket"
 args = [
     "<%= contracts.WETHProxy.address %>",
     "<%= contracts.RUSDProxy.address %>",
-    "WETHRUSD"
+    "WETHRUSD",
 ]
 var.wethRusdSpotMarketId.event = "SpotMarketInfoUpdated"
 var.wethRusdSpotMarketId.arg = 1
@@ -42,7 +42,7 @@ fromCall.func = "owner"
 func = "setSpotMarketConfiguration"
 args = [
     "<%= settings.wethRusdSpotMarketId %>",
-    { oracleDeviation = "<%= parseEther(settings.wethRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.wethRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.wethRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.wethRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.wethRusdSpot_oracleNodeId %>" }
+    { oracleDeviation = "<%= parseEther(settings.wethRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.wethRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.wethRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.wethRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.wethRusdSpot_oracleNodeId %>" },
 ]
 depends = ["invoke.upgrade_core_proxy", "invoke.e_weth_rusd_create_spot_market"]
 
@@ -51,5 +51,8 @@ depends = ["invoke.upgrade_core_proxy", "invoke.e_weth_rusd_create_spot_market"]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
-args = ["<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('spotMarketEnabled')), settings.wethRusdSpotMarketId])) %>", true]
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('spotMarketEnabled')), settings.wethRusdSpotMarketId])) %>",
+    true,
+]
 depends = ["invoke.upgrade_core_proxy", "invoke.e_weth_rusd_create_spot_market"]

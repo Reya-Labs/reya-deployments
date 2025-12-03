@@ -30,7 +30,7 @@ func = "createSpotMarket"
 args = [
     "<%= contracts.RAMBERProxy.address %>",
     "<%= contracts.RUSDProxy.address %>",
-    "RAMBERRUSD"
+    "RAMBERRUSD",
 ]
 var.ramberRusdSpotMarketId.event = "SpotMarketInfoUpdated"
 var.ramberRusdSpotMarketId.arg = 1
@@ -42,6 +42,9 @@ fromCall.func = "owner"
 func = "setSpotMarketConfiguration"
 args = [
     "<%= settings.ramberRusdSpotMarketId %>",
-    { oracleDeviation = "<%= parseEther(settings.ramberRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.ramberRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.ramberRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.ramberRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.ramberRusdSpot_oracleNodeId %>" }
+    { oracleDeviation = "<%= parseEther(settings.ramberRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.ramberRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.ramberRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.ramberRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.ramberRusdSpot_oracleNodeId %>" },
 ]
-depends = ["invoke.upgrade_core_proxy", "invoke.d_ramber_rusd_create_spot_market"]
+depends = [
+    "invoke.upgrade_core_proxy",
+    "invoke.d_ramber_rusd_create_spot_market",
+]

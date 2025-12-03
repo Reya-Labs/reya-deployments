@@ -30,7 +30,7 @@ func = "createSpotMarket"
 args = [
     "<%= contracts.RHEDGEProxy.address %>",
     "<%= contracts.RUSDProxy.address %>",
-    "RHEDGERUSD"
+    "RHEDGERUSD",
 ]
 var.rhedgeRusdSpotMarketId.event = "SpotMarketInfoUpdated"
 var.rhedgeRusdSpotMarketId.arg = 1
@@ -42,6 +42,9 @@ fromCall.func = "owner"
 func = "setSpotMarketConfiguration"
 args = [
     "<%= settings.rhedgeRusdSpotMarketId %>",
-    { oracleDeviation = "<%= parseEther(settings.rhedgeRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.rhedgeRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.rhedgeRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.rhedgeRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.rhedgeRusdSpot_oracleNodeId %>" }
+    { oracleDeviation = "<%= parseEther(settings.rhedgeRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.rhedgeRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.rhedgeRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.rhedgeRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.rhedgeRusdSpot_oracleNodeId %>" },
 ]
-depends = ["invoke.upgrade_core_proxy", "invoke.b_rhedge_rusd_create_spot_market"]
+depends = [
+    "invoke.upgrade_core_proxy",
+    "invoke.b_rhedge_rusd_create_spot_market",
+]

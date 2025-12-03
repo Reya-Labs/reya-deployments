@@ -30,7 +30,7 @@ func = "createSpotMarket"
 args = [
     "<%= contracts.RSELINIProxy.address %>",
     "<%= contracts.RUSDProxy.address %>",
-    "RSELINIRUSD"
+    "RSELINIRUSD",
 ]
 var.rseliniRusdSpotMarketId.event = "SpotMarketInfoUpdated"
 var.rseliniRusdSpotMarketId.arg = 1
@@ -42,6 +42,9 @@ fromCall.func = "owner"
 func = "setSpotMarketConfiguration"
 args = [
     "<%= settings.rseliniRusdSpotMarketId %>",
-    { oracleDeviation = "<%= parseEther(settings.rseliniRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.rseliniRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.rseliniRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.rseliniRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.rseliniRusdSpot_oracleNodeId %>" }
+    { oracleDeviation = "<%= parseEther(settings.rseliniRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.rseliniRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.rseliniRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.rseliniRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.rseliniRusdSpot_oracleNodeId %>" },
 ]
-depends = ["invoke.upgrade_core_proxy", "invoke.c_rselini_rusd_create_spot_market"]
+depends = [
+    "invoke.upgrade_core_proxy",
+    "invoke.c_rselini_rusd_create_spot_market",
+]
