@@ -2,13 +2,13 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import "forge-std/Test.sol";
 
-import { StorageReyaForkTest } from "../reya_common/StorageReyaForkTest.sol";
+import { BaseReyaForkTest } from "../reya_common/BaseReyaForkTest.sol";
 import "../reya_common/DataTypes.sol";
 
 import { ICoreProxy } from "../../src/interfaces/ICoreProxy.sol";
 import { IOracleManagerProxy, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
 
-contract ReyaForkTest is StorageReyaForkTest {
+contract ReyaForkTest is BaseReyaForkTest {
     constructor() {
         string memory rpcKey = vm.envString("RPC_KEY");
         // network
@@ -718,6 +718,9 @@ contract ReyaForkTest is StorageReyaForkTest {
         catch {
             vm.createSelectFork(sec.REYA_RPC);
         }
+
+        // (*) deposit 2m rUSD into the passive pool
+        fundPassivePool(2_000_000e6);
 
         // setup
         // (*) allow anyone to publish match orders

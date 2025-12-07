@@ -399,7 +399,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_rselini_cap_exceeded() public {
-        check_lmToken_cap_exceeded(sec.rselini, 2_000_000e18);
+        check_lmToken_cap_exceeded(sec.rselini, 12_525_209e18);
     }
 
     function check_ramber_cap_exceeded() public {

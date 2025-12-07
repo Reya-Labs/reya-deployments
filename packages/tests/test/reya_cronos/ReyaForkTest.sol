@@ -730,16 +730,7 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         // setup
         // (*) deposit 50m rUSD into the passive pool
-        DepositPassivePoolInputs memory inputs =
-            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: vm.addr(2), minShares: 0 });
-        deal(sec.usdc, sec.periphery, 50_000_000e6);
-        vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        vm.mockCall(
-            dec.socketExecutionHelper[sec.usdc],
-            abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
-            abi.encode(50_000_000e6)
-        );
-        IPeripheryProxy(sec.periphery).depositPassivePool(inputs);
+        fundPassivePool(50_000_000e6);
 
         // (*) allow anyone to publish match orders
         vm.prank(sec.multisig);
