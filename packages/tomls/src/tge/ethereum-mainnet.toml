@@ -3,7 +3,7 @@ include = [
     "../reya-oft-token/ethereum.toml"
 ]
 
-version = "1.0.1"
+version = "1.0.2"
 
 chainId = 1
 
@@ -57,3 +57,7 @@ chainBExecutorAddress = "0xcCE466a522984415bC91338c232d98869193D46e"
 chainBLzRequiredDVN1 = "0x6788f52439aca6bff597d3eec2dc9a44b8fee842"
 chainBLzConfirmations = "15"
 chainBOAppAddress = "0xDE77ADB3Eb0BCAD31dd8Bf27edE053EeCA977474"
+
+[var.distribution]
+mintReceiver = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+mintAmountUnscaled = "10"

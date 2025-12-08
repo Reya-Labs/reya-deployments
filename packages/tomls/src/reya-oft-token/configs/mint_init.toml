@@ -1,0 +1,7 @@
+[invoke.reya_mint]
+target = ["<%= settings.reyaTokenProxy %>"]
+abi = "<%= JSON.stringify(imports.reyaTokenImplementation.contracts.ReyaOFT.abi) %>"
+fromCall.func = "owner"
+func = "mint"
+args = ["<%= settings.mintReceiver %>", "<%= parseEther(settings.mintAmountUnscaled) %>"]
+depends = ["invoke.upgrade_reya_token_proxy"]
