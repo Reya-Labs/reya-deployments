@@ -7,7 +7,7 @@
 # Set Send Library (Source -> Destination)
 [invoke.lz_set_source_send_library]
 target = ["<%= settings.chainAEndpointAddress %>"]
-abi = "<%= settings.lz_endpoint_abi.setSendLibrary %>"
+abi = "<%= settings.abiSetSendLibrary %>"
 from = "<%= settings.owner %>"
 func = "setSendLibrary"
 args = [
@@ -15,12 +15,12 @@ args = [
     "<%= settings.chainBEid %>",
     "<%= settings.chainASendLibAddress %>"
 ]
-depends = ["invoke.reya_token_initialize"]
+depends = ["invoke.upgrade_reya_token_proxy"]
 
 # Set Receive Library (Destination -> Source)
 [invoke.lz_set_source_receive_library]
 target = ["<%= settings.chainAEndpointAddress %>"]
-abi = "<%= settings.lz_endpoint_abi.setReceiveLibrary %>"
+abi = "<%= settings.abiSetReceiveLibrary %>"
 from = "<%= settings.owner %>"
 func = "setReceiveLibrary"
 args = [
@@ -52,7 +52,7 @@ addressPadding = "000000000000000000000000"  # 12 bytes: left-padding for 20-byt
 # - optionalDVNsLength (0 in this case)
 [invoke.lz_set_source_send_config]
 target = ["<%= settings.chainAEndpointAddress %>"]
-abi = "<%= settings.lz_endpoint_abi.setConfig %>"
+abi = "<%= settings.abiSetConfig %>"
 from = "<%= settings.owner %>"
 func = "setConfig"
 args = [

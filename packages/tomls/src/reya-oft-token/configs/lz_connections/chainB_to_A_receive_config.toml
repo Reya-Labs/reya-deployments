@@ -2,7 +2,7 @@
 # Uses the same ABI encoding constants from chainA_to_B_send_config.toml
 [invoke.lz_set_destination_receive_config]
 target = ["<%= settings.chainAEndpointAddress %>"]
-abi = "<%= settings.lz_endpoint_abi.setConfig %>"
+abi = "<%= settings.abiSetConfig %>"
 from = "<%= settings.owner %>"
 func = "setConfig"
 args = [
