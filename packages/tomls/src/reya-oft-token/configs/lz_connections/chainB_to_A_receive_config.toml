@@ -2,7 +2,7 @@
 # Uses the same ABI encoding constants from chainA_to_B_send_config.toml
 [invoke.lz_set_destination_receive_config]
 target = ["<%= settings.chainAEndpointAddress %>"]
-abi = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oapp\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"lib\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint32\",\"name\":\"eid\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"configType\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"config\",\"type\":\"bytes\"}],\"internalType\":\"struct SetConfigParam[]\",\"name\":\"params\",\"type\":\"tuple[]\"}],\"name\":\"setConfig\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
+abi = "<%= settings.lz_endpoint_abi.setConfig %>"
 from = "<%= settings.owner %>"
 func = "setConfig"
 args = [
@@ -12,4 +12,4 @@ args = [
         {eid = "<%= settings.chainBEid %>", configType = 2, config = "0x<%= settings.tupleOffset %><%= hexZeroPad(settings.chainALzConfirmations, 32).slice(2) %><%= hexZeroPad(settings.lzRequiredDVNCount, 32).slice(2) %><%= hexZeroPad(settings.lzOptionalDVNCount, 32).slice(2) %><%= hexZeroPad(settings.lzOptionalDVNThreshold, 32).slice(2) %><%= settings.requiredDVNsOffset %><%= settings.optionalDVNsOffset %><%= hexZeroPad(settings.lzRequiredDVNCount, 32).slice(2) %><%= settings.addressPadding %><%= settings.chainALzRequiredDVN1.slice(2) %><%= settings.optionalDVNsLength %>"}
     ]
 ]
-depends = ["invoke.lz_set_source_send_config", "var.uln_config_encoding"]
+depends = ["invoke.lz_set_source_send_config", "var.config_encoding", "var.lz_endpoint_abi"]

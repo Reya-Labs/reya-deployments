@@ -1,0 +1,59 @@
+include = [
+    "./utils/common.toml",
+    "../reya-oft-token/ethereum.toml"
+]
+
+version = "1.0.0"
+
+chainId = 1
+
+[var.cannonClonePackages]
+reyaTokenProxyPackage = "reya-oft-token:1.0.0@proxy"
+reyaTokenImplementationPackage = "reya-oft-token:1.0.0@implementation"
+reyaTokenProxyAdmin = "0x2276Cb31DF5AD204Ead08d56a2791B14e0eB9752"
+
+[var.upgrade_proxy_vars]
+reyaTokenProxy = "<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"
+
+[var.wallet_addresses]
+owner = "0xDD1F4555Dd91E48e3B1DE657228DC72b65106caA" # mock multisig
+
+[var.pausers]
+# TODO: modify for real deployment
+pauser1 = "0x45556408e543158f74403e882e3c8c23ecd9f732"
+pauser2 = "0x5173cc04a12d1fc7c83293ed71fbfa6bc0f87739"
+pauser3 = "0x23755428879b97a841b62d3f070a72c0f4200c03"
+pauser4 = "0xb89fd195db616b6219204737eb5ed6392ba6d7ca"
+
+[var.reya_token_config]
+blacklistingAdmin = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+[var.lz_common_config]
+# Network agnostic messaging configuration
+lzGracePeriod = "0" 
+lzMaxMessageSize = "10000"
+lzRequiredDVNCount = "1"
+lzOptionalDVNCount = "0"
+lzOptionalDVNThreshold = "0"
+
+# Ethereum addresses
+[var.layerzero_chainA_config]
+chainAEndpointAddress = "0x1a44076050125825900e736c501f859c50fE728c"
+chainASendLibAddress = "0xbB2Ea70C9E858123480642Cf96acbcCE1372dCe1"
+chainAReceiveLibAddress = "0xc02Ab410f0734EFa3F14628780e6e695156024C2"
+chainAEid = "30101"
+chainAExecutorAddress = "0x173272739Bd7Aa6e4e214714048a9fE699453059"
+chainALzRequiredDVN1 = "0xdb979d0a36af0525afa60fc265b1525505c55d79"
+chainALzConfirmations = "15"
+chainAOAppAddress = "<%= settings.reyaTokenProxy %>"
+
+# REYA addresses
+[var.layerzero_chainB_config]
+chainBEndpointAddress = "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B"
+chainBSendLibAddress = "0xC39161c743D0307EB9BCc9FEF03eeb9Dc4802de7"
+chainBReceiveLibAddress = "0xe1844c5D63a9543023008D332Bd3d2e6f1FE1043"
+chainBEid = "30313"
+chainBExecutorAddress = "0xcCE466a522984415bC91338c232d98869193D46e" 
+chainBLzRequiredDVN1 = "0x6788f52439aca6bff597d3eec2dc9a44b8fee842"
+chainBLzConfirmations = "15"
+chainBOAppAddress = "0xDE77ADB3Eb0BCAD31dd8Bf27edE053EeCA977474"

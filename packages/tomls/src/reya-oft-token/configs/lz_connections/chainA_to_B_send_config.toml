@@ -7,7 +7,7 @@
 # Set Send Library (Source -> Destination)
 [invoke.lz_set_source_send_library]
 target = ["<%= settings.chainAEndpointAddress %>"]
-abi = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oapp\",\"type\":\"address\"},{\"internalType\":\"uint32\",\"name\":\"eid\",\"type\":\"uint32\"},{\"internalType\":\"address\",\"name\":\"newLib\",\"type\":\"address\"}],\"name\":\"setSendLibrary\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
+abi = "<%= settings.lz_endpoint_abi.setSendLibrary %>"
 from = "<%= settings.owner %>"
 func = "setSendLibrary"
 args = [
@@ -20,7 +20,7 @@ depends = ["invoke.reya_token_initialize"]
 # Set Receive Library (Destination -> Source)
 [invoke.lz_set_source_receive_library]
 target = ["<%= settings.chainAEndpointAddress %>"]
-abi = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oapp\",\"type\":\"address\"},{\"internalType\":\"uint32\",\"name\":\"eid\",\"type\":\"uint32\"},{\"internalType\":\"address\",\"name\":\"newLib\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"gracePeriod\",\"type\":\"uint256\"}],\"name\":\"setReceiveLibrary\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
+abi = "<%= settings.lz_endpoint_abi.setReceiveLibrary %>"
 from = "<%= settings.owner %>"
 func = "setReceiveLibrary"
 args = [
@@ -33,8 +33,9 @@ depends = ["invoke.lz_set_source_send_library"]
 
 ################################# Set Send Configuration #######################################
 
-# ABI encoding constants for UlnConfig struct
-[var.uln_config_encoding]
+# ABI encoding constants for UlnConfig struct and Executor config
+[var.config_encoding]
+executorConfig = "0000000000000000000000000000000000000000000000000000000000002710"  # 10000 in decimal: max message size or gas limit
 tupleOffset = "0000000000000000000000000000000000000000000000000000000000000020"  # 32 bytes: offset to tuple start
 requiredDVNsOffset = "00000000000000000000000000000000000000000000000000000000000000c0"  # 192 bytes: offset to requiredDVNs array
 optionalDVNsOffset = "0000000000000000000000000000000000000000000000000000000000000100"  # 256 bytes: offset to optionalDVNs array
@@ -51,15 +52,15 @@ addressPadding = "000000000000000000000000"  # 12 bytes: left-padding for 20-byt
 # - optionalDVNsLength (0 in this case)
 [invoke.lz_set_source_send_config]
 target = ["<%= settings.chainAEndpointAddress %>"]
-abi = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oapp\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"lib\",\"type\":\"address\"},{\"components\":[{\"internalType\":\"uint32\",\"name\":\"eid\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"configType\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"config\",\"type\":\"bytes\"}],\"internalType\":\"struct SetConfigParam[]\",\"name\":\"params\",\"type\":\"tuple[]\"}],\"name\":\"setConfig\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
+abi = "<%= settings.lz_endpoint_abi.setConfig %>"
 from = "<%= settings.owner %>"
 func = "setConfig"
 args = [
     "<%= settings.chainAOAppAddress %>",
     "<%= settings.chainASendLibAddress %>",
     [
-        {eid = "<%= settings.chainBEid %>", configType = 1, config = "0x0000000000000000000000000000000000000000000000000000000000002710000000000000000000000000<%= settings.chainAExecutorAddress.slice(2) %>"},
+        {eid = "<%= settings.chainBEid %>", configType = 1, config = "0x<%= settings.executorConfig %><%= settings.addressPadding %><%= settings.chainAExecutorAddress.slice(2) %>"},
         {eid = "<%= settings.chainBEid %>", configType = 2, config = "0x<%= settings.tupleOffset %><%= hexZeroPad(settings.chainBLzConfirmations, 32).slice(2) %><%= hexZeroPad(settings.lzRequiredDVNCount, 32).slice(2) %><%= hexZeroPad(settings.lzOptionalDVNCount, 32).slice(2) %><%= hexZeroPad(settings.lzOptionalDVNThreshold, 32).slice(2) %><%= settings.requiredDVNsOffset %><%= settings.optionalDVNsOffset %><%= hexZeroPad(settings.lzRequiredDVNCount, 32).slice(2) %><%= settings.addressPadding %><%= settings.chainALzRequiredDVN1.slice(2) %><%= settings.optionalDVNsLength %>"}
     ]
 ]
-depends = ["invoke.lz_set_source_receive_library", "var.uln_config_encoding", "var.lz_common_config", "var.layerzero_chainA_config", "var.layerzero_chainB_config"]
+depends = ["invoke.lz_set_source_receive_library", "var.config_encoding", "var.lz_common_config", "var.layerzero_chainA_config", "var.layerzero_chainB_config", "var.lz_endpoint_abi"]
