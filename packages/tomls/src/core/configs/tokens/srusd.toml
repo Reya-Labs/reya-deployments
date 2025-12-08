@@ -21,3 +21,30 @@ args = [
     "<%= settings.passivePoolProxy %>",
 ]
 depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.a_srusd_rusd_create_spot_market]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'SpotMarketInfoUpdated','inputs':[{'name':'eventSequenceNumber','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'spotMarketId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'baseToken','type':'address','indexed':false,'internalType':'address'},{'name':'quoteToken','type':'address','indexed':false,'internalType':'address'},{'name':'symbol','type':'string','indexed':false,'internalType':'string'},{'name':'config','type':'tuple','indexed':false,'internalType':'struct SpotMarketConfig','components':[{'name':'oracleDeviation','type':'uint256','internalType':'UD60x18'},{'name':'minimumOrderBase','type':'uint256','internalType':'UD60x18'},{'name':'baseSpacing','type':'uint256','internalType':'UD60x18'},{'name':'priceSpacing','type':'uint256','internalType':'UD60x18'},{'name':'oracleNodeId','type':'bytes32','internalType':'bytes32'}]},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "owner"
+func = "createSpotMarket"
+args = [
+    "<%= contracts.SRUSDProxy.address %>",
+    "<%= contracts.RUSDProxy.address %>",
+    "SRUSDRUSD",
+]
+var.srusdRusdSpotMarketId.event = "SpotMarketInfoUpdated"
+var.srusdRusdSpotMarketId.arg = 1
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.srusd_rusd_configure_spot_market]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setSpotMarketConfiguration"
+args = [
+    "<%= settings.srusdRusdSpotMarketId %>",
+    { oracleDeviation = "<%= parseEther(settings.srusdRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.srusdRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.srusdRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.srusdRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.srusdRusdSpot_oracleNodeId %>" },
+]
+depends = [
+    "invoke.upgrade_core_proxy",
+    "invoke.a_srusd_rusd_create_spot_market",
+]
