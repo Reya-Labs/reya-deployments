@@ -3,7 +3,7 @@ include = [
     "../reya-oft-token/reya.toml"
 ]
 
-version = "1.0.1"
+version = "1.0.3"
 
 chainId = 1729
 
@@ -11,9 +11,12 @@ chainId = 1729
 reyaTokenProxyPackage = "reya-oft-token:1.0.0@proxy"
 reyaTokenImplementationPackage = "reya-oft-token:1.0.0@implementation"
 reyaTokenProxyAdmin = "0x5bE1233B5e456B4701DbDca3Ddb3451d72aEed52"
+# reyaDistributionProxyPackage = "reya-distributor:1.0.0@proxy"
+# reyaDistributionImplementationPackage = "reya-distributor:1.0.0@implementation"
 
 [var.upgrade_proxy_vars]
 reyaTokenProxy = "<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"
+# reyaDistributionProxy = "<%= imports.reyaDistributionProxy.contracts.TransparentUpgradeableProxy.address %>"
 
 [var.wallet_addresses]
 owner = "0xfF87412803Cec9b5Ed9C4AA9AC875aB2B21DE75D" # mock multisig
@@ -27,6 +30,17 @@ pauser4 = "0xb89fd195db616b6219204737eb5ed6392ba6d7ca"
 
 [var.reya_token_config]
 blacklistingAdmin = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+# TODO: complete at deployment
+# [var.distribution_config]
+# stakedReyaTokenAddress = "0x0000000000000000000000000000000000000000"
+# coreProxyAddress = "0x0000000000000000000000000000000000000000"
+# root = ""
+# startTimestamp = "0"
+# endTimestamp = "0"
+# lockDuration = "0"
+# lockMultiplierUnscaled = "0"
+# releaserAddress = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.lz_common_config]
 # Network agnostic messaging configuration
@@ -54,6 +68,6 @@ chainBSendLibAddress = "0xbB2Ea70C9E858123480642Cf96acbcCE1372dCe1"
 chainBReceiveLibAddress = "0xc02Ab410f0734EFa3F14628780e6e695156024C2"
 chainBEid = "30101"
 chainBExecutorAddress = "0x173272739Bd7Aa6e4e214714048a9fE699453059"
-chainBLzRequiredDVN1 = "0xdb979d0a36af0525afa60fc265b1525505c55d79"
+chainBLzRequiredDVN1 = "0x589dedbd617e0cbcb916a9223f4d1300c294236b"
 chainBLzConfirmations = "15"
 chainBOAppAddress = "0xF3892BCD6AF4150D59CD0546E43b11E0B13ADe62"

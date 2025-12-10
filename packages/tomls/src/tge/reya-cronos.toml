@@ -43,8 +43,6 @@ lockMultiplierUnscaled = "0"
 releaserAddress = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.reya_token_config]
-tokenName = "Test Reya Token"
-tokenSymbol = "TESTREYA"
 blacklistingAdmin = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.lz_common_config]

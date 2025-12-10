@@ -1,8 +1,6 @@
 include = [
     "./utils/common.toml",
-    "../reya-oft-token/ethereum.toml",
-    # "../reya-staked-token/reya-mainnet.toml",
-    # "../reya-distribution/reya-mainnet.toml",
+    "../reya-oft-token/ethereum.toml"
 ]
 
 version = "1.0.0"
@@ -10,18 +8,12 @@ version = "1.0.0"
 chainId = 11155111
 
 [var.cannonClonePackages]
-# reyaDistributionProxyPackage = "reya-distribution:1.0.0@proxy"
-# reyaDistributionImplementationPackage = "reya-distribution:1.0.0@implementation"
 reyaTokenProxyPackage = "reya-oft-token:1.0.0@proxy"
 reyaTokenImplementationPackage = "reya-oft-token:1.0.0@implementation"
 reyaTokenProxyAdmin = "0x1Bc827102b0E85342C80F9628326488887D69249"
-# reyaStakedTokenProxyPackage = "reya-staked-token:1.0.0@proxy"
-# reyaStakedTokenImplementationPackage = "reya-staked-token:1.0.0@implementation"
 
 [var.upgrade_proxy_vars]
 reyaTokenProxy = "<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"
-# reyaStakedTokenProxy = "<%= imports.reyaStakedTokenProxy.contracts.TransparentUpgradeableProxy.address %>"
-# reyaDistributionProxy = "<%= imports.reyaDistributionProxy.contracts.TransparentUpgradeableProxy.address %>"
 
 [var.wallet_addresses]
 owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556" # change for mainnet
@@ -32,19 +24,7 @@ pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
 pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
-[var.distribution_config]
-stakedReyaTokenAddress = "0x0000000000000000000000000000000000000000"
-coreProxyAddress = "0x0000000000000000000000000000000000000000"
-root = ""
-startTimestamp = "0"
-endTimestamp = "0"
-lockDuration = "0"
-lockMultiplierUnscaled = "0"
-releaserAddress = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-
 [var.reya_token_config]
-tokenName = "Test Reya Token"
-tokenSymbol = "TESTREYA"
 blacklistingAdmin = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.lz_common_config]
