@@ -133,7 +133,7 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
     function check_srusd_deposit_withdraw() public {
         removeCollateralWithdrawalLimit(sec.srusd);
 
-        (address user, uint256 userPk) = makeAddrAndKey("user");
+        (address user,) = makeAddrAndKey("user");
         uint256 amount = 1000e30; // denominated in srusd
 
         // deposit new margin account

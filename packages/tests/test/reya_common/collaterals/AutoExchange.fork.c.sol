@@ -258,9 +258,6 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         (, ParentCollateralConfig memory parentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.srusd);
 
-        uint256 coreSrusdPrice =
-            IOracleManagerProxy(sec.oracleManager).process(parentCollateralConfig.oracleNodeId).price;
-
         // deposit rUSD and srUSD into user's account
         {
             s.userAccountId = depositNewMA(user, sec.srusd, 2200e30);
@@ -361,6 +358,9 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             assertEq(s.ae1.quoteAmountToIF, 4e6);
             assertEq(s.ae1.quoteAmountToAccount, 396e6);
 
+            uint256 coreSrusdPrice =
+                IOracleManagerProxy(sec.oracleManager).process(parentCollateralConfig.oracleNodeId).price;
+
             uint256 expectedAutoExchangedSrusd = ud(400e30).div(ud(coreSrusdPrice)).unwrap();
             assertApproxEqAbsDecimal(s.ae1.collateralAmountToLiquidator, expectedAutoExchangedSrusd, 0.001e30, 30);
         }
@@ -432,6 +432,9 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         {
             assertLt(s.ae2.quoteAmountToAccount, 220e6);
             assertEq(int256(s.ae2.quoteAmountToAccount) + s.tbal1.userBalanceRusd, 0);
+
+            uint256 coreSrusdPrice =
+                IOracleManagerProxy(sec.oracleManager).process(parentCollateralConfig.oracleNodeId).price;
 
             uint256 expectedAutoExchangedSrusd =
                 ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e24).div(ud(coreSrusdPrice)).unwrap();
