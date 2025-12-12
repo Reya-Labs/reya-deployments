@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.99"
+version = "1.0.101"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -44,7 +44,7 @@ progCompAccountId = "8038"
 
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.23@router"
+coreRouterPackage = "reya-core:1.0.25@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
@@ -2179,7 +2179,7 @@ market69Prove_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_70Paxg]
 market70Paxg_riskMatrixIndex = "0"
-market70Paxg_maxOpenBaseUnscaled = "160"
+market70Paxg_maxOpenBaseUnscaled = "350"
 market70Paxg_velocityMultiplierUnscaled = "1.2"
 market70Paxg_oracleNodeId = "<%= settings.paxgUsdcMarkNodeIdStork %>"
 market70Paxg_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
