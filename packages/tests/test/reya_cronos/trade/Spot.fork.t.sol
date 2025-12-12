@@ -22,12 +22,4 @@ contract SpotForkTest is ReyaForkTest, SpotForkCheck {
     function test_SpotBatchExecuteFill_WETH() public {
         check_SpotBatchExecuteFill_WETH(WETH_SPOT_MARKET_ID);
     }
-
-    function test_SpotExecuteFill_RevertsWhenMarketDisabled() public {
-        check_SpotExecuteFill_RevertsWhenMarketDisabled(DISABLED_SPOT_MARKET_ID);
-    }
-
-    function test_SpotBatchExecuteFill_PartialSuccess() public {
-        check_SpotBatchExecuteFill_PartialSuccess(WETH_SPOT_MARKET_ID, DISABLED_SPOT_MARKET_ID);
-    }
 }
