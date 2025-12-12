@@ -22,8 +22,6 @@ import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
  * @notice Fork tests for spot execution functionality
  * @dev Tests executeFill and batchExecuteFill via the Orders Gateway.
  *      Only WETH spot market is enabled; other markets should revert with FeatureUnavailable.
- *      NOTE: These tests require the FillExecutionModule to be deployed on the Orders Gateway.
- *      If the module is not deployed, calls will revert with UnknownSelector.
  */
 contract SpotForkCheck is BaseReyaForkTest {
     // Error selectors for feature detection
@@ -83,6 +81,7 @@ contract SpotForkCheck is BaseReyaForkTest {
         returns (bytes32)
     {
         bytes32 CONDITIONAL_ORDER_TYPEHASH = keccak256(
+            // solhint-disable-next-line max-line-length
             "ConditionalOrderDetails(uint128 accountId,uint128 marketId,uint128 exchangeId,uint128[] counterpartyAccountIds,uint8 orderType,bytes inputs,address signer,uint256 nonce,uint256 deadline)"
         );
 
@@ -104,6 +103,7 @@ contract SpotForkCheck is BaseReyaForkTest {
 
     function hashFill(FillDetails memory fillDetails, uint256 deadline) internal pure returns (bytes32) {
         bytes32 FILL_DETAILS_TYPEHASH = keccak256(
+            // solhint-disable-next-line max-line-length
             "FillDetails(uint64 accountOrderId,uint64 counterpartyOrderId,uint256 baseDelta,uint256 price,uint256 nonce,uint256 deadline)"
         );
 
@@ -474,7 +474,12 @@ contract SpotForkCheck is BaseReyaForkTest {
      * @notice Test batch execution where one fill fails but others succeed
      * @dev Batch execution should not revert entirely if one fill fails
      */
-    function check_SpotBatchExecuteFill_PartialSuccess(uint128 wethSpotMarketId, uint128 disabledSpotMarketId) internal {
+    function check_SpotBatchExecuteFill_PartialSuccess(
+        uint128 wethSpotMarketId,
+        uint128 disabledSpotMarketId
+    )
+        internal
+    {
         setupSpotTestActors();
         mockFreshPrices();
 
