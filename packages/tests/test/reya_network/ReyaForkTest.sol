@@ -719,5 +719,10 @@ contract ReyaForkTest is BaseReyaForkTest {
         catch {
             vm.createSelectFork(sec.REYA_RPC);
         }
+
+        // setup
+        // (*) allow anyone to publish match orders
+        vm.prank(sec.multisig);
+        ICoreProxy(sec.core).setFeatureFlagAllowAll(keccak256(bytes("matchOrderPublisher")), true);
     }
 }
