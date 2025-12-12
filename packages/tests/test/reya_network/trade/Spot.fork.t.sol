@@ -12,8 +12,6 @@ import { SpotForkCheck } from "../../reya_common/trade/Spot.fork.c.sol";
 contract SpotForkTest is ReyaForkTest, SpotForkCheck {
     // WETH spot market ID is 5 (the only enabled spot market)
     uint128 constant WETH_SPOT_MARKET_ID = 5;
-    // This is WSTETH which is currently disabled
-    uint128 constant DISABLED_SPOT_MARKET_ID = 6;
 
     function test_SpotExecuteFill_WETH() public {
         check_SpotExecuteFill_WETH(WETH_SPOT_MARKET_ID);
