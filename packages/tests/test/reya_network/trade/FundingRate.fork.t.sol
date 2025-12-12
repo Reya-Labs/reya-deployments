@@ -5,11 +5,11 @@ import { FundingRateForkCheck } from "../../reya_common/trade/FundingRate.fork.c
 
 contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
     function test_FundingVelocity_eth() public {
-        check_FundingVelocity(1);
+        check_FundingVelocity(1, 1e12);
     }
 
     function test_FundingVelocity_btc() public {
-        check_FundingVelocity(2);
+        check_FundingVelocity(2, 1e12);
     }
 
     function test_FundingVelocity_sol() public {
@@ -28,9 +28,10 @@ contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
         check_FundingVelocity(6);
     }
 
-    function test_FundingVelocity_mkr() public {
-        check_FundingVelocity(7);
-    }
+    // note: market MKR is closed and fully unwound
+    // function test_FundingVelocity_mkr() public {
+    //     check_FundingVelocity(7);
+    // }
 
     function test_FundingVelocity_link() public {
         check_FundingVelocity(8);
