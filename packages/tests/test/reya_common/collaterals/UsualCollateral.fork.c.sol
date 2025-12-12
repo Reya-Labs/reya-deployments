@@ -302,7 +302,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_weth_CapExceeded() public {
-        check_UsualCollateral_CapExceeded(sec.weth, 0.5e18);
+        check_UsualCollateral_CapExceeded(sec.weth, 5e18);
     }
 
     function check_weth_DepositWithdraw() public {
