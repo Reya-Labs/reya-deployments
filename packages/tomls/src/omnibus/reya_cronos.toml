@@ -774,14 +774,14 @@ megaUsdcMarkMaxStaleDurationStork = "0"
 susdeUsdMaxStaleDurationStork = "0"
 susdeUsdcMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
-deusdUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-deusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-usdcDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+deusdUsdMaxStaleDurationStork = "0"
+deusdUsdcMaxStaleDurationStork = "0"
+usdcDeusdMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
-sdeusdDeusdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-sdeusdUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+sdeusdDeusdMaxStaleDurationStork = "0"
+sdeusdUsdcMaxStaleDurationStork = "0"
 #-------------------------------------------------------------------------------
-srusdRusd_RRMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+srusdRusd_RRMaxStaleDurationStork = "0"
 #-------------------------------------------------------------------------------
 srusdUsdcPoolMaxDuration = "0"
 #------------------------------------------------------------------------------
