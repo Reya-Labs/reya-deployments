@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.116"
+version = "1.0.117"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -46,7 +46,7 @@ zeuzAccountId = "46092"
 progCompAccountId = "110684"
 
 [var.cannonClonePackages]
-coreRouterPackage = "reya-core:1.0.23@router"
+coreRouterPackage = "reya-core:1.0.25@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"

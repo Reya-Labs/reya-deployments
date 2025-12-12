@@ -104,13 +104,8 @@ contract BaseReyaForkTest is StorageReyaForkTest {
 
     function depositNewMA(address user, address collateral, uint256 amount) internal returns (uint128 accountId) {
         if (isLmToken(collateral) || collateral == sec.srusd) {
-            deal(collateral, address(user), amount);
-            vm.prank(user);
             accountId = ICoreProxy(sec.core).createAccount(user);
-            vm.prank(user);
-            ITokenProxy(collateral).approve(sec.core, amount);
-            vm.prank(user);
-            ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: collateral, amount: amount });
+            depositMA(accountId, collateral, amount);
         } else {
             deal(collateral, address(sec.periphery), amount);
             mockBridgedAmount(dec.socketExecutionHelper[collateral], amount);
@@ -119,6 +114,15 @@ contract BaseReyaForkTest is StorageReyaForkTest {
                 DepositNewMAInputs({ accountOwner: user, token: address(collateral) })
             );
         }
+    }
+
+    function depositMA(uint128 accountId, address collateral, uint256 amount) internal {
+        address user = ICoreProxy(sec.core).getAccountOwner(accountId);
+        deal(collateral, address(user), amount);
+        vm.prank(user);
+        ITokenProxy(collateral).approve(sec.core, amount);
+        vm.prank(user);
+        ICoreProxy(sec.core).deposit({ accountId: accountId, collateral: collateral, amount: amount });
     }
 
     function withdrawMA(uint128 accountId, address collateral, uint256 amount) internal {
@@ -133,6 +137,27 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         });
         vm.prank(accountOwner);
         ICoreProxy(sec.core).execute(accountId, commands);
+    }
+
+    function transferBetweenMAs(
+        uint128 fromAccountId,
+        uint128 toAccountId,
+        address collateral,
+        uint256 amount
+    )
+        internal
+    {
+        address accountOwner = ICoreProxy(sec.core).getAccountOwner(fromAccountId);
+
+        Command_Core[] memory commands = new Command_Core[](1);
+        commands[0] = Command_Core({
+            commandType: uint8(CommandType.TransferBetweenMarginAccounts),
+            inputs: abi.encode(toAccountId, collateral, amount),
+            marketId: 0,
+            exchangeId: 0
+        });
+        vm.prank(accountOwner);
+        ICoreProxy(sec.core).execute(fromAccountId, commands);
     }
 
     function getMatchOrderPeripheryCommand(
@@ -280,6 +305,26 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         executePeripheryCommands(accountId, commands, userPrivateKey, incrementedNonce);
     }
 
+    function getMatchOrderCoreCommand(
+        uint128 marketId,
+        SD59x18 base,
+        UD60x18 priceLimit
+    )
+        internal
+        view
+        returns (Command_Core memory command)
+    {
+        uint128[] memory counterpartyAccountIds = new uint128[](1);
+        counterpartyAccountIds[0] = sec.passivePoolAccountId;
+
+        return Command_Core({
+            commandType: uint8(CommandType.MatchOrder),
+            inputs: abi.encode(counterpartyAccountIds, abi.encode(base, priceLimit)),
+            marketId: marketId,
+            exchangeId: 1 // passive pool
+         });
+    }
+
     function executeCoreMatchOrder(
         uint128 marketId,
         address sender,
@@ -290,20 +335,10 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         internal
         returns (UD60x18 orderPrice, SD59x18 pSlippage)
     {
-        s.counterpartyAccountIds = new uint128[](1);
-        s.counterpartyAccountIds[0] = sec.passivePoolAccountId;
-        s.exchangeId = 1; // passive pool
-
         Command_Core[] memory commands = new Command_Core[](1);
-        commands[0] = Command_Core({
-            commandType: uint8(CommandType.MatchOrder),
-            inputs: abi.encode(s.counterpartyAccountIds, abi.encode(base, priceLimit)),
-            marketId: marketId,
-            exchangeId: s.exchangeId
-        });
+        commands[0] = getMatchOrderCoreCommand(marketId, base, priceLimit);
 
         vm.prank(sender);
-
         (s.outputs,) = ICoreProxy(sec.core).execute(accountId, commands);
 
         orderPrice = UD60x18.wrap(abi.decode(s.outputs[0], (uint256)));
