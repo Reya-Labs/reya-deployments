@@ -247,6 +247,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         mockFreshPrices();
         removeCollateralCap(sec.srusd);
         removeCollateralWithdrawalLimit(sec.srusd);
+        fundPassivePool(2_000_000e6);
 
         (address user,) = makeAddrAndKey("user");
         s.userAccountId = 0;

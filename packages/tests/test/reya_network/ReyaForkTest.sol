@@ -720,9 +720,6 @@ contract ReyaForkTest is BaseReyaForkTest {
             vm.createSelectFork(sec.REYA_RPC);
         }
 
-        // (*) deposit 2m rUSD into the passive pool
-        fundPassivePool(2_000_000e6);
-
         // setup
         // (*) allow anyone to publish match orders
         vm.prank(sec.multisig);
