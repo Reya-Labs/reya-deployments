@@ -77,10 +77,11 @@ contract UsualCollateralForkTest is ReyaForkTest, UsualCollateralForkCheck {
         checkFuzz_wbtc_MintBurn(attacker);
     }
 
-    function testFuzz_Cronos_weth_MintBurn(address attacker) public {
-        vm.assume(attacker != dec.socketController[sec.weth]);
-        checkFuzz_weth_MintBurn(attacker);
-    }
+    // note, weth mint is allowed to everyone on Reya Cronos (testnet)
+    // function testFuzz_Cronos_weth_MintBurn(address attacker) public {
+    //     vm.assume(attacker != dec.socketController[sec.weth]);
+    //     checkFuzz_weth_MintBurn(attacker);
+    // }
 
     function test_Cronos_weth_ViewFunctions() public {
         check_weth_ViewFunctions();

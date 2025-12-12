@@ -44,6 +44,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         removeCollateralWithdrawalLimit(sec.rselini);
         removeCollateralWithdrawalLimit(sec.ramber);
         removeCollateralWithdrawalLimit(sec.rhedge);
+
+        fundPassivePool(2_000_000e6);
     }
 
     function check_PoolHealth() public {
@@ -219,6 +221,15 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         removeCollateralCap(sec.ramber);
         removeCollateralCap(sec.rhedge);
 
+        // note, if the quote token target ratio is set to zero, rebalancing drains all the rUSD from passive pool,
+        // leaving it unable to cover the current exposure
+        if (IPassivePoolProxy(sec.pool).getAllocationConfiguration(sec.passivePoolId).quoteTokenTargetRatio == 0) {
+            vm.prank(sec.multisig);
+            IPassivePoolProxy(sec.pool).setAllocationConfiguration(
+                sec.passivePoolId, AllocationConfigurationData({ quoteTokenTargetRatio: 0.1e18 })
+            );
+        }
+
         address quoteToken = sec.rusd;
         address[] memory supportingTokens = IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
 
@@ -354,28 +365,16 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
-        (, ParentCollateralConfig memory deusdParentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, sec.deusd);
-        (, ParentCollateralConfig memory sdeusdParentCollateralConfig,) =
-            ICoreProxy(sec.core).getCollateralConfig(1, sec.sdeusd);
+        (, ParentCollateralConfig memory rseliniParentCollateralConfig,) =
+            ICoreProxy(sec.core).getCollateralConfig(1, sec.rselini);
 
-        NodeOutput.Data memory deusdOutput =
-            IOracleManagerProxy(sec.oracleManager).process(deusdParentCollateralConfig.oracleNodeId);
+        NodeOutput.Data memory rseliniOutput =
+            IOracleManagerProxy(sec.oracleManager).process(rseliniParentCollateralConfig.oracleNodeId);
         vm.mockCall(
             sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (deusdParentCollateralConfig.oracleNodeId)),
+            abi.encodeCall(IOracleManagerProxy.process, (rseliniParentCollateralConfig.oracleNodeId)),
             abi.encode(
-                NodeOutput.Data({ price: ud(deusdOutput.price).mul(ud(0.99e18)).unwrap(), timestamp: block.timestamp })
-            )
-        );
-
-        NodeOutput.Data memory sdeusdOutput =
-            IOracleManagerProxy(sec.oracleManager).process(sdeusdParentCollateralConfig.oracleNodeId);
-        vm.mockCall(
-            sec.oracleManager,
-            abi.encodeCall(IOracleManagerProxy.process, (sdeusdParentCollateralConfig.oracleNodeId)),
-            abi.encode(
-                NodeOutput.Data({ price: ud(sdeusdOutput.price).mul(ud(1.01e18)).unwrap(), timestamp: block.timestamp })
+                NodeOutput.Data({ price: ud(rseliniOutput.price).mul(ud(0.99e18)).unwrap(), timestamp: block.timestamp })
             )
         );
 

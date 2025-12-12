@@ -120,7 +120,8 @@ contract ReyaForkTest is BaseReyaForkTest {
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.deusdUsdcStorkNodeId, 10_000);
 
         sec.sdeusdDeusdStorkNodeId = 0x2c14164e11064f9666096a57f2502ef935bc2aaa0a21efd326b1652e47cf8cdc;
-        sec.sdeusdUsdcStorkNodeId = 0x4a600800dcd1db78bbc2880174df4e886a8a67e418f065e27ca5866e11b5f886;
+        // note, sdeUSD oracle is set to a closing price
+        sec.sdeusdUsdcStorkNodeId = 0xe4b5faeea2e7c4d448bd5b1ba50abf5ebe97d458b6a8e937211a7727f016c5d0;
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.sdeusdDeusdStorkNodeId, 10_000);
         vm.prank(sec.multisig);
@@ -730,16 +731,7 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         // setup
         // (*) deposit 50m rUSD into the passive pool
-        DepositPassivePoolInputs memory inputs =
-            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: vm.addr(2), minShares: 0 });
-        deal(sec.usdc, sec.periphery, 50_000_000e6);
-        vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        vm.mockCall(
-            dec.socketExecutionHelper[sec.usdc],
-            abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
-            abi.encode(50_000_000e6)
-        );
-        IPeripheryProxy(sec.periphery).depositPassivePool(inputs);
+        fundPassivePool(50_000_000e6);
 
         // (*) allow anyone to publish match orders
         vm.prank(sec.multisig);
