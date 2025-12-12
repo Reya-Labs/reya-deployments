@@ -205,6 +205,7 @@ contract SpotForkCheck is BaseReyaForkTest {
 
         // Record initial balances
         int256 buyerRusdBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 sellerRusdBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).netDeposits;
         int256 sellerWethBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.weth).netDeposits;
 
         // Execute spot fill: buyer buys 0.1 WETH at $3000
@@ -228,12 +229,62 @@ contract SpotForkCheck is BaseReyaForkTest {
         int256 sellerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).netDeposits;
         int256 sellerWethAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.weth).netDeposits;
 
-        // Buyer: -300 rUSD (0.1 * 3000), +0.1 WETH
-        assertEq(buyerRusdAfter, buyerRusdBefore - 300e6, "Buyer rUSD balance incorrect");
+        // The quote token (rUSD) uses 6 decimals while prices are 18 decimals, so
+        // the effective transfer is baseDelta * price / 1e30 (rounded down)
+        uint256 expectedRusdDelta = (baseDelta * price) / 1e30;
+
+        assertEq(buyerRusdAfter, buyerRusdBefore - int256(expectedRusdDelta), "Buyer rUSD balance incorrect");
         assertEq(buyerWethAfter, int256(baseDelta), "Buyer WETH balance incorrect");
 
-        // Seller: +300 rUSD, -0.1 WETH
-        assertEq(sellerRusdAfter, 300e6, "Seller rUSD balance incorrect");
+        assertEq(sellerRusdAfter, sellerRusdBefore + int256(expectedRusdDelta), "Seller rUSD balance incorrect");
+        assertEq(sellerWethAfter, sellerWethBefore - int256(baseDelta), "Seller WETH balance incorrect");
+    }
+
+    /**
+     * @notice Test basic spot fill execution for WETH market
+     * @dev Verifies that buyer receives WETH and seller receives rUSD
+     */
+    function check_SpotExecuteFill_SmallQuantity_And_Price_WETH(uint128 wethSpotMarketId) internal {
+        setupSpotTestActors();
+        mockFreshPrices();
+
+        // Create accounts
+        uint128 buyerAccountId = createAccountWithRusdDeposit(buyer, 10_000e6);
+        uint128 sellerAccountId = ICoreProxy(sec.core).createAccount(seller);
+        depositWethToAccount(seller, sellerAccountId, 10e18);
+
+        // Record initial balances
+        int256 buyerRusdBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 sellerWethBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.weth).netDeposits;
+
+        // Using base delta equal to the base spacing to test rounding
+        uint256 baseDelta = 0.001e18;
+        // Use a price with many significant digits to exercise rounding
+        uint256 price = 3_123_834e15; // 3123.834 with 18 decimals
+
+        executeSpotFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            spotMarketId: wethSpotMarketId,
+            baseDelta: baseDelta,
+            price: price,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        // Verify balances
+        int256 buyerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 buyerWethAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.weth).netDeposits;
+        int256 sellerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).netDeposits;
+        int256 sellerWethAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.weth).netDeposits;
+
+        // Buyer: -3.123834 rUSD (0.001 * 3123.834), +0.001 WETH
+        assertEq(buyerRusdAfter, buyerRusdBefore - 3_123_834, "Buyer rUSD balance incorrect");
+        assertEq(buyerWethAfter, int256(baseDelta), "Buyer WETH balance incorrect");
+
+        // Seller: +3.123834 rUSD, -0.001 WETH
+        assertEq(sellerRusdAfter, 3_123_834, "Seller rUSD balance incorrect");
         assertEq(sellerWethAfter, sellerWethBefore - int256(baseDelta), "Seller WETH balance incorrect");
     }
 

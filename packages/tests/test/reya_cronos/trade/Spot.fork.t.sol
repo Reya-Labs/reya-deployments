@@ -20,4 +20,8 @@ contract SpotForkTest is ReyaForkTest, SpotForkCheck {
     function test_SpotBatchExecuteFill_WETH() public {
         check_SpotBatchExecuteFill_WETH(WETH_SPOT_MARKET_ID);
     }
+
+    function test_SpotExecuteFill_SmallQuantity_And_Price_WETH() public {
+        check_SpotExecuteFill_SmallQuantity_And_Price_WETH(WETH_SPOT_MARKET_ID);
+    }
 }
