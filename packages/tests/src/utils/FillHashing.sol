@@ -25,9 +25,7 @@ library FillHashing {
         bytes32 EIP712_REVISION_HASH = keccak256("1");
         bytes32 EIP712_DOMAIN_TYPEHASH = keccak256("EIP712Domain(string name,string version,address verifyingContract)");
 
-        bytes32 hashedMessage = keccak256(
-            abi.encode(_FILL_TYPEHASH, block.chainid, deadline, hashFillDetails(fill))
-        );
+        bytes32 hashedMessage = keccak256(abi.encode(_FILL_TYPEHASH, block.chainid, deadline, hashFillDetails(fill)));
 
         bytes32 digest;
         unchecked {
