@@ -12,6 +12,10 @@ interface ICoreProxy {
         external
         returns (uint128 accountId);
 
+    function createOrGetSpotAccount(address accountOwner) external returns (uint128 spotAccountId);
+
+    function getOwnerMainAccountId(address owner) external view returns (uint128);
+
     function getAccountBlockExposuresByMarket(
         uint128 accountId,
         uint128 marketId
@@ -131,6 +135,7 @@ interface ICoreProxy {
     ) external;
 
     error AccountNotFound(uint128 accountId);
+    error SpotAccount(uint128 accountId);
     error AccountPermissionDenied(uint128 accountId, address target);
     error AccountPermissionNotGranted(
         uint128 accountId,
