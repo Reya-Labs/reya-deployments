@@ -10,8 +10,8 @@ import { SpotForkCheck } from "../../reya_common/trade/Spot.fork.c.sol";
  *      Currently only WETH/RUSD spot market (ID=5) is enabled.
  */
 contract SpotForkTest is ReyaForkTest, SpotForkCheck {
-    // WETH spot market ID is 1 (the only enabled spot market)
-    uint128 constant WETH_SPOT_MARKET_ID = 1;
+    // WETH spot market ID is 5 (the only enabled spot market)
+    uint128 constant WETH_SPOT_MARKET_ID = 5;
     // Use a large ID for disabled market test (doesn't exist)
     uint128 constant DISABLED_SPOT_MARKET_ID = 999;
 

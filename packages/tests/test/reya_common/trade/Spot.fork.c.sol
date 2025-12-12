@@ -13,6 +13,8 @@ import {
     LimitOrderSpotDetails,
     OrderType
 } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
+import { ConditionalOrderHashing } from "../../../src/utils/ConditionalOrderHashing.sol";
+import { FillHashing } from "../../../src/utils/FillHashing.sol";
 
 import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
@@ -34,90 +36,21 @@ contract SpotForkCheck is BaseReyaForkTest {
     address internal matchingEngine;
     uint256 internal matchingEnginePk;
 
-    // Feature flag constants
-    bytes32 internal constant MATCHING_ENGINE_PUBLISHER_FLAG = keccak256(bytes("matchingEnginePublisher"));
+    // Feature flag constants (must match FeatureFlagSupport._MATCHING_ENGINE_PUBLISHER_FEATURE_FLAG)
+    bytes32 internal constant MATCHING_ENGINE_PUBLISHER_FLAG = keccak256(bytes("matching_engine_publisher"));
 
     function setupSpotTestActors() internal {
         (buyer, buyerPk) = makeAddrAndKey("spotBuyer");
         (seller, sellerPk) = makeAddrAndKey("spotSeller");
         (matchingEngine, matchingEnginePk) = makeAddrAndKey("matchingEngine");
 
-        // Grant matching engine publisher access
+        // Grant matching engine publisher access on Orders Gateway
         vm.prank(sec.multisig);
         IOrdersGatewayProxy(sec.ordersGateway).addToFeatureFlagAllowlist(MATCHING_ENGINE_PUBLISHER_FLAG, matchingEngine);
     }
 
     function getSpotMarketEnabledFeatureFlagId(uint128 spotMarketId) internal pure returns (bytes32) {
         return keccak256(abi.encode(keccak256(bytes("spotMarketEnabled")), spotMarketId));
-    }
-
-    function mockCalculateDigest(bytes32 hashedMessage, address verifyingContract) internal pure returns (bytes32) {
-        bytes32 EIP712_REVISION_HASH = keccak256("1");
-        bytes32 EIP712_DOMAIN_TYPEHASH = keccak256("EIP712Domain(string name,string version,address verifyingContract)");
-
-        bytes32 digest;
-        unchecked {
-            digest = keccak256(
-                abi.encodePacked(
-                    "\x19\x01",
-                    keccak256(
-                        abi.encode(
-                            EIP712_DOMAIN_TYPEHASH, keccak256(bytes("Reya")), EIP712_REVISION_HASH, verifyingContract
-                        )
-                    ),
-                    hashedMessage
-                )
-            );
-        }
-        return digest;
-    }
-
-    function hashConditionalOrder(
-        ConditionalOrderDetails memory order,
-        uint256 deadline
-    )
-        internal
-        pure
-        returns (bytes32)
-    {
-        bytes32 CONDITIONAL_ORDER_TYPEHASH = keccak256(
-            // solhint-disable-next-line max-line-length
-            "ConditionalOrderDetails(uint128 accountId,uint128 marketId,uint128 exchangeId,uint128[] counterpartyAccountIds,uint8 orderType,bytes inputs,address signer,uint256 nonce,uint256 deadline)"
-        );
-
-        return keccak256(
-            abi.encode(
-                CONDITIONAL_ORDER_TYPEHASH,
-                order.accountId,
-                order.marketId,
-                order.exchangeId,
-                keccak256(abi.encodePacked(order.counterpartyAccountIds)),
-                order.orderType,
-                keccak256(order.inputs),
-                order.signer,
-                order.nonce,
-                deadline
-            )
-        );
-    }
-
-    function hashFill(FillDetails memory fillDetails, uint256 deadline) internal pure returns (bytes32) {
-        bytes32 FILL_DETAILS_TYPEHASH = keccak256(
-            // solhint-disable-next-line max-line-length
-            "FillDetails(uint64 accountOrderId,uint64 counterpartyOrderId,uint256 baseDelta,uint256 price,uint256 nonce,uint256 deadline)"
-        );
-
-        return keccak256(
-            abi.encode(
-                FILL_DETAILS_TYPEHASH,
-                fillDetails.accountOrderId,
-                fillDetails.counterpartyOrderId,
-                fillDetails.baseDelta,
-                fillDetails.price,
-                fillDetails.nonce,
-                deadline
-            )
-        );
     }
 
     function createLimitOrderSpot(
@@ -150,7 +83,7 @@ contract SpotForkCheck is BaseReyaForkTest {
 
         uint256 deadline = block.timestamp + 3600;
         (uint8 v, bytes32 r, bytes32 s) =
-            vm.sign(signerPk, mockCalculateDigest(hashConditionalOrder(order, deadline), sec.ordersGateway));
+            vm.sign(signerPk, ConditionalOrderHashing.mockCalculateDigest(order, deadline, sec.ordersGateway));
 
         sig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
     }
@@ -176,7 +109,7 @@ contract SpotForkCheck is BaseReyaForkTest {
 
         uint256 deadline = block.timestamp + 3600;
         (uint8 v, bytes32 r, bytes32 s) =
-            vm.sign(matchingEnginePk, mockCalculateDigest(hashFill(fillDetails, deadline), sec.ordersGateway));
+            vm.sign(matchingEnginePk, FillHashing.mockCalculateDigest(fillDetails, deadline, sec.ordersGateway));
 
         EIP712Signature memory sig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
@@ -192,7 +125,14 @@ contract SpotForkCheck is BaseReyaForkTest {
     }
 
     function createAccountWithRusdDeposit(address user, uint256 amount) internal returns (uint128 accountId) {
-        return depositNewMA(user, sec.usdc, amount);
+        vm.prank(user);
+        accountId = ICoreProxy(sec.core).createAccount(user);
+        // Deposit rUSD directly (not USDC through periphery)
+        deal(sec.rusd, user, amount);
+        vm.startPrank(user);
+        ITokenProxy(sec.rusd).approve(sec.core, amount);
+        ICoreProxy(sec.core).deposit(accountId, sec.rusd, amount);
+        vm.stopPrank();
     }
 
     function executeSpotFill(
@@ -433,7 +373,7 @@ contract SpotForkCheck is BaseReyaForkTest {
             spotMarketId: disabledSpotMarketId,
             baseDelta: int256(0.1e18),
             price: 3000e18,
-            nonce: 1,
+            nonce: 10,
             signer: buyer,
             signerPk: buyerPk
         });
@@ -443,7 +383,7 @@ contract SpotForkCheck is BaseReyaForkTest {
             spotMarketId: disabledSpotMarketId,
             baseDelta: -int256(0.1e18),
             price: 3000e18,
-            nonce: 1,
+            nonce: 10,
             signer: seller,
             signerPk: sellerPk
         });
@@ -453,7 +393,7 @@ contract SpotForkCheck is BaseReyaForkTest {
             baseDelta: 0.1e18,
             accountOrderId: 1,
             counterpartyOrderId: 2,
-            nonce: 1
+            nonce: 10
         });
 
         ExecuteFillInput memory fillInput = ExecuteFillInput({
