@@ -2488,7 +2488,7 @@ cp1Rusd_sdeusd_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_sdeusdParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
 cp1Rusd_sdeusdParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_sdeusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
-cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdStork %>"
+cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdClosing %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"

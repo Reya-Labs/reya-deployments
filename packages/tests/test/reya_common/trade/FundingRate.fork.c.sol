@@ -31,6 +31,10 @@ contract FundingRateForkCheck is BaseReyaForkTest {
     }
 
     function check_FundingVelocity(uint128 marketId) public {
+        check_FundingVelocity(marketId, 1e9);
+    }
+
+    function check_FundingVelocity(uint128 marketId, uint256 eps) public {
         mockFreshPrices();
         removeMarketsOILimit();
 
@@ -43,7 +47,7 @@ contract FundingRateForkCheck is BaseReyaForkTest {
 
         MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
         assertApproxEqAbsDecimal(
-            fundingRate2 - fundingRate1, pSlippage.mul(sd(int256(marketConfig.velocityMultiplier))).unwrap(), 1e9, 18
+            fundingRate2 - fundingRate1, pSlippage.mul(sd(int256(marketConfig.velocityMultiplier))).unwrap(), eps, 18
         );
     }
 }
