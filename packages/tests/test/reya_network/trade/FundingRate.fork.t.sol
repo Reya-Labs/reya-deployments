@@ -28,9 +28,10 @@ contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
         check_FundingVelocity(6);
     }
 
-    function test_FundingVelocity_mkr() public {
-        check_FundingVelocity(7);
-    }
+    // note: market MKR is closed and fully unwound
+    // function test_FundingVelocity_mkr() public {
+    //     check_FundingVelocity(7);
+    // }
 
     function test_FundingVelocity_link() public {
         check_FundingVelocity(8);

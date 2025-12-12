@@ -51,6 +51,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
     function check_AutoExchange(
         address token,
+        uint256 tokenAmount,
         bytes32 tokenUsdcNodeId,
         uint256 tokenAeDiscount,
         uint256 userInitialRusdBalance
@@ -68,7 +69,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
         // deposit rUSD and token into user's account
         {
-            s.userAccountId = depositNewMA(user, token, 2200e18);
+            s.userAccountId = depositNewMA(user, token, tokenAmount);
 
             if (userInitialRusdBalance > 0) {
                 deal(sec.usdc, address(sec.periphery), userInitialRusdBalance);
@@ -462,6 +463,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeWeth_WhenUserHasOnlyWeth() public {
         check_AutoExchange({
             token: sec.weth,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.ethUsdcStorkNodeId,
             tokenAeDiscount: 0.02e18,
             userInitialRusdBalance: 0
@@ -471,6 +473,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeWeth_WhenUserHasBothWethAndRusd() public {
         check_AutoExchange({
             token: sec.weth,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.ethUsdcStorkNodeId,
             tokenAeDiscount: 0.02e18,
             userInitialRusdBalance: 100e6
@@ -480,6 +483,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeUSDe_WhenUserHasOnlyUsde() public {
         check_AutoExchange({
             token: sec.usde,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.usdeUsdcStorkNodeId,
             tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 0
@@ -489,6 +493,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeUSDe_WhenUserHasBothUsdeAndRusd() public {
         check_AutoExchange({
             token: sec.usde,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.usdeUsdcStorkNodeId,
             tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 100e6
@@ -498,6 +503,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSUSDe_WhenUserHasOnlySusde() public {
         check_AutoExchange({
             token: sec.susde,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.susdeUsdcStorkNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -507,6 +513,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSUSDe_WhenUserHasBothSusdeAndRusd() public {
         check_AutoExchange({
             token: sec.susde,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.susdeUsdcStorkNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
@@ -516,6 +523,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeDeusd_WhenUserHasOnlyDeusd() public {
         check_AutoExchange({
             token: sec.deusd,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.deusdUsdcStorkNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -525,6 +533,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeDeusd_WhenUserHasBothDeusdAndRusd() public {
         check_AutoExchange({
             token: sec.deusd,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.deusdUsdcStorkNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
@@ -534,6 +543,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSdeusd_WhenUserHasOnlySdeusd() public {
         check_AutoExchange({
             token: sec.sdeusd,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.sdeusdUsdcStorkNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -543,6 +553,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSdeusd_WhenUserHasBothSdeusdAndRusd() public {
         check_AutoExchange({
             token: sec.sdeusd,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.sdeusdUsdcStorkNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
@@ -552,6 +563,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRselini_WhenUserHasOnlyRselini() public {
         check_AutoExchange({
             token: sec.rselini,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.rseliniUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -561,6 +573,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRselini_WhenUserHasBothRseliniAndRusd() public {
         check_AutoExchange({
             token: sec.rselini,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.rseliniUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
@@ -570,6 +583,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRamber_WhenUserHasOnlyRamber() public {
         check_AutoExchange({
             token: sec.ramber,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.ramberUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -579,6 +593,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRamber_WhenUserHasBothRamberAndRusd() public {
         check_AutoExchange({
             token: sec.ramber,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.ramberUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
@@ -588,6 +603,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRhedge_WhenUserHasOnlyRhedge() public {
         check_AutoExchange({
             token: sec.rhedge,
+            tokenAmount: 10_000e18,
             tokenUsdcNodeId: sec.rhedgeUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -597,6 +613,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRhedge_WhenUserHasBothRhedgeAndRusd() public {
         check_AutoExchange({
             token: sec.rhedge,
+            tokenAmount: 10_000e18,
             tokenUsdcNodeId: sec.rhedgeUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
@@ -614,6 +631,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeWsteth_WhenUserHasOnlyWsteth() public {
         check_AutoExchange({
             token: sec.wsteth,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.wstethUsdcStorkNodeId,
             tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 0
@@ -623,6 +641,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeWsteth_WhenUserHasBothWstethAndRusd() public {
         check_AutoExchange({
             token: sec.wsteth,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.wstethUsdcStorkNodeId,
             tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 100e6

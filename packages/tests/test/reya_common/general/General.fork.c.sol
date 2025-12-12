@@ -1428,14 +1428,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         NodeOutput.Data memory sdeusdUsdcOutput =
             IOracleManagerProxy(sec.oracleManager).process(sec.sdeusdUsdcStorkNodeId);
 
-        NodeOutput.Data memory sdeusdDeusdOutput =
-            IOracleManagerProxy(sec.oracleManager).process(sec.sdeusdDeusdStorkNodeId);
-
-        NodeOutput.Data memory deusdUsdcOutput =
-            IOracleManagerProxy(sec.oracleManager).process(sec.deusdUsdcStorkNodeId);
-
-        uint256 reconstructedSdeusdUsdcPrice = ud(sdeusdDeusdOutput.price).mul(ud(deusdUsdcOutput.price)).unwrap();
-        assertApproxEqAbsDecimal(sdeusdUsdcOutput.price, reconstructedSdeusdUsdcPrice, 10, 18);
+        assertEq(sdeusdUsdcOutput.price, 1_068_966_036_300_082_784);
     }
 
     function check_sdeusd_deusd_price() public {

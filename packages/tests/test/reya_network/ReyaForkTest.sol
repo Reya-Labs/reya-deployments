@@ -120,7 +120,8 @@ contract ReyaForkTest is BaseReyaForkTest {
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.deusdUsdcStorkNodeId, 10_000);
 
         sec.sdeusdDeusdStorkNodeId = 0xa772de4b37974a3283055e04cd7eae5fc8bd330b44adb1aee9c1568cb7d37a03;
-        sec.sdeusdUsdcStorkNodeId = 0xc938a9d958707db169635f9c5a82dd2bb3d0e635f92a75b4dd177dd514e034f0;
+        // note, sdeUSD oracle is set to a closing price
+        sec.sdeusdUsdcStorkNodeId = 0xe4b5faeea2e7c4d448bd5b1ba50abf5ebe97d458b6a8e937211a7727f016c5d0;
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.sdeusdDeusdStorkNodeId, 10_000);
         vm.prank(sec.multisig);
