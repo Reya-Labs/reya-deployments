@@ -16,6 +16,7 @@ contract PoolStakeForkCheck is BaseReyaForkTest {
 
     function setUp() public {
         (user, userPrivateKey) = makeAddrAndKey("user-pool-stake");
+        fundPassivePool(2_000_000e6);
     }
 
     function check_StakeUnstakeCommand(uint256 amount, uint256 minShares) public {

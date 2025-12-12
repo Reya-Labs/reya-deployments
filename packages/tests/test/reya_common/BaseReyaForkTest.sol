@@ -562,4 +562,17 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     function assertEq(CacheStatus a, CacheStatus b) internal pure {
         assertEq(uint256(a), uint256(b));
     }
+
+    function fundPassivePool(uint256 rusdAmount) internal {
+        DepositPassivePoolInputs memory inputs =
+            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: vm.addr(2), minShares: 0 });
+        deal(sec.usdc, sec.periphery, rusdAmount);
+        vm.prank(dec.socketExecutionHelper[sec.usdc]);
+        vm.mockCall(
+            dec.socketExecutionHelper[sec.usdc],
+            abi.encodeCall(ISocketExecutionHelper.bridgeAmount, ()),
+            abi.encode(rusdAmount)
+        );
+        IPeripheryProxy(sec.periphery).depositPassivePool(inputs);
+    }
 }

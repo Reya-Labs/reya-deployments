@@ -5,11 +5,11 @@ import { FundingRateForkCheck } from "../../reya_common/trade/FundingRate.fork.c
 
 contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
     function test_Cronos_FundingVelocity_eth() public {
-        check_FundingVelocity(1);
+        check_FundingVelocity(1, 1e12);
     }
 
     function test_Cronos_FundingVelocity_btc() public {
-        check_FundingVelocity(2);
+        check_FundingVelocity(2, 1e12);
     }
 
     function test_Cronos_FundingVelocity_sol() public {

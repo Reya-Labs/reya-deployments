@@ -10,20 +10,7 @@ import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
 import { ud } from "@prb/math/UD60x18.sol";
 
 contract FundingRateForkCheck is BaseReyaForkTest {
-    function setPriceSpacing(uint128 marketId, uint256 newPriceSpacing) private {
-        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
-        marketConfig.priceSpacing = newPriceSpacing;
-
-        vm.prank(sec.multisig);
-        IPassivePerpProxy(sec.perp).setMarketConfiguration(marketId, marketConfig);
-    }
-
-    function check_FundingVelocity(uint128 marketId) public {
-        mockFreshPrices();
-        removeMarketsOILimit();
-
-        setPriceSpacing({ marketId: marketId, newPriceSpacing: 1 });
-
+    function refreshingTrade(uint128 marketId) public {
         (address user,) = makeAddrAndKey("user");
 
         // deposit new margin account to be able to trade little to get pSlippage
@@ -34,13 +21,25 @@ contract FundingRateForkCheck is BaseReyaForkTest {
             DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) })
         );
 
-        (, SD59x18 pSlippage) = executeCoreMatchOrder({
+        executeCoreMatchOrder({
             marketId: marketId,
             sender: user,
             base: sd(-1e18),
             priceLimit: ud(0),
             accountId: accountId
         });
+    }
+
+    function check_FundingVelocity(uint128 marketId) public {
+        check_FundingVelocity(marketId, 1e9);
+    }
+
+    function check_FundingVelocity(uint128 marketId, uint256 eps) public {
+        mockFreshPrices();
+        removeMarketsOILimit();
+
+        refreshingTrade(marketId);
+        SD59x18 pSlippage = sd(IPassivePerpProxy(sec.perp).getPSlippage(marketId));
 
         int256 fundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId);
         vm.warp(block.timestamp + 86_400);
@@ -48,7 +47,7 @@ contract FundingRateForkCheck is BaseReyaForkTest {
 
         MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
         assertApproxEqAbsDecimal(
-            fundingRate2 - fundingRate1, pSlippage.mul(sd(int256(marketConfig.velocityMultiplier))).unwrap(), 1e5, 18
+            fundingRate2 - fundingRate1, pSlippage.mul(sd(int256(marketConfig.velocityMultiplier))).unwrap(), eps, 18
         );
     }
 }
