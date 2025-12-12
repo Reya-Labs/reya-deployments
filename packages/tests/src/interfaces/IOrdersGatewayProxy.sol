@@ -194,7 +194,7 @@ interface IOrdersGatewayProxy {
     event OrdersGatewayPermissionUpdated(address owner, address target, bool permissionState, uint256 blockTimestamp);
 
     // Fill execution functions
-    function executeFill(ExecuteFillInput calldata input) external returns (bytes memory output);
+    function executeFill(ExecuteFillInput calldata input) external returns (bytes memory outputs);
     function batchExecuteFill(ExecuteFillInput[] calldata inputs) external returns (bytes[] memory outputs);
 
     event SuccessfulFill(
@@ -251,10 +251,12 @@ struct StopLossOrderDetails {
 }
 
 enum OrderType {
-    MarketOrder,
+    StopLoss,
+    TakeProfit,
     LimitOrder,
-    StopLossOrder,
-    TakeProfitOrder,
+    MarketOrder,
+    ReduceOnlyMarketOrder,
+    FullCloseOrder,
     LimitOrderSpot
 }
 
