@@ -51,6 +51,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
     function check_AutoExchange(
         address token,
+        uint256 tokenAmount,
         bytes32 tokenUsdcNodeId,
         uint256 tokenAeDiscount,
         uint256 userInitialRusdBalance
@@ -68,7 +69,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
         // deposit rUSD and token into user's account
         {
-            s.userAccountId = depositNewMA(user, token, 2200e18);
+            s.userAccountId = depositNewMA(user, token, tokenAmount);
 
             if (userInitialRusdBalance > 0) {
                 deal(sec.usdc, address(sec.periphery), userInitialRusdBalance);
@@ -246,6 +247,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         mockFreshPrices();
         removeCollateralCap(sec.srusd);
         removeCollateralWithdrawalLimit(sec.srusd);
+        fundPassivePool(2_000_000e6);
 
         (address user,) = makeAddrAndKey("user");
         s.userAccountId = 0;
@@ -257,9 +259,6 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
 
         (, ParentCollateralConfig memory parentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.srusd);
-
-        uint256 coreSrusdPrice =
-            IOracleManagerProxy(sec.oracleManager).process(parentCollateralConfig.oracleNodeId).price;
 
         // deposit rUSD and srUSD into user's account
         {
@@ -361,6 +360,9 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             assertEq(s.ae1.quoteAmountToIF, 4e6);
             assertEq(s.ae1.quoteAmountToAccount, 396e6);
 
+            uint256 coreSrusdPrice =
+                IOracleManagerProxy(sec.oracleManager).process(parentCollateralConfig.oracleNodeId).price;
+
             uint256 expectedAutoExchangedSrusd = ud(400e30).div(ud(coreSrusdPrice)).unwrap();
             assertApproxEqAbsDecimal(s.ae1.collateralAmountToLiquidator, expectedAutoExchangedSrusd, 0.001e30, 30);
         }
@@ -433,6 +435,9 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             assertLt(s.ae2.quoteAmountToAccount, 220e6);
             assertEq(int256(s.ae2.quoteAmountToAccount) + s.tbal1.userBalanceRusd, 0);
 
+            uint256 coreSrusdPrice =
+                IOracleManagerProxy(sec.oracleManager).process(parentCollateralConfig.oracleNodeId).price;
+
             uint256 expectedAutoExchangedSrusd =
                 ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e24).div(ud(coreSrusdPrice)).unwrap();
             assertApproxEqAbsDecimal(s.ae2.collateralAmountToLiquidator, expectedAutoExchangedSrusd, 0.001e30, 30);
@@ -459,6 +464,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeWeth_WhenUserHasOnlyWeth() public {
         check_AutoExchange({
             token: sec.weth,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.ethUsdcStorkNodeId,
             tokenAeDiscount: 0.02e18,
             userInitialRusdBalance: 0
@@ -468,6 +474,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeWeth_WhenUserHasBothWethAndRusd() public {
         check_AutoExchange({
             token: sec.weth,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.ethUsdcStorkNodeId,
             tokenAeDiscount: 0.02e18,
             userInitialRusdBalance: 100e6
@@ -477,6 +484,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeUSDe_WhenUserHasOnlyUsde() public {
         check_AutoExchange({
             token: sec.usde,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.usdeUsdcStorkNodeId,
             tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 0
@@ -486,6 +494,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeUSDe_WhenUserHasBothUsdeAndRusd() public {
         check_AutoExchange({
             token: sec.usde,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.usdeUsdcStorkNodeId,
             tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 100e6
@@ -495,6 +504,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSUSDe_WhenUserHasOnlySusde() public {
         check_AutoExchange({
             token: sec.susde,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.susdeUsdcStorkNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -504,6 +514,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSUSDe_WhenUserHasBothSusdeAndRusd() public {
         check_AutoExchange({
             token: sec.susde,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.susdeUsdcStorkNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
@@ -513,6 +524,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeDeusd_WhenUserHasOnlyDeusd() public {
         check_AutoExchange({
             token: sec.deusd,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.deusdUsdcStorkNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -522,6 +534,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeDeusd_WhenUserHasBothDeusdAndRusd() public {
         check_AutoExchange({
             token: sec.deusd,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.deusdUsdcStorkNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
@@ -531,6 +544,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSdeusd_WhenUserHasOnlySdeusd() public {
         check_AutoExchange({
             token: sec.sdeusd,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.sdeusdUsdcStorkNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -540,6 +554,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeSdeusd_WhenUserHasBothSdeusdAndRusd() public {
         check_AutoExchange({
             token: sec.sdeusd,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.sdeusdUsdcStorkNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
@@ -549,6 +564,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRselini_WhenUserHasOnlyRselini() public {
         check_AutoExchange({
             token: sec.rselini,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.rseliniUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -558,6 +574,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRselini_WhenUserHasBothRseliniAndRusd() public {
         check_AutoExchange({
             token: sec.rselini,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.rseliniUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
@@ -567,6 +584,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRamber_WhenUserHasOnlyRamber() public {
         check_AutoExchange({
             token: sec.ramber,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.ramberUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -576,6 +594,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRamber_WhenUserHasBothRamberAndRusd() public {
         check_AutoExchange({
             token: sec.ramber,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.ramberUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
@@ -585,6 +604,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRhedge_WhenUserHasOnlyRhedge() public {
         check_AutoExchange({
             token: sec.rhedge,
+            tokenAmount: 10_000e18,
             tokenUsdcNodeId: sec.rhedgeUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -594,6 +614,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRhedge_WhenUserHasBothRhedgeAndRusd() public {
         check_AutoExchange({
             token: sec.rhedge,
+            tokenAmount: 10_000e18,
             tokenUsdcNodeId: sec.rhedgeUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
@@ -611,6 +632,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeWsteth_WhenUserHasOnlyWsteth() public {
         check_AutoExchange({
             token: sec.wsteth,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.wstethUsdcStorkNodeId,
             tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 0
@@ -620,6 +642,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeWsteth_WhenUserHasBothWstethAndRusd() public {
         check_AutoExchange({
             token: sec.wsteth,
+            tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.wstethUsdcStorkNodeId,
             tokenAeDiscount: 0.01e18,
             userInitialRusdBalance: 100e6

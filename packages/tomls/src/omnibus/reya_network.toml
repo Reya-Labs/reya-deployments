@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.115"
+version = "1.0.117"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -46,7 +46,7 @@ zeuzAccountId = "46092"
 progCompAccountId = "110684"
 
 [var.cannonClonePackages]
-coreRouterPackage = "reya-core:1.0.23@router"
+coreRouterPackage = "reya-core:1.0.25@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
@@ -2241,7 +2241,7 @@ market69Prove_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_70Paxg]
 market70Paxg_riskMatrixIndex = "0"
-market70Paxg_maxOpenBaseUnscaled = "160"
+market70Paxg_maxOpenBaseUnscaled = "350"
 market70Paxg_velocityMultiplierUnscaled = "1.2"
 market70Paxg_oracleNodeId = "<%= settings.paxgUsdcMarkNodeIdStork %>"
 market70Paxg_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -2482,7 +2482,7 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_weth_capUnscaled = "0.5"
+cp1Rusd_weth_capUnscaled = "5"
 cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0"
 cp1Rusd_weth_autoExchangeDustThresholdUnscaled = "0"
