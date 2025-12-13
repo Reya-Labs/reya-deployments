@@ -1,0 +1,7 @@
+[invoke.reya_ico_distribution_set_tge_date]
+target = ["<%= settings.reyaIcoDistributionContract %>"]
+abi = "<%= JSON.stringify(imports.reyaIcoDistributionContract.contracts.ICO.abi) %>"
+fromCall.func = "owner"
+func = "setTGEDate"
+args = ["<%= settings.tgeDate %>" ]
+depends = ["pull.reyaIcoDistributionContract"]

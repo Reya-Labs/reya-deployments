@@ -1,0 +1,4 @@
+name = "reya-staging-tge"
+preset = "main"
+description = "Reya Staging TGE"
+privateSourceCode = false

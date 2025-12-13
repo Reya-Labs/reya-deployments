@@ -1,0 +1,4 @@
+include = [
+    "utils/pull_contract.toml",
+    "configs/set_tge_date.toml"
+]
