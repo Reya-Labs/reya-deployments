@@ -24,6 +24,7 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         // multisigs
         sec.multisig = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+        sec.foundationMultisig = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
 
         // Reya contracts
         sec.core = payable(0xC6fB022962e1426F4e0ec9D2F8861c57926E9f72);
@@ -50,6 +51,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.rhedge = 0xFB9eeD7a6F3100dB35c94B214917a0A64AEC1a97;
         sec.srusd = 0xb9F531A54Fc0E9AdCa1b931d9533B4e49bB2fAD6;
         sec.wsteth = 0xDF52410A19298FE168c900513e762adaD00C42b1;
+        sec.reya = 0x9313fC4Cb494E97f72a1Cf076680F387AC545F2C;
 
         // Elixir tokens on Mainnet (Ethereum Sepolia)
         sec.elixirSdeusd = 0x97D3e518029c622015afa7aD20036EbEF60A7A4e;

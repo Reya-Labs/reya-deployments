@@ -10,21 +10,12 @@ version = "1.0.0"
 chainId = 89346162
 
 [var.cannonClonePackages]
-# reyaDistributionProxyPackage = "reya-distribution:1.0.0@proxy"
-# reyaDistributionImplementationPackage = "reya-distribution:1.0.0@implementation"
-reyaTokenProxyPackage = "reya-oft-token:1.0.0@proxy"
-reyaTokenImplementationPackage = "reya-oft-token:1.0.0@implementation"
+reyaTokenProxyPackage = "reya-oft-token:1.0.1@proxy"
+reyaTokenImplementationPackage = "reya-oft-token:1.0.1@implementation"
 reyaTokenProxyAdmin = "0x8Ca9168108340b4B13ff1545D7824E4Cc7433E47"
-# reyaStakedTokenProxyPackage = "reya-staked-token:1.0.0@proxy"
-# reyaStakedTokenImplementationPackage = "reya-staked-token:1.0.0@implementation"
 
 [var.upgrade_proxy_vars]
 reyaTokenProxy = "<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"
-# reyaStakedTokenProxy = "<%= imports.reyaStakedTokenProxy.contracts.TransparentUpgradeableProxy.address %>"
-# reyaDistributionProxy = "<%= imports.reyaDistributionProxy.contracts.TransparentUpgradeableProxy.address %>"
-
-[var.wallet_addresses]
-owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556" # change for mainnet
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
@@ -32,29 +23,26 @@ pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
 pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
 pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
-[var.distribution_config]
-stakedReyaTokenAddress = "0x0000000000000000000000000000000000000000"
-coreProxyAddress = "0x0000000000000000000000000000000000000000"
-root = ""
-startTimestamp = "0"
-endTimestamp = "0"
-lockDuration = "0"
-lockMultiplierUnscaled = "0"
-releaserAddress = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+[var.oft]
+lzEndpoint = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
+foundationOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+reyaTokenProxyAdmin = "0x51cE8112C6A36b512F533469529a8eDFC0956251"
+init_data = "0x077f224a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000ae173a960084903b1d278ff9e3a81ded822755560000000000000000000000000000000000000000000000000000000000000009546573742052657961000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000085445535452455941000000000000000000000000000000000000000000000000"
+salt = "cronos"
+blacklistingAdmin1 = "<%= settings.pauser1 %>"
+blacklistingAdmin2 = "<%= settings.pauser2 %>"
+blacklistingAdmin3 = "<%= settings.pauser3 %>"
+blacklistingAdmin4 = "<%= settings.pauser4 %>"
+depends = ["var.pausers"]
 
-[var.reya_token_config]
-blacklistingAdmin = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-
-[var.lz_common_config]
+[var.lz_config]
 # Network agnostic messaging configuration
 lzGracePeriod = "0" 
 lzMaxMessageSize = "10000"
 lzRequiredDVNCount = "1"
 lzOptionalDVNCount = "0"
 lzOptionalDVNThreshold = "0"
-
 # Ethereum addresses
-[var.layerzero_chainB_config]
 chainBEndpointAddress = "0x6EDCE65403992e310A62460808c4b910D972f10f"
 chainBSendLibAddress = "0xcc1ae8Cf5D3904Cef3360A9532B477529b177cCE"
 chainBReceiveLibAddress = "0xdAf00F5eE2158dD58E0d3857851c432E34A3A851"
@@ -63,10 +51,8 @@ chainBExecutorAddress = "0x718B92b5CB0a5552039B593faF724D182A881eDA"
 chainBLzRequiredDVN1 = "0x530fBe405189204EF459Fa4B767167e4d41E3a37"
 chainBLzConfirmations = "1"
 chainBOAppAddress = "0x886Ea5a9A1EEAdb507766702101e3C251733987e"
-
 # REYA addresses
-[var.layerzero_chainA_config]
-chainAEndpointAddress = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
+chainAEndpointAddress = "<%= settings.lzEndpoint %>"
 chainASendLibAddress = "0xd682ECF100f6F4284138AA925348633B0611Ae21"
 chainAReceiveLibAddress = "0xcF1B0F4106B0324F96fEfcC31bA9498caa80701C"
 chainAEid = "40319"
@@ -74,3 +60,14 @@ chainAExecutorAddress = "0x701f3927871EfcEa1235dB722f9E608aE120d243"
 chainALzRequiredDVN1 = "0xF49d162484290EAeAd7bb8C2c7E3a6f8f52e32d6"
 chainALzConfirmations = "1"
 chainAOAppAddress = "<%= settings.reyaTokenProxy %>"
+depends = ["var.oft"]
+
+[var.oft_distribution_config]
+stakedReyaTokenAddress = "0x0000000000000000000000000000000000000000"
+coreProxyAddress = "0x0000000000000000000000000000000000000000"
+root = ""
+startTimestamp = "0"
+endTimestamp = "0"
+lockDuration = "0"
+lockMultiplierUnscaled = "0"
+releaserAddress = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"

@@ -19,6 +19,7 @@ struct StaticEcosystem {
     uint256 destinationChainId;
     // multisigs
     address multisig;
+    address foundationMultisig;
     // Reya contracts
     address payable core;
     address payable pool;
@@ -43,6 +44,7 @@ struct StaticEcosystem {
     address rhedge;
     address srusd;
     address wsteth;
+    address reya;
     // Elixir tokens on Mainnet (Ethereum or Ethereum Sepolia)
     address elixirSdeusd;
     // Reya modules

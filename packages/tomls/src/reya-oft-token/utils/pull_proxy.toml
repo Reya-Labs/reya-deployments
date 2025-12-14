@@ -1,3 +1,0 @@
-[pull.reyaTokenProxy]
-source = "<%= settings.reyaTokenProxyPackage %>"
-depends = ["var.cannonClonePackages"]

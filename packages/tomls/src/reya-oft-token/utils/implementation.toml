@@ -1,0 +1,5 @@
+[clone.reyaTokenImplementation]
+source = "<%= settings.reyaTokenImplementationPackage %>"
+target = "<%= settings.reyaTokenImplementationPackage %>"
+options.lzEndpoint = "<%= settings.lzEndpoint %>"
+depends = ["var.cannonClonePackages", "var.oft"]

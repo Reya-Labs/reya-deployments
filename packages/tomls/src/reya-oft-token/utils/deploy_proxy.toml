@@ -1,0 +1,41 @@
+[clone.reyaTokenProxy]
+source = "<%= settings.reyaTokenProxyPackage %>"
+target = "<%= settings.reyaTokenProxyPackage %>"
+options.owner = "<%= settings.foundationOwner %>"
+options.salt = "<%= settings.salt %>"
+# hardcode address after 1st deployment to avoid redeploying
+options.reyaOftImplementationAddress = "0xbE2B106b25488669d658FF72e8A2482f70a1949e"
+options.init_data = "<%= settings.init_data  %>"
+depends = ["var.cannonClonePackages", "clone.reyaTokenImplementation", "var.oft"]
+
+# [invoke.upgrade_reya_token_proxy]
+# target = ["<%= settings.reyaTokenProxyAdmin %>"]
+# abi = "[{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"proxy\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"upgradeAndCall\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}]"
+# fromCall.func = "owner"
+# func = "upgradeAndCall"
+# args = ["<%= settings.reyaTokenProxy %>", "<%= imports.reyaTokenImplementation.contracts.ReyaOFT.address %>", "0x"]
+# depends = ["clone.reyaTokenProxy"]
+
+[invoke.reya_oft_unpause]
+target = ["<%= settings.reyaTokenProxy %>"]
+abi = "<%= JSON.stringify(imports.reyaTokenImplementation.contracts.ReyaOFT.abi) %>"
+fromCall.func = "owner"
+func = "unpause"
+args = []
+depends = ["clone.reyaTokenProxy"]
+
+[invoke.reya_oft_set_pausers]
+target = ["<%= settings.reyaTokenProxy %>"]
+abi = "<%= JSON.stringify(imports.reyaTokenImplementation.contracts.ReyaOFT.abi) %>"
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["clone.reyaTokenProxy"]

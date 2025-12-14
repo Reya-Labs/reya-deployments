@@ -4,4 +4,4 @@ abi = "<%= JSON.stringify(imports.reyaTokenImplementation.contracts.ReyaOFT.abi)
 fromCall.func = "owner"
 func = "mint"
 args = ["<%= settings.mintReceiver %>", "<%= parseEther(settings.mintAmountUnscaled) %>"]
-depends = ["invoke.upgrade_reya_token_proxy"]
+depends = ["clone.reyaTokenProxy"]

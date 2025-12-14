@@ -8,20 +8,20 @@
 [invoke.lz_set_source_send_library]
 target = ["<%= settings.chainAEndpointAddress %>"]
 abi = "<%= settings.abiSetSendLibrary %>"
-from = "<%= settings.owner %>"
+from = "<%= settings.foundationOwner %>"
 func = "setSendLibrary"
 args = [
     "<%= settings.chainAOAppAddress %>",
     "<%= settings.chainBEid %>",
     "<%= settings.chainASendLibAddress %>"
 ]
-depends = ["invoke.upgrade_reya_token_proxy"]
+depends = ["clone.reyaTokenProxy"]
 
 # Set Receive Library (Destination -> Source)
 [invoke.lz_set_source_receive_library]
 target = ["<%= settings.chainAEndpointAddress %>"]
 abi = "<%= settings.abiSetReceiveLibrary %>"
-from = "<%= settings.owner %>"
+from = "<%= settings.foundationOwner %>"
 func = "setReceiveLibrary"
 args = [
     "<%= settings.chainAOAppAddress %>",
@@ -53,7 +53,7 @@ addressPadding = "000000000000000000000000"  # 12 bytes: left-padding for 20-byt
 [invoke.lz_set_source_send_config]
 target = ["<%= settings.chainAEndpointAddress %>"]
 abi = "<%= settings.abiSetConfig %>"
-from = "<%= settings.owner %>"
+from = "<%= settings.foundationOwner %>"
 func = "setConfig"
 args = [
     "<%= settings.chainAOAppAddress %>",
@@ -63,4 +63,4 @@ args = [
         {eid = "<%= settings.chainBEid %>", configType = 2, config = "0x<%= settings.tupleOffset %><%= hexZeroPad(settings.chainBLzConfirmations, 32).slice(2) %><%= hexZeroPad(settings.lzRequiredDVNCount, 32).slice(2) %><%= hexZeroPad(settings.lzOptionalDVNCount, 32).slice(2) %><%= hexZeroPad(settings.lzOptionalDVNThreshold, 32).slice(2) %><%= settings.requiredDVNsOffset %><%= settings.optionalDVNsOffset %><%= hexZeroPad(settings.lzRequiredDVNCount, 32).slice(2) %><%= settings.addressPadding %><%= settings.chainALzRequiredDVN1.slice(2) %><%= settings.optionalDVNsLength %>"}
     ]
 ]
-depends = ["invoke.lz_set_source_receive_library", "var.config_encoding", "var.lz_common_config", "var.layerzero_chainA_config", "var.layerzero_chainB_config", "var.lz_endpoint_abi"]
+depends = ["invoke.lz_set_source_receive_library", "var.config_encoding", "var.lz_config", "var.lz_endpoint_abi"]

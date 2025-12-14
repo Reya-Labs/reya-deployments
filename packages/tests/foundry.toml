@@ -12,6 +12,7 @@ test = "test"
 auto_detect_remappings = false
 fs_permissions = [{ access = "read", path = "./"}]
 gas_limit = "18446744073709551615" # u64::MAX
+evm_version = 'shanghai'
 
 [profile.ci]
 fuzz = { runs = 100, max_test_rejects = 100_000 }
