@@ -9,4 +9,8 @@ interface IProxyAdmin {
         address implementation,
         bytes memory data
     ) external payable;
+
+    // Ownable
+    function owner() external view returns (address);
+    function transferOwnership(address newOwner) external;
 }   

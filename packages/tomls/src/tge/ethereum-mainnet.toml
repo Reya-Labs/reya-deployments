@@ -11,15 +11,11 @@ chainId = 1
 [var.cannonClonePackages]
 reyaTokenProxyPackage = "reya-oft-token:1.0.0@proxy"
 reyaTokenImplementationPackage = "reya-oft-token:1.0.0@implementation"
-reyaTokenProxyAdmin = "0x2276Cb31DF5AD204Ead08d56a2791B14e0eB9752"
 reyaIcoDistributionContractPackage = "reya-ico-distribution:1.0.0@staging" # TODO: change to mainnet
 
 [var.upgrade_proxy_vars]
 reyaTokenProxy = "<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"
 reyaIcoDistributionContract = "<%= imports.reyaIcoDistributionContract.contracts.ICO.address %>"
-
-[var.wallet_addresses]
-owner = "0xDD1F4555Dd91E48e3B1DE657228DC72b65106caA" # mock multisig
 
 [var.pausers]
 # TODO: modify for real deployment
@@ -28,20 +24,34 @@ pauser2 = "0x5173cc04a12d1fc7c83293ed71fbfa6bc0f87739"
 pauser3 = "0x23755428879b97a841b62d3f070a72c0f4200c03"
 pauser4 = "0xb89fd195db616b6219204737eb5ed6392ba6d7ca"
 
-[var.reya_token_config]
-blacklistingAdmin = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+[var.oft]
+lzEndpoint = "0x1a44076050125825900e736c501f859c50fE728c"
+foundationOwner = "0xDD1F4555Dd91E48e3B1DE657228DC72b65106caA"
+# TODO: replace with hardcoded value once deployed to avoid proxy redeployment
+reyaInitialImplementation = "0x0000000000000000000000000000000000000000"
+reyaTokenProxyAdmin = "0x2276Cb31DF5AD204Ead08d56a2791B14e0eB9752"
+# calldata to initialize the token with initialize(string,string,address)
+# Generate with: cast calldata "initialize(string,string,address)" "Test Reya" "TESTREYA" "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+init_data = "0x077f224a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000ae173a960084903b1d278ff9e3a81ded822755560000000000000000000000000000000000000000000000000000000000000009546573742052657961000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000085445535452455941000000000000000000000000000000000000000000000000"
+salt = "main"
+blacklistingAdmin1 = "<%= settings.pauser1 %>"
+blacklistingAdmin2 = "<%= settings.pauser2 %>"
+blacklistingAdmin3 = "<%= settings.pauser3 %>"
+blacklistingAdmin4 = "<%= settings.pauser4 %>"
+depends = ["var.pausers"]
 
-[var.lz_common_config]
+[var.ico]
+totalAllocationUnscaled = "160000000"
+
+[var.lz_config]
 # Network agnostic messaging configuration
 lzGracePeriod = "0" 
 lzMaxMessageSize = "10000"
 lzRequiredDVNCount = "1"
 lzOptionalDVNCount = "0"
 lzOptionalDVNThreshold = "0"
-
 # Ethereum addresses
-[var.layerzero_chainA_config]
-chainAEndpointAddress = "0x1a44076050125825900e736c501f859c50fE728c"
+chainAEndpointAddress = "<%= settings.lzEndpoint %>"
 chainASendLibAddress = "0xbB2Ea70C9E858123480642Cf96acbcCE1372dCe1"
 chainAReceiveLibAddress = "0xc02Ab410f0734EFa3F14628780e6e695156024C2"
 chainAEid = "30101"
@@ -49,9 +59,7 @@ chainAExecutorAddress = "0x173272739Bd7Aa6e4e214714048a9fE699453059"
 chainALzRequiredDVN1 = "0x589dedbd617e0cbcb916a9223f4d1300c294236b"
 chainALzConfirmations = "15"
 chainAOAppAddress = "<%= settings.reyaTokenProxy %>"
-
 # REYA addresses
-[var.layerzero_chainB_config]
 chainBEndpointAddress = "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B"
 chainBSendLibAddress = "0xC39161c743D0307EB9BCc9FEF03eeb9Dc4802de7"
 chainBReceiveLibAddress = "0xe1844c5D63a9543023008D332Bd3d2e6f1FE1043"
@@ -60,7 +68,8 @@ chainBExecutorAddress = "0xcCE466a522984415bC91338c232d98869193D46e"
 chainBLzRequiredDVN1 = "0x6788f52439aca6bff597d3eec2dc9a44b8fee842"
 chainBLzConfirmations = "15"
 chainBOAppAddress = "0xDE77ADB3Eb0BCAD31dd8Bf27edE053EeCA977474"
+depends = ["var.oft"]
 
-[var.distribution]
+[var.oft_minting]
 mintReceiver = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 mintAmountUnscaled = "10"

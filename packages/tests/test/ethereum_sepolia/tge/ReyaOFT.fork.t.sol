@@ -1,21 +1,24 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.19 <0.9.0;
 
-import { ReyaForkTest } from "../ReyaForkTest.sol";
-import { ReyaOFTForkCheck } from "../../reya_common/tge/ReyaOFT.fork.c.sol";
-import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
+import { EthereumForkTest } from "../EthereumForkTest.sol";
+import { ReyaOFTForkCheck } from "../../ethereum_common/tge/ReyaOFT.fork.c.sol";
 import { IReyaOFT } from "../../../src/interfaces/IReyaOFT.sol";
-
+import { ILayerZeroEndpointV2 } from "../../../src/interfaces/ILayerZeroEndpointV2.sol";
 import { IProxyAdmin } from "../../../src/interfaces/IProxyAdmin.sol";
 import { ITransparentUpgradeableProxy } from "../../../src/interfaces/ITransparentUpgradeableProxy.sol";
-import { ILayerZeroEndpointV2 } from "../../../src/interfaces/ILayerZeroEndpointV2.sol";
 
-contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
+contract ReyaOFTForkTest is EthereumForkTest, ReyaOFTForkCheck {
+    constructor() {
+        // EthereumForkTest constructor runs first and initializes sec
+        // Now we can initialize the OFT check with the values from sec
+        _initOFTCheck(sec.reya, sec.foundationMultisig);
+    }
 
     function test_ReyaOFT_ContractStorage() public view {
         // Debug test to verify the contract exists in the fork
         uint256 codeSize;
-        address reyaToken = sec.reya;
+        address reyaToken = reya;
         assembly {
             codeSize := extcodesize(reyaToken)
         }
@@ -40,15 +43,15 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
         // Check lzEndpoint is set correctly
         IReyaOFT token = IReyaOFT(reyaToken);
         address lzEndpoint = token.endpoint();
-        require(lzEndpoint == 0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff, "lzEndpoint does not match expected address");
+        require(lzEndpoint == 0x6EDCE65403992e310A62460808c4b910D972f10f, "lzEndpoint does not match expected address");
 
         // Check lzEndpoint delegate is set to foundationMultisig
         address delegate = ILayerZeroEndpointV2(lzEndpoint).delegates(reyaToken);
-        require(delegate == sec.foundationMultisig, "lzEndpoint delegate is not foundationMultisig");
+        require(delegate == foundationMultisig, "lzEndpoint delegate is not foundationMultisig");
 
         // Check Proxy Admin owner
-        address proxyAdminOwner = IProxyAdmin(ITransparentUpgradeableProxy(sec.reya).getAdmin()).owner();
-        require(proxyAdminOwner == sec.foundationMultisig, "Proxy Admin owner is not foundationMultisig");
+        address proxyAdminOwner = IProxyAdmin(ITransparentUpgradeableProxy(reya).getAdmin()).owner();
+        require(proxyAdminOwner == foundationMultisig, "Proxy Admin owner is not foundationMultisig");
     }
 
     function test_ReyaOFT_Permissions() public {
@@ -61,7 +64,7 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
     }
 
     function test_ReyaOFT_BlacklistedCannotTransfer() public {
-        check_ReyaOFT_BlacklistedCannotTransfer(sec.foundationMultisig);
+        check_ReyaOFT_BlacklistedCannotTransfer(foundationMultisig);
     }
 
     function test_ReyaOFT_OwnerCanMint() public {
@@ -69,12 +72,12 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
     }
 
     function testFuzz_ReyaOFT_NonOwnerCannotMint(address attacker) public {
-        vm.assume(attacker != sec.foundationMultisig);
+        vm.assume(attacker != foundationMultisig);
         checkFuzz_ReyaOFT_NonOwnerCannotMint(attacker);
     }
 
     function test_ReyaOFT_EndpointIsSet() public view {
-        check_ReyaOFT_EndpointIsSet(0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff);
+        check_ReyaOFT_EndpointIsSet(0x6EDCE65403992e310A62460808c4b910D972f10f);
     }
 
     function test_ReyaOFT_EndpointDelegatedToOwner() public view {
@@ -82,19 +85,19 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
     }
 
     function test_ReyaOFT_PeersConfigured() public view {
-        check_ReyaOFT_PeersConfigured(40161); // eid of eth mainnet
+        check_ReyaOFT_PeersConfigured(40319); // eid of eth mainnet
     }
 
     function test_ReyaOFT_SendWorks() public {
-        check_ReyaOFT_SendWorks(40161);
+        check_ReyaOFT_SendWorks(40319);
     }
 
     function test_ReyaOFT_SendRespectsBlacklist() public {
-        check_ReyaOFT_SendRespectsBlacklist(40161);
+        check_ReyaOFT_SendRespectsBlacklist(40319);
     }
 
     function test_ReyaOFT_SendRespectsPause() public {
-        check_ReyaOFT_SendRespectsPause(40161);
+        check_ReyaOFT_SendRespectsPause(40319);
     }
 
     function test_ReyaOFT_OnlyEndpointCanCallLzReceive() public {
@@ -102,11 +105,11 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
     }
 
     function test_ReyaOFT_LzReceiveMintsTokens() public {
-        check_ReyaOFT_LzReceiveMintsTokens(40161);
+        check_ReyaOFT_LzReceiveMintsTokens(40319);
     }
 
     function test_ReyaOFT_LzReceiveRespectsPause() public {
-        check_ReyaOFT_LzReceiveRespectsPause(40161);
+        check_ReyaOFT_LzReceiveRespectsPause(40319);
     }
 
     function test_ReyaOFT_NormalTransfer() public {

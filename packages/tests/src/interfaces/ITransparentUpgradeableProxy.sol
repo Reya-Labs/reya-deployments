@@ -4,4 +4,5 @@ pragma solidity ^0.8.4;
 
 interface ITransparentUpgradeableProxy {
     function upgradeToAndCall(address newImplementation, bytes calldata data) external payable;
+    function getAdmin() external view returns (address);
 }

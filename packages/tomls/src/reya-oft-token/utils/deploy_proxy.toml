@@ -4,7 +4,7 @@ target = "<%= settings.reyaTokenProxyPackage %>"
 options.owner = "<%= settings.foundationOwner %>"
 options.salt = "<%= settings.salt %>"
 # hardcode address after 1st deployment to avoid redeploying
-options.reyaOftImplementationAddress = "0xbE2B106b25488669d658FF72e8A2482f70a1949e"
+options.reyaOftImplementationAddress = "<%= (String(settings.reyaInitialImplementation) === '0x0000000000000000000000000000000000000000' ? imports.reyaTokenImplementation.contracts.ReyaOFT.address : settings.reyaInitialImplementation)%>"
 options.init_data = "<%= settings.init_data  %>"
 depends = ["var.cannonClonePackages", "clone.reyaTokenImplementation", "var.oft"]
 

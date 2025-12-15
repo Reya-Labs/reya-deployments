@@ -1,3 +1,0 @@
-[pull.reyaIcoDistributionContract]
-source = "<%= settings.reyaIcoDistributionContractPackage %>"
-depends = ["var.cannonClonePackages"]

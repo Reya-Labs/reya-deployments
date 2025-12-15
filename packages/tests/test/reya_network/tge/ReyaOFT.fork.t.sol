@@ -40,7 +40,7 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
         // Check lzEndpoint is set correctly
         IReyaOFT token = IReyaOFT(reyaToken);
         address lzEndpoint = token.endpoint();
-        require(lzEndpoint == 0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff, "lzEndpoint does not match expected address");
+        require(lzEndpoint == 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B, "lzEndpoint does not match expected address");
 
         // Check lzEndpoint delegate is set to foundationMultisig
         address delegate = ILayerZeroEndpointV2(lzEndpoint).delegates(reyaToken);
@@ -74,7 +74,7 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
     }
 
     function test_ReyaOFT_EndpointIsSet() public view {
-        check_ReyaOFT_EndpointIsSet(0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff);
+        check_ReyaOFT_EndpointIsSet(0x6F475642a6e85809B1c36Fa62763669b1b48DD5B);
     }
 
     function test_ReyaOFT_EndpointDelegatedToOwner() public view {
@@ -82,19 +82,19 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
     }
 
     function test_ReyaOFT_PeersConfigured() public view {
-        check_ReyaOFT_PeersConfigured(40161); // eid of eth mainnet
+        check_ReyaOFT_PeersConfigured(30101); // eid of eth mainnet
     }
 
     function test_ReyaOFT_SendWorks() public {
-        check_ReyaOFT_SendWorks(40161);
+        check_ReyaOFT_SendWorks(30101);
     }
 
     function test_ReyaOFT_SendRespectsBlacklist() public {
-        check_ReyaOFT_SendRespectsBlacklist(40161);
+        check_ReyaOFT_SendRespectsBlacklist(30101);
     }
 
     function test_ReyaOFT_SendRespectsPause() public {
-        check_ReyaOFT_SendRespectsPause(40161);
+        check_ReyaOFT_SendRespectsPause(30101);
     }
 
     function test_ReyaOFT_OnlyEndpointCanCallLzReceive() public {
@@ -102,11 +102,11 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
     }
 
     function test_ReyaOFT_LzReceiveMintsTokens() public {
-        check_ReyaOFT_LzReceiveMintsTokens(40161);
+        check_ReyaOFT_LzReceiveMintsTokens(30101);
     }
 
     function test_ReyaOFT_LzReceiveRespectsPause() public {
-        check_ReyaOFT_LzReceiveRespectsPause(40161);
+        check_ReyaOFT_LzReceiveRespectsPause(30101);
     }
 
     function test_ReyaOFT_NormalTransfer() public {
