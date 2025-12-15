@@ -8,6 +8,6 @@ from = "<%= settings.foundationEoa %>"
 func = "setPeer"
 args = [
     "<%= settings.chainBEid %>",
-    "<%= hexZeroPad(settings.chainBOAppAddress, 32) %>"
+    "<%= hexZeroPad(settings.chainBOAppAddress, 32) %>",
 ]
 depends = ["invoke.lz_set_source_send_config"]

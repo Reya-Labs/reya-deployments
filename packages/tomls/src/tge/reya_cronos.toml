@@ -1,7 +1,4 @@
-include = [
-    "./utils/common.toml",
-    "../reya-oft-token/reya.toml"
-]
+include = ["./utils/common.toml", "../reya-oft-token/reya.toml"]
 
 version = "1.0.0"
 
@@ -39,7 +36,7 @@ depends = ["var.pausers"]
 
 [var.lz_config]
 # Network agnostic messaging configuration
-lzGracePeriod = "0" 
+lzGracePeriod = "0"
 lzMaxMessageSize = "10000"
 lzRequiredDVNCount = "1"
 lzOptionalDVNCount = "0"
@@ -58,7 +55,7 @@ chainAEndpointAddress = "<%= settings.lzEndpoint %>"
 chainASendLibAddress = "0xd682ECF100f6F4284138AA925348633B0611Ae21"
 chainAReceiveLibAddress = "0xcF1B0F4106B0324F96fEfcC31bA9498caa80701C"
 chainAEid = "40319"
-chainAExecutorAddress = "0x701f3927871EfcEa1235dB722f9E608aE120d243" 
+chainAExecutorAddress = "0x701f3927871EfcEa1235dB722f9E608aE120d243"
 chainALzRequiredDVN1 = "0xF49d162484290EAeAd7bb8C2c7E3a6f8f52e32d6"
 chainALzConfirmations = "1"
 chainAOAppAddress = "<%= settings.reyaTokenProxy %>"

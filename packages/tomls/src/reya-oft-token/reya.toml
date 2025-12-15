@@ -5,5 +5,5 @@ include = [
     "configs/lz_connections/lz_endpoint_abi.toml",
     "configs/lz_connections/chainB_to_A_receive_config.toml",
     "configs/lz_connections/chainA_to_B_send_config.toml",
-    "configs/lz_connections/peer_config.toml"
+    "configs/lz_connections/peer_config.toml",
 ]

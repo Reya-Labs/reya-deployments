@@ -1,7 +1,4 @@
-include = [
-    "./utils/common.toml",
-    "../reya-oft-token/reya.toml"
-]
+include = ["./utils/common.toml", "../reya-oft-token/reya.toml"]
 
 version = "1.0.3"
 
@@ -23,14 +20,14 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 [var.oft]
 lzEndpoint = "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B"
 foundationOwner = "0x8349021746B4db503c4DF51e5f24241EAf80E816"
-foundationEoa = "0xaE173a960084903b1d278Ff9E3A81DeD82275556" # TODO: complete after foundation EOA is set
+foundationEoa = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"   # TODO: complete after foundation EOA is set
 # TODO: replace with hardcoded value once deployed to avoid proxy redeployment
 reyaInitialImplementation = "0x0000000000000000000000000000000000000000"
 reyaTokenProxyAdmin = "0x0000000000000000000000000000000000000000"
 # calldata to initialize the token with initialize(string,string,address)
 # Generate with: cast calldata "initialize(string,string,address)" "Reya" "REYA" <foundationEoa>"
 # TODO: complete after foundation EOA is set
-init_data = "0x077f224a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000ae173a960084903b1d278ff9e3a81ded822755560000000000000000000000000000000000000000000000000000000000000004526579610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000045245594100000000000000000000000000000000000000000000000000000000" 
+init_data = "0x077f224a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000ae173a960084903b1d278ff9e3a81ded822755560000000000000000000000000000000000000000000000000000000000000004526579610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000045245594100000000000000000000000000000000000000000000000000000000"
 salt = "main"
 blacklistingAdmin1 = "<%= settings.pauser1 %>"
 blacklistingAdmin2 = "<%= settings.pauser2 %>"
@@ -40,7 +37,7 @@ depends = ["var.pausers"]
 
 [var.lz_config]
 # Network agnostic messaging configuration
-lzGracePeriod = "0" 
+lzGracePeriod = "0"
 lzMaxMessageSize = "10000"
 lzRequiredDVNCount = "1"
 lzOptionalDVNCount = "0"
@@ -50,10 +47,10 @@ chainAEndpointAddress = "<%= settings.lzEndpoint %>"
 chainASendLibAddress = "0xC39161c743D0307EB9BCc9FEF03eeb9Dc4802de7"
 chainAReceiveLibAddress = "0xe1844c5D63a9543023008D332Bd3d2e6f1FE1043"
 chainAEid = "30313"
-chainAExecutorAddress = "0xcCE466a522984415bC91338c232d98869193D46e" 
+chainAExecutorAddress = "0xcCE466a522984415bC91338c232d98869193D46e"
 chainALzRequiredDVN1 = "0x6788f52439aca6bff597d3eec2dc9a44b8fee842"
 chainALzConfirmations = "15"
-chainAOAppAddress = "<%= settings.reyaTokenProxy %>" 
+chainAOAppAddress = "<%= settings.reyaTokenProxy %>"
 # Ethereum addresses
 chainBEndpointAddress = "0x1a44076050125825900e736c501f859c50fE728c"
 chainBSendLibAddress = "0xbB2Ea70C9E858123480642Cf96acbcCE1372dCe1"

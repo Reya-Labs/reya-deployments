@@ -9,7 +9,7 @@ args = [
         "<%= settings.blacklistingAdmin1 %>",
         "<%= settings.blacklistingAdmin2 %>",
         "<%= settings.blacklistingAdmin3 %>",
-        "<%= settings.blacklistingAdmin4 %>"
-    ]
+        "<%= settings.blacklistingAdmin4 %>",
+    ],
 ]
 depends = ["clone.reyaTokenProxy"]

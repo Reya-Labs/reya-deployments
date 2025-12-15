@@ -12,7 +12,7 @@
     "tge:ethereum_mainnet:simulate": "cannon build src/tge/ethereum_mainnet.toml --rpc-url https://mainnet.gateway.tenderly.co --chain-id 1 --dry-run --impersonate-all",
     "lint:check": "yarn prettier:check",
     "lint:write": "yarn prettier:write",
-    "prettier:write": "prettier . '**/*.toml' --write",
-    "prettier:check": "prettier . '**/*.toml' --check"
+    "prettier:write": "npx prettier . '**/*.toml' --write",
+    "prettier:check": "npx prettier . '**/*.toml' --check"
   }
 }

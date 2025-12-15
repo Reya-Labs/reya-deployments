@@ -9,7 +9,11 @@ args = [
     "<%= settings.chainAOAppAddress %>",
     "<%= settings.chainAReceiveLibAddress %>",
     [
-        {eid = "<%= settings.chainBEid %>", configType = 2, config = "0x<%= settings.tupleOffset %><%= hexZeroPad(settings.chainALzConfirmations, 32).slice(2) %><%= hexZeroPad(settings.lzRequiredDVNCount, 32).slice(2) %><%= hexZeroPad(settings.lzOptionalDVNCount, 32).slice(2) %><%= hexZeroPad(settings.lzOptionalDVNThreshold, 32).slice(2) %><%= settings.requiredDVNsOffset %><%= settings.optionalDVNsOffset %><%= hexZeroPad(settings.lzRequiredDVNCount, 32).slice(2) %><%= settings.addressPadding %><%= settings.chainALzRequiredDVN1.slice(2) %><%= settings.optionalDVNsLength %>"}
-    ]
+        { eid = "<%= settings.chainBEid %>", configType = 2, config = "0x<%= settings.tupleOffset %><%= hexZeroPad(settings.chainALzConfirmations, 32).slice(2) %><%= hexZeroPad(settings.lzRequiredDVNCount, 32).slice(2) %><%= hexZeroPad(settings.lzOptionalDVNCount, 32).slice(2) %><%= hexZeroPad(settings.lzOptionalDVNThreshold, 32).slice(2) %><%= settings.requiredDVNsOffset %><%= settings.optionalDVNsOffset %><%= hexZeroPad(settings.lzRequiredDVNCount, 32).slice(2) %><%= settings.addressPadding %><%= settings.chainALzRequiredDVN1.slice(2) %><%= settings.optionalDVNsLength %>" },
+    ],
 ]
-depends = ["invoke.lz_set_source_send_config", "var.config_encoding", "var.lz_endpoint_abi"]
+depends = [
+    "invoke.lz_set_source_send_config",
+    "var.config_encoding",
+    "var.lz_endpoint_abi",
+]

@@ -1,7 +1,7 @@
 include = [
     "./utils/common.toml",
     "../reya-oft-token/ethereum.toml",
-    "../reya-ico-distribution/ethereum.toml"
+    "../reya-ico-distribution/ethereum.toml",
 ]
 
 version = "1.0.3"
@@ -12,7 +12,7 @@ chainId = 1
 reyaTokenProxyPackage = "reya-oft-token:1.0.0@proxy"
 reyaTokenImplementationPackage = "reya-oft-token:1.0.0@implementation"
 # TODO: change to main
-reyaIcoDistributionContractPackage = "reya-ico-distribution:1.0.1@staging" 
+reyaIcoDistributionContractPackage = "reya-ico-distribution:1.0.1@staging"
 
 [var.upgrade_proxy_vars]
 reyaTokenProxy = "<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"
@@ -26,7 +26,7 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 [var.oft]
 lzEndpoint = "0x1a44076050125825900e736c501f859c50fE728c"
 foundationOwner = "0xe148e0Bcb719e06d05089c1ad4953c30BDf86fe5"
-foundationEoa = "0xaE173a960084903b1d278Ff9E3A81DeD82275556" # TODO: complete after foundation EOA is set
+foundationEoa = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"   # TODO: complete after foundation EOA is set
 # TODO: replace with hardcoded value once deployed to avoid proxy redeployment
 reyaInitialImplementation = "0x0000000000000000000000000000000000000000"
 reyaTokenProxyAdmin = "0x0000000000000000000000000000000000000000"
@@ -51,7 +51,7 @@ totalAllocationUnscaled = "160000000" # TODO: complete after ICO allocation is d
 
 [var.lz_config]
 # Network agnostic messaging configuration
-lzGracePeriod = "0" 
+lzGracePeriod = "0"
 lzMaxMessageSize = "10000"
 lzRequiredDVNCount = "1"
 lzOptionalDVNCount = "0"
@@ -70,7 +70,7 @@ chainBEndpointAddress = "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B"
 chainBSendLibAddress = "0xC39161c743D0307EB9BCc9FEF03eeb9Dc4802de7"
 chainBReceiveLibAddress = "0xe1844c5D63a9543023008D332Bd3d2e6f1FE1043"
 chainBEid = "30313"
-chainBExecutorAddress = "0xcCE466a522984415bC91338c232d98869193D46e" 
+chainBExecutorAddress = "0xcCE466a522984415bC91338c232d98869193D46e"
 chainBLzRequiredDVN1 = "0x6788f52439aca6bff597d3eec2dc9a44b8fee842"
 chainBLzConfirmations = "15"
 chainBOAppAddress = "0xDE77ADB3Eb0BCAD31dd8Bf27edE053EeCA977474"

@@ -6,7 +6,11 @@ options.salt = "<%= settings.salt %>"
 # hardcode address after 1st deployment to avoid redeploying
 options.reyaOftImplementationAddress = "<%= (String(settings.reyaInitialImplementation) === '0x0000000000000000000000000000000000000000' ? imports.reyaTokenImplementation.contracts.ReyaOFT.address : settings.reyaInitialImplementation)%>"
 options.init_data = "<%= settings.init_data  %>"
-depends = ["var.cannonClonePackages", "clone.reyaTokenImplementation", "var.oft"]
+depends = [
+    "var.cannonClonePackages",
+    "clone.reyaTokenImplementation",
+    "var.oft",
+]
 
 # [invoke.upgrade_reya_token_proxy]
 # target = ["<%= settings.reyaTokenProxyAdmin %>"]
