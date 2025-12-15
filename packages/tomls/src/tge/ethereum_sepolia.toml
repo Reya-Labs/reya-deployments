@@ -25,9 +25,10 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 [var.oft]
 lzEndpoint = "0x6EDCE65403992e310A62460808c4b910D972f10f"
 foundationOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+foundationEoa = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 # TODO: replace with hardcoded value once deployed to avoid proxy redeployment
 reyaInitialImplementation = "0x0000000000000000000000000000000000000000"
-reyaTokenProxyAdmin = "0x1Bc827102b0E85342C80F9628326488887D69249"
+reyaTokenProxyAdmin = "0x0000000000000000000000000000000000000000"
 # calldata to initialize the token with initialize(string,string,address)
 # Generate with: cast calldata "initialize(string,string,address)" "Test Reya" "TESTREYA" "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 init_data = "0x077f224a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000ae173a960084903b1d278ff9e3a81ded822755560000000000000000000000000000000000000000000000000000000000000009546573742052657961000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000085445535452455941000000000000000000000000000000000000000000000000"
@@ -36,9 +37,12 @@ blacklistingAdmin1 = "<%= settings.pauser1 %>"
 blacklistingAdmin2 = "<%= settings.pauser2 %>"
 blacklistingAdmin3 = "<%= settings.pauser3 %>"
 blacklistingAdmin4 = "<%= settings.pauser4 %>"
-mintAmountUnscaled = "1"
-mintReceiver = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 depends = ["var.pausers"]
+
+[var.oft_minting]
+mintReceiver = "<%= settings.foundationOwner %>"
+mintAmountUnscaled = "8000000000"
+depends = ["var.oft"]
 
 [var.ico]
 totalAllocationUnscaled = "160000000"

@@ -1,7 +1,7 @@
 [clone.reyaTokenProxy]
 source = "<%= settings.reyaTokenProxyPackage %>"
 target = "<%= settings.reyaTokenProxyPackage %>"
-options.owner = "<%= settings.foundationOwner %>"
+options.owner = "<%= settings.foundationEoa %>"
 options.salt = "<%= settings.salt %>"
 # hardcode address after 1st deployment to avoid redeploying
 options.reyaOftImplementationAddress = "<%= (String(settings.reyaInitialImplementation) === '0x0000000000000000000000000000000000000000' ? imports.reyaTokenImplementation.contracts.ReyaOFT.address : settings.reyaInitialImplementation)%>"

@@ -8,7 +8,7 @@
 [invoke.lz_set_source_send_library]
 target = ["<%= settings.chainAEndpointAddress %>"]
 abi = "<%= settings.abiSetSendLibrary %>"
-from = "<%= settings.foundationOwner %>"
+from = "<%= settings.foundationEoa %>"
 func = "setSendLibrary"
 args = [
     "<%= settings.chainAOAppAddress %>",
@@ -21,7 +21,7 @@ depends = ["clone.reyaTokenProxy"]
 [invoke.lz_set_source_receive_library]
 target = ["<%= settings.chainAEndpointAddress %>"]
 abi = "<%= settings.abiSetReceiveLibrary %>"
-from = "<%= settings.foundationOwner %>"
+from = "<%= settings.foundationEoa %>"
 func = "setReceiveLibrary"
 args = [
     "<%= settings.chainAOAppAddress %>",
@@ -53,7 +53,7 @@ addressPadding = "000000000000000000000000"  # 12 bytes: left-padding for 20-byt
 [invoke.lz_set_source_send_config]
 target = ["<%= settings.chainAEndpointAddress %>"]
 abi = "<%= settings.abiSetConfig %>"
-from = "<%= settings.foundationOwner %>"
+from = "<%= settings.foundationEoa %>"
 func = "setConfig"
 args = [
     "<%= settings.chainAOAppAddress %>",

@@ -11,28 +11,28 @@ chainId = 1
 [var.cannonClonePackages]
 reyaTokenProxyPackage = "reya-oft-token:1.0.0@proxy"
 reyaTokenImplementationPackage = "reya-oft-token:1.0.0@implementation"
-reyaIcoDistributionContractPackage = "reya-ico-distribution:1.0.0@staging" # TODO: change to mainnet
+reyaIcoDistributionContractPackage = "reya-ico-distribution:1.0.0@main"
 
 [var.upgrade_proxy_vars]
 reyaTokenProxy = "<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"
 reyaIcoDistributionContract = "<%= imports.reyaIcoDistributionContract.contracts.ICO.address %>"
 
 [var.pausers]
-# TODO: modify for real deployment
-pauser1 = "0x45556408e543158f74403e882e3c8c23ecd9f732"
-pauser2 = "0x5173cc04a12d1fc7c83293ed71fbfa6bc0f87739"
-pauser3 = "0x23755428879b97a841b62d3f070a72c0f4200c03"
-pauser4 = "0xb89fd195db616b6219204737eb5ed6392ba6d7ca"
+pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
+pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
+pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
+pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 
 [var.oft]
 lzEndpoint = "0x1a44076050125825900e736c501f859c50fE728c"
-foundationOwner = "0xDD1F4555Dd91E48e3B1DE657228DC72b65106caA"
+foundationOwner = "0xe148e0Bcb719e06d05089c1ad4953c30BDf86fe5"
+foundationEoa = "0xDD1F4555Dd91E48e3B1DE657228DC72b65106caA"
 # TODO: replace with hardcoded value once deployed to avoid proxy redeployment
 reyaInitialImplementation = "0x0000000000000000000000000000000000000000"
-reyaTokenProxyAdmin = "0x2276Cb31DF5AD204Ead08d56a2791B14e0eB9752"
-# calldata to initialize the token with initialize(string,string,address)
-# Generate with: cast calldata "initialize(string,string,address)" "Test Reya" "TESTREYA" "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-init_data = "0x077f224a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000ae173a960084903b1d278ff9e3a81ded822755560000000000000000000000000000000000000000000000000000000000000009546573742052657961000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000085445535452455941000000000000000000000000000000000000000000000000"
+reyaTokenProxyAdmin = "0x0000000000000000000000000000000000000000"
+# calldata to initialize the token with initialize(string name, string symbol, address owner)
+# Generate with: cast calldata "initialize(string,string,address)" "Reya" "REYA" <foundationEoa>
+init_data = "" # TODO: complete after foundation EOA is set
 salt = "main"
 blacklistingAdmin1 = "<%= settings.pauser1 %>"
 blacklistingAdmin2 = "<%= settings.pauser2 %>"
@@ -40,8 +40,13 @@ blacklistingAdmin3 = "<%= settings.pauser3 %>"
 blacklistingAdmin4 = "<%= settings.pauser4 %>"
 depends = ["var.pausers"]
 
+[var.oft_minting]
+mintReceiver = "<%= settings.foundationOwner %>"
+mintAmountUnscaled = "8000000000"
+depends = ["var.oft"]
+
 [var.ico]
-totalAllocationUnscaled = "160000000"
+totalAllocationUnscaled = "0" # TODO: complete after ICO allocation is decided
 
 [var.lz_config]
 # Network agnostic messaging configuration
@@ -69,7 +74,3 @@ chainBLzRequiredDVN1 = "0x6788f52439aca6bff597d3eec2dc9a44b8fee842"
 chainBLzConfirmations = "15"
 chainBOAppAddress = "0xDE77ADB3Eb0BCAD31dd8Bf27edE053EeCA977474"
 depends = ["var.oft"]
-
-[var.oft_minting]
-mintReceiver = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-mintAmountUnscaled = "10"

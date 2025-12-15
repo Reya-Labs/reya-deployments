@@ -4,7 +4,7 @@
 [invoke.lz_set_peer_for_chainB]
 target = ["<%= settings.chainAOAppAddress %>"]
 abi = "[{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"eid\",\"type\":\"uint32\"},{\"internalType\":\"bytes32\",\"name\":\"peer\",\"type\":\"bytes32\"}],\"name\":\"setPeer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
-from = "<%= settings.foundationOwner %>"
+from = "<%= settings.foundationEoa %>"
 func = "setPeer"
 args = [
     "<%= settings.chainBEid %>",

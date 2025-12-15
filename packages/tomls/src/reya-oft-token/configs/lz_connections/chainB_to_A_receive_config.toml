@@ -3,7 +3,7 @@
 [invoke.lz_set_destination_receive_config]
 target = ["<%= settings.chainAEndpointAddress %>"]
 abi = "<%= settings.abiSetConfig %>"
-from = "<%= settings.foundationOwner %>"
+from = "<%= settings.foundationEoa %>"
 func = "setConfig"
 args = [
     "<%= settings.chainAOAppAddress %>",
