@@ -1,7 +1,7 @@
 [clone.reyaIcoDistributionContract]
 source = "<%= settings.reyaIcoDistributionContractPackage %>"
 target = "<%= settings.reyaIcoDistributionContractPackage %>"
+options.owner = "<%= settings.foundationEoa %>"
 options.tokenAddress = "<%= settings.reyaTokenProxy %>"
 options.totalAllocationUnscaled = "<%= settings.totalAllocationUnscaled %>"
-options.owner = "<%= settings.foundationEoa %>"
 depends = ["var.cannonClonePackages", "var.ico", "var.upgrade_proxy_vars"]

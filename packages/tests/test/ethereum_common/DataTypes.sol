@@ -5,6 +5,7 @@ struct EthereumStaticEcosystem {
     string MAINNET_RPC;
     // multisigs
     address foundationMultisig;
+    address foundationEoa;
     // Contracts
     address reya;
     address ico;

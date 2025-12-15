@@ -20,6 +20,7 @@ struct StaticEcosystem {
     // multisigs
     address multisig;
     address foundationMultisig;
+    address foundationEoa;
     // Reya contracts
     address payable core;
     address payable pool;

@@ -39,4 +39,16 @@ jobs:
         env:
           RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_cronos:test"
+      - name: TGE Reya Network Cannon Test
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
+        run: "tge:reya_mainnet:test"
+      - name: TGE Reya Cronos Cannon Test
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
+        run: "yarn tge:reya_cronos:test"
+      - name: Ethereum Mainnet Cannon Test
+        run: "yarn tge:ethereum_mainnet:test"
+      - name: Ethereum Sepolia Cannon Test
+        run: "yarn tge:ethereum_sepolia:test"
   

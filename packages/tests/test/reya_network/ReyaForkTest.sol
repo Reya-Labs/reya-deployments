@@ -20,7 +20,8 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         // multisigs
         sec.multisig = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9;
-        sec.foundationMultisig = 0xfF87412803Cec9b5Ed9C4AA9AC875aB2B21DE75D; // TODO: replace with actual foundation multisig
+        sec.foundationMultisig = 0x8349021746B4db503c4DF51e5f24241EAf80E816;
+        sec.foundationEoa = 0xaE173a960084903b1d278Ff9E3A81DeD82275556; // TODO: replace with actual foundation EOA
 
         // Reya contracts
         sec.core = payable(0xA763B6a5E09378434406C003daE6487FbbDc1a80);
@@ -48,7 +49,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.srusd = 0x162B78e827A8DB8173D13735C08c8D40Cb5cCdAB;
         sec.wsteth = 0x7ae54d5a9e5a975DFC3261d915f8151dCcA76bE0;
         sec.setMarketZeroFeeBot = 0xdD69B419f0d7a1E15192ac8DBAa0Fc63b25f8A11;
-        sec.reya = 0x25F5a0F905b4876C123E511619F82057cba7e8A7; // TODO: modify for actual token
+        sec.reya = 0xDB2AB65f4F1098936cB82e15Ba0da0D2Ba606001; // TODO: modify for actual token
 
         // Elixir tokens on Mainnet (Ethereum)
         sec.elixirSdeusd = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326;

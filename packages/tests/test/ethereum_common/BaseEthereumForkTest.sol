@@ -4,5 +4,4 @@ import "forge-std/Test.sol";
 import "./DataTypes.sol";
 import { EthereumStorageReyaForkTest } from "./EthereumStorageReyaForkTest.sol";
 
-contract BaseEthereumForkTest is EthereumStorageReyaForkTest {
-}
+contract BaseEthereumForkTest is EthereumStorageReyaForkTest { }

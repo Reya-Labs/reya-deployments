@@ -11,7 +11,6 @@ import { ITransparentUpgradeableProxy } from "../../../src/interfaces/ITranspare
 import { ILayerZeroEndpointV2 } from "../../../src/interfaces/ILayerZeroEndpointV2.sol";
 
 contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
-
     function test_ReyaOFT_ContractStorage() public view {
         // Debug test to verify the contract exists in the fork
         uint256 codeSize;
@@ -20,20 +19,20 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
             codeSize := extcodesize(reyaToken)
         }
         require(codeSize > 0, "ReyaOFT contract does not exist at expected address");
-        
+
         // Check if it's a proxy and verify implementation
         // TransparentUpgradeableProxy stores implementation at slot:
         // bytes32(uint256(keccak256('eip1967.proxy.implementation')) - 1)
         bytes32 implementationSlot = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
         bytes32 implementationBytes = vm.load(reyaToken, implementationSlot);
         address implementation = address(uint160(uint256(implementationBytes)));
-        
+
         // Check implementation has code
         uint256 implCodeSize;
         assembly {
             implCodeSize := extcodesize(implementation)
         }
-        
+
         require(implementation != address(0), "Implementation address is zero");
         require(implCodeSize > 0, "Implementation contract has no code");
 
@@ -42,13 +41,13 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
         address lzEndpoint = token.endpoint();
         require(lzEndpoint == 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B, "lzEndpoint does not match expected address");
 
-        // Check lzEndpoint delegate is set to foundationMultisig
+        // Check lzEndpoint delegate is set to contractsOwner
         address delegate = ILayerZeroEndpointV2(lzEndpoint).delegates(reyaToken);
-        require(delegate == sec.foundationMultisig, "lzEndpoint delegate is not foundationMultisig");
+        require(delegate == contractsOwner, "lzEndpoint delegate is not contractsOwner");
 
         // Check Proxy Admin owner
         address proxyAdminOwner = IProxyAdmin(ITransparentUpgradeableProxy(sec.reya).getAdmin()).owner();
-        require(proxyAdminOwner == sec.foundationMultisig, "Proxy Admin owner is not foundationMultisig");
+        require(proxyAdminOwner == contractsOwner, "Proxy Admin owner is not contractsOwner");
     }
 
     function test_ReyaOFT_Permissions() public {
@@ -61,7 +60,7 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
     }
 
     function test_ReyaOFT_BlacklistedCannotTransfer() public {
-        check_ReyaOFT_BlacklistedCannotTransfer(sec.foundationMultisig);
+        check_ReyaOFT_BlacklistedCannotTransfer(contractsOwner);
     }
 
     function test_ReyaOFT_OwnerCanMint() public {
@@ -69,7 +68,7 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
     }
 
     function testFuzz_ReyaOFT_NonOwnerCannotMint(address attacker) public {
-        vm.assume(attacker != sec.foundationMultisig);
+        vm.assume(attacker != contractsOwner);
         checkFuzz_ReyaOFT_NonOwnerCannotMint(attacker);
     }
 
@@ -82,19 +81,19 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
     }
 
     function test_ReyaOFT_PeersConfigured() public view {
-        check_ReyaOFT_PeersConfigured(30101); // eid of eth mainnet
+        check_ReyaOFT_PeersConfigured(30_101); // eid of eth mainnet
     }
 
     function test_ReyaOFT_SendWorks() public {
-        check_ReyaOFT_SendWorks(30101);
+        check_ReyaOFT_SendWorks(30_101);
     }
 
     function test_ReyaOFT_SendRespectsBlacklist() public {
-        check_ReyaOFT_SendRespectsBlacklist(30101);
+        check_ReyaOFT_SendRespectsBlacklist(30_101);
     }
 
     function test_ReyaOFT_SendRespectsPause() public {
-        check_ReyaOFT_SendRespectsPause(30101);
+        check_ReyaOFT_SendRespectsPause(30_101);
     }
 
     function test_ReyaOFT_OnlyEndpointCanCallLzReceive() public {
@@ -102,11 +101,11 @@ contract ReyaOFTForkTest is ReyaForkTest, ReyaOFTForkCheck {
     }
 
     function test_ReyaOFT_LzReceiveMintsTokens() public {
-        check_ReyaOFT_LzReceiveMintsTokens(30101);
+        check_ReyaOFT_LzReceiveMintsTokens(30_101);
     }
 
     function test_ReyaOFT_LzReceiveRespectsPause() public {
-        check_ReyaOFT_LzReceiveRespectsPause(30101);
+        check_ReyaOFT_LzReceiveRespectsPause(30_101);
     }
 
     function test_ReyaOFT_NormalTransfer() public {

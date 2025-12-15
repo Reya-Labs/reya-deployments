@@ -11,11 +11,11 @@ chainId = 1
 [var.cannonClonePackages]
 reyaTokenProxyPackage = "reya-oft-token:1.0.0@proxy"
 reyaTokenImplementationPackage = "reya-oft-token:1.0.0@implementation"
-reyaIcoDistributionContractPackage = "reya-ico-distribution:1.0.0@main"
+# TODO: change to main
+reyaIcoDistributionContractPackage = "reya-ico-distribution:1.0.1@staging" 
 
 [var.upgrade_proxy_vars]
 reyaTokenProxy = "<%= imports.reyaTokenProxy.contracts.TransparentUpgradeableProxy.address %>"
-reyaIcoDistributionContract = "<%= imports.reyaIcoDistributionContract.contracts.ICO.address %>"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
@@ -26,13 +26,14 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 [var.oft]
 lzEndpoint = "0x1a44076050125825900e736c501f859c50fE728c"
 foundationOwner = "0xe148e0Bcb719e06d05089c1ad4953c30BDf86fe5"
-foundationEoa = "0xDD1F4555Dd91E48e3B1DE657228DC72b65106caA"
+foundationEoa = "0xaE173a960084903b1d278Ff9E3A81DeD82275556" # TODO: complete after foundation EOA is set
 # TODO: replace with hardcoded value once deployed to avoid proxy redeployment
 reyaInitialImplementation = "0x0000000000000000000000000000000000000000"
 reyaTokenProxyAdmin = "0x0000000000000000000000000000000000000000"
 # calldata to initialize the token with initialize(string name, string symbol, address owner)
-# Generate with: cast calldata "initialize(string,string,address)" "Reya" "REYA" <foundationEoa>
-init_data = "" # TODO: complete after foundation EOA is set
+# Generate with: cast calldata "initialize(string,string,address)" "Reya" "REYA" <foudationEoa>
+# TODO: complete after foundation EOA is set
+init_data = "0x077f224a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000ae173a960084903b1d278ff9e3a81ded822755560000000000000000000000000000000000000000000000000000000000000004526579610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000045245594100000000000000000000000000000000000000000000000000000000"
 salt = "main"
 blacklistingAdmin1 = "<%= settings.pauser1 %>"
 blacklistingAdmin2 = "<%= settings.pauser2 %>"
@@ -46,7 +47,7 @@ mintAmountUnscaled = "8000000000"
 depends = ["var.oft"]
 
 [var.ico]
-totalAllocationUnscaled = "0" # TODO: complete after ICO allocation is decided
+totalAllocationUnscaled = "160000000" # TODO: complete after ICO allocation is decided
 
 [var.lz_config]
 # Network agnostic messaging configuration

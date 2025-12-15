@@ -5,5 +5,5 @@ import { BaseEthereumForkTest } from "../BaseEthereumForkTest.sol";
 import { BaseReyaOFTForkCheck } from "../../reya_common/tge/ReyaOFT.fork.c.sol";
 
 contract ReyaOFTForkCheck is BaseReyaOFTForkCheck, BaseEthereumForkTest {
-    // Note: _initOFTCheck must be called by the derived contract after sec is initialized
+// Note: _initOFTCheck must be called by the derived contract after sec is initialized
 }

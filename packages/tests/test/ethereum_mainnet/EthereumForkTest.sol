@@ -14,12 +14,12 @@ contract EthereumForkTest is EthereumStorageReyaForkTest {
         sec.MAINNET_RPC = "https://gateway.tenderly.co/public/mainnet";
 
         // multisigs
-        sec.foundationMultisig = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+        sec.foundationMultisig = 0x8349021746B4db503c4DF51e5f24241EAf80E816;
         sec.foundationEoa = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
 
         // contracts
-        sec.reya = 0x17eaBC48B01704731bB24354220Fa904605bf968;
-        sec.ico = 0x79Effe4F9EBc2B5fE46f46997455b55b5B2D8564;
+        sec.reya = 0x30b8BEF7a17FBfd8Ca749D1e7E722dE157306b49;
+        sec.ico = 0x2bF73F23DcEFF3af24A333D809b4058bBca176FB;
 
         // create fork
         try vm.activeFork() { }

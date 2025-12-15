@@ -43,39 +43,43 @@ contract ERC20Mock {
 }
 
 contract ICODistributionForkCheck is BaseEthereumForkTest {
+    address contractsOwner;
+
+    function _initICOCheck(address _foundationMultisig, address _foundationEoa) internal {
+        contractsOwner = IReyaOFT(sec.reya).owner();
+
+        if (contractsOwner != _foundationEoa && contractsOwner != _foundationMultisig) {
+            revert("Contracts owner is not the foundation EOA or the foundation multisig");
+        }
+    }
     /// @notice Test that configuration has correct REYA token address
+
     function check_ICO_TokenAddressIsCorrect() internal view {
         (IICO.Configuration memory config,,) = IICO(sec.ico).getStatus();
-        
-        assertEq(
-            config.token,
-            sec.reya,
-            "Token address should be REYA"
-        );
+
+        assertEq(config.token, sec.reya, "Token address should be REYA");
     }
 
     /// @notice Test that owner can rescue tokens above total allocation
     function check_ICO_OwnerCanRescueExcessREYA() internal {
         address recipient = makeAddr("rescueRecipient");
-        
+
         // Mint extra REYA to the ICO contract
         uint256 extraAmount = 5000e18;
-        vm.prank(sec.foundationMultisig);
+        vm.prank(contractsOwner);
         IReyaOFT(sec.reya).mint(sec.ico, extraAmount);
-        
+
         uint256 recipientBalanceBefore = IERC20(sec.reya).balanceOf(recipient);
 
         // Owner rescues excess REYA
-        vm.prank(sec.foundationMultisig);
+        vm.prank(contractsOwner);
         IICO(sec.ico).rescueTokens(sec.reya, recipient);
 
         uint256 recipientBalanceAfter = IERC20(sec.reya).balanceOf(recipient);
-        
+
         // Should rescue the extra amount that was minted
         assertEq(
-            recipientBalanceAfter - recipientBalanceBefore,
-            extraAmount,
-            "Should rescue the extra REYA that was minted"
+            recipientBalanceAfter - recipientBalanceBefore, extraAmount, "Should rescue the extra REYA that was minted"
         );
     }
 
@@ -92,15 +96,11 @@ contract ICODistributionForkCheck is BaseEthereumForkTest {
         uint256 recipientBalanceBefore = IERC20(randomToken).balanceOf(recipient);
 
         // Owner rescues tokens
-        vm.prank(sec.foundationMultisig);
+        vm.prank(contractsOwner);
         IICO(sec.ico).rescueTokens(randomToken, recipient);
 
         uint256 recipientBalanceAfter = IERC20(randomToken).balanceOf(recipient);
-        assertEq(
-            recipientBalanceAfter - recipientBalanceBefore,
-            amount,
-            "Recipient should receive all rescued tokens"
-        );
+        assertEq(recipientBalanceAfter - recipientBalanceBefore, amount, "Recipient should receive all rescued tokens");
     }
 
     /// @notice Test that non-owner cannot rescue tokens
@@ -122,7 +122,7 @@ contract ICODistributionForkCheck is BaseEthereumForkTest {
     function check_ICO_OwnerCanSetTGEDate() internal {
         uint256 tgeDate = block.timestamp + 30 days;
 
-        vm.prank(sec.foundationMultisig);
+        vm.prank(contractsOwner);
         IICO(sec.ico).setTGEDate(tgeDate);
 
         // Verify TGE date was set
@@ -142,18 +142,12 @@ contract ICODistributionForkCheck is BaseEthereumForkTest {
     /// @notice Test that owner can set allocations
     function check_ICO_OwnerCanSetAllocations() internal {
         IICO.AllocationInput[] memory allocations = new IICO.AllocationInput[](2);
-        allocations[0] = IICO.AllocationInput({
-            user: makeAddr("user1"),
-            initialAmount: 1000e18,
-            monthlyAmount: 100e18
-        });
-        allocations[1] = IICO.AllocationInput({
-            user: makeAddr("user2"),
-            initialAmount: 2000e18,
-            monthlyAmount: 200e18
-        });
+        allocations[0] =
+            IICO.AllocationInput({ user: makeAddr("user1"), initialAmount: 1000e18, monthlyAmount: 100e18 });
+        allocations[1] =
+            IICO.AllocationInput({ user: makeAddr("user2"), initialAmount: 2000e18, monthlyAmount: 200e18 });
 
-        vm.prank(sec.foundationMultisig);
+        vm.prank(contractsOwner);
         IICO(sec.ico).setAllocations(allocations);
 
         // Verify allocations were set
@@ -168,13 +162,9 @@ contract ICODistributionForkCheck is BaseEthereumForkTest {
 
     /// @notice Test that non-owner cannot set allocations
     function checkFuzz_ICO_NonOwnerCannotSetAllocations(address attacker) internal {
-        
         IICO.AllocationInput[] memory allocations = new IICO.AllocationInput[](1);
-        allocations[0] = IICO.AllocationInput({
-            user: makeAddr("user1"),
-            initialAmount: 1000e18,
-            monthlyAmount: 100e18
-        });
+        allocations[0] =
+            IICO.AllocationInput({ user: makeAddr("user1"), initialAmount: 1000e18, monthlyAmount: 100e18 });
 
         vm.prank(attacker);
         vm.expectRevert(abi.encodeWithSelector(IReyaOFT.OwnableUnauthorizedAccount.selector, attacker));
@@ -186,23 +176,17 @@ contract ICODistributionForkCheck is BaseEthereumForkTest {
         (, uint256 initialTotalAllocated,) = IICO(sec.ico).getStatus();
 
         IICO.AllocationInput[] memory allocations = new IICO.AllocationInput[](2);
-        allocations[0] = IICO.AllocationInput({
-            user: makeAddr("user1"),
-            initialAmount: 1000e18,
-            monthlyAmount: 100e18
-        });
-        allocations[1] = IICO.AllocationInput({
-            user: makeAddr("user2"),
-            initialAmount: 2000e18,
-            monthlyAmount: 200e18
-        });
+        allocations[0] =
+            IICO.AllocationInput({ user: makeAddr("user1"), initialAmount: 1000e18, monthlyAmount: 100e18 });
+        allocations[1] =
+            IICO.AllocationInput({ user: makeAddr("user2"), initialAmount: 2000e18, monthlyAmount: 200e18 });
 
-        vm.prank(sec.foundationMultisig);
+        vm.prank(contractsOwner);
         IICO(sec.ico).setAllocations(allocations);
 
         // Check total allocated
         (, uint256 totalAllocated,) = IICO(sec.ico).getStatus();
-        
+
         // Total should include initial + monthly amounts for all users
         // user1: 1000e18 initial + 100e18 * 6 months = 1600e18
         // user2: 2000e18 initial + 200e18 * 6 months = 3200e18
@@ -217,7 +201,7 @@ contract ICODistributionForkCheck is BaseEthereumForkTest {
     function checkFuzz_ICO_ClaimingRevertsWhenNoAllocation(address claimer) internal {
         uint256 balanceBefore = IERC20(sec.reya).balanceOf(claimer);
 
-        vm.prank(sec.foundationMultisig);
+        vm.prank(contractsOwner);
         IICO(sec.ico).setTGEDate(block.timestamp - 60 days);
 
         vm.prank(claimer);
@@ -232,45 +216,38 @@ contract ICODistributionForkCheck is BaseEthereumForkTest {
         address claimer = makeAddr("claimer");
         uint256 initialAmount = 1000e18;
         uint256 monthlyAmount = 100e18;
-        
+
         // Set allocation for claimer
         IICO.AllocationInput[] memory allocations = new IICO.AllocationInput[](1);
-        allocations[0] = IICO.AllocationInput({
-            user: claimer,
-            initialAmount: initialAmount,
-            monthlyAmount: monthlyAmount
-        });
-        
-        vm.prank(sec.foundationMultisig);
+        allocations[0] =
+            IICO.AllocationInput({ user: claimer, initialAmount: initialAmount, monthlyAmount: monthlyAmount });
+
+        vm.prank(contractsOwner);
         IICO(sec.ico).setAllocations(allocations);
-        
+
         // Set TGE date to now
-        vm.prank(sec.foundationMultisig);
+        vm.prank(contractsOwner);
         IICO(sec.ico).setTGEDate(block.timestamp);
-        
+
         // Fund the ICO contract with enough REYA
         uint256 totalNeeded = initialAmount + (monthlyAmount * 12); // 12 months of vesting
-        vm.prank(sec.foundationMultisig);
+        vm.prank(contractsOwner);
         IReyaOFT(sec.reya).mint(sec.ico, totalNeeded);
-        
+
         // Record balance before claim
         uint256 claimerBalanceBefore = IERC20(sec.reya).balanceOf(claimer);
-        
+
         // Claim tokens
         address[] memory users = new address[](1);
         users[0] = claimer;
-        
+
         uint256[] memory amounts = IICO(sec.ico).claim(users);
-        
+
         // Verify tokens were delivered
         uint256 claimerBalanceAfter = IERC20(sec.reya).balanceOf(claimer);
         assertEq(amounts[0], initialAmount, "Claimed amount should match initial amount");
-        assertEq(
-            claimerBalanceAfter - claimerBalanceBefore,
-            initialAmount,
-            "Claimer should receive initial allocation"
-        );
-        
+        assertEq(claimerBalanceAfter - claimerBalanceBefore, initialAmount, "Claimer should receive initial allocation");
+
         // Verify user status updated
         IICO.UserStatus memory status = IICO(sec.ico).getUserStatus(claimer);
         assertEq(status.claimedAmount, initialAmount, "Claimed amount should be recorded");
@@ -278,15 +255,11 @@ contract ICODistributionForkCheck is BaseEthereumForkTest {
         {
             // Try to claim again immediately (no time passed)
             uint256[] memory secondClaimAmounts = IICO(sec.ico).claim(users);
-            
+
             // Verify no additional tokens were given
             uint256 balanceAfterSecondClaim = IERC20(sec.reya).balanceOf(claimer);
             assertEq(secondClaimAmounts[0], 0, "Second claim should return 0");
-            assertEq(
-                balanceAfterSecondClaim,
-                claimerBalanceAfter,
-                "Balance should not change on second claim"
-            );
+            assertEq(balanceAfterSecondClaim, claimerBalanceAfter, "Balance should not change on second claim");
         }
     }
 }
