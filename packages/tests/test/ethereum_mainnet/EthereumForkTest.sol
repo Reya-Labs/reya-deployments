@@ -19,7 +19,7 @@ contract EthereumForkTest is EthereumStorageReyaForkTest {
 
         // contracts
         sec.reya = 0x30b8BEF7a17FBfd8Ca749D1e7E722dE157306b49;
-        sec.ico = 0x2bF73F23DcEFF3af24A333D809b4058bBca176FB;
+        sec.ico = 0xF29eaFcDD64e2880856A21fAEBF69e9983d223D6;
 
         // create fork
         try vm.activeFork() { }
