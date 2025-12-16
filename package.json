@@ -17,7 +17,11 @@
     "reya_network:simulate": "lerna run reya_network:simulate --scope=@reya-deployments/tomls",
     "reya_cronos:simulate": "lerna run reya_cronos:simulate --scope=@reya-deployments/tomls",
     "reya_network:test": "lerna run reya_network:test --scope=@reya-deployments/tests",
-    "reya_cronos:test": "lerna run reya_cronos:test --scope=@reya-deployments/tests"
+    "reya_cronos:test": "lerna run reya_cronos:test --scope=@reya-deployments/tests",
+    "tge:reya_mainnet:test": "lerna run tge:reya_mainnet:test --scope=@reya-deployments/tests",
+    "tge:reya_cronos:test": "lerna run tge:reya_cronos:test --scope=@reya-deployments/tests",
+    "tge:ethereum_sepolia:test": "lerna run tge:ethereum_sepolia:test --scope=@reya-deployments/tests",
+    "tge:ethereum_mainnet:test": "lerna run tge:ethereum_mainnet:test --scope=@reya-deployments/tests"
   },
   "devDependencies": {
     "@ethersproject/abi": "5.7.0",
