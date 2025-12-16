@@ -194,6 +194,7 @@ setMarketZeroFeeBot = "0xdD69B419f0d7a1E15192ac8DBAa0Fc63b25f8A11"
 
 [var.set_main_account_id_bots]
 setMainAccountIdBot = "0x286119f5cc1f99c9819cb8a7fb22eb49ca22c878" # deprecated 
+d06082025_setMainAccountIdBot = "0x3964296c2d089160B2833407CBF638a48CEDAcc7"
 
 [var.match_order_publisher_admins]
 # -----------------------------------------------

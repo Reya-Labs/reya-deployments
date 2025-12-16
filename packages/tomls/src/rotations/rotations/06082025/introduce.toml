@@ -299,3 +299,13 @@ args = [
     "<%= settings.d06082025_setOgStatusBot %>",
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.core_set_main_account_id_access_2]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('ownerMainAccountId')) %>",
+    "<%= settings.d06082025_setMainAccountIdBot %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
