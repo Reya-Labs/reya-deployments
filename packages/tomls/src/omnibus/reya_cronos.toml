@@ -2542,10 +2542,10 @@ cp1Rusd_rhedgeParentConfig_oracleNodeId = "<%= settings.hedgeUsdcReyaLmNodeId %>
 
 # active
 
-wethRusdSpot_oracleDeviationUnscaled = "0"
-wethRusdSpot_minimumOrderBaseUnscaled = "0.01"
+wethRusdSpot_oracleDeviationUnscaled = "0.05"
+wethRusdSpot_minimumOrderBaseUnscaled = "0.001"
 wethRusdSpot_baseSpacingUnscaled = "0.001"
-wethRusdSpot_priceSpacingUnscaled = "0.001"
+wethRusdSpot_priceSpacingUnscaled = "0.01"
 wethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 # inactive
