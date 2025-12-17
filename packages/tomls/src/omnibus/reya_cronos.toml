@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.102"
+version = "1.0.103"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -2542,11 +2542,11 @@ cp1Rusd_rhedgeParentConfig_oracleNodeId = "<%= settings.hedgeUsdcReyaLmNodeId %>
 
 # active
 
-wethRusdSpot_oracleDeviationUnscaled = "0"
-wethRusdSpot_minimumOrderBaseUnscaled = "0.01"
+wethRusdSpot_oracleDeviationUnscaled = "0.05"
+wethRusdSpot_minimumOrderBaseUnscaled = "0.001"
 wethRusdSpot_baseSpacingUnscaled = "0.001"
-wethRusdSpot_priceSpacingUnscaled = "0.001"
-wethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+wethRusdSpot_priceSpacingUnscaled = "0.01"
+wethRusdSpot_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 
 # inactive
 
