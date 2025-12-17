@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.118"
+version = "1.0.119"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -2609,7 +2609,7 @@ wethRusdSpot_oracleDeviationUnscaled = "0.05"
 wethRusdSpot_minimumOrderBaseUnscaled = "0.001"
 wethRusdSpot_baseSpacingUnscaled = "0.001"
 wethRusdSpot_priceSpacingUnscaled = "0.01"
-wethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+wethRusdSpot_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 
 # inactive
 
