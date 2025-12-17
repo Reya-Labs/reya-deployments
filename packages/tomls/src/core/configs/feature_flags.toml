@@ -219,3 +219,10 @@ fromCall.func = "owner"
 func = "setFeatureFlagAllowAll"
 args = ["<%= keccak256(hexlify('notifyAccountTransfer')) %>", false]
 depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_disable_spot_trading_for_usual_accounts]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('onlySpotAccounts')) %>", true]
+depends = ["invoke.upgrade_core_proxy"]
