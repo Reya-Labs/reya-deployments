@@ -62,7 +62,8 @@ contract PermissionsForkTest is ReyaForkTest {
         bytes32 flagId = keccak256(bytes("ownerMainAccountId"));
         address[] memory allowlist = ICoreProxy(sec.core).getFeatureFlagAllowlist(flagId);
 
-        address[] memory expectedAllowlist = new address[](0);
+        address[] memory expectedAllowlist = new address[](1);
+        expectedAllowlist[0] = 0x3964296c2d089160B2833407CBF638a48CEDAcc7;
         assertEq(allowlist, expectedAllowlist);
     }
 
