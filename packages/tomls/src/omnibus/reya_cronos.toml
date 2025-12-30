@@ -2279,7 +2279,7 @@ market74Linea_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_75Mega]
 market75Mega_riskMatrixIndex = "0"
-market75Mega_maxOpenBaseUnscaled = "2000000"
+market75Mega_maxOpenBaseUnscaled = "1250"
 market75Mega_velocityMultiplierUnscaled = "1.4"
 market75Mega_oracleNodeId = "<%= settings.megaUsdcMarkNodeIdStork %>"
 market75Mega_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
