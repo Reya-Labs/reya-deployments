@@ -200,7 +200,7 @@ contract SpotForkCheck is BaseReyaForkTest {
 
         // Create accounts
         uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 10_000e6);
-        uint128 sellerAccountId = ICoreProxy(sec.core).createAccount(seller);
+        uint128 sellerAccountId = ICoreProxy(sec.core).createOrGetSpotAccount(seller);
         depositWethToAccount(seller, sellerAccountId, 10e18);
 
         // Record initial balances
@@ -250,7 +250,7 @@ contract SpotForkCheck is BaseReyaForkTest {
 
         // Create accounts
         uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 10_000e6);
-        uint128 sellerAccountId = ICoreProxy(sec.core).createAccount(seller);
+        uint128 sellerAccountId = ICoreProxy(sec.core).createOrGetSpotAccount(seller);
         depositWethToAccount(seller, sellerAccountId, 10e18);
 
         // Record initial balances
@@ -298,7 +298,7 @@ contract SpotForkCheck is BaseReyaForkTest {
 
         // Create accounts
         uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 20_000e6);
-        uint128 sellerAccountId = ICoreProxy(sec.core).createAccount(seller);
+        uint128 sellerAccountId = ICoreProxy(sec.core).createOrGetSpotAccount(seller);
         depositWethToAccount(seller, sellerAccountId, 10e18);
 
         // Create two fill inputs
