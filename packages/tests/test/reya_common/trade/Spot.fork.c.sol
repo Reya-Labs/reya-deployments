@@ -2,7 +2,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
-import { ICoreProxy, CollateralInfo } from "../../../src/interfaces/ICoreProxy.sol";
+import { ICoreProxy, CollateralInfo, SpotMarketConfig, SpotMarketData } from "../../../src/interfaces/ICoreProxy.sol";
 import {
     IOrdersGatewayProxy,
     ConditionalOrderDetails,
@@ -38,6 +38,19 @@ contract SpotForkCheck is BaseReyaForkTest {
 
     // Feature flag constants (must match FeatureFlagSupport._MATCHING_ENGINE_PUBLISHER_FEATURE_FLAG)
     bytes32 internal constant MATCHING_ENGINE_PUBLISHER_FLAG = keccak256(bytes("matching_engine_publisher"));
+
+    function removeOraclePriceDeviationConfig(uint128 spotMarketId) internal {
+        SpotMarketData memory marketData = ICoreProxy(sec.core).getSpotMarketData(spotMarketId);
+        SpotMarketConfig memory newConfig = SpotMarketConfig({
+            oracleDeviation: 0,
+            minimumOrderBase: marketData.config.minimumOrderBase,
+            baseSpacing: marketData.config.baseSpacing,
+            priceSpacing: marketData.config.priceSpacing,
+            oracleNodeId: bytes32(0)
+        });
+        vm.prank(sec.multisig);
+        ICoreProxy(sec.core).setSpotMarketConfiguration(spotMarketId, newConfig);
+    }
 
     function setupSpotTestActors() internal {
         (buyer, buyerPk) = makeAddrAndKey("spotBuyer");
@@ -197,6 +210,7 @@ contract SpotForkCheck is BaseReyaForkTest {
     function check_SpotExecuteFill_WETH(uint128 wethSpotMarketId) internal {
         setupSpotTestActors();
         mockFreshPrices();
+        removeOraclePriceDeviationConfig(wethSpotMarketId);
 
         // Create accounts
         uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 10_000e6);
@@ -247,6 +261,7 @@ contract SpotForkCheck is BaseReyaForkTest {
     function check_SpotExecuteFill_SmallQuantity_And_Price_WETH(uint128 wethSpotMarketId) internal {
         setupSpotTestActors();
         mockFreshPrices();
+        removeOraclePriceDeviationConfig(wethSpotMarketId);
 
         // Create accounts
         uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 10_000e6);
@@ -279,12 +294,12 @@ contract SpotForkCheck is BaseReyaForkTest {
         int256 sellerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).netDeposits;
         int256 sellerWethAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.weth).netDeposits;
 
-        // Buyer: -3.123834 rUSD (0.001 * 3123.834), +0.001 WETH
-        assertEq(buyerRusdAfter, buyerRusdBefore - 3_123_834, "Buyer rUSD balance incorrect");
+        // Buyer: -3.123830 rUSD (0.001 * 3123.83), +0.001 WETH
+        assertEq(buyerRusdAfter, buyerRusdBefore - 3_123_830, "Buyer rUSD balance incorrect");
         assertEq(buyerWethAfter, int256(baseDelta), "Buyer WETH balance incorrect");
 
-        // Seller: +3.123834 rUSD, -0.001 WETH
-        assertEq(sellerRusdAfter, 3_123_834, "Seller rUSD balance incorrect");
+        // Seller: +3.123830 rUSD, -0.001 WETH
+        assertEq(sellerRusdAfter, 3_123_830, "Seller rUSD balance incorrect");
         assertEq(sellerWethAfter, sellerWethBefore - int256(baseDelta), "Seller WETH balance incorrect");
     }
 
@@ -295,6 +310,7 @@ contract SpotForkCheck is BaseReyaForkTest {
     function check_SpotBatchExecuteFill_WETH(uint128 wethSpotMarketId) internal {
         setupSpotTestActors();
         mockFreshPrices();
+        removeOraclePriceDeviationConfig(wethSpotMarketId);
 
         // Create accounts
         uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 20_000e6);
