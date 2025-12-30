@@ -260,7 +260,7 @@ contract SpotForkCheck is BaseReyaForkTest {
         // Using base delta equal to the base spacing to test rounding
         uint256 baseDelta = 0.001e18;
         // Use a price with many significant digits to exercise rounding
-        uint256 price = 312383e16; // 3123.83 with 18 decimals
+        uint256 price = 312_383e16; // 3123.83 with 18 decimals
 
         executeSpotFill({
             buyerAccountId: buyerAccountId,
