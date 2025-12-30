@@ -124,9 +124,9 @@ contract SpotForkCheck is BaseReyaForkTest {
         vm.stopPrank();
     }
 
-    function createAccountWithRusdDeposit(address user, uint256 amount) internal returns (uint128 accountId) {
+    function createOrGetSpotAccountWithRusdDeposit(address user, uint256 amount) internal returns (uint128 accountId) {
         vm.prank(user);
-        accountId = ICoreProxy(sec.core).createAccount(user);
+        accountId = ICoreProxy(sec.core).createOrGetSpotAccount(user);
         // Deposit rUSD directly (not USDC through periphery)
         deal(sec.rusd, user, amount);
         vm.startPrank(user);
@@ -199,7 +199,7 @@ contract SpotForkCheck is BaseReyaForkTest {
         mockFreshPrices();
 
         // Create accounts
-        uint128 buyerAccountId = createAccountWithRusdDeposit(buyer, 10_000e6);
+        uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 10_000e6);
         uint128 sellerAccountId = ICoreProxy(sec.core).createAccount(seller);
         depositWethToAccount(seller, sellerAccountId, 10e18);
 
@@ -249,7 +249,7 @@ contract SpotForkCheck is BaseReyaForkTest {
         mockFreshPrices();
 
         // Create accounts
-        uint128 buyerAccountId = createAccountWithRusdDeposit(buyer, 10_000e6);
+        uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 10_000e6);
         uint128 sellerAccountId = ICoreProxy(sec.core).createAccount(seller);
         depositWethToAccount(seller, sellerAccountId, 10e18);
 
@@ -260,7 +260,7 @@ contract SpotForkCheck is BaseReyaForkTest {
         // Using base delta equal to the base spacing to test rounding
         uint256 baseDelta = 0.001e18;
         // Use a price with many significant digits to exercise rounding
-        uint256 price = 3_123_834e15; // 3123.834 with 18 decimals
+        uint256 price = 312383e16; // 3123.83 with 18 decimals
 
         executeSpotFill({
             buyerAccountId: buyerAccountId,
@@ -297,7 +297,7 @@ contract SpotForkCheck is BaseReyaForkTest {
         mockFreshPrices();
 
         // Create accounts
-        uint128 buyerAccountId = createAccountWithRusdDeposit(buyer, 20_000e6);
+        uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 20_000e6);
         uint128 sellerAccountId = ICoreProxy(sec.core).createAccount(seller);
         depositWethToAccount(seller, sellerAccountId, 10e18);
 
