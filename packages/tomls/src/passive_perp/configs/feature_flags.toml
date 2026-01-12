@@ -98,4 +98,3 @@ args = [
     ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
-
