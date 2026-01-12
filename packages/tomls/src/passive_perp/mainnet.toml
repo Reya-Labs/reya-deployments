@@ -1,6 +1,7 @@
 include = [
     "utils/upgrade_proxy.toml",
     "configs/feature_flags.toml",
+    "configs/set_depth_spread_executors.toml",
     "configs/global_config.toml",
     "configs/fees.toml",
     "configs/affiliates.toml",
