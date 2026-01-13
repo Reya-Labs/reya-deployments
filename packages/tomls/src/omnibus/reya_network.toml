@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.123"
+version = "1.0.124"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -897,7 +897,7 @@ market2Btc_depthFactorUnscaled = "35"
 market2Btc_maxExposureFactorUnscaled = "0.999"
 market2Btc_maxPSlippageUnscaled = "0.1"
 market2Btc_marketOrderMaxStaleDuration = "11"
-market2Btc_priceSpreadUnscaled = "0.000035"
+market2Btc_priceSpreadUnscaled = "0.00004"
 market2Btc_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_3sol]
