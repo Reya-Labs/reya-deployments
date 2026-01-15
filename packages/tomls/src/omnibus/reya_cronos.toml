@@ -1079,7 +1079,7 @@ market14Sei_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_15zro]
 market15Zro_riskMatrixIndex = "0"
-market15Zro_maxOpenBaseUnscaled = "277956"
+market15Zro_maxOpenBaseUnscaled = "9000"
 market15Zro_velocityMultiplierUnscaled = "37.2"
 market15Zro_oracleNodeId = "<%= settings.zroUsdcMarkNodeIdStork %>"
 market15Zro_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1919,7 +1919,7 @@ market56Inj_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_57Move]
 market57Move_riskMatrixIndex = "0"
-market57Move_maxOpenBaseUnscaled = "5418765"
+market57Move_maxOpenBaseUnscaled = "1300000"
 market57Move_velocityMultiplierUnscaled = "23.7"
 market57Move_oracleNodeId = "<%= settings.moveUsdcMarkNodeIdStork %>"
 market57Move_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -2139,7 +2139,7 @@ market67Kaito_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_68Zora]
 market68Zora_riskMatrixIndex = "0"
-market68Zora_maxOpenBaseUnscaled = "59000000"
+market68Zora_maxOpenBaseUnscaled = "160000"
 market68Zora_velocityMultiplierUnscaled = "29.3"
 market68Zora_oracleNodeId = "<%= settings.zoraUsdcMarkNodeIdStork %>"
 market68Zora_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
