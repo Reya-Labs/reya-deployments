@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.108"
+version = "1.0.109"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -834,7 +834,7 @@ market2Btc_depthFactorUnscaled = "35"
 market2Btc_maxExposureFactorUnscaled = "0.999"
 market2Btc_maxPSlippageUnscaled = "0.1"
 market2Btc_marketOrderMaxStaleDuration = "11"
-market2Btc_priceSpreadUnscaled = "0.000045"
+market2Btc_priceSpreadUnscaled = "0.00005"
 market2Btc_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_3sol]
