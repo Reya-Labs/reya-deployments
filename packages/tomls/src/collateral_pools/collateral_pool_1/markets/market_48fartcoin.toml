@@ -82,8 +82,7 @@ depends = ["invoke.upgrade_core_proxy", "var.market_48fartcoin_vars"]
 #####################################
 [invoke.market_48fartcoin_set_market_config]
 target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setMarketConfiguration"
+from = "0xE610aBbFf27E1f62F87465478EF9F8ACD1EB1656"
 args = [
     "<%= settings.market48FartcoinId %>",
     { riskMatrixIndex = "<%= settings.market48Fartcoin_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market48Fartcoin_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market48Fartcoin_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market48Fartcoin_oracleNodeId %>", mtmWindow = "<%= settings.market48Fartcoin_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market48Fartcoin_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market48Fartcoin_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market48Fartcoin_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market48Fartcoin_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market48Fartcoin_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market48Fartcoin_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market48Fartcoin_priceSpacingUnscaled) %>", depthFactor = "<%= parseEther(settings.market48Fartcoin_depthFactorUnscaled) %>", maxExposureFactor = "<%= parseEther(settings.market48Fartcoin_maxExposureFactorUnscaled) %>", maxPSlippage = "<%= parseEther(settings.market48Fartcoin_maxPSlippageUnscaled) %>", marketOrderMaxStaleDuration = "<%= settings.market48Fartcoin_marketOrderMaxStaleDuration %>", priceSpread = "<%= parseEther(settings.market48Fartcoin_priceSpreadUnscaled) %>", volatilityIndexMultiplier = "<%= parseEther(settings.market48Fartcoin_volatilityIndexMultiplierUnscaled) %>" },

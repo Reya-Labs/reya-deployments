@@ -94,8 +94,7 @@ depends = ["invoke.upgrade_passive_perp_proxy", "var.market_68zora_vars"]
 #####################################
 [invoke.market_68zora_set_market_config]
 target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setMarketConfiguration"
+from = "0xE610aBbFf27E1f62F87465478EF9F8ACD1EB1656"
 args = [
     "<%= settings.market68ZoraId %>",
     { riskMatrixIndex = "<%= settings.market68Zora_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market68Zora_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market68Zora_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market68Zora_oracleNodeId %>", mtmWindow = "<%= settings.market68Zora_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market68Zora_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market68Zora_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market68Zora_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market68Zora_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market68Zora_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market68Zora_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market68Zora_priceSpacingUnscaled) %>", depthFactor = "<%= parseEther(settings.market68Zora_depthFactorUnscaled) %>", maxExposureFactor = "<%= parseEther(settings.market68Zora_maxExposureFactorUnscaled) %>", maxPSlippage = "<%= parseEther(settings.market68Zora_maxPSlippageUnscaled) %>", marketOrderMaxStaleDuration = "<%= settings.market68Zora_marketOrderMaxStaleDuration %>", priceSpread = "<%= parseEther(settings.market68Zora_priceSpreadUnscaled) %>", volatilityIndexMultiplier = "<%= parseEther(settings.market68Zora_volatilityIndexMultiplierUnscaled) %>" },

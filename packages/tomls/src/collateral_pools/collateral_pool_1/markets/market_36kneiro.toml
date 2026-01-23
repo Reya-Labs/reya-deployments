@@ -82,8 +82,7 @@ depends = ["invoke.upgrade_core_proxy", "var.market_36kneiro_vars"]
 #####################################
 [invoke.market_36kneiro_set_market_config]
 target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setMarketConfiguration"
+from = "0xE610aBbFf27E1f62F87465478EF9F8ACD1EB1656"
 args = [
     "<%= settings.market36KNeiroId %>",
     { riskMatrixIndex = "<%= settings.market36KNeiro_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market36KNeiro_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market36KNeiro_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market36KNeiro_oracleNodeId %>", mtmWindow = "<%= settings.market36KNeiro_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market36KNeiro_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market36KNeiro_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market36KNeiro_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market36KNeiro_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market36KNeiro_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market36KNeiro_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market36KNeiro_priceSpacingUnscaled) %>", depthFactor = "<%= parseEther(settings.market36KNeiro_depthFactorUnscaled) %>", maxExposureFactor = "<%= parseEther(settings.market36KNeiro_maxExposureFactorUnscaled) %>", maxPSlippage = "<%= parseEther(settings.market36KNeiro_maxPSlippageUnscaled) %>", marketOrderMaxStaleDuration = "<%= settings.market36KNeiro_marketOrderMaxStaleDuration %>", priceSpread = "<%= parseEther(settings.market36KNeiro_priceSpreadUnscaled) %>", volatilityIndexMultiplier = "<%= parseEther(settings.market36KNeiro_volatilityIndexMultiplierUnscaled) %>" },

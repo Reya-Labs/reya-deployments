@@ -82,8 +82,7 @@ depends = ["invoke.upgrade_core_proxy", "var.market_33pendle_vars"]
 #####################################
 [invoke.market_33pendle_set_market_config]
 target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setMarketConfiguration"
+from = "0xE610aBbFf27E1f62F87465478EF9F8ACD1EB1656"
 args = [
     "<%= settings.market33PendleId %>",
     { riskMatrixIndex = "<%= settings.market33Pendle_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market33Pendle_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market33Pendle_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market33Pendle_oracleNodeId %>", mtmWindow = "<%= settings.market33Pendle_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market33Pendle_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market33Pendle_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market33Pendle_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market33Pendle_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market33Pendle_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market33Pendle_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market33Pendle_priceSpacingUnscaled) %>", depthFactor = "<%= parseEther(settings.market33Pendle_depthFactorUnscaled) %>", maxExposureFactor = "<%= parseEther(settings.market33Pendle_maxExposureFactorUnscaled) %>", maxPSlippage = "<%= parseEther(settings.market33Pendle_maxPSlippageUnscaled) %>", marketOrderMaxStaleDuration = "<%= settings.market33Pendle_marketOrderMaxStaleDuration %>", priceSpread = "<%= parseEther(settings.market33Pendle_priceSpreadUnscaled) %>", volatilityIndexMultiplier = "<%= parseEther(settings.market33Pendle_volatilityIndexMultiplierUnscaled) %>" },

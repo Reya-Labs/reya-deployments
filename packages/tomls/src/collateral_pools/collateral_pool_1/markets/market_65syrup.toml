@@ -94,8 +94,7 @@ depends = ["invoke.upgrade_passive_perp_proxy", "var.market_65syrup_vars"]
 #####################################
 [invoke.market_65syrup_set_market_config]
 target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setMarketConfiguration"
+from = "0xE610aBbFf27E1f62F87465478EF9F8ACD1EB1656"
 args = [
     "<%= settings.market65SyrupId %>",
     { riskMatrixIndex = "<%= settings.market65Syrup_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market65Syrup_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market65Syrup_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market65Syrup_oracleNodeId %>", mtmWindow = "<%= settings.market65Syrup_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market65Syrup_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market65Syrup_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market65Syrup_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market65Syrup_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market65Syrup_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market65Syrup_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market65Syrup_priceSpacingUnscaled) %>", depthFactor = "<%= parseEther(settings.market65Syrup_depthFactorUnscaled) %>", maxExposureFactor = "<%= parseEther(settings.market65Syrup_maxExposureFactorUnscaled) %>", maxPSlippage = "<%= parseEther(settings.market65Syrup_maxPSlippageUnscaled) %>", marketOrderMaxStaleDuration = "<%= settings.market65Syrup_marketOrderMaxStaleDuration %>", priceSpread = "<%= parseEther(settings.market65Syrup_priceSpreadUnscaled) %>", volatilityIndexMultiplier = "<%= parseEther(settings.market65Syrup_volatilityIndexMultiplierUnscaled) %>" },

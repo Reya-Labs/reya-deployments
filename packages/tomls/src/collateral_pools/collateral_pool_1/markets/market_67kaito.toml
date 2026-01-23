@@ -94,8 +94,7 @@ depends = ["invoke.upgrade_passive_perp_proxy", "var.market_67kaito_vars"]
 #####################################
 [invoke.market_67kaito_set_market_config]
 target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setMarketConfiguration"
+from = "0xE610aBbFf27E1f62F87465478EF9F8ACD1EB1656"
 args = [
     "<%= settings.market67KaitoId %>",
     { riskMatrixIndex = "<%= settings.market67Kaito_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market67Kaito_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market67Kaito_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market67Kaito_oracleNodeId %>", mtmWindow = "<%= settings.market67Kaito_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market67Kaito_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market67Kaito_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market67Kaito_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market67Kaito_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market67Kaito_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market67Kaito_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market67Kaito_priceSpacingUnscaled) %>", depthFactor = "<%= parseEther(settings.market67Kaito_depthFactorUnscaled) %>", maxExposureFactor = "<%= parseEther(settings.market67Kaito_maxExposureFactorUnscaled) %>", maxPSlippage = "<%= parseEther(settings.market67Kaito_maxPSlippageUnscaled) %>", marketOrderMaxStaleDuration = "<%= settings.market67Kaito_marketOrderMaxStaleDuration %>", priceSpread = "<%= parseEther(settings.market67Kaito_priceSpreadUnscaled) %>", volatilityIndexMultiplier = "<%= parseEther(settings.market67Kaito_volatilityIndexMultiplierUnscaled) %>" },

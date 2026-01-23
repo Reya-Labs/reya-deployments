@@ -82,8 +82,7 @@ depends = ["invoke.upgrade_core_proxy", "var.market_46aixbt_vars"]
 #####################################
 [invoke.market_46aixbt_set_market_config]
 target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setMarketConfiguration"
+from = "0xE610aBbFf27E1f62F87465478EF9F8ACD1EB1656"
 args = [
     "<%= settings.market46AixbtId %>",
     { riskMatrixIndex = "<%= settings.market46Aixbt_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market46Aixbt_maxOpenBaseUnscaled) %>", velocityMultiplier = "<%= parseEther(settings.market46Aixbt_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market46Aixbt_oracleNodeId %>", mtmWindow = "<%= settings.market46Aixbt_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market46Aixbt_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market46Aixbt_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market46Aixbt_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market46Aixbt_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market46Aixbt_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market46Aixbt_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market46Aixbt_priceSpacingUnscaled) %>", depthFactor = "<%= parseEther(settings.market46Aixbt_depthFactorUnscaled) %>", maxExposureFactor = "<%= parseEther(settings.market46Aixbt_maxExposureFactorUnscaled) %>", maxPSlippage = "<%= parseEther(settings.market46Aixbt_maxPSlippageUnscaled) %>", marketOrderMaxStaleDuration = "<%= settings.market46Aixbt_marketOrderMaxStaleDuration %>", priceSpread = "<%= parseEther(settings.market46Aixbt_priceSpreadUnscaled) %>", volatilityIndexMultiplier = "<%= parseEther(settings.market46Aixbt_volatilityIndexMultiplierUnscaled) %>" },
