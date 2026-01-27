@@ -23,6 +23,7 @@ version = "1.0.110"
 ethereumSepoliaChainId = "11155111"
 arbitrumSepoliaChainId = "421614"
 optimismSepoliaChainId = "11155420"
+ethereumSepoliaEid = "40161" # Layerzero EID
 
 [var.wallet_addresses]
 owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
@@ -35,6 +36,7 @@ ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.external_contracts]
 camelotYakRouter = "<%= AddressZero %>"
+reyaLayerZeroEndpoint = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
 
 [var.account_ids]
 lotteryPotAccountId = "6888"
@@ -55,7 +57,7 @@ passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.10@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.39@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
-peripheryRouterPackage = "reya-periphery:1.0.9@router"
+peripheryRouterPackage = "reya-periphery:1.0.10@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassProxyPackage = "reya-exchange-pass-nft:1.0.0@proxy"
@@ -113,6 +115,8 @@ oracleManagerProxy = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.
 exchangePassProxy = "<%= imports.reyaExchangePassProxy.contracts.InitialProxy.address %>"
 ranksProxy = "<%= imports.reyaRanksProxy.contracts.InitialProxy.address %>"
 sbtProxy = "<%= imports.reyaSbtProxy.contracts.InitialProxy.address %>"
+sreyaProxy = "0xecab1c86ecf1100Ad3aa7A2C175aEDe4c87E949B"
+reyaProxy = "0xBD96BE24f68C5e616FF22ffC32715Ffa1C4B70d0"
 
 [var.pausers]
 pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
@@ -426,6 +430,8 @@ susdeOptimismSepoliaWithdrawFeeUnscaled = "0.1"
 deusdEthereumSepoliaWithdrawFeeUnscaled = "5.0"
 # -------------------------------------------------------------------
 sdeusdEthereumSepoliaWithdrawFeeUnscaled = "5.0"
+# -------------------------------------------------------------------
+reyaEthereumSepoliaWithdrawFeeUnscaled = "0.1"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -471,6 +477,14 @@ ramberWithdrawalTvlPercentageLimitUnscaled = "0"
 rhedgeCollateralAdapter = "<%= AddressZero %>"
 rhedgeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rhedgeWithdrawalTvlPercentageLimitUnscaled = "0"
+# -------------------------------------------------------------------
+reyaCollateralAdapter = "<%= AddressZero %>"
+reyaWithdrawalWindowSize = "1"
+reyaWithdrawalTvlPercentageLimitUnscaled = "1"
+# -------------------------------------------------------------------
+sreyaCollateralAdapter = "<%= AddressZero %>"
+sreyaWithdrawalWindowSize = "1"
+sreyaWithdrawalTvlPercentageLimitUnscaled = "1"
 
 [var.pool_node_margin_info]
 maxCacheDurationForPoolNodeMarginInfo = "60"

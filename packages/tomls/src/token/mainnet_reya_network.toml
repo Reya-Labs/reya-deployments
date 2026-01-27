@@ -11,6 +11,7 @@ include = [
     "./tokens/sdeusd.toml",
     "./tokens/srusd.toml",
     "./tokens/mfone.toml",
+    "./tokens/reya.toml",
 ]
 
 [clone.reyaTokenRouter]

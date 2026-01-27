@@ -1,0 +1,29 @@
+#####################################
+# Allow REYA OAPP
+#####################################
+[invoke.periphery_unpause]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('authorizedOFT')),settings.reyaProxy])) %>",
+    true,
+]
+depends = ["invoke.upgrade_periphery_proxy"]
+
+#####################################
+# Static Withdraw Fees
+#####################################
+[invoke.periphery_set_reya_ethereum_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= settings.reyaProxy %>",
+    "<%= settings.ethereumEid %>",
+    "<%= parseUnits(settings.reyaEthereumWithdrawFeeUnscaled, parseInt(settings.reyaTokenDecimals)) %>",
+]
+depends = [
+    "invoke.upgrade_periphery_proxy",
+    "var.reya_vars",
+]
