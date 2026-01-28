@@ -1,0 +1,57 @@
+[invoke.wbtc_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    { collateralAdapter = "<%= settings.wbtcCollateralAdapter %>", withdrawalWindowSize = "<%= settings.wbtcWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.wbtcWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = [
+    'invoke.upgrade_core_proxy',
+    'invoke.upgrade_wbtc_proxy',
+    'var.global_collateral_configs',
+]
+
+[invoke.wbtc_auto_exchange_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), contracts.WBTCProxy.address])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.e_wbtc_rusd_create_spot_market]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'SpotMarketInfoUpdated','inputs':[{'name':'eventSequenceNumber','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'spotMarketId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'baseToken','type':'address','indexed':false,'internalType':'address'},{'name':'quoteToken','type':'address','indexed':false,'internalType':'address'},{'name':'symbol','type':'string','indexed':false,'internalType':'string'},{'name':'config','type':'tuple','indexed':false,'internalType':'struct SpotMarketConfig','components':[{'name':'oracleDeviation','type':'uint256','internalType':'UD60x18'},{'name':'minimumOrderBase','type':'uint256','internalType':'UD60x18'},{'name':'baseSpacing','type':'uint256','internalType':'UD60x18'},{'name':'priceSpacing','type':'uint256','internalType':'UD60x18'},{'name':'oracleNodeId','type':'bytes32','internalType':'bytes32'}]},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "owner"
+func = "createSpotMarket"
+args = [
+    "<%= contracts.WBTCProxy.address %>",
+    "<%= contracts.RUSDProxy.address %>",
+    "WBTCRUSD",
+]
+var.wbtcRusdSpotMarketId.event = "SpotMarketInfoUpdated"
+var.wbtcRusdSpotMarketId.arg = 1
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.wbtc_rusd_configure_spot_market]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setSpotMarketConfiguration"
+args = [
+    "<%= settings.wbtcRusdSpotMarketId %>",
+    { oracleDeviation = "<%= parseEther(settings.wbtcRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.wbtcRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.wbtcRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.wbtcRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.wbtcRusdSpot_oracleNodeId %>" },
+]
+depends = ["invoke.upgrade_core_proxy", "invoke.e_wbtc_rusd_create_spot_market"]
+
+[invoke.wbtc_rusd_enable_spot_market]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('spotMarketEnabled')), settings.wbtcRusdSpotMarketId])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy", "invoke.e_wbtc_rusd_create_spot_market"]

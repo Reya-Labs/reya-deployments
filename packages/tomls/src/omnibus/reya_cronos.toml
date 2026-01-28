@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.110"
+version = "1.0.111"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -436,6 +436,10 @@ wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
 wethWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
+wbtcCollateralAdapter = "<%= AddressZero %>"
+wbtcWithdrawalWindowSize = "1"
+wbtcWithdrawalTvlPercentageLimitUnscaled = "1"
+# -------------------------------------------------------------------
 wstethCollateralAdapter = "<%= AddressZero %>"
 wstethWithdrawalWindowSize = "1"
 wstethWithdrawalTvlPercentageLimitUnscaled = "1"
@@ -535,6 +539,8 @@ rusdUsdMaxStaleDuration = "0"
 usdcUsdMaxStaleDuration = "0"
 usdcUsdMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
+btcUsdMaxStaleDurationStork = "0"
+btcUsdcMaxStaleDurationStork = "0"
 btcUsdMarkMaxStaleDurationStork = "0"
 btcUsdcMarkMaxStaleDurationStork = "0"
 #------------------------------------------------------------------------------
@@ -2432,6 +2438,18 @@ cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
+cp1Rusd_wbtc_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_wbtc_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_wbtc_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_wbtc_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_wbtc_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_wbtcParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_wbtcParentConfig_priceHaircutUnscaled = "0.10"
+cp1Rusd_wbtcParentConfig_autoExchangeDiscountUnscaled = "0.02"
+cp1Rusd_wbtcParentConfig_oracleNodeId = "<%= settings.btcUsdcNodeIdStork %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
 cp1Rusd_wsteth_capUnscaled = "<%= formatEther(MaxUint256) %>"
 cp1Rusd_wsteth_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_wsteth_autoExchangeInsuranceFeeUnscaled = "0"
@@ -2547,6 +2565,12 @@ wethRusdSpot_minimumOrderBaseUnscaled = "0.001"
 wethRusdSpot_baseSpacingUnscaled = "0.001"
 wethRusdSpot_priceSpacingUnscaled = "0.01"
 wethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+# -----------------------------------------------
+wbtcRusdSpot_oracleDeviationUnscaled = "0"
+wbtcRusdSpot_minimumOrderBaseUnscaled = "0.0001"
+wbtcRusdSpot_baseSpacingUnscaled = "0.0001"
+wbtcRusdSpot_priceSpacingUnscaled = "0.01"
+wbtcRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 # inactive
 
