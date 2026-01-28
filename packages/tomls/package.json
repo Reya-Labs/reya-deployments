@@ -6,6 +6,8 @@
   "scripts": {
     "reya_network:simulate": "cannon build src/omnibus/reya_network.toml --rpc-url https://rpc.reya.network/${RPC_KEY} --chain-id 1729 --upgrade-from reya-omnibus:latest@main --dry-run --impersonate-all",
     "reya_cronos:simulate": "cannon build src/omnibus/reya_cronos.toml --rpc-url https://rpc.reya-cronos.gelato.digital/${RPC_KEY} --chain-id 89346162 --upgrade-from reya-omnibus:latest@main --dry-run --impersonate-all",
+    "eth_sepolia:simulate": "cannon build src/omnibus/testnet_source_chains.toml --rpc-url https://sepolia.gateway.tenderly.co/${RPC_KEY}--chain-id 11155111 --upgrade-from reya-testnet-source-chains:latest@main --dry-run --impersonate-all",
+    "eth_mainnet:simulate": "cannon build src/omnibus/reya_source_chains.toml --rpc-url https://mainnet.gateway.tenderly.co/${RPC_KEY} --chain-id 1 --upgrade-from reya-source-chains:latest@main --dry-run --impersonate-all",
     "lint:check": "yarn prettier:check",
     "lint:write": "yarn prettier:write",
     "prettier:write": "yarn run -T prettier . '**/*.toml' --write",

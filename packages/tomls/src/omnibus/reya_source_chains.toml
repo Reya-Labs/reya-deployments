@@ -1,0 +1,35 @@
+name = "reya-source-chains"
+preset = "main"
+description = "Reya Source Chains"
+privateSourceCode = false
+version = "1.0.6"
+
+include = ["../vltz/mainnet.toml"]
+
+[var.wallet_addresses]
+owner = "0x0F575355D19F5056415e382CEEEcffE0Fe8433a9"
+
+[var.cannonClonePackages]
+vltzProxyPackage = "reya-vltz:1.0.3@proxy"
+vltzRouterPackage = "reya-vltz:1.0.4@router"
+
+[var.upgrade_proxy_vars]
+vltzProxy = "<%= imports.reyaVltzProxy.contracts.InitialProxy.address %>"
+# Note: this is the latest router address, to be updated every time there is a router upgrade
+vltzRouterAddress = "0xcbb6e9a7e8b01893762ee8750f77ab632acfe4f3"
+
+[var.initial_proxy_vars]
+envSalt = "prodTokenVltz"
+
+[var.pausers]
+pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
+pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
+pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
+pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
+
+[var.vltz_config]
+vltzTokenName = "Voltz"
+vltzTokenSymbol = "$VLTZ"
+vltzRootSubmitter = "0x0F575355D19F5056415e382CEEEcffE0Fe8433a9"
+vltzTokenDecimals = "18"
+vltzRoot = "0x0faccf7c41125fdde5e72990184527a8c1642ccf1fdaa5e9bf7c882edb7e4ea5"
