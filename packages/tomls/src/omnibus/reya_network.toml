@@ -311,6 +311,7 @@ rhedgeCustodian1 = "<%= settings.rebalancer3 %>"
 storkAssetPairIdUSDC = "USDCUSD"
 storkAssetPairIdETH = "ETHUSD"
 storkAssetPairIdBTC = "BTCUSD"
+storkAssetPairIdWBTC = "WBTCUSD"
 storkAssetPairIdSOL = "SOLUSD"
 storkAssetPairIdARB = "ARBUSD"
 storkAssetPairIdOP = "OPUSD"
@@ -605,9 +606,8 @@ rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 usdcUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
-# todo: review oracle name (btc or wbtc)
-btcUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
-btcUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+wbtcUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+wbtcUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 btcUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 btcUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
@@ -2511,7 +2511,7 @@ cp1Rusd_wbtc_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_wbtcParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
 cp1Rusd_wbtcParentConfig_priceHaircutUnscaled = "0.10"
 cp1Rusd_wbtcParentConfig_autoExchangeDiscountUnscaled = "0.02"
-cp1Rusd_wbtcParentConfig_oracleNodeId = "<%= settings.btcUsdcNodeIdStork %>"
+cp1Rusd_wbtcParentConfig_oracleNodeId = "<%= settings.wbtcUsdcNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
@@ -2636,7 +2636,7 @@ wbtcRusdSpot_oracleDeviationUnscaled = "0.05"
 wbtcRusdSpot_minimumOrderBaseUnscaled = "0.0001"
 wbtcRusdSpot_baseSpacingUnscaled = "0.0001"
 wbtcRusdSpot_priceSpacingUnscaled = "0.01"
-wbtcRusdSpot_oracleNodeId = "<%= settings.btcUsdcNodeIdStork %>"
+wbtcRusdSpot_oracleNodeId = "<%= settings.wbtcUsdcNodeIdStork %>"
 
 # inactive
 

@@ -1,4 +1,4 @@
-[invoke.oracle_manager_register_node_btc_usdc_stork]
+[invoke.oracle_manager_register_node_wbtc_usdc_stork]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
@@ -6,20 +6,20 @@ args = [
     "<%= settings.ORACLE_MANAGER_NODE_TYPE_DIV_REDUCER %>",
     "0x",
     [
-        "<%= settings.btcUsdNodeIdStork %>",
+        "<%= settings.wbtcUsdNodeIdStork %>",
         "<%= settings.usdcUsdNodeIdStork %>",
     ],
 ]
-var.btcUsdcNodeIdStork.event = "NodeRegistered"
-var.btcUsdcNodeIdStork.arg = 0
+var.wbtcUsdcNodeIdStork.event = "NodeRegistered"
+var.wbtcUsdcNodeIdStork.arg = 0
 depends = ["invoke.upgrade_oracle_manager_proxy"]
 
-[invoke.oracle_manager_btc_usdc_stork_max_stale_duration]
+[invoke.oracle_manager_wbtc_usdc_stork_max_stale_duration]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "setMaxStaleDuration"
 args = [
-    "<%= settings.btcUsdcNodeIdStork %>",
-    "<%= settings.btcUsdcMaxStaleDurationStork %>",
+    "<%= settings.wbtcUsdcNodeIdStork %>",
+    "<%= settings.wbtcUsdcMaxStaleDurationStork %>",
 ]
-depends = ["invoke.oracle_manager_register_node_btc_usdc_stork"]
+depends = ["invoke.oracle_manager_register_node_wbtc_usdc_stork"]
