@@ -2502,7 +2502,7 @@ cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-# todo: need to double check the oracle name with stork (wbtc or btc) & confirm auto exchange discount / haircut
+# todo: confirm auto exchange discount / haircut with aa
 cp1Rusd_wbtc_capUnscaled = "0.5"
 cp1Rusd_wbtc_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_wbtc_autoExchangeInsuranceFeeUnscaled = "0"
