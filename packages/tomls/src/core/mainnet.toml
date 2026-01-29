@@ -6,6 +6,7 @@ include = [
     "configs/exchanges.toml",
     "configs/tokens/rusd.toml",
     "configs/tokens/weth.toml",
+    "configs/tokens/wbtc.toml",
     "configs/tokens/usde.toml",
     "configs/tokens/susde.toml",
     "configs/tokens/deusd.toml",

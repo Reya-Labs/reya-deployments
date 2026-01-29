@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.126"
+version = "1.0.127"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -52,7 +52,7 @@ rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.10@router"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.38@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.40@router"
 peripheryRouterPackage = "reya-periphery:1.0.9@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
@@ -311,6 +311,7 @@ rhedgeCustodian1 = "<%= settings.rebalancer3 %>"
 storkAssetPairIdUSDC = "USDCUSD"
 storkAssetPairIdETH = "ETHUSD"
 storkAssetPairIdBTC = "BTCUSD"
+storkAssetPairIdWBTC = "WBTCUSD"
 storkAssetPairIdSOL = "SOLUSD"
 storkAssetPairIdARB = "ARBUSD"
 storkAssetPairIdOP = "OPUSD"
@@ -503,6 +504,10 @@ wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
 wethWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
+wbtcCollateralAdapter = "<%= AddressZero %>"
+wbtcWithdrawalWindowSize = "1"
+wbtcWithdrawalTvlPercentageLimitUnscaled = "1"
+# -------------------------------------------------------------------
 usdeCollateralAdapter = "<%= AddressZero %>"
 usdeWithdrawalWindowSize = "1"
 usdeWithdrawalTvlPercentageLimitUnscaled = "1"
@@ -601,6 +606,8 @@ rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 usdcUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
+wbtcUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+wbtcUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 btcUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 btcUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
@@ -2362,7 +2369,7 @@ market75Mega_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "75"
-cp1Rusd_maxCollaterals = "11"
+cp1Rusd_maxCollaterals = "12"
 # -----------------------------------------------
 default_insuranceFund_liquidationFeeUnscaled = "0.15"
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
@@ -2485,13 +2492,26 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # cp1Rusd_rusd_depositingEnabled = "true"
 cp1Rusd_weth_capUnscaled = "5"
 cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
-cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0.01"
 cp1Rusd_weth_autoExchangeDustThresholdUnscaled = "0"
 cp1Rusd_weth_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_wethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
 cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.10"
 cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.02"
 cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
+# -----------------------------------------------
+# TODO later: pass depositingEnabled through var (but there's no parseBool)
+# cp1Rusd_rusd_depositingEnabled = "true"
+# todo: confirm auto exchange discount / haircut with aa
+cp1Rusd_wbtc_capUnscaled = "0.5"
+cp1Rusd_wbtc_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_wbtc_autoExchangeInsuranceFeeUnscaled = "0.01"
+cp1Rusd_wbtc_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_wbtc_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_wbtcParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_wbtcParentConfig_priceHaircutUnscaled = "0.10"
+cp1Rusd_wbtcParentConfig_autoExchangeDiscountUnscaled = "0.02"
+cp1Rusd_wbtcParentConfig_oracleNodeId = "<%= settings.wbtcUsdcNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
@@ -2593,7 +2613,7 @@ cp1Rusd_rhedgeParentConfig_oracleNodeId = "<%= settings.hedgeUsdcReyaLmNodeId %>
 # cp1Rusd_rusd_depositingEnabled = "true"
 cp1Rusd_wsteth_capUnscaled = "225"
 cp1Rusd_wsteth_autoExchangeThresholdUnscaled = "0"
-cp1Rusd_wsteth_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_wsteth_autoExchangeInsuranceFeeUnscaled = "0.01"
 cp1Rusd_wsteth_autoExchangeDustThresholdUnscaled = "0"
 cp1Rusd_wsteth_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_wstethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
@@ -2610,6 +2630,13 @@ wethRusdSpot_minimumOrderBaseUnscaled = "0.001"
 wethRusdSpot_baseSpacingUnscaled = "0.001"
 wethRusdSpot_priceSpacingUnscaled = "0.01"
 wethRusdSpot_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
+# -----------------------------------------------
+# todo: needs review and adjustment by AA (incl. oracle node id name)
+wbtcRusdSpot_oracleDeviationUnscaled = "0.05"
+wbtcRusdSpot_minimumOrderBaseUnscaled = "0.0001"
+wbtcRusdSpot_baseSpacingUnscaled = "0.0001"
+wbtcRusdSpot_priceSpacingUnscaled = "0.01"
+wbtcRusdSpot_oracleNodeId = "<%= settings.wbtcUsdcNodeIdStork %>"
 
 # inactive
 
