@@ -4,7 +4,7 @@ fromCall.func = "owner"
 func = "setGlobalCollateralConfig"
 args = [
     "<%= contracts.WBTCProxy.address %>",
-    { collateralAdapter = "<%= settings.wbtcCollateralAdapter %>", withdrawalWindowSize = "<%= settings.wbtcWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.wbtcWithdrawalTvlPercentageLimitUnscaled)  %>" },
+    { collateralAdapter_DEPRECATED = "<%= settings.wbtcCollateralAdapter %>", withdrawalWindowSize = "<%= settings.wbtcWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.wbtcWithdrawalTvlPercentageLimitUnscaled)  %>" },
 ]
 depends = [
     'invoke.upgrade_core_proxy',
@@ -34,7 +34,7 @@ args = [
 ]
 var.wbtcRusdSpotMarketId.event = "SpotMarketInfoUpdated"
 var.wbtcRusdSpotMarketId.arg = 1
-depends = ["invoke.upgrade_core_proxy"]
+depends = ["invoke.upgrade_core_proxy", "invoke.wbtc_global_collateral_config"]
 
 [invoke.wbtc_rusd_configure_spot_market]
 target = ["CoreProxy"]
