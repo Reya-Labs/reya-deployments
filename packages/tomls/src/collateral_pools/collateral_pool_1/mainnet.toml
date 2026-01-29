@@ -79,6 +79,7 @@ include = [
     "risk/liquidations.toml",
     "tokens/rusd.toml",
     "tokens/weth.toml",
+    "tokens/wbtc.toml",
     "tokens/usde.toml",
     "tokens/susde.toml",
     "tokens/deusd.toml",
