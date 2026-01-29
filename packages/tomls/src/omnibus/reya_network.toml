@@ -2369,7 +2369,7 @@ market75Mega_volatilityIndexMultiplierUnscaled = "0"
 
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "75"
-cp1Rusd_maxCollaterals = "11"
+cp1Rusd_maxCollaterals = "12"
 # -----------------------------------------------
 default_insuranceFund_liquidationFeeUnscaled = "0.15"
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
