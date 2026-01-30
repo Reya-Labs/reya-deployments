@@ -4,9 +4,10 @@ fromCall.func = "owner"
 func = "setGlobalCollateralConfig"
 args = [
     "<%= settings.reyaProxy %>",
-    { collateralAdapter = "<%= settings.reyaCollateralAdapter %>", withdrawalWindowSize = "<%= settings.reyaWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.reyaWithdrawalTvlPercentageLimitUnscaled)  %>" },
+    { collateralAdapter_DEPRECATED = "<%= settings.reyaCollateralAdapter %>", withdrawalWindowSize = "<%= settings.reyaWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.reyaWithdrawalTvlPercentageLimitUnscaled)  %>" },
 ]
 depends = [
     'invoke.upgrade_core_proxy',
+    'var.external_contracts',
     'var.global_collateral_configs',
 ]
