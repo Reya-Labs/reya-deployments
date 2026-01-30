@@ -595,7 +595,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceLINEA);
         ls.maxDeviationMarket.push(ls.maxDeviationLINEA);
 
-        ls.meanPriceMEGA = 0.3 * 1e18;
+        ls.meanPriceMEGA = 0.14 * 1e18;
         ls.maxDeviationMEGA = ls.meanPriceMEGA / 2;
         ls.meanPriceMarket.push(ls.meanPriceMEGA);
         ls.maxDeviationMarket.push(ls.maxDeviationMEGA);
@@ -607,7 +607,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviationWSTETH = ls.meanPriceWSTETH / 2;
 
         if (sec.destinationChainId == 1) {
-            ls.meanPriceSRUSD = 1.09 * 1e18;
+            ls.meanPriceSRUSD = 1.05 * 1e18;
             ls.maxDeviationSRUSD = 0.02 * 1e18;
 
             ls.meanPriceRSELINI = 1.07 * 1e18;
@@ -616,8 +616,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
             ls.meanPriceRAMBER = 1.15 * 1e18;
             ls.maxDeviationRAMBER = 0.05 * 1e18;
 
-            ls.meanPriceRHEDGE = 0.5 * 1e18;
-            ls.maxDeviationRHEDGE = 0.3 * 1e18;
+            ls.meanPriceRHEDGE = 0.03 * 1e18;
+            ls.maxDeviationRHEDGE = 0.0299 * 1e18;
         } else {
             ls.meanPriceSRUSD = 11.11 * 1e18;
             ls.maxDeviationSRUSD = 11 * 1e18;
@@ -1298,7 +1298,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
 
         // Stork is connected to mainnet
         ls.nodeIds.push(sec.srusdRusd_RRStorkNodeId);
-        ls.meanPrices.push(1.09 * 1e18);
+        ls.meanPrices.push(1.05 * 1e18);
         ls.maxDeviations.push(0.02 * 1e18);
 
         ls.nodeIds.push(sec.rseliniUsdcReyaLmNodeId);

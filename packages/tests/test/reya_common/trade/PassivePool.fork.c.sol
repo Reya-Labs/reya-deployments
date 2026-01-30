@@ -186,8 +186,8 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         );
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
-        // create new account and deposit 33000 tokens in it
-        uint128 accountId = depositNewMA(user, token, 33_000e18);
+        // create new account and deposit tokens in it
+        uint128 accountId = depositNewMA(user, token, 3_000_000e18);
 
         // user executes short trade on ETH
         executeCoreMatchOrder({ marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId });
