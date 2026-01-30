@@ -604,7 +604,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRhedge_WhenUserHasOnlyRhedge() public {
         check_AutoExchange({
             token: sec.rhedge,
-            tokenAmount: 10_000e18,
+            tokenAmount: 1_000_000e18,
             tokenUsdcNodeId: sec.rhedgeUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 0
@@ -614,7 +614,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
     function check_AutoExchangeRhedge_WhenUserHasBothRhedgeAndRusd() public {
         check_AutoExchange({
             token: sec.rhedge,
-            tokenAmount: 10_000e18,
+            tokenAmount: 1_000_000e18,
             tokenUsdcNodeId: sec.rhedgeUsdcReyaLmNodeId,
             tokenAeDiscount: 0.005e18,
             userInitialRusdBalance: 100e6
