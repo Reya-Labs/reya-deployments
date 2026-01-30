@@ -10,4 +10,5 @@ include = [
     "configs/tokens/deusd.toml",
     "configs/tokens/sdeusd.toml",
     "configs/tokens/wsteth.toml",
+    "configs/tokens/reya.toml",
 ]

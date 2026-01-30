@@ -26,6 +26,7 @@ arbitrumChainId = "42161"
 optimismChainId = "10"
 polygonChainId = "137"
 baseChainId = "8453"
+ethereumEid = "30101"     # Layerzero EID
 
 [var.wallet_addresses]
 owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
@@ -38,6 +39,9 @@ ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.external_contracts]
 camelotYakRouter = "0x2b59Eb03865D18d8B62a5956BBbFaE352fc1C148"
+reyaLayerZeroEndpoint = "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B"
+sreyaProxy = "0x0000000000000000000000000000000000000000"
+reyaProxy = "0xCC8e02d7112dDaa66A63B89d73E4eDa65722B111"
 
 [var.account_ids]
 lotteryPotAccountId = "20092"
@@ -494,6 +498,8 @@ deusdEthereumWithdrawFeeUnscaled = "5.0"
 sdeusdEthereumWithdrawFeeUnscaled = "5.0"
 # -------------------------------------------------------------------
 wstethEthereumWithdrawFeeUnscaled = "0.00415"
+# -------------------------------------------------------------------
+reyaEthereumWithdrawFeeUnscaled = "0.1"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -543,6 +549,14 @@ rhedgeWithdrawalTvlPercentageLimitUnscaled = "0"
 wstethCollateralAdapter = "<%= AddressZero %>"
 wstethWithdrawalWindowSize = "1"
 wstethWithdrawalTvlPercentageLimitUnscaled = "1"
+# -------------------------------------------------------------------
+reyaCollateralAdapter = "<%= AddressZero %>"
+reyaWithdrawalWindowSize = "1"
+reyaWithdrawalTvlPercentageLimitUnscaled = "1"
+# -------------------------------------------------------------------
+sreyaCollateralAdapter = "<%= AddressZero %>"
+sreyaWithdrawalWindowSize = "1"
+sreyaWithdrawalTvlPercentageLimitUnscaled = "1"
 
 [var.pool_node_margin_info]
 maxCacheDurationForPoolNodeMarginInfo = "60"

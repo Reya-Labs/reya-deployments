@@ -1,0 +1,13 @@
+[invoke.sreya_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= settings.sreyaProxy %>",
+    { collateralAdapter_DEPRECATED = "<%= settings.sreyaCollateralAdapter %>", withdrawalWindowSize = "<%= settings.sreyaWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.sreyaWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = [
+    'invoke.upgrade_core_proxy',
+    'var.external_contracts',
+    'var.global_collateral_configs',
+]
