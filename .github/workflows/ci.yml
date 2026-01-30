@@ -45,4 +45,3 @@ jobs:
       - name: Warn on Cronos Test Failure
         if: steps.reya_cronos_test.outcome == 'failure'
         run: echo "::warning::Reya Cronos (testnet) tests failed"
-  

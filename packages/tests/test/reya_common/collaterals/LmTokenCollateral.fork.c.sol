@@ -325,7 +325,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         removeCollateralWithdrawalLimit(lmToken);
 
         (address user, uint256 userPk) = makeAddrAndKey("user");
-        uint256 amount = 3000e18; // denominated in lmToken
+        uint256 amount = 3000000e18; // denominated in lmToken
         uint128 marketId = 1; // eth
         SD59x18 base = sd(1e18);
         UD60x18 priceLimit = ud(10_000e18);
