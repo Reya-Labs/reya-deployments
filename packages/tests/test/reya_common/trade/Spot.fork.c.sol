@@ -200,6 +200,8 @@ contract SpotForkCheck is BaseReyaForkTest {
             mePayload: mePayload
         });
 
+        // Execute as the conditional order execution bot (which is on the allowlist)
+        vm.prank(sec.coExecutionBot);
         IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
     }
 
@@ -402,7 +404,8 @@ contract SpotForkCheck is BaseReyaForkTest {
         int256 buyerRusdBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
         int256 sellerWethBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.weth).netDeposits;
 
-        // Execute batch fill
+        // Execute batch fill as the conditional order execution bot
+        vm.prank(sec.coExecutionBot);
         bytes[] memory outputs = IOrdersGatewayProxy(sec.ordersGateway).batchExecuteFill(fills);
 
         // Verify outputs returned
@@ -419,5 +422,191 @@ contract SpotForkCheck is BaseReyaForkTest {
         assertEq(buyerWethAfter, 0.3e18, "Buyer WETH balance incorrect");
         assertEq(sellerRusdAfter, 900e6, "Seller rUSD balance incorrect");
         assertEq(sellerWethAfter, sellerWethBefore - 0.3e18, "Seller WETH balance incorrect");
+    }
+
+    // ==================== WBTC Spot Market Checks ====================
+
+    function depositWbtcToAccount(address user, uint128 accountId, uint256 amount) internal {
+        deal(sec.wbtc, user, amount);
+        vm.startPrank(user);
+        ITokenProxy(sec.wbtc).approve(sec.core, amount);
+        ICoreProxy(sec.core).deposit(accountId, sec.wbtc, amount);
+        vm.stopPrank();
+    }
+
+    /**
+     * @notice Test basic spot fill execution for WBTC market
+     * @dev Verifies that buyer receives WBTC and seller receives rUSD
+     *      Note: WBTC token uses 8 decimals, but order baseDelta uses 18 decimals
+     */
+    function check_SpotExecuteFill_WBTC(uint128 wbtcSpotMarketId) internal {
+        setupSpotTestActors();
+        mockFreshPrices();
+        removeOraclePriceDeviationConfig(wbtcSpotMarketId);
+
+        // Create accounts
+        uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 100_000e6);
+        uint128 sellerAccountId = ICoreProxy(sec.core).createOrGetSpotAccount(seller);
+        depositWbtcToAccount(seller, sellerAccountId, 10e8); // 10 WBTC (8 decimals)
+
+        // Record initial balances
+        int256 buyerRusdBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 sellerRusdBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).netDeposits;
+        int256 sellerWbtcBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.wbtc).netDeposits;
+
+        // Execute spot fill: buyer buys 0.001 WBTC at $100,000
+        // Order baseDelta uses 18 decimals (minimumOrderBase is 1e14 = 0.0001e18)
+        uint256 baseDelta = 0.001e18; // 0.001 WBTC in 18 decimals
+        uint256 price = 100_000e18; // $100,000 with 18 decimals
+
+        executeSpotFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            spotMarketId: wbtcSpotMarketId,
+            baseDelta: baseDelta,
+            price: price,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        // Verify balances
+        int256 buyerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 buyerWbtcAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.wbtc).netDeposits;
+        int256 sellerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).netDeposits;
+        int256 sellerWbtcAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.wbtc).netDeposits;
+
+        // baseDelta is 18 decimals, price is 18 decimals, rUSD is 6 decimals
+        // expectedRusdDelta = baseDelta * price / 1e30
+        uint256 expectedRusdDelta = (baseDelta * price) / 1e30;
+        // WBTC balance delta: convert from 18 decimals to 8 decimals (divide by 1e10)
+        uint256 expectedWbtcDelta = baseDelta / 1e10;
+
+        assertEq(buyerRusdAfter, buyerRusdBefore - int256(expectedRusdDelta), "Buyer rUSD balance incorrect");
+        assertEq(buyerWbtcAfter, int256(expectedWbtcDelta), "Buyer WBTC balance incorrect");
+
+        assertEq(sellerRusdAfter, sellerRusdBefore + int256(expectedRusdDelta), "Seller rUSD balance incorrect");
+        assertEq(sellerWbtcAfter, sellerWbtcBefore - int256(expectedWbtcDelta), "Seller WBTC balance incorrect");
+    }
+
+    /**
+     * @notice Test batch spot fill execution for WBTC market
+     * @dev Verifies that multiple fills can be executed in a single transaction
+     *      Note: Order baseDelta uses 18 decimals
+     */
+    function check_SpotBatchExecuteFill_WBTC(uint128 wbtcSpotMarketId) internal {
+        setupSpotTestActors();
+        mockFreshPrices();
+        removeOraclePriceDeviationConfig(wbtcSpotMarketId);
+
+        // Create accounts
+        uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 500_000e6);
+        uint128 sellerAccountId = ICoreProxy(sec.core).createOrGetSpotAccount(seller);
+        depositWbtcToAccount(seller, sellerAccountId, 10e8); // 10 WBTC
+
+        // Create two fill inputs
+        ExecuteFillInput[] memory fills = new ExecuteFillInput[](2);
+
+        // Fill 1: 0.001 WBTC at $100,000 (baseDelta in 18 decimals)
+        {
+            (ConditionalOrderDetails memory buyerOrder1, EIP712Signature memory buyerSig1) = createLimitOrderSpot({
+                accountId: buyerAccountId,
+                spotMarketId: wbtcSpotMarketId,
+                baseDelta: int256(0.001e18),
+                price: 100_000e18,
+                nonce: 1,
+                signer: buyer,
+                signerPk: buyerPk
+            });
+
+            (ConditionalOrderDetails memory sellerOrder1, EIP712Signature memory sellerSig1) = createLimitOrderSpot({
+                accountId: sellerAccountId,
+                spotMarketId: wbtcSpotMarketId,
+                baseDelta: -int256(0.001e18),
+                price: 100_000e18,
+                nonce: 1,
+                signer: seller,
+                signerPk: sellerPk
+            });
+
+            SignedMatchingEnginePayload memory mePayload1 = createMatchingEnginePayload({
+                price: 100_000e18,
+                baseDelta: 0.001e18,
+                accountOrderId: 1,
+                counterpartyOrderId: 2,
+                nonce: 1
+            });
+
+            fills[0] = ExecuteFillInput({
+                accountOrder: buyerOrder1,
+                counterpartyOrder: sellerOrder1,
+                accountSignature: buyerSig1,
+                counterpartySignature: sellerSig1,
+                mePayload: mePayload1
+            });
+        }
+
+        // Fill 2: 0.002 WBTC at $100,000 (baseDelta in 18 decimals)
+        {
+            (ConditionalOrderDetails memory buyerOrder2, EIP712Signature memory buyerSig2) = createLimitOrderSpot({
+                accountId: buyerAccountId,
+                spotMarketId: wbtcSpotMarketId,
+                baseDelta: int256(0.002e18),
+                price: 100_000e18,
+                nonce: 2,
+                signer: buyer,
+                signerPk: buyerPk
+            });
+
+            (ConditionalOrderDetails memory sellerOrder2, EIP712Signature memory sellerSig2) = createLimitOrderSpot({
+                accountId: sellerAccountId,
+                spotMarketId: wbtcSpotMarketId,
+                baseDelta: -int256(0.002e18),
+                price: 100_000e18,
+                nonce: 2,
+                signer: seller,
+                signerPk: sellerPk
+            });
+
+            SignedMatchingEnginePayload memory mePayload2 = createMatchingEnginePayload({
+                price: 100_000e18,
+                baseDelta: 0.002e18,
+                accountOrderId: 3,
+                counterpartyOrderId: 4,
+                nonce: 2
+            });
+
+            fills[1] = ExecuteFillInput({
+                accountOrder: buyerOrder2,
+                counterpartyOrder: sellerOrder2,
+                accountSignature: buyerSig2,
+                counterpartySignature: sellerSig2,
+                mePayload: mePayload2
+            });
+        }
+
+        // Record initial balances
+        int256 buyerRusdBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 sellerWbtcBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.wbtc).netDeposits;
+
+        // Execute batch fill as the conditional order execution bot
+        vm.prank(sec.coExecutionBot);
+        bytes[] memory outputs = IOrdersGatewayProxy(sec.ordersGateway).batchExecuteFill(fills);
+
+        // Verify outputs returned
+        assertEq(outputs.length, 2, "Should return 2 outputs");
+
+        // Verify balances
+        int256 buyerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 buyerWbtcAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.wbtc).netDeposits;
+        int256 sellerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).netDeposits;
+        int256 sellerWbtcAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.wbtc).netDeposits;
+
+        // Total: 0.003 WBTC (18 decimals) at $100,000 = 300 rUSD
+        // WBTC balance in 8 decimals: 0.003e18 / 1e10 = 0.003e8 = 300000
+        assertEq(buyerRusdAfter, buyerRusdBefore - 300e6, "Buyer rUSD balance incorrect");
+        assertEq(buyerWbtcAfter, 0.003e8, "Buyer WBTC balance incorrect");
+        assertEq(sellerRusdAfter, 300e6, "Seller rUSD balance incorrect");
+        assertEq(sellerWbtcAfter, sellerWbtcBefore - 0.003e8, "Seller WBTC balance incorrect");
     }
 }
