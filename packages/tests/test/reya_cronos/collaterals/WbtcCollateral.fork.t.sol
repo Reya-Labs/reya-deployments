@@ -13,11 +13,11 @@ contract WbtcCollateralForkTest is ReyaForkTest, WbtcCollateralForkCheck {
     function test_Cronos_wbtc_collateral_config() public view {
         WbtcCollateralConfigExpectations memory expected = WbtcCollateralConfigExpectations({
             depositingEnabled: true,
-            cap: 11579208923731619542357098500868790785326998466564056403945758400791,
+            cap: 11_579_208_923_731_619_542_357_098_500_868_790_785_326_998_466_564_056_403_945_758_400_791,
             autoExchangeThreshold: 0,
             autoExchangeInsuranceFee: 0.01e18,
             autoExchangeDustThreshold: 0,
-            priceHaircut: 0.10e18,
+            priceHaircut: 0.1e18,
             autoExchangeDiscount: 0.02e18
         });
         check_wbtc_collateral_config(expected);

@@ -13,9 +13,7 @@ import {
     SpotMarketConfig
 } from "../../../src/interfaces/ICoreProxy.sol";
 
-import {
-    IPeripheryProxy, DepositNewMAInputs
-} from "../../../src/interfaces/IPeripheryProxy.sol";
+import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
 
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
@@ -50,13 +48,25 @@ contract WbtcCollateralForkCheck is BaseReyaForkTest {
 
         assertEq(collateralConfig.depositingEnabled, expected.depositingEnabled, "depositingEnabled mismatch");
         assertEq(collateralConfig.cap, expected.cap, "cap mismatch");
-        assertEq(collateralConfig.autoExchangeThreshold, expected.autoExchangeThreshold, "autoExchangeThreshold mismatch");
-        assertEq(collateralConfig.autoExchangeInsuranceFee, expected.autoExchangeInsuranceFee, "autoExchangeInsuranceFee mismatch");
-        assertEq(collateralConfig.autoExchangeDustThreshold, expected.autoExchangeDustThreshold, "autoExchangeDustThreshold mismatch");
+        assertEq(
+            collateralConfig.autoExchangeThreshold, expected.autoExchangeThreshold, "autoExchangeThreshold mismatch"
+        );
+        assertEq(
+            collateralConfig.autoExchangeInsuranceFee,
+            expected.autoExchangeInsuranceFee,
+            "autoExchangeInsuranceFee mismatch"
+        );
+        assertEq(
+            collateralConfig.autoExchangeDustThreshold,
+            expected.autoExchangeDustThreshold,
+            "autoExchangeDustThreshold mismatch"
+        );
 
         assertEq(parentCollateralConfig.collateralAddress, sec.rusd, "parent collateral should be rUSD");
         assertEq(parentCollateralConfig.priceHaircut, expected.priceHaircut, "priceHaircut mismatch");
-        assertEq(parentCollateralConfig.autoExchangeDiscount, expected.autoExchangeDiscount, "autoExchangeDiscount mismatch");
+        assertEq(
+            parentCollateralConfig.autoExchangeDiscount, expected.autoExchangeDiscount, "autoExchangeDiscount mismatch"
+        );
     }
 
     function check_wbtc_global_collateral_config() internal view {
@@ -140,7 +150,9 @@ contract WbtcCollateralForkCheck is BaseReyaForkTest {
 
         int256 marginBalance0 = ICoreProxy(sec.core).getNodeMarginInfo(accountId, sec.rusd).marginBalance;
         // Higher tolerance due to BTC price volatility and oracle price differences
-        assertApproxEqAbsDecimal(marginBalance0 + int256(fees), 0.1e6 * int256(orderPrice.unwrap()) / 1e18, 2000 * 1e6, 6);
+        assertApproxEqAbsDecimal(
+            marginBalance0 + int256(fees), 0.1e6 * int256(orderPrice.unwrap()) / 1e18, 2000 * 1e6, 6
+        );
 
         uint256[] memory randomPrices = new uint256[](4);
         randomPrices[0] = 50_000e18;

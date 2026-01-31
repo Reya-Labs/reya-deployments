@@ -13,11 +13,11 @@ contract WbtcCollateralForkTest is ReyaForkTest, WbtcCollateralForkCheck {
     function test_wbtc_collateral_config() public view {
         WbtcCollateralConfigExpectations memory expected = WbtcCollateralConfigExpectations({
             depositingEnabled: true,
-            cap: 0.5e8,
+            cap: 0,
             autoExchangeThreshold: 0,
             autoExchangeInsuranceFee: 0.01e18,
             autoExchangeDustThreshold: 0,
-            priceHaircut: 0.10e18,
+            priceHaircut: 0.1e18,
             autoExchangeDiscount: 0.02e18
         });
         check_wbtc_collateral_config(expected);
