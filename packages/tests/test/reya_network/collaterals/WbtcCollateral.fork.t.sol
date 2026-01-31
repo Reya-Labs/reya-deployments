@@ -8,7 +8,7 @@ import {
 } from "../../reya_common/collaterals/WbtcCollateral.fork.c.sol";
 
 contract WbtcCollateralForkTest is ReyaForkTest, WbtcCollateralForkCheck {
-    uint128 constant WBTC_SPOT_MARKET_ID = 6;
+    uint128 constant WBTC_SPOT_MARKET_ID = 11;
 
     function test_wbtc_collateral_config() public view {
         WbtcCollateralConfigExpectations memory expected = WbtcCollateralConfigExpectations({

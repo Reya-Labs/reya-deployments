@@ -302,19 +302,20 @@ contract PermissionsForkTest is ReyaForkTest {
         assertEq(allowlist, expectedAllowlist);
     }
 
-    function test_perp_configure_depth_permissions() public view {
-        bytes32 flagId = keccak256(bytes("configureDepth"));
-        address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flagId);
+    // TODO: Uncomment once depth permissions are pushed live on reya_network
+    // function test_perp_configure_depth_permissions() public view {
+    //     bytes32 flagId = keccak256(bytes("configureDepth"));
+    //     address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flagId);
 
-        address[] memory expectedAllowlist = new address[](7);
-        expectedAllowlist[0] = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
-        expectedAllowlist[1] = 0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688;
-        expectedAllowlist[2] = 0x10eE819bc1E25cd2Eb3CE023724209f6f56Ef103;
-        expectedAllowlist[3] = 0xA50Aa11999f86f29badEc3fcD3aBa8AbBe153Ba2;
-        expectedAllowlist[4] = 0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4;
-        expectedAllowlist[5] = 0xbf59e78614F97fDbA523238AefDbe64E2efb28C3;
-        expectedAllowlist[6] = 0xbAF944384b46eB8609c3A5C7894028cE60c15354;
+    //     address[] memory expectedAllowlist = new address[](7);
+    //     expectedAllowlist[0] = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
+    //     expectedAllowlist[1] = 0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688;
+    //     expectedAllowlist[2] = 0x10eE819bc1E25cd2Eb3CE023724209f6f56Ef103;
+    //     expectedAllowlist[3] = 0xA50Aa11999f86f29badEc3fcD3aBa8AbBe153Ba2;
+    //     expectedAllowlist[4] = 0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4;
+    //     expectedAllowlist[5] = 0xbf59e78614F97fDbA523238AefDbe64E2efb28C3;
+    //     expectedAllowlist[6] = 0xbAF944384b46eB8609c3A5C7894028cE60c15354;
 
-        assertEq(allowlist, expectedAllowlist);
-    }
+    //     assertEq(allowlist, expectedAllowlist);
+    // }
 }
