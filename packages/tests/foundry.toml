@@ -1,6 +1,7 @@
 [profile.default]
 allow_paths = ["../", "../../", "./", "../node_modules/"]
 auto_detect_solc = false
+evm_version = "shanghai" # older version mismatch w/ solidity > 8.20
 fuzz = { runs = 256, max_test_rejects = 1_000_000 }
 libs = ["../../node_modules"]
 optimizer = true
