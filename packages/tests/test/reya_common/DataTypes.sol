@@ -43,6 +43,10 @@ struct StaticEcosystem {
     address rhedge;
     address srusd;
     address wsteth;
+    address sREYA;
+    address REYA;
+    // Layerzero endpoint on Reya Network
+    address layerZeroEndpoint;
     // Elixir tokens on Mainnet (Ethereum or Ethereum Sepolia)
     address elixirSdeusd;
     // Reya modules
