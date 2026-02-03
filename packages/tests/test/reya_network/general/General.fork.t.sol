@@ -20,6 +20,9 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         assertEq(globalConfig.coreProxy, sec.core);
         assertEq(globalConfig.rUSDProxy, sec.rusd);
         assertEq(globalConfig.passivePoolProxy, sec.pool);
+        assertEq(globalConfig.sREYAProxy, sec.sREYA);
+        assertEq(globalConfig.REYAProxy, sec.REYA);
+        assertEq(globalConfig.layerZeroEndpoint, sec.layerZeroEndpoint);
 
         assertEq(IPeripheryProxy(sec.periphery).getTokenController(sec.usdc), dec.socketController[sec.usdc]);
         assertEq(IPeripheryProxy(sec.periphery).getTokenExecutionHelper(sec.usdc), dec.socketExecutionHelper[sec.usdc]);

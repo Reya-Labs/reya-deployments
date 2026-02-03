@@ -46,7 +46,12 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.rhedge = 0x3ee6f82498d4e40DB33bac3adDABd8b41eCa1c9c;
         sec.srusd = 0x162B78e827A8DB8173D13735C08c8D40Cb5cCdAB;
         sec.wsteth = 0x7ae54d5a9e5a975DFC3261d915f8151dCcA76bE0;
+        sec.sREYA = 0x0000000000000000000000000000000000000000;
+        sec.REYA = 0xCC8e02d7112dDaa66A63B89d73E4eDa65722B111;
         sec.setMarketZeroFeeBot = 0xdD69B419f0d7a1E15192ac8DBAa0Fc63b25f8A11;
+
+        // Layerzero endpoint on Reya Network
+        sec.layerZeroEndpoint = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B;
 
         // Elixir tokens on Mainnet (Ethereum)
         sec.elixirSdeusd = 0x5C5b196aBE0d54485975D1Ec29617D42D9198326;
