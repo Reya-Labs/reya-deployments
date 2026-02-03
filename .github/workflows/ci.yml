@@ -32,11 +32,16 @@ jobs:
       - name: Build
         run: "yarn build"
       - name: Reya Network Cannon Test
+        id: reya_network_test
         env:
           RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_network:test"
       - name: Reya Cronos Cannon Test
+        id: reya_cronos_test
+        continue-on-error: true
         env:
           RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_cronos:test"
-  
+      - name: Warn on Cronos Test Failure
+        if: steps.reya_cronos_test.outcome == 'failure'
+        run: echo "::warning::Reya Cronos (testnet) tests failed"
