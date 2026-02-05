@@ -2,7 +2,7 @@ include = [
     "utils/deploy_proxy.toml",
     "utils/upgrade_proxy.toml",
     "configs/feature_flags.toml",
-    "configs/global_config.toml",
+    "configs/global_config_testnet.toml",
     "configs/tokens-testnet/usdc.toml",
     "configs/tokens-testnet/weth.toml",
     "configs/tokens-testnet/wbtc.toml",
