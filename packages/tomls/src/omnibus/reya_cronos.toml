@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.113"
+version = "1.0.115"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -35,6 +35,9 @@ ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.external_contracts]
 camelotYakRouter = "<%= AddressZero %>"
+reyaLayerZeroEndpoint = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
+sreyaProxy = "0xecab1c86ecf1100Ad3aa7A2C175aEDe4c87E949B"
+reyaProxy = "0xBD96BE24f68C5e616FF22ffC32715Ffa1C4B70d0"
 
 [var.account_ids]
 lotteryPotAccountId = "6888"
@@ -55,7 +58,7 @@ passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.10@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.41@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
-peripheryRouterPackage = "reya-periphery:1.0.9@router"
+peripheryRouterPackage = "reya-periphery:1.0.11@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassProxyPackage = "reya-exchange-pass-nft:1.0.0@proxy"
