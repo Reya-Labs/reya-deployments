@@ -232,10 +232,11 @@ contract OrderForkCheck is BaseReyaForkTest {
         (address user,) = makeAddrAndKey("user");
 
         // set market level price spread to a large value (100bp)
-        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
-        marketConfig.priceSpread = 0.01e18;
-        vm.prank(sec.multisig);
-        IPassivePerpProxy(sec.perp).setMarketConfiguration(marketId, marketConfig);
+        uint256 priceSpread = 0.01e18;
+        vm.startPrank(sec.multisig);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(keccak256(bytes("configureSpread")), sec.multisig);
+        IPassivePerpProxy(sec.perp).setMarketConfigurationSpread(marketId, priceSpread);
+        vm.stopPrank();
 
         // set fee parameters
 
@@ -290,7 +291,7 @@ contract OrderForkCheck is BaseReyaForkTest {
         });
 
         uint256 orderPrice2WithSpread =
-            orderPrice2.mul(ONE_sd.add(SD59x18.wrap(int256(marketConfig.priceSpread))).intoUD60x18()).unwrap();
+            orderPrice2.mul(ONE_sd.add(SD59x18.wrap(int256(priceSpread))).intoUD60x18()).unwrap();
         assertApproxEqAbs(orderPrice.unwrap(), orderPrice2WithSpread, precision);
     }
 }
