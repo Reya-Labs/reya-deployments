@@ -67,3 +67,13 @@ args = [
     "<%= settings.co_execution_bot7 %>",
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_depth_config_dynamic_pricing_setter_1]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureDepth')) %>",
+    "<%= settings.dynamicPricingSetter1 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]

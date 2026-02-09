@@ -163,6 +163,9 @@ setTierIdBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 setReferralMappingBot = "0xAdA667dCCF02CC78944cE8464fa5d722f2c73594"
 setMarketZeroFeeBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 
+[var.dynamic_pricing_setters]
+dynamicPricingSetter1 = "0x93e3aaee71dc2f42ad9a5992e4a6776b3406104d"
+
 [var.set_main_account_id_bots]
 setMainAccountIdBot = "0x286119f5cc1f99c9819cb8a7fb22eb49ca22c878"
 
