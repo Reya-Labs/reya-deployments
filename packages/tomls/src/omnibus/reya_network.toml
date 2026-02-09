@@ -607,8 +607,8 @@ rusdUsdMaxStaleDuration = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 usdcUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
 # todo: make 1 minute once oracle updater is live
-wbtcUsdMaxStaleDurationStork = "0"
-wbtcUsdcMaxStaleDurationStork = "0"
+wbtcUsdMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
+wbtcUsdcMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 btcUsdMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 btcUsdcMarkMaxStaleDurationStork = "<%= settings.ONE_MINUTE_IN_SECONDS %>"
 #------------------------------------------------------------------------------
@@ -2503,8 +2503,7 @@ cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-# todo: confirm auto exchange discount / haircut with aa
-cp1Rusd_wbtc_capUnscaled = "0"
+cp1Rusd_wbtc_capUnscaled = "1.0"
 cp1Rusd_wbtc_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_wbtc_autoExchangeInsuranceFeeUnscaled = "0.01"
 cp1Rusd_wbtc_autoExchangeDustThresholdUnscaled = "0"
