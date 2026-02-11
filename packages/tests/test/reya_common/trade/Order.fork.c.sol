@@ -294,4 +294,29 @@ contract OrderForkCheck is BaseReyaForkTest {
             orderPrice2.mul(ONE_sd.add(SD59x18.wrap(int256(priceSpread))).intoUD60x18()).unwrap();
         assertApproxEqAbs(orderPrice.unwrap(), orderPrice2WithSpread, precision);
     }
+
+    function check_MatchOrder_GasCost(uint128 marketId, uint256 maxGas) internal {
+        removeMarketsOILimit();
+        mockFreshPrices();
+
+        (address user,) = makeAddrAndKey("user");
+        uint256 amount = 1_000_000e6;
+        SD59x18 base = sd(1e18);
+        UD60x18 priceLimit = ud(1_000_000e18);
+
+        uint128 accountId = depositNewMA(user, sec.usdc, amount);
+
+        uint256 gasBefore = gasleft();
+        executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
+        });
+        uint256 gasUsed = gasBefore - gasleft();
+
+        emit log_named_uint("Trade gas cost", gasUsed);
+        assertLt(gasUsed, maxGas, "Trade gas cost exceeds ceiling");
+    }
 }

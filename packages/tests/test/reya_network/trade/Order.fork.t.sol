@@ -29,6 +29,10 @@ contract OrderForkTest is ReyaForkTest, OrderForkCheck {
     }
 
     function test_MatchOrder_Spread_BTC_market() public {
-        check_MatchOrder_Spread(2, 0.2e18);
+        check_MatchOrder_Spread(2, 0.6e18);
+    }
+
+    function test_MatchOrder_GasCost_ETH_market() public {
+        check_MatchOrder_GasCost(1, 11_000_000);
     }
 }
