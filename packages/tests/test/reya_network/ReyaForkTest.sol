@@ -142,8 +142,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.srusdUsdcPoolNodeId, 10_000);
 
         {
-            (, ParentCollateralConfig memory wbtcParentConfig,) =
-                ICoreProxy(sec.core).getCollateralConfig(1, sec.wbtc);
+            (, ParentCollateralConfig memory wbtcParentConfig,) = ICoreProxy(sec.core).getCollateralConfig(1, sec.wbtc);
             sec.wbtcUsdcStorkNodeId = wbtcParentConfig.oracleNodeId;
             vm.prank(sec.multisig);
             IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wbtcUsdcStorkNodeId, 10_000);
