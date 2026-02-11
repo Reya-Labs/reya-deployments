@@ -456,7 +456,15 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         mockFreshPrices();
     }
 
-    function trade_slippage_helper(uint128 marketId, UD60x18 eps, bool isLong, uint256 iterations, uint256 depthFactor) internal {
+    function trade_slippage_helper(
+        uint128 marketId,
+        UD60x18 eps,
+        bool isLong,
+        uint256 iterations,
+        uint256 depthFactor
+    )
+        internal
+    {
         st.marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
         st.a = ICoreProxy(sec.core).getRiskBlockMatrixByMarket(marketId)[st.marketConfig.riskMatrixIndex][st
             .marketConfig
@@ -464,9 +472,7 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         st.depthFactor = depthFactor;
 
         st.s = (isLong) ? st.sLong : st.sShort;
-        st.sPrime = (isLong)
-            ? st.sPrimeLong[st.a][st.depthFactor]
-            : st.sPrimeShort[st.a][st.depthFactor];
+        st.sPrime = (isLong) ? st.sPrimeLong[st.a][st.depthFactor] : st.sPrimeShort[st.a][st.depthFactor];
 
         assertEq(st.s.length, st.sPrime.length);
 
