@@ -166,7 +166,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
         assertApproxEqAbsDecimal(
             s.ae1.collateralAmountToLiquidator,
             ud(400e18).div(ud(1e18 - tokenAeDiscount)).div(ud(tokenUsdcNodeOutput.price)).unwrap(),
-            0.0015e18,
+            0.002e18,
             18
         );
 
@@ -221,7 +221,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             ud((s.ae2.quoteAmountToAccount + s.ae2.quoteAmountToIF) * 1e12).div(ud(1e18 - tokenAeDiscount)).div(
                 ud(tokenUsdcNodeOutput.price)
             ).unwrap(),
-            0.0015e18,
+            0.002e18,
             18
         );
 

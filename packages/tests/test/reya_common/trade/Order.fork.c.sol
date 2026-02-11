@@ -232,10 +232,11 @@ contract OrderForkCheck is BaseReyaForkTest {
         (address user,) = makeAddrAndKey("user");
 
         // set market level price spread to a large value (100bp)
-        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
-        marketConfig.priceSpread = 0.01e18;
-        vm.prank(sec.multisig);
-        IPassivePerpProxy(sec.perp).setMarketConfiguration(marketId, marketConfig);
+        uint256 priceSpread = 0.01e18;
+        vm.startPrank(sec.multisig);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(keccak256(bytes("configureSpread")), sec.multisig);
+        IPassivePerpProxy(sec.perp).setMarketConfigurationSpread(marketId, priceSpread);
+        vm.stopPrank();
 
         // set fee parameters
 
@@ -290,7 +291,45 @@ contract OrderForkCheck is BaseReyaForkTest {
         });
 
         uint256 orderPrice2WithSpread =
-            orderPrice2.mul(ONE_sd.add(SD59x18.wrap(int256(marketConfig.priceSpread))).intoUD60x18()).unwrap();
+            orderPrice2.mul(ONE_sd.add(SD59x18.wrap(int256(priceSpread))).intoUD60x18()).unwrap();
         assertApproxEqAbs(orderPrice.unwrap(), orderPrice2WithSpread, precision);
+    }
+
+    function check_MatchOrder_GasCost(uint128 marketId, uint256 maxGas, uint256 maxGasClose) internal {
+        removeMarketsOILimit();
+        mockFreshPrices();
+
+        (address user,) = makeAddrAndKey("user");
+        uint256 amount = 1_000_000e6;
+        SD59x18 base = sd(1e18);
+        UD60x18 priceLimit = ud(1_000_000e18);
+
+        uint128 accountId = depositNewMA(user, sec.usdc, amount);
+
+        uint256 gasBefore = gasleft();
+        executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
+        });
+        uint256 gasUsed = gasBefore - gasleft();
+
+        emit log_named_uint("Open trade gas cost", gasUsed);
+        assertLt(gasUsed, maxGas, "Open trade gas cost exceeds ceiling");
+
+        gasBefore = gasleft();
+        executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: sd(-1e18),
+            priceLimit: ud(0),
+            accountId: accountId
+        });
+        uint256 gasUsedClose = gasBefore - gasleft();
+
+        emit log_named_uint("Close trade gas cost", gasUsedClose);
+        assertLt(gasUsedClose, maxGasClose, "Close trade gas cost exceeds ceiling");
     }
 }

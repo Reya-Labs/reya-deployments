@@ -13,7 +13,7 @@ contract WbtcCollateralForkTest is ReyaForkTest, WbtcCollateralForkCheck {
     function test_wbtc_collateral_config() public view {
         WbtcCollateralConfigExpectations memory expected = WbtcCollateralConfigExpectations({
             depositingEnabled: true,
-            cap: 0,
+            cap: 1e8,
             autoExchangeThreshold: 0,
             autoExchangeInsuranceFee: 0.01e18,
             autoExchangeDustThreshold: 0,
@@ -31,8 +31,8 @@ contract WbtcCollateralForkTest is ReyaForkTest, WbtcCollateralForkCheck {
         WbtcSpotMarketConfigExpectations memory expected = WbtcSpotMarketConfigExpectations({
             spotMarketId: WBTC_SPOT_MARKET_ID,
             oracleDeviation: 0.05e18,
-            minimumOrderBase: 0.0001e8,
-            baseSpacing: 0.0001e8,
+            minimumOrderBase: 1e14,
+            baseSpacing: 1e14,
             priceSpacing: 0.01e18
         });
         check_wbtc_spot_market_config(expected);

@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.115"
+version = "1.0.117"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -56,7 +56,7 @@ tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.10@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.41@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.46@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.0.11@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
@@ -162,6 +162,9 @@ setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"
 setTierIdBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 setReferralMappingBot = "0xAdA667dCCF02CC78944cE8464fa5d722f2c73594"
 setMarketZeroFeeBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
+
+[var.dynamic_pricing_setters]
+dynamicPricingSetter1 = "0x93e3aaee71dc2f42ad9a5992e4a6776b3406104d"
 
 [var.set_main_account_id_bots]
 setMainAccountIdBot = "0x286119f5cc1f99c9819cb8a7fb22eb49ca22c878"

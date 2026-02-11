@@ -7,6 +7,7 @@ import "../reya_common/DataTypes.sol";
 
 import { ICoreProxy, ParentCollateralConfig } from "../../src/interfaces/ICoreProxy.sol";
 import { IOracleManagerProxy, NodeDefinition, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
+import { IPassivePerpProxy, MarketConfigurationData } from "../../src/interfaces/IPassivePerpProxy.sol";
 
 contract ReyaForkTest is BaseReyaForkTest {
     constructor() {

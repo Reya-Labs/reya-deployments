@@ -1,0 +1,9 @@
+[invoke.passive_perp_initialize_logf_config_1]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('initializeLogF')) %>",
+    "<%= settings.dynamicPricingSetter1 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
