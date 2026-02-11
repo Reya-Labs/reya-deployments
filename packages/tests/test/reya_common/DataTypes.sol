@@ -84,6 +84,8 @@ struct StaticEcosystem {
     bytes32 ramberUsdcReyaLmNodeId;
     bytes32 rhedgeUsdcReyaLmNodeId;
     bytes32 srusdUsdcPoolNodeId;
+    bytes32 wbtcUsdStorkNodeId;
+    bytes32 wbtcUsdcStorkNodeId;
     bytes32 ftmUsdStorkNodeId;
     bytes32 ftmUsdcStorkNodeId;
     // node ids for mark prices
