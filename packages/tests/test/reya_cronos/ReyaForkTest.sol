@@ -6,11 +6,11 @@ import { BaseReyaForkTest } from "../reya_common/BaseReyaForkTest.sol";
 import "../reya_common/DataTypes.sol";
 
 import { IPeripheryProxy, DepositPassivePoolInputs } from "../../src/interfaces/IPeripheryProxy.sol";
-import { ICoreProxy } from "../../src/interfaces/ICoreProxy.sol";
+import { ICoreProxy, ParentCollateralConfig } from "../../src/interfaces/ICoreProxy.sol";
 import { IPassivePerpProxy } from "../../src/interfaces/IPassivePerpProxy.sol";
 
 import { ISocketExecutionHelper } from "../../src/interfaces/ISocketExecutionHelper.sol";
-import { IOracleManagerProxy } from "../../src/interfaces/IOracleManagerProxy.sol";
+import { IOracleManagerProxy, NodeDefinition } from "../../src/interfaces/IOracleManagerProxy.sol";
 
 contract ReyaForkTest is BaseReyaForkTest {
     constructor() {
@@ -144,6 +144,19 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.srusdUsdcPoolNodeId = 0xc380c1273590e190bc15a196fdb2b5750abdd0eeb868cc8385dd384761e21ddb;
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.srusdUsdcPoolNodeId, 10_000);
+
+        {
+            (, ParentCollateralConfig memory wbtcParentConfig,) = ICoreProxy(sec.core).getCollateralConfig(1, sec.wbtc);
+            sec.wbtcUsdcStorkNodeId = wbtcParentConfig.oracleNodeId;
+            vm.prank(sec.multisig);
+            IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wbtcUsdcStorkNodeId, 10_000);
+
+            NodeDefinition.Data memory wbtcUsdcNode =
+                IOracleManagerProxy(sec.oracleManager).getNode(sec.wbtcUsdcStorkNodeId);
+            sec.wbtcUsdStorkNodeId = wbtcUsdcNode.parents[0];
+            vm.prank(sec.multisig);
+            IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.wbtcUsdStorkNodeId, 10_000);
+        }
 
         // node ids for mark prices
         sec.ethUsdStorkMarkNodeId = 0x3f4c9f3d5efcbd98002f057a6c0acd0313aa63ab20334e611a30261b89acc1fa;
