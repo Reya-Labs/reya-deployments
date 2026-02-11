@@ -738,15 +738,5 @@ contract ReyaForkTest is BaseReyaForkTest {
         // (*) allow anyone to publish match orders
         vm.prank(sec.multisig);
         ICoreProxy(sec.core).setFeatureFlagAllowAll(keccak256(bytes("matchOrderPublisher")), true);
-
-        // (*) initialize depthFactor for all markets using depthFactor_DEPRECATED
-        // (mirrors setDepthFactor.ts one-off script that uses existing deprecated values)
-        for (uint128 i = 1; i <= ICoreProxy(sec.core).getLastCreatedMarketId(); i++) {
-            MarketConfigurationData memory config = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
-            if (config.depthFactor_DEPRECATED > 0) {
-                vm.prank(sec.coExecutionBot);
-                IPassivePerpProxy(sec.perp).setMarketConfigurationDepth(i, config.depthFactor_DEPRECATED);
-            }
-        }
     }
 }

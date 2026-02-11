@@ -295,7 +295,7 @@ contract OrderForkCheck is BaseReyaForkTest {
         assertApproxEqAbs(orderPrice.unwrap(), orderPrice2WithSpread, precision);
     }
 
-    function check_MatchOrder_GasCost(uint128 marketId, uint256 maxGas) internal {
+    function check_MatchOrder_GasCost(uint128 marketId, uint256 maxGas, uint256 maxGasClose) internal {
         removeMarketsOILimit();
         mockFreshPrices();
 
@@ -316,7 +316,20 @@ contract OrderForkCheck is BaseReyaForkTest {
         });
         uint256 gasUsed = gasBefore - gasleft();
 
-        emit log_named_uint("Trade gas cost", gasUsed);
-        assertLt(gasUsed, maxGas, "Trade gas cost exceeds ceiling");
+        emit log_named_uint("Open trade gas cost", gasUsed);
+        assertLt(gasUsed, maxGas, "Open trade gas cost exceeds ceiling");
+
+        gasBefore = gasleft();
+        executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: sd(-1e18),
+            priceLimit: ud(0),
+            accountId: accountId
+        });
+        uint256 gasUsedClose = gasBefore - gasleft();
+
+        emit log_named_uint("Close trade gas cost", gasUsedClose);
+        assertLt(gasUsedClose, maxGasClose, "Close trade gas cost exceeds ceiling");
     }
 }

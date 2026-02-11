@@ -33,6 +33,6 @@ contract OrderForkTest is ReyaForkTest, OrderForkCheck {
     }
 
     function test_MatchOrder_GasCost_ETH_market() public {
-        check_MatchOrder_GasCost(1, 11_000_000);
+        check_MatchOrder_GasCost(1, 11_000_000, 2_000_000);
     }
 }

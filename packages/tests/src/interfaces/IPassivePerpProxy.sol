@@ -47,6 +47,18 @@ interface IPassivePerpProxy {
         uint256 priceSpread
     ) external;
 
+    function batchSetMarketConfigurationDepth(
+        uint128[] calldata marketIds,
+        /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18[]`. */
+        uint256[] calldata depthFactors
+    ) external;
+
+    function batchSetMarketConfigurationSpread(
+        uint128[] calldata marketIds,
+        /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18[]`. */
+        uint256[] calldata priceSpreads
+    ) external;
+
     function setMarketVolatilityConfiguration(
         uint128 marketId,
         MarketVolatilityConfigurationData memory config

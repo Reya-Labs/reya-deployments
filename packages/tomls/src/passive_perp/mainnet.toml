@@ -10,4 +10,5 @@ include = [
     "configs/tier_100_holders.toml",
     "configs/vol_spike_whitelist_holders.toml",
     "configs/pool_node_margin_info.toml",
+    "configs/initialize_depth_factors.toml",
 ]
