@@ -1,0 +1,7 @@
+include = [
+    "utils/deploy_proxy.toml",
+    "utils/upgrade_proxy.toml",
+    "configs/feature_flags.toml",
+    "configs/init.toml",
+    "configs/set_root_updater.toml",
+]

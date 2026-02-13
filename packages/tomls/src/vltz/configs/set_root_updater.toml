@@ -1,0 +1,9 @@
+[invoke.vltz_set_root_updater]
+target = ["VltzProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('updateRoot')) %>",
+    "<%= settings.vltzRootSubmitter %>",
+]
+depends = ["invoke.upgrade_vltz_proxy"]

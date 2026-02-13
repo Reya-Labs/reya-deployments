@@ -1,0 +1,17 @@
+[clone.reyaVltzRouter]
+source = "<%= settings.vltzRouterPackage %>"
+target = "<%= settings.vltzRouterPackage %>"
+depends = ["var.cannonClonePackages"]
+
+# Upgrades implementation of InitialProxy to point to the new
+# router implementation.
+[invoke.upgrade_vltz_proxy]
+target = ["<%= settings.vltzProxy %>"]
+abi = "<%= JSON.stringify(imports.reyaVltzRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= settings.vltzRouterAddress %>"]
+factory.VltzProxy.abiOf = ["reyaVltzRouter.VltzRouter"]
+factory.VltzProxy.event = "Upgraded"
+factory.VltzProxy.arg = 0
+depends = ["var.upgrade_proxy_vars", "clone.reyaVltzRouter"]
