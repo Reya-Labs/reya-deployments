@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.128"
+version = "1.0.129"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -555,7 +555,7 @@ passivePoolExchangeRebateUnscaled = "0.2"
 lotteryPotExchangeRebateUnscaled = "0.2"
 rageTradeExchangeRebateUnscaled = "0.2"
 zeuzExchangeRebateUnscaled = "0.2"
-pool1RusdRebateUnscaled = "0.3125"
+pool1RusdRebateUnscaled = "0.5"
 
 [var.fees_configs]
 takerFeeTier0Unscaled = "0.00040"
