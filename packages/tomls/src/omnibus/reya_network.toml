@@ -2636,8 +2636,8 @@ wethRusdSpot_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 # -----------------------------------------------
 # todo: needs review and adjustment by AA (incl. oracle node id name)
 wbtcRusdSpot_oracleDeviationUnscaled = "0.05"
-wbtcRusdSpot_minimumOrderBaseUnscaled = "0.0001"
-wbtcRusdSpot_baseSpacingUnscaled = "0.0001"
+wbtcRusdSpot_minimumOrderBaseUnscaled = "0.00001"
+wbtcRusdSpot_baseSpacingUnscaled = "0.00001"
 wbtcRusdSpot_priceSpacingUnscaled = "0.01"
 wbtcRusdSpot_oracleNodeId = "<%= settings.wbtcUsdcNodeIdStork %>"
 

@@ -2574,8 +2574,8 @@ wethRusdSpot_priceSpacingUnscaled = "0.01"
 wethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 # -----------------------------------------------
 wbtcRusdSpot_oracleDeviationUnscaled = "0"
-wbtcRusdSpot_minimumOrderBaseUnscaled = "0.0001"
-wbtcRusdSpot_baseSpacingUnscaled = "0.0001"
+wbtcRusdSpot_minimumOrderBaseUnscaled = "0.00001"
+wbtcRusdSpot_baseSpacingUnscaled = "0.00001"
 wbtcRusdSpot_priceSpacingUnscaled = "0.01"
 wbtcRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
