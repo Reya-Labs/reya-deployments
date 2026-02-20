@@ -8,6 +8,7 @@ import "../reya_common/DataTypes.sol";
 import { ICoreProxy, ParentCollateralConfig } from "../../src/interfaces/ICoreProxy.sol";
 import { IOracleManagerProxy, NodeDefinition, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
 import { IPassivePerpProxy, MarketConfigurationData } from "../../src/interfaces/IPassivePerpProxy.sol";
+import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
 
 contract ReyaForkTest is BaseReyaForkTest {
     constructor() {
@@ -736,15 +737,29 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         // setup
         // (*) allow anyone to publish match orders
-        vm.prank(sec.multisig);
+        vm.startPrank(sec.multisig);
         ICoreProxy(sec.core).setFeatureFlagAllowAll(keccak256(bytes("matchOrderPublisher")), true);
 
         // (*) allow anyone to deposit in the pool
-        vm.prank(sec.multisig);
-        ICoreProxy(sec.pool).setFeatureFlagAllowAll(getDepositFeatureFlagId(1), true);
+        IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getDepositFeatureFlagId(1), true);
 
         // (*) allow anyone to withdraw from the pool
-        vm.prank(sec.multisig);
-        ICoreProxy(sec.pool).setFeatureFlagAllowAll(getWithdrawalFeatureFlagId(1), true);
+        IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getWithdrawalFeatureFlagId(1), true);
+
+        // TODO: remove these
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.rusd);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.susde);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.deusd);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.sdeusd);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.rhedge);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.rselini);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.ramber);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.weth);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.wbtc);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.wsteth);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.usde);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.srusd);
+
+        vm.stopPrank();
     }
 }
