@@ -738,5 +738,13 @@ contract ReyaForkTest is BaseReyaForkTest {
         // (*) allow anyone to publish match orders
         vm.prank(sec.multisig);
         ICoreProxy(sec.core).setFeatureFlagAllowAll(keccak256(bytes("matchOrderPublisher")), true);
+
+        // (*) allow anyone to deposit in the pool
+        vm.prank(sec.multisig);
+        ICoreProxy(sec.pool).setFeatureFlagAllowAll(getDepositFeatureFlagId(1), true);
+
+        // (*) allow anyone to withdraw from the pool
+        vm.prank(sec.multisig);
+        ICoreProxy(sec.pool).setFeatureFlagAllowAll(getWithdrawalFeatureFlagId(1), true);
     }
 }

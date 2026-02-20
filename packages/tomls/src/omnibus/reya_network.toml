@@ -51,7 +51,7 @@ coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.1@router"
-passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.10@router"
+passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.12@router"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.46@router"
 peripheryRouterPackage = "reya-periphery:1.0.9@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
@@ -122,9 +122,11 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 # Rotation notes: these addresses are either external integrators or safes that do not need rotation
 # -----------------------------------------------
 rebalancer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556" # deprecated
-rebalancer2 = "0x25E028A45a6012763A76145d7CEEa3587015e990" # external rebalancer
-rebalancer3 = "0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed" # multisig safe
+rebalancer2 = "0x25E028A45a6012763A76145d7CEEa3587015e990" # deprecated
+rebalancer3 = "0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed" # Reya multisig safe
 rebalancer4 = "0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E" # deprecated
+rebalancer5 = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9" # Reya multisig safe
+rebalancer6 = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9" # External rebalancer
 
 [var.liquidators]
 # -----------------------------------------------
@@ -2482,7 +2484,7 @@ cp1Rusd_autoExchangeConfig_quoteBufferPercentageUnscaled = "0"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_rusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_rusd_capUnscaled = "<%= 1000000000 %>"
 cp1Rusd_rusd_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_rusd_autoExchangeInsuranceFeeUnscaled = "0.01"
 cp1Rusd_rusd_autoExchangeDustThresholdUnscaled = "0.01"
@@ -2506,7 +2508,7 @@ cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_wbtc_capUnscaled = "1.0"
+cp1Rusd_wbtc_capUnscaled = "1"
 cp1Rusd_wbtc_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_wbtc_autoExchangeInsuranceFeeUnscaled = "0.01"
 cp1Rusd_wbtc_autoExchangeDustThresholdUnscaled = "0"
@@ -2530,7 +2532,7 @@ cp1Rusd_usdeParentConfig_oracleNodeId = "<%= settings.usdeUsdcNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_susde_capUnscaled = "500000"
+cp1Rusd_susde_capUnscaled = "7500000"
 cp1Rusd_susde_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_susde_autoExchangeInsuranceFeeUnscaled = "0.005"
 cp1Rusd_susde_autoExchangeDustThresholdUnscaled = "0"
@@ -2542,7 +2544,7 @@ cp1Rusd_susdeParentConfig_oracleNodeId = "<%= settings.susdeUsdcNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_deusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_deusd_capUnscaled = "<%= 1423 %>"
 cp1Rusd_deusd_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_deusd_autoExchangeInsuranceFeeUnscaled = "0.005"
 cp1Rusd_deusd_autoExchangeDustThresholdUnscaled = "0"
@@ -2554,7 +2556,7 @@ cp1Rusd_deusdParentConfig_oracleNodeId = "<%= settings.deusdUsdcNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_sdeusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_sdeusd_capUnscaled = "<%= 2025 %>"
 cp1Rusd_sdeusd_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_sdeusd_autoExchangeInsuranceFeeUnscaled = "0.005"
 cp1Rusd_sdeusd_autoExchangeDustThresholdUnscaled = "0"
@@ -2566,7 +2568,7 @@ cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdClosing 
 # ------------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_srusd_capUnscaled = "<%= formatUnits(MaxUint256, parseInt(settings.srusdTokenDecimals)) %>"
+cp1Rusd_srusd_capUnscaled = "<%= 1000000000 %>"
 cp1Rusd_srusd_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled = "0.005"
 cp1Rusd_srusd_autoExchangeDustThresholdUnscaled = "0"
