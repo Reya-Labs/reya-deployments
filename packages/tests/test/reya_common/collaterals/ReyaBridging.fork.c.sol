@@ -117,7 +117,7 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             marketId: 0, // core command, marketId is not necessary
             exchangeId: 0 // core command, does not involve exchange,
          });
-        bytes memory extraData = abi.encode("stakeReya");
+        bytes memory extraData = abi.encode("stakeReya", stakeAmount);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(account, commands, userPk, 1, extraData);
 
         IPeripheryProxy(sec.periphery).stakeReya(
@@ -146,7 +146,7 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             marketId: 0, // core command, marketId is not necessary
             exchangeId: 0 // core command, does not involve exchange,
          });
-        bytes memory extraData = abi.encode("unstakeStakedReya");
+        bytes memory extraData = abi.encode("unstakeStakedReya", unstakeAmount);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(
             account,
             commands,
@@ -181,7 +181,7 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             marketId: 0, // core command, marketId is not necessary
             exchangeId: 0 // core command, does not involve exchange,
          });
-        bytes memory extraData = abi.encode("unstakeStakedReya");
+        bytes memory extraData = abi.encode("unstakeStakedReya", unstakeAmount * 2);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(
             account,
             commands,
@@ -216,7 +216,7 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             marketId: 0, // core command, marketId is not necessary
             exchangeId: 0 // core command, does not involve exchange,
          });
-        bytes memory extraData = abi.encode("stakeReya");
+        bytes memory extraData = abi.encode("stakeReya", stakeAmount + 1);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(account, commands, userPk, 1, extraData);
 
         vm.expectRevert(
@@ -354,7 +354,7 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
                 marketId: 0,
                 exchangeId: 0
             });
-            bytes memory extraData = abi.encode("stakeReya");
+            bytes memory extraData = abi.encode("stakeReya", stakeAmount);
             EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(1, commands, userPk, 1, extraData);
 
             vm.expectRevert(
@@ -380,7 +380,7 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
                 marketId: 0,
                 exchangeId: 0
             });
-            bytes memory extraData = abi.encode("stakeReya");
+            bytes memory extraData = abi.encode("stakeReya", stakeAmount);
             EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(1, commands, userPk, 1, extraData);
 
             vm.expectRevert(
@@ -411,7 +411,7 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
                 marketId: 0,
                 exchangeId: 0
             });
-            bytes memory extraData = abi.encode("stakeReya");
+            bytes memory extraData = abi.encode("stakeReya", stakeAmount);
             EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(1, commands, userPk, 1, extraData);
 
             vm.expectRevert(
@@ -437,7 +437,7 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
                 marketId: 0,
                 exchangeId: 0
             });
-            bytes memory extraData = abi.encode("stakeReya");
+            bytes memory extraData = abi.encode("stakeReya", stakeAmount);
             EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(1, commands, userPk, 1, extraData);
 
             vm.expectRevert(
