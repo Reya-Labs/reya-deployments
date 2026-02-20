@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.130"
+version = "1.0.131"
 
 [var.chain_ids]
 ethereumChainId = "1"
