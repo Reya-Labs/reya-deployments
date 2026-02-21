@@ -746,20 +746,6 @@ contract ReyaForkTest is BaseReyaForkTest {
         // (*) allow anyone to withdraw from the pool
         IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getWithdrawalFeatureFlagId(1), true);
 
-        // TODO: remove these
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.rusd);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.susde);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.deusd);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.sdeusd);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.rhedge);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.rselini);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.ramber);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.weth);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.wbtc);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.wsteth);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.usde);
-        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWhitelistedCollateralFeatureFlagId(1), sec.srusd);
-
         vm.stopPrank();
     }
 }
