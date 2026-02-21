@@ -2536,7 +2536,7 @@ cp1Rusd_usdeParentConfig_oracleNodeId = "<%= settings.usdeUsdcNodeIdStork %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_susde_capUnscaled = "7500000"
+cp1Rusd_susde_capUnscaled = "500000"
 cp1Rusd_susde_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_susde_autoExchangeInsuranceFeeUnscaled = "0.005"
 cp1Rusd_susde_autoExchangeDustThresholdUnscaled = "0"

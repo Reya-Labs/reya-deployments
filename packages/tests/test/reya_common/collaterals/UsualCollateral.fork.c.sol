@@ -258,7 +258,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
     }
 
     function check_susde_CapExceeded() public {
-        check_UsualCollateral_CapExceeded(sec.susde, 7_500_000e18);
+        check_UsualCollateral_CapExceeded(sec.susde, 500_000e18);
     }
 
     function check_susde_DepositWithdraw() public {
