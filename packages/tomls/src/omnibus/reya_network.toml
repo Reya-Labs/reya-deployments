@@ -313,9 +313,9 @@ rhedgeRedeemer1 = "<%= settings.rebalancer3 %>"
 rhedgeCustodian1 = "<%= settings.rebalancer3 %>"
 
 [var.unstaking_test_wallets]
-unstaking_test_wallet_1="0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-unstaking_test_wallet_2="0xFD4295c1A0b07e6b706f0Ab83dC9eB461b7f17B3"
-unstaking_test_wallet_3="0xfED5b6f65D42af35B87795f5C05da2AC07A8aA4e"
+unstaking_test_wallet_1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+unstaking_test_wallet_2 = "0xFD4295c1A0b07e6b706f0Ab83dC9eB461b7f17B3"
+unstaking_test_wallet_3 = "0xfED5b6f65D42af35B87795f5C05da2AC07A8aA4e"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
