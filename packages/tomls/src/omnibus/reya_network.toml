@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.128"
+version = "1.0.130"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -123,9 +123,9 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 # -----------------------------------------------
 rebalancer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556" # deprecated
 rebalancer2 = "0x25E028A45a6012763A76145d7CEEa3587015e990" # deprecated
-rebalancer3 = "0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed" # Reya multisig safe
+rebalancer3 = "0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed" # multisig safe
 rebalancer4 = "0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E" # deprecated
-rebalancer5 = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9" # Reya multisig safe
+rebalancer5 = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9" # multisig safe
 # TODO: replace with external rebalancer
 rebalancer6 = "0x0883CEb64e34038b8f50c285290e3C83d83D2301" # External rebalancer
 
@@ -563,7 +563,7 @@ passivePoolExchangeRebateUnscaled = "0.2"
 lotteryPotExchangeRebateUnscaled = "0.2"
 rageTradeExchangeRebateUnscaled = "0.2"
 zeuzExchangeRebateUnscaled = "0.2"
-pool1RusdRebateUnscaled = "0.3125"
+pool1RusdRebateUnscaled = "0.5"
 
 [var.fees_configs]
 takerFeeTier0Unscaled = "0.00040"
@@ -1362,7 +1362,7 @@ market24Bnb_volatilityIndexMultiplierUnscaled = "0"
 [var.market_25Jto]
 market25Jto_riskMatrixIndex = "0"
 market25Jto_maxOpenBaseUnscaled = "138886"
-market25Jto_velocityMultiplierUnscaled = "33.8"
+market25Jto_velocityMultiplierUnscaled = "135"
 market25Jto_oracleNodeId = "<%= settings.jtoUsdcMarkNodeIdStork %>"
 market25Jto_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market25Jto_dutchConfig_lambdaUnscaled = "1"
@@ -2022,7 +2022,7 @@ market57Move_volatilityIndexMultiplierUnscaled = "0"
 [var.market_58Bera]
 market58Bera_riskMatrixIndex = "0"
 market58Bera_maxOpenBaseUnscaled = "160184"
-market58Bera_velocityMultiplierUnscaled = "37.2"
+market58Bera_velocityMultiplierUnscaled = "75"
 market58Bera_oracleNodeId = "<%= settings.beraUsdcMarkNodeIdStork %>"
 market58Bera_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market58Bera_dutchConfig_lambdaUnscaled = "1"
