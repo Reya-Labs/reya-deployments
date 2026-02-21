@@ -139,3 +139,113 @@ args = [
     "<%= settings.coreProxy %>",
 ]
 depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_allow_rusd_for_auto_rebalance]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('whitelistedCollateral')),settings.pool1RusdId])) %>",
+    "<%= contracts.RUSDProxy.address %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_allow_rselini_for_auto_rebalance]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('whitelistedCollateral')),settings.pool1RusdId])) %>",
+    "<%= contracts.RSELINIProxy.address %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_allow_ramber_for_auto_rebalance]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('whitelistedCollateral')),settings.pool1RusdId])) %>",
+    "<%= contracts.RAMBERProxy.address %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_allow_rhedge_for_auto_rebalance]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('whitelistedCollateral')),settings.pool1RusdId])) %>",
+    "<%= contracts.RHEDGEProxy.address %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_allow_susde_for_auto_rebalance]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('whitelistedCollateral')),settings.pool1RusdId])) %>",
+    "<%= contracts.SUSDEProxy.address %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_allow_deposit_test_wallet_1]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('deposit')),settings.pool1RusdId])) %>",
+    "<%= settings.unstaking_test_wallet_1 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_allow_deposit_test_wallet_2]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('deposit')),settings.pool1RusdId])) %>",
+    "<%= settings.unstaking_test_wallet_2 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_allow_deposit_test_wallet_3]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('deposit')),settings.pool1RusdId])) %>",
+    "<%= settings.unstaking_test_wallet_3 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_allow_withdraw_test_wallet_1]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('withdrawal')),settings.pool1RusdId])) %>",
+    "<%= settings.unstaking_test_wallet_1 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_allow_withdraw_test_wallet_2]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('withdrawal')),settings.pool1RusdId])) %>",
+    "<%= settings.unstaking_test_wallet_2 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_allow_withdraw_test_wallet_3]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('withdrawal')),settings.pool1RusdId])) %>",
+    "<%= settings.unstaking_test_wallet_3 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
