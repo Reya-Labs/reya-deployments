@@ -15,7 +15,7 @@ contract PermissionsForkTest is ReyaForkTest {
 
         address[] memory expectedAllowlist = new address[](2);
         expectedAllowlist[0] = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
-        expectedAllowlist[1] = 0x25E028A45a6012763A76145d7CEEa3587015e990;
+        expectedAllowlist[1] = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9;
 
         assertEq(allowlist, expectedAllowlist);
     }

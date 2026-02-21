@@ -8,6 +8,7 @@ import "../reya_common/DataTypes.sol";
 import { ICoreProxy, ParentCollateralConfig } from "../../src/interfaces/ICoreProxy.sol";
 import { IOracleManagerProxy, NodeDefinition, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
 import { IPassivePerpProxy, MarketConfigurationData } from "../../src/interfaces/IPassivePerpProxy.sol";
+import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
 
 contract ReyaForkTest is BaseReyaForkTest {
     constructor() {
@@ -736,7 +737,15 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         // setup
         // (*) allow anyone to publish match orders
-        vm.prank(sec.multisig);
+        vm.startPrank(sec.multisig);
         ICoreProxy(sec.core).setFeatureFlagAllowAll(keccak256(bytes("matchOrderPublisher")), true);
+
+        // (*) allow anyone to deposit in the pool
+        IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getDepositFeatureFlagId(1), true);
+
+        // (*) allow anyone to withdraw from the pool
+        IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getWithdrawalFeatureFlagId(1), true);
+
+        vm.stopPrank();
     }
 }

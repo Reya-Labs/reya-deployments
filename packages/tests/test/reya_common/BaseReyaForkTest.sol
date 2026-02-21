@@ -610,4 +610,16 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         );
         IPeripheryProxy(sec.periphery).depositPassivePool(inputs);
     }
+
+    function getWithdrawalFeatureFlagId(uint128 poolId) internal pure returns (bytes32) {
+        return keccak256(abi.encode(keccak256(bytes("withdrawal")), poolId));
+    }
+
+    function getDepositFeatureFlagId(uint128 poolId) internal pure returns (bytes32) {
+        return keccak256(abi.encode(keccak256(bytes("deposit")), poolId));
+    }
+
+    function getWhitelistedCollateralFeatureFlagId(uint128 poolId) internal pure returns (bytes32) {
+        return keccak256(abi.encode(keccak256(bytes("whitelistedCollateral")), poolId));
+    }
 }

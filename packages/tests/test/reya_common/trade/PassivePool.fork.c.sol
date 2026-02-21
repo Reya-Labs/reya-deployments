@@ -11,12 +11,7 @@ import {
     ActionMetadata
 } from "../../../src/interfaces/ICoreProxy.sol";
 
-import {
-    IPassivePoolProxy,
-    RebalanceAmounts,
-    AutoRebalanceInput,
-    AllocationConfigurationData
-} from "../../../src/interfaces/IPassivePoolProxy.sol";
+import { IPassivePoolProxy, RebalanceAmounts, AutoRebalanceInput } from "../../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IPeripheryProxy,
     DepositNewMAInputs,
@@ -217,26 +212,21 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         removeCollateralWithdrawalLimit(sec.ramber);
         removeCollateralWithdrawalLimit(sec.rhedge);
 
-        removeCollateralCap(sec.rselini);
-        removeCollateralCap(sec.ramber);
-        removeCollateralCap(sec.rhedge);
-
-        // note, if the quote token target ratio is set to zero, rebalancing drains all the rUSD from passive pool,
-        // leaving it unable to cover the current exposure
-        if (IPassivePoolProxy(sec.pool).getAllocationConfiguration(sec.passivePoolId).quoteTokenTargetRatio == 0) {
-            vm.prank(sec.multisig);
-            IPassivePoolProxy(sec.pool).setAllocationConfiguration(
-                sec.passivePoolId, AllocationConfigurationData({ quoteTokenTargetRatio: 0.1e18 })
-            );
-        }
-
         address quoteToken = sec.rusd;
-        address[] memory supportingTokens = IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
+        address[] memory supportingTokens = new address[](4);
+        supportingTokens[0] = sec.susde;
+        supportingTokens[1] = sec.ramber;
+        supportingTokens[3] = sec.rselini;
+        supportingTokens[2] = sec.rhedge;
 
         address[] memory allTokens = new address[](supportingTokens.length + 1);
         allTokens[0] = quoteToken;
         for (uint256 i = 0; i < supportingTokens.length; i++) {
             allTokens[i + 1] = supportingTokens[i];
+        }
+
+        for (uint256 i = 0; i < allTokens.length; i++) {
+            removeCollateralCap(allTokens[i]);
         }
 
         for (uint256 i = 0; i < allTokens.length; i++) {
@@ -248,36 +238,46 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                 address tokenIn = allTokens[i];
                 address tokenOut = allTokens[j];
 
-                uint256 amountIn = 100_000_000 * (10 ** ITokenProxy(tokenIn).decimals());
+                uint256 minAmountIn = 1 * (10 ** ITokenProxy(tokenIn).decimals());
+                uint256 maxAmountIn = 100_000_000 * (10 ** ITokenProxy(tokenIn).decimals());
 
                 RebalanceAmounts memory rebalanceAmounts =
-                    IPassivePoolProxy(sec.pool).getRebalanceAmounts(sec.passivePoolId, tokenIn, tokenOut, amountIn);
+                    IPassivePoolProxy(sec.pool).getRebalanceAmounts(sec.passivePoolId, tokenIn, tokenOut, maxAmountIn);
 
-                if (rebalanceAmounts.amountIn != 0) {
+                uint256 amountIn = rebalanceAmounts.amountIn;
+                uint256 priceInToOut = rebalanceAmounts.priceInToOut;
+
+                // if token out is rUSD, we can not rebalance all the margin balance because rUSD is needed to cover for
+                // the uPnL and exposure
+                if (tokenOut == sec.rusd) {
+                    amountIn = amountIn * 9 / 10;
+                }
+
+                if (amountIn >= minAmountIn) {
                     uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
                     if (partialAutoRebalance) {
-                        rebalanceAmounts.amountIn = rebalanceAmounts.amountIn / 2;
+                        amountIn = amountIn / 2;
                     }
 
                     if (isLmToken(tokenIn) && mintLmTokens) {
                         vm.prank(sec.poolRebalancer);
-                        ITokenProxy(tokenIn).mint(sec.poolRebalancer, rebalanceAmounts.amountIn);
+                        ITokenProxy(tokenIn).mint(sec.poolRebalancer, amountIn);
                     } else {
-                        deal(tokenIn, sec.poolRebalancer, rebalanceAmounts.amountIn);
+                        deal(tokenIn, sec.poolRebalancer, amountIn);
                     }
 
                     vm.prank(sec.poolRebalancer);
-                    ITokenProxy(tokenIn).approve(sec.pool, rebalanceAmounts.amountIn);
+                    ITokenProxy(tokenIn).approve(sec.pool, amountIn);
 
                     vm.prank(sec.poolRebalancer);
                     IPassivePoolProxy(sec.pool).triggerAutoRebalance(
                         sec.passivePoolId,
                         AutoRebalanceInput({
                             tokenIn: tokenIn,
-                            amountIn: rebalanceAmounts.amountIn,
+                            amountIn: amountIn,
                             tokenOut: tokenOut,
-                            minPrice: rebalanceAmounts.priceInToOut,
+                            minPrice: priceInToOut,
                             receiverAddress: sec.periphery
                         })
                     );
@@ -305,22 +305,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         removeCollateralCap(sec.rselini);
         removeCollateralCap(sec.ramber);
         removeCollateralCap(sec.rhedge);
-
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setAllocationConfiguration(
-            sec.passivePoolId, AllocationConfigurationData({ quoteTokenTargetRatio: 0.353535e18 })
-        );
-
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.sdeusd, 0.454545e18);
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.rselini, 0.2e18);
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.ramber, 0.2e18);
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(
-            sec.passivePoolId, sec.rhedge, 1e18 - 0.454545e18 - 0.2e18 - 0.2e18
-        );
 
         autoRebalancePool(partialAutoRebalance, mintLmTokens);
     }
@@ -361,7 +345,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
     function check_sharePriceChangesWhenAssetPriceChanges() public {
         vm.warp(block.timestamp + 90);
-        autoRebalancePool(false, false);
+        autoRebalancePool(true, false);
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
@@ -480,11 +464,5 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             assertLe(sharePrice0, sharePrice1);
             assertApproxEqRelDecimal(sharePrice0, sharePrice1, 1e12, 18);
         }
-    }
-
-    function check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(address token) public {
-        vm.prank(sec.multisig);
-        vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.TokenNotSupportingCollateral.selector, token));
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, token, 0.1e18);
     }
 }
