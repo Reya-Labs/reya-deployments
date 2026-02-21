@@ -13,9 +13,11 @@ contract PermissionsForkTest is ReyaForkTest {
         bytes32 flagId = keccak256(abi.encode(keccak256(bytes("autoRebalance")), 1));
         address[] memory allowlist = IPassivePoolProxy(sec.pool).getFeatureFlagAllowlist(flagId);
 
-        address[] memory expectedAllowlist = new address[](2);
+        address[] memory expectedAllowlist = new address[](3);
         expectedAllowlist[0] = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
         expectedAllowlist[1] = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9;
+        // TODO: replace with external rebalancer
+        expectedAllowlist[2] = 0x0883CEb64e34038b8f50c285290e3C83d83D2301;
 
         assertEq(allowlist, expectedAllowlist);
     }
