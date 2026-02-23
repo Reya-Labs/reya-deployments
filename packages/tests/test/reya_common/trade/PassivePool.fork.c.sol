@@ -440,4 +440,40 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             assertApproxEqRelDecimal(sharePrice0, sharePrice1, 1e12, 18);
         }
     }
+
+    function check_DepositAndWithdrawalFeatureFlags(address user, bool isWhitelisted) public {
+        vm.startPrank(sec.multisig);
+        IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getDepositFeatureFlagId(1), false);
+        IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getWithdrawalFeatureFlagId(1), false);
+        vm.stopPrank();
+
+        deal(sec.rusd, user, 1e6);
+        vm.prank(user);
+        ITokenProxy(sec.rusd).approve(sec.pool, 1e6);
+
+        if (!isWhitelisted) {
+            vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.DepositDisabled.selector, 1, user));
+        }
+
+        vm.prank(user);
+        IPassivePoolProxy(sec.pool).addLiquidity({
+            poolId: sec.passivePoolId,
+            owner: user,
+            amount: 1e6,
+            minShares: 0,
+            actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: user })
+        });
+
+        if (!isWhitelisted) {
+            vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.WithdrawalDisabled.selector, 1, user));
+        }
+
+        vm.prank(user);
+        IPassivePoolProxy(sec.pool).removeLiquidity({
+            poolId: sec.passivePoolId,
+            sharesAmount: 0.5e30,
+            minOut: 0,
+            actionMetadata: ActionMetadata({ action: Action.Unstake, onBehalfOf: user })
+        });
+    }
 }

@@ -22,6 +22,9 @@ interface IPassivePoolProxy {
         AutoRebalanceInput memory input
     ) external returns (RebalanceAmounts memory amounts);
 
+    error CollateralNotWhitelisted(uint128 poolId, address collateral);
+    error DepositDisabled(uint128 poolId, address user);
+    error WithdrawalDisabled(uint128 poolId, address user);
     error AmountZero();
     error FailedApproval(address spender, uint256 value);
     error FailedTransfer(address from, address to, uint256 value);

@@ -67,6 +67,14 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         check_PassivePoolWithToken(sec.wsteth);
     }
 
+    function test_DepositAndWithdrawalFeatureFlags_NotWhitelisted() public {
+        check_DepositAndWithdrawalFeatureFlags(makeAddr("randomUser"), false);
+    }
+
+    function test_DepositAndWithdrawalFeatureFlags_Whitelisted() public {
+        check_DepositAndWithdrawalFeatureFlags(0xaE173a960084903b1d278Ff9E3A81DeD82275556, true);
+    }
+
     function test_PassivePoolAutoRebalance_partial_rUSD_for_rSelini() public {
         autoRebalancePool(sec.rusd, sec.rselini, true, false);
     }
