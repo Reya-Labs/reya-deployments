@@ -8,7 +8,8 @@ import {
     ParentCollateralConfig,
     ICoreProxy,
     Action,
-    ActionMetadata
+    ActionMetadata,
+    ExchangeInfo
 } from "../../../src/interfaces/ICoreProxy.sol";
 
 import { IPassivePoolProxy, RebalanceAmounts, AutoRebalanceInput } from "../../../src/interfaces/IPassivePoolProxy.sol";
@@ -204,113 +205,87 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         }
     }
 
-    function autoRebalancePool(bool partialAutoRebalance, bool mintLmTokens) internal {
-        removeCollateralWithdrawalLimit(sec.rusd);
-        removeCollateralWithdrawalLimit(sec.deusd);
-        removeCollateralWithdrawalLimit(sec.sdeusd);
-        removeCollateralWithdrawalLimit(sec.rselini);
-        removeCollateralWithdrawalLimit(sec.ramber);
-        removeCollateralWithdrawalLimit(sec.rhedge);
+    function autoRebalancePool(address tokenIn, address tokenOut, bool partial0, bool mintTokenIn) internal {
+        removeCollateralWithdrawalLimit(tokenIn);
+        removeCollateralWithdrawalLimit(tokenOut);
+        removeCollateralCap(tokenIn);
+        removeCollateralCap(tokenOut);
 
-        address quoteToken = sec.rusd;
-        address[] memory supportingTokens = new address[](4);
-        supportingTokens[0] = sec.susde;
-        supportingTokens[1] = sec.ramber;
-        supportingTokens[3] = sec.rselini;
-        supportingTokens[2] = sec.rhedge;
+        ExchangeInfo memory exchange =
+            ICoreProxy(sec.core).getExchangeInfo({ collateralPoolId: 1, collateralA: tokenIn, collateralB: tokenOut });
 
-        address[] memory allTokens = new address[](supportingTokens.length + 1);
-        allTokens[0] = quoteToken;
-        for (uint256 i = 0; i < supportingTokens.length; i++) {
-            allTokens[i + 1] = supportingTokens[i];
+        uint256 maxAmountOut = IPassivePoolProxy(sec.pool).getTokenMarginBalance(sec.passivePoolId, tokenOut);
+
+        uint256 amountIn;
+        if (exchange.decimalsDelta < 0) {
+            amountIn = maxAmountOut * 1e18 / exchange.price * (10 ** uint8(-exchange.decimalsDelta));
+        } else {
+            amountIn = maxAmountOut * 1e18 / exchange.price / (10 ** uint8(exchange.decimalsDelta));
         }
 
-        for (uint256 i = 0; i < allTokens.length; i++) {
-            removeCollateralCap(allTokens[i]);
+        RebalanceAmounts memory rebalanceAmounts =
+            IPassivePoolProxy(sec.pool).getRebalanceAmounts(sec.passivePoolId, tokenIn, tokenOut, amountIn);
+
+        assertEq(rebalanceAmounts.amountIn, amountIn, "amountIn");
+        assertApproxEqRelDecimal(
+            rebalanceAmounts.amountOut, maxAmountOut, 1e13, 10 ** (ITokenProxy(tokenOut).decimals()), "amountOut"
+        );
+        assertEq(rebalanceAmounts.priceInToOut, exchange.price, "priceInToOut");
+
+        // if token out is rUSD, we can not rebalance all the margin balance because rUSD is needed to cover for
+        // the uPnL and exposure
+        if (tokenOut == sec.rusd) {
+            amountIn = amountIn * 9 / 10;
         }
 
-        for (uint256 i = 0; i < allTokens.length; i++) {
-            for (uint256 j = 0; j < allTokens.length; j++) {
-                if (i == j) {
-                    continue;
-                }
-
-                address tokenIn = allTokens[i];
-                address tokenOut = allTokens[j];
-
-                uint256 minAmountIn = 1 * (10 ** ITokenProxy(tokenIn).decimals());
-                uint256 maxAmountIn = 100_000_000 * (10 ** ITokenProxy(tokenIn).decimals());
-
-                RebalanceAmounts memory rebalanceAmounts =
-                    IPassivePoolProxy(sec.pool).getRebalanceAmounts(sec.passivePoolId, tokenIn, tokenOut, maxAmountIn);
-
-                uint256 amountIn = rebalanceAmounts.amountIn;
-                uint256 priceInToOut = rebalanceAmounts.priceInToOut;
-
-                // if token out is rUSD, we can not rebalance all the margin balance because rUSD is needed to cover for
-                // the uPnL and exposure
-                if (tokenOut == sec.rusd) {
-                    amountIn = amountIn * 9 / 10;
-                }
-
-                if (amountIn >= minAmountIn) {
-                    uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-
-                    if (partialAutoRebalance) {
-                        amountIn = amountIn / 2;
-                    }
-
-                    if (isLmToken(tokenIn) && mintLmTokens) {
-                        vm.prank(sec.poolRebalancer);
-                        ITokenProxy(tokenIn).mint(sec.poolRebalancer, amountIn);
-                    } else {
-                        deal(tokenIn, sec.poolRebalancer, amountIn);
-                    }
-
-                    vm.prank(sec.poolRebalancer);
-                    ITokenProxy(tokenIn).approve(sec.pool, amountIn);
-
-                    vm.prank(sec.poolRebalancer);
-                    IPassivePoolProxy(sec.pool).triggerAutoRebalance(
-                        sec.passivePoolId,
-                        AutoRebalanceInput({
-                            tokenIn: tokenIn,
-                            amountIn: amountIn,
-                            tokenOut: tokenOut,
-                            minPrice: priceInToOut,
-                            receiverAddress: sec.periphery
-                        })
-                    );
-
-                    uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-
-                    assertLe(sharePrice0, sharePrice1 + 1e6);
-                    assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e11, 18);
-
-                    if (partialAutoRebalance) {
-                        return;
-                    }
-
-                    vm.warp(block.timestamp + 1);
-                }
-            }
+        if (mintTokenIn) {
+            vm.prank(sec.poolRebalancer);
+            ITokenProxy(tokenIn).mint(sec.poolRebalancer, amountIn);
+        } else {
+            deal(tokenIn, sec.poolRebalancer, amountIn);
         }
-    }
 
-    function check_autoRebalance_currentTargets(bool mintLmTokens) public {
-        autoRebalancePool(false, mintLmTokens);
-    }
+        uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
 
-    function check_autoRebalance_differentTargets(bool partialAutoRebalance, bool mintLmTokens) public {
-        removeCollateralCap(sec.rselini);
-        removeCollateralCap(sec.ramber);
-        removeCollateralCap(sec.rhedge);
+        if (partial0) {
+            amountIn = amountIn / 2;
+        }
 
-        autoRebalancePool(partialAutoRebalance, mintLmTokens);
-    }
+        vm.prank(sec.poolRebalancer);
+        ITokenProxy(tokenIn).approve(sec.pool, amountIn);
 
-    function check_autoRebalance_noSharePriceChange() public {
-        check_autoRebalance_differentTargets(false, false);
+        AutoRebalanceInput memory inputs = AutoRebalanceInput({
+            tokenIn: tokenIn,
+            amountIn: amountIn,
+            tokenOut: tokenOut,
+            minPrice: exchange.price,
+            receiverAddress: sec.periphery
+        });
+
+        vm.prank(sec.poolRebalancer);
+        if (maxAmountOut == 0) {
+            vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.ZeroAmount.selector, 0, 0));
+            IPassivePoolProxy(sec.pool).triggerAutoRebalance(sec.passivePoolId, inputs);
+            return;
+        }
+
+        rebalanceAmounts = IPassivePoolProxy(sec.pool).triggerAutoRebalance(sec.passivePoolId, inputs);
+
+        uint256 expectedAmountOut;
+        if (exchange.decimalsDelta < 0) {
+            expectedAmountOut = amountIn * exchange.price / 1e18 / (10 ** uint8(-exchange.decimalsDelta));
+        } else {
+            expectedAmountOut = amountIn * exchange.price * (10 ** uint8(exchange.decimalsDelta)) / 1e18;
+        }
+
+        assertEq(rebalanceAmounts.amountIn, amountIn, "expected amountIn");
+        assertEq(rebalanceAmounts.amountOut, expectedAmountOut, "expected amountOut");
+        assertEq(rebalanceAmounts.priceInToOut, exchange.price, "expected priceInToOut");
+
+        uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+        assertLe(sharePrice0, sharePrice1 + 1e6, "share price not decreasing");
+        assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e11, 18, "share price not changing by much");
     }
 
     function check_autoRebalance_maxExposure() public {
@@ -318,7 +293,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         (uint256 maxExposureShort0, uint256 maxExposureLong0) =
             IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
 
-        check_autoRebalance_differentTargets(false, false);
+        autoRebalancePool(sec.rselini, sec.rusd, true, false);
 
         (uint256 maxExposureShort1, uint256 maxExposureLong1) =
             IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
@@ -336,7 +311,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         int256 baseDelta = 10_000e18;
 
         uint256 simulatedPrice0 = IPassivePerpProxy(sec.perp).getSimulatedPoolPrice(marketId, baseDelta);
-        check_autoRebalance_differentTargets(false, false);
+        autoRebalancePool(sec.rselini, sec.rusd, true, false);
         uint256 simulatedPrice1 = IPassivePerpProxy(sec.perp).getSimulatedPoolPrice(marketId, baseDelta);
 
         assertNotEq(simulatedPrice0, simulatedPrice1);
@@ -345,9 +320,9 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
     function check_sharePriceChangesWhenAssetPriceChanges() public {
         vm.warp(block.timestamp + 90);
-        autoRebalancePool(true, false);
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+        autoRebalancePool(sec.rselini, sec.rusd, true, false);
 
         (, ParentCollateralConfig memory rseliniParentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.rselini);
