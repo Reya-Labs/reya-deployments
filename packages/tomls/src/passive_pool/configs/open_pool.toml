@@ -1,0 +1,19 @@
+[invoke.passive_pool_open_deposits]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('deposit')),settings.pool1RusdId])) %>",
+    true,
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_open_withdrawals]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('withdrawal')),settings.pool1RusdId])) %>",
+    true,
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
