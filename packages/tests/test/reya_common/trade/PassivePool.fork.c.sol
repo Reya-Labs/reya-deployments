@@ -8,15 +8,11 @@ import {
     ParentCollateralConfig,
     ICoreProxy,
     Action,
-    ActionMetadata
+    ActionMetadata,
+    ExchangeInfo
 } from "../../../src/interfaces/ICoreProxy.sol";
 
-import {
-    IPassivePoolProxy,
-    RebalanceAmounts,
-    AutoRebalanceInput,
-    AllocationConfigurationData
-} from "../../../src/interfaces/IPassivePoolProxy.sol";
+import { IPassivePoolProxy, RebalanceAmounts, AutoRebalanceInput } from "../../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IPeripheryProxy,
     DepositNewMAInputs,
@@ -209,124 +205,87 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         }
     }
 
-    function autoRebalancePool(bool partialAutoRebalance, bool mintLmTokens) internal {
-        removeCollateralWithdrawalLimit(sec.rusd);
-        removeCollateralWithdrawalLimit(sec.deusd);
-        removeCollateralWithdrawalLimit(sec.sdeusd);
-        removeCollateralWithdrawalLimit(sec.rselini);
-        removeCollateralWithdrawalLimit(sec.ramber);
-        removeCollateralWithdrawalLimit(sec.rhedge);
+    function autoRebalancePool(address tokenIn, address tokenOut, bool partial0, bool mintTokenIn) internal {
+        removeCollateralWithdrawalLimit(tokenIn);
+        removeCollateralWithdrawalLimit(tokenOut);
+        removeCollateralCap(tokenIn);
+        removeCollateralCap(tokenOut);
 
-        removeCollateralCap(sec.rselini);
-        removeCollateralCap(sec.ramber);
-        removeCollateralCap(sec.rhedge);
+        ExchangeInfo memory exchange =
+            ICoreProxy(sec.core).getExchangeInfo({ collateralPoolId: 1, collateralA: tokenIn, collateralB: tokenOut });
 
-        // note, if the quote token target ratio is set to zero, rebalancing drains all the rUSD from passive pool,
-        // leaving it unable to cover the current exposure
-        if (IPassivePoolProxy(sec.pool).getAllocationConfiguration(sec.passivePoolId).quoteTokenTargetRatio == 0) {
-            vm.prank(sec.multisig);
-            IPassivePoolProxy(sec.pool).setAllocationConfiguration(
-                sec.passivePoolId, AllocationConfigurationData({ quoteTokenTargetRatio: 0.1e18 })
-            );
+        uint256 maxAmountOut = IPassivePoolProxy(sec.pool).getTokenMarginBalance(sec.passivePoolId, tokenOut);
+
+        uint256 amountIn;
+        if (exchange.decimalsDelta < 0) {
+            amountIn = maxAmountOut * 1e18 / exchange.price * (10 ** uint8(-exchange.decimalsDelta));
+        } else {
+            amountIn = maxAmountOut * 1e18 / exchange.price / (10 ** uint8(exchange.decimalsDelta));
         }
 
-        address quoteToken = sec.rusd;
-        address[] memory supportingTokens = IPassivePoolProxy(sec.pool).getQuoteSupportingCollaterals(sec.passivePoolId);
+        RebalanceAmounts memory rebalanceAmounts =
+            IPassivePoolProxy(sec.pool).getRebalanceAmounts(sec.passivePoolId, tokenIn, tokenOut, amountIn);
 
-        address[] memory allTokens = new address[](supportingTokens.length + 1);
-        allTokens[0] = quoteToken;
-        for (uint256 i = 0; i < supportingTokens.length; i++) {
-            allTokens[i + 1] = supportingTokens[i];
-        }
-
-        for (uint256 i = 0; i < allTokens.length; i++) {
-            for (uint256 j = 0; j < allTokens.length; j++) {
-                if (i == j) {
-                    continue;
-                }
-
-                address tokenIn = allTokens[i];
-                address tokenOut = allTokens[j];
-
-                uint256 amountIn = 100_000_000 * (10 ** ITokenProxy(tokenIn).decimals());
-
-                RebalanceAmounts memory rebalanceAmounts =
-                    IPassivePoolProxy(sec.pool).getRebalanceAmounts(sec.passivePoolId, tokenIn, tokenOut, amountIn);
-
-                if (rebalanceAmounts.amountIn != 0) {
-                    uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-
-                    if (partialAutoRebalance) {
-                        rebalanceAmounts.amountIn = rebalanceAmounts.amountIn / 2;
-                    }
-
-                    if (isLmToken(tokenIn) && mintLmTokens) {
-                        vm.prank(sec.poolRebalancer);
-                        ITokenProxy(tokenIn).mint(sec.poolRebalancer, rebalanceAmounts.amountIn);
-                    } else {
-                        deal(tokenIn, sec.poolRebalancer, rebalanceAmounts.amountIn);
-                    }
-
-                    vm.prank(sec.poolRebalancer);
-                    ITokenProxy(tokenIn).approve(sec.pool, rebalanceAmounts.amountIn);
-
-                    vm.prank(sec.poolRebalancer);
-                    IPassivePoolProxy(sec.pool).triggerAutoRebalance(
-                        sec.passivePoolId,
-                        AutoRebalanceInput({
-                            tokenIn: tokenIn,
-                            amountIn: rebalanceAmounts.amountIn,
-                            tokenOut: tokenOut,
-                            minPrice: rebalanceAmounts.priceInToOut,
-                            receiverAddress: sec.periphery
-                        })
-                    );
-
-                    uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-
-                    assertLe(sharePrice0, sharePrice1 + 1e6);
-                    assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e11, 18);
-
-                    if (partialAutoRebalance) {
-                        return;
-                    }
-
-                    vm.warp(block.timestamp + 1);
-                }
-            }
-        }
-    }
-
-    function check_autoRebalance_currentTargets(bool mintLmTokens) public {
-        autoRebalancePool(false, mintLmTokens);
-    }
-
-    function check_autoRebalance_differentTargets(bool partialAutoRebalance, bool mintLmTokens) public {
-        removeCollateralCap(sec.rselini);
-        removeCollateralCap(sec.ramber);
-        removeCollateralCap(sec.rhedge);
-
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setAllocationConfiguration(
-            sec.passivePoolId, AllocationConfigurationData({ quoteTokenTargetRatio: 0.353535e18 })
+        assertEq(rebalanceAmounts.amountIn, amountIn, "amountIn");
+        assertApproxEqRelDecimal(
+            rebalanceAmounts.amountOut, maxAmountOut, 1e13, 10 ** (ITokenProxy(tokenOut).decimals()), "amountOut"
         );
+        assertEq(rebalanceAmounts.priceInToOut, exchange.price, "priceInToOut");
 
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.sdeusd, 0.454545e18);
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.rselini, 0.2e18);
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, sec.ramber, 0.2e18);
-        vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(
-            sec.passivePoolId, sec.rhedge, 1e18 - 0.454545e18 - 0.2e18 - 0.2e18
-        );
+        // if token out is rUSD, we can not rebalance all the margin balance because rUSD is needed to cover for
+        // the uPnL and exposure
+        if (tokenOut == sec.rusd) {
+            amountIn = amountIn * 9 / 10;
+        }
 
-        autoRebalancePool(partialAutoRebalance, mintLmTokens);
-    }
+        if (mintTokenIn) {
+            vm.prank(sec.poolRebalancer);
+            ITokenProxy(tokenIn).mint(sec.poolRebalancer, amountIn);
+        } else {
+            deal(tokenIn, sec.poolRebalancer, amountIn);
+        }
 
-    function check_autoRebalance_noSharePriceChange() public {
-        check_autoRebalance_differentTargets(false, false);
+        uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+        if (partial0) {
+            amountIn = amountIn / 2;
+        }
+
+        vm.prank(sec.poolRebalancer);
+        ITokenProxy(tokenIn).approve(sec.pool, amountIn);
+
+        AutoRebalanceInput memory inputs = AutoRebalanceInput({
+            tokenIn: tokenIn,
+            amountIn: amountIn,
+            tokenOut: tokenOut,
+            minPrice: exchange.price,
+            receiverAddress: sec.periphery
+        });
+
+        vm.prank(sec.poolRebalancer);
+        if (maxAmountOut == 0) {
+            vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.ZeroAmount.selector, 0, 0));
+            IPassivePoolProxy(sec.pool).triggerAutoRebalance(sec.passivePoolId, inputs);
+            return;
+        }
+
+        rebalanceAmounts = IPassivePoolProxy(sec.pool).triggerAutoRebalance(sec.passivePoolId, inputs);
+
+        uint256 expectedAmountOut;
+        if (exchange.decimalsDelta < 0) {
+            expectedAmountOut = amountIn * exchange.price / 1e18 / (10 ** uint8(-exchange.decimalsDelta));
+        } else {
+            expectedAmountOut = amountIn * exchange.price * (10 ** uint8(exchange.decimalsDelta)) / 1e18;
+        }
+
+        assertEq(rebalanceAmounts.amountIn, amountIn, "expected amountIn");
+        assertEq(rebalanceAmounts.amountOut, expectedAmountOut, "expected amountOut");
+        assertEq(rebalanceAmounts.priceInToOut, exchange.price, "expected priceInToOut");
+
+        uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+
+        assertLe(sharePrice0, sharePrice1 + 1e6, "share price not decreasing");
+        assertApproxEqAbsDecimal(sharePrice0, sharePrice1, 1e11, 18, "share price not changing by much");
     }
 
     function check_autoRebalance_maxExposure() public {
@@ -334,7 +293,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         (uint256 maxExposureShort0, uint256 maxExposureLong0) =
             IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
 
-        check_autoRebalance_differentTargets(false, false);
+        autoRebalancePool(sec.rselini, sec.rusd, true, false);
 
         (uint256 maxExposureShort1, uint256 maxExposureLong1) =
             IPassivePerpProxy(sec.perp).getPoolMaxExposures(sec.passivePoolId);
@@ -352,7 +311,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         int256 baseDelta = 10_000e18;
 
         uint256 simulatedPrice0 = IPassivePerpProxy(sec.perp).getSimulatedPoolPrice(marketId, baseDelta);
-        check_autoRebalance_differentTargets(false, false);
+        autoRebalancePool(sec.rselini, sec.rusd, true, false);
         uint256 simulatedPrice1 = IPassivePerpProxy(sec.perp).getSimulatedPoolPrice(marketId, baseDelta);
 
         assertNotEq(simulatedPrice0, simulatedPrice1);
@@ -361,9 +320,9 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
     function check_sharePriceChangesWhenAssetPriceChanges() public {
         vm.warp(block.timestamp + 90);
-        autoRebalancePool(false, false);
 
         uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
+        autoRebalancePool(sec.rselini, sec.rusd, true, false);
 
         (, ParentCollateralConfig memory rseliniParentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.rselini);
@@ -482,9 +441,39 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         }
     }
 
-    function check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(address token) public {
-        vm.prank(sec.multisig);
-        vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.TokenNotSupportingCollateral.selector, token));
-        IPassivePoolProxy(sec.pool).setTargetRatioPostQuote(sec.passivePoolId, token, 0.1e18);
+    function check_DepositAndWithdrawalFeatureFlags(address user, bool isWhitelisted) public {
+        vm.startPrank(sec.multisig);
+        IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getDepositFeatureFlagId(1), false);
+        IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getWithdrawalFeatureFlagId(1), false);
+        vm.stopPrank();
+
+        deal(sec.rusd, user, 1e6);
+        vm.prank(user);
+        ITokenProxy(sec.rusd).approve(sec.pool, 1e6);
+
+        if (!isWhitelisted) {
+            vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.DepositDisabled.selector, 1, user));
+        }
+
+        vm.prank(user);
+        IPassivePoolProxy(sec.pool).addLiquidity({
+            poolId: sec.passivePoolId,
+            owner: user,
+            amount: 1e6,
+            minShares: 0,
+            actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: user })
+        });
+
+        if (!isWhitelisted) {
+            vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.WithdrawalDisabled.selector, 1, user));
+        }
+
+        vm.prank(user);
+        IPassivePoolProxy(sec.pool).removeLiquidity({
+            poolId: sec.passivePoolId,
+            sharesAmount: 0.5e30,
+            minOut: 0,
+            actionMetadata: ActionMetadata({ action: Action.Unstake, onBehalfOf: user })
+        });
     }
 }

@@ -540,7 +540,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPricePUMP);
         ls.maxDeviationMarket.push(ls.maxDeviationPUMP);
 
-        ls.meanPriceMORPHO = 1.07 * 1e18;
+        ls.meanPriceMORPHO = 1.62 * 1e18;
         ls.maxDeviationMORPHO = ls.meanPriceMORPHO / 2;
         ls.meanPriceMarket.push(ls.meanPriceMORPHO);
         ls.maxDeviationMarket.push(ls.maxDeviationMORPHO);

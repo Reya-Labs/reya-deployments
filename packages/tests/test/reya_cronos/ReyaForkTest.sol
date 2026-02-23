@@ -759,5 +759,13 @@ contract ReyaForkTest is BaseReyaForkTest {
         IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(
             0xd94fe6b0d28029e9b0bc2853dfd3d4ebeaf71dc48257f547d22f3fb421c01ee8, true
         );
+
+        // (*) allow anyone to deposit in the pool
+        vm.prank(sec.multisig);
+        ICoreProxy(sec.pool).setFeatureFlagAllowAll(getDepositFeatureFlagId(1), true);
+
+        // (*) allow anyone to withdraw from the pool
+        vm.prank(sec.multisig);
+        ICoreProxy(sec.pool).setFeatureFlagAllowAll(getWithdrawalFeatureFlagId(1), true);
     }
 }

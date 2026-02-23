@@ -12,11 +12,6 @@ interface IPassivePoolProxy {
         uint256 amountIn
     ) external view returns (RebalanceAmounts memory amounts);
 
-    function getTargetTokenAmount(uint128 poolId, address token)
-        external
-        view
-        returns (uint256);
-
     function getTokenMarginBalance(uint128 poolId, address token)
         external
         view
@@ -27,6 +22,9 @@ interface IPassivePoolProxy {
         AutoRebalanceInput memory input
     ) external returns (RebalanceAmounts memory amounts);
 
+    error CollateralNotWhitelisted(uint128 poolId, address collateral);
+    error DepositDisabled(uint128 poolId, address user);
+    error WithdrawalDisabled(uint128 poolId, address user);
     error AmountZero();
     error FailedApproval(address spender, uint256 value);
     error FailedTransfer(address from, address to, uint256 value);
@@ -60,11 +58,6 @@ interface IPassivePoolProxy {
 
     function createPool(address quoteToken) external returns (uint128 poolId);
 
-    function getAllocationConfiguration(uint128 poolId)
-        external
-        view
-        returns (AllocationConfigurationData memory);
-
     function getGlobalConfiguration()
         external
         pure
@@ -80,43 +73,10 @@ interface IPassivePoolProxy {
         view
         returns (address quoteToken);
 
-    function getQuoteSupportingCollaterals(uint128 poolId)
-        external
-        view
-        returns (address[] memory);
-
-    function getTargetRatio(uint128 poolId, address token)
-        external
-        view
-        returns (
-            /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-            uint256
-        );
-
-    function getTargetRatioPostQuote(uint128 poolId, address token)
-        external
-        view
-        returns (
-            /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-            uint256
-        );
-
     function sendCallToCore(bytes memory data) external returns (bytes memory);
-
-    function setAllocationConfiguration(
-        uint128 poolId,
-        AllocationConfigurationData memory config
-    ) external;
 
     function setGlobalConfiguration(GlobalConfiguration.Data memory config)
         external;
-
-    function setTargetRatioPostQuote(
-        uint128 poolId,
-        address token,
-        /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-        uint256 targetRatioPostQuote
-    ) external;
 
     error CoreCallReverted(bytes output);
     error InvalidQuoteTokenTargetRatio();
@@ -335,11 +295,6 @@ struct AutoRebalanceInput {
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
     uint256 minPrice;
     address receiverAddress;
-}
-
-struct AllocationConfigurationData {
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 quoteTokenTargetRatio;
 }
 
 struct EIP712Signature {
