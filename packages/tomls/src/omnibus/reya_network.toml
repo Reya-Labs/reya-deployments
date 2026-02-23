@@ -474,7 +474,7 @@ usdcOptimismWithdrawFeeUnscaled = "2.1"
 usdcPolygonWithdrawFeeUnscaled = "2.1"
 usdcBaseWithdrawFeeUnscaled = "2.1"
 # -------------------------------------------------------------------
-wethEthereumWithdrawFeeUnscaled = "0.00376"
+wethEthereumWithdrawFeeUnscaled = "0.00415"
 wethArbitrumWithdrawFeeUnscaled = "0.0014"
 wethOptimismWithdrawFeeUnscaled = "0.0012"
 wethPolygonWithdrawFeeUnscaled = "0.0012"

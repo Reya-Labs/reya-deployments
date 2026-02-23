@@ -410,7 +410,7 @@ usdcEthereumSepoliaWithdrawFeeUnscaled = "7.0"
 usdcArbitrumSepoliaWithdrawFeeUnscaled = "2.5"
 usdcOptimismSepoliaWithdrawFeeUnscaled = "2.1"
 # -------------------------------------------------------------------
-wethEthereumSepoliaWithdrawFeeUnscaled = "0.00376"
+wethEthereumSepoliaWithdrawFeeUnscaled = "0.00415"
 wethArbitrumSepoliaWithdrawFeeUnscaled = "0.0014"
 wethOptimismSepoliaWithdrawFeeUnscaled = "0.0012"
 # -------------------------------------------------------------------
