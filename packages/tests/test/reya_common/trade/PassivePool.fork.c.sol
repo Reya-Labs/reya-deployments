@@ -40,8 +40,6 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         removeCollateralWithdrawalLimit(sec.rselini);
         removeCollateralWithdrawalLimit(sec.ramber);
         removeCollateralWithdrawalLimit(sec.rhedge);
-
-        fundPassivePool(2_000_000e6);
     }
 
     function check_PoolHealth() public {
