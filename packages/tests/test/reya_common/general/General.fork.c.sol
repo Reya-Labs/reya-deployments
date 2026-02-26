@@ -600,7 +600,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceMEGA);
         ls.maxDeviationMarket.push(ls.maxDeviationMEGA);
 
-        ls.meanPriceSUSDE = 1.17 * 1e18;
+        ls.meanPriceSUSDE = 1.22 * 1e18;
         ls.maxDeviationSUSDE = 0.05 * 1e18;
 
         ls.meanPriceWSTETH = 2300 * 1e18;
