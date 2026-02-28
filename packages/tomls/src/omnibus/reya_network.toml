@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.134"
+version = "1.0.135"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -486,7 +486,7 @@ wethOptimismWithdrawFeeUnscaled = "0.0012"
 wethPolygonWithdrawFeeUnscaled = "0.0012"
 wethBaseWithdrawFeeUnscaled = "0.0012"
 # -------------------------------------------------------------------
-wbtcEthereumWithdrawFeeUnscaled = "0.00096"
+wbtcEthereumWithdrawFeeUnscaled = "0.000096"
 wbtcArbitrumWithdrawFeeUnscaled = "0.000039"
 wbtcOptimismWithdrawFeeUnscaled = "0.000033"
 wbtcPolygonWithdrawFeeUnscaled = "0.000033"
@@ -2500,7 +2500,7 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_weth_capUnscaled = "5"
+cp1Rusd_weth_capUnscaled = "50"
 cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0.01"
 cp1Rusd_weth_autoExchangeDustThresholdUnscaled = "0"
