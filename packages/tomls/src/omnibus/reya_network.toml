@@ -2500,7 +2500,7 @@ cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 # -----------------------------------------------
 # TODO later: pass depositingEnabled through var (but there's no parseBool)
 # cp1Rusd_rusd_depositingEnabled = "true"
-cp1Rusd_weth_capUnscaled = "20"
+cp1Rusd_weth_capUnscaled = "50"
 cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0.01"
 cp1Rusd_weth_autoExchangeDustThresholdUnscaled = "0"
