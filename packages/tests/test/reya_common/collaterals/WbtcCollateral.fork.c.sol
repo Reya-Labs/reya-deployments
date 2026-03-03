@@ -115,7 +115,7 @@ contract WbtcCollateralForkCheck is BaseReyaForkTest {
         ICoreProxy(sec.core).setCollateralConfig(1, sec.wbtc, collateralConfig, parentCollateralConfig);
 
         // Mock WBTC collateral price (the fork may not have fresh WBTC price data)
-        uint256 wbtcPrice = 100_000e18; // $100k per BTC
+        uint256 wbtcPrice = 66_000e18; // ~$66k per BTC
         mockFreshPrice(parentCollateralConfig.oracleNodeId, wbtcPrice);
 
         uint256 priceHaircut = parentCollateralConfig.priceHaircut;

@@ -1,5 +1,6 @@
 include = [
     "./mainnet.toml",
     "configs/set_depth_executors.toml",
+    "configs/initialize_logf_executors.toml",
     "utils/deploy_proxy.toml",
 ]

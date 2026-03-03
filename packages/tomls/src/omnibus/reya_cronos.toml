@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.115"
+version = "1.0.121"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -48,16 +48,16 @@ progCompAccountId = "8038"
 
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.25@router"
+coreRouterPackage = "reya-core:1.0.26@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
-passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.10@router"
+passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.13@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.41@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.46@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.0.11@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
@@ -128,6 +128,8 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 rebalancer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 rebalancer2 = "0x25E028A45a6012763A76145d7CEEa3587015e990"
 rebalancer3 = "0xe8AaBC33a41d63FE4a0aD13ce815279391dD069E"
+rebalancer4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+rebalancer5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.liquidators]
 liquidator1 = "0x6f7Fa28A4C6457F0dcCcD95360dd072155aA1439"
@@ -163,6 +165,9 @@ setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9"
 setTierIdBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 setReferralMappingBot = "0xAdA667dCCF02CC78944cE8464fa5d722f2c73594"
 setMarketZeroFeeBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
+
+[var.dynamic_pricing_setters]
+dynamicPricingSetter1 = "0x93e3aaee71dc2f42ad9a5992e4a6776b3406104d"
 
 [var.set_main_account_id_bots]
 setMainAccountIdBot = "0x286119f5cc1f99c9819cb8a7fb22eb49ca22c878"
@@ -247,6 +252,11 @@ rhedgeMinter1 = "<%= settings.rebalancer3 %>"
 rhedgeSubscriber1 = "<%= settings.rebalancer3 %>"
 rhedgeRedeemer1 = "<%= settings.rebalancer3 %>"
 rhedgeCustodian1 = "0x45556408e543158f74403e882E3C8c23eCD9f732"
+
+[var.unstaking_test_wallets]
+unstaking_test_wallet_1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+unstaking_test_wallet_2 = "0xFD4295c1A0b07e6b706f0Ab83dC9eB461b7f17B3"
+unstaking_test_wallet_3 = "0xfED5b6f65D42af35B87795f5C05da2AC07A8aA4e"
 
 [var.stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
@@ -404,33 +414,33 @@ sdeusdExecutionHelper = "0xFaA0313F2a7a48Cc995e01ADC68cb3aAD130Bdaa"
 sdeusdEthereumSepoliaConnector = "0x596c0Bb29466cE75A4d1296657AE9275fD4b0912"
 
 [var.periphery_socket_withdraw_fees]
-usdcEthereumSepoliaWithdrawFeeUnscaled = "5.0"
-usdcArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
-usdcOptimismSepoliaWithdrawFeeUnscaled = "0.1"
+usdcEthereumSepoliaWithdrawFeeUnscaled = "7.0"
+usdcArbitrumSepoliaWithdrawFeeUnscaled = "2.5"
+usdcOptimismSepoliaWithdrawFeeUnscaled = "2.1"
 # -------------------------------------------------------------------
 wethEthereumSepoliaWithdrawFeeUnscaled = "0.00415"
-wethArbitrumSepoliaWithdrawFeeUnscaled = "0.000191893276635266"
-wethOptimismSepoliaWithdrawFeeUnscaled = "0.000038378655327053"
+wethArbitrumSepoliaWithdrawFeeUnscaled = "0.0014"
+wethOptimismSepoliaWithdrawFeeUnscaled = "0.0012"
 # -------------------------------------------------------------------
 wbtcEthereumSepoliaWithdrawFeeUnscaled = "0.00096"
-wbtcArbitrumSepoliaWithdrawFeeUnscaled = "0.0000073"
-wbtcOptimismSepoliaWithdrawFeeUnscaled = "0.0000014"
+wbtcArbitrumSepoliaWithdrawFeeUnscaled = "0.000039"
+wbtcOptimismSepoliaWithdrawFeeUnscaled = "0.000033"
 # -------------------------------------------------------------------
 wstethEthereumSepoliaWithdrawFeeUnscaled = "0.00415"
-wstethArbitrumSepoliaWithdrawFeeUnscaled = "0.000191893276635266"
-wstethOptimismSepoliaWithdrawFeeUnscaled = "0.000038378655327053"
+wstethArbitrumSepoliaWithdrawFeeUnscaled = "0.0014"
+wstethOptimismSepoliaWithdrawFeeUnscaled = "0.0012"
 # -------------------------------------------------------------------
-usdeEthereumSepoliaWithdrawFeeUnscaled = "5.0"
-usdeArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
-usdeOptimismSepoliaWithdrawFeeUnscaled = "0.1"
+usdeEthereumSepoliaWithdrawFeeUnscaled = "7.0"
+usdeArbitrumSepoliaWithdrawFeeUnscaled = "2.5"
+usdeOptimismSepoliaWithdrawFeeUnscaled = "2.1"
 # -------------------------------------------------------------------
-susdeEthereumSepoliaWithdrawFeeUnscaled = "5.0"
-susdeArbitrumSepoliaWithdrawFeeUnscaled = "0.5"
-susdeOptimismSepoliaWithdrawFeeUnscaled = "0.1"
+susdeEthereumSepoliaWithdrawFeeUnscaled = "7.0"
+susdeArbitrumSepoliaWithdrawFeeUnscaled = "2.5"
+susdeOptimismSepoliaWithdrawFeeUnscaled = "2.1"
 # -------------------------------------------------------------------
-deusdEthereumSepoliaWithdrawFeeUnscaled = "5.0"
+deusdEthereumSepoliaWithdrawFeeUnscaled = "7.0"
 # -------------------------------------------------------------------
-sdeusdEthereumSepoliaWithdrawFeeUnscaled = "5.0"
+sdeusdEthereumSepoliaWithdrawFeeUnscaled = "7.0"
 # -------------------------------------------------------------------
 reyaEthereumSepoliaWithdrawFeeUnscaled = "0.1"
 
@@ -499,7 +509,7 @@ passivePoolExchangeRebateUnscaled = "0.2"
 lotteryPotExchangeRebateUnscaled = "0.2"
 rageTradeExchangeRebateUnscaled = "0.2"
 zeuzExchangeRebateUnscaled = "0.2"
-pool1RusdRebateUnscaled = "0.3125"
+pool1RusdRebateUnscaled = "0.5"
 
 [var.fees_configs]
 takerFeeTier0Unscaled = "0.00040"
@@ -1301,7 +1311,7 @@ market24Bnb_volatilityIndexMultiplierUnscaled = "0"
 [var.market_25Jto]
 market25Jto_riskMatrixIndex = "0"
 market25Jto_maxOpenBaseUnscaled = "138886"
-market25Jto_velocityMultiplierUnscaled = "33.8"
+market25Jto_velocityMultiplierUnscaled = "135"
 market25Jto_oracleNodeId = "<%= settings.jtoUsdcMarkNodeIdStork %>"
 market25Jto_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market25Jto_dutchConfig_lambdaUnscaled = "1"
@@ -1961,7 +1971,7 @@ market57Move_volatilityIndexMultiplierUnscaled = "0"
 [var.market_58Bera]
 market58Bera_riskMatrixIndex = "0"
 market58Bera_maxOpenBaseUnscaled = "160184"
-market58Bera_velocityMultiplierUnscaled = "37.2"
+market58Bera_velocityMultiplierUnscaled = "75"
 market58Bera_oracleNodeId = "<%= settings.beraUsdcMarkNodeIdStork %>"
 market58Bera_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market58Bera_dutchConfig_lambdaUnscaled = "1"

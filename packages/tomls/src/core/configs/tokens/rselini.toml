@@ -4,7 +4,7 @@ fromCall.func = "owner"
 func = "setGlobalCollateralConfig"
 args = [
     "<%= contracts.RSELINIProxy.address %>",
-    { collateralAdapter = "<%= settings.rseliniCollateralAdapter %>", withdrawalWindowSize = "<%= settings.rseliniWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.rseliniWithdrawalTvlPercentageLimitUnscaled)  %>" },
+    { collateralAdapter_DEPRECATED = "<%= settings.rseliniCollateralAdapter %>", withdrawalWindowSize = "<%= settings.rseliniWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.rseliniWithdrawalTvlPercentageLimitUnscaled)  %>" },
 ]
 depends = [
     'invoke.upgrade_core_proxy',

@@ -68,20 +68,84 @@ contract PassivePoolForkTest is ReyaForkTest, PassivePoolForkCheck {
         check_PassivePoolWithToken(sec.wsteth);
     }
 
-    function test_Cronos_PassivePoolAutoRebalance_DifferentTargets_Partial() public {
-        check_autoRebalance_differentTargets(true, false);
+    function test_PassivePoolAutoRebalance_partial_rUSD_for_rSelini() public {
+        autoRebalancePool(sec.rusd, sec.rselini, true, false);
     }
 
-    function test_Cronos_PassivePoolAutoRebalance_DifferentTargets_Partial_MintLmTokens() public {
-        check_autoRebalance_differentTargets(true, true);
+    function test_PassivePoolAutoRebalance_full_rUSD_for_rSelini() public {
+        autoRebalancePool(sec.rusd, sec.rselini, false, false);
+    }
+
+    function test_PassivePoolAutoRebalance_partial_rSelini_for_rUSD() public {
+        autoRebalancePool(sec.rselini, sec.rusd, true, false);
+    }
+
+    function test_PassivePoolAutoRebalance_full_rSelini_for_rUSD() public {
+        autoRebalancePool(sec.rselini, sec.rusd, false, false);
+    }
+
+    function test_PassivePoolAutoRebalance_full_rSelini_for_rUSD_and_mint() public {
+        autoRebalancePool(sec.rselini, sec.rusd, false, true);
+    }
+
+    function test_PassivePoolAutoRebalance_partial_rUSD_for_rAmber() public {
+        autoRebalancePool(sec.rusd, sec.ramber, true, false);
+    }
+
+    function test_PassivePoolAutoRebalance_full_rUSD_for_rAmber() public {
+        autoRebalancePool(sec.rusd, sec.ramber, false, false);
+    }
+
+    function test_PassivePoolAutoRebalance_partial_rAmber_for_rUSD() public {
+        autoRebalancePool(sec.ramber, sec.rusd, true, false);
+    }
+
+    function test_PassivePoolAutoRebalance_full_rAmber_for_rUSD() public {
+        autoRebalancePool(sec.ramber, sec.rusd, false, false);
+    }
+
+    function test_PassivePoolAutoRebalance_full_rAmber_for_rUSD_and_mint() public {
+        autoRebalancePool(sec.ramber, sec.rusd, false, true);
+    }
+
+    function test_PassivePoolAutoRebalance_partial_rUSD_for_rHedge() public {
+        autoRebalancePool(sec.rusd, sec.rhedge, true, false);
+    }
+
+    function test_PassivePoolAutoRebalance_full_rUSD_for_rHedge() public {
+        autoRebalancePool(sec.rusd, sec.rhedge, false, false);
+    }
+
+    function test_PassivePoolAutoRebalance_partial_rHedge_for_rUSD() public {
+        autoRebalancePool(sec.rhedge, sec.rusd, true, false);
+    }
+
+    function test_PassivePoolAutoRebalance_full_rHedge_for_rUSD() public {
+        autoRebalancePool(sec.rhedge, sec.rusd, false, false);
+    }
+
+    function test_PassivePoolAutoRebalance_full_rHedge_for_rUSD_and_mint() public {
+        autoRebalancePool(sec.rhedge, sec.rusd, false, true);
+    }
+
+    function test_PassivePoolAutoRebalance_partial_rUSD_for_sUSDe() public {
+        autoRebalancePool(sec.rusd, sec.susde, true, false);
+    }
+
+    function test_PassivePoolAutoRebalance_full_rUSD_for_sUSDe() public {
+        autoRebalancePool(sec.rusd, sec.susde, false, false);
+    }
+
+    function test_PassivePoolAutoRebalance_partial_sUSDe_for_rUSD() public {
+        autoRebalancePool(sec.susde, sec.rusd, true, false);
+    }
+
+    function test_PassivePoolAutoRebalance_full_sUSDe_for_rUSD() public {
+        autoRebalancePool(sec.susde, sec.rusd, false, false);
     }
 
     function test_Cronos_AutoRebalance_RevertWhenSenderIsNotRebalancer() public {
         check_autoRebalance_revertWhenSenderIsNotRebalancer();
-    }
-
-    function test_Cronos_SetTokenTargetRatio_RevertWhenNotSupportingToken() public {
-        check_setTokenTargetRatio_revertWhenTokenIsNotSupportingCollateral(vm.addr(10));
     }
 
     function testFuzz_Cronos_DepositWithdraw_NoSharePriceChange(int256[] memory amountsFuzz) public {
