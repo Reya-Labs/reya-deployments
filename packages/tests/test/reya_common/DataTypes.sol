@@ -6,6 +6,8 @@ uint256 constant optimismChainId = 10;
 uint256 constant polygonChainId = 137;
 uint256 constant baseChainId = 8453;
 uint256 constant ethereumSepoliaChainId = 11_155_111;
+
+uint256 constant reyaNetworkChainId = 1729;
 uint256 constant arbitrumSepoliaChainId = 421_614;
 uint256 constant optimismSepoliaChainId = 11_155_420;
 
@@ -43,6 +45,10 @@ struct StaticEcosystem {
     address rhedge;
     address srusd;
     address wsteth;
+    address sREYA;
+    address REYA;
+    // Layerzero endpoint on Reya Network
+    address layerZeroEndpoint;
     // Elixir tokens on Mainnet (Ethereum or Ethereum Sepolia)
     address elixirSdeusd;
     // Reya modules

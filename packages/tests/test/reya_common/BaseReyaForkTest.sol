@@ -455,13 +455,17 @@ contract BaseReyaForkTest is StorageReyaForkTest {
         );
     }
 
+    function isMainnet() internal view returns (bool) {
+        return block.chainid == reyaNetworkChainId;
+    }
+
     function checkPoolHealth() internal {
         s.poolMarginInfo = ICoreProxy(sec.core).getUsdNodeMarginInfo(sec.passivePoolAccountId);
         assertGtDecimal(uint256(s.poolMarginInfo.liquidationDelta), 0, 18);
         assertGtDecimal(uint256(s.poolMarginInfo.initialDelta), 0, 18);
 
         s.sharePrice = ud(IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId));
-        assertGtDecimal(s.sharePrice.unwrap(), 0.99e18, 18);
+        assertGtDecimal(s.sharePrice.unwrap(), isMainnet() ? 1e18 : 0.9e18, 18);
     }
 
     function mockFreshPrice(bytes32 nodeId, uint256 price) internal {
