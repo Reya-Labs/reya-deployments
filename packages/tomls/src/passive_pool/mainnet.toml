@@ -3,4 +3,5 @@ include = [
     "configs/global_config.toml",
     "configs/feature_flags.toml",
     "configs/pools/pool_1rusd.toml",
+    "configs/open_pool.toml",
 ]
