@@ -566,8 +566,9 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
         bytes memory extraData = abi.encode(receiver, dstEid);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(accountId, commands, userPk, 1, extraData);
 
+        uint256 amountAfterFee = withdrawAmount - staticFee;
         vm.expectRevert(
-            abi.encodeWithSignature("SlippageExceeded(uint256,uint256)", withdrawAmount / 1e12 * 1e12, withdrawAmount)
+            abi.encodeWithSignature("SlippageExceeded(uint256,uint256)", amountAfterFee / 1e12 * 1e12, amountAfterFee)
         );
         IPeripheryProxy(sec.periphery).withdrawMALZ(
             WithdrawMALZInputs({
