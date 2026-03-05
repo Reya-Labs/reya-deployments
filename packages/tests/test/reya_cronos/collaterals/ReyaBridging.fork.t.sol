@@ -44,4 +44,32 @@ contract ReyaBridgingForkTest is ReyaForkTest, ReyaBridgingForkCheck {
     function test_Cronos_ReyaStakingPermissions() public {
         check_ReyaStakingPermissions();
     }
+
+    function test_Cronos_ReyaWithdrawMALZ() public {
+        check_ReyaWithdrawMALZ();
+    }
+
+    function test_Cronos_ReyaWithdrawMALZFailsBelowSharedDecimals() public {
+        check_ReyaWithdrawMALZFailsBelowSharedDecimals();
+    }
+
+    function test_Cronos_ReyaWithdrawMALZAboveSharedDecimals() public {
+        check_ReyaWithdrawMALZAboveSharedDecimals();
+    }
+
+    function test_Cronos_ReyaWithdrawMALZFailsWhenNotEnoughFees() public {
+        check_ReyaWithdrawMALZFailsWhenNotEnoughFees();
+    }
+
+    function test_Cronos_ReyaWithdrawMALZFailsForUnauthorizedOFT() public {
+        check_ReyaWithdrawMALZFailsForUnauthorizedOFT();
+    }
+
+    function test_Cronos_ReyaWithdrawMALZWithdrawLimits() public {
+        check_ReyaWithdrawMALZWithdrawLimits();
+    }
+
+    function test_Cronos_ReyaWithdrawMALZFailsWhenPaused() public {
+        check_ReyaWithdrawMALZFailsWhenPaused();
+    }
 }

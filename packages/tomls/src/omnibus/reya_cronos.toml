@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.121"
+version = "1.0.122"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -59,7 +59,7 @@ passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.13@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.46@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
-peripheryRouterPackage = "reya-periphery:1.0.11@router"
+peripheryRouterPackage = "reya-periphery:1.0.13@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassProxyPackage = "reya-exchange-pass-nft:1.0.0@proxy"
@@ -442,7 +442,7 @@ deusdEthereumSepoliaWithdrawFeeUnscaled = "7.0"
 # -------------------------------------------------------------------
 sdeusdEthereumSepoliaWithdrawFeeUnscaled = "7.0"
 # -------------------------------------------------------------------
-reyaEthereumSepoliaWithdrawFeeUnscaled = "0.1"
+reyaEthereumSepoliaWithdrawFeeUnscaled = "373"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"

@@ -22,6 +22,10 @@ import {
     StakeReyaInputs,
     UnstakeStakedReyaInputs,
     WithdrawMALZInputs,
+    SendParam,
+    MessagingFee,
+    MessagingReceipt,
+    OFTReceipt,
     Command as Command_Periphery
 } from "../../../src/interfaces/IPeripheryProxy.sol";
 
@@ -104,6 +108,7 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
     }
 
     function check_ReyaStaking() public returns (uint128 account) {
+        (user, userPk) = makeAddrAndKey("user");
         uint256 stakeAmount = 8e18;
         address reyaToken = IPeripheryProxy(sec.periphery).getGlobalConfiguration().REYAProxy;
         address stakedReya = IPeripheryProxy(sec.periphery).getGlobalConfiguration().sREYAProxy;
@@ -233,6 +238,7 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
     }
 
     function check_ReyaWithdrawLimitInWindowSizes() public {
+        (user, userPk) = makeAddrAndKey("user");
         address reyaToken = IPeripheryProxy(sec.periphery).getGlobalConfiguration().REYAProxy;
 
         (GlobalCollateralConfig memory globalCollateralConfig,) =
@@ -455,5 +461,236 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             vm.prank(IStakedReyaToken(stakedReya).owner());
             IStakedReyaToken(stakedReya).unpause();
         }
+    }
+
+    function check_ReyaWithdrawMALZ() public {
+        uint128 accountId = check_ReyaBridgeIntoSpotMA();
+        uint256 withdrawAmount = 5e18;
+        uint32 dstEid = 40_161;
+        address receiver = user;
+
+        address reyaToken = IPeripheryProxy(sec.periphery).getGlobalConfiguration().REYAProxy;
+
+        // set a static fee for the destination
+        uint256 staticFee = 0.01e18;
+        vm.prank(sec.multisig);
+        IPeripheryProxy(sec.periphery).setTokenStaticWithdrawFee(reyaToken, address(uint160(dstEid)), staticFee);
+
+        Command_Periphery[] memory commands = new Command_Periphery[](1);
+        commands[0] = Command_Periphery({
+            commandType: 1,
+            inputs: abi.encode(reyaToken, withdrawAmount),
+            marketId: 0,
+            exchangeId: 0
+        });
+        bytes memory extraData = abi.encode(receiver, dstEid);
+        EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(accountId, commands, userPk, 1, extraData);
+
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: accountId,
+                token: reyaToken,
+                tokenAmount: withdrawAmount,
+                sig: sig,
+                dstEid: dstEid,
+                receiver: receiver
+            })
+        );
+
+        assertEq(getNetDeposits(accountId, reyaToken), int256(10e18 - withdrawAmount));
+    }
+
+    function check_ReyaWithdrawMALZAboveSharedDecimals() public {
+        uint128 accountId = check_ReyaBridgeIntoSpotMA();
+        uint256 withdrawAmount = 5.432198e18;
+        uint32 dstEid = 40_161;
+        address receiver = user;
+
+        address reyaToken = IPeripheryProxy(sec.periphery).getGlobalConfiguration().REYAProxy;
+
+        // set a static fee for the destination
+        uint256 staticFee = 0.01e18;
+        vm.prank(sec.multisig);
+        IPeripheryProxy(sec.periphery).setTokenStaticWithdrawFee(reyaToken, address(uint160(dstEid)), staticFee);
+
+        Command_Periphery[] memory commands = new Command_Periphery[](1);
+        commands[0] = Command_Periphery({
+            commandType: 1,
+            inputs: abi.encode(reyaToken, withdrawAmount),
+            marketId: 0,
+            exchangeId: 0
+        });
+        bytes memory extraData = abi.encode(receiver, dstEid);
+        EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(accountId, commands, userPk, 1, extraData);
+
+        uint256 initPeripheryBalance = IReyaToken(reyaToken).balanceOf(sec.periphery);
+
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: accountId,
+                token: reyaToken,
+                tokenAmount: withdrawAmount,
+                sig: sig,
+                dstEid: dstEid,
+                receiver: receiver
+            })
+        );
+
+        assertEq(getNetDeposits(accountId, reyaToken), int256(10e18 - withdrawAmount));
+        assertEq(
+            IReyaToken(reyaToken).balanceOf(sec.periphery),
+            initPeripheryBalance + withdrawAmount - (withdrawAmount / 1e12) * 1e12
+        );
+    }
+
+    function check_ReyaWithdrawMALZFailsBelowSharedDecimals() public {
+        uint128 accountId = check_ReyaBridgeIntoSpotMA();
+        uint256 withdrawAmount = 5.4321981e18;
+        uint32 dstEid = 40_161;
+        address receiver = user;
+
+        address reyaToken = IPeripheryProxy(sec.periphery).getGlobalConfiguration().REYAProxy;
+
+        // set a static fee for the destination
+        uint256 staticFee = 0.01e18;
+        vm.prank(sec.multisig);
+        IPeripheryProxy(sec.periphery).setTokenStaticWithdrawFee(reyaToken, address(uint160(dstEid)), staticFee);
+
+        Command_Periphery[] memory commands = new Command_Periphery[](1);
+        commands[0] = Command_Periphery({
+            commandType: 1,
+            inputs: abi.encode(reyaToken, withdrawAmount),
+            marketId: 0,
+            exchangeId: 0
+        });
+        bytes memory extraData = abi.encode(receiver, dstEid);
+        EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(accountId, commands, userPk, 1, extraData);
+
+        vm.expectRevert(
+            abi.encodeWithSignature("SlippageExceeded(uint256,uint256)", withdrawAmount / 1e12 * 1e12, withdrawAmount)
+        );
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: accountId,
+                token: reyaToken,
+                tokenAmount: withdrawAmount,
+                sig: sig,
+                dstEid: dstEid,
+                receiver: receiver
+            })
+        );
+    }
+
+    function check_ReyaWithdrawMALZFailsWhenNotEnoughFees() public {
+        uint128 accountId = check_ReyaBridgeIntoSpotMA();
+        uint32 dstEid = 40_161;
+        address receiver = user;
+
+        address reyaToken = IPeripheryProxy(sec.periphery).getGlobalConfiguration().REYAProxy;
+
+        // set a static fee higher than the withdraw amount
+        uint256 staticFee = 2e18;
+        vm.prank(sec.multisig);
+        IPeripheryProxy(sec.periphery).setTokenStaticWithdrawFee(reyaToken, address(uint160(dstEid)), staticFee);
+
+        uint256 withdrawAmount = 1e18;
+
+        Command_Periphery[] memory commands = new Command_Periphery[](1);
+        commands[0] = Command_Periphery({
+            commandType: 1,
+            inputs: abi.encode(reyaToken, withdrawAmount),
+            marketId: 0,
+            exchangeId: 0
+        });
+        bytes memory extraData = abi.encode(receiver, dstEid);
+        EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(accountId, commands, userPk, 1, extraData);
+
+        vm.expectRevert(abi.encodeWithSelector(IPeripheryProxy.NotEnoughFees.selector, withdrawAmount, staticFee));
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: accountId,
+                token: reyaToken,
+                tokenAmount: withdrawAmount,
+                sig: sig,
+                dstEid: dstEid,
+                receiver: receiver
+            })
+        );
+    }
+
+    function check_ReyaWithdrawMALZFailsForUnauthorizedOFT() public {
+        (user, userPk) = makeAddrAndKey("user");
+
+        vm.expectRevert(abi.encodeWithSelector(IPeripheryProxy.UnauthorizedOft.selector, sec.usdc));
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: 1,
+                token: sec.usdc,
+                tokenAmount: 1000,
+                sig: EIP712Signature({ v: 0, r: bytes32(0), s: bytes32(0), deadline: 0 }),
+                dstEid: 1,
+                receiver: address(123_456_789)
+            })
+        );
+    }
+
+    function check_ReyaWithdrawMALZWithdrawLimits() public {
+        (user, userPk) = makeAddrAndKey("user");
+        address reyaToken = IPeripheryProxy(sec.periphery).getGlobalConfiguration().REYAProxy;
+        uint32 dstEid = 40_161;
+
+        (GlobalCollateralConfig memory globalCollateralConfig,) =
+            ICoreProxy(sec.core).getGlobalCollateralConfig(reyaToken);
+
+        if (globalCollateralConfig.withdrawalTvlPercentageLimit == 1e18) {
+            return; // no limit
+        }
+
+        uint256 withdrawAmount = 8_000_000_001e18;
+
+        Command_Periphery[] memory commands = new Command_Periphery[](1);
+        commands[0] = Command_Periphery({
+            commandType: 1,
+            inputs: abi.encode(reyaToken, withdrawAmount),
+            marketId: 0,
+            exchangeId: 0
+        });
+        bytes memory extraData = abi.encode(user, dstEid);
+        EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(0, commands, userPk, 1, extraData);
+
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.GlobalWithdrawLimitReached.selector, reyaToken));
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: 0,
+                token: reyaToken,
+                tokenAmount: withdrawAmount,
+                sig: sig,
+                dstEid: dstEid,
+                receiver: user
+            })
+        );
+    }
+
+    function check_ReyaWithdrawMALZFailsWhenPaused() public {
+        (user, userPk) = makeAddrAndKey("user");
+        address reyaToken = IPeripheryProxy(sec.periphery).getGlobalConfiguration().REYAProxy;
+
+        vm.prank(sec.multisig);
+        IPeripheryProxy(sec.periphery).setFeatureFlagDenyAll(keccak256(bytes("global")), true);
+
+        vm.expectRevert(abi.encodeWithSelector(IPeripheryProxy.FeatureUnavailable.selector, keccak256(bytes("global"))));
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: 1,
+                token: reyaToken,
+                tokenAmount: 1000,
+                sig: EIP712Signature({ v: 0, r: bytes32(0), s: bytes32(0), deadline: 0 }),
+                dstEid: 1,
+                receiver: address(123_456_789)
+            })
+        );
+
+        vm.prank(sec.multisig);
+        IPeripheryProxy(sec.periphery).setFeatureFlagDenyAll(keccak256(bytes("global")), false);
     }
 }

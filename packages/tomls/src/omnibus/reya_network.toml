@@ -40,7 +40,7 @@ ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 [var.external_contracts]
 camelotYakRouter = "0x2b59Eb03865D18d8B62a5956BBbFaE352fc1C148"
 reyaLayerZeroEndpoint = "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B"
-sreyaProxy = "0x0000000000000000000000000000000000000000"
+sreyaProxy = "0xF3dD224DE5f9B112690a15521b4a0c450A4A82c2"
 reyaProxy = "0xCC8e02d7112dDaa66A63B89d73E4eDa65722B111"
 
 [var.account_ids]
@@ -57,7 +57,7 @@ tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.13@router"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.46@router"
-peripheryRouterPackage = "reya-periphery:1.0.9@router"
+peripheryRouterPackage = "reya-periphery:1.0.12@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
@@ -508,7 +508,7 @@ sdeusdEthereumWithdrawFeeUnscaled = "7.0"
 # -------------------------------------------------------------------
 wstethEthereumWithdrawFeeUnscaled = "0.00415"
 # -------------------------------------------------------------------
-reyaEthereumWithdrawFeeUnscaled = "0.1"
+reyaEthereumWithdrawFeeUnscaled = "373"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
