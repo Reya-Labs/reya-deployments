@@ -11,4 +11,5 @@ include = [
     "configs/vol_spike_whitelist_holders.toml",
     "configs/pool_node_margin_info.toml",
     "configs/initialize_depth_factors.toml",
+    "configs/initialize_velocity_multipliers.toml",
 ]
