@@ -18,9 +18,9 @@ contract ReyaCollateralForkTest is ReyaForkTest, ReyaCollateralForkCheck {
             spotMarketId: REYA_SPOT_MARKET_ID,
             oracleDeviation: 0,
             minimumOrderBase: 1e18,
-            baseSpacing: 1e18,
-            priceSpacing: 0.00001e18
-        });
+            baseSpacing: 0.1e18,
+            priceSpacing: 1e11 // 1e-7 unscaled
+         });
         check_reya_spot_market_config(expected);
     }
 

@@ -52,7 +52,10 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.wsteth = 0xDF52410A19298FE168c900513e762adaD00C42b1;
         sec.sreya = 0xecab1c86ecf1100Ad3aa7A2C175aEDe4c87E949B;
         sec.reya = 0xBD96BE24f68C5e616FF22ffC32715Ffa1C4B70d0;
+
+        // Layerzero configuration
         sec.lzDstEid = 40_161;
+        sec.layerZeroEndpoint = 0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff;
 
         // Elixir tokens on Mainnet (Ethereum Sepolia)
         sec.elixirSdeusd = 0x97D3e518029c622015afa7aD20036EbEF60A7A4e;

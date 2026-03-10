@@ -2599,15 +2599,9 @@ wbtcRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000
 # -----------------------------------------------
 reyaRusdSpot_oracleDeviationUnscaled = "0"
 reyaRusdSpot_minimumOrderBaseUnscaled = "1"
-reyaRusdSpot_baseSpacingUnscaled = "1"
-reyaRusdSpot_priceSpacingUnscaled = "0.00001"
+reyaRusdSpot_baseSpacingUnscaled = "0.1"
+reyaRusdSpot_priceSpacingUnscaled = "0.0000001"
 reyaRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
-# -----------------------------------------------
-sreyaRusdSpot_oracleDeviationUnscaled = "0"
-sreyaRusdSpot_minimumOrderBaseUnscaled = "1"
-sreyaRusdSpot_baseSpacingUnscaled = "1"
-sreyaRusdSpot_priceSpacingUnscaled = "0.00001"
-sreyaRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 # inactive
 
@@ -2664,6 +2658,12 @@ wstethRusdSpot_minimumOrderBaseUnscaled = "0"
 wstethRusdSpot_baseSpacingUnscaled = "0"
 wstethRusdSpot_priceSpacingUnscaled = "0"
 wstethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+# -----------------------------------------------
+sreyaRusdSpot_oracleDeviationUnscaled = "0"
+sreyaRusdSpot_minimumOrderBaseUnscaled = "0"
+sreyaRusdSpot_baseSpacingUnscaled = "0"
+sreyaRusdSpot_priceSpacingUnscaled = "0"
+sreyaRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 [var.sbt_config]
 tokenName = "Reya OG SBT"

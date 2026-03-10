@@ -52,7 +52,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.reya = 0xCC8e02d7112dDaa66A63B89d73E4eDa65722B111;
         sec.setMarketZeroFeeBot = 0xdD69B419f0d7a1E15192ac8DBAa0Fc63b25f8A11;
 
-        // Layerzero endpoint on Reya Network
+        // Layerzero configuration
         sec.layerZeroEndpoint = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B;
         sec.lzDstEid = 30_101;
 
