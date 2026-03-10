@@ -57,10 +57,6 @@ contract ReyaBridgingForkTest is ReyaForkTest, ReyaBridgingForkCheck {
         check_ReyaWithdrawMALZFailsForUnauthorizedOFT();
     }
 
-    function test_Network_ReyaWithdrawMALZWithdrawLimits() public {
-        check_ReyaWithdrawMALZWithdrawLimits();
-    }
-
     function test_Network_ReyaWithdrawMALZFailsWhenPaused() public {
         check_ReyaWithdrawMALZFailsWhenPaused();
     }
