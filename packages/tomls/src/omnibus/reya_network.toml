@@ -508,7 +508,7 @@ sdeusdEthereumWithdrawFeeUnscaled = "7.0"
 # -------------------------------------------------------------------
 wstethEthereumWithdrawFeeUnscaled = "0.00415"
 # -------------------------------------------------------------------
-reyaEthereumWithdrawFeeUnscaled = "373"
+reyaEthereumWithdrawFeeUnscaled = "1"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -2666,6 +2666,12 @@ reyaRusdSpot_minimumOrderBaseUnscaled = "1"
 reyaRusdSpot_baseSpacingUnscaled = "1"
 reyaRusdSpot_priceSpacingUnscaled = "0.00001"
 reyaRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+# -----------------------------------------------
+sreyaRusdSpot_oracleDeviationUnscaled = "0"
+sreyaRusdSpot_minimumOrderBaseUnscaled = "1"
+sreyaRusdSpot_baseSpacingUnscaled = "1"
+sreyaRusdSpot_priceSpacingUnscaled = "0.00001"
+sreyaRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 # inactive
 

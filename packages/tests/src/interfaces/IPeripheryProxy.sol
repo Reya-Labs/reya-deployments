@@ -218,7 +218,7 @@ interface IPeripheryProxy {
 
     error CallerIsNotLayerZeroEndpoint(address caller);
 
-    error UnauthorizedOft(address oapp);
+    error UnauthorizedOFT(address oapp);
 
     error UnacceptableShareAmount(uint256 shareAmount, uint256 minShareAmount);
     error UnacceptableAssetAmount(uint256 assetAmount, uint256 minAssetAmount);

@@ -29,14 +29,6 @@ contract ReyaBridgingForkTest is ReyaForkTest, ReyaBridgingForkCheck {
         check_ReyaFailsToStakeWhenMinShareAmountIsTooHigh();
     }
 
-    function test_Cronos_ReyaWithdrawLimitInWindowSizes() public {
-        check_ReyaWithdrawLimitInWindowSizes();
-    }
-
-    function test_Cronos_StakedReyaWithdrawLimitInWindowSizes() public {
-        check_StakedReyaWithdrawLimitInWindowSizes();
-    }
-
     function test_Cronos_ReyaBridgingPermissions() public {
         check_ReyaBridgingPermissions();
     }

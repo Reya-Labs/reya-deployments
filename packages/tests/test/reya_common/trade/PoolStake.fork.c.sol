@@ -42,7 +42,7 @@ contract PoolStakeForkCheck is BaseReyaForkTest {
         executePeripheryDepositLiquidityToAccount(user, userPrivateKey, 1, sharesAmount, accountId);
 
         assertEq(getNetDeposits(accountId, sec.rusd), 10e6);
-        uint256 moveLiquidityPrecision = block.chainid == reyaNetworkChainId ? 0.000001e30 : 0.00001e30;
+        uint256 moveLiquidityPrecision = isMainnet() ? 0.000001e30 : 0.00001e30;
         assertApproxEqAbsDecimal(
             uint256(getNetDeposits(accountId, sec.srusd)), sharesAmount, moveLiquidityPrecision, 30
         );
