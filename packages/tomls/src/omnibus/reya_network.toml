@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.139"
+version = "1.0.140"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -2660,6 +2660,12 @@ wbtcRusdSpot_minimumOrderBaseUnscaled = "0.0001"
 wbtcRusdSpot_baseSpacingUnscaled = "0.0001"
 wbtcRusdSpot_priceSpacingUnscaled = "0.01"
 wbtcRusdSpot_oracleNodeId = "<%= settings.wbtcUsdcNodeIdStork %>"
+# -----------------------------------------------
+reyaRusdSpot_oracleDeviationUnscaled = "0"
+reyaRusdSpot_minimumOrderBaseUnscaled = "1"
+reyaRusdSpot_baseSpacingUnscaled = "1"
+reyaRusdSpot_priceSpacingUnscaled = "0.00001"
+reyaRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 # inactive
 

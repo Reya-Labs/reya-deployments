@@ -72,4 +72,12 @@ contract ReyaBridgingForkTest is ReyaForkTest, ReyaBridgingForkCheck {
     function test_Network_ReyaWithdrawMALZFailsWhenPaused() public {
         check_ReyaWithdrawMALZFailsWhenPaused();
     }
+
+    function test_Network_ReyaViewFunctions() public {
+        check_ReyaViewFunctions();
+    }
+
+    function test_Network_SreyaViewFunctions() public {
+        check_SreyaViewFunctions();
+    }
 }

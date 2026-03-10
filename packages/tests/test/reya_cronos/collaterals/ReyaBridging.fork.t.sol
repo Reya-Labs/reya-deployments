@@ -72,4 +72,12 @@ contract ReyaBridgingForkTest is ReyaForkTest, ReyaBridgingForkCheck {
     function test_Cronos_ReyaWithdrawMALZFailsWhenPaused() public {
         check_ReyaWithdrawMALZFailsWhenPaused();
     }
+
+    function test_Cronos_ReyaViewFunctions() public {
+        check_ReyaViewFunctions();
+    }
+
+    function test_Cronos_SreyaViewFunctions() public {
+        check_SreyaViewFunctions();
+    }
 }
