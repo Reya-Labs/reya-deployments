@@ -44,4 +44,7 @@ args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('spotMarketEnabled')), settings.reyaRusdSpotMarketId])) %>",
     true,
 ]
-depends = ["invoke.upgrade_core_proxy", "invoke.reya_rusd_configure_spot_market"]
+depends = [
+    "invoke.upgrade_core_proxy",
+    "invoke.reya_rusd_configure_spot_market",
+]
