@@ -1,0 +1,37 @@
+[invoke.sreya_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= settings.sreyaProxy %>",
+    { collateralAdapter_DEPRECATED = "<%= settings.sreyaCollateralAdapter %>", withdrawalWindowSize = "<%= settings.sreyaWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.sreyaWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = [
+    'invoke.upgrade_core_proxy',
+    'var.external_contracts',
+    'var.global_collateral_configs',
+]
+
+[invoke.sreya_rusd_create_spot_market]
+target = ["CoreProxy"]
+abi = "<%= JSON.stringify(contracts.CoreProxy.abi.concat({'type':'event','name':'SpotMarketInfoUpdated','inputs':[{'name':'eventSequenceNumber','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'spotMarketId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'baseToken','type':'address','indexed':false,'internalType':'address'},{'name':'quoteToken','type':'address','indexed':false,'internalType':'address'},{'name':'symbol','type':'string','indexed':false,'internalType':'string'},{'name':'config','type':'tuple','indexed':false,'internalType':'struct SpotMarketConfig','components':[{'name':'oracleDeviation','type':'uint256','internalType':'UD60x18'},{'name':'minimumOrderBase','type':'uint256','internalType':'UD60x18'},{'name':'baseSpacing','type':'uint256','internalType':'UD60x18'},{'name':'priceSpacing','type':'uint256','internalType':'UD60x18'},{'name':'oracleNodeId','type':'bytes32','internalType':'bytes32'}]},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "owner"
+func = "createSpotMarket"
+args = [
+    "<%= settings.sreyaProxy %>",
+    "<%= contracts.RUSDProxy.address %>",
+    "SREYARUSD",
+]
+var.sreyaRusdSpotMarketId.event = "SpotMarketInfoUpdated"
+var.sreyaRusdSpotMarketId.arg = 1
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.sreya_rusd_configure_spot_market]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setSpotMarketConfiguration"
+args = [
+    "<%= settings.sreyaRusdSpotMarketId %>",
+    { oracleDeviation = "<%= parseEther(settings.sreyaRusdSpot_oracleDeviationUnscaled) %>", minimumOrderBase = "<%= parseEther(settings.sreyaRusdSpot_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.sreyaRusdSpot_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.sreyaRusdSpot_priceSpacingUnscaled) %>", oracleNodeId = "<%= settings.sreyaRusdSpot_oracleNodeId %>" },
+]
+depends = ["invoke.upgrade_core_proxy", "invoke.sreya_rusd_create_spot_market"]
