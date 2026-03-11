@@ -2019,7 +2019,7 @@ market57Move_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_58Bera]
 market58Bera_riskMatrixIndex = "0"
-market58Bera_maxOpenBaseUnscaled = "196893"
+market58Bera_maxOpenBaseUnscaled = "10000"
 market58Bera_velocityMultiplierUnscaled = "75"
 market58Bera_oracleNodeId = "<%= settings.beraUsdcMarkNodeIdStork %>"
 market58Bera_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
