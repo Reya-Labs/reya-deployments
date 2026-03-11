@@ -1299,7 +1299,7 @@ market24Bnb_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_25Jto]
 market25Jto_riskMatrixIndex = "0"
-market25Jto_maxOpenBaseUnscaled = "422406"
+market25Jto_maxOpenBaseUnscaled = "2000"
 market25Jto_velocityMultiplierUnscaled = "135"
 market25Jto_oracleNodeId = "<%= settings.jtoUsdcMarkNodeIdStork %>"
 market25Jto_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
