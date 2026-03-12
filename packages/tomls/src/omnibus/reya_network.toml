@@ -1439,7 +1439,7 @@ market28Pol_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_29Near]
 market29Near_riskMatrixIndex = "0"
-market29Near_maxOpenBaseUnscaled = "85234"
+market29Near_maxOpenBaseUnscaled = "375765"
 market29Near_velocityMultiplierUnscaled = "54.1"
 market29Near_oracleNodeId = "<%= settings.nearUsdcMarkNodeIdStork %>"
 market29Near_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
