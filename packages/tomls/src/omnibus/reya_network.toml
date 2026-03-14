@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.140"
+version = "1.0.142"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -919,7 +919,7 @@ market2Btc_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_3sol]
 market3Sol_riskMatrixIndex = "0"
-market3Sol_maxOpenBaseUnscaled = "33492"
+market3Sol_maxOpenBaseUnscaled = "17703"
 market3Sol_velocityMultiplierUnscaled = "7"
 market3Sol_oracleNodeId = "<%= settings.solUsdcMarkNodeIdStork %>"
 market3Sol_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -939,7 +939,7 @@ market3Sol_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_4arb]
 market4Arb_riskMatrixIndex = "0"
-market4Arb_maxOpenBaseUnscaled = "3248426"
+market4Arb_maxOpenBaseUnscaled = "1103642"
 market4Arb_velocityMultiplierUnscaled = "72.2"
 market4Arb_oracleNodeId = "<%= settings.arbUsdcMarkNodeIdStork %>"
 market4Arb_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -959,7 +959,7 @@ market4Arb_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_5op]
 market5Op_riskMatrixIndex = "0"
-market5Op_maxOpenBaseUnscaled = "1137890"
+market5Op_maxOpenBaseUnscaled = "916239"
 market5Op_velocityMultiplierUnscaled = "45.1"
 market5Op_oracleNodeId = "<%= settings.opUsdcMarkNodeIdStork %>"
 market5Op_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -979,7 +979,7 @@ market5Op_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_6avax]
 market6Avax_riskMatrixIndex = "0"
-market6Avax_maxOpenBaseUnscaled = "128821"
+market6Avax_maxOpenBaseUnscaled = "11497"
 market6Avax_velocityMultiplierUnscaled = "112.7"
 market6Avax_oracleNodeId = "<%= settings.avaxUsdcMarkNodeIdStork %>"
 market6Avax_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1000,7 +1000,7 @@ market6Avax_volatilityIndexMultiplierUnscaled = "0"
 [var.market_7mkr]
 market7Mkr_riskMatrixIndex = "0"
 market7Mkr_maxOpenBaseUnscaled = "0"
-market7Mkr_velocityMultiplierUnscaled = "10000"
+market7Mkr_velocityMultiplierUnscaled = "0"
 market7Mkr_oracleNodeId = "<%= settings.mkrUsdcNodeIdClosing %>"
 market7Mkr_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market7Mkr_dutchConfig_lambdaUnscaled = "1"
@@ -1019,7 +1019,7 @@ market7Mkr_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_8link]
 market8Link_riskMatrixIndex = "0"
-market8Link_maxOpenBaseUnscaled = "178872"
+market8Link_maxOpenBaseUnscaled = "12317"
 market8Link_velocityMultiplierUnscaled = "126.3"
 market8Link_oracleNodeId = "<%= settings.linkUsdcMarkNodeIdStork %>"
 market8Link_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1039,7 +1039,7 @@ market8Link_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_9aave]
 market9Aave_riskMatrixIndex = "0"
-market9Aave_maxOpenBaseUnscaled = "12518"
+market9Aave_maxOpenBaseUnscaled = "1001"
 market9Aave_velocityMultiplierUnscaled = "67.6"
 market9Aave_oracleNodeId = "<%= settings.aaveUsdcMarkNodeIdStork %>"
 market9Aave_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1059,7 +1059,7 @@ market9Aave_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_10crv]
 market10Crv_riskMatrixIndex = "0"
-market10Crv_maxOpenBaseUnscaled = "2487376"
+market10Crv_maxOpenBaseUnscaled = "459171"
 market10Crv_velocityMultiplierUnscaled = "50.7"
 market10Crv_oracleNodeId = "<%= settings.crvUsdcMarkNodeIdStork %>"
 market10Crv_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1079,7 +1079,7 @@ market10Crv_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_11uni]
 market11Uni_riskMatrixIndex = "0"
-market11Uni_maxOpenBaseUnscaled = "286639"
+market11Uni_maxOpenBaseUnscaled = "28478"
 market11Uni_velocityMultiplierUnscaled = "85.7"
 market11Uni_oracleNodeId = "<%= settings.uniUsdcMarkNodeIdStork %>"
 market11Uni_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1099,7 +1099,7 @@ market11Uni_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_12sui]
 market12Sui_riskMatrixIndex = "0"
-market12Sui_maxOpenBaseUnscaled = "1419955"
+market12Sui_maxOpenBaseUnscaled = "115304"
 market12Sui_velocityMultiplierUnscaled = "112.7"
 market12Sui_oracleNodeId = "<%= settings.suiUsdcMarkNodeIdStork %>"
 market12Sui_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1119,7 +1119,7 @@ market12Sui_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_13tia]
 market13Tia_riskMatrixIndex = "0"
-market13Tia_maxOpenBaseUnscaled = "198255"
+market13Tia_maxOpenBaseUnscaled = "330363"
 market13Tia_velocityMultiplierUnscaled = "87.9"
 market13Tia_oracleNodeId = "<%= settings.tiaUsdcMarkNodeIdStork %>"
 market13Tia_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1139,7 +1139,7 @@ market13Tia_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_14sei]
 market14Sei_riskMatrixIndex = "0"
-market14Sei_maxOpenBaseUnscaled = "3198069"
+market14Sei_maxOpenBaseUnscaled = "1768827"
 market14Sei_velocityMultiplierUnscaled = "67.6"
 market14Sei_oracleNodeId = "<%= settings.seiUsdcMarkNodeIdStork %>"
 market14Sei_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1159,7 +1159,7 @@ market14Sei_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_15zro]
 market15Zro_riskMatrixIndex = "0"
-market15Zro_maxOpenBaseUnscaled = "9500"
+market15Zro_maxOpenBaseUnscaled = "54057"
 market15Zro_velocityMultiplierUnscaled = "37.2"
 market15Zro_oracleNodeId = "<%= settings.zroUsdcMarkNodeIdStork %>"
 market15Zro_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1179,7 +1179,7 @@ market15Zro_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_16xrp]
 market16Xrp_riskMatrixIndex = "0"
-market16Xrp_maxOpenBaseUnscaled = "2279785"
+market16Xrp_maxOpenBaseUnscaled = "1090260"
 market16Xrp_velocityMultiplierUnscaled = "162.3"
 market16Xrp_oracleNodeId = "<%= settings.xrpUsdcMarkNodeIdStork %>"
 market16Xrp_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1199,7 +1199,7 @@ market16Xrp_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_17wif]
 market17Wif_riskMatrixIndex = "0"
-market17Wif_maxOpenBaseUnscaled = "5851941"
+market17Wif_maxOpenBaseUnscaled = "666028"
 market17Wif_velocityMultiplierUnscaled = "104.8"
 market17Wif_oracleNodeId = "<%= settings.wifUsdcMarkNodeIdStork %>"
 market17Wif_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1219,7 +1219,7 @@ market17Wif_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_18pepe1k]
 market18Pepe1k_riskMatrixIndex = "0"
-market18Pepe1k_maxOpenBaseUnscaled = "544928176"
+market18Pepe1k_maxOpenBaseUnscaled = "33416220"
 market18Pepe1k_velocityMultiplierUnscaled = "104.8"
 market18Pepe1k_oracleNodeId = "<%= settings.pepe1kUsdcMarkNodeIdStork %>"
 market18Pepe1k_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1239,7 +1239,7 @@ market18Pepe1k_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_19popcat]
 market19Popcat_riskMatrixIndex = "0"
-market19Popcat_maxOpenBaseUnscaled = "4107203"
+market19Popcat_maxOpenBaseUnscaled = "2158871"
 market19Popcat_velocityMultiplierUnscaled = "42.8"
 market19Popcat_oracleNodeId = "<%= settings.popcatUsdcMarkNodeIdStork %>"
 market19Popcat_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1259,7 +1259,7 @@ market19Popcat_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_20doge]
 market20Doge_riskMatrixIndex = "0"
-market20Doge_maxOpenBaseUnscaled = "27489083"
+market20Doge_maxOpenBaseUnscaled = "1193581"
 market20Doge_velocityMultiplierUnscaled = "153.3"
 market20Doge_oracleNodeId = "<%= settings.dogeUsdcMarkNodeIdStork %>"
 market20Doge_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1279,7 +1279,7 @@ market20Doge_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_21kshib]
 market21KShib_riskMatrixIndex = "0"
-market21KShib_maxOpenBaseUnscaled = "353202676"
+market21KShib_maxOpenBaseUnscaled = "19315919"
 market21KShib_velocityMultiplierUnscaled = "90.2"
 market21KShib_oracleNodeId = "<%= settings.kshibUsdcMarkNodeIdStork %>"
 market21KShib_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1299,7 +1299,7 @@ market21KShib_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_22kbonk]
 market22KBonk_riskMatrixIndex = "0"
-market22KBonk_maxOpenBaseUnscaled = "270595973"
+market22KBonk_maxOpenBaseUnscaled = "18584861"
 market22KBonk_velocityMultiplierUnscaled = "77.8"
 market22KBonk_oracleNodeId = "<%= settings.kbonkUsdcMarkNodeIdStork %>"
 market22KBonk_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1319,7 +1319,7 @@ market22KBonk_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_23Apt]
 market23Apt_riskMatrixIndex = "0"
-market23Apt_maxOpenBaseUnscaled = "185649"
+market23Apt_maxOpenBaseUnscaled = "116046"
 market23Apt_velocityMultiplierUnscaled = "99.2"
 market23Apt_oracleNodeId = "<%= settings.aptUsdcMarkNodeIdStork %>"
 market23Apt_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1339,7 +1339,7 @@ market23Apt_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_24Bnb]
 market24Bnb_riskMatrixIndex = "0"
-market24Bnb_maxOpenBaseUnscaled = "8227"
+market24Bnb_maxOpenBaseUnscaled = "172"
 market24Bnb_velocityMultiplierUnscaled = "17.4"
 market24Bnb_oracleNodeId = "<%= settings.bnbUsdcMarkNodeIdStork %>"
 market24Bnb_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1359,7 +1359,7 @@ market24Bnb_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_25Jto]
 market25Jto_riskMatrixIndex = "0"
-market25Jto_maxOpenBaseUnscaled = "138886"
+market25Jto_maxOpenBaseUnscaled = "2300"
 market25Jto_velocityMultiplierUnscaled = "135"
 market25Jto_oracleNodeId = "<%= settings.jtoUsdcMarkNodeIdStork %>"
 market25Jto_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1379,7 +1379,7 @@ market25Jto_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_26Ada]
 market26Ada_riskMatrixIndex = "0"
-market26Ada_maxOpenBaseUnscaled = "7066930"
+market26Ada_maxOpenBaseUnscaled = "423953"
 market26Ada_velocityMultiplierUnscaled = "131.9"
 market26Ada_oracleNodeId = "<%= settings.adaUsdcMarkNodeIdStork %>"
 market26Ada_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1399,7 +1399,7 @@ market26Ada_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_27Ldo]
 market27Ldo_riskMatrixIndex = "0"
-market27Ldo_maxOpenBaseUnscaled = "746530"
+market27Ldo_maxOpenBaseUnscaled = "375216"
 market27Ldo_velocityMultiplierUnscaled = "40.6"
 market27Ldo_oracleNodeId = "<%= settings.ldoUsdcMarkNodeIdStork %>"
 market27Ldo_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1419,7 +1419,7 @@ market27Ldo_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_28Pol]
 market28Pol_riskMatrixIndex = "0"
-market28Pol_maxOpenBaseUnscaled = "4500689"
+market28Pol_maxOpenBaseUnscaled = "1138836"
 market28Pol_velocityMultiplierUnscaled = "18"
 market28Pol_oracleNodeId = "<%= settings.polUsdcMarkNodeIdStork %>"
 market28Pol_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1439,7 +1439,7 @@ market28Pol_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_29Near]
 market29Near_riskMatrixIndex = "0"
-market29Near_maxOpenBaseUnscaled = "608470"
+market29Near_maxOpenBaseUnscaled = "375765"
 market29Near_velocityMultiplierUnscaled = "54.1"
 market29Near_oracleNodeId = "<%= settings.nearUsdcMarkNodeIdStork %>"
 market29Near_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1479,7 +1479,7 @@ market30Ftm_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_31Ena]
 market31Ena_riskMatrixIndex = "0"
-market31Ena_maxOpenBaseUnscaled = "5000000"
+market31Ena_maxOpenBaseUnscaled = "1069465"
 market31Ena_velocityMultiplierUnscaled = "74.4"
 market31Ena_oracleNodeId = "<%= settings.enaUsdcMarkNodeIdStork %>"
 market31Ena_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1499,7 +1499,7 @@ market31Ena_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_32Eigen]
 market32Eigen_riskMatrixIndex = "0"
-market32Eigen_maxOpenBaseUnscaled = "318454"
+market32Eigen_maxOpenBaseUnscaled = "589156"
 market32Eigen_velocityMultiplierUnscaled = "27.1"
 market32Eigen_oracleNodeId = "<%= settings.eigenUsdcMarkNodeIdStork %>"
 market32Eigen_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1519,7 +1519,7 @@ market32Eigen_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_33Pendle]
 market33Pendle_riskMatrixIndex = "0"
-market33Pendle_maxOpenBaseUnscaled = "190495"
+market33Pendle_maxOpenBaseUnscaled = "86908"
 market33Pendle_velocityMultiplierUnscaled = "44"
 market33Pendle_oracleNodeId = "<%= settings.pendleUsdcMarkNodeIdStork %>"
 market33Pendle_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1539,7 +1539,7 @@ market33Pendle_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_34Goat]
 market34Goat_riskMatrixIndex = "0"
-market34Goat_maxOpenBaseUnscaled = "5729544"
+market34Goat_maxOpenBaseUnscaled = "5801398"
 market34Goat_velocityMultiplierUnscaled = "18"
 market34Goat_oracleNodeId = "<%= settings.goatUsdcMarkNodeIdStork %>"
 market34Goat_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1559,7 +1559,7 @@ market34Goat_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_35Grass]
 market35Grass_riskMatrixIndex = "0"
-market35Grass_maxOpenBaseUnscaled = "257964"
+market35Grass_maxOpenBaseUnscaled = "307591"
 market35Grass_velocityMultiplierUnscaled = "16.9"
 market35Grass_oracleNodeId = "<%= settings.grassUsdcMarkNodeIdStork %>"
 market35Grass_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1579,7 +1579,7 @@ market35Grass_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_36KNeiro]
 market36KNeiro_riskMatrixIndex = "0"
-market36KNeiro_maxOpenBaseUnscaled = "4406189684"
+market36KNeiro_maxOpenBaseUnscaled = "1669112"
 market36KNeiro_velocityMultiplierUnscaled = "20.3"
 market36KNeiro_oracleNodeId = "<%= settings.kneiroUsdcMarkNodeIdStork %>"
 market36KNeiro_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1599,7 +1599,7 @@ market36KNeiro_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_37Dot]
 market37Dot_riskMatrixIndex = "0"
-market37Dot_maxOpenBaseUnscaled = "331450"
+market37Dot_maxOpenBaseUnscaled = "72104"
 market37Dot_velocityMultiplierUnscaled = "50.7"
 market37Dot_oracleNodeId = "<%= settings.dotUsdcMarkNodeIdStork %>"
 market37Dot_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1619,7 +1619,7 @@ market37Dot_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_38Ltc]
 market38Ltc_riskMatrixIndex = "0"
-market38Ltc_maxOpenBaseUnscaled = "36584"
+market38Ltc_maxOpenBaseUnscaled = "2041"
 market38Ltc_velocityMultiplierUnscaled = "95.8"
 market38Ltc_oracleNodeId = "<%= settings.ltcUsdcMarkNodeIdStork %>"
 market38Ltc_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1639,7 +1639,7 @@ market38Ltc_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_39Pyth]
 market39Pyth_riskMatrixIndex = "0"
-market39Pyth_maxOpenBaseUnscaled = "1522074"
+market39Pyth_maxOpenBaseUnscaled = "2387811"
 market39Pyth_velocityMultiplierUnscaled = "45.1"
 market39Pyth_oracleNodeId = "<%= settings.pythUsdcMarkNodeIdStork %>"
 market39Pyth_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1659,7 +1659,7 @@ market39Pyth_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_40Jup]
 market40Jup_riskMatrixIndex = "0"
-market40Jup_maxOpenBaseUnscaled = "1065700"
+market40Jup_maxOpenBaseUnscaled = "671599"
 market40Jup_velocityMultiplierUnscaled = "49.6"
 market40Jup_oracleNodeId = "<%= settings.jupUsdcMarkNodeIdStork %>"
 market40Jup_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
