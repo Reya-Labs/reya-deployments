@@ -2,7 +2,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 
-import { IPassivePerpProxy, MarketConfigurationData } from "../../../src/interfaces/IPassivePerpProxy.sol";
+import { IPassivePerpProxy, MarketDataResponse } from "../../../src/interfaces/IPassivePerpProxy.sol";
 
 import { IPeripheryProxy, DepositNewMAInputs } from "../../../src/interfaces/IPeripheryProxy.sol";
 
@@ -45,9 +45,12 @@ contract FundingRateForkCheck is BaseReyaForkTest {
         vm.warp(block.timestamp + 86_400);
         int256 fundingRate2 = IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId);
 
-        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+        MarketDataResponse memory marketData = IPassivePerpProxy(sec.perp).getMarketData(marketId);
         assertApproxEqAbsDecimal(
-            fundingRate2 - fundingRate1, pSlippage.mul(sd(int256(marketConfig.velocityMultiplier))).unwrap(), eps, 18
+            fundingRate2 - fundingRate1,
+            pSlippage.mul(sd(int256(marketData.marketData.velocityMultiplier))).unwrap(),
+            eps,
+            18
         );
     }
 }
