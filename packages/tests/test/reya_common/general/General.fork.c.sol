@@ -520,7 +520,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceLAYER);
         ls.maxDeviationMarket.push(ls.maxDeviationLAYER);
 
-        ls.meanPriceTAO = 144 * 1e18;
+        ls.meanPriceTAO = 309 * 1e18;
         ls.maxDeviationTAO = ls.meanPriceTAO / 2;
         ls.meanPriceMarket.push(ls.meanPriceTAO);
         ls.maxDeviationMarket.push(ls.maxDeviationTAO);
@@ -710,13 +710,15 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(ls.meanPriceStableCoin);
         ls.maxDeviations.push(ls.maxDeviationStableCoin * 2);
 
-        ls.nodeIds.push(sec.mkrUsdStorkMarkNodeId);
-        ls.meanPrices.push(ls.meanPriceMKR);
-        ls.maxDeviations.push(ls.maxDeviationMKR);
+        // deprecated
+        // ls.nodeIds.push(sec.mkrUsdStorkMarkNodeId);
+        // ls.meanPrices.push(ls.meanPriceMKR);
+        // ls.maxDeviations.push(ls.maxDeviationMKR);
 
-        ls.nodeIds.push(sec.mkrUsdcStorkMarkNodeId);
-        ls.meanPrices.push(ls.meanPriceMKR);
-        ls.maxDeviations.push(ls.maxDeviationMKR);
+        // deprecated
+        // ls.nodeIds.push(sec.mkrUsdcStorkMarkNodeId);
+        // ls.meanPrices.push(ls.meanPriceMKR);
+        // ls.maxDeviations.push(ls.maxDeviationMKR);
 
         ls.nodeIds.push(sec.linkUsdStorkMarkNodeId);
         ls.meanPrices.push(ls.meanPriceLINK);
