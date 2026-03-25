@@ -424,6 +424,235 @@ contract SpotForkCheck is BaseReyaForkTest {
         assertEq(sellerWethAfter, sellerWethBefore - 0.3e18, "Seller WETH balance incorrect");
     }
 
+    // ==================== REYA Spot Market Checks ====================
+
+    function depositReyaToAccount(address user, uint128 accountId, uint256 amount) internal {
+        deal(sec.reya, user, amount);
+        vm.startPrank(user);
+        ITokenProxy(sec.reya).approve(sec.core, amount);
+        ICoreProxy(sec.core).deposit(accountId, sec.reya, amount);
+        vm.stopPrank();
+    }
+
+    /**
+     * @notice Test basic spot fill execution for REYA market
+     * @dev Verifies that buyer receives REYA and seller receives rUSD
+     */
+    function check_SpotExecuteFill_REYA(uint128 reyaSpotMarketId) internal {
+        setupSpotTestActors();
+        // mockFreshPrices(); TODO: stork node
+        removeOraclePriceDeviationConfig(reyaSpotMarketId);
+
+        // Create accounts
+        uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 10_000e6);
+        uint128 sellerAccountId = ICoreProxy(sec.core).createOrGetSpotAccount(seller);
+        depositReyaToAccount(seller, sellerAccountId, 10_000e18);
+
+        // Record initial balances
+        int256 buyerRusdBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 sellerRusdBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).netDeposits;
+        int256 sellerReyaBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.reya).netDeposits;
+
+        // Execute spot fill: buyer buys 100 REYA at $0.02
+        uint256 baseDelta = 100e18;
+        uint256 price = 0.02e18;
+
+        executeSpotFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            spotMarketId: reyaSpotMarketId,
+            baseDelta: baseDelta,
+            price: price,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        // Verify balances
+        int256 buyerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 buyerReyaAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.reya).netDeposits;
+        int256 sellerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).netDeposits;
+        int256 sellerReyaAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.reya).netDeposits;
+
+        // The quote token (rUSD) uses 6 decimals while prices are 18 decimals, so
+        // the effective transfer is baseDelta * price / 1e30 (rounded down)
+        uint256 expectedRusdDelta = (baseDelta * price) / 1e30;
+
+        assertEq(buyerRusdAfter, buyerRusdBefore - int256(expectedRusdDelta), "Buyer rUSD balance incorrect");
+        assertEq(buyerReyaAfter, int256(baseDelta), "Buyer REYA balance incorrect");
+
+        assertEq(sellerRusdAfter, sellerRusdBefore + int256(expectedRusdDelta), "Seller rUSD balance incorrect");
+        assertEq(sellerReyaAfter, sellerReyaBefore - int256(baseDelta), "Seller REYA balance incorrect");
+    }
+
+    /**
+     * @notice Test spot fill execution for REYA market with small quantity and price
+     * @dev Verifies rounding behavior when baseDelta * price produces fractional rUSD
+     */
+    function check_SpotExecuteFill_SmallQuantity_And_Price_REYA(uint128 reyaSpotMarketId) internal {
+        setupSpotTestActors();
+        // mockFreshPrices(); TODO: stork node
+        removeOraclePriceDeviationConfig(reyaSpotMarketId);
+
+        // Create accounts
+        uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 10_000e6);
+        uint128 sellerAccountId = ICoreProxy(sec.core).createOrGetSpotAccount(seller);
+        depositReyaToAccount(seller, sellerAccountId, 100_000e18);
+
+        // Record initial balances
+        int256 buyerRusdBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 sellerReyaBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.reya).netDeposits;
+
+        // Using small base delta to test rounding
+        uint256 baseDelta = 1e18;
+        // Use a price with many significant digits to exercise rounding
+        uint256 price = 2183e13; // 0.02183 with 18 decimals
+
+        executeSpotFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            spotMarketId: reyaSpotMarketId,
+            baseDelta: baseDelta,
+            price: price,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        // Verify balances
+        int256 buyerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 buyerReyaAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.reya).netDeposits;
+        int256 sellerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).netDeposits;
+        int256 sellerReyaAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.reya).netDeposits;
+
+        // Buyer: -0.021830 rUSD (1 * 0.02183), +1 REYA
+        assertEq(buyerRusdAfter, buyerRusdBefore - 21_830, "Buyer rUSD balance incorrect");
+        assertEq(buyerReyaAfter, int256(baseDelta), "Buyer REYA balance incorrect");
+
+        // Seller: +0.021830 rUSD, -1 REYA
+        assertEq(sellerRusdAfter, 21_830, "Seller rUSD balance incorrect");
+        assertEq(sellerReyaAfter, sellerReyaBefore - int256(baseDelta), "Seller REYA balance incorrect");
+    }
+
+    /**
+     * @notice Test batch spot fill execution for REYA market
+     * @dev Verifies that multiple fills can be executed in a single transaction
+     */
+    function check_SpotBatchExecuteFill_REYA(uint128 reyaSpotMarketId) internal {
+        setupSpotTestActors();
+        // mockFreshPrices(); TODO: stork node
+        removeOraclePriceDeviationConfig(reyaSpotMarketId);
+
+        // Create accounts
+        uint128 buyerAccountId = createOrGetSpotAccountWithRusdDeposit(buyer, 20_000e6);
+        uint128 sellerAccountId = ICoreProxy(sec.core).createOrGetSpotAccount(seller);
+        depositReyaToAccount(seller, sellerAccountId, 100_000e18);
+
+        // Create two fill inputs
+        ExecuteFillInput[] memory fills = new ExecuteFillInput[](2);
+
+        // Fill 1: 100 REYA at $0.02
+        {
+            (ConditionalOrderDetails memory buyerOrder1, EIP712Signature memory buyerSig1) = createLimitOrderSpot({
+                accountId: buyerAccountId,
+                spotMarketId: reyaSpotMarketId,
+                baseDelta: int256(100e18),
+                price: 0.02e18,
+                nonce: 1,
+                signer: buyer,
+                signerPk: buyerPk
+            });
+
+            (ConditionalOrderDetails memory sellerOrder1, EIP712Signature memory sellerSig1) = createLimitOrderSpot({
+                accountId: sellerAccountId,
+                spotMarketId: reyaSpotMarketId,
+                baseDelta: -int256(100e18),
+                price: 0.02e18,
+                nonce: 1,
+                signer: seller,
+                signerPk: sellerPk
+            });
+
+            SignedMatchingEnginePayload memory mePayload1 = createMatchingEnginePayload({
+                price: 0.02e18,
+                baseDelta: 100e18,
+                accountOrderId: 1,
+                counterpartyOrderId: 2,
+                nonce: 1
+            });
+
+            fills[0] = ExecuteFillInput({
+                accountOrder: buyerOrder1,
+                counterpartyOrder: sellerOrder1,
+                accountSignature: buyerSig1,
+                counterpartySignature: sellerSig1,
+                mePayload: mePayload1
+            });
+        }
+
+        // Fill 2: 200 REYA at $0.02
+        {
+            (ConditionalOrderDetails memory buyerOrder2, EIP712Signature memory buyerSig2) = createLimitOrderSpot({
+                accountId: buyerAccountId,
+                spotMarketId: reyaSpotMarketId,
+                baseDelta: int256(200e18),
+                price: 0.02e18,
+                nonce: 2,
+                signer: buyer,
+                signerPk: buyerPk
+            });
+
+            (ConditionalOrderDetails memory sellerOrder2, EIP712Signature memory sellerSig2) = createLimitOrderSpot({
+                accountId: sellerAccountId,
+                spotMarketId: reyaSpotMarketId,
+                baseDelta: -int256(200e18),
+                price: 0.02e18,
+                nonce: 2,
+                signer: seller,
+                signerPk: sellerPk
+            });
+
+            SignedMatchingEnginePayload memory mePayload2 = createMatchingEnginePayload({
+                price: 0.02e18,
+                baseDelta: 200e18,
+                accountOrderId: 3,
+                counterpartyOrderId: 4,
+                nonce: 2
+            });
+
+            fills[1] = ExecuteFillInput({
+                accountOrder: buyerOrder2,
+                counterpartyOrder: sellerOrder2,
+                accountSignature: buyerSig2,
+                counterpartySignature: sellerSig2,
+                mePayload: mePayload2
+            });
+        }
+
+        // Record initial balances
+        int256 buyerRusdBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 sellerReyaBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.reya).netDeposits;
+
+        // Execute batch fill as the conditional order execution bot
+        vm.prank(sec.coExecutionBot);
+        bytes[] memory outputs = IOrdersGatewayProxy(sec.ordersGateway).batchExecuteFill(fills);
+
+        // Verify outputs returned
+        assertEq(outputs.length, 2, "Should return 2 outputs");
+
+        // Verify balances
+        int256 buyerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
+        int256 buyerReyaAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.reya).netDeposits;
+        int256 sellerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).netDeposits;
+        int256 sellerReyaAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.reya).netDeposits;
+
+        // Total: 300 REYA at $0.02 = 6 rUSD
+        assertEq(buyerRusdAfter, buyerRusdBefore - 6e6, "Buyer rUSD balance incorrect");
+        assertEq(buyerReyaAfter, 300e18, "Buyer REYA balance incorrect");
+        assertEq(sellerRusdAfter, 6e6, "Seller rUSD balance incorrect");
+        assertEq(sellerReyaAfter, sellerReyaBefore - 300e18, "Seller REYA balance incorrect");
+    }
+
     // ==================== WBTC Spot Market Checks ====================
 
     function depositWbtcToAccount(address user, uint128 accountId, uint256 amount) internal {

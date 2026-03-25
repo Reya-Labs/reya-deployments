@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.145"
+version = "1.0.146"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -26,6 +26,7 @@ arbitrumChainId = "42161"
 optimismChainId = "10"
 polygonChainId = "137"
 baseChainId = "8453"
+ethereumEid = "30101"     # Layerzero EID
 
 [var.wallet_addresses]
 owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
@@ -38,6 +39,9 @@ ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 [var.external_contracts]
 camelotYakRouter = "0x2b59Eb03865D18d8B62a5956BBbFaE352fc1C148"
+reyaLayerZeroEndpoint = "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B"
+sreyaProxy = "0xF3dD224DE5f9B112690a15521b4a0c450A4A82c2"
+reyaProxy = "0xCC8e02d7112dDaa66A63B89d73E4eDa65722B111"
 
 [var.account_ids]
 lotteryPotAccountId = "20092"
@@ -53,7 +57,7 @@ tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.13@router"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.49@router"
-peripheryRouterPackage = "reya-periphery:1.0.9@router"
+peripheryRouterPackage = "reya-periphery:1.0.14@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
@@ -504,6 +508,8 @@ deusdEthereumWithdrawFeeUnscaled = "7.0"
 sdeusdEthereumWithdrawFeeUnscaled = "7.0"
 # -------------------------------------------------------------------
 wstethEthereumWithdrawFeeUnscaled = "0.00415"
+# -------------------------------------------------------------------
+reyaEthereumWithdrawFeeUnscaled = "1"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -553,6 +559,14 @@ rhedgeWithdrawalTvlPercentageLimitUnscaled = "0"
 wstethCollateralAdapter = "<%= AddressZero %>"
 wstethWithdrawalWindowSize = "1"
 wstethWithdrawalTvlPercentageLimitUnscaled = "1"
+# -------------------------------------------------------------------
+reyaCollateralAdapter = "<%= AddressZero %>"
+reyaWithdrawalWindowSize = "1"
+reyaWithdrawalTvlPercentageLimitUnscaled = "1"
+# -------------------------------------------------------------------
+sreyaCollateralAdapter = "<%= AddressZero %>"
+sreyaWithdrawalWindowSize = "1"
+sreyaWithdrawalTvlPercentageLimitUnscaled = "1"
 
 [var.pool_node_margin_info]
 maxCacheDurationForPoolNodeMarginInfo = "60"
@@ -2647,6 +2661,12 @@ wbtcRusdSpot_minimumOrderBaseUnscaled = "0.0001"
 wbtcRusdSpot_baseSpacingUnscaled = "0.0001"
 wbtcRusdSpot_priceSpacingUnscaled = "0.01"
 wbtcRusdSpot_oracleNodeId = "<%= settings.wbtcUsdcNodeIdStork %>"
+# -----------------------------------------------
+reyaRusdSpot_oracleDeviationUnscaled = "0"
+reyaRusdSpot_minimumOrderBaseUnscaled = "1"
+reyaRusdSpot_baseSpacingUnscaled = "0.1"
+reyaRusdSpot_priceSpacingUnscaled = "0.0000001"
+reyaRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 # inactive
 
@@ -2703,6 +2723,12 @@ wstethRusdSpot_minimumOrderBaseUnscaled = "0"
 wstethRusdSpot_baseSpacingUnscaled = "0"
 wstethRusdSpot_priceSpacingUnscaled = "0"
 wstethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+# -----------------------------------------------
+sreyaRusdSpot_oracleDeviationUnscaled = "0"
+sreyaRusdSpot_minimumOrderBaseUnscaled = "0"
+sreyaRusdSpot_baseSpacingUnscaled = "0"
+sreyaRusdSpot_priceSpacingUnscaled = "0"
+sreyaRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 [var.sbt_config]
 tokenName = "Reya OG SBT"

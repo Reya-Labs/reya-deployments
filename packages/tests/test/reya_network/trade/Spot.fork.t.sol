@@ -11,6 +11,7 @@ import { SpotForkCheck } from "../../reya_common/trade/Spot.fork.c.sol";
 contract SpotForkTest is ReyaForkTest, SpotForkCheck {
     uint128 constant WETH_SPOT_MARKET_ID = 5;
     uint128 constant WBTC_SPOT_MARKET_ID = 11;
+    uint128 constant REYA_SPOT_MARKET_ID = 12;
 
     function test_SpotExecuteFill_WETH() public {
         check_SpotExecuteFill_WETH(WETH_SPOT_MARKET_ID);
@@ -30,5 +31,17 @@ contract SpotForkTest is ReyaForkTest, SpotForkCheck {
 
     function test_SpotBatchExecuteFill_WBTC() public {
         check_SpotBatchExecuteFill_WBTC(WBTC_SPOT_MARKET_ID);
+    }
+
+    function test_SpotExecuteFill_REYA() public {
+        check_SpotExecuteFill_REYA(REYA_SPOT_MARKET_ID);
+    }
+
+    function test_SpotExecuteFill_SmallQuantity_And_Price_REYA() public {
+        check_SpotExecuteFill_SmallQuantity_And_Price_REYA(REYA_SPOT_MARKET_ID);
+    }
+
+    function test_SpotBatchExecuteFill_REYA() public {
+        check_SpotBatchExecuteFill_REYA(REYA_SPOT_MARKET_ID);
     }
 }

@@ -17,12 +17,13 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.130"
+version = "1.0.131"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
 arbitrumSepoliaChainId = "421614"
 optimismSepoliaChainId = "11155420"
+ethereumSepoliaEid = "40161"        # Layerzero EID
 
 [var.wallet_addresses]
 owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
@@ -58,7 +59,7 @@ passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.13@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.49@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
-peripheryRouterPackage = "reya-periphery:1.0.11@router"
+peripheryRouterPackage = "reya-periphery:1.0.14@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassProxyPackage = "reya-exchange-pass-nft:1.0.0@proxy"
@@ -441,6 +442,8 @@ susdeOptimismSepoliaWithdrawFeeUnscaled = "2.1"
 deusdEthereumSepoliaWithdrawFeeUnscaled = "7.0"
 # -------------------------------------------------------------------
 sdeusdEthereumSepoliaWithdrawFeeUnscaled = "7.0"
+# -------------------------------------------------------------------
+reyaEthereumSepoliaWithdrawFeeUnscaled = "1"
 
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -490,6 +493,14 @@ ramberWithdrawalTvlPercentageLimitUnscaled = "0"
 rhedgeCollateralAdapter = "<%= AddressZero %>"
 rhedgeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rhedgeWithdrawalTvlPercentageLimitUnscaled = "0"
+# -------------------------------------------------------------------
+reyaCollateralAdapter = "<%= AddressZero %>"
+reyaWithdrawalWindowSize = "1"
+reyaWithdrawalTvlPercentageLimitUnscaled = "1"
+# -------------------------------------------------------------------
+sreyaCollateralAdapter = "<%= AddressZero %>"
+sreyaWithdrawalWindowSize = "1"
+sreyaWithdrawalTvlPercentageLimitUnscaled = "1"
 
 [var.pool_node_margin_info]
 maxCacheDurationForPoolNodeMarginInfo = "60"
@@ -2586,6 +2597,12 @@ wbtcRusdSpot_minimumOrderBaseUnscaled = "0.0001"
 wbtcRusdSpot_baseSpacingUnscaled = "0.0001"
 wbtcRusdSpot_priceSpacingUnscaled = "0.01"
 wbtcRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+# -----------------------------------------------
+reyaRusdSpot_oracleDeviationUnscaled = "0"
+reyaRusdSpot_minimumOrderBaseUnscaled = "1"
+reyaRusdSpot_baseSpacingUnscaled = "0.1"
+reyaRusdSpot_priceSpacingUnscaled = "0.0000001"
+reyaRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 # inactive
 
@@ -2642,6 +2659,12 @@ wstethRusdSpot_minimumOrderBaseUnscaled = "0"
 wstethRusdSpot_baseSpacingUnscaled = "0"
 wstethRusdSpot_priceSpacingUnscaled = "0"
 wstethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+# -----------------------------------------------
+sreyaRusdSpot_oracleDeviationUnscaled = "0"
+sreyaRusdSpot_minimumOrderBaseUnscaled = "0"
+sreyaRusdSpot_baseSpacingUnscaled = "0"
+sreyaRusdSpot_priceSpacingUnscaled = "0"
+sreyaRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 [var.sbt_config]
 tokenName = "Reya OG SBT"

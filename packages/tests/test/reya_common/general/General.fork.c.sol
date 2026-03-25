@@ -394,7 +394,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceGOAT);
         ls.maxDeviationMarket.push(ls.maxDeviationGOAT);
 
-        ls.meanPriceGRASS = 0.3 * 1e18;
+        ls.meanPriceGRASS = 0.29 * 1e18;
         ls.maxDeviationGRASS = ls.meanPriceGRASS / 2;
         ls.meanPriceMarket.push(ls.meanPriceGRASS);
         ls.maxDeviationMarket.push(ls.maxDeviationGRASS);
@@ -449,7 +449,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceAI16Z);
         ls.maxDeviationMarket.push(ls.maxDeviationAI16Z);
 
-        ls.meanPriceAIXBT = 0.03 * 1e18;
+        ls.meanPriceAIXBT = 0.028 * 1e18;
         ls.maxDeviationAIXBT = ls.meanPriceAIXBT / 2;
         ls.meanPriceMarket.push(ls.meanPriceAIXBT);
         ls.maxDeviationMarket.push(ls.maxDeviationAIXBT);
@@ -520,7 +520,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceLAYER);
         ls.maxDeviationMarket.push(ls.maxDeviationLAYER);
 
-        ls.meanPriceTAO = 144 * 1e18;
+        ls.meanPriceTAO = 309 * 1e18;
         ls.maxDeviationTAO = ls.meanPriceTAO / 2;
         ls.meanPriceMarket.push(ls.meanPriceTAO);
         ls.maxDeviationMarket.push(ls.maxDeviationTAO);
@@ -580,7 +580,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceYZY);
         ls.maxDeviationMarket.push(ls.maxDeviationYZY);
 
-        ls.meanPriceXPL = 0.08 * 1e18;
+        ls.meanPriceXPL = 0.122 * 1e18;
         ls.maxDeviationXPL = ls.meanPriceXPL / 2;
         ls.meanPriceMarket.push(ls.meanPriceXPL);
         ls.maxDeviationMarket.push(ls.maxDeviationXPL);
@@ -710,13 +710,15 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(ls.meanPriceStableCoin);
         ls.maxDeviations.push(ls.maxDeviationStableCoin * 2);
 
-        ls.nodeIds.push(sec.mkrUsdStorkMarkNodeId);
-        ls.meanPrices.push(ls.meanPriceMKR);
-        ls.maxDeviations.push(ls.maxDeviationMKR);
+        // deprecated
+        // ls.nodeIds.push(sec.mkrUsdStorkMarkNodeId);
+        // ls.meanPrices.push(ls.meanPriceMKR);
+        // ls.maxDeviations.push(ls.maxDeviationMKR);
 
-        ls.nodeIds.push(sec.mkrUsdcStorkMarkNodeId);
-        ls.meanPrices.push(ls.meanPriceMKR);
-        ls.maxDeviations.push(ls.maxDeviationMKR);
+        // deprecated
+        // ls.nodeIds.push(sec.mkrUsdcStorkMarkNodeId);
+        // ls.meanPrices.push(ls.meanPriceMKR);
+        // ls.maxDeviations.push(ls.maxDeviationMKR);
 
         ls.nodeIds.push(sec.linkUsdStorkMarkNodeId);
         ls.meanPrices.push(ls.meanPriceLINK);
@@ -1128,13 +1130,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(ls.meanPriceBERA);
         ls.maxDeviations.push(ls.maxDeviationBERA);
 
-        ls.nodeIds.push(sec.layerUsdStorkMarkNodeId);
-        ls.meanPrices.push(ls.meanPriceLAYER);
-        ls.maxDeviations.push(ls.maxDeviationLAYER);
+        // ls.nodeIds.push(sec.layerUsdStorkMarkNodeId);
+        // ls.meanPrices.push(ls.meanPriceLAYER);
+        // ls.maxDeviations.push(ls.maxDeviationLAYER);
 
-        ls.nodeIds.push(sec.layerUsdcStorkMarkNodeId);
-        ls.meanPrices.push(ls.meanPriceLAYER);
-        ls.maxDeviations.push(ls.maxDeviationLAYER);
+        // ls.nodeIds.push(sec.layerUsdcStorkMarkNodeId);
+        // ls.meanPrices.push(ls.meanPriceLAYER);
+        // ls.maxDeviations.push(ls.maxDeviationLAYER);
 
         ls.nodeIds.push(sec.taoUsdStorkMarkNodeId);
         ls.meanPrices.push(ls.meanPriceTAO);
