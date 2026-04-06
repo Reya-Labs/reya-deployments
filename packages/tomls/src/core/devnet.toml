@@ -1,0 +1,10 @@
+include = [
+    "utils/upgrade_proxy.toml",
+    "utils/deploy_proxy.toml",
+    "configs/feature_flags.toml",
+    "configs/protocol_config.toml",
+    "configs/instruments.toml",
+    "configs/exchanges.toml",
+    "configs/tokens/rusd.toml",
+    "configs/tokens/weth.toml",
+]

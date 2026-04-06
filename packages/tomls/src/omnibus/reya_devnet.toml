@@ -1,0 +1,685 @@
+###############################################################################
+# Reya Devnet Omnibus
+#
+# Minimal environment for perp orderbook (perpOB) release testing.
+# Shares the Cronos testnet chain (chainId 89346162) and reuses existing
+# Cronos token deployments. Deploys fresh proxies for core system contracts.
+#
+# Markets: 1 perp (ETH), 1 spot (WETH/rUSD)
+# Collaterals: rUSD, wETH
+###############################################################################
+
+include = [
+    "utils/commons.toml",
+    "utils/constants.toml",
+    "../token/devnet.toml",
+    "../rusd/testnet.toml",
+    "../core/devnet.toml",
+    "../passive_pool/testnet.toml",
+    "../passive_perp/devnet.toml",
+    "../periphery/testnet.toml",
+    "../oracle_manager/testnet.toml",
+    "../exchange_pass_nft/testnet.toml",
+    "../ranks/testnet.toml",
+    "../collateral_pools/collateral_pool_1/devnet.toml",
+    "../orders_gateway/devnet.toml",
+    "../oracle_adapters/testnet.toml",
+    "../share_token/mainnet.toml",
+    "../sbt/testnet.toml",
+]
+
+version = "1.0.0"
+
+###############################################################################
+# Chain IDs (same as Cronos testnet)
+###############################################################################
+[var.chain_ids]
+ethereumSepoliaChainId = "11155111"
+arbitrumSepoliaChainId = "421614"
+optimismSepoliaChainId = "11155420"
+ethereumSepoliaEid = "40161"
+
+###############################################################################
+# Wallet Addresses (simplified - single owner for devnet)
+###############################################################################
+[var.wallet_addresses]
+owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+lotteryPotExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+rageTradeExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+zeuzExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+progCompExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+ranksBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# External Contracts (reuse Cronos deployments)
+###############################################################################
+[var.external_contracts]
+camelotYakRouter = "<%= AddressZero %>"
+reyaLayerZeroEndpoint = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
+sreyaProxy = "0xecab1c86ecf1100Ad3aa7A2C175aEDe4c87E949B"
+reyaProxy = "0xBD96BE24f68C5e616FF22ffC32715Ffa1C4B70d0"
+
+###############################################################################
+# Account IDs
+###############################################################################
+[var.account_ids]
+lotteryPotAccountId = "6888"
+rageTradeAccountId = "7224"
+zeuzAccountId = "7601"
+progCompAccountId = "8038"
+
+###############################################################################
+# Cannon Clone Packages (current versions as placeholders)
+# TODO: Update with perpOB router package versions once published
+###############################################################################
+[var.cannonClonePackages]
+coreProxyPackage = "reya-core:1.0.0@proxy"
+coreRouterPackage = "reya-core:1.0.26@router"
+coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
+rUSDProxyPackage = "reya-rusd:1.0.0@proxy"
+rUSDRouterPackage = "reya-rusd:1.0.0@router"
+tokensProxyPackage = "reya-tokens:1.0.0@proxy"
+tokensRouterPackage = "reya-tokens:1.0.1@router"
+passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
+passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.13@router"
+passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.49@router"
+peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
+peripheryRouterPackage = "reya-periphery:1.0.14@router"
+oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
+oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
+exchangePassProxyPackage = "reya-exchange-pass-nft:1.0.0@proxy"
+exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
+ranksProxyPackage = "reya-ranks:1.0.0@proxy"
+ranksRouterPackage = "reya-ranks:1.0.0@router"
+ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.19@router"
+oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
+oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.8@router"
+shareTokensProxyPackage = "reya-share-tokens:1.0.0@proxy"
+shareTokensRouterPackage = "reya-share-tokens:1.0.2@router"
+sbtProxyPackage = "reya-sbt:1.0.0@proxy"
+sbtRouterPackage = "reya-sbt:1.0.2@router"
+
+###############################################################################
+# Account NFT
+###############################################################################
+[var.account_nft_vars]
+accountNftId = "<%= formatBytes32String('accountNFT') %>"
+accountNftName = "Reya Account NFT"
+accountNftSymbol = "REYA"
+accountNftUri = "https://reya.xyz/"
+
+###############################################################################
+# Exchange Pass
+###############################################################################
+[var.exchange_pass_vars]
+exchangePassName = "Reya Exchange Pass"
+exchangePassSymbol = "ReyaEPass"
+exchangePassUri = "https://reya.xyz/"
+
+###############################################################################
+# Initial Proxy Salts (devnet-specific to avoid collision with Cronos)
+###############################################################################
+[var.initial_proxy_vars]
+usdcSalt = "usdc-devnet"
+usdtSalt = "usdt-devnet"
+daiSalt = "dai-devnet"
+wethSalt = "weth-devnet"
+wbtcSalt = "wbtc-devnet"
+wstethSalt = "wsteth-devnet"
+usdeSalt = "usde-devnet"
+susdeSalt = "susde-devnet"
+deusdSalt = "deusd-devnet"
+sdeusdSalt = "sdeusd-devnet"
+srusdSalt = "srusd-devnet"
+rseliniSalt = "rselini-devnet"
+ramberSalt = "ramber-devnet"
+rhedgeSalt = "rhedge-devnet"
+
+[var.missing_vars]
+salt = ""
+
+###############################################################################
+# Proxy Upgrade Variables (fresh deployments via InitialProxy)
+###############################################################################
+[var.upgrade_proxy_vars]
+coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
+rUSDProxy = "<%= imports.reyaRusdProxy.contracts.InitialProxy.address %>"
+passivePoolProxy = "<%= imports.reyaPassivePoolProxy.contracts.InitialProxy.address %>"
+passivePerpProxy = "<%= imports.reyaPassivePerpProxy.contracts.InitialProxy.address %>"
+peripheryProxy = "<%= imports.reyaPeripheryProxy.contracts.InitialProxy.address %>"
+ordersGatewayProxy = "<%= imports.reyaOrdersGatewayProxy.contracts.InitialProxy.address %>"
+oracleAdaptersProxy = "<%= imports.reyaOracleAdaptersProxy.contracts.InitialProxy.address %>"
+oracleManagerProxy = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>"
+exchangePassProxy = "<%= imports.reyaExchangePassProxy.contracts.InitialProxy.address %>"
+ranksProxy = "<%= imports.reyaRanksProxy.contracts.InitialProxy.address %>"
+sbtProxy = "<%= imports.reyaSbtProxy.contracts.InitialProxy.address %>"
+
+###############################################################################
+# Pausers (simplified: single pauser for devnet)
+###############################################################################
+[var.pausers]
+pauser1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+pauser2 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+pauser3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+pauser4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Rebalancers (not needed initially for devnet)
+###############################################################################
+[var.rebalancers]
+rebalancer1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+rebalancer2 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+rebalancer3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+rebalancer4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+rebalancer5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+rebalancer6 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Liquidators (simplified: single liquidator for devnet)
+###############################################################################
+[var.liquidators]
+liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+liquidator2 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+liquidator3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+liquidator4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+liquidator5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+liquidator6 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+liquidator7 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+liquidator8 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+liquidator9 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+liquidator10 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# AE Liquidators
+###############################################################################
+[var.ae_liquidators]
+ae_liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+ae_liquidator2 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+ae_liquidator3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Conditional Order Execution Bots (not used in perpOB - old COs removed)
+###############################################################################
+[var.co_execution_bots]
+co_execution_bot1 = "0x0000000000000000000000000000000000000000"
+co_execution_bot2 = "0x0000000000000000000000000000000000000000"
+co_execution_bot3 = "0x0000000000000000000000000000000000000000"
+co_execution_bot4 = "0x0000000000000000000000000000000000000000"
+co_execution_bot5 = "0x0000000000000000000000000000000000000000"
+co_execution_bot6 = "0x0000000000000000000000000000000000000000"
+co_execution_bot7 = "0x0000000000000000000000000000000000000000"
+
+###############################################################################
+# Matching Engine Publishers
+###############################################################################
+[var.matching_engine_publishers]
+matching_engine_publisher1 = "0x89340FA8559968c2ADe406C6CcAd6C74F892472d"
+
+###############################################################################
+# Fee Configuration Bots
+###############################################################################
+[var.fee_configuration_bots]
+setOgStatusBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+setTierIdBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+setReferralMappingBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+setMarketZeroFeeBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Dynamic Pricing Setters (not used in perpOB)
+###############################################################################
+[var.dynamic_pricing_setters]
+dynamicPricingSetter1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Set Main Account ID Bots
+###############################################################################
+[var.set_main_account_id_bots]
+setMainAccountIdBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Match Order Publisher Admins
+###############################################################################
+[var.match_order_publisher_admins]
+matchOrderPublisherAdmin1 = "<%= settings.pauser1 %>"
+matchOrderPublisherAdmin2 = "<%= settings.pauser2 %>"
+matchOrderPublisherAdmin3 = "<%= settings.pauser3 %>"
+matchOrderPublisherAdmin4 = "<%= settings.pauser4 %>"
+matchOrderPublisherAdmin5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Camelot Swap (not used on devnet)
+###############################################################################
+[var.camelot_swap_publisher_settings]
+camelotSwapPublisher = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Stork Publishers (reuse Cronos config)
+###############################################################################
+[var.stork_publishers]
+storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
+storkPublisher2 = "0xb91C675E0c0Ecfd4c16f97B110376C3C224061d8"
+storkPublisher3 = "0x51aa9e9c781f85a2c0636a835eb80114c4553098"
+storkPublisher4 = "0xf024a9aa110798e5cd0d698fba6523113eaa7fb2"
+storkPublisher5 = "0xf2e72022eb19352f488526e835c4b17248aa6c03"
+storkPublisherAggregate = "0x0a803F9b1CCe32e2773e0d2e98b37E0775cA5d44"
+
+###############################################################################
+# Stork Executors (simplified for devnet)
+###############################################################################
+[var.stork_executors]
+storkExecutor1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor2 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor6 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor7 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor8 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor9 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor10 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor11 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor12 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor13 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor14 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor15 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor16 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor17 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor18 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor19 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+storkExecutor20 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Market Vol Configurators (not used in perpOB - AMM concept removed)
+###############################################################################
+[var.market_vol_configurators]
+marketVolConfigurator1 = "<%= settings.storkExecutor1 %>"
+marketVolConfigurator2 = "<%= settings.storkExecutor2 %>"
+marketVolConfigurator3 = "<%= settings.storkExecutor3 %>"
+marketVolConfigurator4 = "<%= settings.storkExecutor4 %>"
+marketVolConfigurator5 = "<%= settings.storkExecutor5 %>"
+marketVolConfigurator6 = "<%= settings.storkExecutor6 %>"
+marketVolConfigurator7 = "<%= settings.storkExecutor7 %>"
+marketVolConfigurator8 = "<%= settings.storkExecutor8 %>"
+marketVolConfigurator9 = "<%= settings.storkExecutor9 %>"
+marketVolConfigurator10 = "<%= settings.storkExecutor10 %>"
+marketVolConfigurator11 = "<%= settings.storkExecutor11 %>"
+marketVolConfigurator12 = "<%= settings.storkExecutor12 %>"
+marketVolConfigurator13 = "<%= settings.storkExecutor13 %>"
+marketVolConfigurator14 = "<%= settings.storkExecutor14 %>"
+marketVolConfigurator15 = "<%= settings.storkExecutor15 %>"
+marketVolConfigurator16 = "<%= settings.storkExecutor16 %>"
+marketVolConfigurator17 = "<%= settings.storkExecutor17 %>"
+marketVolConfigurator18 = "<%= settings.storkExecutor18 %>"
+marketVolConfigurator19 = "<%= settings.storkExecutor19 %>"
+marketVolConfigurator20 = "<%= settings.storkExecutor20 %>"
+
+###############################################################################
+# Share Token Roles (simplified - not needed for devnet initially)
+###############################################################################
+[var.share_token_roles]
+rseliniMinter1 = "<%= settings.owner %>"
+rseliniSubscriber1 = "<%= settings.owner %>"
+rseliniRedeemer1 = "<%= settings.owner %>"
+rseliniCustodian1 = "<%= settings.owner %>"
+ramberMinter1 = "<%= settings.owner %>"
+ramberSubscriber1 = "<%= settings.owner %>"
+ramberRedeemer1 = "<%= settings.owner %>"
+ramberCustodian1 = "<%= settings.owner %>"
+rhedgeMinter1 = "<%= settings.owner %>"
+rhedgeSubscriber1 = "<%= settings.owner %>"
+rhedgeRedeemer1 = "<%= settings.owner %>"
+rhedgeCustodian1 = "<%= settings.owner %>"
+
+###############################################################################
+# Unstaking Test Wallets
+###############################################################################
+[var.unstaking_test_wallets]
+unstaking_test_wallet_1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+unstaking_test_wallet_2 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+unstaking_test_wallet_3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Stork Asset Pair IDs (only ETH needed for devnet)
+###############################################################################
+[var.stork_asset_pair_ids]
+storkAssetPairIdUSDC = "USDCUSD"
+storkAssetPairIdETH = "ETHUSD"
+storkAssetPairIdBTC = "BTCUSD"
+storkAssetPairIdWBTC = "WBTCUSD"
+storkAssetPairIdSOL = "SOLUSD"
+storkAssetPairIdARB = "ARBUSD"
+storkAssetPairIdOP = "OPUSD"
+storkAssetPairIdAVAX = "AVAXUSD"
+storkAssetPairIdWSTETH = "WSTETHUSD"
+storkAssetPairIdUSDE = "USDEUSD"
+storkAssetPairIdMKR = "MKRUSD"
+storkAssetPairIdLINK = "LINKUSD"
+storkAssetPairIdAAVE = "AAVEUSD"
+storkAssetPairIdCRV = "CRVUSD"
+storkAssetPairIdUNI = "UNIUSD"
+storkAssetPairIdSUSDE = "SUSDEUSD"
+storkAssetPairIdDEUSD = "DEUSDUSD"
+storkAssetPairIdSDEUSDDEUSD = "SDEUSDDEUSD"
+storkAssetPairIdFTM = "FTMUSD"
+storkAssetPairIdSRUSDRUSD_RR = "SRUSDRUSD_RR"
+
+[var.stork_asset_pair_ids_mark]
+storkAssetPairIdETHMark = "ETHUSDMARK"
+storkAssetPairIdBTCMark = "BTCUSDMARK"
+storkAssetPairIdSOLMark = "SOLUSDMARK"
+storkAssetPairIdARBMark = "ARBUSDMARK"
+storkAssetPairIdOPMark = "OPUSDMARK"
+storkAssetPairIdAVAXMark = "AVAXUSDMARK"
+storkAssetPairIdMKRMark = "MKRUSDMARK"
+storkAssetPairIdLINKMark = "LINKUSDMARK"
+storkAssetPairIdAAVEMark = "AAVEUSDMARK"
+storkAssetPairIdCRVMark = "CRVUSDMARK"
+storkAssetPairIdUNIMark = "UNIUSDMARK"
+storkAssetPairIdSUIMark = "SUIUSDMARK"
+storkAssetPairIdTIAMark = "TIAUSDMARK"
+storkAssetPairIdSEIMark = "SEIUSDMARK"
+storkAssetPairIdZROMark = "ZROUSDMARK"
+storkAssetPairIdXRPMark = "XRPUSDMARK"
+storkAssetPairIdWIFMark = "WIFUSDMARK"
+storkAssetPairId1000PEPEMark = "1000PEPEUSDMARK"
+storkAssetPairIdPOPCATMark = "POPCATUSDMARK"
+storkAssetPairIdDOGEMark = "DOGEUSDMARK"
+storkAssetPairIdKSHIBMark = "1000SHIBUSDMARK"
+storkAssetPairIdKBONKMark = "1000BONKUSDMARK"
+storkAssetPairIdAPTMark = "APTUSDMARK"
+storkAssetPairIdBNBMark = "BNBUSDMARK"
+storkAssetPairIdJTOMark = "JTOUSDMARK"
+storkAssetPairIdADAMark = "ADAUSDMARK"
+storkAssetPairIdLDOMark = "LDOUSDMARK"
+storkAssetPairIdPOLMark = "POLUSDMARK"
+storkAssetPairIdNEARMark = "NEARUSDMARK"
+storkAssetPairIdFTMMark = "FTMUSDMARK"
+storkAssetPairIdENAMark = "ENAUSDMARK"
+storkAssetPairIdEIGENMark = "EIGENUSDMARK"
+storkAssetPairIdPENDLEMark = "PENDLEUSDMARK"
+storkAssetPairIdGOATMark = "GOATUSDMARK"
+storkAssetPairIdGRASSMark = "GRASSUSDMARK"
+storkAssetPairIdKNEIROMark = "1000NEIROUSDMARK"
+storkAssetPairIdDOTMark = "DOTUSDMARK"
+storkAssetPairIdLTCMark = "LTCUSDMARK"
+storkAssetPairIdPYTHMark = "PYTHUSDMARK"
+storkAssetPairIdJUPMark = "JUPUSDMARK"
+storkAssetPairIdPENGUMark = "PENGUUSDMARK"
+storkAssetPairIdTRUMPMark = "TRUMPUSDMARK"
+storkAssetPairIdHYPEMark = "HYPEUSDMARK"
+storkAssetPairIdVIRTUALMark = "VIRTUALUSDMARK"
+storkAssetPairIdAI16ZMark = "AI16ZUSDMARK"
+storkAssetPairIdAIXBTMark = "AIXBTUSDMARK"
+storkAssetPairIdSONICMark = "SUSDMARK"
+storkAssetPairIdFARTCOINMark = "FARTCOINUSDMARK"
+storkAssetPairIdGRIFFAINMark = "GRIFFAINUSDMARK"
+storkAssetPairIdWLDMark = "WLDUSDMARK"
+storkAssetPairIdATOMMark = "ATOMUSDMARK"
+storkAssetPairIdAPEMark = "APEUSDMARK"
+storkAssetPairIdTONMark = "TONUSDMARK"
+storkAssetPairIdONDOMark = "ONDOUSDMARK"
+storkAssetPairIdTRXMark = "TRXUSDMARK"
+storkAssetPairIdINJMark = "INJUSDMARK"
+storkAssetPairIdMOVEMark = "MOVEUSDMARK"
+storkAssetPairIdBERAMark = "BERAUSDMARK"
+storkAssetPairIdLAYERMark = "LAYERUSDMARK"
+storkAssetPairIdTAOMark = "TAOUSDMARK"
+storkAssetPairIdIPMark = "IPUSDMARK"
+storkAssetPairIdMEMark = "MEUSDMARK"
+storkAssetPairIdPUMPMark = "PUMPUSDMARK"
+storkAssetPairIdMORPHOMark = "MORPHOUSDMARK"
+storkAssetPairIdSYRUPMark = "SYRUPUSDMARK"
+storkAssetPairIdAEROMark = "AEROUSDMARK"
+storkAssetPairIdKAITOMark = "KAITOUSDMARK"
+storkAssetPairIdZORAMark = "ZORAUSDMARK"
+storkAssetPairIdPROVEMark = "PROVEUSDMARK"
+storkAssetPairIdPAXGMark = "PAXGUSDMARK"
+storkAssetPairIdYZYMark = "YZYUSDMARK"
+storkAssetPairIdXPLMark = "XPLUSDMARK"
+storkAssetPairIdWLFIMark = "WLFIUSDMARK"
+storkAssetPairIdLINEAMark = "LINEAUSDMARK"
+storkAssetPairIdMEGAMark = "MEGAUSDMARK"
+
+[var.reya_lm_asset_pair_ids]
+reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
+reyaLmAssetPairIdAMBER = "REYALM#AMBERUSDC"
+reyaLmAssetPairIdHEDGE = "REYALM#HEDGEUSDC"
+
+[var.pool_asset_pair_ids]
+poolAssetPairIdSRUSD = "REYAPOOL#1"
+
+[var.stork_contracts]
+storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
+
+###############################################################################
+# Socket Contracts (reuse Cronos)
+###############################################################################
+[var.socket_contracts]
+usdcController = "0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e"
+usdcExecutionHelper = "0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE"
+usdcEthereumSepoliaConnector = "0x79B607E711853F83002d0649DcCeCA73Bef3F3A7"
+usdcArbitrumSepoliaConnector = "0x41CC670dae3f91160f6B64AF46e939223E5C99F9"
+usdcOptimismSepoliaConnector = "0xc18463EcAC98d34196E098cd2678E688Ef7dE759"
+# -------------------------------------------------------------------
+wethController = "0x1529413F38b95cE156f54C34471528B6d0Daf2eb"
+wethExecutionHelper = "0xF1e0f8B07Eb4928922448CBD6f77ac5918f8e032"
+wethEthereumSepoliaConnector = "0xD69619c745aD7AaB060727bDC5D46b4E702dEc6F"
+wethArbitrumSepoliaConnector = "0xD927149f1fa5E8844464ab7F3C84c77F7ebD0aa8"
+wethOptimismSepoliaConnector = "0x3395f0c1546DC5eE16EC021523B3E8c0DB861E00"
+
+###############################################################################
+# Periphery Socket Withdraw Fees (only USDC + WETH for devnet)
+###############################################################################
+[var.periphery_socket_withdraw_fees]
+usdcEthereumSepoliaWithdrawFeeUnscaled = "7.0"
+usdcArbitrumSepoliaWithdrawFeeUnscaled = "2.5"
+usdcOptimismSepoliaWithdrawFeeUnscaled = "2.1"
+# -------------------------------------------------------------------
+wethEthereumSepoliaWithdrawFeeUnscaled = "0.00415"
+wethArbitrumSepoliaWithdrawFeeUnscaled = "0.0014"
+wethOptimismSepoliaWithdrawFeeUnscaled = "0.0012"
+
+###############################################################################
+# Global Collateral Configs (only rUSD + wETH for devnet)
+###############################################################################
+[var.global_collateral_configs]
+rusdCollateralAdapter = "<%= AddressZero %>"
+rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+rusdWithdrawalTvlPercentageLimitUnscaled = "0.4"
+# -------------------------------------------------------------------
+wethCollateralAdapter = "<%= AddressZero %>"
+wethWithdrawalWindowSize = "1"
+wethWithdrawalTvlPercentageLimitUnscaled = "1"
+
+###############################################################################
+# Pool Node Margin Info (may be deprecated in perpOB, kept for now)
+###############################################################################
+[var.pool_node_margin_info]
+maxCacheDurationForPoolNodeMarginInfo = "60"
+
+###############################################################################
+# Fees (simplified for devnet)
+###############################################################################
+[var.fees]
+passivePoolExchangeRebateUnscaled = "0.2"
+lotteryPotExchangeRebateUnscaled = "0.2"
+rageTradeExchangeRebateUnscaled = "0.2"
+zeuzExchangeRebateUnscaled = "0.2"
+pool1RusdRebateUnscaled = "0.5"
+
+[var.fees_configs]
+takerFeeTier0Unscaled = "0.00040"
+makerFeeTier0Unscaled = "0.00040"
+takerFeeTier1Unscaled = "0.00035"
+makerFeeTier1Unscaled = "0.00035"
+takerFeeTier2Unscaled = "0.00030"
+makerFeeTier2Unscaled = "0.00030"
+takerFeeTier3Unscaled = "0.00027"
+makerFeeTier3Unscaled = "0.00027"
+takerFeeTier4Unscaled = "0.00025"
+makerFeeTier4Unscaled = "0.00025"
+takerFeeTier5Unscaled = "0.00022"
+makerFeeTier5Unscaled = "0.00022"
+takerFeeTier6Unscaled = "0.00020"
+makerFeeTier6Unscaled = "0.00020"
+takerFeeTier100Unscaled = "0.00010"
+makerFeeTier100Unscaled = "0.00010"
+takerFeeTier101Unscaled = "0.00010"
+makerFeeTier101Unscaled = "0.00010"
+ogDiscountUnscaled = "0.3"
+refereeDiscountUnscaled = "0.1"
+referrerRebateUnscaled = "0.1"
+affiliateReferrerRebateUnscaled = "0.15"
+vltzDiscountUnscaled = "0.1"
+spreadDiscountUnscaled = "1.0"
+
+[var.affiliates]
+affiliate1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+affiliate2 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+affiliate3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+affiliate4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+affiliate5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+affiliate6 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+affiliate7 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+affiliate8 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+affiliate9 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+affiliate10 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+[var.institutions]
+institution1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+institution2 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+institution3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+institution4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+institution5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+institution6 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+institution7 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Oracle Node Max Stale Durations (only ETH needed, all set to 0 = disabled)
+###############################################################################
+[var.oracleNodeMaxStaleDuration]
+rusdUsdMaxStaleDuration = "0"
+usdcUsdMaxStaleDuration = "0"
+usdcUsdMaxStaleDurationStork = "0"
+ethUsdMaxStaleDurationStork = "0"
+ethUsdcMaxStaleDurationStork = "0"
+ethUsdMarkMaxStaleDurationStork = "0"
+ethUsdcMarkMaxStaleDurationStork = "0"
+
+###############################################################################
+# Pool 1
+###############################################################################
+[var.pool_1]
+pool1_quoteTokenTargetRatioUnscaled = "0.1"
+pool1_DEUSDTargetRatioPostQuoteUnscaled = "0"
+pool1_SDEUSDTargetRatioPostQuoteUnscaled = "0"
+pool1_RSELINITargetRatioPostQuoteUnscaled = "0"
+pool1_RAMBERTargetRatioPostQuoteUnscaled = "0"
+pool1_RHEDGETargetRatioPostQuoteUnscaled = "0"
+
+###############################################################################
+# ETH Market Configuration
+# Deprecated AMM fields set to 0
+###############################################################################
+[var.market_1eth]
+market1Eth_riskMatrixIndex = "0"
+market1Eth_maxOpenBaseUnscaled = "4950"
+market1Eth_velocityMultiplierUnscaled = "0"
+market1Eth_oracleNodeId = "<%= settings.ethUsdcMarkNodeIdStork %>"
+market1Eth_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market1Eth_dutchConfig_lambdaUnscaled = "1"
+market1Eth_dutchConfig_minBaseUnscaled = "0"
+market1Eth_slippageParams_phiUnscaled = "0"
+market1Eth_slippageParams_betaUnscaled = "0"
+market1Eth_minimumOrderBaseUnscaled = "0.010"
+market1Eth_baseSpacingUnscaled = "0.001"
+market1Eth_priceSpacingUnscaled = "0.001"
+market1Eth_depthFactorUnscaled = "0"
+market1Eth_maxExposureFactorUnscaled = "0.999"
+market1Eth_maxPSlippageUnscaled = "0"
+market1Eth_marketOrderMaxStaleDuration = "11"
+market1Eth_priceSpreadUnscaled = "0"
+market1Eth_volatilityIndexMultiplierUnscaled = "0"
+
+###############################################################################
+# Collateral Pool 1 Configuration
+###############################################################################
+[var.cp_1rusd]
+cp1Rusd_maxMarkets = "1"
+cp1Rusd_maxCollaterals = "2"
+
+cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
+
+# Risk matrix: ETH market only (25x leverage with IMR multiplier 1.3)
+cp1Rusd_market1Eth_riskMatrix00Unscaled = "0.000947"
+
+# Risk multipliers
+cp1Rusd_imMultiplierUnscaled = "1.3"
+cp1Rusd_mmrMultiplierUnscaled = "1"
+cp1Rusd_dutchMultiplierUnscaled = "1"
+cp1Rusd_adlMultiplierUnscaled = "0.65"
+cp1Rusd_imBufferMultiplierUnscaled = "9.15"
+cp1Rusd_poolImMultiplierUnscaled = "9.1"
+
+# Backstop liquidation (dedicated backstop account, not passive pool)
+cp1Rusd_backstopLp_liquidationFeeUnscaled = "0.15"
+cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled = "0"
+
+# Liquidation config
+cp1Rusd_bidKeeperFeeUnscaled = "0"
+cp1Rusd_queueDurationInSeconds = "0"
+cp1Rusd_maxOrdersInBid = "0"
+cp1Rusd_maxBidsInQueue = "0"
+cp1Rusd_bidScoreWeightUnscaled = "0"
+cp1Rusd_backstopKeeperFeeUnscaled = "0"
+cp1Rusd_adlExecutionKeeperFeeUnscaled = "0"
+cp1Rusd_dDutchMinUnscaled = "0.01"
+cp1Rusd_dMaxUnscaled = "0.4"
+
+# Auto-exchange (disabled for devnet)
+cp1Rusd_autoExchangeConfig_totalAutoExchangeThresholdInUSDUnscaled = "0"
+cp1Rusd_autoExchangeConfig_negativeCollateralBalancesMultiplierUnscaled = "0"
+cp1Rusd_autoExchangeConfig_quoteBufferPercentageUnscaled = "0"
+
+# rUSD collateral pool config
+cp1Rusd_rusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_rusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_rusd_autoExchangeInsuranceFeeUnscaled = "0.01"
+cp1Rusd_rusd_autoExchangeDustThresholdUnscaled = "0.01"
+cp1Rusd_rusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_rusdParentConfig_collateralAddress = "<%= AddressZero %>"
+cp1Rusd_rusdParentConfig_priceHaircutUnscaled = "0"
+cp1Rusd_rusdParentConfig_autoExchangeDiscountUnscaled = "0"
+cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
+
+# wETH collateral pool config
+cp1Rusd_weth_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0.01"
+cp1Rusd_weth_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_weth_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_wethParentConfig_collateralAddress = "<%= contracts.RUSDProxy.address %>"
+cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.10"
+cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.02"
+cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
+
+###############################################################################
+# Spot Markets (only WETH/rUSD for devnet)
+###############################################################################
+[var.spotMarkets]
+wethRusdSpot_oracleDeviationUnscaled = "0"
+wethRusdSpot_minimumOrderBaseUnscaled = "0.001"
+wethRusdSpot_baseSpacingUnscaled = "0.001"
+wethRusdSpot_priceSpacingUnscaled = "0.01"
+wethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
+###############################################################################
+# SBT Config
+###############################################################################
+[var.sbt_config]
+tokenName = "Reya OG SBT"
+tokenSymbol = "REYAOGSBT"
+rootSubmitter = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"

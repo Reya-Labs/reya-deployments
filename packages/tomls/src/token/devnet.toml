@@ -1,0 +1,4 @@
+include = [
+    "./tokens/usdc.toml",
+    "./tokens/weth.toml",
+]

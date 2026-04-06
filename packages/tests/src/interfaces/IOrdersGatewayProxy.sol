@@ -257,10 +257,19 @@ enum OrderType {
     MarketOrder,
     ReduceOnlyMarketOrder,
     FullCloseOrder,
-    LimitOrderSpot
+    LimitOrderSpot,
+    LimitOrderPerp,
+    ReduceOnlyPerp
 }
 
 struct LimitOrderSpotDetails {
+    /* warning: missing UDVT support in source Solidity version; parameter is `SD59x18`. */
+    int256 baseDelta;
+    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
+    uint256 price;
+}
+
+struct LimitOrderPerpDetails {
     /* warning: missing UDVT support in source Solidity version; parameter is `SD59x18`. */
     int256 baseDelta;
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
