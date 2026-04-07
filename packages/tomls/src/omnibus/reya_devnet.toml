@@ -307,6 +307,8 @@ ethereumSepoliaChainId = "11155111"
 ###############################################################################
 [var.external_contracts]
 reyaLayerZeroEndpoint = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
+sreyaProxy = "0xecab1c86ecf1100Ad3aa7A2C175aEDe4c87E949B"
+reyaProxy = "0xBD96BE24f68C5e616FF22ffC32715Ffa1C4B70d0"
 
 ###############################################################################
 # Socket Contracts (reuse Cronos socket deployments for USDC + WETH bridging)
