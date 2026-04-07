@@ -3,10 +3,10 @@
 #
 # Minimal environment for perp orderbook (perpOB) release testing.
 # Shares the Cronos testnet chain (chainId 89346162) and reuses existing
-# Cronos deployments for tokens, rUSD, passive pool, periphery, oracle
-# manager, exchange pass, oracle adapters, ranks, and SBT.
+# Cronos deployments for tokens, rUSD, passive pool, oracle manager,
+# exchange pass, oracle adapters, ranks, and SBT.
 #
-# Only deploys fresh proxies for: Core, PassivePerp, OrdersGateway.
+# Deploys fresh proxies for: Core, PassivePerp, OrdersGateway, Periphery.
 #
 # Markets: 1 perp (ETH), 1 spot (WETH/rUSD)
 # Collaterals: rUSD, wETH
@@ -18,6 +18,7 @@ include = [
     "../core/devnet.toml",
     "../passive_perp/devnet.toml",
     "../orders_gateway/devnet.toml",
+    "../periphery/devnet.toml",
     "../collateral_pools/collateral_pool_1/devnet.toml",
 ]
 
@@ -28,6 +29,7 @@ version = "1.0.0"
 ###############################################################################
 [var.existing_cronos_contracts]
 rusdProxyAddress = "0x9DE724e7b3facF87Ce39465D3D712717182e3e55"
+usdcProxyAddress = "0xfA27c7c6051344263533cc365274d9569b0272A8"
 wethProxyAddress = "0x2CF56315ACC7E791B1A0135c09d8D5C8dBCD2F14"
 passivePoolProxyAddress = "0x9A3A664987b88790A6FDC1632e3b607813fd94fF"
 oracleManagerProxyAddress = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
@@ -41,7 +43,7 @@ owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 ###############################################################################
-# Cannon Clone Packages (only the 3 we deploy fresh)
+# Cannon Clone Packages (the 4 proxies we deploy fresh)
 ###############################################################################
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
@@ -51,6 +53,8 @@ passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.50@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
 ordersGatewayRouterPackage = "reya-orders-gateway:1.0.20@router"
+peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
+peripheryRouterPackage = "reya-periphery:1.0.14@router"
 
 ###############################################################################
 # Account NFT
@@ -76,18 +80,21 @@ oracleManagerProxy = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
 coreSalt = "core-devnet"
 passivePerpSalt = "passive-perp-devnet"
 ordersGatewaySalt = "orders-gateway-devnet"
+peripherySalt = "periphery-devnet"
 
 ###############################################################################
-# Proxy Upgrade Variables (only the 3 fresh proxies)
+# Proxy Upgrade Variables (the 4 fresh proxies)
 ###############################################################################
 [var.upgrade_proxy_vars]
 coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
 passivePerpProxy = "<%= imports.reyaPassivePerpProxy.contracts.InitialProxy.address %>"
 ordersGatewayProxy = "<%= imports.reyaOrdersGatewayProxy.contracts.InitialProxy.address %>"
+peripheryProxy = "<%= imports.reyaPeripheryProxy.contracts.InitialProxy.address %>"
 depends = [
     "clone.reyaCoreProxy",
     "clone.reyaPassivePerpProxy",
     "clone.reyaOrdersGatewayProxy",
+    "clone.reyaPeripheryProxy",
 ]
 
 ###############################################################################
@@ -152,6 +159,7 @@ matchOrderPublisherAdmin5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 ###############################################################################
 [var.token_vars]
 rusdTokenDecimals = "6"
+usdcTokenDecimals = "6"
 wethTokenDecimals = "18"
 
 ###############################################################################
@@ -287,3 +295,33 @@ wethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000
 rusdUsdNodeId = "0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857"
 ethUsdcNodeIdStork = "0xb19e4d8ea5f0a3752fbd19515075063f7486e6954b8aa2b3d462c61726c46619"
 ethUsdcMarkNodeIdStork = "0x14dba23a7f8775bceefeedb4266fbe135b949ae40fe08e491f2a476d3448c66f"
+
+###############################################################################
+# Chain IDs (for periphery bridging connectors)
+###############################################################################
+[var.chain_ids]
+ethereumSepoliaChainId = "11155111"
+
+###############################################################################
+# External Contracts (LayerZero endpoint, reused from Cronos)
+###############################################################################
+[var.external_contracts]
+reyaLayerZeroEndpoint = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
+
+###############################################################################
+# Socket Contracts (reuse Cronos socket deployments for USDC + WETH bridging)
+###############################################################################
+[var.socket_contracts]
+usdcController = "0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e"
+usdcExecutionHelper = "0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE"
+usdcEthereumSepoliaConnector = "0x79B607E711853F83002d0649DcCeCA73Bef3F3A7"
+wethController = "0x1529413F38b95cE156f54C34471528B6d0Daf2eb"
+wethExecutionHelper = "0xF1e0f8B07Eb4928922448CBD6f77ac5918f8e032"
+wethEthereumSepoliaConnector = "0xD69619c745aD7AaB060727bDC5D46b4E702dEc6F"
+
+###############################################################################
+# Periphery Withdraw Fees (Ethereum Sepolia only)
+###############################################################################
+[var.periphery_socket_withdraw_fees]
+usdcEthereumSepoliaWithdrawFeeUnscaled = "7.0"
+wethEthereumSepoliaWithdrawFeeUnscaled = "0.00415"

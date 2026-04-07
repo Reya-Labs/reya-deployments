@@ -33,7 +33,8 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.pool = payable(0x9A3A664987b88790A6FDC1632e3b607813fd94fF); // reused Cronos PassivePool
         sec.perp = payable(0x57DDC64bf7e36A6f812A1CDCFfAe2f4E6d712F40);
         sec.oracleManager = 0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA; // reused Cronos
-        sec.periphery = payable(0x94ccAe812f1647696754412082dd6684C2366A7f); // reused Cronos
+        // TODO: update with fresh periphery proxy address after devnet cannon deployment
+        sec.periphery = payable(0x94ccAe812f1647696754412082dd6684C2366A7f); // placeholder
         sec.ordersGateway = payable(0x8748D534997a822278BD2288aad74e448eFfBd91);
         sec.oracleAdaptersProxy = payable(0xc501A2356703CD351703D68963c6F4136120f7CF); // reused Cronos
         sec.exchangePass = 0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB; // reused Cronos
