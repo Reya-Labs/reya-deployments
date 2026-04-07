@@ -35,73 +35,86 @@ import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
  * @notice Fork tests for trading with wETH collateral in perpOB model
  * @dev Tests that wETH as collateral works correctly with fill-based execution.
  *      Legacy WethCollateralForkCheck is kept separately for cronos/mainnet.
+ *
+ *      Oracle architecture in perpOB:
+ *        - Stork spot (ethUsdcStorkNodeId) -> wETH collateral valuation
+ *        - Stork mark (ethUsdcStorkMarkNodeId) -> circuit breaker for pushed prices/fills
+ *        - Pushed mark price (via pushMarkPrice) -> actual PnL and margin requirements
  */
 contract WethCollateralPerpOBForkCheck is PerpFillForkCheck {
     /**
-     * @notice Test trading ETH perp with wETH collateral
-     * @dev Deposits wETH, opens a short ETH position via fill, verifies margin.
-     *      Short ETH + hold wETH creates a hedged position where margin
-     *      should be stable across price movements.
+     * @notice Test trading ETH perp with wETH collateral (perfect hedge)
+     * @dev Deposits enough wETH to perfectly hedge a short ETH position, accounting
+     *      for the collateral haircut. Then verifies margin stability across price
+     *      movements by updating all three oracle sources simultaneously:
+     *        1. Stork spot oracle -> wETH collateral valuation
+     *        2. Stork mark oracle -> circuit breaker consistency
+     *        3. Pushed mark price -> PnL and margin requirements
+     *
+     *      Perfect hedge formula: wethAmount = shortSize / (1 - haircut)
+     *      so that wethAmount * (1 - haircut) == shortSize, giving net delta = 0.
      */
     function check_WethTradeWithWethCollateral_PerpOB(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
 
-        uint256 markPrice = 3000e18;
-        pushMarkPrice(marketId, markPrice);
+        uint256 entryPrice = 3000e18;
+
+        // Mock Stork spot oracle (collateral valuation) and Stork mark oracle
+        // (circuit breaker) to be consistent with pushed mark price BEFORE the fill.
+        // mockFreshPrices() only covers market oracleNodeIds, not collateral oracles.
+        mockFreshPrice(sec.ethUsdcStorkNodeId, entryPrice);
+        mockFreshPrice(sec.ethUsdcStorkMarkNodeId, entryPrice);
+
+        pushMarkPrice(marketId, entryPrice);
         pushFundingRate(marketId, 0);
 
-        // Remove wETH collateral cap
+        // Get haircut to calculate perfect hedge amount
         (CollateralConfig memory collateralConfig, ParentCollateralConfig memory parentCollateralConfig,) =
             ICoreProxy(sec.core).getCollateralConfig(1, sec.weth);
+        uint256 priceHaircut = parentCollateralConfig.priceHaircut;
+
+        // Remove wETH collateral cap
         vm.prank(sec.multisig);
         collateralConfig.cap = type(uint256).max;
         ICoreProxy(sec.core).setCollateralConfig(1, sec.weth, collateralConfig, parentCollateralConfig);
 
-        // Deposit wETH as collateral for buyer (who will go short)
-        uint256 wethAmount = 10e18;
-        deal(sec.weth, perpBuyer, wethAmount);
-        vm.startPrank(perpBuyer);
-        ITokenProxy(sec.weth).approve(sec.core, wethAmount);
-        vm.stopPrank();
+        // Calculate wETH amount for a perfect hedge.
+        // Effective collateral delta = wethAmount * (1 - haircut).
+        // For delta-neutral: wethAmount * (1 - haircut) = shortSize
+        //   -> wethAmount = shortSize / (1 - haircut)
+        // This ensures marginBalance is constant across all price levels.
+        uint256 shortSize = 10e18;
+        uint256 wethAmount = shortSize * 1e18 / (1e18 - priceHaircut);
 
         uint128 shortAccountId = depositNewMA(perpBuyer, sec.weth, wethAmount);
+        uint128 longAccountId = depositNewMA(perpSeller, sec.rusd, 100_000e6);
 
-        // Counterparty with rUSD collateral
-        uint128 longAccountId = depositNewMA(perpSeller, sec.rusd, 50_000e6);
-
-        // Open short 5 ETH position via fill at $3000
-        // Seller goes short (negative baseDelta), buyer goes long (positive)
-        // But here we want perpBuyer to go SHORT, so we need to swap roles in executePerpFill
-        // executePerpFill expects buyerAccountId as the long side
-        // So longAccountId is the "buyer" (long) and shortAccountId is the "seller" (short)
-
-        // Create the fill manually with swapped roles
+        // Open short position via fill at entry price.
+        // perpBuyer -> short (wETH collateral), perpSeller -> long (rUSD collateral).
         {
-            // Long order for counterparty
             (ConditionalOrderDetails memory longOrder, EIP712Signature memory longSig) = createLimitOrderPerp({
                 accountId: longAccountId,
                 marketId: marketId,
-                baseDelta: int256(5e18),
-                price: markPrice,
+                baseDelta: int256(shortSize),
+                price: entryPrice,
                 nonce: 1,
                 signer: perpSeller,
                 signerPk: perpSellerPk
             });
 
-            // Short order for wETH-collateralized user
             (ConditionalOrderDetails memory shortOrder, EIP712Signature memory shortSig) = createLimitOrderPerp({
                 accountId: shortAccountId,
                 marketId: marketId,
-                baseDelta: -int256(5e18),
-                price: markPrice,
+                baseDelta: -int256(shortSize),
+                price: entryPrice,
                 nonce: 1,
                 signer: perpBuyer,
                 signerPk: perpBuyerPk
             });
 
             SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
-                price: markPrice, baseDelta: 5e18, accountOrderId: 1, counterpartyOrderId: 2, nonce: 1
+                price: entryPrice, baseDelta: shortSize, accountOrderId: 1, counterpartyOrderId: 2, nonce: 1
             });
 
             ExecuteFillInput memory fillInput = ExecuteFillInput({
@@ -116,42 +129,43 @@ contract WethCollateralPerpOBForkCheck is PerpFillForkCheck {
             IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
         }
 
-        // Verify short position
+        // Verify short position opened
         PerpPosition memory shortPos = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, shortAccountId);
-        assertEq(shortPos.base, -5e18, "Should be short 5 ETH");
+        assertEq(shortPos.base, -int256(shortSize), "Should be short");
 
-        // Get initial margin balance (hedged: short ETH + hold wETH)
+        // Baseline margin (includes fee impact from fill)
         int256 marginBalance0 = ICoreProxy(sec.core).getNodeMarginInfo(shortAccountId, sec.rusd).marginBalance;
 
-        // Check margin stability across small price movements.
-        // The hedge is imperfect: 10 wETH (with 10% haircut → 9 effective delta)
-        // minus 5 ETH short → net +4 delta. Larger swings cause expected drift.
-        // Use small movements to verify the accounting works without exceeding tolerance.
-        uint256[] memory testPrices = new uint256[](3);
-        testPrices[0] = 2950e18;
-        testPrices[1] = 3050e18;
-        testPrices[2] = 3001e18;
+        // Test margin stability across price movements.
+        // With perfect hedge, margin is invariant to price:
+        //   collateralValue = wethAmount * price * (1-haircut) = shortSize * price
+        //   unrealizedPnL   = -shortSize * (price - entryPrice)
+        //   marginBalance   = shortSize * price - shortSize * (price - entryPrice)
+        //                   = shortSize * entryPrice = constant
+        uint256[] memory testPrices = new uint256[](4);
+        testPrices[0] = 3000e18;
+        testPrices[1] = 100_000e18;
+        testPrices[2] = entryPrice - 10e18;
+        testPrices[3] = entryPrice + 10e18;
 
         for (uint256 i = 0; i < testPrices.length; i++) {
-            // Mock both spot and mark oracle prices for consistent valuation.
-            // The Core's margin calculation uses the oracle manager for both collateral
-            // valuation (ethUsdcStorkNodeId) and position PnL (ethUsdcStorkMarkNodeId).
-            vm.mockCall(
-                sec.oracleManager,
-                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkNodeId)),
-                abi.encode(NodeOutput.Data({ price: testPrices[i], timestamp: block.timestamp }))
-            );
-            vm.mockCall(
-                sec.oracleManager,
-                abi.encodeCall(IOracleManagerProxy.process, (sec.ethUsdcStorkMarkNodeId)),
-                abi.encode(NodeOutput.Data({ price: testPrices[i], timestamp: block.timestamp }))
-            );
+            // Advance time so each pushed mark price has a fresh timestamp
+            vm.warp(block.timestamp + 1);
+
+            // 1. Stork spot oracle -> wETH collateral valuation
+            mockFreshPrice(sec.ethUsdcStorkNodeId, testPrices[i]);
+
+            // 2. Stork mark oracle -> circuit breaker for pushed prices
+            mockFreshPrice(sec.ethUsdcStorkMarkNodeId, testPrices[i]);
+
+            // 3. Pushed mark price -> actual PnL and margin requirements
+            pushMarkPrice(marketId, testPrices[i]);
 
             int256 marginBalance1 = ICoreProxy(sec.core).getNodeMarginInfo(shortAccountId, sec.rusd).marginBalance;
-            // Hedged position margin should be approximately stable.
-            // Tolerance accounts for imperfect hedge (net +4 delta) and haircut.
-            // For ±$50 movement: max margin drift ≈ 4 * $50 = $200 + margin req changes.
-            assertApproxEqAbsDecimal(marginBalance0, marginBalance1, 500e6, 6, "Margin should be stable");
+
+            // Perfect hedge: margin should be stable across all prices.
+            // Tolerance accounts for rounding and any margin requirement scaling.
+            assertApproxEqAbsDecimal(marginBalance0, marginBalance1, 10e6, 6, "Hedged margin should be stable");
         }
     }
 }

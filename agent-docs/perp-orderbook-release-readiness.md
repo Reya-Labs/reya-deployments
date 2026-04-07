@@ -569,7 +569,7 @@ When the devnet proves stable, gradually introduce:
 
 3. **Global configuration**: `passive_perp/configs/global_config.toml` sets `exchangeProxy = PassivePoolProxy.address`. In perpOB, if the passive pool is no longer the perp counterparty, this configuration may need to change or the relationship between exchange proxy and passive pool may need clarification.
 
-4. **Backstop liquidator account creation**: Need to define the process for creating and funding the dedicated backstop liquidator account on devnet.
+4. **Backstop liquidator account creation**: Need to define the process for creating and funding the dedicated backstop liquidator account on devnet. **TODO**: Once the backstop account is created, hardcode its account ID in the devnet omnibus settings (e.g. `backstopLiquidatorAccountId`) and wire it into `backstop_lp_config` via `setBackstopLPConfig`. The devnet `liquidations_devnet.toml` currently skips `backstop_lp_config` because it can't use `PassivePoolProxy.sendCallToCore` with the existing Cronos pool — the fix is to call `setBackstopLPConfig` directly on CoreProxy with the hardcoded account ID instead of going through the pool.
 
 5. **Fee tier `makerRebate` field**: The current `fees.toml` config sets tier parameters. Need to verify whether `makerRebate` is a new field that needs to be added to the fee configuration toml files.
 

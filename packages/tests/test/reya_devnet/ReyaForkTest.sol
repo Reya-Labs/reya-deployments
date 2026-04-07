@@ -76,5 +76,11 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         dec.socketController[sec.weth] = 0x1529413F38b95cE156f54C34471528B6d0Daf2eb;
         dec.socketExecutionHelper[sec.weth] = 0xF1e0f8B07Eb4928922448CBD6f77ac5918f8e032;
+
+        // create fork
+        try vm.activeFork() { }
+        catch {
+            vm.createSelectFork(sec.REYA_RPC);
+        }
     }
 }

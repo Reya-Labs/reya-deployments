@@ -50,6 +50,14 @@ contract LeveragePerpOBForkCheck is PerpFillForkCheck {
         setupPerpTestActors();
         mockFreshPrices();
 
+        // For wETH collateral, mock the Stork spot oracle (collateral valuation) and
+        // Stork mark oracle (circuit breaker) to be consistent with the mark price.
+        // mockFreshPrices() only covers market oracleNodeIds, not collateral oracles.
+        if (collateral == sec.weth) {
+            mockFreshPrice(sec.ethUsdcStorkNodeId, markPrice);
+            mockFreshPrice(sec.ethUsdcStorkMarkNodeId, markPrice);
+        }
+
         // Push mark price and zero funding
         pushMarkPrice(marketId, markPrice);
         pushFundingRate(marketId, 0);

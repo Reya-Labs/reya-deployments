@@ -12,10 +12,7 @@ contract LeverageForkTest is ReyaForkTest, LeveragePerpOBForkCheck {
         check_trade_leverage_perpOB(ETH_MARKET_ID, ETH_LEVERAGE, ETH_MARK_PRICE, sec.rusd);
     }
 
-    /// @dev Temporarily skipped — arithmetic overflow in Core margin calc
-    ///      with wETH collateral. Needs investigation into the wETH deposit + fill
-    ///      interaction in perpOB.
-    function skip_test_Devnet_Leverage_ETH_wETH() public {
+    function test_Devnet_Leverage_ETH_wETH() public {
         check_trade_leverage_perpOB(ETH_MARKET_ID, ETH_LEVERAGE, ETH_MARK_PRICE, sec.weth);
     }
 }

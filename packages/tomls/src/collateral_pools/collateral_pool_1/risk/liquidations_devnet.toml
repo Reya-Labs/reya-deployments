@@ -1,5 +1,8 @@
-# Devnet liquidations: skips pool_account_activate_market and backstop_lp_config
-# (these require PassivePoolProxy.sendCallToCore which can't work with existing pool)
+# Devnet liquidations: skips pool_account_activate_market (not needed in perpOB)
+#
+# TODO: Add backstop_lp_config once backstop liquidator account is created.
+# Use a hardcoded backstopLiquidatorAccountId setting and call setBackstopLPConfig
+# directly on CoreProxy (not via PassivePoolProxy.sendCallToCore).
 [invoke.cp_1rusd_configure_liquidation]
 target = ["CoreProxy"]
 fromCall.func = "getCollateralPoolOwner"
