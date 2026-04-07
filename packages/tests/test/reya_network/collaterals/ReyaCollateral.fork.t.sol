@@ -20,7 +20,7 @@ contract ReyaCollateralForkTest is ReyaForkTest, ReyaCollateralForkCheck {
             minimumOrderBase: 1e18,
             baseSpacing: 0.1e18,
             priceSpacing: 1e11 // 1e-7 unscaled
-        });
+         });
         check_reya_spot_market_config(expected);
     }
 

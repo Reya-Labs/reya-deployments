@@ -18,6 +18,6 @@ target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "configureProtocol"
 args = [
-    { oracleManagerAddress = "<%= settings.oracleManagerProxy %>", exchangePassNFTAddress = "<%= settings.exchangePassProxyAddress %>", feeCollectorAccountId = "<%= settings.coreFeeCollectorAccountId %>", yakRouterAddress_DEPRECATED = "<%= settings.camelotYakRouter %>", ordersGatewayAddress = "<%= contracts.OrdersGatewayProxy.address %>", passivePoolAddress = "<%= settings.passivePoolProxyAddress %>" },
+    { oracleManagerAddress = "<%= settings.oracleManagerProxy %>", exchangePassNFTAddress = "<%= settings.exchangePassProxyAddress %>", feeCollectorAccountId = "<%= settings.coreFeeCollectorAccountId %>", yakRouterAddress_DEPRECATED = "<%= AddressZero %>", ordersGatewayAddress = "<%= contracts.OrdersGatewayProxy.address %>", passivePoolAddress = "<%= settings.passivePoolProxyAddress %>" },
 ]
 depends = ["invoke.core_create_fee_collector_account"]

@@ -63,16 +63,14 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         vm.prank(attacker);
         vm.expectRevert();
-        IPassivePoolProxy(sec.pool)
-            .removeLiquidity(
-                sec.passivePoolId, userSharesAmount, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: attacker })
-            );
+        IPassivePoolProxy(sec.pool).removeLiquidity(
+            sec.passivePoolId, userSharesAmount, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: attacker })
+        );
 
         vm.prank(user);
-        IPassivePoolProxy(sec.pool)
-            .removeLiquidity(
-                sec.passivePoolId, userSharesAmount, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user })
-            );
+        IPassivePoolProxy(sec.pool).removeLiquidity(
+            sec.passivePoolId, userSharesAmount, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user })
+        );
     }
 
     function checkFuzz_PoolDepositWithdrawTokenized(
@@ -94,14 +92,13 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         vm.prank(alice);
         ITokenProxy(sec.rusd).approve(sec.pool, amount);
         vm.prank(alice);
-        IPassivePoolProxy(sec.pool)
-            .addLiquidityTokenized(
-                sec.passivePoolId,
-                alice,
-                amount,
-                minShares,
-                ActionMetadata({ action: Action.StakeTokenized, onBehalfOf: alice })
-            );
+        IPassivePoolProxy(sec.pool).addLiquidityTokenized(
+            sec.passivePoolId,
+            alice,
+            amount,
+            minShares,
+            ActionMetadata({ action: Action.StakeTokenized, onBehalfOf: alice })
+        );
 
         uint256 aliceSharesAmount = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user);
         assertEq(aliceSharesAmount, 0);
@@ -111,24 +108,22 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         vm.prank(attacker);
         vm.expectRevert();
-        IPassivePoolProxy(sec.pool)
-            .removeLiquidityTokenized(
-                sec.passivePoolId,
-                aliceSrusdAmount,
-                0,
-                ActionMetadata({ action: Action.UnstakeTokenized, onBehalfOf: attacker })
-            );
+        IPassivePoolProxy(sec.pool).removeLiquidityTokenized(
+            sec.passivePoolId,
+            aliceSrusdAmount,
+            0,
+            ActionMetadata({ action: Action.UnstakeTokenized, onBehalfOf: attacker })
+        );
 
         vm.prank(alice);
         ITokenProxy(sec.srusd).approve(sec.pool, aliceSrusdAmount);
         vm.prank(alice);
-        IPassivePoolProxy(sec.pool)
-            .removeLiquidityTokenized(
-                sec.passivePoolId,
-                aliceSrusdAmount,
-                0,
-                ActionMetadata({ action: Action.UnstakeTokenized, onBehalfOf: alice })
-            );
+        IPassivePoolProxy(sec.pool).removeLiquidityTokenized(
+            sec.passivePoolId,
+            aliceSrusdAmount,
+            0,
+            ActionMetadata({ action: Action.UnstakeTokenized, onBehalfOf: alice })
+        );
 
         assertApproxEqAbsDecimal(ITokenProxy(sec.rusd).balanceOf(alice), amount, 0.001e6, 6);
         assertEq(ITokenProxy(sec.srusd).balanceOf(alice), 0);
@@ -172,17 +167,17 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             abi.encode(10e6)
         );
 
-        IPeripheryProxy(sec.periphery)
-            .depositPassivePool(DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: 0 }));
+        IPeripheryProxy(sec.periphery).depositPassivePool(
+            DepositPassivePoolInputs({ poolId: sec.passivePoolId, owner: user, minShares: 0 })
+        );
 
         uint256 sharesIn = IPassivePoolProxy(sec.pool).getAccountBalance(sec.passivePoolId, user);
 
         // make sure that the passive pool withdrawal works
         vm.prank(user);
-        uint256 amountOut = IPassivePoolProxy(sec.pool)
-            .removeLiquidity(
-                sec.passivePoolId, sharesIn, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user })
-            );
+        uint256 amountOut = IPassivePoolProxy(sec.pool).removeLiquidity(
+            sec.passivePoolId, sharesIn, 0, ActionMetadata({ action: Action.Unstake, onBehalfOf: user })
+        );
         assertApproxEqAbsDecimal(amountOut, 10e6, 10, 6);
 
         // create new account and deposit tokens in it
@@ -193,7 +188,11 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         // user closes the short trade on ETH and goes same long
         executeCoreMatchOrder({
-            marketId: 1, sender: user, base: sd(20e18), priceLimit: ud(type(uint256).max), accountId: accountId
+            marketId: 1,
+            sender: user,
+            base: sd(20e18),
+            priceLimit: ud(type(uint256).max),
+            accountId: accountId
         });
 
         // withdraw 100 tokens from account
@@ -332,9 +331,7 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
             sec.oracleManager,
             abi.encodeCall(IOracleManagerProxy.process, (rseliniParentCollateralConfig.oracleNodeId)),
             abi.encode(
-                NodeOutput.Data({
-                    price: ud(rseliniOutput.price).mul(ud(0.99e18)).unwrap(), timestamp: block.timestamp
-                })
+                NodeOutput.Data({ price: ud(rseliniOutput.price).mul(ud(0.99e18)).unwrap(), timestamp: block.timestamp })
             )
         );
 
@@ -352,13 +349,16 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                 keccak256(abi.encode(keccak256(bytes("autoRebalance")), sec.passivePoolId))
             )
         );
-        IPassivePoolProxy(sec.pool)
-            .triggerAutoRebalance(
-                sec.passivePoolId,
-                AutoRebalanceInput({
-                    tokenIn: address(0), amountIn: 0, tokenOut: address(0), minPrice: 0, receiverAddress: address(0)
-                })
-            );
+        IPassivePoolProxy(sec.pool).triggerAutoRebalance(
+            sec.passivePoolId,
+            AutoRebalanceInput({
+                tokenIn: address(0),
+                amountIn: 0,
+                tokenOut: address(0),
+                minPrice: 0,
+                receiverAddress: address(0)
+            })
+        );
     }
 
     function checkFuzz_depositWithdraw_noSharePriceChange(int256[] memory amountsFuzz) public {
@@ -381,8 +381,9 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
 
         address owner = vm.addr(333_222);
         vm.prank(sec.multisig);
-        IPassivePoolProxy(sec.pool)
-            .addToFeatureFlagAllowlist(keccak256(abi.encode(keccak256(bytes("v2Liquidity")), sec.passivePoolId)), owner);
+        IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(
+            keccak256(abi.encode(keccak256(bytes("v2Liquidity")), sec.passivePoolId)), owner
+        );
 
         for (uint256 i = 0; i < amountsFuzz.length; i++) {
             uint256 sharePrice0 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
@@ -396,14 +397,13 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                 vm.prank(owner);
                 ITokenProxy(token).approve(sec.pool, amount);
                 vm.prank(owner);
-                IPassivePoolProxy(sec.pool)
-                    .addLiquidity({
-                        poolId: sec.passivePoolId,
-                        owner: owner,
-                        amount: amount,
-                        minShares: 0,
-                        actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: owner })
-                    });
+                IPassivePoolProxy(sec.pool).addLiquidity({
+                    poolId: sec.passivePoolId,
+                    owner: owner,
+                    amount: amount,
+                    minShares: 0,
+                    actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: owner })
+                });
             } else {
                 uint256 amount = uint256(-amounts[i]);
 
@@ -424,13 +424,12 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
                 }
 
                 vm.prank(owner);
-                IPassivePoolProxy(sec.pool)
-                    .removeLiquidity({
-                        poolId: sec.passivePoolId,
-                        sharesAmount: sharesAmount,
-                        minOut: 0,
-                        actionMetadata: ActionMetadata({ action: Action.Unstake, onBehalfOf: owner })
-                    });
+                IPassivePoolProxy(sec.pool).removeLiquidity({
+                    poolId: sec.passivePoolId,
+                    sharesAmount: sharesAmount,
+                    minOut: 0,
+                    actionMetadata: ActionMetadata({ action: Action.Unstake, onBehalfOf: owner })
+                });
             }
 
             uint256 sharePrice1 = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
@@ -455,26 +454,24 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         }
 
         vm.prank(user);
-        IPassivePoolProxy(sec.pool)
-            .addLiquidity({
-                poolId: sec.passivePoolId,
-                owner: user,
-                amount: 1e6,
-                minShares: 0,
-                actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: user })
-            });
+        IPassivePoolProxy(sec.pool).addLiquidity({
+            poolId: sec.passivePoolId,
+            owner: user,
+            amount: 1e6,
+            minShares: 0,
+            actionMetadata: ActionMetadata({ action: Action.Stake, onBehalfOf: user })
+        });
 
         if (!isWhitelisted) {
             vm.expectRevert(abi.encodeWithSelector(IPassivePoolProxy.WithdrawalDisabled.selector, 1, user));
         }
 
         vm.prank(user);
-        IPassivePoolProxy(sec.pool)
-            .removeLiquidity({
-                poolId: sec.passivePoolId,
-                sharesAmount: 0.5e30,
-                minOut: 0,
-                actionMetadata: ActionMetadata({ action: Action.Unstake, onBehalfOf: user })
-            });
+        IPassivePoolProxy(sec.pool).removeLiquidity({
+            poolId: sec.passivePoolId,
+            sharesAmount: 0.5e30,
+            minOut: 0,
+            actionMetadata: ActionMetadata({ action: Action.Unstake, onBehalfOf: user })
+        });
     }
 }

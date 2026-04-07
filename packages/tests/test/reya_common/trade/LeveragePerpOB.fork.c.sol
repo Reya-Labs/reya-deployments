@@ -19,8 +19,6 @@ import {
 
 import { IOracleManagerProxy } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
-import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
-
 import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
@@ -80,9 +78,7 @@ contract LeveragePerpOBForkCheck is PerpFillForkCheck {
         }
 
         // Deposit generous collateral for both sides
-        // Use smaller amounts for non-stablecoin collaterals to avoid arithmetic overflow
-        uint8 decimals = ITokenProxy(collateral).decimals();
-        uint256 amount = decimals <= 8 ? 1_000_000 * 10 ** decimals : 10 * 10 ** decimals;
+        uint256 amount = 1_000_000e6;
         uint128 userAccountId = depositNewMA(perpBuyer, collateral, amount);
         uint128 counterpartyAccountId = depositNewMA(perpSeller, collateral, amount);
 

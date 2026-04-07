@@ -50,14 +50,13 @@ contract DistributeFunds is Script, Test {
                 IPassivePoolProxy(pool).getAccountBalance(poolId, pendingTxs[i].wallet_address);
 
             vm.broadcast(multisigEOA);
-            IPassivePoolProxy(pool)
-                .addLiquidity(
-                    poolId,
-                    pendingTxs[i].wallet_address,
-                    pendingTxs[i].amount,
-                    pendingTxs[i].amount * 98 / 100 * 1e24,
-                    ActionMetadata({ action: Action.Stake, onBehalfOf: pendingTxs[i].wallet_address })
-                );
+            IPassivePoolProxy(pool).addLiquidity(
+                poolId,
+                pendingTxs[i].wallet_address,
+                pendingTxs[i].amount,
+                pendingTxs[i].amount * 98 / 100 * 1e24,
+                ActionMetadata({ action: Action.Stake, onBehalfOf: pendingTxs[i].wallet_address })
+            );
 
             uint256 shareSupplyUserAfter =
                 IPassivePoolProxy(pool).getAccountBalance(poolId, pendingTxs[i].wallet_address);

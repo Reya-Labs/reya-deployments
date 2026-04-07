@@ -7,44 +7,6 @@ import { MarginInfo } from "./ICoreProxy.sol";
 interface IPassivePerpProxy {
     function getPSlippage(uint128 marketId) external view returns (int256);
 
-    // Oracle Push Module
-    function pushOracleData(
-        OracleDataPayload calldata payload,
-        EIP712Signature calldata signature
-    ) external;
-
-    function getMarkPrice(uint128 marketId)
-        external
-        view
-        returns (
-            /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-            uint256
-        );
-
-    function getMarkPriceTimestamp(uint128 marketId)
-        external
-        view
-        returns (uint256);
-
-    function getFundingRate(uint128 marketId)
-        external
-        view
-        returns (
-            /* warning: missing UDVT support in source Solidity version; parameter is `SD59x18`. */
-            int256
-        );
-
-    function getFundingRateTimestamp(uint128 marketId)
-        external
-        view
-        returns (uint256);
-
-    // perpOB: read full market config including new orderbook fields
-    function getMarketConfigurationV2(uint128 marketId)
-        external
-        view
-        returns (MarketConfigurationDataV2 memory config);
-
     function createMarket(string memory name, uint128 passivePoolId)
         external
         returns (uint128 id);
@@ -349,10 +311,6 @@ interface IPassivePerpProxy {
         uint256 x
     );
     error StalePriceDetectedInMarketOrder(uint128 marketId);
-    error StaleMarkPrice(uint128 marketId, uint256 markPriceTimestamp, uint256 maxStaleDuration);
-    error StaleFundingRate(uint128 marketId, uint256 fundingRateTimestamp, uint256 maxStaleDuration);
-    error FillPriceDeviationExceeded(uint128 marketId, uint256 fillPrice, uint256 markPrice, uint256 maxDeviation);
-    error MarkPriceDeviationExceeded(uint128 marketId, uint256 markPrice, uint256 oraclePrice, uint256 maxDeviation);
     error ZeroQuadraticCoefficient();
 
     function executeLiquidationOrder(
@@ -584,43 +542,6 @@ struct MarketConfigurationData {
     uint256 volatilityIndexMultiplier;
 }
 
-// perpOB: updated market config with deprecated AMM fields and new orderbook fields
-struct MarketConfigurationDataV2 {
-    uint256 riskMatrixIndex;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 maxOpenBase;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 velocityMultiplier_DEPRECATED;
-    bytes32 oracleNodeId;
-    uint256 mtmWindow_DEPRECATED;
-    DutchConfiguration dutchConfig;
-    SlippageParams slippageParams;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 minimumOrderBase_DEPRECATED;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 baseSpacing;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 priceSpacing;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 depthFactor_DEPRECATED;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 maxExposureFactor_DEPRECATED;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 maxPSlippage_DEPRECATED;
-    uint256 marketOrderMaxStaleDuration;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 priceSpread_DEPRECATED;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 volatilityIndexMultiplier_DEPRECATED;
-    // perpOB fields
-    uint256 markPriceMaxStaleDuration;
-    uint256 fundingRateMaxStaleDuration;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 markPriceMaxDeviation;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 fillPriceMaxDeviation;
-}
-
 struct MarketVolatilityConfigurationData {
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
     uint256 volPriceImpact;
@@ -713,69 +634,34 @@ struct GlobalFeeParameters {
 
 struct MarketRuntimeData {
     uint128 id;
-    uint128 passivePoolId_DEPRECATED;
-    uint128 poolAccountId_DEPRECATED;
+    uint128 passivePoolId;
+    uint128 poolAccountId;
     address quoteToken;
     uint8 quoteTokenDecimals;
     /* warning: missing UDVT support in source Solidity version; parameter is `SD59x18`. */
-    int256 lastFundingVelocity_DEPRECATED;
+    int256 lastFundingVelocity;
     /* warning: missing UDVT support in source Solidity version; parameter is `SD59x18`. */
-    int256 lastFundingRate_DEPRECATED;
+    int256 lastFundingRate;
     uint256 lastFundingTimestamp;
-    PriceData lastMTM_DEPRECATED;
+    PriceData lastMTM;
     FundingAndADLTrackers longTrackers;
     FundingAndADLTrackers shortTrackers;
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
     uint256 openInterest;
     /* warning: missing UDVT support in source Solidity version; parameter is `SD59x18`. */
-    int256 logPriceMultiplier_DEPRECATED;
+    int256 logPriceMultiplier;
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 depthFactor_DEPRECATED;
+    uint256 depthFactor;
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 priceSpread_DEPRECATED;
+    uint256 priceSpread;
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 velocityMultiplier_DEPRECATED;
-    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 markPrice;
-    uint256 markPriceTimestamp;
-    /* warning: missing UDVT support in source Solidity version; parameter is `SD59x18`. */
-    int256 fundingRate;
-    uint256 fundingRateTimestamp;
+    uint256 velocityMultiplier;
 }
 
 struct MarketDataResponse {
     MarketRuntimeData marketData;
     uint256 blockTimestamp;
     uint256 blockNumber;
-}
-
-enum OracleDataType {
-    MarkPrice,
-    FundingRate
-}
-
-struct OracleDataPayload {
-    uint128 marketId;
-    uint256 timestamp;
-    OracleDataType dataType;
-    bytes data;
-    address publisher;
-}
-
-enum ExecutionType {
-    MatchOrder,
-    DutchLiquidation,
-    RankedLiquidation,
-    BackstopLiquidation,
-    ADL
-}
-
-struct PerpFillFees {
-    uint256 protocolFeeCredit;
-    uint256 exchangeFeeCredit;
-    uint256 makerFeeCredit;
-    uint256 makerFeeDebit;
-    uint256 referrerFeeCredit;
 }
 
 // THIS FILE WAS AUTOGENERATED FROM THE FOLLOWING ABI JSON:

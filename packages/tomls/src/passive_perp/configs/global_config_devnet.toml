@@ -4,6 +4,6 @@ target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setGlobalConfiguration"
 args = [
-    { coreProxy = "<%= contracts.CoreProxy.address %>", exchangeProxy_DEPRECATED = "<%= settings.passivePoolProxyAddress %>", oracleManagerAddress = "<%= settings.oracleManagerProxyAddress %>", maxAbsFundingRate = "<%= parseEther(settings.maxAbsFundingRateUnscaled) %>" },
+    { coreProxy = "<%= contracts.CoreProxy.address %>", exchangeProxy_DEPRECATED = "<%= AddressZero %>", oracleManagerAddress = "<%= settings.oracleManagerProxyAddress %>", maxAbsFundingRate = "<%= parseEther(settings.maxAbsFundingRateUnscaled) %>" },
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]

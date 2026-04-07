@@ -28,17 +28,10 @@ version = "1.0.0"
 ###############################################################################
 [var.existing_cronos_contracts]
 rusdProxyAddress = "0x9DE724e7b3facF87Ce39465D3D712717182e3e55"
-usdcProxyAddress = "0xfA27c7c6051344263533cc365274d9569b0272A8"
 wethProxyAddress = "0x2CF56315ACC7E791B1A0135c09d8D5C8dBCD2F14"
 passivePoolProxyAddress = "0x9A3A664987b88790A6FDC1632e3b607813fd94fF"
 oracleManagerProxyAddress = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
-peripheryProxyAddress = "0x94ccAe812f1647696754412082dd6684C2366A7f"
-oracleAdaptersProxyAddress = "0xc501A2356703CD351703D68963c6F4136120f7CF"
 exchangePassProxyAddress = "0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB"
-accountNftProxyAddress = "0xeA13E7dA71E018160019A296Eca4184Ddc53aeB1"
-# Existing Cronos passive pool ID and account ID
-existingPool1RusdId = "1"
-existingPool1RusdAccountId = "2"
 
 ###############################################################################
 # Wallet Addresses (simplified - single owner for devnet)
@@ -46,12 +39,6 @@ existingPool1RusdAccountId = "2"
 [var.wallet_addresses]
 owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-
-###############################################################################
-# External Contracts
-###############################################################################
-[var.external_contracts]
-camelotYakRouter = "<%= AddressZero %>"
 
 ###############################################################################
 # Cannon Clone Packages (only the 3 we deploy fresh)
@@ -75,14 +62,12 @@ accountNftSymbol = "REYA"
 accountNftUri = "https://reya.xyz/"
 
 ###############################################################################
-# Compatibility Aliases (match var names expected by existing config files)
+# Compatibility Aliases
+# Some shared config files reference these var names (without "Address" suffix)
 ###############################################################################
 [var.cronos_compat_vars]
 passivePoolProxy = "0x9A3A664987b88790A6FDC1632e3b607813fd94fF"
 oracleManagerProxy = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
-pool1RusdId = "1"
-pool1RusdAccountId = "2"
-pool1RusdRebateUnscaled = "0"
 
 ###############################################################################
 # Initial Proxy Salts (devnet-specific to avoid collision with Cronos)
@@ -91,9 +76,6 @@ pool1RusdRebateUnscaled = "0"
 coreSalt = "core-devnet"
 passivePerpSalt = "passive-perp-devnet"
 ordersGatewaySalt = "orders-gateway-devnet"
-
-[var.missing_vars]
-salt = ""
 
 ###############################################################################
 # Proxy Upgrade Variables (only the 3 fresh proxies)
@@ -118,7 +100,10 @@ pauser3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 pauser4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 ###############################################################################
-# Liquidators (simplified: single liquidator for devnet)
+# Liquidators (simplified: single liquidator wallet for devnet)
+# TODO: Create a dedicated liquidator wallet and replace the multisig address
+# below. Devnet only needs 1 wallet; all slots point to it for simplicity.
+# For cronos/mainnet migration, create fresh wallets for liquidator1-10.
 ###############################################################################
 [var.liquidators]
 liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
@@ -133,18 +118,12 @@ liquidator9 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 liquidator10 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 ###############################################################################
-# AE Liquidators
+# AE Liquidators (same single wallet for devnet)
 ###############################################################################
 [var.ae_liquidators]
 ae_liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 ae_liquidator2 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 ae_liquidator3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-
-###############################################################################
-# Co-Execution Bots (conditional order execution)
-###############################################################################
-[var.co_execution_bots]
-co_execution_bot1 = "0xB6EaF546b84E1f917579FC4FD3d7082DfE2ba212"
 
 ###############################################################################
 # Matching Engine Publishers
@@ -188,19 +167,13 @@ wethWithdrawalWindowSize = "1"
 wethWithdrawalTvlPercentageLimitUnscaled = "1"
 
 ###############################################################################
-# Stork Asset Pair IDs (only ETH needed for devnet)
-###############################################################################
-[var.stork_asset_pair_ids_mark]
-storkAssetPairIdETHMark = "ETHUSDMARK"
-
-###############################################################################
 # PassivePerp Global Config
 ###############################################################################
 [var.passive_perp_global]
 maxAbsFundingRateUnscaled = "0.1"
 
 ###############################################################################
-# Fees (simplified for devnet)
+# Fees (simplified for devnet — single tier, same discounts as cronos)
 ###############################################################################
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.2"
@@ -208,17 +181,19 @@ passivePoolExchangeRebateUnscaled = "0.2"
 [var.fees_configs]
 takerFeeTier0Unscaled = "0.00040"
 makerFeeTier0Unscaled = "0.00040"
+makerRebateTier0Unscaled = "0"
 
-###############################################################################
-# Oracle Node Max Stale Durations
-###############################################################################
-[var.oracleNodeMaxStaleDuration]
-ethUsdMarkMaxStaleDurationStork = "0"
-ethUsdcMarkMaxStaleDurationStork = "0"
+[var.global_fee_params]
+ogDiscountUnscaled = "0.3"
+refereeDiscountUnscaled = "0.1"
+referrerRebateUnscaled = "0.1"
+affiliateReferrerRebateUnscaled = "0.15"
+vltzDiscountUnscaled = "0.1"
+spreadDiscountUnscaled = "1.0"
 
 ###############################################################################
 # ETH Market Configuration
-# Deprecated AMM fields set to 0
+# Deprecated AMM fields set to 0; perpOB fields active
 ###############################################################################
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
@@ -261,11 +236,6 @@ cp1Rusd_mmrMultiplierUnscaled = "1"
 cp1Rusd_dutchMultiplierUnscaled = "1"
 cp1Rusd_adlMultiplierUnscaled = "0.65"
 cp1Rusd_imBufferMultiplierUnscaled = "9.15"
-cp1Rusd_poolImMultiplierUnscaled = "9.1"
-
-# Backstop liquidation
-cp1Rusd_backstopLp_liquidationFeeUnscaled = "0.15"
-cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled = "0"
 
 # Liquidation config
 cp1Rusd_bidKeeperFeeUnscaled = "0"
@@ -277,11 +247,6 @@ cp1Rusd_backstopKeeperFeeUnscaled = "0"
 cp1Rusd_adlExecutionKeeperFeeUnscaled = "0"
 cp1Rusd_dDutchMinUnscaled = "0.01"
 cp1Rusd_dMaxUnscaled = "0.4"
-
-# Auto-exchange (disabled for devnet)
-cp1Rusd_autoExchangeConfig_totalAutoExchangeThresholdInUSDUnscaled = "0"
-cp1Rusd_autoExchangeConfig_negativeCollateralBalancesMultiplierUnscaled = "0"
-cp1Rusd_autoExchangeConfig_quoteBufferPercentageUnscaled = "0"
 
 # rUSD collateral pool config
 cp1Rusd_rusd_capUnscaled = "<%= formatEther(MaxUint256) %>"

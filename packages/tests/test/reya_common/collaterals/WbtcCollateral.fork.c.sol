@@ -125,12 +125,17 @@ contract WbtcCollateralForkCheck is BaseReyaForkTest {
         deal(sec.wbtc, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.wbtc], amount);
         vm.prank(dec.socketExecutionHelper[sec.wbtc]);
-        uint128 accountId = IPeripheryProxy(sec.periphery)
-            .depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.wbtc) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.wbtc) })
+        );
 
         // user executes short trade on BTC (market ID 2)
         (UD60x18 orderPrice,) = executeCoreMatchOrder({
-            marketId: 2, sender: user, base: sd(-0.1e18), priceLimit: ud(0), accountId: accountId
+            marketId: 2,
+            sender: user,
+            base: sd(-0.1e18),
+            priceLimit: ud(0),
+            accountId: accountId
         });
 
         // compute fees paid in rUSD

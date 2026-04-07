@@ -4,11 +4,14 @@ import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 
 import {
     IPassivePerpProxy,
-    OracleDataPayload,
-    OracleDataType,
-    MarketDataResponse,
     EIP712Signature as PerpEIP712Signature
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
+import {
+    IPassivePerpProxyV2,
+    OracleDataPayload,
+    OracleDataType,
+    MarketDataResponseV2
+} from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import {
     IOrdersGatewayProxy,
     ConditionalOrderDetails,
@@ -57,8 +60,8 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         PerpEIP712Signature memory sig = PerpEIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
         vm.prank(unauthorized);
-        vm.expectRevert();
-        IPassivePerpProxy(sec.perp).pushOracleData(payload, sig);
+        vm.expectRevert(abi.encodeWithSelector(IPassivePerpProxy.FeatureUnavailable.selector, ORACLE_PUSHERS_FLAG));
+        IPassivePerpProxyV2(sec.perp).pushOracleData(payload, sig);
     }
 
     /**
@@ -90,10 +93,10 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         PerpEIP712Signature memory sig = PerpEIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
         vm.prank(publisher);
-        IPassivePerpProxy(sec.perp).pushOracleData(payload, sig);
+        IPassivePerpProxyV2(sec.perp).pushOracleData(payload, sig);
 
         // Verify it was stored via getMarketData
-        MarketDataResponse memory mdr = IPassivePerpProxy(sec.perp).getMarketData(marketId);
+        MarketDataResponseV2 memory mdr = IPassivePerpProxyV2(sec.perp).getMarketData(marketId);
         assertEq(mdr.marketData.markPrice, 3000e18, "Mark price should be stored");
     }
 
@@ -168,7 +171,9 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
 
         // Should revert because ME is not on allowlist
         vm.prank(sec.coExecutionBot);
-        vm.expectRevert();
+        vm.expectRevert(
+            abi.encodeWithSelector(IOrdersGatewayProxy.FeatureUnavailable.selector, MATCHING_ENGINE_PUBLISHER_FLAG)
+        );
         IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
     }
 
@@ -202,7 +207,7 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         PerpEIP712Signature memory sig = PerpEIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
         vm.prank(publisher);
-        vm.expectRevert();
-        IPassivePerpProxy(sec.perp).pushOracleData(payload, sig);
+        vm.expectRevert(abi.encodeWithSelector(IPassivePerpProxy.FeatureUnavailable.selector, ORACLE_PUSHERS_FLAG));
+        IPassivePerpProxyV2(sec.perp).pushOracleData(payload, sig);
     }
 }

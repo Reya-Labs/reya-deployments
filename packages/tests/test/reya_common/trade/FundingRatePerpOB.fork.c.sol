@@ -4,12 +4,15 @@ import { PerpFillForkCheck } from "./PerpFill.fork.c.sol";
 
 import {
     IPassivePerpProxy,
-    OracleDataPayload,
-    OracleDataType,
     PerpPosition,
-    MarketDataResponse,
     EIP712Signature as PerpEIP712Signature
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
+import {
+    IPassivePerpProxyV2,
+    OracleDataPayload,
+    OracleDataType,
+    MarketDataResponseV2
+} from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import { ICoreProxy, MarginInfo } from "../../../src/interfaces/ICoreProxy.sol";
 import { OracleDataPayloadHashing } from "../../../src/utils/OracleDataPayloadHashing.sol";
 
@@ -50,7 +53,7 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
         PerpEIP712Signature memory sig = PerpEIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
         vm.prank(fundingPublisher);
-        IPassivePerpProxy(sec.perp).pushOracleData(payload, sig);
+        IPassivePerpProxyV2(sec.perp).pushOracleData(payload, sig);
     }
 
     /**
@@ -65,7 +68,7 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
         _pushOracleData(marketId, OracleDataType.FundingRate, abi.encode(fundingRate));
 
         // Read back via getMarketData (standalone getters not on router)
-        MarketDataResponse memory mdr = IPassivePerpProxy(sec.perp).getMarketData(marketId);
+        MarketDataResponseV2 memory mdr = IPassivePerpProxyV2(sec.perp).getMarketData(marketId);
         assertEq(mdr.marketData.fundingRate, fundingRate, "Stored funding rate should match pushed value");
         assertEq(mdr.marketData.fundingRateTimestamp, block.timestamp, "Funding rate timestamp should match");
     }
@@ -85,7 +88,7 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
         mockFreshPrices();
 
         // Reading should still work (staleness is checked during trade, not read)
-        MarketDataResponse memory mdr = IPassivePerpProxy(sec.perp).getMarketData(marketId);
+        MarketDataResponseV2 memory mdr = IPassivePerpProxyV2(sec.perp).getMarketData(marketId);
         assertTrue(block.timestamp > mdr.marketData.fundingRateTimestamp + 3600, "Funding rate should be stale");
     }
 
@@ -100,7 +103,7 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
         _pushOracleData(marketId, OracleDataType.MarkPrice, abi.encode(markPrice));
 
         // Read back via getMarketData (standalone getters not on router)
-        MarketDataResponse memory mdr = IPassivePerpProxy(sec.perp).getMarketData(marketId);
+        MarketDataResponseV2 memory mdr = IPassivePerpProxyV2(sec.perp).getMarketData(marketId);
         assertEq(mdr.marketData.markPrice, markPrice, "Stored mark price should match pushed value");
         assertEq(mdr.marketData.markPriceTimestamp, block.timestamp, "Mark price timestamp should match");
     }
@@ -109,6 +112,11 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
      * @notice Test that funding rate actually accrues on open positions
      * @dev Opens a long position, pushes a positive funding rate, warps forward,
      *      and verifies that the long's margin decreases (longs pay positive funding).
+     *
+     * TODO: Revisit this test once the funding rate accrual logic is finalized.
+     * The exact accrual formula (rate * price * time * base) and its interaction
+     * with tracker updates may need small adjustments to match the final
+     * implementation.
      */
     function check_FundingRateAccrual(uint128 marketId) internal {
         // Use PerpFill actors (we inherit from PerpFillForkCheck now)

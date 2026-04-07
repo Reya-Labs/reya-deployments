@@ -6,9 +6,7 @@ import "../DataTypes.sol";
 import { ICoreProxy, ParentCollateralConfig, MarginInfo, CollateralInfo } from "../../../src/interfaces/ICoreProxy.sol";
 
 import {
-    IPeripheryProxy,
-    DepositNewMAInputs,
-    DepositExistingMAInputs
+    IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
 } from "../../../src/interfaces/IPeripheryProxy.sol";
 
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
@@ -85,8 +83,9 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         NodeOutput.Data memory tokenUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(tokenStorkNodeId);
 
         (, ParentCollateralConfig memory parentCollateralConfig,) = ICoreProxy(sec.core).getCollateralConfig(1, token);
-        SD59x18 tokenAmountInUSD = sd(int256(tokenAmount)).mul(sd(int256(tokenUsdcNodeOutput.price)))
-            .mul(UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut))));
+        SD59x18 tokenAmountInUSD = sd(int256(tokenAmount)).mul(sd(int256(tokenUsdcNodeOutput.price))).mul(
+            UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut)))
+        );
 
         MarginInfo memory accountUsdNodeMarginInfo = ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId);
         assertApproxEqAbsDecimal(accountUsdNodeMarginInfo.marginBalance, tokenAmountInUSD.unwrap(), 0.000001e18, 18);
@@ -100,8 +99,9 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         deal(sec.usdc, address(sec.periphery), usdcAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], usdcAmount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        IPeripheryProxy(sec.periphery)
-            .depositExistingMA(DepositExistingMAInputs({ accountId: accountId, token: sec.usdc }));
+        IPeripheryProxy(sec.periphery).depositExistingMA(
+            DepositExistingMAInputs({ accountId: accountId, token: sec.usdc })
+        );
 
         accountUsdNodeMarginInfo = ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId);
         assertApproxEqAbsDecimal(
@@ -161,8 +161,9 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         s.coreTokenBalance1 = ITokenProxy(token).balanceOf(sec.core);
         s.peripheryTokenBalance1 = ITokenProxy(token).balanceOf(sec.periphery);
         s.multisigTokenBalance1 = ITokenProxy(token).balanceOf(sec.multisig);
-        uint256 withdrawStaticFees = IPeripheryProxy(sec.periphery)
-            .getTokenStaticWithdrawFee(token, dec.socketConnector[token][sec.destinationChainId]);
+        uint256 withdrawStaticFees = IPeripheryProxy(sec.periphery).getTokenStaticWithdrawFee(
+            token, dec.socketConnector[token][sec.destinationChainId]
+        );
 
         assertEq(s.coreTokenBalance0 - s.coreTokenBalance1, amount);
         assertEq(s.multisigTokenBalance1 - s.multisigTokenBalance0, withdrawStaticFees);
@@ -196,8 +197,9 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         deal(sec.usdc, address(sec.periphery), usdcAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], usdcAmount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        IPeripheryProxy(sec.periphery)
-            .depositExistingMA(DepositExistingMAInputs({ accountId: accountId, token: sec.usdc }));
+        IPeripheryProxy(sec.periphery).depositExistingMA(
+            DepositExistingMAInputs({ accountId: accountId, token: sec.usdc })
+        );
 
         amount = 100e18;
         executePeripheryWithdrawMA(user, userPk, 2, accountId, token, amount, sec.destinationChainId);

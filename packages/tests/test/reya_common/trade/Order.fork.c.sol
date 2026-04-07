@@ -46,7 +46,11 @@ contract OrderForkCheck is BaseReyaForkTest {
         CollateralInfo memory preOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
         (UD60x18 orderPrice,) = executeCoreMatchOrder({
-            marketId: marketId, sender: user, base: base, priceLimit: priceLimit, accountId: accountId
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
         });
 
         CollateralInfo memory postOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
@@ -89,12 +93,17 @@ contract OrderForkCheck is BaseReyaForkTest {
         CollateralInfo memory preOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
         (UD60x18 orderPrice,) = executeCoreMatchOrder({
-            marketId: marketId, sender: user, base: base, priceLimit: priceLimit, accountId: accountId
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
         });
 
         CollateralInfo memory postOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
-        SD59x18 fee = sd(BASIC_TIER_FEE_PERCENTAGE).mul(ONE_sd.sub(sd(int256(config.ogDiscount))))
-            .mul(ONE_sd.sub(sd(int256(config.vltzDiscount))));
+        SD59x18 fee = sd(BASIC_TIER_FEE_PERCENTAGE).mul(ONE_sd.sub(sd(int256(config.ogDiscount)))).mul(
+            ONE_sd.sub(sd(int256(config.vltzDiscount)))
+        );
 
         int256 expectedFees = orderPrice.intoSD59x18().mul(base).mul(fee).unwrap() / 1e12;
         int256 paidFees = preOrderBalance.realBalance - postOrderBalance.realBalance;
@@ -119,7 +128,11 @@ contract OrderForkCheck is BaseReyaForkTest {
         CollateralInfo memory preOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
         executeCoreMatchOrder({
-            marketId: marketId, sender: user, base: base, priceLimit: priceLimit, accountId: accountId
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
         });
 
         CollateralInfo memory postOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
@@ -146,9 +159,7 @@ contract OrderForkCheck is BaseReyaForkTest {
         {
             CollateralInfo memory preOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
-            executeCoreMatchOrder({
-                marketId: 1, sender: user, base: base, priceLimit: priceLimit, accountId: accountId
-            });
+            executeCoreMatchOrder({ marketId: 1, sender: user, base: base, priceLimit: priceLimit, accountId: accountId });
 
             CollateralInfo memory postOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
@@ -159,9 +170,7 @@ contract OrderForkCheck is BaseReyaForkTest {
         {
             CollateralInfo memory preOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
-            executeCoreMatchOrder({
-                marketId: 2, sender: user, base: base, priceLimit: priceLimit, accountId: accountId
-            });
+            executeCoreMatchOrder({ marketId: 2, sender: user, base: base, priceLimit: priceLimit, accountId: accountId });
 
             CollateralInfo memory postOrderBalance = ICoreProxy(sec.core).getCollateralInfo(accountId, sec.rusd);
 
@@ -253,12 +262,20 @@ contract OrderForkCheck is BaseReyaForkTest {
         IPassivePerpProxy(sec.perp).setAccountOwnerSpreadDiscountStatusFeeConfig(user, false);
 
         (UD60x18 orderPrice,) = executeCoreMatchOrder({
-            marketId: marketId, sender: user, base: base, priceLimit: priceLimit, accountId: accountId
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
         });
 
         // reverse the trade
         executeCoreMatchOrder({
-            marketId: marketId, sender: user, base: reverseBase, priceLimit: ud(0), accountId: accountId
+            marketId: marketId,
+            sender: user,
+            base: reverseBase,
+            priceLimit: ud(0),
+            accountId: accountId
         });
 
         // execute with spread discount
@@ -266,7 +283,11 @@ contract OrderForkCheck is BaseReyaForkTest {
         IPassivePerpProxy(sec.perp).setAccountOwnerSpreadDiscountStatusFeeConfig(user, true);
 
         (UD60x18 orderPrice2,) = executeCoreMatchOrder({
-            marketId: marketId, sender: user, base: base, priceLimit: priceLimit, accountId: accountId
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
         });
 
         uint256 orderPrice2WithSpread =
@@ -287,7 +308,11 @@ contract OrderForkCheck is BaseReyaForkTest {
 
         uint256 gasBefore = gasleft();
         executeCoreMatchOrder({
-            marketId: marketId, sender: user, base: base, priceLimit: priceLimit, accountId: accountId
+            marketId: marketId,
+            sender: user,
+            base: base,
+            priceLimit: priceLimit,
+            accountId: accountId
         });
         uint256 gasUsed = gasBefore - gasleft();
 
@@ -296,7 +321,11 @@ contract OrderForkCheck is BaseReyaForkTest {
 
         gasBefore = gasleft();
         executeCoreMatchOrder({
-            marketId: marketId, sender: user, base: sd(-1e18), priceLimit: ud(0), accountId: accountId
+            marketId: marketId,
+            sender: user,
+            base: sd(-1e18),
+            priceLimit: ud(0),
+            accountId: accountId
         });
         uint256 gasUsedClose = gasBefore - gasleft();
 

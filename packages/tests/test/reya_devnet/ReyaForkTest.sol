@@ -14,17 +14,9 @@ import { IOracleManagerProxy } from "../../src/interfaces/IOracleManagerProxy.so
  *      Minimal setup: 1 perp market (ETH), 1 spot market (WETH), 2 collaterals (rUSD, wETH).
  *      No passive pool counterparty — uses dedicated backstop liquidator account.
  *
- *      IMPORTANT: The devnet deploys fresh Core/Perp/OrdersGateway but reuses the Cronos
- *      Periphery. Since the Periphery's global config points to the Cronos Core (not devnet
- *      Core), all deposits must go through the direct deposit path (deal + approve + deposit)
- *      rather than the periphery path.
  */
 contract ReyaForkTest is BaseReyaForkTest {
     constructor() {
-        // All deposits go through the direct path (deal + approve + deposit on devnet Core)
-        // because the shared Cronos Periphery points to the wrong Core.
-        useDirectDeposit = true;
-
         string memory rpcKey = vm.envString("RPC_KEY");
         // network (same chain as cronos testnet)
         sec.REYA_RPC = string.concat("https://rpc.reya-cronos.gelato.digital/", rpcKey);

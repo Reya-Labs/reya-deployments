@@ -61,14 +61,13 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             composeMsg
         );
         vm.prank(sec.layerZeroEndpoint);
-        IPeripheryProxy(sec.periphery)
-            .lzCompose(
-                sec.reya, // The OFT token address
-                0, // Message GUID
-                message, // The composed message
-                address(0), // Executor address
-                bytes("") // Extra data
-            );
+        IPeripheryProxy(sec.periphery).lzCompose(
+            sec.reya, // The OFT token address
+            0, // Message GUID
+            message, // The composed message
+            address(0), // Executor address
+            bytes("") // Extra data
+        );
 
         accountId = ICoreProxy(sec.core).createOrGetSpotAccount(user);
         assertEq(IReyaToken(sec.reya).balanceOf(sec.periphery), 0);
@@ -95,14 +94,13 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
         vm.prank(sec.layerZeroEndpoint);
 
         vm.expectRevert(abi.encodeWithSignature("CollateralNotConfigured(uint128,address)", uint128(1), sec.reya));
-        IPeripheryProxy(sec.periphery)
-            .lzCompose(
-                sec.reya, // The OFT token address
-                0, // Message GUID
-                message, // The composed message
-                address(0), // Executor address
-                bytes("") // Extra data
-            );
+        IPeripheryProxy(sec.periphery).lzCompose(
+            sec.reya, // The OFT token address
+            0, // Message GUID
+            message, // The composed message
+            address(0), // Executor address
+            bytes("") // Extra data
+        );
     }
 
     function check_ReyaStaking() public returns (uint128 account) {
@@ -117,16 +115,18 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             inputs: abi.encode(sec.reya, stakeAmount),
             marketId: 0, // core command, marketId is not necessary
             exchangeId: 0 // core command, does not involve exchange,
-        });
+         });
         bytes memory extraData = abi.encode("stakeReya", stakeAmount);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(account, commands, userPk, 1, extraData);
 
-        IPeripheryProxy(sec.periphery)
-            .stakeReya(
-                StakeReyaInputs({
-                    accountId: account, assetAmount: stakeAmount, minShareAmount: stakeAmount, withdrawSig: sig
-                })
-            );
+        IPeripheryProxy(sec.periphery).stakeReya(
+            StakeReyaInputs({
+                accountId: account,
+                assetAmount: stakeAmount,
+                minShareAmount: stakeAmount,
+                withdrawSig: sig
+            })
+        );
 
         assertEq(getNetDeposits(account, sec.reya), int256(2e18));
         assertEq(getNetDeposits(account, sec.sreya), int256(stakeAmount));
@@ -142,7 +142,7 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             inputs: abi.encode(sec.sreya, unstakeAmount),
             marketId: 0, // core command, marketId is not necessary
             exchangeId: 0 // core command, does not involve exchange,
-        });
+         });
         bytes memory extraData = abi.encode("unstakeStakedReya", unstakeAmount);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(
             account,
@@ -152,12 +152,14 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             extraData
         );
 
-        IPeripheryProxy(sec.periphery)
-            .unstakeStakedReya(
-                UnstakeStakedReyaInputs({
-                    accountId: account, shareAmount: unstakeAmount, minAssetAmount: unstakeAmount, withdrawSig: sig
-                })
-            );
+        IPeripheryProxy(sec.periphery).unstakeStakedReya(
+            UnstakeStakedReyaInputs({
+                accountId: account,
+                shareAmount: unstakeAmount,
+                minAssetAmount: unstakeAmount,
+                withdrawSig: sig
+            })
+        );
 
         assertEq(getNetDeposits(account, sec.reya), int256(2e18 + unstakeAmount));
         assertEq(getNetDeposits(account, sec.sreya), int256(8e18 - unstakeAmount));
@@ -173,7 +175,7 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             inputs: abi.encode(sec.sreya, unstakeAmount),
             marketId: 0, // core command, marketId is not necessary
             exchangeId: 0 // core command, does not involve exchange,
-        });
+         });
         bytes memory extraData = abi.encode("unstakeStakedReya", unstakeAmount * 2);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(
             account,
@@ -186,12 +188,14 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
         vm.expectRevert(
             abi.encodeWithSelector(IPeripheryProxy.UnacceptableAssetAmount.selector, unstakeAmount, unstakeAmount * 2)
         );
-        IPeripheryProxy(sec.periphery)
-            .unstakeStakedReya(
-                UnstakeStakedReyaInputs({
-                    accountId: account, shareAmount: unstakeAmount, minAssetAmount: unstakeAmount * 2, withdrawSig: sig
-                })
-            );
+        IPeripheryProxy(sec.periphery).unstakeStakedReya(
+            UnstakeStakedReyaInputs({
+                accountId: account,
+                shareAmount: unstakeAmount,
+                minAssetAmount: unstakeAmount * 2,
+                withdrawSig: sig
+            })
+        );
     }
 
     function check_ReyaFailsToStakeWhenMinShareAmountIsTooHigh() public {
@@ -205,19 +209,21 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             inputs: abi.encode(sec.reya, stakeAmount),
             marketId: 0, // core command, marketId is not necessary
             exchangeId: 0 // core command, does not involve exchange,
-        });
+         });
         bytes memory extraData = abi.encode("stakeReya", stakeAmount + 1);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(account, commands, userPk, 1, extraData);
 
         vm.expectRevert(
             abi.encodeWithSelector(IPeripheryProxy.UnacceptableShareAmount.selector, stakeAmount, stakeAmount + 1)
         );
-        IPeripheryProxy(sec.periphery)
-            .stakeReya(
-                StakeReyaInputs({
-                    accountId: account, assetAmount: stakeAmount, minShareAmount: stakeAmount + 1, withdrawSig: sig
-                })
-            );
+        IPeripheryProxy(sec.periphery).stakeReya(
+            StakeReyaInputs({
+                accountId: account,
+                assetAmount: stakeAmount,
+                minShareAmount: stakeAmount + 1,
+                withdrawSig: sig
+            })
+        );
     }
 
     function check_ReyaBridgingPermissions() public {
@@ -229,14 +235,13 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             vm.expectRevert(
                 abi.encodeWithSelector(IPeripheryProxy.FeatureUnavailable.selector, keccak256(bytes("global")))
             );
-            IPeripheryProxy(sec.periphery)
-                .lzCompose(
-                    sec.reya, // The OFT token address
-                    0, // Message GUID
-                    bytes(""), // The composed message
-                    address(0), // Executor address
-                    bytes("") // Extra data
-                );
+            IPeripheryProxy(sec.periphery).lzCompose(
+                sec.reya, // The OFT token address
+                0, // Message GUID
+                bytes(""), // The composed message
+                address(0), // Executor address
+                bytes("") // Extra data
+            );
 
             vm.prank(sec.multisig);
             IPeripheryProxy(sec.periphery).setFeatureFlagDenyAll(keccak256(bytes("global")), false);
@@ -248,28 +253,26 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
                 abi.encodeWithSelector(IPeripheryProxy.CallerIsNotLayerZeroEndpoint.selector, address(6333))
             );
             vm.prank(address(6333));
-            IPeripheryProxy(sec.periphery)
-                .lzCompose(
-                    sec.reya, // The OFT token address
-                    0, // Message GUID
-                    bytes(""), // The composed message
-                    address(0), // Executor address
-                    bytes("") // Extra data
-                );
+            IPeripheryProxy(sec.periphery).lzCompose(
+                sec.reya, // The OFT token address
+                0, // Message GUID
+                bytes(""), // The composed message
+                address(0), // Executor address
+                bytes("") // Extra data
+            );
         }
 
         // try calling from unauthorized oapp
         {
             vm.prank(sec.layerZeroEndpoint);
             vm.expectRevert(abi.encodeWithSelector(IPeripheryProxy.UnauthorizedOFT.selector, address(1_245_363)));
-            IPeripheryProxy(sec.periphery)
-                .lzCompose(
-                    address(1_245_363), // The OFT token address
-                    0, // Message GUID
-                    bytes(""), // The composed message
-                    address(0), // Executor address
-                    bytes("") // Extra data
-                );
+            IPeripheryProxy(sec.periphery).lzCompose(
+                address(1_245_363), // The OFT token address
+                0, // Message GUID
+                bytes(""), // The composed message
+                address(0), // Executor address
+                bytes("") // Extra data
+            );
         }
 
         // try pausing and withdraw (expect failure)
@@ -280,17 +283,16 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             vm.expectRevert(
                 abi.encodeWithSelector(IPeripheryProxy.FeatureUnavailable.selector, keccak256(bytes("global")))
             );
-            IPeripheryProxy(sec.periphery)
-                .withdrawMALZ(
-                    WithdrawMALZInputs({
-                        accountId: 1,
-                        token: sec.reya,
-                        tokenAmount: 1000,
-                        sig: EIP712Signature({ v: 0, r: bytes32(0), s: bytes32(0), deadline: 0 }),
-                        dstEid: 1,
-                        receiver: address(123_456_789)
-                    })
-                );
+            IPeripheryProxy(sec.periphery).withdrawMALZ(
+                WithdrawMALZInputs({
+                    accountId: 1,
+                    token: sec.reya,
+                    tokenAmount: 1000,
+                    sig: EIP712Signature({ v: 0, r: bytes32(0), s: bytes32(0), deadline: 0 }),
+                    dstEid: 1,
+                    receiver: address(123_456_789)
+                })
+            );
 
             vm.prank(sec.multisig);
             IPeripheryProxy(sec.periphery).setFeatureFlagDenyAll(keccak256(bytes("global")), false);
@@ -308,7 +310,10 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
 
             Command_Periphery[] memory commands = new Command_Periphery[](1);
             commands[0] = Command_Periphery({
-                commandType: 1, inputs: abi.encode(sec.reya, stakeAmount), marketId: 0, exchangeId: 0
+                commandType: 1,
+                inputs: abi.encode(sec.reya, stakeAmount),
+                marketId: 0,
+                exchangeId: 0
             });
             bytes memory extraData = abi.encode("stakeReya", stakeAmount);
             EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(1, commands, userPk, 1, extraData);
@@ -316,12 +321,9 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             vm.expectRevert(
                 abi.encodeWithSelector(IPeripheryProxy.FeatureUnavailable.selector, keccak256(bytes("global")))
             );
-            IPeripheryProxy(sec.periphery)
-                .stakeReya(
-                    StakeReyaInputs({
-                        accountId: 1, assetAmount: stakeAmount, minShareAmount: stakeAmount, withdrawSig: sig
-                    })
-                );
+            IPeripheryProxy(sec.periphery).stakeReya(
+                StakeReyaInputs({ accountId: 1, assetAmount: stakeAmount, minShareAmount: stakeAmount, withdrawSig: sig })
+            );
 
             vm.prank(sec.multisig);
             IPeripheryProxy(sec.periphery).setFeatureFlagDenyAll(keccak256(bytes("global")), false);
@@ -334,7 +336,10 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
 
             Command_Periphery[] memory commands = new Command_Periphery[](1);
             commands[0] = Command_Periphery({
-                commandType: 1, inputs: abi.encode(sec.reya, stakeAmount), marketId: 0, exchangeId: 0
+                commandType: 1,
+                inputs: abi.encode(sec.reya, stakeAmount),
+                marketId: 0,
+                exchangeId: 0
             });
             bytes memory extraData = abi.encode("stakeReya", stakeAmount);
             EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(1, commands, userPk, 1, extraData);
@@ -342,12 +347,14 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             vm.expectRevert(
                 abi.encodeWithSelector(IPeripheryProxy.FeatureUnavailable.selector, keccak256(bytes("global")))
             );
-            IPeripheryProxy(sec.periphery)
-                .unstakeStakedReya(
-                    UnstakeStakedReyaInputs({
-                        accountId: 1, shareAmount: stakeAmount, minAssetAmount: stakeAmount, withdrawSig: sig
-                    })
-                );
+            IPeripheryProxy(sec.periphery).unstakeStakedReya(
+                UnstakeStakedReyaInputs({
+                    accountId: 1,
+                    shareAmount: stakeAmount,
+                    minAssetAmount: stakeAmount,
+                    withdrawSig: sig
+                })
+            );
 
             vm.prank(sec.multisig);
             IPeripheryProxy(sec.periphery).setFeatureFlagDenyAll(keccak256(bytes("global")), false);
@@ -360,7 +367,10 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
 
             Command_Periphery[] memory commands = new Command_Periphery[](1);
             commands[0] = Command_Periphery({
-                commandType: 1, inputs: abi.encode(sec.reya, stakeAmount), marketId: 0, exchangeId: 0
+                commandType: 1,
+                inputs: abi.encode(sec.reya, stakeAmount),
+                marketId: 0,
+                exchangeId: 0
             });
             bytes memory extraData = abi.encode("stakeReya", stakeAmount);
             EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(1, commands, userPk, 1, extraData);
@@ -368,12 +378,9 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             vm.expectRevert(
                 abi.encodeWithSelector(IPeripheryProxy.FeatureUnavailable.selector, keccak256(bytes("global")))
             );
-            IPeripheryProxy(sec.periphery)
-                .stakeReya(
-                    StakeReyaInputs({
-                        accountId: 1, assetAmount: stakeAmount, minShareAmount: stakeAmount, withdrawSig: sig
-                    })
-                );
+            IPeripheryProxy(sec.periphery).stakeReya(
+                StakeReyaInputs({ accountId: 1, assetAmount: stakeAmount, minShareAmount: stakeAmount, withdrawSig: sig })
+            );
 
             vm.prank(IReyaToken(sec.reya).owner());
             IReyaToken(sec.reya).unpause();
@@ -386,7 +393,10 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
 
             Command_Periphery[] memory commands = new Command_Periphery[](1);
             commands[0] = Command_Periphery({
-                commandType: 1, inputs: abi.encode(sec.reya, stakeAmount), marketId: 0, exchangeId: 0
+                commandType: 1,
+                inputs: abi.encode(sec.reya, stakeAmount),
+                marketId: 0,
+                exchangeId: 0
             });
             bytes memory extraData = abi.encode("stakeReya", stakeAmount);
             EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(1, commands, userPk, 1, extraData);
@@ -394,12 +404,14 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
             vm.expectRevert(
                 abi.encodeWithSelector(IPeripheryProxy.FeatureUnavailable.selector, keccak256(bytes("global")))
             );
-            IPeripheryProxy(sec.periphery)
-                .unstakeStakedReya(
-                    UnstakeStakedReyaInputs({
-                        accountId: 1, shareAmount: stakeAmount, minAssetAmount: stakeAmount, withdrawSig: sig
-                    })
-                );
+            IPeripheryProxy(sec.periphery).unstakeStakedReya(
+                UnstakeStakedReyaInputs({
+                    accountId: 1,
+                    shareAmount: stakeAmount,
+                    minAssetAmount: stakeAmount,
+                    withdrawSig: sig
+                })
+            );
 
             vm.prank(IStakedReyaToken(sec.sreya).owner());
             IStakedReyaToken(sec.sreya).unpause();
@@ -419,22 +431,24 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
 
         Command_Periphery[] memory commands = new Command_Periphery[](1);
         commands[0] = Command_Periphery({
-            commandType: 1, inputs: abi.encode(sec.reya, withdrawAmount), marketId: 0, exchangeId: 0
+            commandType: 1,
+            inputs: abi.encode(sec.reya, withdrawAmount),
+            marketId: 0,
+            exchangeId: 0
         });
         bytes memory extraData = abi.encode("withdrawMALZ", receiver, dstEid);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(accountId, commands, userPk, 1, extraData);
 
-        IPeripheryProxy(sec.periphery)
-            .withdrawMALZ(
-                WithdrawMALZInputs({
-                    accountId: accountId,
-                    token: sec.reya,
-                    tokenAmount: withdrawAmount,
-                    sig: sig,
-                    dstEid: dstEid,
-                    receiver: receiver
-                })
-            );
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: accountId,
+                token: sec.reya,
+                tokenAmount: withdrawAmount,
+                sig: sig,
+                dstEid: dstEid,
+                receiver: receiver
+            })
+        );
 
         assertEq(getNetDeposits(accountId, sec.reya), int256(10e18 - withdrawAmount));
     }
@@ -452,24 +466,26 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
 
         Command_Periphery[] memory commands = new Command_Periphery[](1);
         commands[0] = Command_Periphery({
-            commandType: 1, inputs: abi.encode(sec.reya, withdrawAmount), marketId: 0, exchangeId: 0
+            commandType: 1,
+            inputs: abi.encode(sec.reya, withdrawAmount),
+            marketId: 0,
+            exchangeId: 0
         });
         bytes memory extraData = abi.encode("withdrawMALZ", receiver, dstEid);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(accountId, commands, userPk, 1, extraData);
 
         uint256 initPeripheryBalance = IReyaToken(sec.reya).balanceOf(sec.periphery);
 
-        IPeripheryProxy(sec.periphery)
-            .withdrawMALZ(
-                WithdrawMALZInputs({
-                    accountId: accountId,
-                    token: sec.reya,
-                    tokenAmount: withdrawAmount,
-                    sig: sig,
-                    dstEid: dstEid,
-                    receiver: receiver
-                })
-            );
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: accountId,
+                token: sec.reya,
+                tokenAmount: withdrawAmount,
+                sig: sig,
+                dstEid: dstEid,
+                receiver: receiver
+            })
+        );
 
         assertEq(getNetDeposits(accountId, sec.reya), int256(10e18 - withdrawAmount));
         assertEq(
@@ -491,7 +507,10 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
 
         Command_Periphery[] memory commands = new Command_Periphery[](1);
         commands[0] = Command_Periphery({
-            commandType: 1, inputs: abi.encode(sec.reya, withdrawAmount), marketId: 0, exchangeId: 0
+            commandType: 1,
+            inputs: abi.encode(sec.reya, withdrawAmount),
+            marketId: 0,
+            exchangeId: 0
         });
         bytes memory extraData = abi.encode("withdrawMALZ", receiver, dstEid);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(accountId, commands, userPk, 1, extraData);
@@ -500,17 +519,16 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
         vm.expectRevert(
             abi.encodeWithSignature("SlippageExceeded(uint256,uint256)", amountAfterFee / 1e12 * 1e12, amountAfterFee)
         );
-        IPeripheryProxy(sec.periphery)
-            .withdrawMALZ(
-                WithdrawMALZInputs({
-                    accountId: accountId,
-                    token: sec.reya,
-                    tokenAmount: withdrawAmount,
-                    sig: sig,
-                    dstEid: dstEid,
-                    receiver: receiver
-                })
-            );
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: accountId,
+                token: sec.reya,
+                tokenAmount: withdrawAmount,
+                sig: sig,
+                dstEid: dstEid,
+                receiver: receiver
+            })
+        );
     }
 
     function check_ReyaWithdrawMALZFailsWhenNotEnoughFees() public {
@@ -527,40 +545,41 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
 
         Command_Periphery[] memory commands = new Command_Periphery[](1);
         commands[0] = Command_Periphery({
-            commandType: 1, inputs: abi.encode(sec.reya, withdrawAmount), marketId: 0, exchangeId: 0
+            commandType: 1,
+            inputs: abi.encode(sec.reya, withdrawAmount),
+            marketId: 0,
+            exchangeId: 0
         });
         bytes memory extraData = abi.encode("withdrawMALZ", receiver, dstEid);
         EIP712Signature memory sig = getEIP712SignatureForPeripheryCommands(accountId, commands, userPk, 1, extraData);
 
         vm.expectRevert(abi.encodeWithSelector(IPeripheryProxy.NotEnoughFees.selector, withdrawAmount, staticFee));
-        IPeripheryProxy(sec.periphery)
-            .withdrawMALZ(
-                WithdrawMALZInputs({
-                    accountId: accountId,
-                    token: sec.reya,
-                    tokenAmount: withdrawAmount,
-                    sig: sig,
-                    dstEid: dstEid,
-                    receiver: receiver
-                })
-            );
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: accountId,
+                token: sec.reya,
+                tokenAmount: withdrawAmount,
+                sig: sig,
+                dstEid: dstEid,
+                receiver: receiver
+            })
+        );
     }
 
     function check_ReyaWithdrawMALZFailsForUnauthorizedOFT() public {
         (user, userPk) = makeAddrAndKey("user");
 
         vm.expectRevert(abi.encodeWithSelector(IPeripheryProxy.UnauthorizedOFT.selector, sec.usdc));
-        IPeripheryProxy(sec.periphery)
-            .withdrawMALZ(
-                WithdrawMALZInputs({
-                    accountId: 1,
-                    token: sec.usdc,
-                    tokenAmount: 1000,
-                    sig: EIP712Signature({ v: 0, r: bytes32(0), s: bytes32(0), deadline: 0 }),
-                    dstEid: 1,
-                    receiver: address(123_456_789)
-                })
-            );
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: 1,
+                token: sec.usdc,
+                tokenAmount: 1000,
+                sig: EIP712Signature({ v: 0, r: bytes32(0), s: bytes32(0), deadline: 0 }),
+                dstEid: 1,
+                receiver: address(123_456_789)
+            })
+        );
     }
 
     function check_ReyaWithdrawMALZFailsWhenPaused() public {
@@ -570,17 +589,16 @@ contract ReyaBridgingForkCheck is BaseReyaForkTest {
         IPeripheryProxy(sec.periphery).setFeatureFlagDenyAll(keccak256(bytes("global")), true);
 
         vm.expectRevert(abi.encodeWithSelector(IPeripheryProxy.FeatureUnavailable.selector, keccak256(bytes("global"))));
-        IPeripheryProxy(sec.periphery)
-            .withdrawMALZ(
-                WithdrawMALZInputs({
-                    accountId: 1,
-                    token: sec.reya,
-                    tokenAmount: 1000,
-                    sig: EIP712Signature({ v: 0, r: bytes32(0), s: bytes32(0), deadline: 0 }),
-                    dstEid: 1,
-                    receiver: address(123_456_789)
-                })
-            );
+        IPeripheryProxy(sec.periphery).withdrawMALZ(
+            WithdrawMALZInputs({
+                accountId: 1,
+                token: sec.reya,
+                tokenAmount: 1000,
+                sig: EIP712Signature({ v: 0, r: bytes32(0), s: bytes32(0), deadline: 0 }),
+                dstEid: 1,
+                receiver: address(123_456_789)
+            })
+        );
 
         vm.prank(sec.multisig);
         IPeripheryProxy(sec.periphery).setFeatureFlagDenyAll(keccak256(bytes("global")), false);

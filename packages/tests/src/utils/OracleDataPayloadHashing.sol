@@ -1,6 +1,6 @@
 pragma solidity >=0.8.19 <0.9.0;
 
-import { OracleDataPayload } from "../../src/interfaces/IPassivePerpProxy.sol";
+import { OracleDataPayload } from "../../src/interfaces/IPassivePerpProxyV2.sol";
 
 library OracleDataPayloadHashing {
     bytes32 private constant _ORACLE_DATA_PAYLOAD_TYPEHASH = keccak256(

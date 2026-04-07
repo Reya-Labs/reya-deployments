@@ -470,9 +470,10 @@ When the devnet proves stable, gradually introduce:
 4. Upgrade devnet proxies to perpOB routers
 5. Configure oracle push infrastructure (pusher, publisher addresses)
 6. Configure matching engine publisher
-7. Create dedicated backstop liquidator account
-8. Run devnet fork checks
-9. Stress test: high-volume fills, edge-case liquidations, funding accrual, staleness enforcement
+7. Create dedicated backstop liquidator account, hardcode its ID in omnibus, wire into `setBackstopLPConfig`
+8. Create a dedicated liquidator wallet for devnet (single wallet for all liquidator1-10 slots), replace multisig address in omnibus
+9. Run devnet fork checks
+10. Stress test: high-volume fills, edge-case liquidations, funding accrual, staleness enforcement
 
 ### Phase 2: Cronos Testnet Migration
 **Goal**: Migrate existing cronos environment to perpOB model.
@@ -484,7 +485,8 @@ When the devnet proves stable, gradually introduce:
    - New fields (`markPriceMaxStaleDuration`, etc.) configured per market
 4. Configure oracle push infrastructure on cronos
 5. Migrate from passive pool counterparty to dedicated backstop account
-6. Update all 75 market configurations
+6. Create fresh liquidator wallets for liquidator1-10 (new keys, not reused from old deployment)
+7. Update all 75 market configurations
 7. Update fork checks for cronos (same changes as devnet)
 8. Run full cronos test suite
 9. Deploy upgrade via Cannon
@@ -582,3 +584,5 @@ When the devnet proves stable, gradually introduce:
 9. **maxAbsFundingRate**: Need to define the global max absolute funding rate for devnet ETH market.
 
 10. **Insurance fund**: The `market_1eth.toml` creates an insurance fund account per collateral pool. Need to verify this flow is unchanged in perpOB.
+
+11. **[P2] Replace `mockFreshPrices()` with real oracle adapter pushes**: Currently fork tests use `vm.mockCall` / `vm.store` to mock oracle prices via `mockFreshPrices()`. It is potentially cleaner to instead push prices through the oracle adapters proxy (e.g. Stork's `verify` path) so tests exercise the real oracle pipeline end-to-end. This would give higher confidence but requires more thought on key management and adapter ABI integration. Needs further discussion before implementation.

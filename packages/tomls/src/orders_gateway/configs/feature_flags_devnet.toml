@@ -1,4 +1,5 @@
-# Devnet orders gateway feature flags: unpause, co execution bot, matching engine publisher
+# Devnet orders gateway feature flags: unpause, matching engine publisher
+# Note: conditional_orders feature flag is not used in perpOB — dropped for devnet.
 [invoke.orders_gateway_unpause]
 target = ["OrdersGatewayProxy"]
 fromCall.func = "owner"
@@ -18,16 +19,6 @@ args = [
         "<%= settings.pauser3 %>",
         "<%= settings.pauser4 %>",
     ],
-]
-depends = ["invoke.upgrade_orders_gateway_proxy"]
-
-[invoke.orders_gateway_enable_execution_bot]
-target = ["OrdersGatewayProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('conditional_orders')) %>",
-    "<%= settings.co_execution_bot1 %>",
 ]
 depends = ["invoke.upgrade_orders_gateway_proxy"]
 

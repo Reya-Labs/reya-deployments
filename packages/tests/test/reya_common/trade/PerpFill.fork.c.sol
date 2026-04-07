@@ -4,11 +4,14 @@ import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import { ICoreProxy, MarginInfo, RiskMultipliers, CollateralInfo } from "../../../src/interfaces/ICoreProxy.sol";
 import {
     IPassivePerpProxy,
-    OracleDataPayload,
-    OracleDataType,
     PerpPosition,
     EIP712Signature as PerpEIP712Signature
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
+import {
+    IPassivePerpProxyV2,
+    OracleDataPayload,
+    OracleDataType
+} from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import {
     IOrdersGatewayProxy,
     ConditionalOrderDetails,
@@ -148,7 +151,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         PerpEIP712Signature memory sig = PerpEIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
         vm.prank(oraclePublisher);
-        IPassivePerpProxy(sec.perp).pushOracleData(payload, sig);
+        IPassivePerpProxyV2(sec.perp).pushOracleData(payload, sig);
     }
 
     function pushFundingRate(uint128 marketId, int256 rate) internal {
@@ -167,7 +170,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         PerpEIP712Signature memory sig = PerpEIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
         vm.prank(oraclePublisher);
-        IPassivePerpProxy(sec.perp).pushOracleData(payload, sig);
+        IPassivePerpProxyV2(sec.perp).pushOracleData(payload, sig);
     }
 
     function executePerpFill(

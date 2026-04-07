@@ -58,8 +58,9 @@ contract CoOrderForkCheck is BaseReyaForkTest {
 
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], amount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        accountId = IPeripheryProxy(sec.periphery)
-            .depositNewMA(DepositNewMAInputs({ accountOwner: st.user, token: address(sec.usdc) }));
+        accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: st.user, token: address(sec.usdc) })
+        );
     }
 
     function buildCoOrder() internal returns (ConditionalOrderDetails memory, OG_EIP712Signature memory) {
@@ -573,8 +574,9 @@ contract CoOrderForkCheck is BaseReyaForkTest {
 
         // authorize the publisher
         vm.prank(sec.multisig);
-        IOracleAdaptersProxy(sec.oracleAdaptersProxy)
-            .addToFeatureFlagAllowlist(keccak256(bytes("publishers")), futurePublisher);
+        IOracleAdaptersProxy(sec.oracleAdaptersProxy).addToFeatureFlagAllowlist(
+            keccak256(bytes("publishers")), futurePublisher
+        );
 
         bytes[] memory signedOffchainDataArray = new bytes[](1);
         signedOffchainDataArray[0] = abi.encode(storkSignedPayload);

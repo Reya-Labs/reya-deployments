@@ -70,11 +70,19 @@ contract LiquidationForkCheck is BaseReyaForkTest {
         mockFreshPrice(sec.arbUsdcStorkMarkNodeId, 0.3e18);
 
         executeCoreMatchOrder({
-            marketId: 3, sender: user, base: sd(30e18), priceLimit: ud(type(uint256).max), accountId: accountId
+            marketId: 3,
+            sender: user,
+            base: sd(30e18),
+            priceLimit: ud(type(uint256).max),
+            accountId: accountId
         });
 
         executeCoreMatchOrder({
-            marketId: 4, sender: user, base: sd(40_000e18), priceLimit: ud(type(uint256).max), accountId: accountId
+            marketId: 4,
+            sender: user,
+            base: sd(40_000e18),
+            priceLimit: ud(type(uint256).max),
+            accountId: accountId
         });
 
         // LMR post-trade = 30 * 200 * sqrt(0.000947) + 40000 * 0.3 * sqrt(0.001479) ~= 646

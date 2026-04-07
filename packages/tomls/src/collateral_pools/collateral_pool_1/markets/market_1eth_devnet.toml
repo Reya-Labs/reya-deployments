@@ -1,5 +1,4 @@
-# Devnet market 1 ETH: removes passive_pool_create_pool_1rusd dependency
-# Uses existing Cronos pool (pool1RusdId=1) instead of creating a new one
+# Devnet market 1 ETH (perpOB): createMarket takes quoteToken address, not pool ID
 #####################################
 # Create Market
 #####################################
