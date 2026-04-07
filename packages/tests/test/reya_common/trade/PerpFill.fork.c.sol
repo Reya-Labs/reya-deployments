@@ -1,7 +1,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
-import { ICoreProxy, MarginInfo } from "../../../src/interfaces/ICoreProxy.sol";
+import { ICoreProxy, MarginInfo, RiskMultipliers, CollateralInfo } from "../../../src/interfaces/ICoreProxy.sol";
 import {
     IPassivePerpProxy,
     OracleDataPayload,
@@ -47,6 +47,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     // Feature flag constants
     bytes32 internal constant MATCHING_ENGINE_PUBLISHER_FLAG = keccak256(bytes("matching_engine_publisher"));
     bytes32 internal constant ORACLE_PUSHERS_FLAG = keccak256(bytes("oraclePushers"));
+    bytes32 internal constant ORACLE_PUBLISHERS_FLAG = keccak256(bytes("oraclePublishers"));
 
     function setupPerpTestActors() internal {
         (perpBuyer, perpBuyerPk) = makeAddrAndKey("perpBuyer");
@@ -60,9 +61,13 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             MATCHING_ENGINE_PUBLISHER_FLAG, perpMatchingEngine
         );
 
-        // Grant oracle pusher access on PassivePerp
+        // Grant oracle pusher access on PassivePerp (checks msg.sender)
         vm.prank(sec.multisig);
         IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUSHERS_FLAG, oraclePublisher);
+
+        // Grant oracle publisher access on PassivePerp (checks payload.publisher signature)
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUBLISHERS_FLAG, oraclePublisher);
     }
 
     function createLimitOrderPerp(
@@ -403,5 +408,570 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         PerpPosition memory sellerPosition =
             IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, sellerAccountId);
         assertEq(sellerPosition.base, -int256(0.3e18), "Seller should have 0.3 ETH short");
+    }
+
+    /**
+     * @notice Test that margin is consumed after opening a position
+     * @dev Verifies that:
+     *      - LMR is non-zero after opening a position
+     *      - Both buyer and seller have correct margin impact (symmetric LMR)
+     *      - Margin balance remains positive
+     */
+    function check_PerpFillMarginImpact(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
+
+        // Execute fill: 1 ETH at $3000
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 1e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        // After trade: both accounts should have non-zero LMR
+        MarginInfo memory buyerMarginAfter = ICoreProxy(sec.core).getUsdNodeMarginInfo(buyerAccountId);
+        MarginInfo memory sellerMarginAfter = ICoreProxy(sec.core).getUsdNodeMarginInfo(sellerAccountId);
+
+        assertGt(buyerMarginAfter.liquidationMarginRequirement, 0, "Buyer LMR should be non-zero after trade");
+        assertGt(sellerMarginAfter.liquidationMarginRequirement, 0, "Seller LMR should be non-zero after trade");
+
+        // Both sides should have same LMR (symmetric positions)
+        assertEq(
+            buyerMarginAfter.liquidationMarginRequirement,
+            sellerMarginAfter.liquidationMarginRequirement,
+            "Buyer and seller LMR should be equal (symmetric)"
+        );
+
+        // Margin balance should be positive (10k deposit minus small fees)
+        assertGt(buyerMarginAfter.marginBalance, 0, "Buyer margin balance should be positive");
+        assertGt(sellerMarginAfter.marginBalance, 0, "Seller margin balance should be positive");
+    }
+
+    /**
+     * @notice Test that nonce replay is rejected
+     * @dev Executes a fill, then tries to reuse the same nonces — should revert
+     */
+    function check_PerpFillNonceReplay(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 50_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 50_000e6);
+
+        // First fill succeeds
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 0.1e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        // Replay with same nonces should revert
+        vm.expectRevert();
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 0.1e18,
+            price: 3000e18,
+            buyerNonce: 1, // same nonce
+            sellerNonce: 1, // same nonce
+            meNonce: 1 // same nonce
+        });
+    }
+
+    /**
+     * @notice Test that a position can be closed by filling in the opposite direction
+     * @dev Opens a long, then closes it with a short of equal size. Verifies position is zeroed.
+     *      To close, the buyer sells (negative baseDelta) and the seller buys (positive baseDelta).
+     *      We must construct orders manually since executePerpFill always assigns perpBuyer=long.
+     */
+    function check_PerpFillClosePosition(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
+
+        // Open: buyer goes long 0.5 ETH
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 0.5e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        PerpPosition memory buyerPos = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, buyerAccountId);
+        assertEq(buyerPos.base, int256(0.5e18), "Buyer should be long 0.5 ETH");
+
+        // Close: buyer sells 0.5 ETH (negative baseDelta), seller buys 0.5 ETH (positive baseDelta)
+        // Build orders manually since executePerpFill assumes perpBuyer=long
+        {
+            // perpBuyer's order: sell 0.5 ETH (negative baseDelta = short/close)
+            (ConditionalOrderDetails memory buyerCloseOrder, EIP712Signature memory buyerCloseSig) =
+                createLimitOrderPerp({
+                    accountId: buyerAccountId,
+                    marketId: marketId,
+                    baseDelta: -int256(0.5e18),
+                    price: 3000e18,
+                    nonce: 2,
+                    signer: perpBuyer,
+                    signerPk: perpBuyerPk
+                });
+
+            // perpSeller's order: buy 0.5 ETH (positive baseDelta = long/close short)
+            (ConditionalOrderDetails memory sellerCloseOrder, EIP712Signature memory sellerCloseSig) =
+                createLimitOrderPerp({
+                    accountId: sellerAccountId,
+                    marketId: marketId,
+                    baseDelta: int256(0.5e18),
+                    price: 3000e18,
+                    nonce: 2,
+                    signer: perpSeller,
+                    signerPk: perpSellerPk
+                });
+
+            // ME payload: seller (buying) is the "account", buyer (selling) is the "counterparty"
+            SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
+                price: 3000e18,
+                baseDelta: 0.5e18,
+                accountOrderId: 3,
+                counterpartyOrderId: 4,
+                nonce: 2
+            });
+
+            ExecuteFillInput memory fillInput = ExecuteFillInput({
+                accountOrder: sellerCloseOrder,
+                counterpartyOrder: buyerCloseOrder,
+                accountSignature: sellerCloseSig,
+                counterpartySignature: buyerCloseSig,
+                mePayload: mePayload
+            });
+
+            vm.prank(sec.coExecutionBot);
+            IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
+        }
+
+        // Both should be flat
+        PerpPosition memory buyerPosAfter = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, buyerAccountId);
+        PerpPosition memory sellerPosAfter =
+            IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, sellerAccountId);
+
+        assertEq(buyerPosAfter.base, 0, "Buyer position should be closed");
+        assertEq(sellerPosAfter.base, 0, "Seller position should be closed");
+    }
+
+    /**
+     * @notice Test that mark price changes affect margin balance
+     * @dev Opens a position, changes mark price, verifies margin balance moves accordingly
+     */
+    function check_PerpMarkPriceImpactsMargin(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
+
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 1e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        MarginInfo memory buyerMarginAtOpen = ICoreProxy(sec.core).getUsdNodeMarginInfo(buyerAccountId);
+        MarginInfo memory sellerMarginAtOpen = ICoreProxy(sec.core).getUsdNodeMarginInfo(sellerAccountId);
+
+        // Price goes up $100 — long gains, short loses
+        pushMarkPrice(marketId, 3100e18);
+        mockFreshPrices();
+
+        MarginInfo memory buyerMarginAfterUp = ICoreProxy(sec.core).getUsdNodeMarginInfo(buyerAccountId);
+        MarginInfo memory sellerMarginAfterUp = ICoreProxy(sec.core).getUsdNodeMarginInfo(sellerAccountId);
+
+        assertGt(
+            buyerMarginAfterUp.marginBalance,
+            buyerMarginAtOpen.marginBalance,
+            "Buyer (long) margin should increase when price goes up"
+        );
+        assertLt(
+            sellerMarginAfterUp.marginBalance,
+            sellerMarginAtOpen.marginBalance,
+            "Seller (short) margin should decrease when price goes up"
+        );
+
+        // Price goes down $200 from initial (to $2800) — long loses, short gains
+        pushMarkPrice(marketId, 2800e18);
+        mockFreshPrices();
+
+        MarginInfo memory buyerMarginAfterDown = ICoreProxy(sec.core).getUsdNodeMarginInfo(buyerAccountId);
+        MarginInfo memory sellerMarginAfterDown = ICoreProxy(sec.core).getUsdNodeMarginInfo(sellerAccountId);
+
+        assertLt(
+            buyerMarginAfterDown.marginBalance,
+            buyerMarginAtOpen.marginBalance,
+            "Buyer (long) margin should decrease when price drops below entry"
+        );
+        assertGt(
+            sellerMarginAfterDown.marginBalance,
+            sellerMarginAtOpen.marginBalance,
+            "Seller (short) margin should increase when price drops below entry"
+        );
+    }
+
+    /**
+     * @notice Test that fees are correctly deducted from both buyer and seller on a perp fill
+     * @dev Devnet fee config: tier0 taker=0.04%, maker=0.04%, no discounts, no maker rebate.
+     *      Fee per side = |baseDelta| * fillPrice * 0.0004.
+     *      We verify by checking getCollateralInfo(accountId, rusd).realBalance before/after.
+     *      Mark price = fill price so unrealized PnL is zero and only fees affect realBalance.
+     */
+    function check_PerpFillFees(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 100_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 100_000e6);
+
+        int256 buyerBalBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).realBalance;
+        int256 sellerBalBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
+
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 1e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        int256 buyerBalAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).realBalance;
+        int256 sellerBalAfter = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
+
+        int256 buyerPaid = buyerBalBefore - buyerBalAfter;
+        int256 sellerPaid = sellerBalBefore - sellerBalAfter;
+
+        // Expected fee per side = 1 ETH * $3000 * 0.0004 = $1.20 = 1.2e6 rUSD
+        int256 expectedFee = 1.2e6;
+
+        assertApproxEqAbs(buyerPaid, expectedFee, 0.01e6, "Buyer should pay ~4bps taker fee");
+        assertApproxEqAbs(sellerPaid, expectedFee, 0.01e6, "Seller should pay ~4bps maker fee");
+        assertGt(buyerPaid, 0, "Buyer fee should be positive");
+        assertGt(sellerPaid, 0, "Seller fee should be positive");
+    }
+
+    /**
+     * @notice Test zero fees when market zero-fee flag is enabled
+     * @dev Enables the marketZeroFees flag, executes a fill, and verifies no fees are charged.
+     */
+    function check_PerpFillZeroFees(uint128 marketId, address zeroFeeBot) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+
+        // Enable zero fees for this market
+        bytes32 flagId = keccak256(abi.encode(keccak256(bytes("marketZeroFees")), marketId));
+        vm.prank(zeroFeeBot);
+        IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(flagId, true);
+
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 100_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 100_000e6);
+
+        int256 buyerBalBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).realBalance;
+        int256 sellerBalBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
+
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 1e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        int256 buyerPaid = buyerBalBefore - ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).realBalance;
+        int256 sellerPaid =
+            sellerBalBefore - ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
+
+        assertEq(buyerPaid, 0, "Buyer should pay zero fees");
+        assertEq(sellerPaid, 0, "Seller should pay zero fees");
+
+        // Restore default (fees on)
+        vm.prank(zeroFeeBot);
+        IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(flagId, false);
+    }
+
+    /**
+     * @notice Test that insufficient margin blocks a perp fill
+     * @dev Attempts to open a position larger than what the margin can support.
+     *      With $10 deposit and 1 ETH at $3000 → ~300x leverage, well beyond the 25x limit.
+     */
+    function check_PerpFillInsufficientMargin(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        // Tiny collateral: $10 rUSD
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 100_000e6);
+
+        // Try to open 1 ETH ($3000 exposure) with $10 collateral → should fail (IMR check)
+        vm.expectRevert();
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 1e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+    }
+
+    /**
+     * @notice Test that a reduce-only order can close an existing position
+     * @dev Opens a long position, then uses ReduceOnlyPerp to close it
+     */
+    function check_PerpFillReduceOnly(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
+
+        // Open: buyer goes long 0.5 ETH
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 0.5e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        // Verify position is open
+        PerpPosition memory buyerPos = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, buyerAccountId);
+        assertEq(buyerPos.base, int256(0.5e18), "Buyer should be long 0.5 ETH");
+
+        // Close using ReduceOnlyPerp: buyer sells 0.5 ETH
+        {
+            // Buyer's reduce-only sell order
+            uint128[] memory emptyIds = new uint128[](0);
+            ConditionalOrderDetails memory reduceOrder = ConditionalOrderDetails({
+                accountId: buyerAccountId,
+                marketId: marketId,
+                exchangeId: 1,
+                counterpartyAccountIds: emptyIds,
+                orderType: uint8(OrderType.ReduceOnlyPerp),
+                inputs: abi.encode(LimitOrderPerpDetails({ baseDelta: -int256(0.5e18), price: 3000e18 })),
+                signer: perpBuyer,
+                nonce: 2
+            });
+
+            uint256 deadline = block.timestamp + 3600;
+            (uint8 v, bytes32 r, bytes32 s) =
+                vm.sign(perpBuyerPk, ConditionalOrderHashing.mockCalculateDigest(reduceOrder, deadline, sec.ordersGateway));
+            EIP712Signature memory reduceSig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
+
+            // Seller's regular buy order (counterparty)
+            (ConditionalOrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({
+                accountId: sellerAccountId,
+                marketId: marketId,
+                baseDelta: int256(0.5e18),
+                price: 3000e18,
+                nonce: 2,
+                signer: perpSeller,
+                signerPk: perpSellerPk
+            });
+
+            SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
+                price: 3000e18,
+                baseDelta: 0.5e18,
+                accountOrderId: 3,
+                counterpartyOrderId: 4,
+                nonce: 2
+            });
+
+            ExecuteFillInput memory fillInput = ExecuteFillInput({
+                accountOrder: reduceOrder,
+                counterpartyOrder: sellerOrder,
+                accountSignature: reduceSig,
+                counterpartySignature: sellerSig,
+                mePayload: mePayload
+            });
+
+            vm.prank(sec.coExecutionBot);
+            IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
+        }
+
+        // Verify position is closed
+        PerpPosition memory buyerPosAfter = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, buyerAccountId);
+        assertEq(buyerPosAfter.base, 0, "Buyer position should be closed via reduce-only");
+    }
+
+    /**
+     * @notice Test partial withdrawal with an open position
+     * @dev Opens a position (1 ETH at $3000, $10k deposit), withdraws $5k,
+     *      verifies margin and position are both correctly tracked.
+     */
+    function check_WithdrawWithOpenPosition(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
+
+        // Open position: 1 ETH long
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 1e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        MarginInfo memory marginBefore = ICoreProxy(sec.core).getUsdNodeMarginInfo(buyerAccountId);
+
+        // Partial withdrawal: $5k out of ~$10k
+        withdrawMA(buyerAccountId, sec.rusd, 5_000e6);
+
+        // Verify margin decreased by approximately $5k
+        MarginInfo memory marginAfter = ICoreProxy(sec.core).getUsdNodeMarginInfo(buyerAccountId);
+        int256 marginDrop = marginBefore.marginBalance - marginAfter.marginBalance;
+        assertApproxEqAbs(marginDrop, 5_000e18, 1e18, "Margin should decrease by ~$5k");
+
+        // Position should be unchanged
+        PerpPosition memory pos = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, buyerAccountId);
+        assertEq(pos.base, 1e18, "Position should still be 1 ETH long");
+
+        // LMR should be unchanged (same position size)
+        assertEq(
+            marginAfter.liquidationMarginRequirement,
+            marginBefore.liquidationMarginRequirement,
+            "LMR should be unchanged after withdrawal"
+        );
+    }
+
+    /**
+     * @notice Test that a reduce-only order cannot increase a position (wrong direction)
+     * @dev Opens a long, then tries to use ReduceOnlyPerp to go further long — should revert.
+     */
+    function check_PerpFillReduceOnlyRevert(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
+
+        // Open: buyer goes long 0.5 ETH
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 0.5e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        // Try to increase with ReduceOnlyPerp: buyer tries to buy MORE (same direction) → should revert
+        {
+            uint128[] memory emptyIds = new uint128[](0);
+            ConditionalOrderDetails memory reduceOrder = ConditionalOrderDetails({
+                accountId: buyerAccountId,
+                marketId: marketId,
+                exchangeId: 1,
+                counterpartyAccountIds: emptyIds,
+                orderType: uint8(OrderType.ReduceOnlyPerp),
+                inputs: abi.encode(LimitOrderPerpDetails({ baseDelta: int256(0.5e18), price: 3000e18 })),
+                signer: perpBuyer,
+                nonce: 2
+            });
+
+            uint256 deadline = block.timestamp + 3600;
+            (uint8 v, bytes32 r, bytes32 s) =
+                vm.sign(perpBuyerPk, ConditionalOrderHashing.mockCalculateDigest(reduceOrder, deadline, sec.ordersGateway));
+            EIP712Signature memory reduceSig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
+
+            (ConditionalOrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({
+                accountId: sellerAccountId,
+                marketId: marketId,
+                baseDelta: -int256(0.5e18),
+                price: 3000e18,
+                nonce: 2,
+                signer: perpSeller,
+                signerPk: perpSellerPk
+            });
+
+            SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
+                price: 3000e18,
+                baseDelta: 0.5e18,
+                accountOrderId: 3,
+                counterpartyOrderId: 4,
+                nonce: 2
+            });
+
+            ExecuteFillInput memory fillInput = ExecuteFillInput({
+                accountOrder: reduceOrder,
+                counterpartyOrder: sellerOrder,
+                accountSignature: reduceSig,
+                counterpartySignature: sellerSig,
+                mePayload: mePayload
+            });
+
+            vm.prank(sec.coExecutionBot);
+            vm.expectRevert();
+            IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
+        }
     }
 }

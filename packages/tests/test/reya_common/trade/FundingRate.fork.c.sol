@@ -48,7 +48,7 @@ contract FundingRateForkCheck is BaseReyaForkTest {
         MarketDataResponse memory marketData = IPassivePerpProxy(sec.perp).getMarketData(marketId);
         assertApproxEqAbsDecimal(
             fundingRate2 - fundingRate1,
-            pSlippage.mul(sd(int256(marketData.marketData.velocityMultiplier))).unwrap(),
+            pSlippage.mul(sd(int256(marketData.marketData.velocityMultiplier_DEPRECATED))).unwrap(),
             eps,
             18
         );

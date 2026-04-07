@@ -1,0 +1,7 @@
+# Devnet passive perp proxy: uses devnet-specific salt to avoid CREATE2 collision with Cronos
+[clone.reyaPassivePerpProxy]
+source = "<%= settings.passivePerpProxyPackage %>"
+target = "<%= settings.passivePerpProxyPackage %>"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.passivePerpSalt %>"
+depends = ["var.cannonClonePackages"]

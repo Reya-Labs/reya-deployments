@@ -1,10 +1,10 @@
 # Devnet collateral pool config: 1 market (ETH), 2 collaterals (rUSD, wETH)
 include = [
-    "markets/market_1eth.toml",
-    "risk/risk_multipliers.toml",
-    "risk/liquidations.toml",
-    "tokens/rusd.toml",
-    "tokens/weth.toml",
+    "markets/market_1eth_devnet.toml",
+    "risk/risk_multipliers_devnet.toml",
+    "risk/liquidations_devnet.toml",
+    "tokens/rusd_devnet.toml",
+    "tokens/weth_devnet.toml",
 ]
 
 # Devnet risk matrix: single market (ETH) with 1x1 matrix

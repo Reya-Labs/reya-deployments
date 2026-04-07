@@ -6,6 +6,7 @@ import {
     IPassivePerpProxy,
     OracleDataPayload,
     OracleDataType,
+    MarketDataResponse,
     EIP712Signature as PerpEIP712Signature
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import {
@@ -32,6 +33,7 @@ import { FillHashing } from "../../../src/utils/FillHashing.sol";
  */
 contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
     bytes32 internal constant ORACLE_PUSHERS_FLAG = keccak256(bytes("oraclePushers"));
+    bytes32 internal constant ORACLE_PUBLISHERS_FLAG = keccak256(bytes("oraclePublishers"));
     bytes32 internal constant MATCHING_ENGINE_PUBLISHER_FLAG = keccak256(bytes("matching_engine_publisher"));
 
     /**
@@ -67,9 +69,13 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
     function check_AuthorizedOraclePusher(uint128 marketId) internal {
         (address publisher, uint256 publisherPk) = makeAddrAndKey("authorizedPublisher");
 
-        // Grant access
+        // Grant pusher access (checks msg.sender)
         vm.prank(sec.multisig);
         IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUSHERS_FLAG, publisher);
+
+        // Grant publisher access (checks payload.publisher signature)
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUBLISHERS_FLAG, publisher);
 
         OracleDataPayload memory payload = OracleDataPayload({
             marketId: marketId,
@@ -90,9 +96,9 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         vm.prank(publisher);
         IPassivePerpProxy(sec.perp).pushOracleData(payload, sig);
 
-        // Verify it was stored
-        uint256 storedPrice = IPassivePerpProxy(sec.perp).getMarkPrice(marketId);
-        assertEq(storedPrice, 3000e18, "Mark price should be stored");
+        // Verify it was stored via getMarketData
+        MarketDataResponse memory mdr = IPassivePerpProxy(sec.perp).getMarketData(marketId);
+        assertEq(mdr.marketData.markPrice, 3000e18, "Mark price should be stored");
     }
 
     /**
@@ -184,9 +190,11 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
     function check_RevokeOraclePusher(uint128 marketId) internal {
         (address publisher, uint256 publisherPk) = makeAddrAndKey("revokablePublisher");
 
-        // Grant, then revoke
+        // Grant both flags, then revoke the pusher flag
         vm.prank(sec.multisig);
         IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUSHERS_FLAG, publisher);
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUBLISHERS_FLAG, publisher);
         vm.prank(sec.multisig);
         IPassivePerpProxy(sec.perp).removeFromFeatureFlagAllowlist(ORACLE_PUSHERS_FLAG, publisher);
 

@@ -1,0 +1,12 @@
+# Devnet liquidations: skips pool_account_activate_market and backstop_lp_config
+# (these require PassivePoolProxy.sendCallToCore which can't work with existing pool)
+[invoke.cp_1rusd_configure_liquidation]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
+func = "configureLiquidation"
+args = [
+    "<%= settings.cp1RusdId %>",
+    { bidKeeperFee = "<%= parseEther(settings.cp1Rusd_bidKeeperFeeUnscaled) %>", queueDurationInSeconds = "<%= settings.cp1Rusd_queueDurationInSeconds %>", maxOrdersInBid = "<%= settings.cp1Rusd_maxOrdersInBid %>", maxBidsInQueue = "<%= settings.cp1Rusd_maxBidsInQueue %>", bidScoreWeight = "<%= parseEther(settings.cp1Rusd_bidScoreWeightUnscaled) %>", backstopKeeperFee = "<%= parseEther(settings.cp1Rusd_backstopKeeperFeeUnscaled) %>", adlExecutionKeeperFee = "<%= parseEther(settings.cp1Rusd_adlExecutionKeeperFeeUnscaled) %>", dDutchMin = "<%= parseEther(settings.cp1Rusd_dDutchMinUnscaled) %>", dMax = "<%= parseEther(settings.cp1Rusd_dMaxUnscaled) %>" },
+]
+depends = ["var.cp_1rusd_vars"]

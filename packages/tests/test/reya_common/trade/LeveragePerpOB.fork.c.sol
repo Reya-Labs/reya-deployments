@@ -7,7 +7,8 @@ import {
     RiskMultipliers,
     MarginInfo,
     CollateralConfig,
-    ParentCollateralConfig
+    ParentCollateralConfig,
+    CachedCollateralConfig
 } from "../../../src/interfaces/ICoreProxy.sol";
 
 import { IPassivePerpProxy, MarketConfigurationData, PerpPosition } from "../../../src/interfaces/IPassivePerpProxy.sol";
@@ -53,11 +54,23 @@ contract LeveragePerpOBForkCheck is PerpFillForkCheck {
         if (collateral == sec.usdc) {
             removeCollateralCap(sec.rusd);
         } else {
-            removeCollateralCap(collateral);
+            try ICoreProxy(sec.core).getCollateralConfig(1, collateral) returns (
+                CollateralConfig memory cfg, ParentCollateralConfig memory parentCfg, CachedCollateralConfig memory
+            ) {
+                if (cfg.cap < type(uint256).max) {
+                    vm.prank(sec.multisig);
+                    cfg.cap = type(uint256).max;
+                    ICoreProxy(sec.core).setCollateralConfig(1, collateral, cfg, parentCfg);
+                }
+            } catch {
+                // Collateral may not be configured in this pool — skip cap removal
+            }
         }
 
         // Deposit generous collateral for both sides
-        uint256 amount = 1_000_000 * 10 ** ITokenProxy(collateral).decimals();
+        // Use smaller amounts for non-stablecoin collaterals to avoid arithmetic overflow
+        uint8 decimals = ITokenProxy(collateral).decimals();
+        uint256 amount = decimals <= 8 ? 1_000_000 * 10 ** decimals : 10 * 10 ** decimals;
         uint128 userAccountId = depositNewMA(perpBuyer, collateral, amount);
         uint128 counterpartyAccountId = depositNewMA(perpSeller, collateral, amount);
 

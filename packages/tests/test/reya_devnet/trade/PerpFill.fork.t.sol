@@ -17,4 +17,44 @@ contract PerpFillForkTest is ReyaForkTest, PerpFillForkCheck {
     function test_Devnet_PerpBatchExecuteFill_ETH() public {
         check_PerpBatchExecuteFill(ETH_MARKET_ID);
     }
+
+    function test_Devnet_PerpFillMarginImpact_ETH() public {
+        check_PerpFillMarginImpact(ETH_MARKET_ID);
+    }
+
+    function test_Devnet_PerpFillNonceReplay_ETH() public {
+        check_PerpFillNonceReplay(ETH_MARKET_ID);
+    }
+
+    function test_Devnet_PerpFillClosePosition_ETH() public {
+        check_PerpFillClosePosition(ETH_MARKET_ID);
+    }
+
+    function test_Devnet_PerpMarkPriceImpactsMargin_ETH() public {
+        check_PerpMarkPriceImpactsMargin(ETH_MARKET_ID);
+    }
+
+    function test_Devnet_PerpFillFees_ETH() public {
+        check_PerpFillFees(ETH_MARKET_ID);
+    }
+
+    function test_Devnet_PerpFillZeroFees_ETH() public {
+        check_PerpFillZeroFees(ETH_MARKET_ID, sec.setMarketZeroFeeBot);
+    }
+
+    function test_Devnet_PerpFillInsufficientMargin_ETH() public {
+        check_PerpFillInsufficientMargin(ETH_MARKET_ID);
+    }
+
+    function test_Devnet_PerpFillReduceOnly_ETH() public {
+        check_PerpFillReduceOnly(ETH_MARKET_ID);
+    }
+
+    function test_Devnet_PerpFillReduceOnlyRevert_ETH() public {
+        check_PerpFillReduceOnlyRevert(ETH_MARKET_ID);
+    }
+
+    function test_Devnet_WithdrawWithOpenPosition_ETH() public {
+        check_WithdrawWithOpenPosition(ETH_MARKET_ID);
+    }
 }

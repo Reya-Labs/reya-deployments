@@ -1,0 +1,9 @@
+# Devnet orders gateway global config: uses hardcoded Cronos OracleAdapters address
+[invoke.orders_gateway_global_config]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "setConfiguration"
+args = [
+    { coreProxy = "<%= contracts.CoreProxy.address %>", passivePerpProxy = "<%= contracts.PassivePerpProxy.address %>", oracleAdaptersProxy_DEPRECATED = "<%= settings.oracleAdaptersProxyAddress %>" },
+]
+depends = ["invoke.upgrade_orders_gateway_proxy", "invoke.upgrade_core_proxy"]

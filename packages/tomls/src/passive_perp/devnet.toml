@@ -2,8 +2,8 @@
 # Excludes AMM-specific configs: depth, velocity, logf, spread, pool_node_margin_info
 include = [
     "utils/upgrade_proxy.toml",
-    "utils/deploy_proxy.toml",
-    "configs/feature_flags.toml",
-    "configs/global_config.toml",
-    "configs/fees.toml",
+    "utils/deploy_proxy_devnet.toml",
+    "configs/feature_flags_devnet.toml",
+    "configs/global_config_devnet.toml",
+    "configs/fees_devnet.toml",
 ]

@@ -713,28 +713,34 @@ struct GlobalFeeParameters {
 
 struct MarketRuntimeData {
     uint128 id;
-    uint128 passivePoolId;
-    uint128 poolAccountId;
+    uint128 passivePoolId_DEPRECATED;
+    uint128 poolAccountId_DEPRECATED;
     address quoteToken;
     uint8 quoteTokenDecimals;
     /* warning: missing UDVT support in source Solidity version; parameter is `SD59x18`. */
-    int256 lastFundingVelocity;
+    int256 lastFundingVelocity_DEPRECATED;
     /* warning: missing UDVT support in source Solidity version; parameter is `SD59x18`. */
-    int256 lastFundingRate;
+    int256 lastFundingRate_DEPRECATED;
     uint256 lastFundingTimestamp;
-    PriceData lastMTM;
+    PriceData lastMTM_DEPRECATED;
     FundingAndADLTrackers longTrackers;
     FundingAndADLTrackers shortTrackers;
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
     uint256 openInterest;
     /* warning: missing UDVT support in source Solidity version; parameter is `SD59x18`. */
-    int256 logPriceMultiplier;
+    int256 logPriceMultiplier_DEPRECATED;
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 depthFactor;
+    uint256 depthFactor_DEPRECATED;
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 priceSpread;
+    uint256 priceSpread_DEPRECATED;
     /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
-    uint256 velocityMultiplier;
+    uint256 velocityMultiplier_DEPRECATED;
+    /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
+    uint256 markPrice;
+    uint256 markPriceTimestamp;
+    /* warning: missing UDVT support in source Solidity version; parameter is `SD59x18`. */
+    int256 fundingRate;
+    uint256 fundingRateTimestamp;
 }
 
 struct MarketDataResponse {
