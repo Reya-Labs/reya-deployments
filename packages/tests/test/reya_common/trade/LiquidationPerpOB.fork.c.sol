@@ -47,16 +47,17 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
             ICoreProxy(sec.core).activateFirstMarketForAccount(poolAccountId, 1);
 
             vm.prank(sec.multisig);
-            ICoreProxy(sec.core).setBackstopLPConfig(
-                1,
-                BackstopLPConfig({
-                    accountId: poolAccountId,
-                    liquidationFee: 0.15e18,
-                    minFreeCollateralThresholdInUSD: 0,
-                    withdrawCooldownDurationInSeconds_DEPRECATED: 0,
-                    withdrawDurationInSeconds_DEPRECATED: 0
-                })
-            );
+            ICoreProxy(sec.core)
+                .setBackstopLPConfig(
+                    1,
+                    BackstopLPConfig({
+                        accountId: poolAccountId,
+                        liquidationFee: 0.15e18,
+                        minFreeCollateralThresholdInUSD: 0,
+                        withdrawCooldownDurationInSeconds_DEPRECATED: 0,
+                        withdrawDurationInSeconds_DEPRECATED: 0
+                    })
+                );
         }
 
         // Create accounts for perpBuyer (user to be liquidated) and perpSeller (counterparty / liquidator).
@@ -171,9 +172,7 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
 
         // Execute backstop liquidation — keeper is perpSeller's account
         vm.prank(perpSeller);
-        ICoreProxy(sec.core).executeBackstopLiquidation(
-            liqUserAccountId, liqLiquidatorAccountId, sec.rusd, 1e18
-        );
+        ICoreProxy(sec.core).executeBackstopLiquidation(liqUserAccountId, liqLiquidatorAccountId, sec.rusd, 1e18);
 
         // Verify user position is fully closed
         {

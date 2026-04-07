@@ -51,10 +51,8 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         });
 
         uint256 deadline = block.timestamp + 3600;
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
-            unauthorizedPk,
-            OracleDataPayloadHashing.mockCalculateDigest(payload, deadline, sec.perp)
-        );
+        (uint8 v, bytes32 r, bytes32 s) =
+            vm.sign(unauthorizedPk, OracleDataPayloadHashing.mockCalculateDigest(payload, deadline, sec.perp));
 
         PerpEIP712Signature memory sig = PerpEIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
@@ -86,10 +84,8 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         });
 
         uint256 deadline = block.timestamp + 3600;
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
-            publisherPk,
-            OracleDataPayloadHashing.mockCalculateDigest(payload, deadline, sec.perp)
-        );
+        (uint8 v, bytes32 r, bytes32 s) =
+            vm.sign(publisherPk, OracleDataPayloadHashing.mockCalculateDigest(payload, deadline, sec.perp));
 
         PerpEIP712Signature memory sig = PerpEIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
@@ -159,22 +155,14 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
 
         // Build ME payload signed by unauthorized key in scoped block
         {
-            FillDetails memory fillDetails = FillDetails({
-                accountOrderId: 1,
-                counterpartyOrderId: 2,
-                baseDelta: 0.1e18,
-                price: 3000e18,
-                nonce: 1
-            });
+            FillDetails memory fillDetails =
+                FillDetails({ accountOrderId: 1, counterpartyOrderId: 2, baseDelta: 0.1e18, price: 3000e18, nonce: 1 });
 
-            (uint8 v, bytes32 r, bytes32 s) = vm.sign(
-                unauthorizedMEPk,
-                FillHashing.mockCalculateDigest(fillDetails, deadline, sec.ordersGateway)
-            );
+            (uint8 v, bytes32 r, bytes32 s) =
+                vm.sign(unauthorizedMEPk, FillHashing.mockCalculateDigest(fillDetails, deadline, sec.ordersGateway));
 
             fillInput.mePayload = SignedMatchingEnginePayload({
-                fillDetails: fillDetails,
-                signature: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })
+                fillDetails: fillDetails, signature: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })
             });
         }
 
@@ -208,10 +196,8 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         });
 
         uint256 deadline = block.timestamp + 3600;
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
-            publisherPk,
-            OracleDataPayloadHashing.mockCalculateDigest(payload, deadline, sec.perp)
-        );
+        (uint8 v, bytes32 r, bytes32 s) =
+            vm.sign(publisherPk, OracleDataPayloadHashing.mockCalculateDigest(payload, deadline, sec.perp));
 
         PerpEIP712Signature memory sig = PerpEIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 

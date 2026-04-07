@@ -40,17 +40,12 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
 
     function _pushOracleData(uint128 marketId, OracleDataType dataType, bytes memory data) internal {
         OracleDataPayload memory payload = OracleDataPayload({
-            marketId: marketId,
-            timestamp: block.timestamp,
-            dataType: dataType,
-            data: data,
-            publisher: fundingPublisher
+            marketId: marketId, timestamp: block.timestamp, dataType: dataType, data: data, publisher: fundingPublisher
         });
 
         uint256 deadline = block.timestamp + 3600;
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
-            fundingPublisherPk, OracleDataPayloadHashing.mockCalculateDigest(payload, deadline, sec.perp)
-        );
+        (uint8 v, bytes32 r, bytes32 s) =
+            vm.sign(fundingPublisherPk, OracleDataPayloadHashing.mockCalculateDigest(payload, deadline, sec.perp));
 
         PerpEIP712Signature memory sig = PerpEIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 

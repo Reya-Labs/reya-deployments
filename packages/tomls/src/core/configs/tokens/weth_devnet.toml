@@ -7,10 +7,7 @@ args = [
     "<%= settings.wethProxyAddress %>",
     { collateralAdapter_DEPRECATED = "<%= settings.wethCollateralAdapter %>", withdrawalWindowSize = "<%= settings.wethWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.wethWithdrawalTvlPercentageLimitUnscaled)  %>" },
 ]
-depends = [
-    'invoke.upgrade_core_proxy',
-    'var.global_collateral_configs',
-]
+depends = ['invoke.upgrade_core_proxy', 'var.global_collateral_configs']
 
 [invoke.weth_auto_exchange_access]
 target = ["CoreProxy"]
@@ -34,7 +31,11 @@ args = [
 ]
 var.wethRusdSpotMarketId.event = "SpotMarketInfoUpdated"
 var.wethRusdSpotMarketId.arg = 1
-depends = ["invoke.upgrade_core_proxy", "invoke.rusd_global_collateral_config", "invoke.weth_global_collateral_config"]
+depends = [
+    "invoke.upgrade_core_proxy",
+    "invoke.rusd_global_collateral_config",
+    "invoke.weth_global_collateral_config",
+]
 
 [invoke.weth_rusd_configure_spot_market]
 target = ["CoreProxy"]

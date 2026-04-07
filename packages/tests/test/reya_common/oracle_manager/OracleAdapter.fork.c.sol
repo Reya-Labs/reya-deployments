@@ -23,9 +23,8 @@ contract OracleAdapterForkCheck is BaseReyaForkTest {
 
         // authorize the publisher
         vm.prank(sec.multisig);
-        IOracleAdaptersProxy(sec.oracleAdaptersProxy).addToFeatureFlagAllowlist(
-            keccak256(bytes("publishers")), futurePublisher
-        );
+        IOracleAdaptersProxy(sec.oracleAdaptersProxy)
+            .addToFeatureFlagAllowlist(keccak256(bytes("publishers")), futurePublisher);
 
         // expect successful update
         vm.prank(futureExecutor);

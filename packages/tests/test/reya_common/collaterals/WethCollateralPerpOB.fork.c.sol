@@ -101,11 +101,7 @@ contract WethCollateralPerpOBForkCheck is PerpFillForkCheck {
             });
 
             SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
-                price: markPrice,
-                baseDelta: 5e18,
-                accountOrderId: 1,
-                counterpartyOrderId: 2,
-                nonce: 1
+                price: markPrice, baseDelta: 5e18, accountOrderId: 1, counterpartyOrderId: 2, nonce: 1
             });
 
             ExecuteFillInput memory fillInput = ExecuteFillInput({
@@ -121,8 +117,7 @@ contract WethCollateralPerpOBForkCheck is PerpFillForkCheck {
         }
 
         // Verify short position
-        PerpPosition memory shortPos =
-            IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, shortAccountId);
+        PerpPosition memory shortPos = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, shortAccountId);
         assertEq(shortPos.base, -5e18, "Should be short 5 ETH");
 
         // Get initial margin balance (hedged: short ETH + hold wETH)

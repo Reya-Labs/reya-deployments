@@ -19,12 +19,12 @@ var.cp1RusdMarket1EthRiskBlockId.arg = 1
 args = [
     "<%= settings.cp1RusdId %>",
     [
-        ["<%= parseEther(settings.cp1Rusd_market1Eth_riskMatrix00Unscaled) %>"],
+        [
+            "<%= parseEther(settings.cp1Rusd_market1Eth_riskMatrix00Unscaled) %>",
+        ],
     ],
 ]
-depends = [
-    "var.cp_1rusd_vars",
-]
+depends = ["var.cp_1rusd_vars"]
 
 [invoke.cp_1rusd_set_risk_block_id_market_1eth_devnet]
 target = ["PassivePerpProxy"]
@@ -40,6 +40,4 @@ depends = ["invoke.cp_1rusd_create_risk_matrix_market_1eth_devnet"]
 # Collateral pool anchor - only depends on market 1 ETH
 [var.cp_1rusd_vars]
 cp1RusdId = "<%= settings.market1EthId %>"
-depends = [
-    "var.market_1eth_vars",
-]
+depends = ["var.market_1eth_vars"]

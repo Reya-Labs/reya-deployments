@@ -1,4 +1,1 @@
-include = [
-    "./tokens/usdc.toml",
-    "./tokens/weth.toml",
-]
+include = ["./tokens/usdc.toml", "./tokens/weth.toml"]

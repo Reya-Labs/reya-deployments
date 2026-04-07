@@ -466,9 +466,8 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         internal
     {
         st.marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
-        st.a = ICoreProxy(sec.core).getRiskBlockMatrixByMarket(marketId)[st.marketConfig.riskMatrixIndex][st
-            .marketConfig
-            .riskMatrixIndex];
+        st.a = ICoreProxy(sec.core)
+            .getRiskBlockMatrixByMarket(marketId)[st.marketConfig.riskMatrixIndex][st.marketConfig.riskMatrixIndex];
         st.depthFactor = depthFactor;
 
         st.s = (isLong) ? st.sLong : st.sShort;
@@ -483,9 +482,8 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         deal(sec.usdc, address(sec.periphery), depositAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], depositAmount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
-            DepositNewMAInputs({ accountOwner: st.user, token: address(sec.usdc) })
-        );
+        uint128 accountId = IPeripheryProxy(sec.periphery)
+            .depositNewMA(DepositNewMAInputs({ accountOwner: st.user, token: address(sec.usdc) }));
 
         // grant configureDepth access and set depthFactor on Market.Data
         vm.startPrank(sec.multisig);
@@ -537,22 +535,25 @@ contract PSlippageForkCheck is BaseReyaForkTest {
         for (uint256 i = 1; i < st.s.length && iterations > 0; i += 1) {
             iterations -= 1;
 
-            SD59x18 notional = st.s[i].div(UNIT_sd.add(st.s[i])).mul(
-                sd(int256(st.depthFactor)).mul(passivePoolTVL).div(
-                    sd(int256(st.passivePoolImMultiplier)).mul(
-                        sd(st.marketRiskMatrix[st.marketConfig.riskMatrixIndex][st.marketConfig.riskMatrixIndex]).sqrt()
-                    )
-                )
-            ).sub(prevNotionalsSum);
+            SD59x18 notional = st.s[i].div(UNIT_sd.add(st.s[i]))
+                .mul(
+                    sd(int256(st.depthFactor)).mul(passivePoolTVL)
+                        .div(
+                            sd(int256(st.passivePoolImMultiplier))
+                                .mul(
+                                    sd(
+                                            st.marketRiskMatrix[
+                                                st.marketConfig.riskMatrixIndex
+                                            ][st.marketConfig.riskMatrixIndex]
+                                        ).sqrt()
+                                )
+                        )
+                ).sub(prevNotionalsSum);
             SD59x18 base = exposureToBase(marketId, notional);
             base = base.sub(base.mod(sd(int256(st.marketConfig.baseSpacing))));
 
             (, st.pSlippage) = executeCoreMatchOrder({
-                marketId: marketId,
-                sender: st.user,
-                base: base,
-                priceLimit: getPriceLimit(base),
-                accountId: accountId
+                marketId: marketId, sender: st.user, base: base, priceLimit: getPriceLimit(base), accountId: accountId
             });
 
             assertApproxEqAbsDecimal(st.pSlippage.unwrap(), st.sPrime[i].unwrap(), eps.unwrap(), 18);
@@ -598,566 +599,848 @@ contract PSlippageForkCheck is BaseReyaForkTest {
     }
 
     function check_trade_slippage_crv_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 10, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 10, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_uni_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 11, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 11, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_sui_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 12, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 12, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_tia_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 13, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 13, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_sei_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 14, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 14, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_zro_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 15, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 15, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_xrp_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 16, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 16, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_wif_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 17, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 17, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_pepe1k_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 18, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 18, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_popcat_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 19, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 19, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_doge_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 20, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 20, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_kshib_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 21, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 21, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_kbonk_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 22, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 22, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_apt_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 23, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 23, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_bnb_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 24, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 24, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_jto_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 25, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 25, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ada_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 26, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 26, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ldo_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 27, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 27, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_pol_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 28, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 28, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_near_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 29, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 29, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ftm_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 30, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 30, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ena_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 31, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 31, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_eigen_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 32, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 32, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_pendle_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 33, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 33, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_goat_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 34, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 34, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_grass_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 35, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 35, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_kneiro_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 36, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 36, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_dot_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 37, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 37, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ltc_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 38, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 38, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_pyth_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 39, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 39, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_jup_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 40, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 40, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_pengu_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 41, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 41, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_trump_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 42, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 42, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_hype_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 43, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 43, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_virtual_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 44, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 44, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ai16z_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 45, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 45, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_aixbt_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 46, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 46, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_sonic_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 47, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 47, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_fartcoin_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 48, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 48, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_griffain_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 49, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 49, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_wld_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 50, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 50, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_atom_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 51, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 51, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ape_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 52, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 52, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ton_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 53, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 53, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ondo_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 54, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 54, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_trx_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 55, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 55, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_inj_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 56, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 56, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_move_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 57, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 57, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_bera_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 58, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 58, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_layer_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 59, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 59, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_tao_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 60, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 60, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ip_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 61, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 61, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_me_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 62, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 62, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_pump_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 63, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 63, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_morpho_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 64, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 64, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_syrup_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 65, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 65, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_aero_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 66, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 66, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_kaito_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 67, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 67, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_zora_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 68, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 68, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_prove_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 69, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 69, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_paxg_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 70, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 70, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_yzy_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 71, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 71, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_xpl_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 72, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 72, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_wlfi_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 73, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 73, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_linea_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 74, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 74, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_mega_long(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 75, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 75, eps: ud(0.002e18), isLong: true, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_eth_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 1, eps: ud(0.001e18), isLong: false, iterations: 4, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 1, eps: ud(0.001e18), isLong: false, iterations: 4, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_btc_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 2, eps: ud(0.001e18), isLong: false, iterations: 4, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 2, eps: ud(0.001e18), isLong: false, iterations: 4, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_sol_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 3, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 3, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_arb_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 4, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 4, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_op_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 5, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 5, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_avax_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 6, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 6, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_mkr_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 7, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 7, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_link_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 8, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 8, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_aave_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 9, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 9, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_crv_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 10, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 10, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_uni_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 11, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 11, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_sui_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 12, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 12, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_tia_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 13, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 13, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_sei_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 14, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 14, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_zro_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 15, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 15, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_xrp_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 16, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 16, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_wif_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 17, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 17, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_pepe1k_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 18, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 18, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_popcat_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 19, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 19, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_doge_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 20, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 20, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_kshib_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 21, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 21, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_kbonk_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 22, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 22, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_apt_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 23, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 23, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_bnb_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 24, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 24, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_jto_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 25, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 25, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ada_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 26, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 26, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ldo_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 27, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 27, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_pol_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 28, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 28, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_near_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 29, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 29, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ftm_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 30, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 30, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ena_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 31, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 31, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_eigen_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 32, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 32, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_pendle_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 33, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 33, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_goat_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 34, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 34, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_grass_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 35, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 35, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_kneiro_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 36, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 36, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_dot_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 37, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 37, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ltc_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 38, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 38, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_pyth_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 39, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 39, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_jup_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 40, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 40, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_pengu_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 41, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 41, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_trump_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 42, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 42, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_hype_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 43, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 43, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_virtual_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 44, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 44, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ai16z_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 45, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 45, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_aixbt_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 46, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 46, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_sonic_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 47, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 47, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_fartcoin_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 48, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 48, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_griffain_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 49, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 49, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_wld_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 50, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 50, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_atom_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 51, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 51, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ape_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 52, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 52, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ton_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 53, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 53, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ondo_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 54, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 54, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_trx_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 55, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 55, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_inj_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 56, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 56, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_move_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 57, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 57, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_bera_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 58, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 58, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_layer_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 59, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 59, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_tao_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 60, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 60, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_ip_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 61, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 61, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_me_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 62, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 62, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_pump_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 63, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 63, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_morpho_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 64, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 64, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_syrup_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 65, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 65, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_aero_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 66, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 66, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_kaito_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 67, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 67, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_zora_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 68, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 68, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_prove_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 69, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 69, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_paxg_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 70, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 70, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_yzy_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 71, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 71, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_xpl_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 72, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 72, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_wlfi_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 73, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 73, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_linea_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 74, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 74, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 
     function check_trade_slippage_mega_short(uint256 depthFactor) public {
-        trade_slippage_helper({ marketId: 75, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor });
+        trade_slippage_helper({
+            marketId: 75, eps: ud(0.001e18), isLong: false, iterations: 9, depthFactor: depthFactor
+        });
     }
 }

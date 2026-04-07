@@ -12,7 +12,9 @@ import {
 } from "../../../src/interfaces/ICoreProxy.sol";
 
 import {
-    IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
+    IPeripheryProxy,
+    DepositNewMAInputs,
+    DepositExistingMAInputs
 } from "../../../src/interfaces/IPeripheryProxy.sol";
 
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
@@ -47,17 +49,12 @@ contract WethCollateralForkCheck is BaseReyaForkTest {
         deal(sec.weth, address(sec.periphery), amount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.weth], amount);
         vm.prank(dec.socketExecutionHelper[sec.weth]);
-        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
-            DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) })
-        );
+        uint128 accountId = IPeripheryProxy(sec.periphery)
+            .depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.weth) }));
 
         // user executes short trade on ETH
         (UD60x18 orderPrice,) = executeCoreMatchOrder({
-            marketId: 1,
-            sender: user,
-            base: sd(-10e18),
-            priceLimit: ud(0),
-            accountId: accountId
+            marketId: 1, sender: user, base: sd(-10e18), priceLimit: ud(0), accountId: accountId
         });
 
         // compute fees paid in rUSD

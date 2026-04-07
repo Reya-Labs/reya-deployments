@@ -7,7 +7,4 @@ args = [
     "<%= settings.rusdProxyAddress %>",
     { collateralAdapter_DEPRECATED = "<%= settings.rusdCollateralAdapter %>", withdrawalWindowSize = "<%= settings.rusdWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.rusdWithdrawalTvlPercentageLimitUnscaled)  %>" },
 ]
-depends = [
-    'invoke.upgrade_core_proxy',
-    'var.global_collateral_configs',
-]
+depends = ['invoke.upgrade_core_proxy', 'var.global_collateral_configs']

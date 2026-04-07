@@ -184,11 +184,7 @@ contract SpotForkCheck is BaseReyaForkTest {
 
         // Matching engine payload
         SignedMatchingEnginePayload memory mePayload = createMatchingEnginePayload({
-            price: price,
-            baseDelta: baseDelta,
-            accountOrderId: 1,
-            counterpartyOrderId: 2,
-            nonce: meNonce
+            price: price, baseDelta: baseDelta, accountOrderId: 1, counterpartyOrderId: 2, nonce: meNonce
         });
 
         // Execute fill
@@ -345,11 +341,7 @@ contract SpotForkCheck is BaseReyaForkTest {
             });
 
             SignedMatchingEnginePayload memory mePayload1 = createMatchingEnginePayload({
-                price: 3000e18,
-                baseDelta: 0.1e18,
-                accountOrderId: 1,
-                counterpartyOrderId: 2,
-                nonce: 1
+                price: 3000e18, baseDelta: 0.1e18, accountOrderId: 1, counterpartyOrderId: 2, nonce: 1
             });
 
             fills[0] = ExecuteFillInput({
@@ -384,11 +376,7 @@ contract SpotForkCheck is BaseReyaForkTest {
             });
 
             SignedMatchingEnginePayload memory mePayload2 = createMatchingEnginePayload({
-                price: 3000e18,
-                baseDelta: 0.2e18,
-                accountOrderId: 3,
-                counterpartyOrderId: 4,
-                nonce: 2
+                price: 3000e18, baseDelta: 0.2e18, accountOrderId: 3, counterpartyOrderId: 4, nonce: 2
             });
 
             fills[1] = ExecuteFillInput({
@@ -574,11 +562,7 @@ contract SpotForkCheck is BaseReyaForkTest {
             });
 
             SignedMatchingEnginePayload memory mePayload1 = createMatchingEnginePayload({
-                price: 0.02e18,
-                baseDelta: 100e18,
-                accountOrderId: 1,
-                counterpartyOrderId: 2,
-                nonce: 1
+                price: 0.02e18, baseDelta: 100e18, accountOrderId: 1, counterpartyOrderId: 2, nonce: 1
             });
 
             fills[0] = ExecuteFillInput({
@@ -613,11 +597,7 @@ contract SpotForkCheck is BaseReyaForkTest {
             });
 
             SignedMatchingEnginePayload memory mePayload2 = createMatchingEnginePayload({
-                price: 0.02e18,
-                baseDelta: 200e18,
-                accountOrderId: 3,
-                counterpartyOrderId: 4,
-                nonce: 2
+                price: 0.02e18, baseDelta: 200e18, accountOrderId: 3, counterpartyOrderId: 4, nonce: 2
             });
 
             fills[1] = ExecuteFillInput({
@@ -759,11 +739,7 @@ contract SpotForkCheck is BaseReyaForkTest {
             });
 
             SignedMatchingEnginePayload memory mePayload1 = createMatchingEnginePayload({
-                price: 100_000e18,
-                baseDelta: 0.001e18,
-                accountOrderId: 1,
-                counterpartyOrderId: 2,
-                nonce: 1
+                price: 100_000e18, baseDelta: 0.001e18, accountOrderId: 1, counterpartyOrderId: 2, nonce: 1
             });
 
             fills[0] = ExecuteFillInput({
@@ -798,11 +774,7 @@ contract SpotForkCheck is BaseReyaForkTest {
             });
 
             SignedMatchingEnginePayload memory mePayload2 = createMatchingEnginePayload({
-                price: 100_000e18,
-                baseDelta: 0.002e18,
-                accountOrderId: 3,
-                counterpartyOrderId: 4,
-                nonce: 2
+                price: 100_000e18, baseDelta: 0.002e18, accountOrderId: 3, counterpartyOrderId: 4, nonce: 2
             });
 
             fills[1] = ExecuteFillInput({

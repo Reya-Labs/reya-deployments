@@ -8,7 +8,9 @@ import { ICoreProxy, ParentCollateralConfig, MarginInfo, CollateralInfo } from "
 import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
 
 import {
-    IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
+    IPeripheryProxy,
+    DepositNewMAInputs,
+    DepositExistingMAInputs
 } from "../../../src/interfaces/IPeripheryProxy.sol";
 
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
@@ -75,9 +77,8 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         NodeOutput.Data memory srusdUsdcNodeOutput =
             IOracleManagerProxy(sec.oracleManager).process(parentCollateralConfig.oracleNodeId);
 
-        SD59x18 srusdAmountInUSD = sd(int256(srusdAmount)).mul(sd(int256(srusdUsdcNodeOutput.price))).mul(
-            UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut)))
-        ).div(sd(1e30));
+        SD59x18 srusdAmountInUSD = sd(int256(srusdAmount)).mul(sd(int256(srusdUsdcNodeOutput.price)))
+            .mul(UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut)))).div(sd(1e30));
 
         MarginInfo memory accountUsdNodeMarginInfo = ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId);
         assertApproxEqAbsDecimal(accountUsdNodeMarginInfo.marginBalance, srusdAmountInUSD.unwrap(), 0.000001e18, 18);
@@ -91,9 +92,8 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         deal(sec.usdc, address(sec.periphery), usdcAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], usdcAmount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        IPeripheryProxy(sec.periphery).depositExistingMA(
-            DepositExistingMAInputs({ accountId: accountId, token: sec.usdc })
-        );
+        IPeripheryProxy(sec.periphery)
+            .depositExistingMA(DepositExistingMAInputs({ accountId: accountId, token: sec.usdc }));
 
         accountUsdNodeMarginInfo = ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId);
         assertApproxEqAbsDecimal(
@@ -174,9 +174,8 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         deal(sec.usdc, address(sec.periphery), usdcAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], usdcAmount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        IPeripheryProxy(sec.periphery).depositExistingMA(
-            DepositExistingMAInputs({ accountId: accountId, token: sec.usdc })
-        );
+        IPeripheryProxy(sec.periphery)
+            .depositExistingMA(DepositExistingMAInputs({ accountId: accountId, token: sec.usdc }));
 
         amount = 100e18;
         vm.prank(sec.multisig);

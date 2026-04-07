@@ -15,11 +15,7 @@ contract SreyaCollateralForkTest is ReyaForkTest, SreyaCollateralForkCheck {
 
     function test_sreya_spot_market_config() public view {
         SreyaSpotMarketConfigExpectations memory expected = SreyaSpotMarketConfigExpectations({
-            spotMarketId: SREYA_SPOT_MARKET_ID,
-            oracleDeviation: 0,
-            minimumOrderBase: 0,
-            baseSpacing: 0,
-            priceSpacing: 0
+            spotMarketId: SREYA_SPOT_MARKET_ID, oracleDeviation: 0, minimumOrderBase: 0, baseSpacing: 0, priceSpacing: 0
         });
         check_sreya_spot_market_config(expected);
     }
