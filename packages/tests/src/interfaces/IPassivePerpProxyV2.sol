@@ -69,8 +69,9 @@ interface IPassivePerpProxyV2 {
 
     // ─── Errors ──────────────────────────────────────────────────────────
 
-    error StaleMarkPrice(uint128 marketId, uint256 markPriceTimestamp, uint256 maxStaleDuration);
-    error StaleFundingRate(uint128 marketId, uint256 fundingRateTimestamp, uint256 maxStaleDuration);
+    error MarkPriceStale(uint128 marketId, uint256 priceTimestamp, uint256 blockTimestamp, uint256 maxStaleDuration);
+    error FundingRateStale(uint128 marketId, uint256 fundingRateTimestamp, uint256 blockTimestamp, uint256 maxStaleDuration);
+    error UnauthorizedOraclePusher(address pusher);
     error FillPriceDeviationExceeded(uint128 marketId, uint256 fillPrice, uint256 markPrice, uint256 maxDeviation);
     error MarkPriceDeviationExceeded(uint128 marketId, uint256 markPrice, uint256 oraclePrice, uint256 maxDeviation);
 }

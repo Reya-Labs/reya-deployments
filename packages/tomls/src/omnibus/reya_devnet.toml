@@ -139,6 +139,12 @@ ae_liquidator3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 matching_engine_publisher1 = "0x89340FA8559968c2ADe406C6CcAd6C74F892472d"
 
 ###############################################################################
+# CO Execution Bots (conditional order execution)
+###############################################################################
+[var.co_execution_bots]
+co_execution_bot1 = "0xB6EaF546b84E1f917579FC4FD3d7082DfE2ba212"
+
+###############################################################################
 # Fee Configuration Bots
 ###############################################################################
 [var.fee_configuration_bots]

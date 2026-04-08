@@ -91,7 +91,7 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         PerpEIP712Signature memory sig = PerpEIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
         vm.prank(unauthorized);
-        vm.expectRevert(abi.encodeWithSelector(IPassivePerpProxy.FeatureUnavailable.selector, ORACLE_PUSHERS_FLAG));
+        vm.expectRevert(abi.encodeWithSelector(IPassivePerpProxyV2.UnauthorizedOraclePusher.selector, unauthorized));
         IPassivePerpProxyV2(sec.perp).pushOracleData(payload, sig);
     }
 
@@ -137,7 +137,7 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
     function check_MatchingEnginePermission(uint128 marketId) internal {
         (address buyer, uint256 buyerPk) = makeAddrAndKey("permBuyer");
         (address seller, uint256 sellerPk) = makeAddrAndKey("permSeller");
-        (, uint256 unauthorizedMEPk) = makeAddrAndKey("unauthorizedME");
+        (address unauthorizedME, uint256 unauthorizedMEPk) = makeAddrAndKey("unauthorizedME");
 
         // Seed fresh oracle/price state so we reach the permission check
         // rather than reverting early on stale prices
@@ -208,7 +208,7 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         // Should revert because ME is not on allowlist
         vm.prank(sec.coExecutionBot);
         vm.expectRevert(
-            abi.encodeWithSelector(IOrdersGatewayProxy.FeatureUnavailable.selector, MATCHING_ENGINE_PUBLISHER_FLAG)
+            abi.encodeWithSelector(IOrdersGatewayProxy.UnauthorizedMatchingEnginePublisher.selector, unauthorizedME)
         );
         IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
     }
@@ -243,7 +243,7 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         PerpEIP712Signature memory sig = PerpEIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
         vm.prank(publisher);
-        vm.expectRevert(abi.encodeWithSelector(IPassivePerpProxy.FeatureUnavailable.selector, ORACLE_PUSHERS_FLAG));
+        vm.expectRevert(abi.encodeWithSelector(IPassivePerpProxyV2.UnauthorizedOraclePusher.selector, publisher));
         IPassivePerpProxyV2(sec.perp).pushOracleData(payload, sig);
     }
 }

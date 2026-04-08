@@ -227,6 +227,25 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     }
 
     /**
+     * @notice Public wrapper for executePerpFill, callable via this.executePerpFillExternal()
+     *         so it can be used in try-catch blocks (which require external calls).
+     */
+    function executePerpFillExternal(
+        uint128 buyerAccountId,
+        uint128 sellerAccountId,
+        uint128 marketId,
+        uint256 baseDelta,
+        uint256 price,
+        uint256 buyerNonce,
+        uint256 sellerNonce,
+        uint256 meNonce
+    )
+        public
+    {
+        executePerpFill(buyerAccountId, sellerAccountId, marketId, baseDelta, price, buyerNonce, sellerNonce, meNonce);
+    }
+
+    /**
      * @notice Test basic perp fill execution for ETH market
      * @dev Opens a long/short position between buyer and seller, verifies positions
      */
@@ -286,8 +305,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         mockFreshPrices();
 
         // Attempt fill should revert due to stale mark price
-        vm.expectRevert(IPassivePerpProxyV2.StaleMarkPrice.selector);
-        executePerpFill({
+        try this.executePerpFillExternal({
             buyerAccountId: buyerAccountId,
             sellerAccountId: sellerAccountId,
             marketId: marketId,
@@ -296,7 +314,11 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             buyerNonce: 1,
             sellerNonce: 1,
             meNonce: 1
-        });
+        }) {
+            revert("Expected MarkPriceStale revert");
+        } catch (bytes memory revertData) {
+            assertEq(bytes4(revertData), IPassivePerpProxyV2.MarkPriceStale.selector, "Should revert with MarkPriceStale");
+        }
     }
 
     /**
@@ -470,8 +492,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         });
 
         // Replay with same nonces should revert
-        vm.expectRevert(IOrdersGatewayProxy.NonceAlreadyUsed.selector);
-        executePerpFill({
+        try this.executePerpFillExternal({
             buyerAccountId: buyerAccountId,
             sellerAccountId: sellerAccountId,
             marketId: marketId,
@@ -480,7 +501,11 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             buyerNonce: 1, // same nonce
             sellerNonce: 1, // same nonce
             meNonce: 1 // same nonce
-        });
+        }) {
+            revert("Expected SignerNonceAlreadyUsed revert");
+        } catch (bytes memory revertData) {
+            assertEq(bytes4(revertData), IOrdersGatewayProxy.SignerNonceAlreadyUsed.selector, "Should revert with SignerNonceAlreadyUsed");
+        }
     }
 
     /**

@@ -77,10 +77,13 @@ contract LeveragePerpOBForkCheck is PerpFillForkCheck {
             }
         }
 
-        // Deposit generous collateral for both sides
-        uint256 amount = 1_000_000e6;
+        // Deposit generous collateral for both sides.
+        // The user deposits the collateral being tested; the counterparty always uses rUSD
+        // to avoid Core overflow when both sides share non-rUSD collateral during fill.
+        // rUSD has 6 decimals (1_000_000e6 = $1M); wETH has 18 decimals (500e18 = 500 ETH ≈ $1.5M at $3000).
+        uint256 amount = (collateral == sec.weth) ? 500e18 : 1_000_000e6;
         uint128 userAccountId = depositNewMA(perpBuyer, collateral, amount);
-        uint128 counterpartyAccountId = depositNewMA(perpSeller, collateral, amount);
+        uint128 counterpartyAccountId = depositNewMA(perpSeller, sec.rusd, 1_000_000e6);
 
         // Open 1 unit long position
         executePerpFill({

@@ -78,10 +78,7 @@ interface IOrdersGatewayProxy {
         /* warning: missing UDVT support in source Solidity version; parameter is `UD60x18`. */
         uint256 priceLimit
     );
-    error NonceAlreadyUsed(
-        ConditionalOrderDetails order,
-        EIP712Signature signature
-    );
+    error SignerNonceAlreadyUsed(address signer, uint256 nonce);
     error OrderTypeNotFound(uint8 orderType);
     error SignatureExpired();
     error SignerNotAuthorized(
@@ -91,6 +88,7 @@ interface IOrdersGatewayProxy {
     error ZeroStopLossOrderSize(StopLossOrderDetails stopLossOrder);
 
     error ReduceOnlyConditionFailed(uint128 marketId, uint128 accountId);
+    error UnauthorizedMatchingEnginePublisher(address publisher);
 
     function addToFeatureFlagAllowlist(bytes32 feature, address account)
         external;

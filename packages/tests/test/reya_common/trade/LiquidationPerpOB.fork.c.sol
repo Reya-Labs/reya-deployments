@@ -229,8 +229,11 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
             });
 
             vm.prank(perpSeller);
-            vm.expectRevert(ICoreProxy.AccountAboveLm.selector);
-            ICoreProxy(sec.core).execute(liqLiquidatorAccountId, commands);
+            try ICoreProxy(sec.core).execute(liqLiquidatorAccountId, commands) {
+                revert("Expected AccountAboveLm revert for healthy account");
+            } catch (bytes memory revertData) {
+                assertEq(bytes4(revertData), ICoreProxy.AccountAboveLm.selector, "Should revert with AccountAboveLm");
+            }
         }
     }
 
@@ -255,7 +258,10 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
 
         // Backstop should revert — account is not deeply underwater enough for ADL
         vm.prank(perpSeller);
-        vm.expectRevert(ICoreProxy.AccountAboveAdl.selector);
-        ICoreProxy(sec.core).executeBackstopLiquidation(liqUserAccountId, liqLiquidatorAccountId, sec.rusd, 1e18);
+        try ICoreProxy(sec.core).executeBackstopLiquidation(liqUserAccountId, liqLiquidatorAccountId, sec.rusd, 1e18) {
+            revert("Expected AccountAboveAdl revert");
+        } catch (bytes memory revertData) {
+            assertEq(bytes4(revertData), ICoreProxy.AccountAboveAdl.selector, "Should revert with AccountAboveAdl");
+        }
     }
 }
