@@ -1,8 +1,8 @@
 # Devnet passive perp config for perpOB release
 # Excludes AMM-specific configs: depth, velocity, logf, spread, pool_node_margin_info
 include = [
-    "utils/upgrade_proxy.toml",
     "utils/deploy_proxy_devnet.toml",
+    "utils/upgrade_proxy.toml",
     "configs/feature_flags_devnet.toml",
     "configs/global_config_devnet.toml",
     "configs/fees_devnet.toml",

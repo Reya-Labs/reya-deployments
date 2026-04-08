@@ -285,7 +285,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         mockFreshPrices();
 
         // Attempt fill should revert due to stale mark price
-        vm.expectRevert();
+        vm.expectRevert(IPassivePerpProxyV2.StaleMarkPrice.selector);
         executePerpFill({
             buyerAccountId: buyerAccountId,
             sellerAccountId: sellerAccountId,

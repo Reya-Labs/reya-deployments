@@ -105,6 +105,10 @@ contract LeveragePerpOBForkCheck is PerpFillForkCheck {
         UD60x18 price = ud(markPrice);
         UD60x18 leverage = price.div(imr); // base=1, so exposure = price
 
+        // Tolerance of ±2x accounts for rounding in IMR calculation across the
+        // risk matrix, IM multiplier, and haircut-adjusted collateral valuation.
+        // The exact leverage depends on oracle price at fork time, so a tight
+        // tolerance would make this test flaky across different fork snapshots.
         assertApproxEqAbsDecimal(leverage.unwrap(), expectedLev, 2e18, 18, "Leverage should match expected");
     }
 }

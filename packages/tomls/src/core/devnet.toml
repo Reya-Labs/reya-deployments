@@ -1,6 +1,6 @@
 include = [
-    "utils/upgrade_proxy.toml",
     "utils/deploy_proxy_devnet.toml",
+    "utils/upgrade_proxy.toml",
     "configs/feature_flags_devnet.toml",
     "configs/protocol_config_devnet.toml",
     "configs/instruments.toml",
