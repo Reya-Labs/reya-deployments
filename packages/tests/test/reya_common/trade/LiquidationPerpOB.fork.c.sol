@@ -229,7 +229,7 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
             });
 
             vm.prank(perpSeller);
-            vm.expectRevert();
+            vm.expectRevert(ICoreProxy.AccountAboveLm.selector);
             ICoreProxy(sec.core).execute(liqLiquidatorAccountId, commands);
         }
     }

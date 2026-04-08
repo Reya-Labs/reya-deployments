@@ -469,7 +469,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         });
 
         // Replay with same nonces should revert
-        vm.expectRevert();
+        vm.expectRevert(IOrdersGatewayProxy.NonceAlreadyUsed.selector);
         executePerpFill({
             buyerAccountId: buyerAccountId,
             sellerAccountId: sellerAccountId,
@@ -632,7 +632,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
      * @dev Devnet fee config: tier0 taker=0.04%, maker=0.04%, no discounts, no maker rebate.
      *      Fee per side = |baseDelta| * fillPrice * 0.0004.
      *      We verify by checking getCollateralInfo(accountId, rusd).realBalance before/after.
-     *      Mark price = fill price so unrealized PnL is zero and only fees affect realBalance.
+     *      Unrealized PnL only affects marginBalance, not realBalance, so only fees change realBalance.
      */
     function check_PerpFillFees(uint128 marketId) internal {
         setupPerpTestActors();
@@ -666,8 +666,8 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         // Expected fee per side = 1 ETH * $3000 * 0.0004 = $1.20 = 1.2e6 rUSD
         int256 expectedFee = 1.2e6;
 
-        assertApproxEqAbs(buyerPaid, expectedFee, 0.01e6, "Buyer should pay ~4bps taker fee");
-        assertApproxEqAbs(sellerPaid, expectedFee, 0.01e6, "Seller should pay ~4bps maker fee");
+        assertEq(buyerPaid, expectedFee, "Buyer should pay exactly 4bps taker fee");
+        assertEq(sellerPaid, expectedFee, "Seller should pay exactly 4bps maker fee");
         assertGt(buyerPaid, 0, "Buyer fee should be positive");
         assertGt(sellerPaid, 0, "Seller fee should be positive");
     }
@@ -721,6 +721,8 @@ contract PerpFillForkCheck is BaseReyaForkTest {
      * @notice Test that insufficient margin blocks a perp fill
      * @dev Attempts to open a position larger than what the margin can support.
      *      With $10 deposit and 1 ETH at $3000 → ~300x leverage, well beyond the 25x limit.
+     *      Verifies that the revert is specifically AccountBelowIM for the buyer's account
+     *      (the seller has $100k collateral and should not be the one failing).
      */
     function check_PerpFillInsufficientMargin(uint128 marketId) internal {
         setupPerpTestActors();
@@ -732,18 +734,54 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10e6);
         uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 100_000e6);
 
-        // Try to open 1 ETH ($3000 exposure) with $10 collateral → should fail (IMR check)
-        vm.expectRevert();
-        executePerpFill({
-            buyerAccountId: buyerAccountId,
-            sellerAccountId: sellerAccountId,
-            marketId: marketId,
-            baseDelta: 1e18,
-            price: 3000e18,
-            buyerNonce: 1,
-            sellerNonce: 1,
-            meNonce: 1
-        });
+        // Build fill input in scoped blocks to avoid stack-too-deep
+        ExecuteFillInput memory fillInput;
+        {
+            (ConditionalOrderDetails memory buyerOrder, EIP712Signature memory buyerSig) = createLimitOrderPerp({
+                accountId: buyerAccountId,
+                marketId: marketId,
+                baseDelta: int256(1e18),
+                price: 3000e18,
+                nonce: 1,
+                signer: perpBuyer,
+                signerPk: perpBuyerPk
+            });
+
+            (ConditionalOrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({
+                accountId: sellerAccountId,
+                marketId: marketId,
+                baseDelta: -int256(1e18),
+                price: 3000e18,
+                nonce: 1,
+                signer: perpSeller,
+                signerPk: perpSellerPk
+            });
+
+            fillInput = ExecuteFillInput({
+                accountOrder: buyerOrder,
+                counterpartyOrder: sellerOrder,
+                accountSignature: buyerSig,
+                counterpartySignature: sellerSig,
+                mePayload: createPerpMatchingEnginePayload({
+                    price: 3000e18, baseDelta: 1e18, accountOrderId: 1, counterpartyOrderId: 2, nonce: 1
+                })
+            });
+        }
+
+        // Execute and verify the revert is AccountBelowIM for the buyer's account specifically
+        vm.prank(sec.coExecutionBot);
+        try IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput) {
+            revert("Expected AccountBelowIM revert for underfunded buyer");
+        } catch (bytes memory revertData) {
+            assertEq(bytes4(revertData), ICoreProxy.AccountBelowIM.selector, "Should revert with AccountBelowIM");
+
+            // Decode accountId: AccountBelowIM(uint128 accountId, int256 delta)
+            uint128 failedAccountId;
+            assembly {
+                failedAccountId := mload(add(revertData, 36))
+            }
+            assertEq(failedAccountId, buyerAccountId, "IM failure should be on buyer (underfunded), not seller");
+        }
     }
 
     /**
@@ -902,6 +940,8 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         });
 
         // Try to increase with ReduceOnlyPerp: buyer tries to buy MORE (same direction) → should revert
+        // Build fill input in scoped block to avoid stack-too-deep
+        ExecuteFillInput memory fillInput;
         {
             uint128[] memory emptyIds = new uint128[](0);
             ConditionalOrderDetails memory reduceOrder = ConditionalOrderDetails({
@@ -931,21 +971,22 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 signerPk: perpSellerPk
             });
 
-            SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
-                price: 3000e18, baseDelta: 0.5e18, accountOrderId: 3, counterpartyOrderId: 4, nonce: 2
-            });
-
-            ExecuteFillInput memory fillInput = ExecuteFillInput({
+            fillInput = ExecuteFillInput({
                 accountOrder: reduceOrder,
                 counterpartyOrder: sellerOrder,
                 accountSignature: reduceSig,
                 counterpartySignature: sellerSig,
-                mePayload: mePayload
+                mePayload: createPerpMatchingEnginePayload({
+                    price: 3000e18, baseDelta: 0.5e18, accountOrderId: 3, counterpartyOrderId: 4, nonce: 2
+                })
             });
-
-            vm.prank(sec.coExecutionBot);
-            vm.expectRevert();
-            IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
         }
+
+        // Verify revert is ReduceOnlyConditionFailed for the correct market and account
+        vm.prank(sec.coExecutionBot);
+        vm.expectRevert(
+            abi.encodeWithSelector(IOrdersGatewayProxy.ReduceOnlyConditionFailed.selector, marketId, buyerAccountId)
+        );
+        IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
     }
 }
