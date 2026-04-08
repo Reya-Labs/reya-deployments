@@ -1,2 +1,0 @@
-# Devnet reuses existing Cronos token contracts (USDC, WETH, rUSD)
-# defined in var.existing_cronos_contracts — no token deployment needed.

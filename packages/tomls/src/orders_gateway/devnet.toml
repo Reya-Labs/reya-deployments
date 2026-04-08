@@ -1,6 +1,0 @@
-include = [
-    "utils/deploy_proxy_devnet.toml",
-    "utils/upgrade_proxy.toml",
-    "configs/feature_flags_devnet.toml",
-    "configs/global_config_devnet.toml",
-]

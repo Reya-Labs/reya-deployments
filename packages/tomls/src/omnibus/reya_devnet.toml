@@ -13,13 +13,13 @@
 ###############################################################################
 
 include = [
-    "utils/commons_devnet.toml",
+    "../devnet/commons.toml",
     "utils/constants.toml",
-    "../core/devnet.toml",
-    "../passive_perp/devnet.toml",
-    "../orders_gateway/devnet.toml",
-    "../periphery/devnet.toml",
-    "../collateral_pools/collateral_pool_1/devnet.toml",
+    "../devnet/core/core.toml",
+    "../devnet/passive_perp/passive_perp.toml",
+    "../devnet/orders_gateway/orders_gateway.toml",
+    "../devnet/periphery/periphery.toml",
+    "../devnet/collateral_pools/collateral_pool_1.toml",
 ]
 
 version = "1.0.0"
