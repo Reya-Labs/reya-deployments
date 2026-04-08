@@ -26,7 +26,7 @@ import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
     uint128 private liqUserAccountId;
     uint128 private liqLiquidatorAccountId;
-    uint128 private poolAccountId;
+    uint128 private backstopAccountId;
 
     function setupLiquidationTest(uint128 marketId) internal {
         setupPerpTestActors();
@@ -36,22 +36,22 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
         pushMarkPrice(marketId, 3000e18);
         pushFundingRate(marketId, 0); // zero funding to simplify
 
-        // Configure a pool/insurance account for the collateral pool.
-        // Both Dutch and backstop liquidation require a pool account for fee distribution.
+        // Create a backstop LP account for the collateral pool.
+        // Backstop liquidation requires a funded account to absorb liquidated positions.
         // Devnet doesn't have a PassivePool linked to its Core, so we create one in-test.
         {
-            (address poolOwner,) = makeAddrAndKey("poolOwner");
-            poolAccountId = depositNewMA(poolOwner, sec.rusd, 100_000e6);
+            (address backstopOwner,) = makeAddrAndKey("backstopOwner");
+            backstopAccountId = depositNewMA(backstopOwner, sec.rusd, 100_000e6);
 
-            vm.prank(poolOwner);
-            ICoreProxy(sec.core).activateFirstMarketForAccount(poolAccountId, 1);
+            vm.prank(backstopOwner);
+            ICoreProxy(sec.core).activateFirstMarketForAccount(backstopAccountId, 1);
 
             vm.prank(sec.multisig);
             ICoreProxy(sec.core)
                 .setBackstopLPConfig(
                     1,
                     BackstopLPConfig({
-                        accountId: poolAccountId,
+                        accountId: backstopAccountId,
                         liquidationFee: 0.15e18,
                         minFreeCollateralThresholdInUSD: 0,
                         withdrawCooldownDurationInSeconds_DEPRECATED: 0,
