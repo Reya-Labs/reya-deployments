@@ -44,7 +44,7 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
             backstopAccountId = depositNewMA(backstopOwner, sec.rusd, 100_000e6);
 
             vm.prank(backstopOwner);
-            ICoreProxy(sec.core).activateFirstMarketForAccount(backstopAccountId, 1);
+            ICoreProxy(sec.core).activateFirstMarketForAccount(backstopAccountId, marketId);
 
             vm.prank(sec.multisig);
             ICoreProxy(sec.core)
