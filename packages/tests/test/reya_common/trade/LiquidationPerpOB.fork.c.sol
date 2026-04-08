@@ -233,4 +233,29 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
             ICoreProxy(sec.core).execute(liqLiquidatorAccountId, commands);
         }
     }
+
+    /**
+     * @notice Test that backstop liquidation (ADL) reverts when account is above ADL threshold
+     * @dev Account is in Dutch liquidation territory (below LMR but above ADL).
+     *      Backstop/ADL should only be available for deeply underwater accounts below ADL threshold.
+     */
+    function check_BackstopLiquidation_RevertAboveAdl_PerpOB(uint128 marketId) internal {
+        setupLiquidationTest(marketId);
+
+        // Drop price to Dutch territory (below LMR but above ADL threshold)
+        // Same price as Dutch test: $2565
+        // PnL = -$435, remaining margin ≈ $65 — below LMR (~$79) but above ADL (~$51)
+        pushMarkPrice(marketId, 2565e18);
+        mockFreshPrices();
+
+        // Verify account IS eligible for Dutch liquidation (sanity check)
+        MarginInfo memory margin = ICoreProxy(sec.core).getUsdNodeMarginInfo(liqUserAccountId);
+        assertLt(margin.liquidationDelta, 0, "Account should be below LMR");
+        assertGt(margin.adlDelta, 0, "Account should be above ADL threshold");
+
+        // Backstop should revert — account is not deeply underwater enough for ADL
+        vm.prank(perpSeller);
+        vm.expectRevert(ICoreProxy.AccountAboveAdl.selector);
+        ICoreProxy(sec.core).executeBackstopLiquidation(liqUserAccountId, liqLiquidatorAccountId, sec.rusd, 1e18);
+    }
 }

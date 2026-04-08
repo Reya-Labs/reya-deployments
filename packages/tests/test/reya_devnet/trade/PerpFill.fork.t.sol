@@ -57,4 +57,22 @@ contract PerpFillForkTest is ReyaForkTest, PerpFillForkCheck {
     function test_Devnet_WithdrawWithOpenPosition_ETH() public {
         check_WithdrawWithOpenPosition(ETH_MARKET_ID);
     }
+
+    // Fee model checks
+
+    function test_Devnet_PerpFillFeeDiscounts_OG_ETH() public {
+        check_PerpFillFeeDiscounts(ETH_MARKET_ID, true, false);
+    }
+
+    function test_Devnet_PerpFillFeeDiscounts_VLTZ_ETH() public {
+        check_PerpFillFeeDiscounts(ETH_MARKET_ID, false, true);
+    }
+
+    function test_Devnet_PerpFillFeeDiscounts_OG_VLTZ_ETH() public {
+        check_PerpFillFeeDiscounts(ETH_MARKET_ID, true, true);
+    }
+
+    function test_Devnet_PerpFillExchangeZeroFees_ETH() public {
+        check_PerpFillExchangeZeroFees(ETH_MARKET_ID);
+    }
 }

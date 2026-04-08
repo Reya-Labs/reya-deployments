@@ -541,9 +541,9 @@ When the devnet proves stable, gradually introduce:
 13. ✅ Backward compatibility verified (existing cronos/mainnet tests unaffected)
 
 ### Step 2b: Test Infrastructure TODO
-1. ⬜ Add `ReduceOnlyPerp` fork check (open + partial close flow)
-2. ⬜ Add ADL fork check (auto-deleveraging execution type)
-3. ⬜ Add perpOB fee model fork check (taker fees, maker fee/rebate, protocol/exchange fees)
+1. ✅ Add `ReduceOnlyPerp` fork check (open + partial close flow)
+2. ✅ Add ADL fork check (backstop revert above ADL threshold)
+3. ✅ Add perpOB fee model fork check (OG/VLTZ discounts, exchange zero-fee flag)
 
 ### Step 3: Build & Deploy (blocked on perpOB package publish)
 1. ⬜ Build perpOB router packages from `reya-network` feat/perpOB

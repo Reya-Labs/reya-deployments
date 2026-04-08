@@ -5,7 +5,8 @@ import { ICoreProxy, MarginInfo, RiskMultipliers, CollateralInfo } from "../../.
 import {
     IPassivePerpProxy,
     PerpPosition,
-    EIP712Signature as PerpEIP712Signature
+    EIP712Signature as PerpEIP712Signature,
+    GlobalFeeParameters
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import {
     IPassivePerpProxyV2,
@@ -26,7 +27,7 @@ import { ConditionalOrderHashing } from "../../../src/utils/ConditionalOrderHash
 import { FillHashing } from "../../../src/utils/FillHashing.sol";
 import { OracleDataPayloadHashing } from "../../../src/utils/OracleDataPayloadHashing.sol";
 
-import { sd, SD59x18 } from "@prb/math/SD59x18.sol";
+import { sd, SD59x18, UNIT as ONE_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
 /**
@@ -988,5 +989,128 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             abi.encodeWithSelector(IOrdersGatewayProxy.ReduceOnlyConditionFailed.selector, marketId, buyerAccountId)
         );
         IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                        FEE MODEL CHECKS
+    //////////////////////////////////////////////////////////////*/
+
+    int256 private constant BASIC_TIER_FEE_PERCENTAGE = 0.0004e18;
+
+    /**
+     * @notice Test that OG/VLTZ fee discounts apply to perpOB fills
+     * @dev Mirrors the AMM-based check_MatchOrder_FeeDiscounts in Order.fork.c.sol.
+     *      Applies OG and/or VLTZ discount to the buyer, verifies reduced fee.
+     *      Seller has no discounts and should pay the full 4bps fee.
+     */
+    function check_PerpFillFeeDiscounts(uint128 marketId, bool ogDiscount, bool vltzDiscount) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        IPassivePerpProxy perp = IPassivePerpProxy(sec.perp);
+
+        // Set up fee config bot with configureFees permission
+        (address feeBot,) = makeAddrAndKey("feeBot");
+        vm.prank(sec.multisig);
+        perp.addToFeatureFlagAllowlist(keccak256(bytes("configureFees")), feeBot);
+
+        // Configure global discount parameters
+        GlobalFeeParameters memory config = perp.getGlobalFeeParameters();
+        config.ogDiscount = ogDiscount ? 0.2e18 : 0; // 20% OG discount
+        config.vltzDiscount = vltzDiscount ? 0.1e18 : 0; // 10% VLTZ discount
+        vm.prank(sec.multisig);
+        perp.setGlobalFeeParameters(config);
+
+        // Apply discounts to buyer only — seller gets no discounts
+        vm.prank(feeBot);
+        perp.setAccountOwnerOgStatusFeeConfig(perpBuyer, true);
+        vm.prank(feeBot);
+        perp.setAccountOwnerVltzStatusFeeConfig(perpBuyer, true);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 100_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 100_000e6);
+
+        int256 buyerBalBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).realBalance;
+        int256 sellerBalBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
+
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 1e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        int256 buyerPaid = buyerBalBefore - ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).realBalance;
+        int256 sellerPaid =
+            sellerBalBefore - ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
+
+        // Compute expected discounted fee for buyer
+        // Base fee = 1 ETH * $3000 * 0.0004 = $1.20 = 1.2e6 rUSD
+        SD59x18 feeRate = sd(BASIC_TIER_FEE_PERCENTAGE);
+        if (ogDiscount) feeRate = feeRate.mul(ONE_sd.sub(sd(0.2e18)));
+        if (vltzDiscount) feeRate = feeRate.mul(ONE_sd.sub(sd(0.1e18)));
+        int256 expectedBuyerFee = sd(3000e18).mul(sd(1e18)).mul(feeRate).unwrap() / 1e12;
+
+        // Seller pays full fee (no discounts applied)
+        int256 expectedSellerFee = sd(3000e18).mul(sd(1e18)).mul(sd(BASIC_TIER_FEE_PERCENTAGE)).unwrap() / 1e12;
+
+        assertEq(buyerPaid, expectedBuyerFee, "Buyer should pay discounted fee");
+        assertEq(sellerPaid, expectedSellerFee, "Seller should pay full fee (no discount)");
+
+        // Verify discounts actually reduced the buyer's fee vs the base rate
+        if (ogDiscount || vltzDiscount) {
+            assertLt(buyerPaid, expectedSellerFee, "Buyer fee should be less than seller fee due to discounts");
+        }
+    }
+
+    /**
+     * @notice Test that exchange-level zero-fee flag disables fees for perpOB fills
+     * @dev Similar to check_PerpFillZeroFees (market-level), but uses the exchangeZeroFees flag.
+     *      PerpOB fills use exchangeId=1, so we toggle that flag.
+     */
+    function check_PerpFillExchangeZeroFees(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        // Enable zero fees for exchange 1 (used by all perpOB fills)
+        bytes32 flagId = keccak256(abi.encode(keccak256(bytes("exchangeZeroFees")), uint128(1)));
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(flagId, true);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 100_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 100_000e6);
+
+        int256 buyerBalBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).realBalance;
+        int256 sellerBalBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
+
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 1e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        int256 buyerPaid = buyerBalBefore - ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).realBalance;
+        int256 sellerPaid =
+            sellerBalBefore - ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
+
+        assertEq(buyerPaid, 0, "Buyer should pay zero fees (exchange zero-fee)");
+        assertEq(sellerPaid, 0, "Seller should pay zero fees (exchange zero-fee)");
+
+        // Restore default (fees on)
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(flagId, false);
     }
 }

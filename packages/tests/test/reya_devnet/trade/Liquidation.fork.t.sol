@@ -17,4 +17,8 @@ contract LiquidationForkTest is ReyaForkTest, LiquidationPerpOBForkCheck {
     function test_Devnet_DutchLiquidation_RevertWhenHealthy_ETH() public {
         check_DutchLiquidation_RevertWhenHealthy_PerpOB(ETH_MARKET_ID);
     }
+
+    function test_Devnet_BackstopLiquidation_RevertAboveAdl_ETH() public {
+        check_BackstopLiquidation_RevertAboveAdl_PerpOB(ETH_MARKET_ID);
+    }
 }
