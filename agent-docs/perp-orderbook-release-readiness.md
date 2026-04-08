@@ -586,3 +586,7 @@ When the devnet proves stable, gradually introduce:
 10. **Insurance fund**: The `market_1eth.toml` creates an insurance fund account per collateral pool. Need to verify this flow is unchanged in perpOB.
 
 11. **[P2] Replace `mockFreshPrices()` with real oracle adapter pushes**: Currently fork tests use `vm.mockCall` / `vm.store` to mock oracle prices via `mockFreshPrices()`. It is potentially cleaner to instead push prices through the oracle adapters proxy (e.g. Stork's `verify` path) so tests exercise the real oracle pipeline end-to-end. This would give higher confidence but requires more thought on key management and adapter ABI integration. Needs further discussion before implementation.
+
+12. **[P2] Add REYA as a supported collateral token**: Bring REYA into devnet as a collateral token to exercise the LayerZero bridging path (all other tokens use Socket). This would also enable adding a REYA spot market and an additional perp market (e.g. REYA/USD), increasing test coverage for multi-market scenarios.
+
+13. **[P2] Tighten leverage tolerance in LeveragePerpOB**: The `assertApproxEqAbsDecimal` in `LeveragePerpOB.fork.c.sol` uses ±2x tolerance (inherited from legacy `Leverage.fork.c.sol`). In a fork environment oracle prices are deterministic, so this should be tighter. Investigate the gap between theoretical max leverage from risk params and the computed `price / IMR` value.
