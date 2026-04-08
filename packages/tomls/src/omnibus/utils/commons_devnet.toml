@@ -1,0 +1,4 @@
+name = "reya-devnet-omnibus"
+preset = "main"
+description = "Reya Devnet Omnibus"
+privateSourceCode = true

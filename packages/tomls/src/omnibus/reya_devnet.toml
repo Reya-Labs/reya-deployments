@@ -13,7 +13,7 @@
 ###############################################################################
 
 include = [
-    "utils/commons.toml",
+    "utils/commons_devnet.toml",
     "utils/constants.toml",
     "../core/devnet.toml",
     "../passive_perp/devnet.toml",
