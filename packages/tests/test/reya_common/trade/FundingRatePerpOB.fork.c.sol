@@ -109,25 +109,35 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
     }
 
     /**
-     * @notice Test that funding rate actually accrues on open positions
-     * @dev Opens a long position, pushes a positive funding rate, warps forward,
-     *      and verifies that the long's margin decreases (longs pay positive funding).
+     * @notice Test that funding rate accrues on open positions under the forward-looking model
+     * @dev In the forward-looking funding model (v1.0.50+):
+     *      - Funding is materialized ONLY when a new rate is pushed via pushFundingRate.
+     *      - The NEWLY pushed rate is applied retroactively over the elapsed interval
+     *        [lastFundingTimestamp, block.timestamp], then lastFundingTimestamp is stamped
+     *        to block.timestamp.
+     *      - pushMarkPrice does NOT accrue funding; trades/liquidations/ADL never touch
+     *        market.fundingRate or market.lastFundingTimestamp.
+     *      - getMarginInfo / getUpdatedPositionInfo read stored trackers verbatim — they do
+     *        NOT forward-project. So funding is invisible until the next pushFundingRate.
      *
-     * TODO: Revisit this test once the funding rate accrual logic is finalized.
-     * The exact accrual formula (rate * price * time * base) and its interaction
-     * with tracker updates may need small adjustments to match the final
-     * implementation.
+     *      Funding rate is denominated per-DAY (not per-year):
+     *        fundingValueDelta = rate * markPrice * (secondsElapsed / 86400) * baseMultiplier
+     *        positionFundingPnL = fundingValueDelta / oldBaseMultiplier * (-base)
+     *
+     *      For rate=0.1e18 (10%/day), markPrice=3000, elapsed=3600s, base=+1e18:
+     *        delta = 0.1 * 3000 * (3600/86400) * 1 = 12.5 USD
+     *        long PnL = -12.5 USD, short PnL = +12.5 USD
      */
     function check_FundingRateAccrual(uint128 marketId) internal {
-        // Use PerpFill actors (we inherit from PerpFillForkCheck now)
         setupPerpTestActors();
         mockFreshPrices();
 
-        // Push mark price and zero initial funding
+        // Establish baseline: push mark price and zero funding at t0.
+        // This stamps lastFundingTimestamp = t0 so the next push has a defined window.
         pushMarkPrice(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
-        // Open position: buyer goes long 1 ETH
+        // Open position: buyer goes long 1 ETH, seller goes short 1 ETH
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
         uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
 
@@ -142,39 +152,44 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
             meNonce: 1
         });
 
-        // Record margin immediately after open
+        // Record margin immediately after open (includes fees already, so funding PnL will
+        // be visible as a pure delta from this baseline).
         MarginInfo memory buyerMarginAfterOpen = ICoreProxy(sec.core).getUsdNodeMarginInfo(buyerAccountId);
         MarginInfo memory sellerMarginAfterOpen = ICoreProxy(sec.core).getUsdNodeMarginInfo(sellerAccountId);
 
-        // Push a positive funding rate (longs pay, shorts receive)
-        // 10% annualized = 0.1e18
-        int256 positiveRate = 0.1e18;
-        pushFundingRate(marketId, positiveRate);
+        // Stage the funding rate for the upcoming window. This pushes with elapsed=0 so no
+        // accrual yet — it just stores the rate that will govern the next window.
+        // 0.1e18 = 10% per DAY (the per-day rate is the native unit in passive-perp).
+        int256 dailyRate = 0.1e18;
+        pushFundingRate(marketId, dailyRate);
 
-        // Warp forward 1 hour
-        vm.warp(block.timestamp + 3600);
-
-        // Refresh prices and funding to a new timestamp so staleness doesn't interfere
+        // Warp forward exactly 1 hour.
+        uint256 elapsed = 3600;
+        vm.warp(block.timestamp + elapsed);
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18); // same price — isolate funding effect
-        pushFundingRate(marketId, positiveRate); // re-push at new timestamp
 
-        // Check margin after funding accrual
+        // Push the SAME rate again at the new timestamp. This is the call that actually
+        // accrues funding: it computes fundingValueDelta = dailyRate * markPrice * (3600/86400) * 1
+        // and adds it to both long and short trackers, then stamps lastFundingTimestamp.
+        pushFundingRate(marketId, dailyRate);
+
+        // Expected funding PnL for a 1 ETH position over 1 hour at 10%/day and $3000 markPrice:
+        //   delta = 0.1 * 3000 * (3600/86400) * 1 = 12.5 USD (wad: 12.5e18)
+        // Long pays +12.5, short receives +12.5.
+        int256 expectedFundingDelta = 12.5e18;
+
         MarginInfo memory buyerMarginAfterFunding = ICoreProxy(sec.core).getUsdNodeMarginInfo(buyerAccountId);
         MarginInfo memory sellerMarginAfterFunding = ICoreProxy(sec.core).getUsdNodeMarginInfo(sellerAccountId);
 
-        // Long pays positive funding → margin decreases
-        assertLt(
-            buyerMarginAfterFunding.marginBalance,
-            buyerMarginAfterOpen.marginBalance,
-            "Long should lose margin from positive funding"
-        );
+        int256 buyerFundingPnL = buyerMarginAfterFunding.marginBalance - buyerMarginAfterOpen.marginBalance;
+        int256 sellerFundingPnL = sellerMarginAfterFunding.marginBalance - sellerMarginAfterOpen.marginBalance;
 
-        // Short receives positive funding → margin increases
-        assertGt(
-            sellerMarginAfterFunding.marginBalance,
-            sellerMarginAfterOpen.marginBalance,
-            "Short should gain margin from positive funding"
+        // Tolerance: 1e12 (1e-6 USD) to absorb fixed-point rounding in UD60x18/SD59x18 math.
+        assertApproxEqAbsDecimal(
+            buyerFundingPnL, -expectedFundingDelta, 1e12, 18, "Long funding PnL should be -12.5 USD"
+        );
+        assertApproxEqAbsDecimal(
+            sellerFundingPnL, expectedFundingDelta, 1e12, 18, "Short funding PnL should be +12.5 USD"
         );
     }
 }
