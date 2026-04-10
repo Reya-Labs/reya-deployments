@@ -88,7 +88,7 @@ args = [
         "<%= settings.setMarketZeroFeeBot %>",
     ],
 ]
-depends = ["invoke.upgrade_passive_perp_proxy"]
+depends = ["invoke.upgrade_passive_perp_proxy", "var.market_1eth_vars"]
 
 #####################################
 # Market Configuration

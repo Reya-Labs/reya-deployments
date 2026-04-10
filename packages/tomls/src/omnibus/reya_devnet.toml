@@ -107,30 +107,17 @@ pauser3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 pauser4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 ###############################################################################
-# Liquidators (simplified: single liquidator wallet for devnet)
-# TODO: Create a dedicated liquidator wallet and replace the multisig address
-# below. Devnet only needs 1 wallet; all slots point to it for simplicity.
-# For cronos/mainnet migration, create fresh wallets for liquidator1-10.
+# Liquidators (devnet uses a single shared wallet)
+# For cronos/mainnet migration, create fresh wallets and add additional slots.
 ###############################################################################
 [var.liquidators]
 liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-liquidator2 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-liquidator3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-liquidator4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-liquidator5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-liquidator6 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-liquidator7 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-liquidator8 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-liquidator9 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-liquidator10 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 ###############################################################################
-# AE Liquidators (same single wallet for devnet)
+# AE Liquidators (devnet uses a single shared wallet)
 ###############################################################################
 [var.ae_liquidators]
 ae_liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-ae_liquidator2 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
-ae_liquidator3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 ###############################################################################
 # Matching Engine Publishers
@@ -151,14 +138,12 @@ co_execution_bot1 = "0xB6EaF546b84E1f917579FC4FD3d7082DfE2ba212"
 setMarketZeroFeeBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 ###############################################################################
-# Match Order Publisher Admins
+# Match Order Publisher Admins (devnet uses a single shared wallet)
+# Note: matchOrderPublisher is set to allowAll=true, so the admin list is not
+# consulted at runtime. Kept here purely for completeness.
 ###############################################################################
 [var.match_order_publisher_admins]
-matchOrderPublisherAdmin1 = "<%= settings.pauser1 %>"
-matchOrderPublisherAdmin2 = "<%= settings.pauser2 %>"
-matchOrderPublisherAdmin3 = "<%= settings.pauser3 %>"
-matchOrderPublisherAdmin4 = "<%= settings.pauser4 %>"
-matchOrderPublisherAdmin5 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+matchOrderPublisherAdmin1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 ###############################################################################
 # Token Config (not deployed, just vars for collateral pool configs)

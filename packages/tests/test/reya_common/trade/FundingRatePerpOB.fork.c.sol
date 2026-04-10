@@ -42,8 +42,21 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
     }
 
     function _pushOracleData(uint128 marketId, OracleDataType dataType, bytes memory data) internal {
+        _pushOracleDataAt(marketId, dataType, data, block.timestamp);
+    }
+
+    function _pushOracleDataAt(
+        uint128 marketId,
+        OracleDataType dataType,
+        bytes memory data,
+        uint256 payloadTimestamp
+    ) internal {
         OracleDataPayload memory payload = OracleDataPayload({
-            marketId: marketId, timestamp: block.timestamp, dataType: dataType, data: data, publisher: fundingPublisher
+            marketId: marketId,
+            timestamp: payloadTimestamp,
+            dataType: dataType,
+            data: data,
+            publisher: fundingPublisher
         });
 
         uint256 deadline = block.timestamp + 3600;
@@ -74,22 +87,32 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
     }
 
     /**
-     * @notice Test that stale funding rate is detected
+     * @notice Test that pushing a stale funding rate payload reverts.
+     * @dev validateFundingRatePush (push-time check) reverts with FundingRateStale when
+     *      blockTimestamp > payloadTimestamp + fundingRateMaxStaleDuration.
+     *      There is no trade-path equivalent for funding rate; staleness is enforced
+     *      only at push time.
      */
     function check_FundingRateStaleness(uint128 marketId) internal {
         setupFundingTestActors();
         mockFreshPrices();
 
-        // Push funding rate
-        _pushOracleData(marketId, OracleDataType.FundingRate, abi.encode(int256(1e16)));
+        // Seed lastFundingTimestamp at the current block by pushing a fresh zero rate.
+        _pushOracleData(marketId, OracleDataType.FundingRate, abi.encode(int256(0)));
 
-        // Warp past max stale duration
-        vm.warp(block.timestamp + 3601);
-        mockFreshPrices();
+        // Construct a payload one second older than fundingRateMaxStaleDuration (3600s).
+        uint256 stalePayloadTimestamp = block.timestamp - 3601;
 
-        // Reading should still work (staleness is checked during trade, not read)
-        MarketDataResponseV2 memory mdr = IPassivePerpProxyV2(sec.perp).getMarketData(marketId);
-        assertTrue(block.timestamp > mdr.marketData.fundingRateTimestamp + 3600, "Funding rate should be stale");
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IPassivePerpProxyV2.FundingRateStale.selector,
+                marketId,
+                stalePayloadTimestamp,
+                block.timestamp,
+                uint256(3600)
+            )
+        );
+        _pushOracleDataAt(marketId, OracleDataType.FundingRate, abi.encode(int256(1e16)), stalePayloadTimestamp);
     }
 
     /**
