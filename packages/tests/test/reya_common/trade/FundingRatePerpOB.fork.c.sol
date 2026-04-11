@@ -50,7 +50,9 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
         OracleDataType dataType,
         bytes memory data,
         uint256 payloadTimestamp
-    ) internal {
+    )
+        internal
+    {
         OracleDataPayload memory payload = OracleDataPayload({
             marketId: marketId,
             timestamp: payloadTimestamp,

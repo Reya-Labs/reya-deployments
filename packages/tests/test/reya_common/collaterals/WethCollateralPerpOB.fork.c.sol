@@ -114,7 +114,11 @@ contract WethCollateralPerpOBForkCheck is PerpFillForkCheck {
             });
 
             SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
-                price: entryPrice, baseDelta: shortSize, accountOrderId: 1, counterpartyOrderId: 2, nonce: 1
+                price: entryPrice,
+                baseDelta: shortSize,
+                accountOrderId: 1,
+                counterpartyOrderId: 2,
+                nonce: 1
             });
 
             ExecuteFillInput memory fillInput = ExecuteFillInput({

@@ -17,11 +17,16 @@ contract FundingRateForkCheck is BaseReyaForkTest {
         deal(sec.usdc, address(sec.periphery), 1_000_000e6);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], 1_000_000e6);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        uint128 accountId = IPeripheryProxy(sec.periphery)
-            .depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) }));
+        uint128 accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+            DepositNewMAInputs({ accountOwner: user, token: address(sec.usdc) })
+        );
 
         executeCoreMatchOrder({
-            marketId: marketId, sender: user, base: sd(-1e18), priceLimit: ud(0), accountId: accountId
+            marketId: marketId,
+            sender: user,
+            base: sd(-1e18),
+            priceLimit: ud(0),
+            accountId: accountId
         });
     }
 

@@ -27,9 +27,7 @@ import {
 } from "../../src/interfaces/IPeripheryProxy.sol";
 
 import {
-    IOracleAdaptersProxy,
-    StorkSignedPayload,
-    StorkPricePayload
+    IOracleAdaptersProxy, StorkSignedPayload, StorkPricePayload
 } from "../../src/interfaces/IOracleAdaptersProxy.sol";
 
 import { IOracleManagerProxy, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
@@ -112,8 +110,9 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             deal(collateral, address(sec.periphery), amount);
             mockBridgedAmount(dec.socketExecutionHelper[collateral], amount);
             vm.prank(dec.socketExecutionHelper[collateral]);
-            accountId = IPeripheryProxy(sec.periphery)
-                .depositNewMA(DepositNewMAInputs({ accountOwner: user, token: address(collateral) }));
+            accountId = IPeripheryProxy(sec.periphery).depositNewMA(
+                DepositNewMAInputs({ accountOwner: user, token: address(collateral) })
+            );
         }
     }
 
@@ -131,7 +130,10 @@ contract BaseReyaForkTest is StorageReyaForkTest {
 
         Command_Core[] memory commands = new Command_Core[](1);
         commands[0] = Command_Core({
-            commandType: uint8(CommandType.Withdraw), inputs: abi.encode(collateral, amount), marketId: 0, exchangeId: 0
+            commandType: uint8(CommandType.Withdraw),
+            inputs: abi.encode(collateral, amount),
+            marketId: 0,
+            exchangeId: 0
         });
         vm.prank(accountOwner);
         ICoreProxy(sec.core).execute(accountId, commands);
@@ -175,7 +177,7 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             inputs: abi.encode(counterpartyAccountIds, abi.encode(base, priceLimit)),
             marketId: marketId,
             exchangeId: 1 // passive pool
-        });
+         });
     }
 
     function getEIP712SignatureForPeripheryCommands(
@@ -233,16 +235,15 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     )
         internal
     {
-        IPeripheryProxy(sec.periphery)
-            .execute(
-                PeripheryExecutionInputs({
-                    accountId: accountId,
-                    commands: commands,
-                    sig: getEIP712SignatureForPeripheryCommands(
-                        accountId, commands, userPrivateKey, incrementedNonce, abi.encode()
-                    )
-                })
-            );
+        IPeripheryProxy(sec.periphery).execute(
+            PeripheryExecutionInputs({
+                accountId: accountId,
+                commands: commands,
+                sig: getEIP712SignatureForPeripheryCommands(
+                    accountId, commands, userPrivateKey, incrementedNonce, abi.encode()
+                )
+            })
+        );
     }
 
     function getNetDeposits(uint128 accountId, address collateral) internal view returns (int256) {
@@ -321,7 +322,7 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             inputs: abi.encode(counterpartyAccountIds, abi.encode(base, priceLimit)),
             marketId: marketId,
             exchangeId: 1 // passive pool
-        });
+         });
     }
 
     function executeCoreMatchOrder(
@@ -366,22 +367,21 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     )
         internal
     {
-        IPeripheryProxy(sec.periphery)
-            .depositLiquidityToAccount(
-                DepositLiquidityToAccountInputs({
-                    accountId: accountId,
-                    poolId: sec.passivePoolId,
-                    sharesAmount: sharesAmount,
-                    sig: getEIP712SignatureForPool(
-                        user,
-                        userPrivateKey,
-                        sharesAmount,
-                        0,
-                        incrementedNonce,
-                        abi.encode("DepositLiquidityToAccount", accountId, sec.passivePoolId, sharesAmount)
-                    )
-                })
-            );
+        IPeripheryProxy(sec.periphery).depositLiquidityToAccount(
+            DepositLiquidityToAccountInputs({
+                accountId: accountId,
+                poolId: sec.passivePoolId,
+                sharesAmount: sharesAmount,
+                sig: getEIP712SignatureForPool(
+                    user,
+                    userPrivateKey,
+                    sharesAmount,
+                    0,
+                    incrementedNonce,
+                    abi.encode("DepositLiquidityToAccount", accountId, sec.passivePoolId, sharesAmount)
+                )
+            })
+        );
     }
 
     function exposureToBase(uint128 marketId, SD59x18 exposure) internal view returns (SD59x18) {
@@ -405,7 +405,10 @@ contract BaseReyaForkTest is StorageReyaForkTest {
     {
         Command_Periphery[] memory commands = new Command_Periphery[](1);
         commands[0] = Command_Periphery({
-            commandType: uint8(CommandType.Withdraw), inputs: abi.encode(token, tokenAmount), marketId: 0, exchangeId: 0
+            commandType: uint8(CommandType.Withdraw),
+            inputs: abi.encode(token, tokenAmount),
+            marketId: 0,
+            exchangeId: 0
         });
 
         s.socketMsgGasLimit = 10_000_000;
@@ -439,18 +442,17 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             abi.encode()
         );
 
-        IPeripheryProxy(sec.periphery)
-            .withdrawMA(
-                WithdrawMAInputs({
-                    accountId: accountId,
-                    token: token,
-                    tokenAmount: tokenAmount,
-                    sig: EIP712Signature({ v: s.v, r: s.r, s: s.s, deadline: block.timestamp + 3600 }),
-                    socketMsgGasLimit: s.socketMsgGasLimit,
-                    chainId: chainId,
-                    receiver: userAddress
-                })
-            );
+        IPeripheryProxy(sec.periphery).withdrawMA(
+            WithdrawMAInputs({
+                accountId: accountId,
+                token: token,
+                tokenAmount: tokenAmount,
+                sig: EIP712Signature({ v: s.v, r: s.r, s: s.s, deadline: block.timestamp + 3600 }),
+                socketMsgGasLimit: s.socketMsgGasLimit,
+                chainId: chainId,
+                receiver: userAddress
+            })
+        );
     }
 
     function isMainnet() internal view returns (bool) {

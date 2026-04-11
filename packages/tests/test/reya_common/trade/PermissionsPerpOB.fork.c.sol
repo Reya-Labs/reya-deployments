@@ -3,8 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 
 import {
-    IPassivePerpProxy,
-    EIP712Signature as PerpEIP712Signature
+    IPassivePerpProxy, EIP712Signature as PerpEIP712Signature
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import {
     IPassivePerpProxyV2,
@@ -201,7 +200,8 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
                 vm.sign(unauthorizedMEPk, FillHashing.mockCalculateDigest(fillDetails, deadline, sec.ordersGateway));
 
             fillInput.mePayload = SignedMatchingEnginePayload({
-                fillDetails: fillDetails, signature: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })
+                fillDetails: fillDetails,
+                signature: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })
             });
         }
 

@@ -8,11 +8,7 @@ import {
     EIP712Signature as PerpEIP712Signature,
     GlobalFeeParameters
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
-import {
-    IPassivePerpProxyV2,
-    OracleDataPayload,
-    OracleDataType
-} from "../../../src/interfaces/IPassivePerpProxyV2.sol";
+import { IPassivePerpProxyV2, OracleDataPayload, OracleDataType } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import {
     IOrdersGatewayProxy,
     ConditionalOrderDetails,
@@ -61,8 +57,9 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
         // Grant matching engine publisher access on Orders Gateway
         vm.prank(sec.multisig);
-        IOrdersGatewayProxy(sec.ordersGateway)
-            .addToFeatureFlagAllowlist(MATCHING_ENGINE_PUBLISHER_FLAG, perpMatchingEngine);
+        IOrdersGatewayProxy(sec.ordersGateway).addToFeatureFlagAllowlist(
+            MATCHING_ENGINE_PUBLISHER_FLAG, perpMatchingEngine
+        );
 
         // Grant oracle pusher access on PassivePerp (checks msg.sender)
         vm.prank(sec.multisig);
@@ -210,7 +207,11 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
         // Matching engine payload
         SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
-            price: price, baseDelta: baseDelta, accountOrderId: 1, counterpartyOrderId: 2, nonce: meNonce
+            price: price,
+            baseDelta: baseDelta,
+            accountOrderId: 1,
+            counterpartyOrderId: 2,
+            nonce: meNonce
         });
 
         // Execute fill
@@ -317,7 +318,9 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         }) {
             revert("Expected MarkPriceStale revert");
         } catch (bytes memory revertData) {
-            assertEq(bytes4(revertData), IPassivePerpProxyV2.MarkPriceStale.selector, "Should revert with MarkPriceStale");
+            assertEq(
+                bytes4(revertData), IPassivePerpProxyV2.MarkPriceStale.selector, "Should revert with MarkPriceStale"
+            );
         }
     }
 
@@ -360,7 +363,11 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             });
 
             SignedMatchingEnginePayload memory mePayload1 = createPerpMatchingEnginePayload({
-                price: 3000e18, baseDelta: 0.1e18, accountOrderId: 1, counterpartyOrderId: 2, nonce: 1
+                price: 3000e18,
+                baseDelta: 0.1e18,
+                accountOrderId: 1,
+                counterpartyOrderId: 2,
+                nonce: 1
             });
 
             fills[0] = ExecuteFillInput({
@@ -395,7 +402,11 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             });
 
             SignedMatchingEnginePayload memory mePayload2 = createPerpMatchingEnginePayload({
-                price: 3010e18, baseDelta: 0.2e18, accountOrderId: 3, counterpartyOrderId: 4, nonce: 2
+                price: 3010e18,
+                baseDelta: 0.2e18,
+                accountOrderId: 3,
+                counterpartyOrderId: 4,
+                nonce: 2
             });
 
             fills[1] = ExecuteFillInput({
@@ -501,10 +512,14 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             buyerNonce: 1, // same nonce
             sellerNonce: 1, // same nonce
             meNonce: 1 // same nonce
-        }) {
+         }) {
             revert("Expected SignerNonceAlreadyUsed revert");
         } catch (bytes memory revertData) {
-            assertEq(bytes4(revertData), IOrdersGatewayProxy.SignerNonceAlreadyUsed.selector, "Should revert with SignerNonceAlreadyUsed");
+            assertEq(
+                bytes4(revertData),
+                IOrdersGatewayProxy.SignerNonceAlreadyUsed.selector,
+                "Should revert with SignerNonceAlreadyUsed"
+            );
         }
     }
 
@@ -542,7 +557,8 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         // Build orders manually since executePerpFill assumes perpBuyer=long
         {
             // perpBuyer's order: sell 0.5 ETH (negative baseDelta = short/close)
-            (ConditionalOrderDetails memory buyerCloseOrder, EIP712Signature memory buyerCloseSig) = createLimitOrderPerp({
+            (ConditionalOrderDetails memory buyerCloseOrder, EIP712Signature memory buyerCloseSig) =
+            createLimitOrderPerp({
                 accountId: buyerAccountId,
                 marketId: marketId,
                 baseDelta: -int256(0.5e18),
@@ -553,7 +569,8 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             });
 
             // perpSeller's order: buy 0.5 ETH (positive baseDelta = long/close short)
-            (ConditionalOrderDetails memory sellerCloseOrder, EIP712Signature memory sellerCloseSig) = createLimitOrderPerp({
+            (ConditionalOrderDetails memory sellerCloseOrder, EIP712Signature memory sellerCloseSig) =
+            createLimitOrderPerp({
                 accountId: sellerAccountId,
                 marketId: marketId,
                 baseDelta: int256(0.5e18),
@@ -565,7 +582,11 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
             // ME payload: seller (buying) is the "account", buyer (selling) is the "counterparty"
             SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
-                price: 3000e18, baseDelta: 0.5e18, accountOrderId: 3, counterpartyOrderId: 4, nonce: 2
+                price: 3000e18,
+                baseDelta: 0.5e18,
+                accountOrderId: 3,
+                counterpartyOrderId: 4,
+                nonce: 2
             });
 
             ExecuteFillInput memory fillInput = ExecuteFillInput({
@@ -789,7 +810,11 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 accountSignature: buyerSig,
                 counterpartySignature: sellerSig,
                 mePayload: createPerpMatchingEnginePayload({
-                    price: 3000e18, baseDelta: 1e18, accountOrderId: 1, counterpartyOrderId: 2, nonce: 1
+                    price: 3000e18,
+                    baseDelta: 1e18,
+                    accountOrderId: 1,
+                    counterpartyOrderId: 2,
+                    nonce: 1
                 })
             });
         }
@@ -872,7 +897,11 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             });
 
             SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
-                price: 3000e18, baseDelta: 0.5e18, accountOrderId: 3, counterpartyOrderId: 4, nonce: 2
+                price: 3000e18,
+                baseDelta: 0.5e18,
+                accountOrderId: 3,
+                counterpartyOrderId: 4,
+                nonce: 2
             });
 
             ExecuteFillInput memory fillInput = ExecuteFillInput({
@@ -1003,7 +1032,11 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 accountSignature: reduceSig,
                 counterpartySignature: sellerSig,
                 mePayload: createPerpMatchingEnginePayload({
-                    price: 3000e18, baseDelta: 0.5e18, accountOrderId: 3, counterpartyOrderId: 4, nonce: 2
+                    price: 3000e18,
+                    baseDelta: 0.5e18,
+                    accountOrderId: 3,
+                    counterpartyOrderId: 4,
+                    nonce: 2
                 })
             });
         }
