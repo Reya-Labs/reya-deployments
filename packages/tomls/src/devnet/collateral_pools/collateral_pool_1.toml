@@ -2,7 +2,7 @@
 include = [
     "market_1eth.toml",
     "risk_multipliers.toml",
-    "../../collateral_pools/collateral_pool_1/risk/risk_matrix_devnet.toml",
+    "risk_matrix.toml",
     "liquidations.toml",
     "tokens/rusd.toml",
     "tokens/weth.toml",
