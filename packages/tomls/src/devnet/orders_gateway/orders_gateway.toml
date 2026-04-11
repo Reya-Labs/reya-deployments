@@ -1,0 +1,6 @@
+include = [
+    "deploy_proxy.toml",
+    "../../orders_gateway/utils/upgrade_proxy.toml",
+    "feature_flags.toml",
+    "global_config.toml",
+]

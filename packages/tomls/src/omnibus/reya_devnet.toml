@@ -1,0 +1,320 @@
+###############################################################################
+# Reya Devnet Omnibus
+#
+# Minimal environment for perp orderbook (perpOB) release testing.
+# Shares the Cronos testnet chain (chainId 89346162) and reuses existing
+# Cronos deployments for tokens, rUSD, passive pool, oracle manager,
+# exchange pass, oracle adapters, ranks, and SBT.
+#
+# Deploys fresh proxies for: Core, PassivePerp, OrdersGateway, Periphery.
+#
+# Markets: 1 perp (ETH), 1 spot (WETH/rUSD)
+# Collaterals: rUSD, wETH
+###############################################################################
+
+include = [
+    "../devnet/commons.toml",
+    "utils/constants.toml",
+    "../devnet/core/core.toml",
+    "../devnet/passive_perp/passive_perp.toml",
+    "../devnet/orders_gateway/orders_gateway.toml",
+    "../devnet/periphery/periphery.toml",
+    "../devnet/collateral_pools/collateral_pool_1.toml",
+]
+
+version = "1.0.0"
+
+###############################################################################
+# Existing Cronos Contract Addresses (reused, not redeployed)
+###############################################################################
+[var.existing_cronos_contracts]
+rusdProxyAddress = "0x9DE724e7b3facF87Ce39465D3D712717182e3e55"
+usdcProxyAddress = "0xfA27c7c6051344263533cc365274d9569b0272A8"
+wethProxyAddress = "0x2CF56315ACC7E791B1A0135c09d8D5C8dBCD2F14"
+passivePoolProxyAddress = "0x9A3A664987b88790A6FDC1632e3b607813fd94fF"
+oracleManagerProxyAddress = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
+exchangePassProxyAddress = "0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB"
+
+###############################################################################
+# Wallet Addresses (simplified - single owner for devnet)
+###############################################################################
+[var.wallet_addresses]
+owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Cannon Clone Packages (the 4 proxies we deploy fresh)
+###############################################################################
+[var.cannonClonePackages]
+coreProxyPackage = "reya-core:1.0.0@proxy"
+coreRouterPackage = "reya-core:1.0.27@router"
+coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
+passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.51@router"
+ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.20@router"
+peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
+peripheryRouterPackage = "reya-periphery:1.0.14@router"
+
+###############################################################################
+# Account NFT
+###############################################################################
+[var.account_nft_vars]
+accountNftId = "<%= formatBytes32String('accountNFT') %>"
+accountNftName = "Reya Account NFT"
+accountNftSymbol = "REYA"
+accountNftUri = "https://reya.xyz/"
+
+###############################################################################
+# Compatibility Aliases
+# Some shared config files reference these var names (without "Address" suffix)
+###############################################################################
+[var.cronos_compat_vars]
+passivePoolProxy = "0x9A3A664987b88790A6FDC1632e3b607813fd94fF"
+oracleManagerProxy = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
+
+###############################################################################
+# Initial Proxy Salts (devnet-specific to avoid collision with Cronos)
+###############################################################################
+[var.initial_proxy_vars]
+coreSalt = "core-devnet"
+passivePerpSalt = "passive-perp-devnet"
+ordersGatewaySalt = "orders-gateway-devnet"
+peripherySalt = "periphery-devnet"
+
+###############################################################################
+# Proxy Upgrade Variables (the 4 fresh proxies)
+###############################################################################
+[var.upgrade_proxy_vars]
+coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
+passivePerpProxy = "<%= imports.reyaPassivePerpProxy.contracts.InitialProxy.address %>"
+ordersGatewayProxy = "<%= imports.reyaOrdersGatewayProxy.contracts.InitialProxy.address %>"
+peripheryProxy = "<%= imports.reyaPeripheryProxy.contracts.InitialProxy.address %>"
+depends = [
+    "clone.reyaCoreProxy",
+    "clone.reyaPassivePerpProxy",
+    "clone.reyaOrdersGatewayProxy",
+    "clone.reyaPeripheryProxy",
+]
+
+###############################################################################
+# Pausers (simplified: single pauser for devnet)
+###############################################################################
+[var.pausers]
+pauser1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+pauser2 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+pauser3 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+pauser4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Liquidators (devnet uses a single shared wallet)
+# For cronos/mainnet migration, create fresh wallets and add additional slots.
+###############################################################################
+[var.liquidators]
+liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# AE Liquidators (devnet uses a single shared wallet)
+###############################################################################
+[var.ae_liquidators]
+ae_liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Matching Engine Publishers
+###############################################################################
+[var.matching_engine_publishers]
+matching_engine_publisher1 = "0x89340FA8559968c2ADe406C6CcAd6C74F892472d"
+
+###############################################################################
+# CO Execution Bots (conditional order execution)
+###############################################################################
+[var.co_execution_bots]
+co_execution_bot1 = "0xB6EaF546b84E1f917579FC4FD3d7082DfE2ba212"
+
+###############################################################################
+# Fee Configuration Bots
+###############################################################################
+[var.fee_configuration_bots]
+setMarketZeroFeeBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Match Order Publisher Admins (devnet uses a single shared wallet)
+# Note: matchOrderPublisher is set to allowAll=true, so the admin list is not
+# consulted at runtime. Kept here purely for completeness.
+###############################################################################
+[var.match_order_publisher_admins]
+matchOrderPublisherAdmin1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+
+###############################################################################
+# Token Config (not deployed, just vars for collateral pool configs)
+###############################################################################
+[var.token_vars]
+rusdTokenDecimals = "6"
+usdcTokenDecimals = "6"
+wethTokenDecimals = "18"
+
+###############################################################################
+# Global Collateral Configs (only rUSD + wETH)
+###############################################################################
+[var.global_collateral_configs]
+rusdCollateralAdapter = "<%= AddressZero %>"
+rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+rusdWithdrawalTvlPercentageLimitUnscaled = "0.4"
+# -------------------------------------------------------------------
+wethCollateralAdapter = "<%= AddressZero %>"
+wethWithdrawalWindowSize = "1"
+wethWithdrawalTvlPercentageLimitUnscaled = "1"
+
+###############################################################################
+# PassivePerp Global Config
+###############################################################################
+[var.passive_perp_global]
+maxAbsFundingRateUnscaled = "0.1"
+
+###############################################################################
+# Fees (simplified for devnet — single tier, same discounts as cronos)
+###############################################################################
+[var.fees]
+passivePoolExchangeRebateUnscaled = "0.2"
+
+[var.fees_configs]
+takerFeeTier0Unscaled = "0.00040"
+makerFeeTier0Unscaled = "0.00040"
+makerRebateTier0Unscaled = "0"
+
+[var.global_fee_params]
+ogDiscountUnscaled = "0.3"
+refereeDiscountUnscaled = "0.1"
+referrerRebateUnscaled = "0.1"
+affiliateReferrerRebateUnscaled = "0.15"
+vltzDiscountUnscaled = "0.1"
+spreadDiscountUnscaled = "1.0"
+
+###############################################################################
+# ETH Market Configuration
+# Deprecated AMM fields set to 0; perpOB fields active
+###############################################################################
+[var.market_1eth]
+market1Eth_riskMatrixIndex = "0"
+market1Eth_maxOpenBaseUnscaled = "4950"
+market1Eth_velocityMultiplierUnscaled = "0"
+market1Eth_oracleNodeId = "<%= settings.ethUsdcMarkNodeIdStork %>"
+market1Eth_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market1Eth_dutchConfig_lambdaUnscaled = "1"
+market1Eth_dutchConfig_minBaseUnscaled = "0"
+market1Eth_slippageParams_phiUnscaled = "0"
+market1Eth_slippageParams_betaUnscaled = "0"
+market1Eth_minimumOrderBaseUnscaled = "0.010"
+market1Eth_baseSpacingUnscaled = "0.001"
+market1Eth_priceSpacingUnscaled = "0.001"
+market1Eth_depthFactorUnscaled = "0"
+market1Eth_maxExposureFactorUnscaled = "0.999"
+market1Eth_maxPSlippageUnscaled = "0"
+market1Eth_markPriceMaxStaleDuration = "3600"
+market1Eth_priceSpreadUnscaled = "0"
+market1Eth_volatilityIndexMultiplierUnscaled = "0"
+market1Eth_fundingRateMaxStaleDuration = "3600"
+market1Eth_markPriceMaxDeviationUnscaled = "0"
+market1Eth_fillPriceMaxDeviationUnscaled = "0"
+
+###############################################################################
+# Collateral Pool 1 Configuration
+###############################################################################
+[var.cp_1rusd]
+cp1Rusd_maxMarkets = "1"
+cp1Rusd_maxCollaterals = "2"
+
+cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
+
+# Risk matrix: ETH market only (25x leverage with IMR multiplier 1.3)
+cp1Rusd_market1Eth_riskMatrix00Unscaled = "0.000947"
+
+# Risk multipliers
+cp1Rusd_imMultiplierUnscaled = "1.3"
+cp1Rusd_mmrMultiplierUnscaled = "1"
+cp1Rusd_dutchMultiplierUnscaled = "1"
+cp1Rusd_adlMultiplierUnscaled = "0.65"
+cp1Rusd_imBufferMultiplierUnscaled = "9.15"
+
+# Liquidation config
+cp1Rusd_bidKeeperFeeUnscaled = "0"
+cp1Rusd_queueDurationInSeconds = "0"
+cp1Rusd_maxOrdersInBid = "0"
+cp1Rusd_maxBidsInQueue = "0"
+cp1Rusd_bidScoreWeightUnscaled = "0"
+cp1Rusd_backstopKeeperFeeUnscaled = "0"
+cp1Rusd_adlExecutionKeeperFeeUnscaled = "0"
+cp1Rusd_dDutchMinUnscaled = "0.01"
+cp1Rusd_dMaxUnscaled = "0.4"
+
+# rUSD collateral pool config
+cp1Rusd_rusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_rusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_rusd_autoExchangeInsuranceFeeUnscaled = "0.01"
+cp1Rusd_rusd_autoExchangeDustThresholdUnscaled = "0.01"
+cp1Rusd_rusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_rusdParentConfig_collateralAddress = "<%= AddressZero %>"
+cp1Rusd_rusdParentConfig_priceHaircutUnscaled = "0"
+cp1Rusd_rusdParentConfig_autoExchangeDiscountUnscaled = "0"
+cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
+
+# wETH collateral pool config
+cp1Rusd_weth_capUnscaled = "<%= formatEther(MaxUint256) %>"
+cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled = "0.01"
+cp1Rusd_weth_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_weth_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_wethParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.10"
+cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.02"
+cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
+
+###############################################################################
+# Spot Markets (only WETH/rUSD for devnet)
+###############################################################################
+[var.spotMarkets]
+wethRusdSpot_oracleDeviationUnscaled = "0"
+wethRusdSpot_minimumOrderBaseUnscaled = "0.001"
+wethRusdSpot_baseSpacingUnscaled = "0.001"
+wethRusdSpot_priceSpacingUnscaled = "0.01"
+wethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
+###############################################################################
+# Stork Oracle Node IDs (reuse Cronos stork nodes)
+###############################################################################
+[var.stork_oracle_node_ids]
+rusdUsdNodeId = "0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857"
+ethUsdcNodeIdStork = "0xb19e4d8ea5f0a3752fbd19515075063f7486e6954b8aa2b3d462c61726c46619"
+ethUsdcMarkNodeIdStork = "0x14dba23a7f8775bceefeedb4266fbe135b949ae40fe08e491f2a476d3448c66f"
+
+###############################################################################
+# Chain IDs (for periphery bridging connectors)
+###############################################################################
+[var.chain_ids]
+ethereumSepoliaChainId = "11155111"
+
+###############################################################################
+# External Contracts (LayerZero endpoint, reused from Cronos)
+###############################################################################
+[var.external_contracts]
+reyaLayerZeroEndpoint = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
+sreyaProxy = "0xecab1c86ecf1100Ad3aa7A2C175aEDe4c87E949B"
+reyaProxy = "0xBD96BE24f68C5e616FF22ffC32715Ffa1C4B70d0"
+
+###############################################################################
+# Socket Contracts (reuse Cronos socket deployments for USDC + WETH bridging)
+###############################################################################
+[var.socket_contracts]
+usdcController = "0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e"
+usdcExecutionHelper = "0x605C8aeB0ED6c51C8A288eCC90d4A3749e4596EE"
+usdcEthereumSepoliaConnector = "0x79B607E711853F83002d0649DcCeCA73Bef3F3A7"
+wethController = "0x1529413F38b95cE156f54C34471528B6d0Daf2eb"
+wethExecutionHelper = "0xF1e0f8B07Eb4928922448CBD6f77ac5918f8e032"
+wethEthereumSepoliaConnector = "0xD69619c745aD7AaB060727bDC5D46b4E702dEc6F"
+
+###############################################################################
+# Periphery Withdraw Fees (Ethereum Sepolia only)
+###############################################################################
+[var.periphery_socket_withdraw_fees]
+usdcEthereumSepoliaWithdrawFeeUnscaled = "7.0"
+wethEthereumSepoliaWithdrawFeeUnscaled = "0.00415"

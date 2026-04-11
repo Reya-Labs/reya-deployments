@@ -1,0 +1,10 @@
+# Devnet rUSD collateral config: uses hardcoded Cronos rUSD address
+[invoke.rusd_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= settings.rusdProxyAddress %>",
+    { collateralAdapter_DEPRECATED = "<%= settings.rusdCollateralAdapter %>", withdrawalWindowSize = "<%= settings.rusdWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.rusdWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = ['invoke.upgrade_core_proxy', 'var.global_collateral_configs']

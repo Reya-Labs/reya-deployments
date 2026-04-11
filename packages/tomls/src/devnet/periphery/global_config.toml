@@ -1,0 +1,15 @@
+###############################################################################
+# Periphery Global Configuration (Devnet)
+#
+# Unlike testnet/mainnet, devnet reuses Cronos token and pool deployments.
+# CoreProxy is the only contract deployed fresh, so we use contracts.CoreProxy.
+# Everything else is referenced via settings.xxxProxyAddress.
+###############################################################################
+[invoke.periphery_global_config]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setGlobalConfiguration"
+args = [
+    { coreProxy = "<%= contracts.CoreProxy.address %>", rUSDProxy = "<%= settings.rusdProxyAddress %>", passivePoolProxy = "<%= settings.passivePoolProxyAddress %>", layerZeroEndpoint = "<%= settings.reyaLayerZeroEndpoint %>", sREYAProxy = "<%= settings.sreyaProxy %>", REYAProxy = "<%= settings.reyaProxy %>" },
+]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_core_proxy"]

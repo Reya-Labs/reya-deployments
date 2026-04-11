@@ -1,0 +1,58 @@
+###############################################################################
+# Periphery WETH Token Config (Devnet)
+#
+# Reuses the Cronos WETH proxy (not deployed fresh). References the token
+# address via settings.wethProxyAddress instead of contracts.WETHProxy.address.
+# Only configures the Ethereum Sepolia connector (minimal devnet scope).
+###############################################################################
+
+#####################################
+# Controller
+#####################################
+[invoke.periphery_set_wethController]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenController"
+args = ["<%= settings.wethProxyAddress %>", "<%= settings.wethController %>"]
+depends = ["invoke.upgrade_periphery_proxy"]
+
+#####################################
+# Execution Helper
+#####################################
+[invoke.periphery_set_wethExecutionHelper]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenExecutionHelper"
+args = [
+    "<%= settings.wethProxyAddress %>",
+    "<%= settings.wethExecutionHelper %>",
+]
+depends = ["invoke.upgrade_periphery_proxy"]
+
+#####################################
+# Connectors (Ethereum Sepolia only)
+#####################################
+[invoke.periphery_set_wethEthereumSepoliaConnector]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenChainConnector"
+args = [
+    "<%= settings.wethProxyAddress %>",
+    "<%= settings.ethereumSepoliaChainId %>",
+    "<%= settings.wethEthereumSepoliaConnector %>",
+]
+depends = ["invoke.upgrade_periphery_proxy"]
+
+#####################################
+# Static Withdraw Fees
+#####################################
+[invoke.periphery_set_weth_ethereum_sepolia_withdraw_fee]
+target = ["PeripheryProxy"]
+fromCall.func = "owner"
+func = "setTokenStaticWithdrawFee"
+args = [
+    "<%= settings.wethProxyAddress %>",
+    "<%= settings.wethEthereumSepoliaConnector %>",
+    "<%= parseUnits(settings.wethEthereumSepoliaWithdrawFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>",
+]
+depends = ["invoke.upgrade_periphery_proxy"]

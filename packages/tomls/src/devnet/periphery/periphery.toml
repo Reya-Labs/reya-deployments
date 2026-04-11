@@ -1,0 +1,8 @@
+include = [
+    "deploy_proxy.toml",
+    "../../periphery/utils/upgrade_proxy.toml",
+    "../../periphery/configs/feature_flags.toml",
+    "global_config.toml",
+    "tokens/usdc.toml",
+    "tokens/weth.toml",
+]

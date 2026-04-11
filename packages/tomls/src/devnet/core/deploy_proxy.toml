@@ -1,0 +1,7 @@
+# Devnet core proxy: uses devnet-specific salt to avoid CREATE2 collision with Cronos
+[clone.reyaCoreProxy]
+source = "<%= settings.coreProxyPackage %>"
+target = "<%= settings.coreProxyPackage %>"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.coreSalt %>"
+depends = ["var.cannonClonePackages"]

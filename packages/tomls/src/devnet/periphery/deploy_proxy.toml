@@ -1,0 +1,7 @@
+# Devnet periphery proxy: uses devnet-specific salt to avoid CREATE2 collision with Cronos
+[clone.reyaPeripheryProxy]
+source = "<%= settings.peripheryProxyPackage %>"
+target = "<%= settings.peripheryProxyPackage %>"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.peripherySalt %>"
+depends = ["var.cannonClonePackages"]

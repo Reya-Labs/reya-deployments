@@ -1,0 +1,7 @@
+# Devnet orders gateway proxy: uses devnet-specific salt to avoid CREATE2 collision with Cronos
+[clone.reyaOrdersGatewayProxy]
+source = "<%= settings.ordersGatewayProxyPackage %>"
+target = "<%= settings.ordersGatewayProxyPackage %>"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.ordersGatewaySalt %>"
+depends = ["var.cannonClonePackages"]
