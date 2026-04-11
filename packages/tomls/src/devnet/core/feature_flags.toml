@@ -75,7 +75,9 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(hexlify('matchOrderPublisher')) %>",
-    ["<%= settings.matchOrderPublisherAdmin1 %>"],
+    [
+        "<%= settings.matchOrderPublisherAdmin1 %>",
+    ],
 ]
 depends = ["invoke.upgrade_core_proxy"]
 

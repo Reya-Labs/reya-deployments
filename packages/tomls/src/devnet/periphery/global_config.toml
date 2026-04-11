@@ -12,7 +12,4 @@ func = "setGlobalConfiguration"
 args = [
     { coreProxy = "<%= contracts.CoreProxy.address %>", rUSDProxy = "<%= settings.rusdProxyAddress %>", passivePoolProxy = "<%= settings.passivePoolProxyAddress %>", layerZeroEndpoint = "<%= settings.reyaLayerZeroEndpoint %>", sREYAProxy = "<%= settings.sreyaProxy %>", REYAProxy = "<%= settings.reyaProxy %>" },
 ]
-depends = [
-    "invoke.upgrade_periphery_proxy",
-    "invoke.upgrade_core_proxy",
-]
+depends = ["invoke.upgrade_periphery_proxy", "invoke.upgrade_core_proxy"]
