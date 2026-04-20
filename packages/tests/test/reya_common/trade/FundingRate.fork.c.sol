@@ -41,6 +41,8 @@ contract FundingRateForkCheck is BaseReyaForkTest {
         refreshingTrade(marketId);
         SD59x18 pSlippage = sd(IPassivePerpProxy(sec.perp).getPSlippage(marketId));
 
+        SD59x18 pSlippage = sd(IPassivePerpProxy(sec.perp).getPSlippage(marketId));
+
         int256 fundingRate1 = IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId);
         vm.warp(block.timestamp + 86_400);
         int256 fundingRate2 = IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId);
