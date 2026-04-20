@@ -5,6 +5,13 @@ func = "setFeatureFlagAllowAll"
 args = ["<%= keccak256(hexlify('global')) %>", true]
 depends = ["invoke.upgrade_orders_gateway_proxy"]
 
+[invoke.orders_gateway_disable_conditional_orders_allow_all]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('conditional_orders')) %>", false]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
 [invoke.orders_gateway_set_pausers]
 target = ["OrdersGatewayProxy"]
 fromCall.func = "owner"
