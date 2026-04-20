@@ -2,13 +2,26 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
 import { ICoreProxy } from "../../../src/interfaces/ICoreProxy.sol";
-import { IOrdersGatewayProxy } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
+import {
+    IOrdersGatewayProxy,
+    ConditionalOrderDetails,
+    EIP712Signature,
+    OrderType
+} from "../../../src/interfaces/IOrdersGatewayProxy.sol";
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
-import { IOracleAdaptersProxy } from "../../../src/interfaces/IOracleAdaptersProxy.sol";
+import {
+    IOracleAdaptersProxy,
+    StorkSignedPayload,
+    StorkPricePayload
+} from "../../../src/interfaces/IOracleAdaptersProxy.sol";
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
 
 contract PermissionsForkTest is ReyaForkTest {
+    // ---------------------------------------------------------------------
+    // PassivePoolProxy — permissioned flags
+    // ---------------------------------------------------------------------
+
     function test_pool_autorebalance_permissions() public view {
         bytes32 flagId = keccak256(abi.encode(keccak256(bytes("autoRebalance")), 1));
         address[] memory allowlist = IPassivePoolProxy(sec.pool).getFeatureFlagAllowlist(flagId);
@@ -19,6 +32,8 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[2] = 0x0C81E390758A4C7AEF67BD2b0727DC6404Ea4883;
 
         assertEq(allowlist, expectedAllowlist);
+        assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagAllowAll(flagId));
+        assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagDenyAll(flagId));
     }
 
     function test_pool_srusd_auto_exchange_permissions() public view {
@@ -32,7 +47,60 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[3] = 0x8836cf32426cb26353698B105ab89fb87f52Fc34;
 
         assertEq(allowlist, expectedAllowlist);
+        assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagAllowAll(flagId));
+        assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagDenyAll(flagId));
     }
+
+    function test_pool_action_metadata_overwrite_permissions() public view {
+        bytes32 flagId = keccak256(bytes("actionMetadataOverwrite"));
+        address[] memory allowlist = IPassivePoolProxy(sec.pool).getFeatureFlagAllowlist(flagId);
+
+        address[] memory expectedAllowlist = new address[](2);
+        expectedAllowlist[0] = sec.core;
+        expectedAllowlist[1] = sec.periphery;
+
+        assertEq(allowlist, expectedAllowlist);
+        assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagAllowAll(flagId));
+        assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagDenyAll(flagId));
+    }
+
+    function test_pool_whitelisted_collateral_permissions() public view {
+        bytes32 flagId = keccak256(abi.encode(keccak256(bytes("whitelistedCollateral")), 1));
+        address[] memory allowlist = IPassivePoolProxy(sec.pool).getFeatureFlagAllowlist(flagId);
+
+        address[] memory expectedAllowlist = new address[](5);
+        expectedAllowlist[0] = sec.ramber;
+        expectedAllowlist[1] = sec.rhedge;
+        expectedAllowlist[2] = sec.rselini;
+        expectedAllowlist[3] = sec.rusd;
+        expectedAllowlist[4] = sec.susde;
+
+        assertEq(allowlist, expectedAllowlist);
+        assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagAllowAll(flagId));
+        assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagDenyAll(flagId));
+    }
+
+    function test_pool_deposit_permissions() public view {
+        // deposit:pool1 is intentionally open at this time — the `addToFeatureFlagAllowlist`
+        // entries in passive_pool/configs/feature_flags.toml are prep for a future restriction
+        // (unstaking). Until that flips, this test asserts the current expected state.
+        // TODO: when deposits are restricted, flip allowAll expectation and enumerate allowlist.
+        bytes32 flagId = keccak256(abi.encode(keccak256(bytes("deposit")), 1));
+        assertTrue(IPassivePoolProxy(sec.pool).getFeatureFlagAllowAll(flagId));
+        assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagDenyAll(flagId));
+    }
+
+    function test_pool_withdrawal_permissions() public view {
+        // withdrawal:pool1 is intentionally open at this time, same reasoning as deposit.
+        // TODO: when withdrawals are restricted, flip allowAll expectation.
+        bytes32 flagId = keccak256(abi.encode(keccak256(bytes("withdrawal")), 1));
+        assertTrue(IPassivePoolProxy(sec.pool).getFeatureFlagAllowAll(flagId));
+        assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagDenyAll(flagId));
+    }
+
+    // ---------------------------------------------------------------------
+    // CoreProxy — permissioned flags
+    // ---------------------------------------------------------------------
 
     function test_core_multicall_permissions() public view {
         bytes32 flagId = keccak256(bytes("multicall"));
@@ -57,6 +125,8 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[15] = 0x8836cf32426cb26353698B105ab89fb87f52Fc34;
 
         assertEq(allowlist, expectedAllowlist);
+        assertFalse(ICoreProxy(sec.core).getFeatureFlagAllowAll(flagId));
+        assertFalse(ICoreProxy(sec.core).getFeatureFlagDenyAll(flagId));
     }
 
     function test_core_owner_main_account_id_permissions() public view {
@@ -66,7 +136,46 @@ contract PermissionsForkTest is ReyaForkTest {
         address[] memory expectedAllowlist = new address[](1);
         expectedAllowlist[0] = 0x3964296c2d089160B2833407CBF638a48CEDAcc7;
         assertEq(allowlist, expectedAllowlist);
+        assertFalse(ICoreProxy(sec.core).getFeatureFlagAllowAll(flagId));
+        assertFalse(ICoreProxy(sec.core).getFeatureFlagDenyAll(flagId));
     }
+
+    function test_core_set_custom_im_multiplier_permissions() public view {
+        bytes32 flagId = keccak256(bytes("setCustomImMultiplier"));
+        address[] memory allowlist = ICoreProxy(sec.core).getFeatureFlagAllowlist(flagId);
+
+        address[] memory expectedAllowlist = new address[](1);
+        expectedAllowlist[0] = sec.pool;
+
+        assertEq(allowlist, expectedAllowlist);
+        assertFalse(ICoreProxy(sec.core).getFeatureFlagAllowAll(flagId));
+        assertFalse(ICoreProxy(sec.core).getFeatureFlagDenyAll(flagId));
+    }
+
+    function test_core_camelot_swap_publisher_permissions() public view {
+        // camelotSwapPublisher is deprecated; the allowlist should be empty and the flag
+        // must not be globally open (otherwise anyone could publish swaps).
+        bytes32 flagId = keccak256(bytes("camelotSwapPublisher"));
+        address[] memory allowlist = ICoreProxy(sec.core).getFeatureFlagAllowlist(flagId);
+
+        assertEq(allowlist.length, 0);
+        assertFalse(ICoreProxy(sec.core).getFeatureFlagAllowAll(flagId));
+        assertFalse(ICoreProxy(sec.core).getFeatureFlagDenyAll(flagId));
+    }
+
+    function test_core_notify_account_transfer_permissions() public view {
+        // notifyAccountTransfer is intentionally disabled on mainnet (core_disable_account_transfer):
+        // allowAll is false AND no addresses are allowlisted, so nobody can invoke the feature.
+        // denyAll stays false — the feature is off by being empty, not by being actively denied.
+        bytes32 flagId = keccak256(bytes("notifyAccountTransfer"));
+        assertFalse(ICoreProxy(sec.core).getFeatureFlagAllowAll(flagId));
+        assertFalse(ICoreProxy(sec.core).getFeatureFlagDenyAll(flagId));
+        assertEq(ICoreProxy(sec.core).getFeatureFlagAllowlist(flagId).length, 0);
+    }
+
+    // ---------------------------------------------------------------------
+    // PassivePerpProxy — permissioned flags
+    // ---------------------------------------------------------------------
 
     function test_perp_configure_fees_permissions() public view {
         bytes32 flagId = keccak256(bytes("configureFees"));
@@ -82,7 +191,51 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[6] = 0xc99a112E3dA3AACbaEA357fec8fc64802B4804Af;
 
         assertEq(allowlist, expectedAllowlist);
+        assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagAllowAll(flagId));
+        assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagDenyAll(flagId));
     }
+
+    function test_perp_configure_spread_permissions() public view {
+        bytes32 flagId = keccak256(bytes("configureSpread"));
+        address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flagId);
+
+        address[] memory expectedAllowlist = new address[](7);
+        expectedAllowlist[0] = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
+        expectedAllowlist[1] = 0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688;
+        expectedAllowlist[2] = 0x10eE819bc1E25cd2Eb3CE023724209f6f56Ef103;
+        expectedAllowlist[3] = 0xA50Aa11999f86f29badEc3fcD3aBa8AbBe153Ba2;
+        expectedAllowlist[4] = 0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4;
+        expectedAllowlist[5] = 0xbf59e78614F97fDbA523238AefDbe64E2efb28C3;
+        expectedAllowlist[6] = 0xbAF944384b46eB8609c3A5C7894028cE60c15354;
+
+        assertEq(allowlist, expectedAllowlist);
+        assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagAllowAll(flagId));
+        assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagDenyAll(flagId));
+    }
+
+    function test_perp_configure_depth_permissions() public view {
+        bytes32 flagId = keccak256(bytes("configureDepth"));
+        address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flagId);
+
+        address[] memory expectedAllowlist = new address[](9);
+        expectedAllowlist[0] = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
+        expectedAllowlist[1] = 0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688;
+        expectedAllowlist[2] = 0x10eE819bc1E25cd2Eb3CE023724209f6f56Ef103;
+        expectedAllowlist[3] = 0xA50Aa11999f86f29badEc3fcD3aBa8AbBe153Ba2;
+        expectedAllowlist[4] = 0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4;
+        expectedAllowlist[5] = 0xbf59e78614F97fDbA523238AefDbe64E2efb28C3;
+        expectedAllowlist[6] = 0xbAF944384b46eB8609c3A5C7894028cE60c15354;
+        expectedAllowlist[7] = 0x93e3AaEe71Dc2f42AD9a5992e4A6776B3406104D;
+        expectedAllowlist[8] = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9;
+
+        assertEq(allowlist, expectedAllowlist);
+        assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagAllowAll(flagId));
+        assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagDenyAll(flagId));
+    }
+
+    // ---------------------------------------------------------------------
+    // OrdersGatewayProxy — permissioned flags
+    // ---------------------------------------------------------------------
 
     function test_orders_gateway_conditional_orders_permissions() public view {
         bytes32 flagId = keccak256(bytes("conditional_orders"));
@@ -103,7 +256,28 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[11] = 0xdDfD9f70972742bE561eFb89E9CF5BEF848729F8;
 
         assertEq(allowlist, expectedAllowlist);
+        // allowAll is expected to be FALSE — conditional_orders should only be executable by the
+        // allowlist above. A `true` value means anyone can drive CO execution, which is a
+        // security-critical misconfiguration.
+        assertFalse(IOrdersGatewayProxy(sec.ordersGateway).getFeatureFlagAllowAll(flagId));
+        assertFalse(IOrdersGatewayProxy(sec.ordersGateway).getFeatureFlagDenyAll(flagId));
     }
+
+    function test_orders_gateway_matching_engine_publisher_permissions() public view {
+        bytes32 flagId = keccak256(bytes("matching_engine_publisher"));
+        address[] memory allowlist = IOrdersGatewayProxy(sec.ordersGateway).getFeatureFlagAllowlist(flagId);
+
+        address[] memory expectedAllowlist = new address[](1);
+        expectedAllowlist[0] = 0x47b3df006f9856c8a8d1B7c558e273B4C1562296;
+
+        assertEq(allowlist, expectedAllowlist);
+        assertFalse(IOrdersGatewayProxy(sec.ordersGateway).getFeatureFlagAllowAll(flagId));
+        assertFalse(IOrdersGatewayProxy(sec.ordersGateway).getFeatureFlagDenyAll(flagId));
+    }
+
+    // ---------------------------------------------------------------------
+    // OracleAdaptersProxy — permissioned flags
+    // ---------------------------------------------------------------------
 
     function test_oracle_adapters_executors_permissions() public view {
         bytes32 flagId = keccak256(bytes("executors"));
@@ -136,6 +310,11 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[23] = 0xfc8c96bE87Da63CeCddBf54abFA7B13ee8044739;
 
         assertEq(allowlist, expectedAllowlist);
+        // allowAll MUST be false — the allowlist above is the intended access-control for who can
+        // publish oracle prices. A `true` value means anyone can publish prices and is a
+        // security-critical misconfiguration.
+        assertFalse(IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowAll(flagId));
+        assertFalse(IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagDenyAll(flagId));
     }
 
     function test_oracle_adapters_subsecond_executors_permissions() public view {
@@ -176,7 +355,22 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[30] = 0xfc8c96bE87Da63CeCddBf54abFA7B13ee8044739;
 
         assertEq(allowlist, expectedAllowlist);
+        assertFalse(IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowAll(flagId));
+        assertFalse(IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagDenyAll(flagId));
     }
+
+    function test_oracle_adapters_lm_token_price_updaters_permissions() public view {
+        bytes32 flagId = keccak256(bytes("lmTokenPriceUpdaters"));
+        // the allowlist is only the deployment owner; content intentionally unchecked here
+        // since the owner address is covered elsewhere in the ownership fuzz test.
+        // what we care about is that the flag is not globally open and not paused.
+        assertFalse(IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowAll(flagId));
+        assertFalse(IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagDenyAll(flagId));
+    }
+
+    // ---------------------------------------------------------------------
+    // CoreProxy — configuration/account permissions (no allowAll/denyAll concept)
+    // ---------------------------------------------------------------------
 
     function test_perp_market_volatility_configurator_permissions() public view {
         bytes32 permission = keccak256(bytes("CP_PP_MARKET_VOLATILITY_CONFIGURATOR"));
@@ -245,6 +439,65 @@ contract PermissionsForkTest is ReyaForkTest {
         }
     }
 
+    // ---------------------------------------------------------------------
+    // Behavioural unauthorized-revert checks — defense in depth on top of
+    // the static allowAll/denyAll/allowlist assertions above. Each test calls
+    // a gated entrypoint from a wallet that is deliberately not in the
+    // allowlist and asserts the call reverts with the expected
+    // FeatureUnavailable(flag) error. If the allow-all escape hatch is ever
+    // flipped on for a permissioned flag, these tests fail loudly because
+    // the call proceeds past the feature-flag check and reverts with a
+    // different downstream error.
+    // ---------------------------------------------------------------------
+
+    function test_orders_gateway_conditional_orders_rejects_non_allowlisted_caller() public {
+        address stranger = vm.addr(uint256(keccak256(bytes("not-a-co-executor"))));
+
+        bytes32 flagId = keccak256(bytes("conditional_orders"));
+        address[] memory allowlist = IOrdersGatewayProxy(sec.ordersGateway).getFeatureFlagAllowlist(flagId);
+        for (uint256 i = 0; i < allowlist.length; i++) {
+            assertTrue(allowlist[i] != stranger, "stranger unexpectedly in allowlist");
+        }
+
+        ConditionalOrderDetails memory order = ConditionalOrderDetails({
+            accountId: 0,
+            marketId: 0,
+            exchangeId: 0,
+            counterpartyAccountIds: new uint128[](0),
+            orderType: uint8(OrderType.LimitOrder),
+            inputs: "",
+            signer: address(0),
+            nonce: 0
+        });
+        EIP712Signature memory sig = EIP712Signature({ v: 0, r: bytes32(0), s: bytes32(0), deadline: 0 });
+
+        vm.prank(stranger);
+        vm.expectRevert(abi.encodeWithSelector(IOrdersGatewayProxy.FeatureUnavailable.selector, flagId));
+        IOrdersGatewayProxy(sec.ordersGateway).execute(order, sig);
+    }
+
+    function test_oracle_adapters_executors_rejects_non_allowlisted_caller() public {
+        address stranger = vm.addr(uint256(keccak256(bytes("not-an-oracle-executor"))));
+
+        bytes32 flagId = keccak256(bytes("executors"));
+        address[] memory allowlist = IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowlist(flagId);
+        for (uint256 i = 0; i < allowlist.length; i++) {
+            assertTrue(allowlist[i] != stranger, "stranger unexpectedly in allowlist");
+        }
+
+        StorkSignedPayload memory payload = StorkSignedPayload({
+            oraclePubKey: address(0),
+            pricePayload: StorkPricePayload({ assetPairId: "FAKE/USD", timestamp: 0, price: 0 }),
+            r: bytes32(0),
+            s: bytes32(0),
+            v: 0
+        });
+
+        vm.prank(stranger);
+        vm.expectRevert(abi.encodeWithSelector(IOracleAdaptersProxy.FeatureUnavailable.selector, flagId));
+        IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(abi.encode(payload));
+    }
+
     function test_liquidator_margin_account_permissions() public view {
         bytes32 permission1 = keccak256(bytes("DUTCH_LIQUIDATION"));
         bytes32 permission2 = keccak256(bytes("MATCH_ORDER"));
@@ -285,39 +538,5 @@ contract PermissionsForkTest is ReyaForkTest {
                 );
             }
         }
-    }
-
-    function test_perp_configure_spread_permissions() public view {
-        bytes32 flagId = keccak256(bytes("configureSpread"));
-        address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flagId);
-
-        address[] memory expectedAllowlist = new address[](7);
-        expectedAllowlist[0] = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
-        expectedAllowlist[1] = 0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688;
-        expectedAllowlist[2] = 0x10eE819bc1E25cd2Eb3CE023724209f6f56Ef103;
-        expectedAllowlist[3] = 0xA50Aa11999f86f29badEc3fcD3aBa8AbBe153Ba2;
-        expectedAllowlist[4] = 0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4;
-        expectedAllowlist[5] = 0xbf59e78614F97fDbA523238AefDbe64E2efb28C3;
-        expectedAllowlist[6] = 0xbAF944384b46eB8609c3A5C7894028cE60c15354;
-
-        assertEq(allowlist, expectedAllowlist);
-    }
-
-    function test_perp_configure_depth_permissions() public view {
-        bytes32 flagId = keccak256(bytes("configureDepth"));
-        address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flagId);
-
-        address[] memory expectedAllowlist = new address[](9);
-        expectedAllowlist[0] = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
-        expectedAllowlist[1] = 0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688;
-        expectedAllowlist[2] = 0x10eE819bc1E25cd2Eb3CE023724209f6f56Ef103;
-        expectedAllowlist[3] = 0xA50Aa11999f86f29badEc3fcD3aBa8AbBe153Ba2;
-        expectedAllowlist[4] = 0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4;
-        expectedAllowlist[5] = 0xbf59e78614F97fDbA523238AefDbe64E2efb28C3;
-        expectedAllowlist[6] = 0xbAF944384b46eB8609c3A5C7894028cE60c15354;
-        expectedAllowlist[7] = 0x93e3AaEe71Dc2f42AD9a5992e4A6776B3406104D;
-        expectedAllowlist[8] = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9;
-
-        assertEq(allowlist, expectedAllowlist);
     }
 }
