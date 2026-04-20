@@ -164,10 +164,13 @@ contract PermissionsForkTest is ReyaForkTest {
     }
 
     function test_core_notify_account_transfer_permissions() public view {
-        // notifyAccountTransfer is intentionally disabled on mainnet (core_disable_account_transfer).
+        // notifyAccountTransfer is intentionally disabled on mainnet (core_disable_account_transfer):
+        // allowAll is false AND no addresses are allowlisted, so nobody can invoke the feature.
+        // denyAll stays false — the feature is off by being empty, not by being actively denied.
         bytes32 flagId = keccak256(bytes("notifyAccountTransfer"));
         assertFalse(ICoreProxy(sec.core).getFeatureFlagAllowAll(flagId));
         assertFalse(ICoreProxy(sec.core).getFeatureFlagDenyAll(flagId));
+        assertEq(ICoreProxy(sec.core).getFeatureFlagAllowlist(flagId).length, 0);
     }
 
     // ---------------------------------------------------------------------
