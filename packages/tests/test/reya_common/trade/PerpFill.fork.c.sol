@@ -565,8 +565,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         // Build orders manually since executePerpFill assumes perpBuyer=long
         {
             // perpBuyer's order: sell 0.5 ETH (negative baseDelta = short/close)
-            (OrderDetails memory buyerCloseOrder, EIP712Signature memory buyerCloseSig) =
-            createLimitOrderPerp({
+            (OrderDetails memory buyerCloseOrder, EIP712Signature memory buyerCloseSig) = createLimitOrderPerp({
                 accountId: buyerAccountId,
                 marketId: marketId,
                 baseDelta: -int256(0.5e18),
@@ -577,8 +576,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             });
 
             // perpSeller's order: buy 0.5 ETH (positive baseDelta = long/close short)
-            (OrderDetails memory sellerCloseOrder, EIP712Signature memory sellerCloseSig) =
-            createLimitOrderPerp({
+            (OrderDetails memory sellerCloseOrder, EIP712Signature memory sellerCloseSig) = createLimitOrderPerp({
                 accountId: sellerAccountId,
                 marketId: marketId,
                 baseDelta: int256(0.5e18),
@@ -892,9 +890,8 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             });
 
             uint256 deadline = block.timestamp + 3600;
-            (uint8 v, bytes32 r, bytes32 s) = vm.sign(
-                perpBuyerPk, OrderDetailsHashing.mockCalculateDigest(reduceOrder, deadline, sec.ordersGateway)
-            );
+            (uint8 v, bytes32 r, bytes32 s) =
+                vm.sign(perpBuyerPk, OrderDetailsHashing.mockCalculateDigest(reduceOrder, deadline, sec.ordersGateway));
             EIP712Signature memory reduceSig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
             // Seller's regular buy order (counterparty)
@@ -1027,9 +1024,8 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             });
 
             uint256 deadline = block.timestamp + 3600;
-            (uint8 v, bytes32 r, bytes32 s) = vm.sign(
-                perpBuyerPk, OrderDetailsHashing.mockCalculateDigest(reduceOrder, deadline, sec.ordersGateway)
-            );
+            (uint8 v, bytes32 r, bytes32 s) =
+                vm.sign(perpBuyerPk, OrderDetailsHashing.mockCalculateDigest(reduceOrder, deadline, sec.ordersGateway));
             EIP712Signature memory reduceSig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
             (OrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({

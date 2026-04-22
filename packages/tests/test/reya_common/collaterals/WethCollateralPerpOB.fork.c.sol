@@ -19,9 +19,7 @@ import {
     SignedMatchingEnginePayload
 } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
 import {
-    IOrdersGatewayProxyV2,
-    OrderDetails,
-    ExecuteFillInputV2
+    IOrdersGatewayProxyV2, OrderDetails, ExecuteFillInputV2
 } from "../../../src/interfaces/IOrdersGatewayProxyV2.sol";
 
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
