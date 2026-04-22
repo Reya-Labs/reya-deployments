@@ -75,4 +75,14 @@ contract PerpFillForkTest is ReyaForkTest, PerpFillForkCheck {
     function test_Devnet_PerpFillExchangeZeroFees_ETH() public {
         check_PerpFillExchangeZeroFees(ETH_MARKET_ID);
     }
+
+    // --- perpOB 1.0.52 enrichment ---
+
+    function test_Devnet_PerpFillMakerRebate_ETH() public {
+        check_PerpFillMakerRebate(ETH_MARKET_ID);
+    }
+
+    function test_Devnet_MakerFeeAndRebateMutuallyExclusive() public {
+        check_MakerFeeAndRebateMutuallyExclusive();
+    }
 }

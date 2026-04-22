@@ -29,15 +29,15 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.multisig = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
 
         // Reya contracts (deterministic CREATE2 addresses from devnet cannon deployment)
-        sec.core = payable(0xa351bC9ae59AD5Becc4428884c4Aa4d5951E02ba);
+        sec.core = payable(0x2D9B4D687e037E260778f2AE7F7742416E42C302);
         sec.pool = payable(0x9A3A664987b88790A6FDC1632e3b607813fd94fF); // reused Cronos PassivePool
-        sec.perp = payable(0x57DDC64bf7e36A6f812A1CDCFfAe2f4E6d712F40);
+        sec.perp = payable(0x9CaB9895e58662B8BB8F2279605CdFeDfaB51Cee);
         sec.oracleManager = 0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA; // reused Cronos
-        sec.periphery = payable(0x9465507eC916e95BAF769e61872910dBC211FE7B);
-        sec.ordersGateway = payable(0x8748D534997a822278BD2288aad74e448eFfBd91);
+        sec.periphery = payable(0x2bad953AE7A3895cb01060C9CE09961eF4c729A4);
+        sec.ordersGateway = payable(0xA191A7666e199bC401507504CF267d2eF273E0e3);
         sec.oracleAdaptersProxy = payable(0xc501A2356703CD351703D68963c6F4136120f7CF); // reused Cronos
         sec.exchangePass = 0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB; // reused Cronos
-        sec.accountNft = 0xeA13E7dA71E018160019A296Eca4184Ddc53aeB1; // reused Cronos
+        sec.accountNft = 0x83815d47Fe106d9201E0C68d7db7d3B0360b9370;
 
         // Reya tokens (reuse Cronos testnet token deployments)
         sec.rusd = 0x9DE724e7b3facF87Ce39465D3D712717182e3e55;

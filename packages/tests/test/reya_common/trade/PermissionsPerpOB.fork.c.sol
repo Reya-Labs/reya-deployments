@@ -13,16 +13,18 @@ import {
 } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import {
     IOrdersGatewayProxy,
-    ConditionalOrderDetails,
     EIP712Signature,
-    ExecuteFillInput,
     SignedMatchingEnginePayload,
-    FillDetails,
-    LimitOrderPerpDetails,
-    OrderType
+    FillDetails
 } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
+import {
+    IOrdersGatewayProxyV2,
+    OrderDetails,
+    OrderTypeV2,
+    ExecuteFillInputV2
+} from "../../../src/interfaces/IOrdersGatewayProxyV2.sol";
 import { OracleDataPayloadHashing } from "../../../src/utils/OracleDataPayloadHashing.sol";
-import { ConditionalOrderHashing } from "../../../src/utils/ConditionalOrderHashing.sol";
+import { OrderDetailsHashing } from "../../../src/utils/OrderDetailsHashing.sol";
 import { FillHashing } from "../../../src/utils/FillHashing.sol";
 
 /**
@@ -146,26 +148,30 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         uint128 buyerAccountId = depositNewMA(buyer, sec.rusd, 10_000e6);
         uint128 sellerAccountId = depositNewMA(seller, sec.rusd, 10_000e6);
 
-        uint128[] memory emptyIds = new uint128[](0);
         uint256 deadline = block.timestamp + 3600;
 
-        ExecuteFillInput memory fillInput;
+        ExecuteFillInputV2 memory fillInput;
 
         // Build buyer order + signature in scoped block
         {
-            ConditionalOrderDetails memory buyerOrder = ConditionalOrderDetails({
+            OrderDetails memory buyerOrder = OrderDetails({
                 accountId: buyerAccountId,
                 marketId: marketId,
                 exchangeId: 1,
-                counterpartyAccountIds: emptyIds,
-                orderType: uint8(OrderType.LimitOrderPerp),
-                inputs: abi.encode(LimitOrderPerpDetails({ baseDelta: int256(0.1e18), price: 3000e18 })),
+                orderType: OrderTypeV2.Limit,
+                quantity: int256(0.1e18),
+                limitPrice: 3000e18,
+                triggerPrice: 0,
+                timeInForce: 0,
+                clientOrderId: 0,
+                reduceOnly: false,
+                expiresAfter: 0,
                 signer: buyer,
                 nonce: 1
             });
 
             (uint8 v, bytes32 r, bytes32 s) =
-                vm.sign(buyerPk, ConditionalOrderHashing.mockCalculateDigest(buyerOrder, deadline, sec.ordersGateway));
+                vm.sign(buyerPk, OrderDetailsHashing.mockCalculateDigest(buyerOrder, deadline, sec.ordersGateway));
 
             fillInput.accountOrder = buyerOrder;
             fillInput.accountSignature = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
@@ -173,19 +179,24 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
 
         // Build seller order + signature in scoped block
         {
-            ConditionalOrderDetails memory sellerOrder = ConditionalOrderDetails({
+            OrderDetails memory sellerOrder = OrderDetails({
                 accountId: sellerAccountId,
                 marketId: marketId,
                 exchangeId: 1,
-                counterpartyAccountIds: emptyIds,
-                orderType: uint8(OrderType.LimitOrderPerp),
-                inputs: abi.encode(LimitOrderPerpDetails({ baseDelta: -int256(0.1e18), price: 3000e18 })),
+                orderType: OrderTypeV2.Limit,
+                quantity: -int256(0.1e18),
+                limitPrice: 3000e18,
+                triggerPrice: 0,
+                timeInForce: 0,
+                clientOrderId: 0,
+                reduceOnly: false,
+                expiresAfter: 0,
                 signer: seller,
                 nonce: 1
             });
 
             (uint8 v, bytes32 r, bytes32 s) =
-                vm.sign(sellerPk, ConditionalOrderHashing.mockCalculateDigest(sellerOrder, deadline, sec.ordersGateway));
+                vm.sign(sellerPk, OrderDetailsHashing.mockCalculateDigest(sellerOrder, deadline, sec.ordersGateway));
 
             fillInput.counterpartyOrder = sellerOrder;
             fillInput.counterpartySignature = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
@@ -210,7 +221,7 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         vm.expectRevert(
             abi.encodeWithSelector(IOrdersGatewayProxy.UnauthorizedMatchingEnginePublisher.selector, unauthorizedME)
         );
-        IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
+        IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput);
     }
 
     /**
@@ -245,5 +256,31 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         vm.prank(publisher);
         vm.expectRevert(abi.encodeWithSelector(IPassivePerpProxyV2.UnauthorizedOraclePusher.selector, publisher));
         IPassivePerpProxyV2(sec.perp).pushOracleData(payload, sig);
+    }
+
+    /**
+     * @notice Assert the orders-gateway permission sequence counter increments on managePermission.
+     * @dev New getter in 1.0.22; validates the monotonic sequence number exposed for off-chain indexers.
+     */
+    function check_GatewayPermissionSequenceIncrements() internal {
+        (address owner, uint256 ownerPk) = makeAddrAndKey("permOwner");
+        ownerPk; // unused
+        address target = makeAddr("permTarget");
+
+        uint128 seqBefore = IOrdersGatewayProxyV2(sec.ordersGateway).getLatestGatewayPermissionUpdatedSequenceNumber();
+
+        vm.prank(owner);
+        IOrdersGatewayProxyV2(sec.ordersGateway).managePermission(target, true);
+
+        uint128 seqAfter1 = IOrdersGatewayProxyV2(sec.ordersGateway).getLatestGatewayPermissionUpdatedSequenceNumber();
+        assertGt(seqAfter1, seqBefore, "Granting permission should increment sequence number");
+
+        vm.prank(owner);
+        IOrdersGatewayProxyV2(sec.ordersGateway).managePermission(target, false);
+
+        uint128 seqAfter2 = IOrdersGatewayProxyV2(sec.ordersGateway).getLatestGatewayPermissionUpdatedSequenceNumber();
+        assertGt(seqAfter2, seqAfter1, "Revoking permission should increment sequence number");
+
+        assertEq(IOrdersGatewayProxyV2(sec.ordersGateway).hasPermission(owner, target), false, "Permission revoked");
     }
 }

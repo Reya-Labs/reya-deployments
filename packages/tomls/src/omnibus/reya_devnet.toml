@@ -77,10 +77,10 @@ oracleManagerProxy = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
 # Initial Proxy Salts (devnet-specific to avoid collision with Cronos)
 ###############################################################################
 [var.initial_proxy_vars]
-coreSalt = "core-devnet"
-passivePerpSalt = "passive-perp-devnet"
-ordersGatewaySalt = "orders-gateway-devnet"
-peripherySalt = "periphery-devnet"
+coreSalt = "core-devnet2"
+passivePerpSalt = "passive-perp-devnet2"
+ordersGatewaySalt = "orders-gateway-devnet2"
+peripherySalt = "periphery-devnet2"
 
 ###############################################################################
 # Proxy Upgrade Variables (the 4 fresh proxies)

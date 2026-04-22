@@ -60,6 +60,23 @@ interface IPassivePerpProxyV2 {
         view
         returns (MarketConfigurationDataV2 memory config);
 
+    function setMarketConfiguration(uint128 marketId, MarketConfigurationDataV2 memory config) external;
+
+    // ─── Fee Configuration (perpOB) ─────────────────────────────────────
+
+    function setFeeTierParameters(uint256 tierId, FeeTierParameters memory params) external;
+
+    function getFeeTierParameters(uint256 tierId) external view returns (FeeTierParameters memory);
+
+    function getAccountOwnerFeeParameters(address accountOwner)
+        external
+        view
+        returns (
+            /* UD60x18 */ uint256 takerFeeParameter,
+            /* UD60x18 */ uint256 makerFeeParameter,
+            /* UD60x18 */ uint256 makerRebateParameter
+        );
+
     // ─── V2 Market Data (20-field struct) ────────────────────────────────
 
     function getMarketData(uint128 marketId)
@@ -74,6 +91,16 @@ interface IPassivePerpProxyV2 {
     error UnauthorizedOraclePusher(address pusher);
     error FillPriceDeviationExceeded(uint128 marketId, uint256 fillPrice, uint256 markPrice, uint256 maxDeviation);
     error MarkPriceDeviationExceeded(uint128 marketId, uint256 markPrice, uint256 oraclePrice, uint256 maxDeviation);
+    error MakerFeeAndRebateBothNonZero();
+}
+
+// ─── Fee Structs (perpOB) ────────────────────────────────────────────────
+
+// At most one of makerFee / makerRebate may be nonzero.
+struct FeeTierParameters {
+    /* UD60x18 */ uint256 takerFee;
+    /* UD60x18 */ uint256 makerFee;
+    /* UD60x18 */ uint256 makerRebate;
 }
 
 // ─── perpOB Enums ────────────────────────────────────────────────────────
@@ -88,7 +115,8 @@ enum ExecutionType {
     DutchLiquidation,
     RankedLiquidation,
     BackstopLiquidation,
-    ADL
+    ADL,
+    Dust
 }
 
 // ─── perpOB Structs ──────────────────────────────────────────────────────
@@ -118,17 +146,15 @@ struct MarketConfigurationDataV2 {
     uint256 mtmWindow_DEPRECATED;
     DutchConfiguration dutchConfig;
     SlippageParams slippageParams;
-    /* UD60x18 */ uint256 minimumOrderBase_DEPRECATED;
+    /* UD60x18 */ uint256 minimumOrderBase;
     /* UD60x18 */ uint256 baseSpacing;
     /* UD60x18 */ uint256 priceSpacing;
     /* UD60x18 */ uint256 depthFactor_DEPRECATED;
     /* UD60x18 */ uint256 maxExposureFactor_DEPRECATED;
     /* UD60x18 */ uint256 maxPSlippage_DEPRECATED;
-    uint256 marketOrderMaxStaleDuration;
+    uint256 markPriceMaxStaleDuration;
     /* UD60x18 */ uint256 priceSpread_DEPRECATED;
     /* UD60x18 */ uint256 volatilityIndexMultiplier_DEPRECATED;
-    // perpOB fields
-    uint256 markPriceMaxStaleDuration;
     uint256 fundingRateMaxStaleDuration;
     /* UD60x18 */ uint256 markPriceMaxDeviation;
     /* UD60x18 */ uint256 fillPriceMaxDeviation;
