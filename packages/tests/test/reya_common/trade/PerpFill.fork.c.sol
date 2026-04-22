@@ -1197,6 +1197,10 @@ contract PerpFillForkCheck is BaseReyaForkTest {
      *        exchangeFeeCredit = 20% * 1.20                                    = 0.24 rUSD
      *        remaining        = 1.20 - 0 - 0.24                                = 0.96 rUSD
      *        makerFeeCredit   = 50% * 0.96                                     = 0.48 rUSD
+     *
+     *      TODO: revisit once the fee / rebate logic is finalised with the team — the
+     *      numeric assertions below assume the current "% of remaining" semantics and
+     *      will drift if the formula or the passive-pool exchange rebate cut changes.
      */
     function check_PerpFillMakerRebate(uint128 marketId) internal {
         setupPerpTestActors();

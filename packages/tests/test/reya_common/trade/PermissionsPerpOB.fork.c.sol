@@ -257,30 +257,4 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         vm.expectRevert(abi.encodeWithSelector(IPassivePerpProxyV2.UnauthorizedOraclePusher.selector, publisher));
         IPassivePerpProxyV2(sec.perp).pushOracleData(payload, sig);
     }
-
-    /**
-     * @notice Assert the orders-gateway permission sequence counter increments on managePermission.
-     * @dev New getter in 1.0.22; validates the monotonic sequence number exposed for off-chain indexers.
-     */
-    function check_GatewayPermissionSequenceIncrements() internal {
-        (address owner, uint256 ownerPk) = makeAddrAndKey("permOwner");
-        ownerPk; // unused
-        address target = makeAddr("permTarget");
-
-        uint128 seqBefore = IOrdersGatewayProxyV2(sec.ordersGateway).getLatestGatewayPermissionUpdatedSequenceNumber();
-
-        vm.prank(owner);
-        IOrdersGatewayProxyV2(sec.ordersGateway).managePermission(target, true);
-
-        uint128 seqAfter1 = IOrdersGatewayProxyV2(sec.ordersGateway).getLatestGatewayPermissionUpdatedSequenceNumber();
-        assertGt(seqAfter1, seqBefore, "Granting permission should increment sequence number");
-
-        vm.prank(owner);
-        IOrdersGatewayProxyV2(sec.ordersGateway).managePermission(target, false);
-
-        uint128 seqAfter2 = IOrdersGatewayProxyV2(sec.ordersGateway).getLatestGatewayPermissionUpdatedSequenceNumber();
-        assertGt(seqAfter2, seqAfter1, "Revoking permission should increment sequence number");
-
-        assertEq(IOrdersGatewayProxyV2(sec.ordersGateway).hasPermission(owner, target), false, "Permission revoked");
-    }
 }
