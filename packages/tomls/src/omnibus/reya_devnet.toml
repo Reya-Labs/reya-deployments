@@ -22,7 +22,7 @@ include = [
     "../devnet/collateral_pools/collateral_pool_1.toml",
 ]
 
-version = "1.0.0"
+version = "1.0.1"
 
 ###############################################################################
 # Existing Cronos Contract Addresses (reused, not redeployed)
@@ -111,20 +111,21 @@ pauser4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 # For cronos/mainnet migration, create fresh wallets and add additional slots.
 ###############################################################################
 [var.liquidators]
-liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+liquidator1 = "0x343Dcbb57A7ded3d4236C15373E52aB8436A2f11"
 
 ###############################################################################
 # AE Liquidators (devnet uses a single shared wallet)
 ###############################################################################
 [var.ae_liquidators]
-ae_liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+ae_liquidator1 = "0xD16e5043499Bc4567141e9048c38b73c45986d20"
 
 ###############################################################################
 # Matching Engine Publishers
 ###############################################################################
 [var.matching_engine_publishers]
-matching_engine_publisher1 = "0x89340FA8559968c2ADe406C6CcAd6C74F892472d"
+matching_engine_publisher1 = "0xD3D5911FE8ab109645f931Cf65B341d5dd672eFB"
 
+# todo: p1: get rid of conditional order bot
 ###############################################################################
 # CO Execution Bots (conditional order execution)
 ###############################################################################
@@ -143,7 +144,7 @@ setMarketZeroFeeBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 # consulted at runtime. Kept here purely for completeness.
 ###############################################################################
 [var.match_order_publisher_admins]
-matchOrderPublisherAdmin1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+matchOrderPublisherAdmin1 = "0xD3D5911FE8ab109645f931Cf65B341d5dd672eFB"
 
 ###############################################################################
 # Token Config (not deployed, just vars for collateral pool configs)
@@ -159,11 +160,11 @@ wethTokenDecimals = "18"
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-rusdWithdrawalTvlPercentageLimitUnscaled = "0.4"
+rusdWithdrawalTvlPercentageLimitUnscaled = "1.0"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
-wethWithdrawalTvlPercentageLimitUnscaled = "1"
+wethWithdrawalTvlPercentageLimitUnscaled = "1.0"
 
 ###############################################################################
 # PassivePerp Global Config
@@ -197,9 +198,7 @@ spreadDiscountUnscaled = "1.0"
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
 market1Eth_maxOpenBaseUnscaled = "4950"
-market1Eth_velocityMultiplierUnscaled = "0"
 market1Eth_oracleNodeId = "<%= settings.ethUsdcMarkNodeIdStork %>"
-market1Eth_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market1Eth_dutchConfig_lambdaUnscaled = "1"
 market1Eth_dutchConfig_minBaseUnscaled = "0"
 market1Eth_slippageParams_phiUnscaled = "0"
@@ -207,15 +206,19 @@ market1Eth_slippageParams_betaUnscaled = "0"
 market1Eth_minimumOrderBaseUnscaled = "0.010"
 market1Eth_baseSpacingUnscaled = "0.001"
 market1Eth_priceSpacingUnscaled = "0.001"
-market1Eth_depthFactorUnscaled = "0"
-market1Eth_maxExposureFactorUnscaled = "0.999"
-market1Eth_maxPSlippageUnscaled = "0"
 market1Eth_markPriceMaxStaleDuration = "3600"
-market1Eth_priceSpreadUnscaled = "0"
-market1Eth_volatilityIndexMultiplierUnscaled = "0"
 market1Eth_fundingRateMaxStaleDuration = "3600"
 market1Eth_markPriceMaxDeviationUnscaled = "0"
 market1Eth_fillPriceMaxDeviationUnscaled = "0"
+# Need to deprecate
+market1Eth_priceSpreadUnscaled = "0"
+market1Eth_volatilityIndexMultiplierUnscaled = "0"
+market1Eth_maxPSlippageUnscaled = "0"
+market1Eth_maxExposureFactorUnscaled = "0.999"
+market1Eth_depthFactorUnscaled = "0"
+market1Eth_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market1Eth_velocityMultiplierUnscaled = "0"
+
 
 ###############################################################################
 # Collateral Pool 1 Configuration
