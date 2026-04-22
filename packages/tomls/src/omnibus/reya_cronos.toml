@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.134"
+version = "1.0.135"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -510,7 +510,7 @@ passivePoolExchangeRebateUnscaled = "0.2"
 lotteryPotExchangeRebateUnscaled = "0.2"
 rageTradeExchangeRebateUnscaled = "0.2"
 zeuzExchangeRebateUnscaled = "0.2"
-pool1RusdRebateUnscaled = "0.5"
+pool1RusdRebateUnscaled = "0.2"
 
 [var.fees_configs]
 takerFeeTier0Unscaled = "0.00040"
