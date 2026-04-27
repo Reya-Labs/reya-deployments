@@ -111,13 +111,13 @@ pauser4 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 # For cronos/mainnet migration, create fresh wallets and add additional slots.
 ###############################################################################
 [var.liquidators]
-liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+liquidator1 = "0x343Dcbb57A7ded3d4236C15373E52aB8436A2f11"
 
 ###############################################################################
 # AE Liquidators (devnet uses a single shared wallet)
 ###############################################################################
 [var.ae_liquidators]
-ae_liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+ae_liquidator1 = "0xD16e5043499Bc4567141e9048c38b73c45986d20"
 
 ###############################################################################
 # Matching Engine Publishers
@@ -126,10 +126,19 @@ ae_liquidator1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 matching_engine_publisher1 = "0x89340FA8559968c2ADe406C6CcAd6C74F892472d"
 
 ###############################################################################
-# CO Execution Bots (conditional order execution)
+# PerpOB oracle data pushers (msg.sender of PassivePerpProxy.pushOracleData).
+# Publisher (EIP-712 signer) is matching_engine_publisher1, whitelisted as
+# oraclePublishers in devnet/passive_perp/feature_flags.toml.
+###############################################################################
+[var.oracle_pushers]
+oraclePusher1 = "0x61548af5B40Ee331a30aBecA9Ff2237D6C753462"
+oraclePusher2 = "0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3"
+
+###############################################################################
+# CO Execution Bots (conditional order execution + batch fill execution)
 ###############################################################################
 [var.co_execution_bots]
-co_execution_bot1 = "0xB6EaF546b84E1f917579FC4FD3d7082DfE2ba212"
+co_execution_bot1 = "0xc9A01c03AEE926B89b83F7781b15B822807E1d33"
 
 ###############################################################################
 # Fee Configuration Bots
@@ -159,7 +168,7 @@ wethTokenDecimals = "18"
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-rusdWithdrawalTvlPercentageLimitUnscaled = "0.4"
+rusdWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
