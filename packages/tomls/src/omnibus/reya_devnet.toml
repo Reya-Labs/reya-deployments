@@ -22,7 +22,7 @@ include = [
     "../devnet/collateral_pools/collateral_pool_1.toml",
 ]
 
-version = "1.0.0"
+version = "1.0.3"
 
 ###############################################################################
 # Existing Cronos Contract Addresses (reused, not redeployed)
@@ -47,14 +47,14 @@ passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD822755
 ###############################################################################
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.27@router"
+coreRouterPackage = "reya-core:1.0.32@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.51@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.53@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
-ordersGatewayRouterPackage = "reya-orders-gateway:1.0.20@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.23@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
-peripheryRouterPackage = "reya-periphery:1.0.14@router"
+peripheryRouterPackage = "reya-periphery:1.0.16@router"
 
 ###############################################################################
 # Account NFT
@@ -77,10 +77,10 @@ oracleManagerProxy = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
 # Initial Proxy Salts (devnet-specific to avoid collision with Cronos)
 ###############################################################################
 [var.initial_proxy_vars]
-coreSalt = "core-devnet"
-passivePerpSalt = "passive-perp-devnet"
-ordersGatewaySalt = "orders-gateway-devnet"
-peripherySalt = "periphery-devnet"
+coreSalt = "core-devnet3"
+passivePerpSalt = "passive-perp-devnet3"
+ordersGatewaySalt = "orders-gateway-devnet3"
+peripherySalt = "periphery-devnet3"
 
 ###############################################################################
 # Proxy Upgrade Variables (the 4 fresh proxies)
@@ -123,8 +123,9 @@ ae_liquidator1 = "0xD16e5043499Bc4567141e9048c38b73c45986d20"
 # Matching Engine Publishers
 ###############################################################################
 [var.matching_engine_publishers]
-matching_engine_publisher1 = "0x89340FA8559968c2ADe406C6CcAd6C74F892472d"
+matching_engine_publisher1 = "0xD3D5911FE8ab109645f931Cf65B341d5dd672eFB"
 
+# todo: p1: get rid of conditional order bot
 ###############################################################################
 # PerpOB oracle data pushers (msg.sender of PassivePerpProxy.pushOracleData).
 # Publisher (EIP-712 signer) is matching_engine_publisher1, whitelisted as
@@ -152,7 +153,7 @@ setMarketZeroFeeBot = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 # consulted at runtime. Kept here purely for completeness.
 ###############################################################################
 [var.match_order_publisher_admins]
-matchOrderPublisherAdmin1 = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
+matchOrderPublisherAdmin1 = "0xD3D5911FE8ab109645f931Cf65B341d5dd672eFB"
 
 ###############################################################################
 # Token Config (not deployed, just vars for collateral pool configs)
@@ -168,11 +169,11 @@ wethTokenDecimals = "18"
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-rusdWithdrawalTvlPercentageLimitUnscaled = "1"
+rusdWithdrawalTvlPercentageLimitUnscaled = "1.0"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
-wethWithdrawalTvlPercentageLimitUnscaled = "1"
+wethWithdrawalTvlPercentageLimitUnscaled = "1.0"
 
 ###############################################################################
 # PassivePerp Global Config
@@ -206,9 +207,7 @@ spreadDiscountUnscaled = "1.0"
 [var.market_1eth]
 market1Eth_riskMatrixIndex = "0"
 market1Eth_maxOpenBaseUnscaled = "4950"
-market1Eth_velocityMultiplierUnscaled = "0"
 market1Eth_oracleNodeId = "<%= settings.ethUsdcMarkNodeIdStork %>"
-market1Eth_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market1Eth_dutchConfig_lambdaUnscaled = "1"
 market1Eth_dutchConfig_minBaseUnscaled = "0"
 market1Eth_slippageParams_phiUnscaled = "0"
@@ -216,15 +215,18 @@ market1Eth_slippageParams_betaUnscaled = "0"
 market1Eth_minimumOrderBaseUnscaled = "0.010"
 market1Eth_baseSpacingUnscaled = "0.001"
 market1Eth_priceSpacingUnscaled = "0.001"
-market1Eth_depthFactorUnscaled = "0"
-market1Eth_maxExposureFactorUnscaled = "0.999"
-market1Eth_maxPSlippageUnscaled = "0"
 market1Eth_markPriceMaxStaleDuration = "3600"
-market1Eth_priceSpreadUnscaled = "0"
-market1Eth_volatilityIndexMultiplierUnscaled = "0"
 market1Eth_fundingRateMaxStaleDuration = "3600"
 market1Eth_markPriceMaxDeviationUnscaled = "0"
 market1Eth_fillPriceMaxDeviationUnscaled = "0"
+# Need to deprecate
+market1Eth_priceSpreadUnscaled = "0"
+market1Eth_volatilityIndexMultiplierUnscaled = "0"
+market1Eth_maxPSlippageUnscaled = "0"
+market1Eth_maxExposureFactorUnscaled = "0.999"
+market1Eth_depthFactorUnscaled = "0"
+market1Eth_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market1Eth_velocityMultiplierUnscaled = "0"
 
 ###############################################################################
 # Collateral Pool 1 Configuration

@@ -15,13 +15,12 @@ import { IPassivePerpProxy, PerpPosition } from "../../../src/interfaces/IPassiv
 
 import {
     IOrdersGatewayProxy,
-    ConditionalOrderDetails,
     EIP712Signature,
-    ExecuteFillInput,
-    SignedMatchingEnginePayload,
-    LimitOrderPerpDetails,
-    OrderType
+    SignedMatchingEnginePayload
 } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
+import {
+    IOrdersGatewayProxyV2, OrderDetails, ExecuteFillInputV2
+} from "../../../src/interfaces/IOrdersGatewayProxyV2.sol";
 
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
@@ -93,7 +92,7 @@ contract WethCollateralPerpOBForkCheck is PerpFillForkCheck {
         // Open short position via fill at entry price.
         // perpBuyer -> short (wETH collateral), perpSeller -> long (rUSD collateral).
         {
-            (ConditionalOrderDetails memory longOrder, EIP712Signature memory longSig) = createLimitOrderPerp({
+            (OrderDetails memory longOrder, EIP712Signature memory longSig) = createLimitOrderPerp({
                 accountId: longAccountId,
                 marketId: marketId,
                 baseDelta: int256(shortSize),
@@ -103,7 +102,7 @@ contract WethCollateralPerpOBForkCheck is PerpFillForkCheck {
                 signerPk: perpSellerPk
             });
 
-            (ConditionalOrderDetails memory shortOrder, EIP712Signature memory shortSig) = createLimitOrderPerp({
+            (OrderDetails memory shortOrder, EIP712Signature memory shortSig) = createLimitOrderPerp({
                 accountId: shortAccountId,
                 marketId: marketId,
                 baseDelta: -int256(shortSize),
@@ -121,7 +120,7 @@ contract WethCollateralPerpOBForkCheck is PerpFillForkCheck {
                 nonce: 1
             });
 
-            ExecuteFillInput memory fillInput = ExecuteFillInput({
+            ExecuteFillInputV2 memory fillInput = ExecuteFillInputV2({
                 accountOrder: longOrder,
                 counterpartyOrder: shortOrder,
                 accountSignature: longSig,
@@ -130,7 +129,7 @@ contract WethCollateralPerpOBForkCheck is PerpFillForkCheck {
             });
 
             vm.prank(sec.coExecutionBot);
-            IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
+            IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput);
         }
 
         // Verify short position opened

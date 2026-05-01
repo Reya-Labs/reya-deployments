@@ -1,9 +1,9 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
-import { SpotForkCheck } from "../../reya_common/trade/Spot.fork.c.sol";
+import { SpotPerpOBForkCheck } from "../../reya_common/trade/SpotPerpOB.fork.c.sol";
 
-contract SpotForkTest is ReyaForkTest, SpotForkCheck {
+contract SpotForkTest is ReyaForkTest, SpotPerpOBForkCheck {
     uint128 constant WETH_SPOT_MARKET_ID = 1;
 
     function test_Devnet_SpotExecuteFill_WETH() public {

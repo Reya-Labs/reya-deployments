@@ -8,18 +8,25 @@ import {
     EIP712Signature as PerpEIP712Signature,
     GlobalFeeParameters
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
-import { IPassivePerpProxyV2, OracleDataPayload, OracleDataType } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
+import {
+    IPassivePerpProxyV2,
+    OracleDataPayload,
+    OracleDataType,
+    FeeTierParameters
+} from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import {
     IOrdersGatewayProxy,
-    ConditionalOrderDetails,
     EIP712Signature,
-    ExecuteFillInput,
     SignedMatchingEnginePayload,
-    FillDetails,
-    LimitOrderPerpDetails,
-    OrderType
+    FillDetails
 } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
-import { ConditionalOrderHashing } from "../../../src/utils/ConditionalOrderHashing.sol";
+import {
+    IOrdersGatewayProxyV2,
+    OrderDetails,
+    OrderTypeV2,
+    ExecuteFillInputV2
+} from "../../../src/interfaces/IOrdersGatewayProxyV2.sol";
+import { OrderDetailsHashing } from "../../../src/utils/OrderDetailsHashing.sol";
 import { FillHashing } from "../../../src/utils/FillHashing.sol";
 import { OracleDataPayloadHashing } from "../../../src/utils/OracleDataPayloadHashing.sol";
 
@@ -81,26 +88,27 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     )
         internal
         view
-        returns (ConditionalOrderDetails memory order, EIP712Signature memory sig)
+        returns (OrderDetails memory order, EIP712Signature memory sig)
     {
-        uint128[] memory counterpartyAccountIds = new uint128[](0);
-
-        bytes memory inputs = abi.encode(LimitOrderPerpDetails({ baseDelta: baseDelta, price: price }));
-
-        order = ConditionalOrderDetails({
+        order = OrderDetails({
             accountId: accountId,
             marketId: marketId,
             exchangeId: 1,
-            counterpartyAccountIds: counterpartyAccountIds,
-            orderType: uint8(OrderType.LimitOrderPerp),
-            inputs: inputs,
+            orderType: OrderTypeV2.Limit,
+            quantity: baseDelta,
+            limitPrice: price,
+            triggerPrice: 0,
+            timeInForce: 0,
+            clientOrderId: 0,
+            reduceOnly: false,
+            expiresAfter: 0,
             signer: signer,
             nonce: nonce
         });
 
         uint256 deadline = block.timestamp + 3600;
         (uint8 v, bytes32 r, bytes32 s) =
-            vm.sign(signerPk, ConditionalOrderHashing.mockCalculateDigest(order, deadline, sec.ordersGateway));
+            vm.sign(signerPk, OrderDetailsHashing.mockCalculateDigest(order, deadline, sec.ordersGateway));
 
         sig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
     }
@@ -184,7 +192,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         internal
     {
         // Buyer order (positive baseDelta = long)
-        (ConditionalOrderDetails memory buyerOrder, EIP712Signature memory buyerSig) = createLimitOrderPerp({
+        (OrderDetails memory buyerOrder, EIP712Signature memory buyerSig) = createLimitOrderPerp({
             accountId: buyerAccountId,
             marketId: marketId,
             baseDelta: int256(baseDelta),
@@ -195,7 +203,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         });
 
         // Seller order (negative baseDelta = short)
-        (ConditionalOrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({
+        (OrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({
             accountId: sellerAccountId,
             marketId: marketId,
             baseDelta: -int256(baseDelta),
@@ -215,7 +223,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         });
 
         // Execute fill
-        ExecuteFillInput memory fillInput = ExecuteFillInput({
+        ExecuteFillInputV2 memory fillInput = ExecuteFillInputV2({
             accountOrder: buyerOrder,
             counterpartyOrder: sellerOrder,
             accountSignature: buyerSig,
@@ -224,7 +232,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         });
 
         vm.prank(sec.coExecutionBot);
-        IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
+        IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput);
     }
 
     /**
@@ -338,11 +346,11 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 50_000e6);
 
         // Create two fill inputs
-        ExecuteFillInput[] memory fills = new ExecuteFillInput[](2);
+        ExecuteFillInputV2[] memory fills = new ExecuteFillInputV2[](2);
 
         // Fill 1: 0.1 ETH at $3000
         {
-            (ConditionalOrderDetails memory buyerOrder1, EIP712Signature memory buyerSig1) = createLimitOrderPerp({
+            (OrderDetails memory buyerOrder1, EIP712Signature memory buyerSig1) = createLimitOrderPerp({
                 accountId: buyerAccountId,
                 marketId: marketId,
                 baseDelta: int256(0.1e18),
@@ -352,7 +360,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 signerPk: perpBuyerPk
             });
 
-            (ConditionalOrderDetails memory sellerOrder1, EIP712Signature memory sellerSig1) = createLimitOrderPerp({
+            (OrderDetails memory sellerOrder1, EIP712Signature memory sellerSig1) = createLimitOrderPerp({
                 accountId: sellerAccountId,
                 marketId: marketId,
                 baseDelta: -int256(0.1e18),
@@ -370,7 +378,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 nonce: 1
             });
 
-            fills[0] = ExecuteFillInput({
+            fills[0] = ExecuteFillInputV2({
                 accountOrder: buyerOrder1,
                 counterpartyOrder: sellerOrder1,
                 accountSignature: buyerSig1,
@@ -381,7 +389,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
         // Fill 2: 0.2 ETH at $3010
         {
-            (ConditionalOrderDetails memory buyerOrder2, EIP712Signature memory buyerSig2) = createLimitOrderPerp({
+            (OrderDetails memory buyerOrder2, EIP712Signature memory buyerSig2) = createLimitOrderPerp({
                 accountId: buyerAccountId,
                 marketId: marketId,
                 baseDelta: int256(0.2e18),
@@ -391,7 +399,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 signerPk: perpBuyerPk
             });
 
-            (ConditionalOrderDetails memory sellerOrder2, EIP712Signature memory sellerSig2) = createLimitOrderPerp({
+            (OrderDetails memory sellerOrder2, EIP712Signature memory sellerSig2) = createLimitOrderPerp({
                 accountId: sellerAccountId,
                 marketId: marketId,
                 baseDelta: -int256(0.2e18),
@@ -409,7 +417,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 nonce: 2
             });
 
-            fills[1] = ExecuteFillInput({
+            fills[1] = ExecuteFillInputV2({
                 accountOrder: buyerOrder2,
                 counterpartyOrder: sellerOrder2,
                 accountSignature: buyerSig2,
@@ -419,7 +427,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         }
 
         vm.prank(sec.coExecutionBot);
-        IOrdersGatewayProxy(sec.ordersGateway).batchExecuteFill(fills);
+        IOrdersGatewayProxyV2(sec.ordersGateway).batchExecuteFill(fills);
 
         // Verify combined position
         PerpPosition memory buyerPosition = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, buyerAccountId);
@@ -557,8 +565,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         // Build orders manually since executePerpFill assumes perpBuyer=long
         {
             // perpBuyer's order: sell 0.5 ETH (negative baseDelta = short/close)
-            (ConditionalOrderDetails memory buyerCloseOrder, EIP712Signature memory buyerCloseSig) =
-            createLimitOrderPerp({
+            (OrderDetails memory buyerCloseOrder, EIP712Signature memory buyerCloseSig) = createLimitOrderPerp({
                 accountId: buyerAccountId,
                 marketId: marketId,
                 baseDelta: -int256(0.5e18),
@@ -569,8 +576,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             });
 
             // perpSeller's order: buy 0.5 ETH (positive baseDelta = long/close short)
-            (ConditionalOrderDetails memory sellerCloseOrder, EIP712Signature memory sellerCloseSig) =
-            createLimitOrderPerp({
+            (OrderDetails memory sellerCloseOrder, EIP712Signature memory sellerCloseSig) = createLimitOrderPerp({
                 accountId: sellerAccountId,
                 marketId: marketId,
                 baseDelta: int256(0.5e18),
@@ -589,7 +595,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 nonce: 2
             });
 
-            ExecuteFillInput memory fillInput = ExecuteFillInput({
+            ExecuteFillInputV2 memory fillInput = ExecuteFillInputV2({
                 accountOrder: sellerCloseOrder,
                 counterpartyOrder: buyerCloseOrder,
                 accountSignature: sellerCloseSig,
@@ -598,7 +604,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             });
 
             vm.prank(sec.coExecutionBot);
-            IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
+            IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput);
         }
 
         // Both should be flat
@@ -782,9 +788,9 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 100_000e6);
 
         // Build fill input in scoped blocks to avoid stack-too-deep
-        ExecuteFillInput memory fillInput;
+        ExecuteFillInputV2 memory fillInput;
         {
-            (ConditionalOrderDetails memory buyerOrder, EIP712Signature memory buyerSig) = createLimitOrderPerp({
+            (OrderDetails memory buyerOrder, EIP712Signature memory buyerSig) = createLimitOrderPerp({
                 accountId: buyerAccountId,
                 marketId: marketId,
                 baseDelta: int256(1e18),
@@ -794,7 +800,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 signerPk: perpBuyerPk
             });
 
-            (ConditionalOrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({
+            (OrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({
                 accountId: sellerAccountId,
                 marketId: marketId,
                 baseDelta: -int256(1e18),
@@ -804,7 +810,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 signerPk: perpSellerPk
             });
 
-            fillInput = ExecuteFillInput({
+            fillInput = ExecuteFillInputV2({
                 accountOrder: buyerOrder,
                 counterpartyOrder: sellerOrder,
                 accountSignature: buyerSig,
@@ -821,7 +827,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
         // Execute and verify the revert is AccountBelowIM for the buyer's account specifically
         vm.prank(sec.coExecutionBot);
-        try IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput) {
+        try IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput) {
             revert("Expected AccountBelowIM revert for underfunded buyer");
         } catch (bytes memory revertData) {
             assertEq(bytes4(revertData), ICoreProxy.AccountBelowIM.selector, "Should revert with AccountBelowIM");
@@ -867,26 +873,29 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         // Close using ReduceOnlyPerp: buyer sells 0.5 ETH
         {
             // Buyer's reduce-only sell order
-            uint128[] memory emptyIds = new uint128[](0);
-            ConditionalOrderDetails memory reduceOrder = ConditionalOrderDetails({
+            OrderDetails memory reduceOrder = OrderDetails({
                 accountId: buyerAccountId,
                 marketId: marketId,
                 exchangeId: 1,
-                counterpartyAccountIds: emptyIds,
-                orderType: uint8(OrderType.ReduceOnlyPerp),
-                inputs: abi.encode(LimitOrderPerpDetails({ baseDelta: -int256(0.5e18), price: 3000e18 })),
+                orderType: OrderTypeV2.Limit,
+                quantity: -int256(0.5e18),
+                limitPrice: 3000e18,
+                triggerPrice: 0,
+                timeInForce: 0,
+                clientOrderId: 0,
+                reduceOnly: true,
+                expiresAfter: 0,
                 signer: perpBuyer,
                 nonce: 2
             });
 
             uint256 deadline = block.timestamp + 3600;
-            (uint8 v, bytes32 r, bytes32 s) = vm.sign(
-                perpBuyerPk, ConditionalOrderHashing.mockCalculateDigest(reduceOrder, deadline, sec.ordersGateway)
-            );
+            (uint8 v, bytes32 r, bytes32 s) =
+                vm.sign(perpBuyerPk, OrderDetailsHashing.mockCalculateDigest(reduceOrder, deadline, sec.ordersGateway));
             EIP712Signature memory reduceSig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
             // Seller's regular buy order (counterparty)
-            (ConditionalOrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({
+            (OrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({
                 accountId: sellerAccountId,
                 marketId: marketId,
                 baseDelta: int256(0.5e18),
@@ -904,7 +913,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 nonce: 2
             });
 
-            ExecuteFillInput memory fillInput = ExecuteFillInput({
+            ExecuteFillInputV2 memory fillInput = ExecuteFillInputV2({
                 accountOrder: reduceOrder,
                 counterpartyOrder: sellerOrder,
                 accountSignature: reduceSig,
@@ -913,7 +922,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             });
 
             vm.prank(sec.coExecutionBot);
-            IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
+            IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput);
         }
 
         // Verify position is closed
@@ -996,27 +1005,30 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
         // Try to increase with ReduceOnlyPerp: buyer tries to buy MORE (same direction) → should revert
         // Build fill input in scoped block to avoid stack-too-deep
-        ExecuteFillInput memory fillInput;
+        ExecuteFillInputV2 memory fillInput;
         {
-            uint128[] memory emptyIds = new uint128[](0);
-            ConditionalOrderDetails memory reduceOrder = ConditionalOrderDetails({
+            OrderDetails memory reduceOrder = OrderDetails({
                 accountId: buyerAccountId,
                 marketId: marketId,
                 exchangeId: 1,
-                counterpartyAccountIds: emptyIds,
-                orderType: uint8(OrderType.ReduceOnlyPerp),
-                inputs: abi.encode(LimitOrderPerpDetails({ baseDelta: int256(0.5e18), price: 3000e18 })),
+                orderType: OrderTypeV2.Limit,
+                quantity: int256(0.5e18),
+                limitPrice: 3000e18,
+                triggerPrice: 0,
+                timeInForce: 0,
+                clientOrderId: 0,
+                reduceOnly: true,
+                expiresAfter: 0,
                 signer: perpBuyer,
                 nonce: 2
             });
 
             uint256 deadline = block.timestamp + 3600;
-            (uint8 v, bytes32 r, bytes32 s) = vm.sign(
-                perpBuyerPk, ConditionalOrderHashing.mockCalculateDigest(reduceOrder, deadline, sec.ordersGateway)
-            );
+            (uint8 v, bytes32 r, bytes32 s) =
+                vm.sign(perpBuyerPk, OrderDetailsHashing.mockCalculateDigest(reduceOrder, deadline, sec.ordersGateway));
             EIP712Signature memory reduceSig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
-            (ConditionalOrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({
+            (OrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({
                 accountId: sellerAccountId,
                 marketId: marketId,
                 baseDelta: -int256(0.5e18),
@@ -1026,7 +1038,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 signerPk: perpSellerPk
             });
 
-            fillInput = ExecuteFillInput({
+            fillInput = ExecuteFillInputV2({
                 accountOrder: reduceOrder,
                 counterpartyOrder: sellerOrder,
                 accountSignature: reduceSig,
@@ -1046,7 +1058,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         vm.expectRevert(
             abi.encodeWithSelector(IOrdersGatewayProxy.ReduceOnlyConditionFailed.selector, marketId, buyerAccountId)
         );
-        IOrdersGatewayProxy(sec.ordersGateway).executeFill(fillInput);
+        IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput);
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -1170,5 +1182,84 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         // Restore default (fees on)
         vm.prank(sec.multisig);
         IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(flagId, false);
+    }
+
+    /**
+     * @notice Exercise the maker-rebate fee path (1.0.52 feature).
+     * @dev makerRebate is the UD60x18 fraction of REMAINING taker fee (after referrer & exchange
+     *      rebates) that is credited back to the maker — not a rate on notional. With a 50%
+     *      rebate and the devnet passive-pool exchange rebate of 20%, the math is:
+     *        takerFeeDebit    = takerFeeParameter * exposure = 4bps * 3000 rUSD = 1.20 rUSD
+     *        exchangeFeeCredit = 20% * 1.20                                    = 0.24 rUSD
+     *        remaining        = 1.20 - 0 - 0.24                                = 0.96 rUSD
+     *        makerFeeCredit   = 50% * 0.96                                     = 0.48 rUSD
+     *
+     *      TODO: revisit once the fee / rebate logic is finalised with the team — the
+     *      numeric assertions below assume the current "% of remaining" semantics and
+     *      will drift if the formula or the passive-pool exchange rebate cut changes.
+     */
+    function check_PerpFillMakerRebate(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        // Configure tier 0: taker 4bps, no maker fee, 50% maker rebate (fraction of remaining).
+        FeeTierParameters memory originalTier0 = IPassivePerpProxyV2(sec.perp).getFeeTierParameters(0);
+        vm.prank(sec.multisig);
+        IPassivePerpProxyV2(sec.perp).setFeeTierParameters(
+            0, FeeTierParameters({ takerFee: 4e14, makerFee: 0, makerRebate: 5e17 })
+        );
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 100_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 100_000e6);
+
+        int256 buyerBalBefore = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).realBalance;
+        int256 sellerBalBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
+
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 1e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        int256 buyerDelta =
+            ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).realBalance - buyerBalBefore;
+        int256 sellerDelta =
+            ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance - sellerBalBefore;
+
+        // Taker (buyer) pays 4bps of 3000 rUSD/ETH on 1 ETH = 1.2 rUSD debit (6-decimal rUSD).
+        assertEq(buyerDelta, -int256(1.2e6), "Taker should pay 4bps fee");
+        // Maker (seller) receives 50% of remaining (after 20% exchange rebate) = 0.48 rUSD credit.
+        assertEq(sellerDelta, int256(0.48e6), "Maker should receive 50% of remaining as rebate credit");
+
+        // Restore tier 0 so any subsequent tests see defaults.
+        vm.prank(sec.multisig);
+        IPassivePerpProxyV2(sec.perp).setFeeTierParameters(0, originalTier0);
+    }
+
+    /**
+     * @notice Assert that setFeeTierParameters rejects both maker fee and rebate being nonzero.
+     * @dev Mutual-exclusion invariant introduced with the rebate field in 1.0.52.
+     */
+    function check_MakerFeeAndRebateMutuallyExclusive() internal {
+        FeeTierParameters memory originalTier0 = IPassivePerpProxyV2(sec.perp).getFeeTierParameters(0);
+
+        vm.prank(sec.multisig);
+        vm.expectRevert(IPassivePerpProxyV2.MakerFeeAndRebateBothNonZero.selector);
+        IPassivePerpProxyV2(sec.perp).setFeeTierParameters(
+            0, FeeTierParameters({ takerFee: 4e14, makerFee: 4e14, makerRebate: 2e14 })
+        );
+
+        // Nothing should have changed.
+        FeeTierParameters memory after_ = IPassivePerpProxyV2(sec.perp).getFeeTierParameters(0);
+        assertEq(after_.takerFee, originalTier0.takerFee, "takerFee unchanged");
+        assertEq(after_.makerFee, originalTier0.makerFee, "makerFee unchanged");
+        assertEq(after_.makerRebate, originalTier0.makerRebate, "makerRebate unchanged");
     }
 }
