@@ -228,7 +228,6 @@ market1Eth_depthFactorUnscaled = "0"
 market1Eth_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market1Eth_velocityMultiplierUnscaled = "0"
 
-
 ###############################################################################
 # Collateral Pool 1 Configuration
 ###############################################################################
