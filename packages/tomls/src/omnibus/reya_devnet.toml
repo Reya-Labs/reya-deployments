@@ -127,10 +127,19 @@ matching_engine_publisher1 = "0xD3D5911FE8ab109645f931Cf65B341d5dd672eFB"
 
 # todo: p1: get rid of conditional order bot
 ###############################################################################
-# CO Execution Bots (conditional order execution)
+# PerpOB oracle data pushers (msg.sender of PassivePerpProxy.pushOracleData).
+# Publisher (EIP-712 signer) is matching_engine_publisher1, whitelisted as
+# oraclePublishers in devnet/passive_perp/feature_flags.toml.
+###############################################################################
+[var.oracle_pushers]
+oraclePusher1 = "0x61548af5B40Ee331a30aBecA9Ff2237D6C753462"
+oraclePusher2 = "0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3"
+
+###############################################################################
+# CO Execution Bots (conditional order execution + batch fill execution)
 ###############################################################################
 [var.co_execution_bots]
-co_execution_bot1 = "0xB6EaF546b84E1f917579FC4FD3d7082DfE2ba212"
+co_execution_bot1 = "0xc9A01c03AEE926B89b83F7781b15B822807E1d33"
 
 ###############################################################################
 # Fee Configuration Bots
