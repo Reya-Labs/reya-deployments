@@ -22,7 +22,7 @@ include = [
     "../devnet/collateral_pools/collateral_pool_1.toml",
 ]
 
-version = "1.0.1"
+version = "1.0.2"
 
 ###############################################################################
 # Existing Cronos Contract Addresses (reused, not redeployed)
@@ -47,14 +47,14 @@ passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD822755
 ###############################################################################
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.28@router"
+coreRouterPackage = "reya-core:1.0.31@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.52@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.53@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
-ordersGatewayRouterPackage = "reya-orders-gateway:1.0.22@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.23@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
-peripheryRouterPackage = "reya-periphery:1.0.15@router"
+peripheryRouterPackage = "reya-periphery:1.0.16@router"
 
 ###############################################################################
 # Account NFT
