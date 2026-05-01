@@ -22,7 +22,7 @@ include = [
     "../devnet/collateral_pools/collateral_pool_1.toml",
 ]
 
-version = "1.0.2"
+version = "1.0.3"
 
 ###############################################################################
 # Existing Cronos Contract Addresses (reused, not redeployed)
@@ -47,7 +47,7 @@ passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD822755
 ###############################################################################
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.31@router"
+coreRouterPackage = "reya-core:1.0.32@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.53@router"
@@ -77,10 +77,10 @@ oracleManagerProxy = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
 # Initial Proxy Salts (devnet-specific to avoid collision with Cronos)
 ###############################################################################
 [var.initial_proxy_vars]
-coreSalt = "core-devnet2"
-passivePerpSalt = "passive-perp-devnet2"
-ordersGatewaySalt = "orders-gateway-devnet2"
-peripherySalt = "periphery-devnet2"
+coreSalt = "core-devnet3"
+passivePerpSalt = "passive-perp-devnet3"
+ordersGatewaySalt = "orders-gateway-devnet3"
+peripherySalt = "periphery-devnet3"
 
 ###############################################################################
 # Proxy Upgrade Variables (the 4 fresh proxies)

@@ -50,11 +50,11 @@ struct ExecuteFillInputV2 {
 
 interface IOrdersGatewayProxyV2 {
     // ── FillExecutionModule ──────────────────────────────────────────────
-    function executeFill(ExecuteFillInputV2 calldata input) external returns (bytes memory outputs);
+    function executeFill(ExecuteFillInputV2 calldata input) external;
     function cancelNonce(address signer, uint256 nonce) external;
 
     // ── BatchExecutionModule ─────────────────────────────────────────────
-    function batchExecuteFill(ExecuteFillInputV2[] calldata inputs) external returns (bytes[] memory outputs);
+    function batchExecuteFill(ExecuteFillInputV2[] calldata inputs) external;
 
     // ── ConfigurationModule ──────────────────────────────────────────────
     function managePermissionBySig(

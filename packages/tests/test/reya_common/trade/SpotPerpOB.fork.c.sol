@@ -371,9 +371,7 @@ contract SpotPerpOBForkCheck is BaseReyaForkTest {
         int256 sellerWethBefore = ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.weth).netDeposits;
 
         vm.prank(sec.coExecutionBot);
-        bytes[] memory outputs = IOrdersGatewayProxyV2(sec.ordersGateway).batchExecuteFill(fills);
-
-        assertEq(outputs.length, 2, "Should return 2 outputs");
+        IOrdersGatewayProxyV2(sec.ordersGateway).batchExecuteFill(fills);
 
         int256 buyerRusdAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.rusd).netDeposits;
         int256 buyerWethAfter = ICoreProxy(sec.core).getCollateralInfo(buyerAccountId, sec.weth).netDeposits;
