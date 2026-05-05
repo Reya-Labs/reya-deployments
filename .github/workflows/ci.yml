@@ -46,3 +46,21 @@ jobs:
       - name: Warn on Cronos Test Failure
         if: steps.reya_cronos_test.outcome == 'failure'
         run: echo "::warning::Reya Cronos (testnet) tests failed"
+      - name: Reya Devnet Simulate
+        id: reya_devnet_simulate
+        continue-on-error: true
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
+        run: "yarn reya_devnet:simulate"
+      - name: Warn on Devnet Simulate Failure
+        if: steps.reya_devnet_simulate.outcome == 'failure'
+        run: echo "::warning::Reya Devnet simulation failed"
+      - name: Reya Devnet Cannon Test
+        id: reya_devnet_test
+        continue-on-error: true
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
+        run: "yarn reya_devnet:test"
+      - name: Warn on Devnet Test Failure
+        if: steps.reya_devnet_test.outcome == 'failure'
+        run: echo "::warning::Reya Devnet fork tests failed"
