@@ -21,4 +21,12 @@ contract PermissionsForkTest is ReyaForkTest, PermissionsPerpOBForkCheck {
     function test_Devnet_RevokeOraclePusher_ETH() public {
         check_RevokeOraclePusher(ETH_MARKET_ID);
     }
+
+    function test_Devnet_OraclePushersFeatureFlagState() public view {
+        check_OraclePushersFeatureFlagState();
+    }
+
+    function test_Devnet_MulticallFeatureFlagState() public view {
+        check_MulticallFeatureFlagState();
+    }
 }

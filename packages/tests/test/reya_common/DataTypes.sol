@@ -61,6 +61,8 @@ struct StaticEcosystem {
     // Reya bots
     address coExecutionBot;
     address poolRebalancer;
+    address oraclePusher1;
+    address oraclePusher2;
     address rseliniCustodian;
     address rseliniSubscriber;
     address rseliniRedeemer;

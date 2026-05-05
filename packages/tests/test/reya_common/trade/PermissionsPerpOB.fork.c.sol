@@ -39,6 +39,7 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
     bytes32 internal constant ORACLE_PUSHERS_FLAG = keccak256(bytes("oraclePushers"));
     bytes32 internal constant ORACLE_PUBLISHERS_FLAG = keccak256(bytes("oraclePublishers"));
     bytes32 internal constant MATCHING_ENGINE_PUBLISHER_FLAG = keccak256(bytes("matching_engine_publisher"));
+    bytes32 internal constant MULTICALL_FLAG = keccak256(bytes("multicall"));
 
     /**
      * @notice Push a mark price via an authorized oracle publisher
@@ -222,6 +223,44 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
             abi.encodeWithSelector(IOrdersGatewayProxy.UnauthorizedMatchingEnginePublisher.selector, unauthorizedME)
         );
         IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput);
+    }
+
+    /**
+     * @notice Verify both oracle pushers are in the PassivePerp "oraclePushers" allowlist.
+     * @dev ensureOraclePusherAccess checks this flag against msg.sender inside pushOracleData.
+     */
+    function check_OraclePushersFeatureFlagState() internal view {
+        address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(ORACLE_PUSHERS_FLAG);
+
+        bool pusher1Found = false;
+        bool pusher2Found = false;
+        for (uint256 i = 0; i < allowlist.length; i++) {
+            if (allowlist[i] == sec.oraclePusher1) pusher1Found = true;
+            if (allowlist[i] == sec.oraclePusher2) pusher2Found = true;
+        }
+
+        assertTrue(pusher1Found, "oraclePusher1 missing from PassivePerp oraclePushers allowlist");
+        assertTrue(pusher2Found, "oraclePusher2 missing from PassivePerp oraclePushers allowlist");
+    }
+
+    /**
+     * @notice Verify both oracle pushers are in the PassivePerp "multicall" allowlist.
+     * @dev tryAggregate checks this flag against msg.sender before delegatecalling into
+     *      pushOracleData — without it every gas estimation and live submission reverts
+     *      with FeatureUnavailable, even though oraclePushers access is correctly granted.
+     */
+    function check_MulticallFeatureFlagState() internal view {
+        address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(MULTICALL_FLAG);
+
+        bool pusher1Found = false;
+        bool pusher2Found = false;
+        for (uint256 i = 0; i < allowlist.length; i++) {
+            if (allowlist[i] == sec.oraclePusher1) pusher1Found = true;
+            if (allowlist[i] == sec.oraclePusher2) pusher2Found = true;
+        }
+
+        assertTrue(pusher1Found, "oraclePusher1 missing from PassivePerp multicall allowlist");
+        assertTrue(pusher2Found, "oraclePusher2 missing from PassivePerp multicall allowlist");
     }
 
     /**

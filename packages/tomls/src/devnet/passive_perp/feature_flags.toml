@@ -61,3 +61,26 @@ args = [
     "<%= settings.matching_engine_publisher1 %>",
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
+
+# PerpOB oracle pushers must also be on the multicall allowlist because
+# pushOracleData is batched via PassivePerpProxy.tryAggregate, which checks
+# the "multicall" feature flag against msg.sender before delegatecalling.
+[invoke.passive_perp_set_multicall_oracle_pusher1]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.oraclePusher1 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_multicall_oracle_pusher2]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.oraclePusher2 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]

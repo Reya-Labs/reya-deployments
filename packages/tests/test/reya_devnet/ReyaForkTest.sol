@@ -51,6 +51,8 @@ contract ReyaForkTest is BaseReyaForkTest {
         // Reya bots
         sec.coExecutionBot = 0xc9A01c03AEE926B89b83F7781b15B822807E1d33;
         sec.setMarketZeroFeeBot = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+        sec.oraclePusher1 = 0x61548af5B40Ee331a30aBecA9Ff2237D6C753462;
+        sec.oraclePusher2 = 0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3;
 
         // Spot oracle node ids (reuse Cronos Stork nodes for ETH spot price)
         sec.ethUsdStorkNodeId = 0x6f1442b15af1cde852d45cdd67336b330257c9df23834909159097b25b57936c;
