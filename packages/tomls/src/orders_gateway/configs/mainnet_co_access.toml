@@ -1,6 +1,0 @@
-[invoke.orders_gateway_enable_free_execution_access]
-target = ["OrdersGatewayProxy"]
-fromCall.func = "owner"
-func = "setFeatureFlagAllowAll"
-args = ["<%= keccak256(hexlify('conditional_orders')) %>", true]
-depends = ["invoke.upgrade_orders_gateway_proxy"]

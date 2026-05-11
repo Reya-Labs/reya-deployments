@@ -1,0 +1,86 @@
+# Devnet passive perp feature flags: basic unpause + pausers only
+# Excludes: FTM market pause, fee config bots, prog comp exchange
+[invoke.passive_perp_unpause]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_pausers]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_fee_config_system_owner]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('configureFees')) %>", "<%= settings.owner %>"]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+# PerpOB oracle push permissions
+# - oraclePushers: msg.sender of pushOracleData (two relay bots)
+# - oraclePublishers: EIP-712 signer (single = matching engine publisher)
+[invoke.passive_perp_set_oracle_pusher1]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('oraclePushers')) %>",
+    "<%= settings.oraclePusher1 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_oracle_pusher2]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('oraclePushers')) %>",
+    "<%= settings.oraclePusher2 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_oracle_publisher_me]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('oraclePublishers')) %>",
+    "<%= settings.matching_engine_publisher1 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+# PerpOB oracle pushers must also be on the multicall allowlist because
+# pushOracleData is batched via PassivePerpProxy.tryAggregate, which checks
+# the "multicall" feature flag against msg.sender before delegatecalling.
+[invoke.passive_perp_set_multicall_oracle_pusher1]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.oraclePusher1 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_multicall_oracle_pusher2]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.oraclePusher2 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]

@@ -1,0 +1,14 @@
+# Devnet collateral pool config: 1 market (ETH), 2 collaterals (rUSD, wETH)
+include = [
+    "market_1eth.toml",
+    "risk_multipliers.toml",
+    "risk_matrix.toml",
+    "liquidations.toml",
+    "tokens/rusd.toml",
+    "tokens/weth.toml",
+]
+
+# Collateral pool anchor - only depends on market 1 ETH
+[var.cp_1rusd_vars]
+cp1RusdId = "<%= settings.market1EthId %>"
+depends = ["var.market_1eth_vars"]

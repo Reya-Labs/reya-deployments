@@ -1,0 +1,11 @@
+# Devnet risk multipliers: skips pool IM multiplier (requires PassivePool sendCallToCore)
+[invoke.cp_1rusd_set_risk_multipliers]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
+func = "configureRiskMultipliers"
+args = [
+    "<%= settings.cp1RusdId %>",
+    { imMultiplier = "<%= parseEther(settings.cp1Rusd_imMultiplierUnscaled) %>", mmrMultiplier = "<%= parseEther(settings.cp1Rusd_mmrMultiplierUnscaled) %>", dutchMultiplier = "<%= parseEther(settings.cp1Rusd_dutchMultiplierUnscaled) %>", adlMultiplier = "<%= parseEther(settings.cp1Rusd_adlMultiplierUnscaled) %>", imBufferMultiplier = "<%= parseEther(settings.cp1Rusd_imBufferMultiplierUnscaled) %>" },
+]
+depends = ["var.cp_1rusd_vars"]

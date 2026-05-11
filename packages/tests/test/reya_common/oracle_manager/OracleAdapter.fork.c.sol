@@ -10,14 +10,20 @@ import {
 contract OracleAdapterForkCheck is BaseReyaForkTest {
     function check_fulfillOracleQuery_StorkOracleAdapter() public {
         (address futurePublisher, uint256 futurePublisherPK) = makeAddrAndKey("futurePublisher");
-        (address futureExecutor,) = makeAddrAndKey("futureExecutor");
+
+        // Use an existing allowlisted executor — the offchain wallets we run in production —
+        // so the feature-flag gate passes and the call reaches the publisher check below.
+        address[] memory executors =
+            IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowlist(keccak256(bytes("executors")));
+        require(executors.length > 0, "no allowlisted executors");
+        address executor = executors[0];
 
         // create a StorkPricePayload and sign it
         StorkSignedPayload memory storkSignedPayload =
             createSignedPricePayload(futurePublisher, futurePublisherPK, block.timestamp);
 
         // expect revert since the publisher is not authorized yet
-        vm.prank(futureExecutor);
+        vm.prank(executor);
         vm.expectRevert(abi.encodeWithSelector(IOracleAdaptersProxy.UnauthorizedPublisher.selector, futurePublisher));
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(abi.encode(storkSignedPayload));
 
@@ -28,7 +34,7 @@ contract OracleAdapterForkCheck is BaseReyaForkTest {
         );
 
         // expect successful update
-        vm.prank(futureExecutor);
+        vm.prank(executor);
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(abi.encode(storkSignedPayload));
 
         // create an earlier StorkPricePayload and sign it
@@ -36,7 +42,7 @@ contract OracleAdapterForkCheck is BaseReyaForkTest {
             createSignedPricePayload(futurePublisher, futurePublisherPK, block.timestamp - 1);
 
         // expect revert since we push an earlier price payload
-        vm.prank(futureExecutor);
+        vm.prank(executor);
         vm.expectRevert(
             abi.encodeWithSelector(
                 IOracleAdaptersProxy.StorkPayloadOlderThanLatest.selector,
