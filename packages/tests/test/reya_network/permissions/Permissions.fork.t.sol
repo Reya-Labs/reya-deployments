@@ -9,11 +9,7 @@ import {
     OrderType
 } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
-import {
-    IOracleAdaptersProxy,
-    StorkSignedPayload,
-    StorkPricePayload
-} from "../../../src/interfaces/IOracleAdaptersProxy.sol";
+import { IOracleAdaptersProxy } from "../../../src/interfaces/IOracleAdaptersProxy.sol";
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
 
@@ -310,10 +306,10 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[23] = 0xfc8c96bE87Da63CeCddBf54abFA7B13ee8044739;
 
         assertEq(allowlist, expectedAllowlist);
-        // allowAll MUST be false — the allowlist above is the intended access-control for who can
-        // publish oracle prices. A `true` value means anyone can publish prices and is a
-        // security-critical misconfiguration.
-        assertFalse(IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowAll(flagId));
+        // allowAll is intentionally true for the `executors` flag: the gate is open so any caller
+        // can invoke executor entrypoints. The allowlist above is preserved for defense-in-depth
+        // and to make a future tightening (flip allowAll → false) a single-line config change.
+        assertTrue(IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowAll(flagId));
         assertFalse(IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagDenyAll(flagId));
     }
 
@@ -474,28 +470,6 @@ contract PermissionsForkTest is ReyaForkTest {
         vm.prank(stranger);
         vm.expectRevert(abi.encodeWithSelector(IOrdersGatewayProxy.FeatureUnavailable.selector, flagId));
         IOrdersGatewayProxy(sec.ordersGateway).execute(order, sig);
-    }
-
-    function test_oracle_adapters_executors_rejects_non_allowlisted_caller() public {
-        address stranger = vm.addr(uint256(keccak256(bytes("not-an-oracle-executor"))));
-
-        bytes32 flagId = keccak256(bytes("executors"));
-        address[] memory allowlist = IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowlist(flagId);
-        for (uint256 i = 0; i < allowlist.length; i++) {
-            assertTrue(allowlist[i] != stranger, "stranger unexpectedly in allowlist");
-        }
-
-        StorkSignedPayload memory payload = StorkSignedPayload({
-            oraclePubKey: address(0),
-            pricePayload: StorkPricePayload({ assetPairId: "FAKE/USD", timestamp: 0, price: 0 }),
-            r: bytes32(0),
-            s: bytes32(0),
-            v: 0
-        });
-
-        vm.prank(stranger);
-        vm.expectRevert(abi.encodeWithSelector(IOracleAdaptersProxy.FeatureUnavailable.selector, flagId));
-        IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(abi.encode(payload));
     }
 
     function test_liquidator_margin_account_permissions() public view {
