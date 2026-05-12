@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.135"
+version = "1.0.136"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -155,8 +155,9 @@ co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688" # conditional o
 co_execution_bot3 = "0xf9E50a2584CFBD3d23468A395114461E5154fD61" # main API executor 1
 co_execution_bot4 = "0xdC9f85dE54543eddD2Cc61e63D5DD8DFFb0b2cF4" # main API executor 2
 co_execution_bot5 = "0xf5dD8F0D98138330F6b5927B019E5B94B3C1E919" # main API executor 3
-co_execution_bot6 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
+co_execution_bot6 = "0x744b23B8E86Af45b686E9BBf7cF463e6ED79a984" # ws-exec relayer
 co_execution_bot7 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
+co_execution_bot8 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
 
 [var.matching_engine_publishers]
 matching_engine_publisher1 = "0x89340FA8559968c2ADe406C6CcAd6C74F892472d"
