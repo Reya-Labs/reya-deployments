@@ -4,7 +4,7 @@ fromCall.func = "owner"
 func = "setGlobalCollateralConfig"
 args = [
     "<%= contracts.RAMBERProxy.address %>",
-    { collateralAdapter = "<%= settings.ramberCollateralAdapter %>", withdrawalWindowSize = "<%= settings.ramberWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.ramberWithdrawalTvlPercentageLimitUnscaled)  %>" },
+    { collateralAdapter_DEPRECATED = "<%= settings.ramberCollateralAdapter %>", withdrawalWindowSize = "<%= settings.ramberWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.ramberWithdrawalTvlPercentageLimitUnscaled)  %>" },
 ]
 depends = [
     'invoke.upgrade_core_proxy',
