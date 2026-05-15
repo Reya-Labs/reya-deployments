@@ -82,7 +82,7 @@ depends = ["invoke.upgrade_core_proxy", "var.market_41pengu_vars"]
 #####################################
 [invoke.market_41pengu_set_market_config]
 target = ["PassivePerpProxy"]
-fromCall.func = "owner"
+from = "0xE610aBbFf27E1f62F87465478EF9F8ACD1EB1656"
 func = "setMarketConfiguration"
 args = [
     "<%= settings.market41PenguId %>",
