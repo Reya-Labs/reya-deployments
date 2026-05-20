@@ -312,7 +312,13 @@ cp1Rusd_srusd_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_srusdParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
 cp1Rusd_srusdParentConfig_priceHaircutUnscaled = "0.1"
 cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
-cp1Rusd_srusdParentConfig_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+# Reuse the Cronos Stork sRUSD/USDC pool node — devnet shares the Cronos
+# OracleManager proxy (sec.oracleManager = 0x689f...64eA, see
+# `tests/test/reya_devnet/ReyaForkTest.sol`), so any node registered for
+# cronos is reachable here. Required because margin / IM checks traverse
+# pool-collateral parent oracles and revert with UnprocessableNode if the
+# id is zero — the perp test suite tripped on that before this fix.
+cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdUsdcPoolNodeId %>"
 
 ###############################################################################
 # Spot Markets (WETH/rUSD, sRUSD/rUSD)
@@ -342,6 +348,10 @@ srusdRusdSpot_oracleNodeId = "0x000000000000000000000000000000000000000000000000
 rusdUsdNodeId = "0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857"
 ethUsdcNodeIdStork = "0xb19e4d8ea5f0a3752fbd19515075063f7486e6954b8aa2b3d462c61726c46619"
 ethUsdcMarkNodeIdStork = "0x14dba23a7f8775bceefeedb4266fbe135b949ae40fe08e491f2a476d3448c66f"
+# Stork sRUSD/USDC pool node — already registered on the Cronos OracleManager
+# (devnet reuses the same proxy), so we just need to reference the id.
+# Source: reya_cronos.toml / ReyaForkTest.sol:150.
+srusdUsdcPoolNodeId = "0xc380c1273590e190bc15a196fdb2b5750abdd0eeb868cc8385dd384761e21ddb"
 
 ###############################################################################
 # Chain IDs (for periphery bridging connectors)
