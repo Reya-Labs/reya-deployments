@@ -291,6 +291,24 @@ cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.10"
 cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.02"
 cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 
+# sRUSD collateral pool config. Cap / fee / threshold values mirror
+# `reya_cronos.toml` and `reya_network.toml` byte-for-byte. ParentConfig
+# uses rUSD as the parent collateral (`contracts.RUSDProxy.address` on
+# cronos/mainnet) and leaves the oracle node id zero — devnet doesn't host
+# a Stork sRUSD/USDC pool node, and we don't need oracle-validated price
+# routing for the SDK suite's `test_asset_definitions` check. If sRUSD-as-
+# collateral ever needs to be exercised under load on devnet, swap the
+# zero oracleNodeId for a real node + add the staleness setup.
+cp1Rusd_srusd_capUnscaled = "<%= formatUnits(MaxUint256, parseInt(settings.srusdTokenDecimals)) %>"
+cp1Rusd_srusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_srusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_srusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_srusdParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_srusdParentConfig_priceHaircutUnscaled = "0.1"
+cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
+cp1Rusd_srusdParentConfig_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+
 ###############################################################################
 # Spot Markets (WETH/rUSD, sRUSD/rUSD)
 ###############################################################################
