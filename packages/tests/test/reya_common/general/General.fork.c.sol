@@ -610,8 +610,11 @@ contract GeneralForkCheck is BaseReyaForkTest {
             ls.meanPriceSRUSD = 1.05 * 1e18;
             ls.maxDeviationSRUSD = 0.02 * 1e18;
 
-            ls.meanPriceRSELINI = 1.07 * 1e18;
-            ls.maxDeviationRSELINI = 0.02 * 1e18;
+            // rSELINI is a yield-bearing LM share token that drifts upward
+            // over time. Widened to ±0.05 (matching RAMBER / SUSDE) so a few
+            // months of yield accrual don't trip the test again.
+            ls.meanPriceRSELINI = 1.1 * 1e18;
+            ls.maxDeviationRSELINI = 0.05 * 1e18;
 
             ls.meanPriceRAMBER = 1.15 * 1e18;
             ls.maxDeviationRAMBER = 0.05 * 1e18;
