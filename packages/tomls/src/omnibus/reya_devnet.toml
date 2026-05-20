@@ -244,7 +244,12 @@ market1Eth_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "1"
-cp1Rusd_maxCollaterals = "2"
+# Was "2" (rUSD + wETH). Bumped to "12" to match cronos / mainnet so devnet
+# can layer in more collaterals without breaching the limit (today the next
+# one is sRUSD; see `setCollateralConfig` in `devnet/collateral_pools/
+# tokens/srusd.toml` — it reverts with `CollateralLimitBreached("1","3","2")`
+# at the old cap).
+cp1Rusd_maxCollaterals = "12"
 
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
 
