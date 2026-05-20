@@ -11,7 +11,9 @@ import { IOracleManagerProxy } from "../../src/interfaces/IOracleManagerProxy.so
  * @title ReyaForkTest (Devnet)
  * @notice Devnet environment configuration for perpOB fork tests
  * @dev Shares the Cronos testnet chain (chainId 89346162) but uses fresh proxy deployments.
- *      Minimal setup: 1 perp market (ETH), 1 spot market (WETH), 2 collaterals (rUSD, wETH).
+ *      Minimal setup: 1 perp market (ETH), 2 spot markets (WETHRUSD enabled,
+ *      SRUSDRUSD created+configured but not orderbook-enabled — mirrors
+ *      cronos/mainnet), 3 collaterals (rUSD, wETH, sRUSD).
  *      No passive pool counterparty — uses dedicated backstop liquidator account.
  *
  */
@@ -43,6 +45,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.rusd = 0x9DE724e7b3facF87Ce39465D3D712717182e3e55;
         sec.usdc = 0xfA27c7c6051344263533cc365274d9569b0272A8;
         sec.weth = 0x2CF56315ACC7E791B1A0135c09d8D5C8dBCD2F14;
+        sec.srusd = 0xb9F531A54Fc0E9AdCa1b931d9533B4e49bB2fAD6;
 
         // Reya variables
         sec.passivePoolId = 1;
@@ -59,6 +62,15 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.ethUsdcStorkNodeId = 0xb19e4d8ea5f0a3752fbd19515075063f7486e6954b8aa2b3d462c61726c46619;
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
         sec.usdcUsdStorkNodeId = 0x28c79729ca502a5cd2565613c087a3bda098a1c78e3f3f45733d03c3482f099d;
+
+        // sRUSD parent-collateral oracle (reused from Cronos). Devnet's
+        // sRUSD entry on collateral_pool_1 uses this for parent-config
+        // pricing — see `cp1Rusd_srusdParentConfig_oracleNodeId` in the
+        // devnet omnibus. Staleness bumped to 10_000s so the fork (which
+        // may be pointed at an older block) doesn't trip OracleStale.
+        sec.srusdUsdcPoolNodeId = 0xc380c1273590e190bc15a196fdb2b5750abdd0eeb868cc8385dd384761e21ddb;
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.srusdUsdcPoolNodeId, 10_000);
 
         // Mark price node ids (ETH only — may differ from cronos after perpOB deploy)
         sec.ethUsdStorkMarkNodeId = 0x3f4c9f3d5efcbd98002f057a6c0acd0313aa63ab20334e611a30261b89acc1fa;
