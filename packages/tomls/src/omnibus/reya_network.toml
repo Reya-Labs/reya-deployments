@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.151"
+version = "1.0.152"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -1775,7 +1775,7 @@ market44Virtual_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_45Ai16z]
 market45Ai16z_riskMatrixIndex = "0"
-market45Ai16z_maxOpenBaseUnscaled = "3142291"
+market45Ai16z_maxOpenBaseUnscaled = "35000"
 market45Ai16z_velocityMultiplierUnscaled = "75"
 market45Ai16z_oracleNodeId = "<%= settings.ai16zUsdcMarkNodeIdStork %>"
 market45Ai16z_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -2015,7 +2015,7 @@ market56Inj_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_57Move]
 market57Move_riskMatrixIndex = "0"
-market57Move_maxOpenBaseUnscaled = "5307334"
+market57Move_maxOpenBaseUnscaled = "165000"
 market57Move_velocityMultiplierUnscaled = "23.7"
 market57Move_oracleNodeId = "<%= settings.moveUsdcMarkNodeIdStork %>"
 market57Move_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -2255,7 +2255,7 @@ market68Zora_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_69Prove]
 market69Prove_riskMatrixIndex = "0"
-market69Prove_maxOpenBaseUnscaled = "428077"
+market69Prove_maxOpenBaseUnscaled = "235705"
 market69Prove_velocityMultiplierUnscaled = "23.7"
 market69Prove_oracleNodeId = "<%= settings.proveUsdcMarkNodeIdStork %>"
 market69Prove_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -2335,7 +2335,7 @@ market72Xpl_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_73Wlfi]
 market73Wlfi_riskMatrixIndex = "0"
-market73Wlfi_maxOpenBaseUnscaled = "1091243"
+market73Wlfi_maxOpenBaseUnscaled = "500"
 market73Wlfi_velocityMultiplierUnscaled = "52.1"
 market73Wlfi_oracleNodeId = "<%= settings.wlfiUsdcMarkNodeIdStork %>"
 market73Wlfi_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -2375,7 +2375,7 @@ market74Linea_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_75Mega]
 market75Mega_riskMatrixIndex = "0"
-market75Mega_maxOpenBaseUnscaled = "12500"
+market75Mega_maxOpenBaseUnscaled = "8500"
 market75Mega_velocityMultiplierUnscaled = "1.4"
 market75Mega_oracleNodeId = "<%= settings.megaUsdcMarkNodeIdStork %>"
 market75Mega_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
