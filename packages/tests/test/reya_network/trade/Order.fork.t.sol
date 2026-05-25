@@ -33,6 +33,10 @@ contract OrderForkTest is ReyaForkTest, OrderForkCheck {
     }
 
     function test_MatchOrder_GasCost_ETH_market() public {
-        check_MatchOrder_GasCost(1, 11_000_000, 2_000_000);
+        // Open-trade ceiling bumped from 11M to 11.5M: natural state drift on
+        // forked mainnet has been crossing the prior tight ceiling by tens of
+        // thousands of gas (e.g. 11_001_876 on PR #475's CI). 11.5M still
+        // catches a real regression (~5% headroom) without flaking on drift.
+        check_MatchOrder_GasCost(1, 11_500_000, 2_000_000);
     }
 }
