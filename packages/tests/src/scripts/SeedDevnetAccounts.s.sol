@@ -36,6 +36,7 @@ contract SeedDevnetAccounts is Script, Test {
             ICoreProxy(core).deposit(accountId, rusd, amountPerAccount);
 
             assertEq(ICoreProxy(core).getAccountOwner(accountId), target, "owner mismatch");
+            // solhint-disable-next-line no-console
             console2.log("seeded", target, "accountId:", uint256(accountId));
         }
     }
