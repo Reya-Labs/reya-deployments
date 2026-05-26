@@ -237,7 +237,7 @@ contract PermissionsForkTest is ReyaForkTest {
         bytes32 flagId = keccak256(bytes("conditional_orders"));
         address[] memory allowlist = IOrdersGatewayProxy(sec.ordersGateway).getFeatureFlagAllowlist(flagId);
 
-        address[] memory expectedAllowlist = new address[](13);
+        address[] memory expectedAllowlist = new address[](14);
         expectedAllowlist[0] = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
         expectedAllowlist[1] = 0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688;
         expectedAllowlist[2] = 0x10eE819bc1E25cd2Eb3CE023724209f6f56Ef103;
@@ -251,6 +251,7 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[10] = 0xa4d537B5C310CEF9514e7255Fca1268A2B80d67D;
         expectedAllowlist[11] = 0xdDfD9f70972742bE561eFb89E9CF5BEF848729F8;
         expectedAllowlist[12] = 0x7B6365ECDf114Ec3F3c84285990A22E6DF126403;
+        expectedAllowlist[13] = 0x9bf831e7C8e2584Ab63c860Fa2d9Dc16939E1D33;
 
         assertEq(allowlist, expectedAllowlist);
         // allowAll is expected to be FALSE — conditional_orders should only be executable by the
