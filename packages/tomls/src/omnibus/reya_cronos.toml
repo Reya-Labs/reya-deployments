@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.137"
+version = "1.0.139"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -158,6 +158,7 @@ co_execution_bot5 = "0xf5dD8F0D98138330F6b5927B019E5B94B3C1E919" # main API exec
 co_execution_bot6 = "0x744b23B8E86Af45b686E9BBf7cF463e6ED79a984" # ws-exec relayer
 co_execution_bot7 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
 co_execution_bot8 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
+co_execution_bot9 = "0x0000000000000000000000000000000000000000" # duplicated (free slot)
 
 [var.matching_engine_publishers]
 matching_engine_publisher1 = "0x89340FA8559968c2ADe406C6CcAd6C74F892472d"
@@ -1112,7 +1113,7 @@ market14Sei_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_15zro]
 market15Zro_riskMatrixIndex = "0"
-market15Zro_maxOpenBaseUnscaled = "54057"
+market15Zro_maxOpenBaseUnscaled = "5600"
 market15Zro_velocityMultiplierUnscaled = "37.2"
 market15Zro_oracleNodeId = "<%= settings.zroUsdcMarkNodeIdStork %>"
 market15Zro_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1312,7 +1313,7 @@ market24Bnb_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_25Jto]
 market25Jto_riskMatrixIndex = "0"
-market25Jto_maxOpenBaseUnscaled = "2000"
+market25Jto_maxOpenBaseUnscaled = "2875"
 market25Jto_velocityMultiplierUnscaled = "135"
 market25Jto_oracleNodeId = "<%= settings.jtoUsdcMarkNodeIdStork %>"
 market25Jto_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1972,7 +1973,7 @@ market57Move_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_58Bera]
 market58Bera_riskMatrixIndex = "0"
-market58Bera_maxOpenBaseUnscaled = "10000"
+market58Bera_maxOpenBaseUnscaled = "1888"
 market58Bera_velocityMultiplierUnscaled = "75"
 market58Bera_oracleNodeId = "<%= settings.beraUsdcMarkNodeIdStork %>"
 market58Bera_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -2072,7 +2073,7 @@ market62Me_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_63Pump]
 market63Pump_riskMatrixIndex = "0"
-market63Pump_maxOpenBaseUnscaled = "55692008"
+market63Pump_maxOpenBaseUnscaled = "259021"
 market63Pump_velocityMultiplierUnscaled = "70.3"
 market63Pump_oracleNodeId = "<%= settings.pumpUsdcMarkNodeIdStork %>"
 market63Pump_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -2172,7 +2173,7 @@ market67Kaito_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_68Zora]
 market68Zora_riskMatrixIndex = "0"
-market68Zora_maxOpenBaseUnscaled = "6433556"
+market68Zora_maxOpenBaseUnscaled = "17029"
 market68Zora_velocityMultiplierUnscaled = "29.3"
 market68Zora_oracleNodeId = "<%= settings.zoraUsdcMarkNodeIdStork %>"
 market68Zora_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -2232,7 +2233,7 @@ market70Paxg_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_71Yzy]
 market71Yzy_riskMatrixIndex = "0"
-market71Yzy_maxOpenBaseUnscaled = "339856"
+market71Yzy_maxOpenBaseUnscaled = "15"
 market71Yzy_velocityMultiplierUnscaled = "8.8"
 market71Yzy_oracleNodeId = "<%= settings.yzyUsdcMarkNodeIdStork %>"
 market71Yzy_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -2252,7 +2253,7 @@ market71Yzy_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_72Xpl]
 market72Xpl_riskMatrixIndex = "0"
-market72Xpl_maxOpenBaseUnscaled = "1110467"
+market72Xpl_maxOpenBaseUnscaled = "7872"
 market72Xpl_velocityMultiplierUnscaled = "56.8"
 market72Xpl_oracleNodeId = "<%= settings.xplUsdcMarkNodeIdStork %>"
 market72Xpl_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
