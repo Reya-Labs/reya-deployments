@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.155"
+version = "1.0.156"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -551,7 +551,7 @@ rseliniWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rseliniWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 ramberCollateralAdapter = "<%= AddressZero %>"
-ramberWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+ramberWithdrawalWindowSize = "0"
 ramberWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 rhedgeCollateralAdapter = "<%= AddressZero %>"
