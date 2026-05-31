@@ -144,7 +144,7 @@ oraclePusher2 = "0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3"
 ###############################################################################
 [var.co_execution_bots]
 co_execution_bot1 = "0xc9A01c03AEE926B89b83F7781b15B822807E1d33"
-co_execution_bot2 = "0x9aF1E36612fcD94E3DBE5616261dA219416536Ae" # ws-exec relayer
+co_execution_bot2 = "0x6623C4a8e54549d5dB1ACb666B13f9c046DFD5B2" # ws-exec relayer
 
 ###############################################################################
 # Fee Configuration Bots
