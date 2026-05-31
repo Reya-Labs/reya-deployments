@@ -29,4 +29,10 @@ contract PermissionsForkTest is ReyaForkTest, PermissionsPerpOBForkCheck {
     function test_Devnet_MulticallFeatureFlagState() public view {
         check_MulticallFeatureFlagState();
     }
+
+    /// @dev co_execution_bot2 — the live ws-exec relayer; must be on the
+    /// conditional_orders allowlist or perp IOC reverts FeatureUnavailable (PRO-152).
+    function test_Devnet_WsExecRelayerExecutionPermission() public view {
+        check_ConditionalOrdersExecutionAllowlist(0x6623C4a8e54549d5dB1ACb666B13f9c046DFD5B2);
+    }
 }

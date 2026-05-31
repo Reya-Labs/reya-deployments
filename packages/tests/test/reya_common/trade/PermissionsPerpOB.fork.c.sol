@@ -40,6 +40,7 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
     bytes32 internal constant ORACLE_PUBLISHERS_FLAG = keccak256(bytes("oraclePublishers"));
     bytes32 internal constant MATCHING_ENGINE_PUBLISHER_FLAG = keccak256(bytes("matching_engine_publisher"));
     bytes32 internal constant MULTICALL_FLAG = keccak256(bytes("multicall"));
+    bytes32 internal constant CONDITIONAL_ORDERS_FLAG = keccak256(bytes("conditional_orders"));
 
     /**
      * @notice Push a mark price via an authorized oracle publisher
@@ -295,5 +296,19 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         vm.prank(publisher);
         vm.expectRevert(abi.encodeWithSelector(IPassivePerpProxyV2.UnauthorizedOraclePusher.selector, publisher));
         IPassivePerpProxyV2(sec.perp).pushOracleData(payload, sig);
+    }
+
+    /**
+     * @notice The OrdersGateway execution gate for batchExecuteFill (perp fill
+     * settlement) is the `conditional_orders` feature flag
+     * (FeatureFlagSupport.ensureOrdersGatewayExecutionAccess). The configured
+     * executor must be on its allowlist, else perp IOC reverts FeatureUnavailable
+     * (the drift behind PRO-152).
+     */
+    function check_ConditionalOrdersExecutionAllowlist(address executor) internal view {
+        assertTrue(
+            IOrdersGatewayProxy(sec.ordersGateway).isFeatureAllowed(CONDITIONAL_ORDERS_FLAG, executor),
+            "executor must be on the conditional_orders allowlist (batchExecuteFill gate)"
+        );
     }
 }
