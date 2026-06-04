@@ -101,6 +101,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             timeInForce: 0,
             clientOrderId: 0,
             reduceOnly: false,
+            postOnly: false,
             expiresAfter: 0,
             signer: signer,
             nonce: nonce
@@ -884,6 +885,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 timeInForce: 0,
                 clientOrderId: 0,
                 reduceOnly: true,
+                postOnly: false,
                 expiresAfter: 0,
                 signer: perpBuyer,
                 nonce: 2
@@ -1018,6 +1020,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 timeInForce: 0,
                 clientOrderId: 0,
                 reduceOnly: true,
+                postOnly: false,
                 expiresAfter: 0,
                 signer: perpBuyer,
                 nonce: 2

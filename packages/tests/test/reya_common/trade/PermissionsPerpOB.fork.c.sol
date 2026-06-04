@@ -167,6 +167,7 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
                 timeInForce: 0,
                 clientOrderId: 0,
                 reduceOnly: false,
+                postOnly: false,
                 expiresAfter: 0,
                 signer: buyer,
                 nonce: 1
@@ -192,6 +193,7 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
                 timeInForce: 0,
                 clientOrderId: 0,
                 reduceOnly: false,
+                postOnly: false,
                 expiresAfter: 0,
                 signer: seller,
                 nonce: 1

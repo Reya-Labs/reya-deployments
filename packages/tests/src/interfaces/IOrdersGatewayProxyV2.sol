@@ -34,6 +34,9 @@ struct OrderDetails {
     uint64 clientOrderId;
     // Signed reduce-only intent.
     bool reduceOnly;
+    // Signed post-only (maker-only) intent. Order must rest as a maker; a crossing post-only
+    // order is rejected at matching. Valid on GTC/GTT, rejected on IOC and TP/SL.
+    bool postOnly;
     // Order lifetime. Zero means valid until cancelled. Enforced on-chain at settlement.
     uint256 expiresAfter;
     address signer;
