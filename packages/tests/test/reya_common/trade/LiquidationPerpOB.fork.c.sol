@@ -199,8 +199,8 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
             //                   = counterpartyBase × (openInterest − liquidatedBase) / openInterest,
             // where liquidatedBase is the user's long (1e18) closed by the backstop. On a pristine
             // market (counterparty == sole OI) this is exactly 0; with other OI present it's a residual.
-            int256 expectedCounterpartyBase = counterpartyPosBefore.base
-                * (int256(oiBeforeBackstop) - userPosBefore.base) / int256(oiBeforeBackstop);
+            int256 expectedCounterpartyBase =
+                counterpartyPosBefore.base * (int256(oiBeforeBackstop) - userPosBefore.base) / int256(oiBeforeBackstop);
             assertApproxEqAbs(
                 counterpartyPosAfter.base,
                 expectedCounterpartyBase,
