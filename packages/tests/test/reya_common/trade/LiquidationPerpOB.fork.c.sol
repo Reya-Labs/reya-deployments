@@ -169,6 +169,14 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
             IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, liqLiquidatorAccountId);
         assertEq(counterpartyPosBefore.base, -1e18, "Counterparty should be short 1 ETH before backstop");
 
+        // Snapshot market open interest before the backstop. ADL socializes the liquidated base
+        // across ALL opposite-side OI proportionally — `ADL.sol::computeADLParams` computes
+        // `adlMultiplier = |liquidatedBase| / openInterest`, scaling every short by `(1 - adlMultiplier)`.
+        // This fork runs against LIVE devnet state, so `openInterest` includes positions beyond this
+        // test's counterparty; the counterparty is therefore only PARTIALLY deleveraged, not fully to
+        // zero. Asserting hard `== 0` only holds when the counterparty is the sole OI (see PRO-157).
+        uint256 oiBeforeBackstop = IPassivePerpProxy(sec.perp).getMarketData(marketId).marketData.openInterest;
+
         // Execute backstop liquidation — keeper is perpSeller's account
         vm.prank(perpSeller);
         ICoreProxy(sec.core).executeBackstopLiquidation(liqUserAccountId, liqLiquidatorAccountId, sec.rusd, 1e18);
@@ -182,12 +190,23 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
             assertEq(userPos.base, 0, "User position should be closed");
         }
 
-        // In perpOB backstop, the counterparty is ADL'd (force-unwound).
-        // The counterparty had short 1 ETH; after ADL, their position is also closed.
+        // In perpOB backstop, the counterparty is ADL'd (force-unwound) — proportional to OI.
         {
             PerpPosition memory counterpartyPosAfter =
                 IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, liqLiquidatorAccountId);
-            assertEq(counterpartyPosAfter.base, 0, "Counterparty should be ADL'd to zero");
+
+            // Expected residual = counterpartyBase × (1 − adlMultiplier)
+            //                   = counterpartyBase × (openInterest − liquidatedBase) / openInterest,
+            // where liquidatedBase is the user's long (1e18) closed by the backstop. On a pristine
+            // market (counterparty == sole OI) this is exactly 0; with other OI present it's a residual.
+            int256 expectedCounterpartyBase =
+                counterpartyPosBefore.base * (int256(oiBeforeBackstop) - userPosBefore.base) / int256(oiBeforeBackstop);
+            assertApproxEqAbs(
+                counterpartyPosAfter.base,
+                expectedCounterpartyBase,
+                1e12, // tolerance for PRB-math rounding (~1e-6 ETH)
+                "Counterparty should be ADL'd proportional to market OI"
+            );
 
             // Counterparty realizes profit from the price drop (bought at 3000, closed below 3000)
             assertGt(counterpartyPosAfter.realizedPnL, 0, "Counterparty should have positive realized PnL");

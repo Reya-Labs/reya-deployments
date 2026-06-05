@@ -35,4 +35,10 @@ contract PermissionsForkTest is ReyaForkTest, PermissionsPerpOBForkCheck {
     function test_Devnet_WsExecRelayerExecutionPermission() public view {
         check_ConditionalOrdersExecutionAllowlist(0x6623C4a8e54549d5dB1ACb666B13f9c046DFD5B2);
     }
+
+    /// @dev co_execution_bot3 — the Rust wallet-manager relayer; must be on the
+    /// conditional_orders allowlist or its batchExecuteFill reverts FeatureUnavailable.
+    function test_Devnet_WalletManagerRelayerExecutionPermission() public view {
+        check_ConditionalOrdersExecutionAllowlist(0xB04ce54876A8017ae7785A3f4218308BC8fBb724);
+    }
 }
