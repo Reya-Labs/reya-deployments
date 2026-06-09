@@ -365,15 +365,23 @@ contract OrderForkCheck is BaseReyaForkTest {
         }
 
         // 2) Check trades are allowed if OI is unchanged
+        int256 reduceBase = poolBase > 0 ? unit : -unit;
         uint256 oiBefore = IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId);
         executeCoreMatchOrder({
             marketId: marketId,
             sender: user,
-            base: poolBase > 0 ? sd(unit) : sd(-unit),
+            base: sd(reduceBase),
             priceLimit: poolBase > 0 ? ud(1_000_000_000e18) : ud(0),
             accountId: accountId
         });
         uint256 oiAfter = IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId);
         assertLe(oiAfter, oiBefore, "open interest must not increase when reducing");
+
+        // the user (previously flat) now holds exactly the reducing unit
+        assertEq(
+            IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, accountId).base,
+            reduceBase,
+            "reducing unit was not added to the user's position"
+        );
     }
 }
