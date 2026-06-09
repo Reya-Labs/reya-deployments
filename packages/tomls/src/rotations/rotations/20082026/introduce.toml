@@ -1,0 +1,492 @@
+# -----------------------------------------------
+# Replace 2 liquidators for matchOrderPublisher (rotating liquidator1, liquidator10)
+# -----------------------------------------------
+
+[invoke.core_proxy_add_access_d20052026_liquidator1_matchOrderPublisher]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('matchOrderPublisher')) %>",
+    "<%= settings.d20052026_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_add_access_d20052026_liquidator2_matchOrderPublisher]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('matchOrderPublisher')) %>",
+    "<%= settings.d20052026_liquidator2 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+# -----------------------------------------------
+# Replace AE liquidator (rotating d06082025_ae_liquidator1)
+# -----------------------------------------------
+
+[invoke.core_proxy_enable_multicall_access_d20052026_ae_liquidator1]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.d20052026_ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.passive_pool_enable_staked_quote_auto_exchange_access_d20052026_ae_liquidator1]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('stakedAssetAutoExchange')),settings.pool1RusdId])) %>",
+    "<%= settings.d20052026_ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+# -----------------------------------------------
+# Replace conditional order bots (rotating co_execution_bot1, 3-8 and d06082025_co_execution_bot_2, _5)
+# -----------------------------------------------
+
+[invoke.orders_gateway_enable_conditional_orders_d20052026_co_execution_bot1]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.d20052026_co_execution_bot1 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_conditional_orders_d20052026_co_execution_bot2]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.d20052026_co_execution_bot2 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_conditional_orders_d20052026_co_execution_bot3]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.d20052026_co_execution_bot3 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_conditional_orders_d20052026_co_execution_bot4]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.d20052026_co_execution_bot4 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_conditional_orders_d20052026_co_execution_bot5]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.d20052026_co_execution_bot5 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_conditional_orders_d20052026_co_execution_bot6]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.d20052026_co_execution_bot6 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_conditional_orders_d20052026_co_execution_bot7]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.d20052026_co_execution_bot7 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_conditional_orders_d20052026_co_execution_bot8]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.d20052026_co_execution_bot8 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_conditional_orders_d20052026_co_execution_bot9]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.d20052026_co_execution_bot9 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+# -----------------------------------------------
+# Grant executors + subSecondExecutors to rotated co_execution_bots (replaces co_execution_bot1, 3-7)
+# Note: bot2 (d06082025_co_execution_bot_2), bot8, bot9 (d06082025_co_execution_bot_5) had no executor/subsecond grants
+# -----------------------------------------------
+
+[invoke.oracle_adapters_enable_executors_d20052026_co_execution_bot1]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.d20052026_co_execution_bot1 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_subsecond_d20052026_co_execution_bot1]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.d20052026_co_execution_bot1 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_executors_d20052026_co_execution_bot3]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.d20052026_co_execution_bot3 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_subsecond_d20052026_co_execution_bot3]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.d20052026_co_execution_bot3 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_executors_d20052026_co_execution_bot4]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.d20052026_co_execution_bot4 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_subsecond_d20052026_co_execution_bot4]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.d20052026_co_execution_bot4 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_executors_d20052026_co_execution_bot5]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.d20052026_co_execution_bot5 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_subsecond_d20052026_co_execution_bot5]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.d20052026_co_execution_bot5 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_executors_d20052026_co_execution_bot6]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.d20052026_co_execution_bot6 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_subsecond_d20052026_co_execution_bot6]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.d20052026_co_execution_bot6 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_executors_d20052026_co_execution_bot7]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.d20052026_co_execution_bot7 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_subsecond_d20052026_co_execution_bot7]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.d20052026_co_execution_bot7 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+# -----------------------------------------------
+# Grant configureDepth + configureSpread to rotated co_execution_bots (replaces co_execution_bot1, 3-7)
+# -----------------------------------------------
+
+[invoke.passive_perp_enable_configure_depth_d20052026_co_execution_bot1]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureDepth')) %>",
+    "<%= settings.d20052026_co_execution_bot1 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_enable_configure_spread_d20052026_co_execution_bot1]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureSpread')) %>",
+    "<%= settings.d20052026_co_execution_bot1 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_enable_configure_depth_d20052026_co_execution_bot3]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureDepth')) %>",
+    "<%= settings.d20052026_co_execution_bot3 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_enable_configure_spread_d20052026_co_execution_bot3]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureSpread')) %>",
+    "<%= settings.d20052026_co_execution_bot3 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_enable_configure_depth_d20052026_co_execution_bot4]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureDepth')) %>",
+    "<%= settings.d20052026_co_execution_bot4 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_enable_configure_spread_d20052026_co_execution_bot4]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureSpread')) %>",
+    "<%= settings.d20052026_co_execution_bot4 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_enable_configure_depth_d20052026_co_execution_bot5]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureDepth')) %>",
+    "<%= settings.d20052026_co_execution_bot5 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_enable_configure_spread_d20052026_co_execution_bot5]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureSpread')) %>",
+    "<%= settings.d20052026_co_execution_bot5 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_enable_configure_depth_d20052026_co_execution_bot6]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureDepth')) %>",
+    "<%= settings.d20052026_co_execution_bot6 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_enable_configure_depth_d20052026_co_execution_bot7]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureDepth')) %>",
+    "<%= settings.d20052026_co_execution_bot7 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_enable_configure_spread_d20052026_co_execution_bot8]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureSpread')) %>",
+    "<%= settings.d20052026_co_execution_bot8 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_enable_configure_spread_d20052026_co_execution_bot9]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureSpread')) %>",
+    "<%= settings.d20052026_co_execution_bot9 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+# -----------------------------------------------
+# Replace matching engine publisher (rotating matching_engine_publisher1)
+# -----------------------------------------------
+
+[invoke.orders_gateway_enable_matching_engine_publisher_d20052026_matching_engine_publisher1]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('matching_engine_publisher')) %>",
+    "<%= settings.d20052026_matching_engine_publisher1 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+# -----------------------------------------------
+# Replace fee configuration bots (rotating setTierIdBot, setReferralMappingBot)
+# -----------------------------------------------
+
+[invoke.passive_perp_enable_configure_fees_d20052026_setTierIdBot]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureFees')) %>",
+    "<%= settings.d20052026_setTierIdBot %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_enable_configure_fees_d20052026_setReferralMappingBot]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureFees')) %>",
+    "<%= settings.d20052026_setReferralMappingBot %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+# -----------------------------------------------
+# Replace stork executors (rotating storkExecutor18, 19, 20)
+# -----------------------------------------------
+
+[invoke.oracle_adapters_enable_executors_d20052026_storkExecutor1]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.d20052026_storkExecutor1 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_subsecond_d20052026_storkExecutor1]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.d20052026_storkExecutor1 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_executors_d20052026_storkExecutor2]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.d20052026_storkExecutor2 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_subsecond_d20052026_storkExecutor2]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.d20052026_storkExecutor2 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_executors_d20052026_storkExecutor3]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('executors')) %>",
+    "<%= settings.d20052026_storkExecutor3 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
+
+[invoke.oracle_adapters_enable_subsecond_d20052026_storkExecutor3]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.d20052026_storkExecutor3 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy"]
