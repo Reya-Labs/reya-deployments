@@ -31,4 +31,12 @@ contract OrderForkTest is ReyaForkTest, OrderForkCheck {
     function test_Cronos_MatchOrder_Spread_BTC_market() public {
         check_MatchOrder_Spread(2, 0.02e18);
     }
+
+    function test_Cronos_MatchOrder_ReduceOnlyWhenMaxOiZero_all_markets() public {
+        for (uint128 marketId = 1; marketId <= lastMarketId(); marketId++) {
+            if (isMarketReduceOnly(marketId)) {
+                check_MatchOrder_ReduceOnlyWhenMaxOiZero(marketId, sec.passivePoolAccountId);
+            }
+        }
+    }
 }

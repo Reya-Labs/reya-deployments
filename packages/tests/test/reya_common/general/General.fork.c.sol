@@ -1429,6 +1429,33 @@ contract GeneralForkCheck is BaseReyaForkTest {
         vm.assertEq(bytes(mismatches).length, 0, mismatches);
     }
 
+    function check_marketsMaxOiAndOi(
+        uint128[] memory reduceOnlyMarkets,
+        uint128[] memory inactiveMarkets
+    )
+        public
+        view
+    {
+        for (uint256 i = 0; i < reduceOnlyMarkets.length; i++) {
+            uint128 marketId = reduceOnlyMarkets[i];
+            MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+            assertEq(
+                marketConfig.maxOpenBase,
+                0,
+                string.concat("maxOpenBase is not zero for market ", uintToString(marketId))
+            );
+        }
+
+        for (uint256 i = 0; i < inactiveMarkets.length; i++) {
+            uint128 marketId = inactiveMarkets[i];
+            assertEq(
+                IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId),
+                0,
+                string.concat("open interest is not zero for market ", uintToString(marketId))
+            );
+        }
+    }
+
     function check_sdeusd_price() public view {
         NodeOutput.Data memory sdeusdUsdcOutput =
             IOracleManagerProxy(sec.oracleManager).process(sec.sdeusdUsdcStorkNodeId);

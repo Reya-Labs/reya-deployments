@@ -47,6 +47,14 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         check_marketsOrderMaxStaleDuration(11);
     }
 
+    function test_MarketsMaxOiAndOi() public view {
+        // todo: add markets here after they are set to reduce only
+        uint128[] memory reduceOnlyMarkets = new uint128[](0);
+        // todo: add markets here after they are fully closed
+        uint128[] memory inactiveMarkets = new uint128[](0);
+        check_marketsMaxOiAndOi(reduceOnlyMarkets, inactiveMarkets);
+    }
+
     function test_CheckSDEUSDPrice() public view {
         check_sdeusd_price();
     }

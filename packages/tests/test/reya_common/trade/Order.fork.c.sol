@@ -2,7 +2,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
-import { ICoreProxy, CollateralInfo, MarginInfo } from "../../../src/interfaces/ICoreProxy.sol";
+import { ICoreProxy, CollateralInfo, MarginInfo, Command as Command_Core } from "../../../src/interfaces/ICoreProxy.sol";
 import {
     IPassivePerpProxy,
     GlobalFeeParameters,
@@ -331,5 +331,49 @@ contract OrderForkCheck is BaseReyaForkTest {
 
         emit log_named_uint("Close trade gas cost", gasUsedClose);
         assertLt(gasUsedClose, maxGasClose, "Close trade gas cost exceeds ceiling");
+    }
+
+    function isMarketReduceOnly(uint128 marketId) internal view returns (bool) {
+        return IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).maxOpenBase == 0;
+    }
+
+    function check_MatchOrder_ReduceOnlyWhenMaxOiZero(uint128 marketId, uint128 poolAccountId) internal {
+        mockFreshPrices();
+
+        MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+        assertEq(marketConfig.maxOpenBase, 0, "market is not reduce-only");
+
+        int256 poolBase = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, poolAccountId).base;
+        int256 unit = int256(marketConfig.minimumOrderBase);
+
+        (address user,) = makeAddrAndKey(string.concat("userReduceOnly_", vm.toString(marketId)));
+        uint128 accountId = depositNewMA(user, sec.usdc, 1_000_000e6);
+
+        // 1) Increasing open interest must always revert on a reduce-only market. Trade the opposite side of the
+        //    pool: pool long -> user sells; pool short or flat -> user buys (when flat, any direction increases OI).
+        SD59x18 increaseBase = poolBase > 0 ? sd(-unit) : sd(unit);
+        UD60x18 increasePriceLimit = poolBase > 0 ? ud(0) : ud(1_000_000_000e18);
+
+        Command_Core[] memory commands = new Command_Core[](1);
+        commands[0] = getMatchOrderCoreCommand(marketId, increaseBase, increasePriceLimit);
+        vm.prank(user);
+        vm.expectRevert(abi.encodeWithSelector(IPassivePerpProxy.OpenInterestExceeded.selector, marketId));
+        ICoreProxy(sec.core).execute(accountId, commands);
+
+        if (poolBase == 0) {
+            return;
+        }
+
+        // 2) Check trades are allowed if OI is unchanged
+        uint256 oiBefore = IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId);
+        executeCoreMatchOrder({
+            marketId: marketId,
+            sender: user,
+            base: poolBase > 0 ? sd(unit) : sd(-unit),
+            priceLimit: poolBase > 0 ? ud(1_000_000_000e18) : ud(0),
+            accountId: accountId
+        });
+        uint256 oiAfter = IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId);
+        assertLe(oiAfter, oiBefore, "open interest must not increase when reducing");
     }
 }

@@ -39,4 +39,12 @@ contract OrderForkTest is ReyaForkTest, OrderForkCheck {
         // catches a real regression (~5% headroom) without flaking on drift.
         check_MatchOrder_GasCost(1, 11_500_000, 2_000_000);
     }
+
+    function test_MatchOrder_ReduceOnlyWhenMaxOiZero_all_markets() public {
+        for (uint128 marketId = 1; marketId <= lastMarketId(); marketId++) {
+            if (isMarketReduceOnly(marketId)) {
+                check_MatchOrder_ReduceOnlyWhenMaxOiZero(marketId, sec.passivePoolAccountId);
+            }
+        }
+    }
 }
