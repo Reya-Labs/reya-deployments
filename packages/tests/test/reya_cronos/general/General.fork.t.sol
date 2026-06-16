@@ -49,8 +49,8 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
 
     function test_MarketsMaxOiAndOi() public view {
         uint128[] memory reduceOnlyMarkets = new uint128[](2);
-        reduceOnlyMarkets[0] = 34; // kBONK
-        reduceOnlyMarkets[1] = 22; // GOAT
+        reduceOnlyMarkets[0] = 34; // GOAT
+        reduceOnlyMarkets[1] = 22; // kBONK
         uint128[] memory inactiveMarkets = new uint128[](1);
         inactiveMarkets[0] = 22; // kBONK
         check_marketsMaxOiAndOi(reduceOnlyMarkets, inactiveMarkets);
