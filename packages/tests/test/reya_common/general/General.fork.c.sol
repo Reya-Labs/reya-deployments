@@ -293,7 +293,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceSEI);
         ls.maxDeviationMarket.push(ls.maxDeviationSEI);
 
-        ls.meanPriceZRO = 2.5 * 1e18;
+        // refreshed 2026-06-16 (was 2.5)
+        ls.meanPriceZRO = 1.1 * 1e18;
         ls.maxDeviationZRO = ls.meanPriceZRO / 2;
         ls.meanPriceMarket.push(ls.meanPriceZRO);
         ls.maxDeviationMarket.push(ls.maxDeviationZRO);
@@ -343,7 +344,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceBNB);
         ls.maxDeviationMarket.push(ls.maxDeviationBNB);
 
-        ls.meanPriceJTO = 0.47 * 1e18;
+        // refreshed 2026-06-16 (was 0.47)
+        ls.meanPriceJTO = 0.8 * 1e18;
         ls.maxDeviationJTO = ls.meanPriceJTO / 2;
         ls.meanPriceMarket.push(ls.meanPriceJTO);
         ls.maxDeviationMarket.push(ls.maxDeviationJTO);
@@ -469,7 +471,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceGRIFFAIN);
         ls.maxDeviationMarket.push(ls.maxDeviationGRIFFAIN);
 
-        ls.meanPriceWLD = 0.36 * 1e18;
+        // refreshed 2026-06-16 (was 0.36)
+        ls.meanPriceWLD = 0.65 * 1e18;
         ls.maxDeviationWLD = ls.meanPriceWLD / 2;
         ls.meanPriceMarket.push(ls.meanPriceWLD);
         ls.maxDeviationMarket.push(ls.maxDeviationWLD);
@@ -509,7 +512,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceMOVE);
         ls.maxDeviationMarket.push(ls.maxDeviationMOVE);
 
-        ls.meanPriceBERA = 0.6 * 1e18;
+        // refreshed 2026-06-16 (was 0.6)
+        ls.meanPriceBERA = 0.26 * 1e18;
         ls.maxDeviationBERA = ls.meanPriceBERA / 2;
         ls.meanPriceMarket.push(ls.meanPriceBERA);
         ls.maxDeviationMarket.push(ls.maxDeviationBERA);
@@ -530,7 +534,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceIP);
         ls.maxDeviationMarket.push(ls.maxDeviationIP);
 
-        ls.meanPriceME = 0.13 * 1e18;
+        // refreshed 2026-06-16 (was 0.13)
+        ls.meanPriceME = 0.09 * 1e18;
         ls.maxDeviationME = ls.meanPriceME / 2;
         ls.meanPriceMarket.push(ls.meanPriceME);
         ls.maxDeviationMarket.push(ls.maxDeviationME);
@@ -545,7 +550,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceMORPHO);
         ls.maxDeviationMarket.push(ls.maxDeviationMORPHO);
 
-        ls.meanPriceSYRUP = 0.28 * 1e18;
+        // refreshed 2026-06-16 (was 0.28)
+        ls.meanPriceSYRUP = 0.14 * 1e18;
         ls.maxDeviationSYRUP = ls.meanPriceSYRUP / 2;
         ls.meanPriceMarket.push(ls.meanPriceSYRUP);
         ls.maxDeviationMarket.push(ls.maxDeviationSYRUP);
@@ -560,7 +566,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceKAITO);
         ls.maxDeviationMarket.push(ls.maxDeviationKAITO);
 
-        ls.meanPriceZORA = 0.02 * 1e18;
+        // refreshed 2026-06-16 (was 0.02)
+        ls.meanPriceZORA = 0.009 * 1e18;
         ls.maxDeviationZORA = ls.meanPriceZORA / 2;
         ls.meanPriceMarket.push(ls.meanPriceZORA);
         ls.maxDeviationMarket.push(ls.maxDeviationZORA);
@@ -595,7 +602,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceLINEA);
         ls.maxDeviationMarket.push(ls.maxDeviationLINEA);
 
-        ls.meanPriceMEGA = 0.12 * 1e18;
+        // refreshed 2026-06-16 (was 0.12)
+        ls.meanPriceMEGA = 0.06 * 1e18;
         ls.maxDeviationMEGA = ls.meanPriceMEGA / 2;
         ls.meanPriceMarket.push(ls.meanPriceMEGA);
         ls.maxDeviationMarket.push(ls.maxDeviationMEGA);
@@ -1427,6 +1435,33 @@ contract GeneralForkCheck is BaseReyaForkTest {
         }
 
         vm.assertEq(bytes(mismatches).length, 0, mismatches);
+    }
+
+    function check_marketsMaxOiAndOi(
+        uint128[] memory reduceOnlyMarkets,
+        uint128[] memory inactiveMarkets
+    )
+        public
+        view
+    {
+        for (uint256 i = 0; i < reduceOnlyMarkets.length; i++) {
+            uint128 marketId = reduceOnlyMarkets[i];
+            MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+            assertEq(
+                marketConfig.maxOpenBase,
+                0,
+                string.concat("maxOpenBase is not zero for market ", uintToString(marketId))
+            );
+        }
+
+        for (uint256 i = 0; i < inactiveMarkets.length; i++) {
+            uint128 marketId = inactiveMarkets[i];
+            assertEq(
+                IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId),
+                0,
+                string.concat("open interest is not zero for market ", uintToString(marketId))
+            );
+        }
     }
 
     function check_sdeusd_price() public view {

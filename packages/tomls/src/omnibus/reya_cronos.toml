@@ -17,7 +17,7 @@ include = [
     "../sbt/testnet.toml",
 ]
 
-version = "1.0.140"
+version = "1.0.141"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"
@@ -57,7 +57,7 @@ tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.13@router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.49@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.55@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.0.14@router"
 oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
@@ -1253,7 +1253,7 @@ market21KShib_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_22kbonk]
 market22KBonk_riskMatrixIndex = "0"
-market22KBonk_maxOpenBaseUnscaled = "18584861"
+market22KBonk_maxOpenBaseUnscaled = "0"
 market22KBonk_velocityMultiplierUnscaled = "77.8"
 market22KBonk_oracleNodeId = "<%= settings.kbonkUsdcMarkNodeIdStork %>"
 market22KBonk_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1493,7 +1493,7 @@ market33Pendle_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_34Goat]
 market34Goat_riskMatrixIndex = "0"
-market34Goat_maxOpenBaseUnscaled = "5801398"
+market34Goat_maxOpenBaseUnscaled = "0"
 market34Goat_velocityMultiplierUnscaled = "18"
 market34Goat_oracleNodeId = "<%= settings.goatUsdcMarkNodeIdStork %>"
 market34Goat_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
