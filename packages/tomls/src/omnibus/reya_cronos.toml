@@ -489,7 +489,7 @@ rseliniWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rseliniWithdrawalTvlPercentageLimitUnscaled = "0"
 # -------------------------------------------------------------------
 ramberCollateralAdapter = "<%= AddressZero %>"
-ramberWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+ramberWithdrawalWindowSize = "0"
 ramberWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 rhedgeCollateralAdapter = "<%= AddressZero %>"
