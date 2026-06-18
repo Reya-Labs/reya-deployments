@@ -50,7 +50,10 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.wsteth = 0x7ae54d5a9e5a975DFC3261d915f8151dCcA76bE0;
         sec.sreya = 0xF3dD224DE5f9B112690a15521b4a0c450A4A82c2;
         sec.reya = 0xCC8e02d7112dDaa66A63B89d73E4eDa65722B111;
-        sec.setMarketZeroFeeBot = 0xdD69B419f0d7a1E15192ac8DBAa0Fc63b25f8A11;
+        // setMarketZeroFeeBot (0xdD69B...) was deprecated; the 18062026 rotation revokes its
+        // marketZeroFees admin, so the protocol owner (multisig) is now the only authority that can
+        // toggle marketZeroFees/exchangeZeroFees allowAll. Point the test bot at the multisig.
+        sec.setMarketZeroFeeBot = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9;
 
         // Layerzero configuration
         sec.layerZeroEndpoint = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B;
