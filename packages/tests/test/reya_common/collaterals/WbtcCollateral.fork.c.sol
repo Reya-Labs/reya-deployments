@@ -73,8 +73,8 @@ contract WbtcCollateralForkCheck is BaseReyaForkTest {
         (GlobalCollateralConfig memory globalConfig,) = ICoreProxy(sec.core).getGlobalCollateralConfig(sec.wbtc);
 
         assertEq(globalConfig.collateralAdapter, address(0), "collateralAdapter should be zero address");
-        assertEq(globalConfig.withdrawalWindowSize, 1, "withdrawalWindowSize mismatch");
-        assertEq(globalConfig.withdrawalTvlPercentageLimit, 1e18, "withdrawalTvlPercentageLimit mismatch");
+        assertEq(globalConfig.withdrawalWindowSize, 10_800, "withdrawalWindowSize mismatch");
+        assertEq(globalConfig.withdrawalTvlPercentageLimit, 0.25e18, "withdrawalTvlPercentageLimit mismatch");
     }
 
     function check_wbtc_spot_market_config(WbtcSpotMarketConfigExpectations memory expected) internal view {

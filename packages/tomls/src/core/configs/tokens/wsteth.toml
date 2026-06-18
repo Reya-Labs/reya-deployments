@@ -4,7 +4,7 @@ fromCall.func = "owner"
 func = "setGlobalCollateralConfig"
 args = [
     "<%= contracts.WSTETHProxy.address %>",
-    { collateralAdapter = "<%= settings.wstethCollateralAdapter %>", withdrawalWindowSize = "<%= settings.wstethWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.wstethWithdrawalTvlPercentageLimitUnscaled)  %>" },
+    { collateralAdapter_DEPRECATED = "<%= settings.wstethCollateralAdapter %>", withdrawalWindowSize = "<%= settings.wstethWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.wstethWithdrawalTvlPercentageLimitUnscaled)  %>" },
 ]
 depends = [
     'invoke.upgrade_core_proxy',

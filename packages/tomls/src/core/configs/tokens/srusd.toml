@@ -4,7 +4,7 @@ fromCall.func = "owner"
 func = "setGlobalCollateralConfig"
 args = [
     "<%= contracts.SRUSDProxy.address %>",
-    { collateralAdapter = "<%= settings.srusdCollateralAdapter %>", withdrawalWindowSize = "<%= settings.srusdWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.srusdWithdrawalTvlPercentageLimitUnscaled)  %>" },
+    { collateralAdapter_DEPRECATED = "<%= settings.srusdCollateralAdapter %>", withdrawalWindowSize = "<%= settings.srusdWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.srusdWithdrawalTvlPercentageLimitUnscaled)  %>" },
 ]
 depends = [
     'invoke.upgrade_core_proxy',
