@@ -29,26 +29,6 @@ depends = ["invoke.upgrade_core_proxy"]
 # Revoke AE liquidator permissions from d06082025_ae_liquidator1
 # -----------------------------------------------
 
-[invoke.core_proxy_remove_multicall_access_d06082025_ae_liquidator1]
-target = ["CoreProxy"]
-fromCall.func = "owner"
-func = "removeFromFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('multicall')) %>",
-    "<%= settings.d06082025_ae_liquidator1 %>",
-]
-depends = ["invoke.upgrade_core_proxy"]
-
-[invoke.passive_pool_remove_staked_quote_auto_exchange_access_d06082025_ae_liquidator1]
-target = ["PassivePoolProxy"]
-fromCall.func = "owner"
-func = "removeFromFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('stakedAssetAutoExchange')),settings.pool1RusdId])) %>",
-    "<%= settings.d06082025_ae_liquidator1 %>",
-]
-depends = ["invoke.upgrade_passive_pool_proxy"]
-
 [invoke.core_proxy_revoke_admin_permission_d06082025_ae_liquidator1]
 target = ["CoreProxy"]
 fromCall.func = "owner"
@@ -57,6 +37,79 @@ args = [
     "<%= settings.aeMarginAccountId1 %>",
     "<%= keccak256(hexlify('ADMIN')) %>",
     "<%= settings.d06082025_ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+# -----------------------------------------------
+# Revoke remaining permissions from ae_liquidator1 (rotated to d18062026_ae_liquidator1)
+# -----------------------------------------------
+
+[invoke.core_proxy_remove_access_ae_liquidator1_multicall]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.passive_pool_remove_staked_asset_auto_exchange_ae_liquidator1]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('stakedAssetAutoExchange')),settings.pool1RusdId])) %>",
+    "<%= settings.ae_liquidator1 %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+# -----------------------------------------------
+# Revoke account permissions (DUTCH_LIQUIDATION, MATCH_ORDER) from deprecated
+# d06082025_liquidator1, d06082025_liquidator2 on liquidatorMarginAccountId1
+# -----------------------------------------------
+
+[invoke.core_proxy_revoke_dutch_liquidation_d06082025_liquidator1]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeAccountPermission"
+args = [
+    "<%= settings.liquidatorMarginAccountId1 %>",
+    "<%= keccak256(hexlify('DUTCH_LIQUIDATION')) %>",
+    "<%= settings.d06082025_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_revoke_match_order_d06082025_liquidator1]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeAccountPermission"
+args = [
+    "<%= settings.liquidatorMarginAccountId1 %>",
+    "<%= keccak256(hexlify('MATCH_ORDER')) %>",
+    "<%= settings.d06082025_liquidator1 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_revoke_dutch_liquidation_d06082025_liquidator2]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeAccountPermission"
+args = [
+    "<%= settings.liquidatorMarginAccountId1 %>",
+    "<%= keccak256(hexlify('DUTCH_LIQUIDATION')) %>",
+    "<%= settings.d06082025_liquidator2 %>",
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+[invoke.core_proxy_revoke_match_order_d06082025_liquidator2]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "revokeAccountPermission"
+args = [
+    "<%= settings.liquidatorMarginAccountId1 %>",
+    "<%= keccak256(hexlify('MATCH_ORDER')) %>",
+    "<%= settings.d06082025_liquidator2 %>",
 ]
 depends = ["invoke.upgrade_core_proxy"]
 
@@ -141,6 +194,16 @@ func = "removeFromFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('conditional_orders')) %>",
     "<%= settings.co_execution_bot8 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_remove_conditional_orders_co_execution_bot9]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.co_execution_bot9 %>",
 ]
 depends = ["invoke.upgrade_orders_gateway_proxy"]
 

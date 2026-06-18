@@ -180,7 +180,7 @@ co_execution_bot5 = "0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4" # ops API execu
 co_execution_bot6 = "0xbf59e78614F97fDbA523238AefDbe64E2efb28C3" # ops API executor 2 # rotating to d18062026_co_execution_bot6
 co_execution_bot7 = "0xbAF944384b46eB8609c3A5C7894028cE60c15354" # staging API executor # rotating to d18062026_co_execution_bot7
 co_execution_bot8 = "0x7B6365ECDf114Ec3F3c84285990A22E6DF126403" # ws-exec relayer (staging) # rotating to d18062026_co_execution_bot8
-co_execution_bot9 = "0x9bf831e7C8e2584Ab63c860Fa2d9Dc16939E1D33" # ws-exec relayer (prod)
+co_execution_bot9 = "0x9bf831e7C8e2584Ab63c860Fa2d9Dc16939E1D33" # ws-exec relayer (prod) # rotating to d18062026_co_execution_bot10
 
 d06082025_co_execution_bot_1 = "0xd933f2FcA9Be1A8Fb0Db05cb63570c62930e8d61" # conditional order bot 1 # deprecated
 d06082025_co_execution_bot_2 = "0xd0a8780853999Ff5Cd0fe852217467d3de160EEb" # conditional order bot 2 # rotating to d18062026_co_execution_bot2
@@ -188,15 +188,16 @@ d06082025_co_execution_bot_3 = "0xb5Cd25E984Daa87a7DcdfaA7fd4c4e97AE0A95B8" # ma
 d06082025_co_execution_bot_4 = "0xa4d537B5C310CEF9514e7255Fca1268A2B80d67D" # main API executor 2 # deprecated
 d06082025_co_execution_bot_5 = "0xdDfD9f70972742bE561eFb89E9CF5BEF848729F8" # staging API executor # rotating to d18062026_co_execution_bot9
 
-d18062026_co_execution_bot1 = "0xee98b2522a811c41f6fd370b0900e86905f8e3f4" # co_execution_bot_1_18062026
-d18062026_co_execution_bot2 = "0x392f4efb04ad308ae1c55cba44c00e2656c158a3" # co_execution_bot_2_18062026
-d18062026_co_execution_bot3 = "0x83f1a9b75fc0422e95a90a9381295a71b71089b0" # co_execution_bot_3_18062026
-d18062026_co_execution_bot4 = "0x7798c14b6e620367054ad058bee54e44ab90b976" # co_execution_bot_4_18062026
-d18062026_co_execution_bot5 = "0x9c22ea6f9e88547b6e658bf59c4650bd708faa51" # co_execution_bot_5_18062026
-d18062026_co_execution_bot6 = "0xb13e082e6549f897739f1c9f9cbdcaee0dc3bc8e" # co_execution_bot_6_18062026
-d18062026_co_execution_bot7 = "0xfab9a76484fc463653c84d33b671328a65f0ee4a" # co_execution_bot_7_18062026
-d18062026_co_execution_bot8 = "0xb7bba1cc10181674325dc065af58cf9ecc8f0606" # co_execution_bot_8_18062026
-d18062026_co_execution_bot9 = "0xd321b17d7d42a532c78a7858c6167ce3bb5afd79" # co_execution_bot_9_18062026
+d18062026_co_execution_bot1 = "0xee98b2522a811c41f6fd370b0900e86905f8e3f4"  # co_execution_bot_1_18062026
+d18062026_co_execution_bot2 = "0x392f4efb04ad308ae1c55cba44c00e2656c158a3"  # co_execution_bot_2_18062026
+d18062026_co_execution_bot3 = "0x83f1a9b75fc0422e95a90a9381295a71b71089b0"  # co_execution_bot_3_18062026
+d18062026_co_execution_bot4 = "0x7798c14b6e620367054ad058bee54e44ab90b976"  # co_execution_bot_4_18062026
+d18062026_co_execution_bot5 = "0x9c22ea6f9e88547b6e658bf59c4650bd708faa51"  # co_execution_bot_5_18062026
+d18062026_co_execution_bot6 = "0xb13e082e6549f897739f1c9f9cbdcaee0dc3bc8e"  # co_execution_bot_6_18062026
+d18062026_co_execution_bot7 = "0xfab9a76484fc463653c84d33b671328a65f0ee4a"  # co_execution_bot_7_18062026
+d18062026_co_execution_bot8 = "0xb7bba1cc10181674325dc065af58cf9ecc8f0606"  # co_execution_bot_8_18062026
+d18062026_co_execution_bot9 = "0xd321b17d7d42a532c78a7858c6167ce3bb5afd79"  # co_execution_bot_9_18062026
+d18062026_co_execution_bot10 = "0x3ce11c890cb38844e772203cf58771634117c9b5"
 
 [var.dynamic_pricing_setters]
 dynamicPricingSetter1 = "0x93e3aaee71dc2f42ad9a5992e4a6776b3406104d" # deprecated

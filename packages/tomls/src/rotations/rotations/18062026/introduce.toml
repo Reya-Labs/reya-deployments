@@ -47,7 +47,7 @@ args = [
 depends = ["invoke.upgrade_passive_pool_proxy"]
 
 # -----------------------------------------------
-# Replace conditional order bots (rotating co_execution_bot1, 3-8 and d06082025_co_execution_bot_2, _5)
+# Replace conditional order bots (rotating co_execution_bot2-9 and d06082025_co_execution_bot_2, _5)
 # -----------------------------------------------
 
 [invoke.orders_gateway_enable_conditional_orders_d18062026_co_execution_bot1]
@@ -140,9 +140,19 @@ args = [
 ]
 depends = ["invoke.upgrade_orders_gateway_proxy"]
 
+[invoke.orders_gateway_enable_conditional_orders_d18062026_co_execution_bot10]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "<%= settings.d18062026_co_execution_bot10 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
+
 # -----------------------------------------------
-# Grant executors + subSecondExecutors to rotated co_execution_bots (replaces co_execution_bot1, 3-7)
-# Note: bot2 (d06082025_co_execution_bot_2), bot8, bot9 (d06082025_co_execution_bot_5) had no executor/subsecond grants
+# Grant executors + subSecondExecutors to rotated co_execution_bots (replaces co_execution_bot2-7)
+# Note: bot2 (d06082025_co_execution_bot_2), bot8 (co_execution_bot8), bot9 (d06082025_co_execution_bot_5), bot10 (co_execution_bot9) had no executor/subsecond grants
 # -----------------------------------------------
 
 [invoke.oracle_adapters_enable_executors_d18062026_co_execution_bot1]
@@ -359,6 +369,16 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
+[invoke.passive_perp_enable_configure_spread_d18062026_co_execution_bot6]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureSpread')) %>",
+    "<%= settings.d18062026_co_execution_bot6 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
 [invoke.passive_perp_enable_configure_depth_d18062026_co_execution_bot7]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -369,23 +389,13 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
-[invoke.passive_perp_enable_configure_spread_d18062026_co_execution_bot8]
+[invoke.passive_perp_enable_configure_spread_d18062026_co_execution_bot7]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('configureSpread')) %>",
-    "<%= settings.d18062026_co_execution_bot8 %>",
-]
-depends = ["invoke.upgrade_passive_perp_proxy"]
-
-[invoke.passive_perp_enable_configure_spread_d18062026_co_execution_bot9]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('configureSpread')) %>",
-    "<%= settings.d18062026_co_execution_bot9 %>",
+    "<%= settings.d18062026_co_execution_bot7 %>",
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
