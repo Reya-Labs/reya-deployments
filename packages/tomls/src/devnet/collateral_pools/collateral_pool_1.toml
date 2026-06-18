@@ -1,4 +1,4 @@
-# Devnet collateral pool config: 1 market (ETH), 2 collaterals (rUSD, wETH)
+# Devnet collateral pool config: 1 market (ETH), 3 collaterals (rUSD, wETH, sRUSD)
 include = [
     "market_1eth.toml",
     "risk_multipliers.toml",
@@ -6,6 +6,7 @@ include = [
     "liquidations.toml",
     "tokens/rusd.toml",
     "tokens/weth.toml",
+    "tokens/srusd.toml",
 ]
 
 # Collateral pool anchor - only depends on market 1 ETH

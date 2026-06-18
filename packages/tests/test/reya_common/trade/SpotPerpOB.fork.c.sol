@@ -91,6 +91,7 @@ contract SpotPerpOBForkCheck is BaseReyaForkTest {
             timeInForce: 0,
             clientOrderId: 0,
             reduceOnly: false,
+            postOnly: false,
             expiresAfter: 0,
             signer: signer,
             nonce: nonce

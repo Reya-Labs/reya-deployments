@@ -8,8 +8,8 @@
 #
 # Deploys fresh proxies for: Core, PassivePerp, OrdersGateway, Periphery.
 #
-# Markets: 1 perp (ETH), 1 spot (WETH/rUSD)
-# Collaterals: rUSD, wETH
+# Markets: 1 perp (ETH), 2 spot (WETH/rUSD, sRUSD/rUSD)
+# Collaterals: rUSD, wETH, sRUSD
 ###############################################################################
 
 include = [
@@ -22,7 +22,7 @@ include = [
     "../devnet/collateral_pools/collateral_pool_1.toml",
 ]
 
-version = "1.0.5"
+version = "1.0.8"
 
 ###############################################################################
 # Existing Cronos Contract Addresses (reused, not redeployed)
@@ -31,6 +31,10 @@ version = "1.0.5"
 rusdProxyAddress = "0x9DE724e7b3facF87Ce39465D3D712717182e3e55"
 usdcProxyAddress = "0xfA27c7c6051344263533cc365274d9569b0272A8"
 wethProxyAddress = "0x2CF56315ACC7E791B1A0135c09d8D5C8dBCD2F14"
+# sRUSD proxy lives on Cronos already (deployed via srusd-main salt). We reuse
+# the existing instance on devnet1 rather than redeploying. Cross-ref:
+# packages/tests/deployments/test/SRUSDProxy.json, ReyaForkTest.sol:51.
+srusdProxyAddress = "0xb9F531A54Fc0E9AdCa1b931d9533B4e49bB2fAD6"
 passivePoolProxyAddress = "0x9A3A664987b88790A6FDC1632e3b607813fd94fF"
 oracleManagerProxyAddress = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
 exchangePassProxyAddress = "0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB"
@@ -47,14 +51,14 @@ passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD822755
 ###############################################################################
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
-coreRouterPackage = "reya-core:1.0.32@router"
+coreRouterPackage = "reya-core:1.0.33@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.53@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.54@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
-ordersGatewayRouterPackage = "reya-orders-gateway:1.0.23@router"
+ordersGatewayRouterPackage = "reya-orders-gateway:1.0.24@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
-peripheryRouterPackage = "reya-periphery:1.0.16@router"
+peripheryRouterPackage = "reya-periphery:1.0.17@router"
 
 ###############################################################################
 # Account NFT
@@ -140,7 +144,8 @@ oraclePusher2 = "0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3"
 ###############################################################################
 [var.co_execution_bots]
 co_execution_bot1 = "0xc9A01c03AEE926B89b83F7781b15B822807E1d33"
-co_execution_bot2 = "0x9aF1E36612fcD94E3DBE5616261dA219416536Ae" # ws-exec relayer
+co_execution_bot2 = "0x6623C4a8e54549d5dB1ACb666B13f9c046DFD5B2" # ws-exec relayer
+co_execution_bot3 = "0xB04ce54876A8017ae7785A3f4218308BC8fBb724" # rust wallet-manager relayer
 
 ###############################################################################
 # Fee Configuration Bots
@@ -163,9 +168,11 @@ matchOrderPublisherAdmin1 = "0xD3D5911FE8ab109645f931Cf65B341d5dd672eFB"
 rusdTokenDecimals = "6"
 usdcTokenDecimals = "6"
 wethTokenDecimals = "18"
+# Matches the Cronos sRUSD deployment (see packages/tomls/src/token/tokens/srusd.toml).
+srusdTokenDecimals = "30"
 
 ###############################################################################
-# Global Collateral Configs (only rUSD + wETH)
+# Global Collateral Configs (rUSD, wETH, sRUSD)
 ###############################################################################
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
@@ -175,6 +182,10 @@ rusdWithdrawalTvlPercentageLimitUnscaled = "1.0"
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
 wethWithdrawalTvlPercentageLimitUnscaled = "1.0"
+# -------------------------------------------------------------------
+srusdCollateralAdapter = "<%= AddressZero %>"
+srusdWithdrawalWindowSize = "1"
+srusdWithdrawalTvlPercentageLimitUnscaled = "1.0"
 
 ###############################################################################
 # PassivePerp Global Config
@@ -234,7 +245,12 @@ market1Eth_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.cp_1rusd]
 cp1Rusd_maxMarkets = "1"
-cp1Rusd_maxCollaterals = "2"
+# Was "2" (rUSD + wETH). Bumped to "12" to match cronos / mainnet so devnet
+# can layer in more collaterals without breaching the limit (today the next
+# one is sRUSD; see `setCollateralConfig` in `devnet/collateral_pools/
+# tokens/srusd.toml` — it reverts with `CollateralLimitBreached("1","3","2")`
+# at the old cap).
+cp1Rusd_maxCollaterals = "12"
 
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
 
@@ -281,8 +297,32 @@ cp1Rusd_wethParentConfig_priceHaircutUnscaled = "0.10"
 cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled = "0.02"
 cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 
+# sRUSD collateral pool config. Cap / fee / threshold values mirror
+# `reya_cronos.toml` and `reya_network.toml` byte-for-byte. ParentConfig
+# uses rUSD as the parent collateral (`contracts.RUSDProxy.address` on
+# cronos/mainnet) and leaves the oracle node id zero — devnet doesn't host
+# a Stork sRUSD/USDC pool node, and we don't need oracle-validated price
+# routing for the SDK suite's `test_asset_definitions` check. If sRUSD-as-
+# collateral ever needs to be exercised under load on devnet, swap the
+# zero oracleNodeId for a real node + add the staleness setup.
+cp1Rusd_srusd_capUnscaled = "<%= formatUnits(MaxUint256, parseInt(settings.srusdTokenDecimals)) %>"
+cp1Rusd_srusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_srusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_srusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_srusdParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_srusdParentConfig_priceHaircutUnscaled = "0.1"
+cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
+# Reuse the Cronos Stork sRUSD/USDC pool node — devnet shares the Cronos
+# OracleManager proxy (sec.oracleManager = 0x689f...64eA, see
+# `tests/test/reya_devnet/ReyaForkTest.sol`), so any node registered for
+# cronos is reachable here. Required because margin / IM checks traverse
+# pool-collateral parent oracles and revert with UnprocessableNode if the
+# id is zero — the perp test suite tripped on that before this fix.
+cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdUsdcPoolNodeId %>"
+
 ###############################################################################
-# Spot Markets (only WETH/rUSD for devnet)
+# Spot Markets (WETH/rUSD, sRUSD/rUSD)
 ###############################################################################
 [var.spotMarkets]
 wethRusdSpot_oracleDeviationUnscaled = "0"
@@ -290,6 +330,17 @@ wethRusdSpot_minimumOrderBaseUnscaled = "0.001"
 wethRusdSpot_baseSpacingUnscaled = "0.001"
 wethRusdSpot_priceSpacingUnscaled = "0.01"
 wethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+# -------------------------------------------------------------------
+# sRUSD/rUSD spot market. All params zero — matches `reya_cronos.toml` and
+# `reya_network.toml` byte-for-byte. The market isn't allowlisted for
+# orderbook trading (see srusd.toml — no `srusd_rusd_enable_spot_market`
+# step), so the configure call only exists to seed the on-chain metadata
+# row that flows through to `/v2/referenceData/assetDefinitions`.
+srusdRusdSpot_oracleDeviationUnscaled = "0"
+srusdRusdSpot_minimumOrderBaseUnscaled = "0"
+srusdRusdSpot_baseSpacingUnscaled = "0"
+srusdRusdSpot_priceSpacingUnscaled = "0"
+srusdRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 ###############################################################################
 # Stork Oracle Node IDs (reuse Cronos stork nodes)
@@ -298,6 +349,10 @@ wethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000
 rusdUsdNodeId = "0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857"
 ethUsdcNodeIdStork = "0xb19e4d8ea5f0a3752fbd19515075063f7486e6954b8aa2b3d462c61726c46619"
 ethUsdcMarkNodeIdStork = "0x14dba23a7f8775bceefeedb4266fbe135b949ae40fe08e491f2a476d3448c66f"
+# Stork sRUSD/USDC pool node — already registered on the Cronos OracleManager
+# (devnet reuses the same proxy), so we just need to reference the id.
+# Source: reya_cronos.toml / ReyaForkTest.sol:150.
+srusdUsdcPoolNodeId = "0xc380c1273590e190bc15a196fdb2b5750abdd0eeb868cc8385dd384761e21ddb"
 
 ###############################################################################
 # Chain IDs (for periphery bridging connectors)

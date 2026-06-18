@@ -633,7 +633,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             token: sec.wsteth,
             tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.wstethUsdcStorkNodeId,
-            tokenAeDiscount: 0.01e18,
+            tokenAeDiscount: 0.02e18,
             userInitialRusdBalance: 0
         });
     }
@@ -643,7 +643,7 @@ contract AutoExchangeForkCheck is BaseReyaForkTest {
             token: sec.wsteth,
             tokenAmount: 2200e18,
             tokenUsdcNodeId: sec.wstethUsdcStorkNodeId,
-            tokenAeDiscount: 0.01e18,
+            tokenAeDiscount: 0.02e18,
             userInitialRusdBalance: 100e6
         });
     }

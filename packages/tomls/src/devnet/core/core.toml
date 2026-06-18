@@ -7,4 +7,5 @@ include = [
     "exchanges.toml",
     "tokens/rusd.toml",
     "tokens/weth.toml",
+    "tokens/srusd.toml",
 ]
