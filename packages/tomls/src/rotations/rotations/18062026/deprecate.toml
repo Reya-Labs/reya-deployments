@@ -1,4 +1,3 @@
-
 # -----------------------------------------------
 # Revoking permissions for liquidators - unused multicall feature
 # -----------------------------------------------
@@ -263,7 +262,6 @@ args = [
 ]
 depends = ["invoke.upgrade_core_proxy"]
 
-
 ##################################
 ############ OrdersGateway ################
 ##################################
@@ -281,7 +279,6 @@ args = [
     "<%= settings.co_execution_bot1 %>",
 ]
 depends = ["invoke.upgrade_orders_gateway_proxy"]
-
 
 [invoke.orders_gateway_remove_conditional_orders_d06082025_co_execution_bot_1]
 target = ["OrdersGatewayProxy"]
@@ -765,7 +762,6 @@ depends = ["invoke.upgrade_oracle_adapters_proxy"]
 ############ PassivePerp ##################
 ###########################################
 
-
 # -----------------------------------------------
 # Revoking permissions for unused configureFees
 # -----------------------------------------------
@@ -833,7 +829,6 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
-
 # -----------------------------------------------
 # Revoking permissions for unused migration1
 # -----------------------------------------------
@@ -847,7 +842,6 @@ args = [
     "0x0c449715a20aa7Ee9a8255E9fB57317e17A8AD4a",
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
-
 
 # -----------------------------------------------
 # Revoking permissions for unused configureDepth
@@ -873,11 +867,8 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
-
-
 # Deprecate in stage 2 - co_execution_bot2, co_execution_bot3, co_execution_bot4, 
 # co_execution_bot5, co_execution_bot6, co_execution_bot7 (replace with d18062026_)
-
 
 # -----------------------------------------------
 # Revoking permissions for unused configureSpread
@@ -920,7 +911,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market1EthId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -930,7 +922,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market2BtcId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -940,7 +933,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market64MorphoId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -950,7 +944,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market65SyrupId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -960,7 +955,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market66AeroId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -970,7 +966,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market67KaitoId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -980,7 +977,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market68ZoraId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -990,7 +988,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market69ProveId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -1000,7 +999,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market70PaxgId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -1010,7 +1010,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market71YzyId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -1020,7 +1021,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market72XplId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -1030,7 +1032,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market73WlfiId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -1040,7 +1043,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market74LineaId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -1050,7 +1054,8 @@ fromCall.func = "owner"
 func = "setAdmins"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market75MegaId])) %>",
-    [],
+    [
+    ],
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
