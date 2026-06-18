@@ -26,6 +26,26 @@ args = [
 depends = ["invoke.upgrade_core_proxy"]
 
 # -----------------------------------------------
+# Remove matchOrderPublisherAdmin5 from matchOrderPublisher admins
+# (setAdmins replaces the full admin set, so we re-set to pausers 1-4 only)
+# -----------------------------------------------
+
+[invoke.core_proxy_remove_match_order_publisher_admin5]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setAdmins"
+args = [
+    "<%= keccak256(hexlify('matchOrderPublisher')) %>",
+    [
+        "<%= settings.matchOrderPublisherAdmin1 %>",
+        "<%= settings.matchOrderPublisherAdmin2 %>",
+        "<%= settings.matchOrderPublisherAdmin3 %>",
+        "<%= settings.matchOrderPublisherAdmin4 %>",
+    ],
+]
+depends = ["invoke.upgrade_core_proxy"]
+
+# -----------------------------------------------
 # Revoke AE liquidator permissions from d06082025_ae_liquidator1
 # -----------------------------------------------
 
