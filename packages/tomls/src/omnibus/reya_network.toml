@@ -136,7 +136,7 @@ rebalancer6 = "0x0C81E390758A4C7AEF67BD2b0727DC6404Ea4883" # external rebalancer
 # -----------------------------------------------
 # Rotation notes: all these addresses need rotation
 # -----------------------------------------------
-liquidator1 = "0x7Cef71c72d97Ac8CbE4bB9aB091C3bCDB7c1CB56" # rotating to d20052026_liquidator1
+liquidator1 = "0x7Cef71c72d97Ac8CbE4bB9aB091C3bCDB7c1CB56" # rotating to d18062026_liquidator1
 liquidator2 = "0xb7335ad22b33afF74F07cA77b0945A3A242A7956" # deprecated
 liquidator3 = "0x64b8466c45436DCd2Bd7A43c580DEFe33AAB4D6C" # deprecated
 liquidator4 = "0x0328d0806c3e64a86Fe405b1368A631A58E63977" # deprecated
@@ -145,13 +145,13 @@ liquidator6 = "0xb0aB30aa804595835765c50114e4831b474Bd3Ac" # deprecated
 liquidator7 = "0xd956277f454951F95244b55a47e8ed9159CAed85" # deprecated
 liquidator8 = "0x8DA6DD4675e96F706F45BB9566Be31eB050ED652" # deprecated
 liquidator9 = "0xffA24D284111E58E2142dc74e4FB08a398D97c45" # deprecated
-liquidator10 = "0x4d0AfCA2357F1797CF18c579171b71B427604933" # rotating to d20052026_liquidator2
+liquidator10 = "0x4d0AfCA2357F1797CF18c579171b71B427604933" # rotating to d18062026_liquidator2
 
 d06082025_liquidator1 = "0x84d17e2E153FE902Ac5b5d9c877F18DF3b9C6E56" # deprecated
 d06082025_liquidator2 = "0xb776c97866FAeaBe752A2260ceCe8c19153EEbFc" # deprecated
 
-d20052026_liquidator1 = ""
-d20052026_liquidator2 = ""
+d18062026_liquidator1 = "0xcd43c319d5b0e6e0fbb37ed4f61d75b6c08138ab" # liquidator-1-18062026
+d18062026_liquidator2 = "0x3f7544ae06909389468205b15792c002738d4565" # liquidator-2-18062026
 
 [var.ae_liquidators]
 # -----------------------------------------------
@@ -164,53 +164,53 @@ ae_liquidator1 = "0x89520d105a125CC6165c6685de262c42113Df9c0" # deprecated
 ae_liquidator2 = "0xc656647754e72c2Db056712AC40dc04Ce6681a7D" # external AE bot
 ae_liquidator3 = "0x9afe15992448b33bda6d5851383e643ce007cb5a" # external AE bot
 
-d06082025_ae_liquidator1 = "0x8836cf32426cb26353698B105ab89fb87f52Fc34" # rotating to d20052026_ae_liquidator1
+d06082025_ae_liquidator1 = "0x8836cf32426cb26353698B105ab89fb87f52Fc34" # rotating to d18062026_ae_liquidator1
 
-d20052026_ae_liquidator1 = ""
+d18062026_ae_liquidator1 = "0x0e0c1e80cc13a309602ae340b8c4dc6b4a84f25b" # ae-liquidator-18062026
 
 [var.co_execution_bots]
 # -----------------------------------------------
 # Rotation notes: all these addresses need rotation
 # -----------------------------------------------
 co_execution_bot1 = "0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a" # conditional order bot 1 # deprecated
-co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688" # conditional order bot 2 # rotating to d20052026_co_execution_bot1
-co_execution_bot3 = "0x10eE819bc1E25cd2Eb3CE023724209f6f56Ef103" # main API executor 1 # rotating to d20052026_co_execution_bot3
-co_execution_bot4 = "0xA50Aa11999f86f29badEc3fcD3aBa8AbBe153Ba2" # main API executor 2 # rotating to d20052026_co_execution_bot4
-co_execution_bot5 = "0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4" # ops API executor 1 # rotating to d20052026_co_execution_bot5
-co_execution_bot6 = "0xbf59e78614F97fDbA523238AefDbe64E2efb28C3" # ops API executor 2 # rotating to d20052026_co_execution_bot6
-co_execution_bot7 = "0xbAF944384b46eB8609c3A5C7894028cE60c15354" # staging API executor # rotating to d20052026_co_execution_bot7
-co_execution_bot8 = "0x7B6365ECDf114Ec3F3c84285990A22E6DF126403" # ws-exec relayer (staging) # rotating to d20052026_co_execution_bot8
+co_execution_bot2 = "0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688" # conditional order bot 2 # rotating to d18062026_co_execution_bot1
+co_execution_bot3 = "0x10eE819bc1E25cd2Eb3CE023724209f6f56Ef103" # main API executor 1 # rotating to d18062026_co_execution_bot3
+co_execution_bot4 = "0xA50Aa11999f86f29badEc3fcD3aBa8AbBe153Ba2" # main API executor 2 # rotating to d18062026_co_execution_bot4
+co_execution_bot5 = "0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4" # ops API executor 1 # rotating to d18062026_co_execution_bot5
+co_execution_bot6 = "0xbf59e78614F97fDbA523238AefDbe64E2efb28C3" # ops API executor 2 # rotating to d18062026_co_execution_bot6
+co_execution_bot7 = "0xbAF944384b46eB8609c3A5C7894028cE60c15354" # staging API executor # rotating to d18062026_co_execution_bot7
+co_execution_bot8 = "0x7B6365ECDf114Ec3F3c84285990A22E6DF126403" # ws-exec relayer (staging) # rotating to d18062026_co_execution_bot8
 
 d06082025_co_execution_bot_1 = "0xd933f2FcA9Be1A8Fb0Db05cb63570c62930e8d61" # conditional order bot 1 # deprecated
-d06082025_co_execution_bot_2 = "0xd0a8780853999Ff5Cd0fe852217467d3de160EEb" # conditional order bot 2 # rotating to d20052026_co_execution_bot2
+d06082025_co_execution_bot_2 = "0xd0a8780853999Ff5Cd0fe852217467d3de160EEb" # conditional order bot 2 # rotating to d18062026_co_execution_bot2
 d06082025_co_execution_bot_3 = "0xb5Cd25E984Daa87a7DcdfaA7fd4c4e97AE0A95B8" # main API executor 1 # deprecated
 d06082025_co_execution_bot_4 = "0xa4d537B5C310CEF9514e7255Fca1268A2B80d67D" # main API executor 2 # deprecated
-d06082025_co_execution_bot_5 = "0xdDfD9f70972742bE561eFb89E9CF5BEF848729F8" # staging API executor # rotating to d20052026_co_execution_bot9
+d06082025_co_execution_bot_5 = "0xdDfD9f70972742bE561eFb89E9CF5BEF848729F8" # staging API executor # rotating to d18062026_co_execution_bot9
 
-d20052026_co_execution_bot1 = ""
-d20052026_co_execution_bot2 = ""
-d20052026_co_execution_bot3 = ""
-d20052026_co_execution_bot4 = ""
-d20052026_co_execution_bot5 = ""
-d20052026_co_execution_bot6 = ""
-d20052026_co_execution_bot7 = ""
-d20052026_co_execution_bot8 = ""
-d20052026_co_execution_bot9 = ""
+d18062026_co_execution_bot1 = "0xee98b2522a811c41f6fd370b0900e86905f8e3f4" # co_execution_bot_1_18062026
+d18062026_co_execution_bot2 = "0x392f4efb04ad308ae1c55cba44c00e2656c158a3" # co_execution_bot_2_18062026
+d18062026_co_execution_bot3 = "0x83f1a9b75fc0422e95a90a9381295a71b71089b0" # co_execution_bot_3_18062026
+d18062026_co_execution_bot4 = "0x7798c14b6e620367054ad058bee54e44ab90b976" # co_execution_bot_4_18062026
+d18062026_co_execution_bot5 = "0x9c22ea6f9e88547b6e658bf59c4650bd708faa51" # co_execution_bot_5_18062026
+d18062026_co_execution_bot6 = "0xb13e082e6549f897739f1c9f9cbdcaee0dc3bc8e" # co_execution_bot_6_18062026
+d18062026_co_execution_bot7 = "0xfab9a76484fc463653c84d33b671328a65f0ee4a" # co_execution_bot_7_18062026
+d18062026_co_execution_bot8 = "0xb7bba1cc10181674325dc065af58cf9ecc8f0606" # co_execution_bot_8_18062026
+d18062026_co_execution_bot9 = "0xd321b17d7d42a532c78a7858c6167ce3bb5afd79" # co_execution_bot_9_18062026
 
 [var.dynamic_pricing_setters]
 dynamicPricingSetter1 = "0x93e3aaee71dc2f42ad9a5992e4a6776b3406104d" # deprecated
 
 [var.matching_engine_publishers]
-matching_engine_publisher1 = "0x47b3df006f9856c8a8d1B7c558e273B4C1562296" # rotating to d20052026_matching_engine_publisher1
-d20052026_matching_engine_publisher1 = ""
+matching_engine_publisher1 = "0x47b3df006f9856c8a8d1B7c558e273B4C1562296" # rotating to d18062026_matching_engine_publisher1
+d18062026_matching_engine_publisher1 = "0x76b03658661e1b3247cb08daa8045293122b89ce" # matching_engine_publisher_1_18062026
 
 [var.fee_configuration_bots]
 # -----------------------------------------------
 # Rotation notes: all these addresses need rotation
 # -----------------------------------------------
 setOgStatusBot = "0x2598d555b4e92d493416676f36a09d29a19835b9" # deprecated
-setTierIdBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6" # rotating to d20052026_setTierIdBot
-setReferralMappingBot = "0xAdA667dCCF02CC78944cE8464fa5d722f2c73594" # rotating to d20052026_setReferralMappingBot
+setTierIdBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6" # rotating to d18062026_setTierIdBot
+setReferralMappingBot = "0xAdA667dCCF02CC78944cE8464fa5d722f2c73594" # rotating to d18062026_setReferralMappingBot
 # setMarketZeroFeeBot = "0x6b5E482fCE86F0C95cAe69CAC2788EA8610a84c6"
 
 d06082025_setOgStatusBot = "0x23ADf7BA3f9d2a8D9F4b34b65aFC4aDb0fC85c46" # deprecated
@@ -218,8 +218,8 @@ d06082025_setTierIdBot = "0xc99a112E3dA3AACbaEA357fec8fc64802B4804Af" # deprecat
 d06082025_setReferralMappingBot = "0x3964296c2d089160B2833407CBF638a48CEDAcc7"  # deprecated
 setMarketZeroFeeBot = "0xdD69B419f0d7a1E15192ac8DBAa0Fc63b25f8A11" # deprecated
 
-d20052026_setReferralMappingBot = ""
-d20052026_setTierIdBot = ""
+d18062026_setReferralMappingBot = "0xdab5cc2dc31d69fd96b6633e91e2aede46385f27" # setReferralMappingBot_18062026 
+d18062026_setTierIdBot = "0x4e5052c9cf7fdbd13ff8c30e1ee9f52476da50b8" # setTierIdBot_18062026
 
 [var.set_main_account_id_bots]
 setMainAccountIdBot = "0x286119f5cc1f99c9819cb8a7fb22eb49ca22c878"           # deprecated
@@ -280,17 +280,17 @@ storkExecutor14 = "0xf6965516e3a326b86510Fa1dAD52aa7EBd1fCB3d" # deprecated
 storkExecutor15 = "0x41528555d19B8002EF5Ba51fc709dFB5c29a2996" # deprecated
 storkExecutor16 = "0x4AF44F22119E3e7bd00058C4eef833708b7F8bf3" # deprecated
 storkExecutor17 = "0xBf345d145eE74EbcF9FE91Eee9887CEf2549F891" # deprecated
-storkExecutor18 = "0xf9E50a2584CFBD3d23468A395114461E5154fD61" # rotating to d20052026_storkExecutor1
-storkExecutor19 = "0xdC9f85dE54543eddD2Cc61e63D5DD8DFFb0b2cF4" # rotating to d20052026_storkExecutor2
-storkExecutor20 = "0xf5dD8F0D98138330F6b5927B019E5B94B3C1E919" # rotating to d20052026_storkExecutor3
+storkExecutor18 = "0xf9E50a2584CFBD3d23468A395114461E5154fD61" # rotating to d18062026_storkExecutor1
+storkExecutor19 = "0xdC9f85dE54543eddD2Cc61e63D5DD8DFFb0b2cF4" # rotating to d18062026_storkExecutor2
+storkExecutor20 = "0xf5dD8F0D98138330F6b5927B019E5B94B3C1E919" # rotating to d18062026_storkExecutor3
 
 d06082025_storkExecutor1 = "0x942C8b975877D3201BAa385497a1037DAD3f336f" # heartbeat # deprecated
 d06082025_storkExecutor2 = "0xe5476044f3F2a601748816f7177A72bf1aa3f2E1" # volatility # deprecated
 d06082025_storkExecutor3 = "0x53ca123CbE4e7a4dD093302E0EfDab2a28b55a4f" # fallback # deprecated
 
-d20052026_storkExecutor1 = ""
-d20052026_storkExecutor2 = ""
-d20052026_storkExecutor3 = ""
+d18062026_storkExecutor1 = "0xb367da961ae48e16d9907b1365c84b3bb9abb175" # storkExecutor_1_18062026
+d18062026_storkExecutor2 = "0xda4068b909730ac1f44be98ee142e25744ecbdce" # storkExecutor_2_18062026
+d18062026_storkExecutor3 = "0x9b75b0ddca961ca98900ff8c1fe57d08ce0fe132" # storkExecutor_3_18062026
 
 [var.market_vol_configurators]
 # -----------------------------------------------

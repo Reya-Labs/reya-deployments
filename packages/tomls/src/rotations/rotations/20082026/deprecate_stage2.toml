@@ -1,4 +1,4 @@
-# Stage 2: revoke permissions from the original wallets that were rotated to d20052026_*
+# Stage 2: revoke permissions from the original wallets that were rotated to d18062026_*
 # Run AFTER introduce.toml has executed successfully on-chain.
 
 # -----------------------------------------------
