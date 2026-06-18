@@ -1,1 +1,5 @@
-include = ["rotations/06082025/introduce.toml"]
+include = [
+    "rotations/06082025/introduce.toml",
+    "rotations/18062026/deprecate.toml",
+    "rotations/18062026/introduce.toml",
+]
