@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.156"
+version = "1.0.157"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -516,15 +516,15 @@ reyaEthereumWithdrawFeeUnscaled = "1"
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= settings.THREE_HOURS_IN_SECONDS %>"
-rusdWithdrawalTvlPercentageLimitUnscaled = "0.4"
+rusdWithdrawalTvlPercentageLimitUnscaled = "0.1"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
-wethWithdrawalWindowSize = "1"
-wethWithdrawalTvlPercentageLimitUnscaled = "1"
+wethWithdrawalWindowSize = "<%= settings.THREE_HOURS_IN_SECONDS %>"
+wethWithdrawalTvlPercentageLimitUnscaled = "0.25"
 # -------------------------------------------------------------------
 wbtcCollateralAdapter = "<%= AddressZero %>"
-wbtcWithdrawalWindowSize = "1"
-wbtcWithdrawalTvlPercentageLimitUnscaled = "1"
+wbtcWithdrawalWindowSize = "<%= settings.THREE_HOURS_IN_SECONDS %>"
+wbtcWithdrawalTvlPercentageLimitUnscaled = "0.25"
 # -------------------------------------------------------------------
 usdeCollateralAdapter = "<%= AddressZero %>"
 usdeWithdrawalWindowSize = "1"
@@ -543,24 +543,24 @@ sdeusdWithdrawalWindowSize = "1"
 sdeusdWithdrawalTvlPercentageLimitUnscaled = "1"
 # -------------------------------------------------------------------
 srusdCollateralAdapter = "<%= AddressZero %>"
-srusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-srusdWithdrawalTvlPercentageLimitUnscaled = "0.3"
+srusdWithdrawalWindowSize = "<%= settings.THREE_HOURS_IN_SECONDS %>"
+srusdWithdrawalTvlPercentageLimitUnscaled = "0.1"
 # -------------------------------------------------------------------
 rseliniCollateralAdapter = "<%= AddressZero %>"
 rseliniWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-rseliniWithdrawalTvlPercentageLimitUnscaled = "1"
+rseliniWithdrawalTvlPercentageLimitUnscaled = "0"
 # -------------------------------------------------------------------
 ramberCollateralAdapter = "<%= AddressZero %>"
 ramberWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
-ramberWithdrawalTvlPercentageLimitUnscaled = "1"
+ramberWithdrawalTvlPercentageLimitUnscaled = "0"
 # -------------------------------------------------------------------
 rhedgeCollateralAdapter = "<%= AddressZero %>"
 rhedgeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rhedgeWithdrawalTvlPercentageLimitUnscaled = "0"
 # -------------------------------------------------------------------
 wstethCollateralAdapter = "<%= AddressZero %>"
-wstethWithdrawalWindowSize = "1"
-wstethWithdrawalTvlPercentageLimitUnscaled = "1"
+wstethWithdrawalWindowSize = "<%= settings.THREE_HOURS_IN_SECONDS %>"
+wstethWithdrawalTvlPercentageLimitUnscaled = "0.25"
 # -------------------------------------------------------------------
 reyaCollateralAdapter = "<%= AddressZero %>"
 reyaWithdrawalWindowSize = "1"
