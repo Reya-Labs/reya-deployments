@@ -244,8 +244,6 @@ args = [
 ]
 depends = ["invoke.upgrade_core_proxy"]
 
-# Deprecate in step 2 matchOrderPublisherAdmin5 from admin of matchOrderPublisher
-
 # -----------------------------------------------
 # Revoking permissions for ownerMainAccountId
 # -----------------------------------------------
