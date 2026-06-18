@@ -177,19 +177,15 @@ contract PermissionsForkTest is ReyaForkTest {
 
         // Intermediate state (stage 1 + introduce). introduce.toml grants multicall ONLY to
         // d18062026_ae_liquidator1 (NOT to the new liquidators). deprecate.toml (stage 1)
-        // revokes liquidator2..9, d06082025_liquidator1/2 and d06082025_ae_liquidator1.
-        // liquidator1, liquidator10 and ae_liquidator1 are revoked only in stage 2, so they
-        // remain here for now.
-        // FINALIZE: ordering is best-effort — confirm against the cannon test run output.
-        address[] memory expectedAllowlist = new address[](6);
+        // revokes liquidator1..10 (the liquidator bot does not use multicall), d06082025_liquidator1/2
+        // and d06082025_ae_liquidator1. ae_liquidator1 is revoked only in stage 2, so it remains here.
+        address[] memory expectedAllowlist = new address[](4);
         expectedAllowlist[0] = 0xc656647754e72c2Db056712AC40dc04Ce6681a7D; // ae_liquidator2 (external)
         expectedAllowlist[1] = 0x9Afe15992448b33BDa6D5851383E643CE007cb5A; // ae_liquidator3 (external)
-        expectedAllowlist[2] = liquidator1; // stage 2
-        expectedAllowlist[3] = liquidator10; // stage 2
-        expectedAllowlist[4] = ae_liquidator1; // stage 2
-        expectedAllowlist[5] = d18062026_ae_liquidator1;
+        expectedAllowlist[2] = ae_liquidator1; // stage 2
+        expectedAllowlist[3] = d18062026_ae_liquidator1;
 
-        assertEq(allowlist, expectedAllowlist);
+        _assertSameMembers(allowlist, expectedAllowlist);
         assertFalse(ICoreProxy(sec.core).getFeatureFlagAllowAll(flagId));
         assertFalse(ICoreProxy(sec.core).getFeatureFlagDenyAll(flagId));
     }
@@ -444,25 +440,19 @@ contract PermissionsForkTest is ReyaForkTest {
         address[] memory allowlist = IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowlist(flagId);
 
         // Intermediate state. NOTE: co_execution_bot* are NOT on the `executors` allowlist on-chain
-        // (they hold subSecondExecutors only). introduce.toml grants `executors` to the NEW co-bots
-        // 1,3,4,5,6,7 — a capability their predecessors never held (flagged separately for review).
-        // deprecate.toml (stage 1) revokes storkExecutor1..17 and d06082025_storkExecutor1/2/3;
-        // storkExecutor18/19/20 remain (revoked in stage 2). The OrdersGateway proxy holds executors
-        // and is never rotated. introduce.toml also adds d18062026_storkExecutor1/2/3.
-        address[] memory expectedAllowlist = new address[](13);
+        // (they hold subSecondExecutors only), and the rotation no longer grants `executors` to the
+        // new co-bots (parity with predecessors). deprecate.toml (stage 1) revokes storkExecutor1..17
+        // and d06082025_storkExecutor1/2/3; storkExecutor18/19/20 remain (revoked in stage 2). The
+        // OrdersGateway proxy holds executors and is never rotated. introduce.toml adds only the
+        // d18062026_storkExecutor1/2/3.
+        address[] memory expectedAllowlist = new address[](7);
         expectedAllowlist[0] = storkExecutor18; // stage 2
         expectedAllowlist[1] = storkExecutor19; // stage 2
         expectedAllowlist[2] = storkExecutor20; // stage 2
         expectedAllowlist[3] = sec.ordersGateway; // permanent holder, not rotated
-        expectedAllowlist[4] = d18062026_co_execution_bot1;
-        expectedAllowlist[5] = d18062026_co_execution_bot3;
-        expectedAllowlist[6] = d18062026_co_execution_bot4;
-        expectedAllowlist[7] = d18062026_co_execution_bot5;
-        expectedAllowlist[8] = d18062026_co_execution_bot6;
-        expectedAllowlist[9] = d18062026_co_execution_bot7;
-        expectedAllowlist[10] = d18062026_storkExecutor1;
-        expectedAllowlist[11] = d18062026_storkExecutor2;
-        expectedAllowlist[12] = d18062026_storkExecutor3;
+        expectedAllowlist[4] = d18062026_storkExecutor1;
+        expectedAllowlist[5] = d18062026_storkExecutor2;
+        expectedAllowlist[6] = d18062026_storkExecutor3;
 
         _assertSameMembers(allowlist, expectedAllowlist);
         // allowAll is intentionally true for the `executors` flag: the gate is open so any caller

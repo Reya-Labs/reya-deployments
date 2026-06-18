@@ -151,19 +151,11 @@ args = [
 depends = ["invoke.upgrade_orders_gateway_proxy"]
 
 # -----------------------------------------------
-# Grant executors + subSecondExecutors to rotated co_execution_bots (replaces co_execution_bot2-7)
-# Note: bot2 (d06082025_co_execution_bot_2), bot8 (co_execution_bot8), bot9 (d06082025_co_execution_bot_5), bot10 (co_execution_bot9) had no executor/subsecond grants
+# Grant subSecondExecutors to rotated co_execution_bots (replaces co_execution_bot2-7)
+# Note: predecessors held subSecondExecutors only (NOT executors), so no executors grant here.
+#       bot2 (d06082025_co_execution_bot_2), bot8 (co_execution_bot8), bot9 (d06082025_co_execution_bot_5),
+#       bot10 (co_execution_bot9) had no executor/subsecond grants.
 # -----------------------------------------------
-
-[invoke.oracle_adapters_enable_executors_d18062026_co_execution_bot1]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('executors')) %>",
-    "<%= settings.d18062026_co_execution_bot1 %>",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
 
 [invoke.oracle_adapters_enable_subsecond_d18062026_co_execution_bot1]
 target = ["OracleAdaptersProxy"]
@@ -172,16 +164,6 @@ func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('subSecondExecutors')) %>",
     "<%= settings.d18062026_co_execution_bot1 %>",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-[invoke.oracle_adapters_enable_executors_d18062026_co_execution_bot3]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('executors')) %>",
-    "<%= settings.d18062026_co_execution_bot3 %>",
 ]
 depends = ["invoke.upgrade_oracle_adapters_proxy"]
 
@@ -195,16 +177,6 @@ args = [
 ]
 depends = ["invoke.upgrade_oracle_adapters_proxy"]
 
-[invoke.oracle_adapters_enable_executors_d18062026_co_execution_bot4]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('executors')) %>",
-    "<%= settings.d18062026_co_execution_bot4 %>",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
 [invoke.oracle_adapters_enable_subsecond_d18062026_co_execution_bot4]
 target = ["OracleAdaptersProxy"]
 fromCall.func = "owner"
@@ -212,16 +184,6 @@ func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('subSecondExecutors')) %>",
     "<%= settings.d18062026_co_execution_bot4 %>",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-[invoke.oracle_adapters_enable_executors_d18062026_co_execution_bot5]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('executors')) %>",
-    "<%= settings.d18062026_co_execution_bot5 %>",
 ]
 depends = ["invoke.upgrade_oracle_adapters_proxy"]
 
@@ -235,16 +197,6 @@ args = [
 ]
 depends = ["invoke.upgrade_oracle_adapters_proxy"]
 
-[invoke.oracle_adapters_enable_executors_d18062026_co_execution_bot6]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('executors')) %>",
-    "<%= settings.d18062026_co_execution_bot6 %>",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
 [invoke.oracle_adapters_enable_subsecond_d18062026_co_execution_bot6]
 target = ["OracleAdaptersProxy"]
 fromCall.func = "owner"
@@ -252,16 +204,6 @@ func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('subSecondExecutors')) %>",
     "<%= settings.d18062026_co_execution_bot6 %>",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-[invoke.oracle_adapters_enable_executors_d18062026_co_execution_bot7]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('executors')) %>",
-    "<%= settings.d18062026_co_execution_bot7 %>",
 ]
 depends = ["invoke.upgrade_oracle_adapters_proxy"]
 

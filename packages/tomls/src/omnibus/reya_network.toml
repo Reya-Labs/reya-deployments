@@ -197,7 +197,7 @@ d18062026_co_execution_bot6 = "0xb13e082e6549f897739f1c9f9cbdcaee0dc3bc8e"  # co
 d18062026_co_execution_bot7 = "0xfab9a76484fc463653c84d33b671328a65f0ee4a"  # co_execution_bot_7_18062026
 d18062026_co_execution_bot8 = "0xb7bba1cc10181674325dc065af58cf9ecc8f0606"  # co_execution_bot_8_18062026
 d18062026_co_execution_bot9 = "0xd321b17d7d42a532c78a7858c6167ce3bb5afd79"  # co_execution_bot_9_18062026
-d18062026_co_execution_bot10 = "0x3ce11c890cb38844e772203cf58771634117c9b5"
+d18062026_co_execution_bot10 = "0x3ce11c890cb38844e772203cf58771634117c9b5" # co_execution_bot_10_18062026
 
 [var.dynamic_pricing_setters]
 dynamicPricingSetter1 = "0x93e3aaee71dc2f42ad9a5992e4a6776b3406104d" # deprecated

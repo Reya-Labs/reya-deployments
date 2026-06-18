@@ -239,6 +239,8 @@ depends = ["invoke.upgrade_orders_gateway_proxy"]
 
 # -----------------------------------------------
 # Revoke executors + subSecondExecutors from co_execution_bot2, 3-7
+# (the executors removals are no-ops — these wallets never held executors — but are kept
+#  defensively in case they were ever granted)
 # -----------------------------------------------
 
 [invoke.oracle_adapters_remove_executors_co_execution_bot2]

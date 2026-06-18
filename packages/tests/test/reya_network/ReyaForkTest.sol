@@ -67,7 +67,10 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.passivePoolAccountId = 2;
 
         // Reya bots
-        sec.coExecutionBot = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
+        // co_execution_bot1 (0x0d171...) was deprecated and removed from conditional_orders by the
+        // 18062026 rotation; use its rotated replacement d18062026_co_execution_bot1, which holds
+        // conditional_orders + subSecondExecutors + configureDepth/Spread in the post-rotation state.
+        sec.coExecutionBot = 0xEE98b2522a811c41f6FD370B0900e86905f8E3F4;
         sec.poolRebalancer = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
         sec.rseliniCustodian = 0x75cfe7F41953cDfeA30C9F6A0BceC6BAA3dA71B0;
         sec.rseliniSubscriber = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
