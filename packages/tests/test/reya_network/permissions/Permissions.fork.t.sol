@@ -33,6 +33,7 @@ contract PermissionsForkTest is ReyaForkTest {
     address constant d18062026_co_execution_bot7 = 0xFaB9A76484Fc463653c84d33B671328a65F0Ee4A;
     address constant d18062026_co_execution_bot8 = 0xB7bba1CC10181674325Dc065aF58cF9ECc8F0606;
     address constant d18062026_co_execution_bot9 = 0xd321b17D7D42a532C78A7858c6167ce3BB5afD79;
+    address constant d18062026_co_execution_bot10 = 0x3CE11c890cb38844e772203Cf58771634117C9b5;
     address constant d18062026_matching_engine_publisher1 = 0x76B03658661E1b3247cB08dAa8045293122B89ce;
     address constant d18062026_setTierIdBot = 0x4E5052c9CF7FDbD13fF8C30e1Ee9F52476Da50B8;
     address constant d18062026_setReferralMappingBot = 0xdAB5cc2DC31D69fd96B6633E91E2Aede46385F27;
@@ -59,6 +60,7 @@ contract PermissionsForkTest is ReyaForkTest {
     address constant co_execution_bot6 = 0xbf59e78614F97fDbA523238AefDbe64E2efb28C3;
     address constant co_execution_bot7 = 0xbAF944384b46eB8609c3A5C7894028cE60c15354;
     address constant co_execution_bot8 = 0x7B6365ECDf114Ec3F3c84285990A22E6DF126403;
+    address constant co_execution_bot9 = 0x9bf831e7C8e2584Ab63c860Fa2d9Dc16939E1D33;
     address constant storkExecutor18 = 0xf9E50a2584CFBD3d23468A395114461E5154fD61;
     address constant storkExecutor19 = 0xdC9f85dE54543eddD2Cc61e63D5DD8DFFb0b2cF4;
     address constant storkExecutor20 = 0xf5dD8F0D98138330F6b5927B019E5B94B3C1E919;
@@ -81,19 +83,39 @@ contract PermissionsForkTest is ReyaForkTest {
         assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagDenyAll(flagId));
     }
 
+    // Order-independent allowlist comparison. Cannon executes independent invokes (same
+    // `depends`) in a non-deterministic order, and EnumerableSet removals use swap-and-pop,
+    // so the on-chain allowlist order after a rotation is not reliably predictable by hand.
+    // We assert set-equality (length + membership) instead of exact ordering.
+    function _assertSameMembers(address[] memory actual, address[] memory expected) internal pure {
+        assertEq(actual.length, expected.length, "allowlist length mismatch");
+        for (uint256 i = 0; i < expected.length; i++) {
+            bool found = false;
+            for (uint256 j = 0; j < actual.length; j++) {
+                if (actual[j] == expected[i]) {
+                    found = true;
+                    break;
+                }
+            }
+            assertTrue(found, "expected address missing from allowlist");
+        }
+    }
+
     function test_pool_srusd_auto_exchange_permissions() public view {
         bytes32 flagId = keccak256(abi.encode(keccak256(bytes("stakedAssetAutoExchange")), 1));
         address[] memory allowlist = IPassivePoolProxy(sec.pool).getFeatureFlagAllowlist(flagId);
 
-        // post-rotation allowlist: the two external AE bots and the new rotation wallet.
+        // Intermediate state: the two external AE bots, the new rotation wallet, AND ae_liquidator1.
         // deprecate.toml (stage 1) revokes d06082025_ae_liquidator1 and introduce.toml adds
-        // d18062026_ae_liquidator1. ae_liquidator1 is NOT in this flag's allowlist.
-        address[] memory expectedAllowlist = new address[](3);
+        // d18062026_ae_liquidator1. ae_liquidator1 is a current holder and is revoked only in
+        // stage 2 (deprecate_stage2.toml), so it is still present here.
+        address[] memory expectedAllowlist = new address[](4);
         expectedAllowlist[0] = 0xc656647754e72c2Db056712AC40dc04Ce6681a7D; // ae_liquidator2 (external)
         expectedAllowlist[1] = 0x9Afe15992448b33BDa6D5851383E643CE007cb5A; // ae_liquidator3 (external)
         expectedAllowlist[2] = d18062026_ae_liquidator1;
+        expectedAllowlist[3] = ae_liquidator1; // stage 2
 
-        assertEq(allowlist, expectedAllowlist);
+        _assertSameMembers(allowlist, expectedAllowlist);
         assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagAllowAll(flagId));
         assertFalse(IPassivePoolProxy(sec.pool).getFeatureFlagDenyAll(flagId));
     }
@@ -268,14 +290,15 @@ contract PermissionsForkTest is ReyaForkTest {
 
         // Intermediate state: introduce.toml adds d18062026_setTierIdBot/setReferralMappingBot.
         // The old setTierIdBot/setReferralMappingBot are revoked only in stage 2 → still present.
-        // FINALIZE: ordering is best-effort — confirm against the cannon test run output.
-        address[] memory expectedAllowlist = new address[](4);
-        expectedAllowlist[0] = setTierIdBot; // stage 2
-        expectedAllowlist[1] = setReferralMappingBot; // stage 2
-        expectedAllowlist[2] = d18062026_setTierIdBot;
-        expectedAllowlist[3] = d18062026_setReferralMappingBot;
+        // The owner multisig (0x1Fe5...) holds configureFees and is never rotated → present.
+        address[] memory expectedAllowlist = new address[](5);
+        expectedAllowlist[0] = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9; // owner multisig
+        expectedAllowlist[1] = setTierIdBot; // stage 2
+        expectedAllowlist[2] = setReferralMappingBot; // stage 2
+        expectedAllowlist[3] = d18062026_setTierIdBot;
+        expectedAllowlist[4] = d18062026_setReferralMappingBot;
 
-        assertEq(allowlist, expectedAllowlist);
+        _assertSameMembers(allowlist, expectedAllowlist);
         assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagAllowAll(flagId));
         assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagDenyAll(flagId));
     }
@@ -284,10 +307,9 @@ contract PermissionsForkTest is ReyaForkTest {
         bytes32 flagId = keccak256(bytes("configureSpread"));
         address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flagId);
 
-        // Intermediate state: introduce.toml adds configureSpread for d18062026 bots 1,3,4,5,8,9.
-        // deprecate.toml (stage 1) revokes only co_execution_bot1; co_execution_bot2..7 are
-        // revoked in stage 2, so they remain present for now.
-        // FINALIZE: membership/ordering are best-effort — confirm against the cannon test run.
+        // Intermediate state: introduce.toml adds configureSpread for d18062026 bots 1,3,4,5,6,7
+        // (mirrors configureDepth). deprecate.toml (stage 1) revokes only co_execution_bot1;
+        // co_execution_bot2..7 are revoked in stage 2, so they remain present for now.
         address[] memory expectedAllowlist = new address[](12);
         expectedAllowlist[0] = co_execution_bot2; // stage 2
         expectedAllowlist[1] = co_execution_bot3; // stage 2
@@ -299,10 +321,10 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[7] = d18062026_co_execution_bot3;
         expectedAllowlist[8] = d18062026_co_execution_bot4;
         expectedAllowlist[9] = d18062026_co_execution_bot5;
-        expectedAllowlist[10] = d18062026_co_execution_bot8;
-        expectedAllowlist[11] = d18062026_co_execution_bot9;
+        expectedAllowlist[10] = d18062026_co_execution_bot6;
+        expectedAllowlist[11] = d18062026_co_execution_bot7;
 
-        assertEq(allowlist, expectedAllowlist);
+        _assertSameMembers(allowlist, expectedAllowlist);
         assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagAllowAll(flagId));
         assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagDenyAll(flagId));
     }
@@ -335,7 +357,6 @@ contract PermissionsForkTest is ReyaForkTest {
         // deprecate.toml (stage 1) revokes co_execution_bot1 AND dynamicPricingSetter1
         // (0x93e3...). co_execution_bot2..7 are revoked in stage 2, so they remain present.
         // The multisig (0x1Fe5...) is not rotated.
-        // FINALIZE: membership/ordering are best-effort — confirm against the cannon test run.
         address[] memory expectedAllowlist = new address[](13);
         expectedAllowlist[0] = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9; // multisig
         expectedAllowlist[1] = co_execution_bot2; // stage 2
@@ -351,7 +372,7 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[11] = d18062026_co_execution_bot6;
         expectedAllowlist[12] = d18062026_co_execution_bot7;
 
-        assertEq(allowlist, expectedAllowlist);
+        _assertSameMembers(allowlist, expectedAllowlist);
         assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagAllowAll(flagId));
         assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagDenyAll(flagId));
     }
@@ -364,11 +385,11 @@ contract PermissionsForkTest is ReyaForkTest {
         bytes32 flagId = keccak256(bytes("conditional_orders"));
         address[] memory allowlist = IOrdersGatewayProxy(sec.ordersGateway).getFeatureFlagAllowlist(flagId);
 
-        // Intermediate state: introduce.toml adds all 9 d18062026 bots. deprecate.toml (stage 1)
-        // revokes co_execution_bot1 and d06082025_co_execution_bot_1/3/4. The remaining old bots
-        // (co_execution_bot2..8, d06082025_co_execution_bot_2/_5) are revoked in stage 2 → present.
-        // FINALIZE: membership/ordering are best-effort — confirm against the cannon test run.
-        address[] memory expectedAllowlist = new address[](18);
+        // Intermediate state: introduce.toml adds all 10 d18062026 bots (bot1..bot10).
+        // deprecate.toml (stage 1) revokes co_execution_bot1 and d06082025_co_execution_bot_1/3/4.
+        // The remaining old bots (co_execution_bot2..9, d06082025_co_execution_bot_2/_5) are
+        // revoked in stage 2 → still present here.
+        address[] memory expectedAllowlist = new address[](20);
         expectedAllowlist[0] = co_execution_bot2; // stage 2
         expectedAllowlist[1] = co_execution_bot3; // stage 2
         expectedAllowlist[2] = co_execution_bot4; // stage 2
@@ -376,19 +397,21 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[4] = co_execution_bot6; // stage 2
         expectedAllowlist[5] = co_execution_bot7; // stage 2
         expectedAllowlist[6] = co_execution_bot8; // stage 2
-        expectedAllowlist[7] = 0xd0a8780853999Ff5Cd0fe852217467d3de160EEb; // d06082025_co_execution_bot_2 (stage 2)
-        expectedAllowlist[8] = 0xdDfD9f70972742bE561eFb89E9CF5BEF848729F8; // d06082025_co_execution_bot_5 (stage 2)
-        expectedAllowlist[9] = d18062026_co_execution_bot1;
-        expectedAllowlist[10] = d18062026_co_execution_bot2;
-        expectedAllowlist[11] = d18062026_co_execution_bot3;
-        expectedAllowlist[12] = d18062026_co_execution_bot4;
-        expectedAllowlist[13] = d18062026_co_execution_bot5;
-        expectedAllowlist[14] = d18062026_co_execution_bot6;
-        expectedAllowlist[15] = d18062026_co_execution_bot7;
-        expectedAllowlist[16] = d18062026_co_execution_bot8;
-        expectedAllowlist[17] = d18062026_co_execution_bot9;
+        expectedAllowlist[7] = co_execution_bot9; // stage 2
+        expectedAllowlist[8] = 0xd0a8780853999Ff5Cd0fe852217467d3de160EEb; // d06082025_co_execution_bot_2 (stage 2)
+        expectedAllowlist[9] = 0xdDfD9f70972742bE561eFb89E9CF5BEF848729F8; // d06082025_co_execution_bot_5 (stage 2)
+        expectedAllowlist[10] = d18062026_co_execution_bot1;
+        expectedAllowlist[11] = d18062026_co_execution_bot2;
+        expectedAllowlist[12] = d18062026_co_execution_bot3;
+        expectedAllowlist[13] = d18062026_co_execution_bot4;
+        expectedAllowlist[14] = d18062026_co_execution_bot5;
+        expectedAllowlist[15] = d18062026_co_execution_bot6;
+        expectedAllowlist[16] = d18062026_co_execution_bot7;
+        expectedAllowlist[17] = d18062026_co_execution_bot8;
+        expectedAllowlist[18] = d18062026_co_execution_bot9;
+        expectedAllowlist[19] = d18062026_co_execution_bot10;
 
-        assertEq(allowlist, expectedAllowlist);
+        _assertSameMembers(allowlist, expectedAllowlist);
         // allowAll is expected to be FALSE — conditional_orders should only be executable by the
         // allowlist above. A `true` value means anyone can drive CO execution, which is a
         // security-critical misconfiguration.
@@ -420,33 +443,28 @@ contract PermissionsForkTest is ReyaForkTest {
         bytes32 flagId = keccak256(bytes("executors"));
         address[] memory allowlist = IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowlist(flagId);
 
-        // Intermediate state: introduce.toml adds executors for d18062026 co bots 1,3,4,5,6,7 AND
-        // d18062026_storkExecutor1/2/3. deprecate.toml (stage 1) revokes storkExecutor1..17 and
-        // d06082025_storkExecutor1/2/3. Old co_execution_bot1,3..7 and storkExecutor18/19/20 are
-        // revoked only in stage 2, so they remain present.
-        // FINALIZE: this flag is allowAll=true; its allowlist membership/ordering depend on current
-        // on-chain state — confirm the full expected array against the cannon test run output.
-        address[] memory expectedAllowlist = new address[](18);
-        expectedAllowlist[0] = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a; // co_execution_bot1 (stage 2)
-        expectedAllowlist[1] = co_execution_bot3; // stage 2
-        expectedAllowlist[2] = co_execution_bot4; // stage 2
-        expectedAllowlist[3] = co_execution_bot5; // stage 2
-        expectedAllowlist[4] = co_execution_bot6; // stage 2
-        expectedAllowlist[5] = co_execution_bot7; // stage 2
-        expectedAllowlist[6] = storkExecutor18; // stage 2
-        expectedAllowlist[7] = storkExecutor19; // stage 2
-        expectedAllowlist[8] = storkExecutor20; // stage 2
-        expectedAllowlist[9] = d18062026_co_execution_bot1;
-        expectedAllowlist[10] = d18062026_co_execution_bot3;
-        expectedAllowlist[11] = d18062026_co_execution_bot4;
-        expectedAllowlist[12] = d18062026_co_execution_bot5;
-        expectedAllowlist[13] = d18062026_co_execution_bot6;
-        expectedAllowlist[14] = d18062026_co_execution_bot7;
-        expectedAllowlist[15] = d18062026_storkExecutor1;
-        expectedAllowlist[16] = d18062026_storkExecutor2;
-        expectedAllowlist[17] = d18062026_storkExecutor3;
+        // Intermediate state. NOTE: co_execution_bot* are NOT on the `executors` allowlist on-chain
+        // (they hold subSecondExecutors only). introduce.toml grants `executors` to the NEW co-bots
+        // 1,3,4,5,6,7 — a capability their predecessors never held (flagged separately for review).
+        // deprecate.toml (stage 1) revokes storkExecutor1..17 and d06082025_storkExecutor1/2/3;
+        // storkExecutor18/19/20 remain (revoked in stage 2). The OrdersGateway proxy holds executors
+        // and is never rotated. introduce.toml also adds d18062026_storkExecutor1/2/3.
+        address[] memory expectedAllowlist = new address[](13);
+        expectedAllowlist[0] = storkExecutor18; // stage 2
+        expectedAllowlist[1] = storkExecutor19; // stage 2
+        expectedAllowlist[2] = storkExecutor20; // stage 2
+        expectedAllowlist[3] = sec.ordersGateway; // permanent holder, not rotated
+        expectedAllowlist[4] = d18062026_co_execution_bot1;
+        expectedAllowlist[5] = d18062026_co_execution_bot3;
+        expectedAllowlist[6] = d18062026_co_execution_bot4;
+        expectedAllowlist[7] = d18062026_co_execution_bot5;
+        expectedAllowlist[8] = d18062026_co_execution_bot6;
+        expectedAllowlist[9] = d18062026_co_execution_bot7;
+        expectedAllowlist[10] = d18062026_storkExecutor1;
+        expectedAllowlist[11] = d18062026_storkExecutor2;
+        expectedAllowlist[12] = d18062026_storkExecutor3;
 
-        assertEq(allowlist, expectedAllowlist);
+        _assertSameMembers(allowlist, expectedAllowlist);
         // allowAll is intentionally true for the `executors` flag: the gate is open so any caller
         // can invoke executor entrypoints. The allowlist above is preserved for defense-in-depth
         // and to make a future tightening (flip allowAll → false) a single-line config change.
@@ -462,9 +480,8 @@ contract PermissionsForkTest is ReyaForkTest {
         // 1,3,4,5,6,7 AND d18062026_storkExecutor1/2/3. deprecate.toml (stage 1) revokes
         // storkExecutor1..17, d06082025_storkExecutor1/2/3 and co_execution_bot1. Old
         // co_execution_bot2..7 and storkExecutor18/19/20 are revoked only in stage 2 → present.
-        // FINALIZE: membership/ordering depend on current on-chain state — confirm the full
-        // expected array against the cannon test run output.
-        address[] memory expectedAllowlist = new address[](18);
+        // The OrdersGateway proxy holds subSecondExecutors and is never rotated → present.
+        address[] memory expectedAllowlist = new address[](19);
         expectedAllowlist[0] = co_execution_bot2; // stage 2
         expectedAllowlist[1] = co_execution_bot3; // stage 2
         expectedAllowlist[2] = co_execution_bot4; // stage 2
@@ -474,17 +491,18 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[6] = storkExecutor18; // stage 2
         expectedAllowlist[7] = storkExecutor19; // stage 2
         expectedAllowlist[8] = storkExecutor20; // stage 2
-        expectedAllowlist[9] = d18062026_co_execution_bot1;
-        expectedAllowlist[10] = d18062026_co_execution_bot3;
-        expectedAllowlist[11] = d18062026_co_execution_bot4;
-        expectedAllowlist[12] = d18062026_co_execution_bot5;
-        expectedAllowlist[13] = d18062026_co_execution_bot6;
-        expectedAllowlist[14] = d18062026_co_execution_bot7;
-        expectedAllowlist[15] = d18062026_storkExecutor1;
-        expectedAllowlist[16] = d18062026_storkExecutor2;
-        expectedAllowlist[17] = d18062026_storkExecutor3;
+        expectedAllowlist[9] = sec.ordersGateway; // permanent holder, not rotated
+        expectedAllowlist[10] = d18062026_co_execution_bot1;
+        expectedAllowlist[11] = d18062026_co_execution_bot3;
+        expectedAllowlist[12] = d18062026_co_execution_bot4;
+        expectedAllowlist[13] = d18062026_co_execution_bot5;
+        expectedAllowlist[14] = d18062026_co_execution_bot6;
+        expectedAllowlist[15] = d18062026_co_execution_bot7;
+        expectedAllowlist[16] = d18062026_storkExecutor1;
+        expectedAllowlist[17] = d18062026_storkExecutor2;
+        expectedAllowlist[18] = d18062026_storkExecutor3;
 
-        assertEq(allowlist, expectedAllowlist);
+        _assertSameMembers(allowlist, expectedAllowlist);
         assertFalse(IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowAll(flagId));
         assertFalse(IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagDenyAll(flagId));
     }
