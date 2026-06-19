@@ -126,3 +126,13 @@ args = [
     "<%= settings.matching_engine_publisher1 %>",
 ]
 depends = ["invoke.upgrade_orders_gateway_proxy"]
+
+[invoke.orders_gateway_enable_cancel_nonce_bot_1]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('cancel_nonce')) %>",
+    "<%= settings.cancel_nonce_bot1 %>",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
