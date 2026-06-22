@@ -65,8 +65,25 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     }
 
     function test_MarketsMaxOiAndOi() public view {
-        // todo: add markets here after they are set to reduce only
-        uint128[] memory reduceOnlyMarkets = new uint128[](0);
+        uint128[] memory reduceOnlyMarkets = new uint128[](18);
+        reduceOnlyMarkets[0] = 45; // AI16Z
+        reduceOnlyMarkets[1] = 58; // BERA
+        reduceOnlyMarkets[2] = 25; // JTO
+        reduceOnlyMarkets[3] = 57; // MOVE
+        reduceOnlyMarkets[4] = 69; // PROVE
+        reduceOnlyMarkets[5] = 73; // WLFI
+        reduceOnlyMarkets[6] = 72; // XPL
+        reduceOnlyMarkets[7] = 71; // YZY
+        reduceOnlyMarkets[8] = 68; // ZORA
+        reduceOnlyMarkets[9] = 15; // ZRO
+        reduceOnlyMarkets[10] = 34; // GOAT
+        reduceOnlyMarkets[11] = 49; // GRIFFAIN
+        reduceOnlyMarkets[12] = 22; // KBONK
+        reduceOnlyMarkets[13] = 35; // GRASS
+        reduceOnlyMarkets[14] = 21; // KSHIB
+        reduceOnlyMarkets[15] = 52; // APE
+        reduceOnlyMarkets[16] = 36; // KNEIRO
+        reduceOnlyMarkets[17] = 53; // TON
         // todo: add markets here after they are fully closed
         uint128[] memory inactiveMarkets = new uint128[](0);
         check_marketsMaxOiAndOi(reduceOnlyMarkets, inactiveMarkets);
