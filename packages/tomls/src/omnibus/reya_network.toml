@@ -1298,7 +1298,7 @@ market20Doge_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_21kshib]
 market21KShib_riskMatrixIndex = "0"
-market21KShib_maxOpenBaseUnscaled = "0"
+market21KShib_maxOpenBaseUnscaled = "19315919"
 market21KShib_velocityMultiplierUnscaled = "90.2"
 market21KShib_oracleNodeId = "<%= settings.kshibUsdcMarkNodeIdStork %>"
 market21KShib_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1318,7 +1318,7 @@ market21KShib_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_22kbonk]
 market22KBonk_riskMatrixIndex = "0"
-market22KBonk_maxOpenBaseUnscaled = "0"
+market22KBonk_maxOpenBaseUnscaled = "18584861"
 market22KBonk_velocityMultiplierUnscaled = "77.8"
 market22KBonk_oracleNodeId = "<%= settings.kbonkUsdcMarkNodeIdStork %>"
 market22KBonk_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1558,7 +1558,7 @@ market33Pendle_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_34Goat]
 market34Goat_riskMatrixIndex = "0"
-market34Goat_maxOpenBaseUnscaled = "0"
+market34Goat_maxOpenBaseUnscaled = "5801398"
 market34Goat_velocityMultiplierUnscaled = "18"
 market34Goat_oracleNodeId = "<%= settings.goatUsdcMarkNodeIdStork %>"
 market34Goat_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1578,7 +1578,7 @@ market34Goat_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_35Grass]
 market35Grass_riskMatrixIndex = "0"
-market35Grass_maxOpenBaseUnscaled = "0"
+market35Grass_maxOpenBaseUnscaled = "307591"
 market35Grass_velocityMultiplierUnscaled = "16.9"
 market35Grass_oracleNodeId = "<%= settings.grassUsdcMarkNodeIdStork %>"
 market35Grass_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1598,7 +1598,7 @@ market35Grass_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_36KNeiro]
 market36KNeiro_riskMatrixIndex = "0"
-market36KNeiro_maxOpenBaseUnscaled = "0"
+market36KNeiro_maxOpenBaseUnscaled = "1669112"
 market36KNeiro_velocityMultiplierUnscaled = "20.3"
 market36KNeiro_oracleNodeId = "<%= settings.kneiroUsdcMarkNodeIdStork %>"
 market36KNeiro_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1858,7 +1858,7 @@ market48Fartcoin_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_49Griffain]
 market49Griffain_riskMatrixIndex = "0"
-market49Griffain_maxOpenBaseUnscaled = "0"
+market49Griffain_maxOpenBaseUnscaled = "11988501"
 market49Griffain_velocityMultiplierUnscaled = "13.5"
 market49Griffain_oracleNodeId = "<%= settings.griffainUsdcMarkNodeIdStork %>"
 market49Griffain_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1918,7 +1918,7 @@ market51Atom_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_52Ape]
 market52Ape_riskMatrixIndex = "0"
-market52Ape_maxOpenBaseUnscaled = "0"
+market52Ape_maxOpenBaseUnscaled = "1148768"
 market52Ape_velocityMultiplierUnscaled = "30.4"
 market52Ape_oracleNodeId = "<%= settings.apeUsdcMarkNodeIdStork %>"
 market52Ape_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
