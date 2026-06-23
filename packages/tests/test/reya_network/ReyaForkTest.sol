@@ -50,7 +50,10 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.wsteth = 0x7ae54d5a9e5a975DFC3261d915f8151dCcA76bE0;
         sec.sreya = 0xF3dD224DE5f9B112690a15521b4a0c450A4A82c2;
         sec.reya = 0xCC8e02d7112dDaa66A63B89d73E4eDa65722B111;
-        sec.setMarketZeroFeeBot = 0xdD69B419f0d7a1E15192ac8DBAa0Fc63b25f8A11;
+        // setMarketZeroFeeBot (0xdD69B...) was deprecated; the 18062026 rotation revokes its
+        // marketZeroFees admin, so the protocol owner (multisig) is now the only authority that can
+        // toggle marketZeroFees/exchangeZeroFees allowAll. Point the test bot at the multisig.
+        sec.setMarketZeroFeeBot = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9;
 
         // Layerzero configuration
         sec.layerZeroEndpoint = 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B;
@@ -67,7 +70,10 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.passivePoolAccountId = 2;
 
         // Reya bots
-        sec.coExecutionBot = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
+        // co_execution_bot1 (0x0d171...) was deprecated and removed from conditional_orders by the
+        // 18062026 rotation; use its rotated replacement d18062026_co_execution_bot1, which holds
+        // conditional_orders + subSecondExecutors + configureDepth/Spread in the post-rotation state.
+        sec.coExecutionBot = 0xEE98b2522a811c41f6FD370B0900e86905f8E3F4;
         sec.poolRebalancer = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
         sec.rseliniCustodian = 0x75cfe7F41953cDfeA30C9F6A0BceC6BAA3dA71B0;
         sec.rseliniSubscriber = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;

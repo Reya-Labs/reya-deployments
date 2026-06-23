@@ -443,6 +443,13 @@ contract PassivePoolForkCheck is BaseReyaForkTest {
         vm.startPrank(sec.multisig);
         IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getDepositFeatureFlagId(1), false);
         IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getWithdrawalFeatureFlagId(1), false);
+        if (isWhitelisted) {
+            // Explicitly whitelist the user: the previously whitelisted test wallets were removed
+            // from the deposit/withdrawal allowlists by the 18062026 rotation, so the test must not
+            // rely on a pre-existing allowlisted address.
+            IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getDepositFeatureFlagId(1), user);
+            IPassivePoolProxy(sec.pool).addToFeatureFlagAllowlist(getWithdrawalFeatureFlagId(1), user);
+        }
         vm.stopPrank();
 
         deal(sec.rusd, user, 1e6);
