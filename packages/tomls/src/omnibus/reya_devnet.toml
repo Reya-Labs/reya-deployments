@@ -22,7 +22,7 @@ include = [
     "../devnet/collateral_pools/collateral_pool_1.toml",
 ]
 
-version = "1.0.8"
+version = "1.0.9"
 
 ###############################################################################
 # Existing Cronos Contract Addresses (reused, not redeployed)
