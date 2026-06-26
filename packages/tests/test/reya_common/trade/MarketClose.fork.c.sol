@@ -1,11 +1,16 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19 <0.9.0;
 
+// This is a fork-check harness; console logging is intentional.
+// solhint-disable no-console
+
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 
 import { console2 } from "forge-std/console2.sol";
 
-import { IPassivePerpProxy, MarketConfigurationData, PnLComponents } from "../../../src/interfaces/IPassivePerpProxy.sol";
+import {
+    IPassivePerpProxy, MarketConfigurationData, PnLComponents
+} from "../../../src/interfaces/IPassivePerpProxy.sol";
 import { ICoreProxy, Command as Command_Core } from "../../../src/interfaces/ICoreProxy.sol";
 import { IMarketCloseModule } from "../../../src/interfaces/IMarketCloseModule.sol";
 import { IOracleManagerProxy } from "../../../src/interfaces/IOracleManagerProxy.sol";
@@ -130,7 +135,9 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
 
         // Funding rate / velocity did not move (still frozen at zero) ...
         assertEq(
-            IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId), snap.frBefore, "funding rate moved on frozen market"
+            IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId),
+            snap.frBefore,
+            "funding rate moved on frozen market"
         );
         assertEq(IPassivePerpProxy(sec.perp).getFundingVelocity(marketId), 0, "funding velocity moved on frozen market");
 
@@ -260,13 +267,7 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
     // ----------------------------------------------------------------------------------------------------------------
 
     /// @notice End-to-end close of a still-live market: reduce-only -> no-extend -> freeze -> assert frozen -> close.
-    function check_MarketCloseFullFlow(
-        uint128 marketId,
-        uint128 poolAccountId,
-        uint128[] memory accountIds
-    )
-        internal
-    {
+    function check_MarketCloseFullFlow(uint128 marketId, uint128 poolAccountId, uint128[] memory accountIds) internal {
         check_EnterReduceOnly(marketId, poolAccountId);
         check_FreezeMarketForClosure(marketId);
         check_ForceClose(marketId, accountIds);

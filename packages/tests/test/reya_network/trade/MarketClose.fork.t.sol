@@ -6,7 +6,8 @@ import { MarketCloseForkCheck } from "../../reya_common/trade/MarketClose.fork.c
 
 contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
     /// @dev Use this test as a script to check the full lifecycle of closing a market
-    /// Full close flow for a market, e.g. market 22: reduce-only -> no-extend -> freeze -> force close. Commented out because
+    /// Full close flow for a market, e.g. market 22: reduce-only -> no-extend -> freeze -> force close. Commented out
+    /// because
     // it actually unwinds every position; re-enable (and refresh the account list) when running the close rehearsal.
     // function test_ForceClose_Market22Kbonk() public {
     //     uint128[] memory accountIds = new uint128[](6);
