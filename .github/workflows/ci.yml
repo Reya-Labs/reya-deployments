@@ -11,6 +11,15 @@ jobs:
     name: Reya Deployments Check
     runs-on: ubuntu-latest
     timeout-minutes: 75
+    env:
+      # Cannon's default hosted IPFS read endpoint is chosen by timezone
+      # (getCannonRepoRegistryUrl -> https+ipfs://<region>.repo.usecannon.com;
+      # UTC CI runners resolve to us-east). All regional subdomains have been
+      # decommissioned (NXDOMAIN), so `--upgrade-from reya-omnibus:latest@main`
+      # can no longer download the baseline package and every cannon test fails
+      # at "Checking for existing package...". Pin reads to the live, non-regional
+      # base host, which still serves the packages over the Kubo /api/v0 API.
+      CANNON_IPFS_URL: https+ipfs://repo.usecannon.com
     steps:
       - name: Checkout
         uses: actions/checkout@v4
