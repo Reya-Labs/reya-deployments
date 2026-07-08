@@ -360,7 +360,14 @@ contract OrderForkCheck is BaseReyaForkTest {
         vm.expectRevert(abi.encodeWithSelector(IPassivePerpProxy.OpenInterestExceeded.selector, marketId));
         ICoreProxy(sec.core).execute(accountId, commands);
 
-        if (poolBase == 0) {
+        // A reducing trade is only possible when the pool holds at least one minimum order. The reducing side
+        // must be at least `minimumOrderBase` (a smaller resulting position reverts with SmallOrderSize) yet no
+        // larger than the pool's own position (a larger one flips the pool and raises OI on the other side,
+        // reverting with OpenInterestExceeded). So a pool position below one `minimumOrderBase` (abs(poolBase) <
+        // unit, which also covers the flat case) is dust that cannot be reduced by any valid order and there is
+        // nothing to assert here — e.g. market 69 sitting at 0.1 base against a 1.0 minimum order, which would
+        // otherwise overshoot to +0.9 and revert.
+        if (poolBase > -unit && poolBase < unit) {
             return;
         }
 
