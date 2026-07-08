@@ -8,7 +8,8 @@ import { IPassivePerpProxy } from "../src/interfaces/IPassivePerpProxy.sol";
 
 /// @title CheckMarketCloseReadiness
 /// @notice Read-only pre-flight check run immediately before `forceCloseMarket`, mirroring the runbook's Step-2/Step-3
-///         fork checks (see reya-network/agent-docs/market-close-scope.md §2). For a hardcoded market and account list it:
+///         fork checks (see reya-network/agent-docs/market-close-scope.md §2). For a hardcoded market and account list
+/// it:
 ///
 ///           1. Account health — flags every account whose USD initial-margin delta is negative (i.e. below its
 ///              initial margin requirement). §3.8/§3.10: the close skips the per-account health check and does not
