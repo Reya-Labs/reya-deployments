@@ -1462,6 +1462,40 @@ contract GeneralForkCheck is BaseReyaForkTest {
                 string.concat("open interest is not zero for market ", uintToString(marketId))
             );
         }
+
+        // Complement check. The two loops above are one-directional: they only assert that *listed* markets are
+        // zeroed, so a market accidentally left in (or put into) reduce-only would drift past CI unnoticed. Sweep
+        // every market and flag any that is reduce-only on-chain (maxOpenBase == 0) but absent from both lists.
+        // maxOpenBase == 0 is the trigger for the whole market-close flow, so an unlisted zero is exactly what we
+        // want surfaced here.
+        string memory unlisted;
+        uint128 lastId = lastMarketId();
+        for (uint128 marketId = 1; marketId <= lastId; marketId++) {
+            if (IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).maxOpenBase != 0) {
+                continue;
+            }
+            if (_isListed(reduceOnlyMarkets, marketId) || _isListed(inactiveMarkets, marketId)) {
+                continue;
+            }
+            unlisted = bytes(unlisted).length == 0
+                ? uintToString(marketId)
+                : string.concat(unlisted, ", ", uintToString(marketId));
+        }
+        vm.assertEq(
+            bytes(unlisted).length,
+            0,
+            string.concat("reduce-only markets (maxOpenBase == 0) missing from reduceOnly/inactive lists: ", unlisted)
+        );
+    }
+
+    /// @dev Membership test for the market-id lists in {check_marketsMaxOiAndOi}.
+    function _isListed(uint128[] memory marketIds, uint128 marketId) private pure returns (bool) {
+        for (uint256 i = 0; i < marketIds.length; i++) {
+            if (marketIds[i] == marketId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function check_sdeusd_price() public view {

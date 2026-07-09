@@ -65,7 +65,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     }
 
     function test_MarketsMaxOiAndOi() public view {
-        uint128[] memory reduceOnlyMarkets = new uint128[](17);
+        uint128[] memory reduceOnlyMarkets = new uint128[](18);
         reduceOnlyMarkets[0] = 45; // AI16Z
         reduceOnlyMarkets[1] = 58; // BERA
         reduceOnlyMarkets[2] = 25; // JTO
@@ -77,13 +77,14 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         reduceOnlyMarkets[8] = 68; // ZORA
         reduceOnlyMarkets[9] = 15; // ZRO
         reduceOnlyMarkets[10] = 53; // TON
+        reduceOnlyMarkets[11] = 7; // MKR (network-only: reduce-only on reya_network, active on cronos)
         // markets decided to be closed on 7 Jul 2026
-        reduceOnlyMarkets[11] = 34; // GOAT
-        reduceOnlyMarkets[12] = 36; // KNEIRO
-        reduceOnlyMarkets[13] = 46; // AIXBT
-        reduceOnlyMarkets[14] = 49; // GRIFFAIN
-        reduceOnlyMarkets[15] = 52; // APE
-        reduceOnlyMarkets[16] = 61; // IP
+        reduceOnlyMarkets[12] = 34; // GOAT
+        reduceOnlyMarkets[13] = 36; // KNEIRO
+        reduceOnlyMarkets[14] = 46; // AIXBT
+        reduceOnlyMarkets[15] = 49; // GRIFFAIN
+        reduceOnlyMarkets[16] = 52; // APE
+        reduceOnlyMarkets[17] = 61; // IP
         // todo: add markets here after they are fully closed
         uint128[] memory inactiveMarkets = new uint128[](0);
         check_marketsMaxOiAndOi(reduceOnlyMarkets, inactiveMarkets);

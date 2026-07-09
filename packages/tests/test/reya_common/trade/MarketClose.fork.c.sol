@@ -231,6 +231,10 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
     ///         including the passive pool). Asserts the market is fully emptied: open interest and every passed base
     ///         go to zero, and the funding state is reset.
     function check_ForceClose(uint128 marketId, uint128[] memory accountIds) internal {
+        // Precondition: force close is only valid on a frozen market. The module call below would reject an unfrozen
+        // market anyway, but as a standalone Phase B.2 check this local guard makes misuse fail with a clearer signal.
+        _assertFrozen(marketId);
+
         // Tolerated residue: the close reverts with `ForceClosureResidueAboveMax` if the unwound longs/shorts and the
         // snapshotted open interest disagree by more than this. The production runbook must compute the exact dust;
         // this fixed bound just flags a materially incomplete account list on the fork.
