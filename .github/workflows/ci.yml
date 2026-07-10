@@ -6,6 +6,17 @@ on:
   push:
     branches:
       - main
+env:
+  # Point cannon's on-chain package registry (Optimism mainnet) at our own RPC instead of the shared
+  # public Infura key baked into cannon's DEFAULT_REGISTRY_CONFIG, which gets rate-limited (429) and
+  # times out while cloning packages — crashing builds before anvil starts, after which every forked
+  # test fails with "Connection refused". Mirrors the local ~/.local/share/cannon/settings.json. All
+  # three are required: cannon only uses a custom registry when ADDRESS is set alongside RPC_URL/CHAIN_ID
+  # (see @usecannon/cli settings.js). Set CANNON_REGISTRY_RPC_URL as a repo secret (an Optimism mainnet
+  # RPC URL with your own key).
+  CANNON_REGISTRY_RPC_URL: ${{ secrets.CANNON_REGISTRY_RPC_URL }}
+  CANNON_REGISTRY_CHAIN_ID: "10"
+  CANNON_REGISTRY_ADDRESS: "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
 jobs:
   reya-deployments-check:
     name: Reya Deployments Check
