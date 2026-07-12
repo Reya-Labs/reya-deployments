@@ -275,6 +275,16 @@ cp1Rusd_adlExecutionKeeperFeeUnscaled = "0"
 cp1Rusd_dDutchMinUnscaled = "0.01"
 cp1Rusd_dMaxUnscaled = "0.4"
 
+# Backstop-LP config. Devnet has no PassivePool account linked to Core, so the
+# backstop account is a standalone margin account (hardcoded id below) that was
+# created + funded (1M rUSD) + market-activated out-of-band, rather than the
+# pool account used on cronos/mainnet. Economics mirror cronos/mainnet
+# (15% liquidation fee). Wired via setBackstopLPConfig in
+# devnet/collateral_pools/liquidations.toml.
+cp1Rusd_backstopLpAccountId = "23"
+cp1Rusd_backstopLp_liquidationFeeUnscaled = "0.15"
+cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled = "0"
+
 # rUSD collateral pool config
 cp1Rusd_rusd_capUnscaled = "<%= formatEther(MaxUint256) %>"
 cp1Rusd_rusd_autoExchangeThresholdUnscaled = "0"

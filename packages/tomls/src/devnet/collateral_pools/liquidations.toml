@@ -1,8 +1,22 @@
-# Devnet liquidations: skips pool_account_activate_market (not needed in perpOB)
+# Devnet liquidations: skips pool_account_activate_market (not needed in perpOB).
 #
-# TODO: Add backstop_lp_config once backstop liquidator account is created.
-# Use a hardcoded backstopLiquidatorAccountId setting and call setBackstopLPConfig
-# directly on CoreProxy (not via PassivePoolProxy.sendCallToCore).
+# Backstop LP: devnet has no PassivePool account linked to its Core, so the
+# backstop account is a standalone margin account (settings.cp1Rusd_backstopLpAccountId,
+# hardcoded in omnibus/reya_devnet.toml) created + funded + market-activated
+# out-of-band, then wired here by calling setBackstopLPConfig directly on
+# CoreProxy (NOT via PassivePoolProxy.sendCallToCore). Config mirrors
+# cronos/mainnet (15% liquidation fee, zero thresholds).
+[invoke.cp_1rusd_set_backstop_lp_config]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.cp1RusdId %>"]
+func = "setBackstopLPConfig"
+args = [
+    "<%= settings.cp1RusdId %>",
+    { accountId = "<%= settings.cp1Rusd_backstopLpAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_backstopLp_liquidationFeeUnscaled) %>", minFreeCollateralThresholdInUSD = "<%= parseEther(settings.cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled) %>", withdrawCooldownDurationInSeconds_DEPRECATED = "0", withdrawDurationInSeconds_DEPRECATED = "0" },
+]
+depends = ["var.cp_1rusd_vars"]
+
 [invoke.cp_1rusd_configure_liquidation]
 target = ["CoreProxy"]
 fromCall.func = "getCollateralPoolOwner"
