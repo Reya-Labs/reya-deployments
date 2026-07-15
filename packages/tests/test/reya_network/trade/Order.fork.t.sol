@@ -42,7 +42,9 @@ contract OrderForkTest is ReyaForkTest, OrderForkCheck {
 
     function test_MatchOrder_ReduceOnlyWhenMaxOiZero_all_markets() public {
         for (uint128 marketId = 1; marketId <= lastMarketId(); marketId++) {
-            if (isMarketReduceOnly(marketId)) {
+            // Only enabled reduce-only markets: a fully-closed (disabled) market is also reduce-only
+            // (maxOpenBase stays 0) but rejects every order with FeatureUnavailable, not OpenInterestExceeded.
+            if (isMarketReduceOnly(marketId) && isMarketActive(marketId)) {
                 check_MatchOrder_ReduceOnlyWhenMaxOiZero(marketId, sec.passivePoolAccountId);
             }
         }

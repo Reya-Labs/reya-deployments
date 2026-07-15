@@ -19,7 +19,7 @@ include = [
     # "utils/adhoc_ramber_rebalance_test.toml",
 ]
 
-version = "1.0.158"
+version = "1.0.159"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -57,7 +57,7 @@ rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.1@router"
 passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.13@router"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.55@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.56@router"
 peripheryRouterPackage = "reya-periphery:1.0.14@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
@@ -607,7 +607,7 @@ refereeDiscountUnscaled = "0.1"
 referrerRebateUnscaled = "0.1"
 affiliateReferrerRebateUnscaled = "0.15"
 vltzDiscountUnscaled = "0.1"
-spreadDiscountUnscaled = "0.8"
+spreadDiscountUnscaled = "1.0"
 
 [var.affiliates]
 affiliate1 = "0xae173a960084903b1d278ff9e3a81ded82275556"
@@ -1559,7 +1559,7 @@ market33Pendle_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_34Goat]
 market34Goat_riskMatrixIndex = "0"
-market34Goat_maxOpenBaseUnscaled = "5801398"
+market34Goat_maxOpenBaseUnscaled = "0"
 market34Goat_velocityMultiplierUnscaled = "18"
 market34Goat_oracleNodeId = "<%= settings.goatUsdcMarkNodeIdStork %>"
 market34Goat_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1599,7 +1599,7 @@ market35Grass_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_36KNeiro]
 market36KNeiro_riskMatrixIndex = "0"
-market36KNeiro_maxOpenBaseUnscaled = "1669112"
+market36KNeiro_maxOpenBaseUnscaled = "0"
 market36KNeiro_velocityMultiplierUnscaled = "20.3"
 market36KNeiro_oracleNodeId = "<%= settings.kneiroUsdcMarkNodeIdStork %>"
 market36KNeiro_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1799,7 +1799,7 @@ market45Ai16z_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_46Aixbt]
 market46Aixbt_riskMatrixIndex = "0"
-market46Aixbt_maxOpenBaseUnscaled = "4199866"
+market46Aixbt_maxOpenBaseUnscaled = "0"
 market46Aixbt_velocityMultiplierUnscaled = "62"
 market46Aixbt_oracleNodeId = "<%= settings.aixbtUsdcMarkNodeIdStork %>"
 market46Aixbt_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1859,7 +1859,7 @@ market48Fartcoin_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_49Griffain]
 market49Griffain_riskMatrixIndex = "0"
-market49Griffain_maxOpenBaseUnscaled = "11988501"
+market49Griffain_maxOpenBaseUnscaled = "0"
 market49Griffain_velocityMultiplierUnscaled = "13.5"
 market49Griffain_oracleNodeId = "<%= settings.griffainUsdcMarkNodeIdStork %>"
 market49Griffain_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -1919,7 +1919,7 @@ market51Atom_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_52Ape]
 market52Ape_riskMatrixIndex = "0"
-market52Ape_maxOpenBaseUnscaled = "1148768"
+market52Ape_maxOpenBaseUnscaled = "0"
 market52Ape_velocityMultiplierUnscaled = "30.4"
 market52Ape_oracleNodeId = "<%= settings.apeUsdcMarkNodeIdStork %>"
 market52Ape_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
@@ -2099,7 +2099,7 @@ market60Tao_volatilityIndexMultiplierUnscaled = "0"
 
 [var.market_61Ip]
 market61Ip_riskMatrixIndex = "0"
-market61Ip_maxOpenBaseUnscaled = "141472"
+market61Ip_maxOpenBaseUnscaled = "0"
 market61Ip_velocityMultiplierUnscaled = "37.2"
 market61Ip_oracleNodeId = "<%= settings.ipUsdcMarkNodeIdStork %>"
 market61Ip_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
