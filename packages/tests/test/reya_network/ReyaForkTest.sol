@@ -752,6 +752,10 @@ contract ReyaForkTest is BaseReyaForkTest {
         // (*) allow anyone to withdraw from the pool
         IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getWithdrawalFeatureFlagId(1), true);
 
+        // (*) add little amount of rAmber to the pool
+        deal(sec.ramber, sec.multisig, 1e18);
+        ICoreProxy(sec.core).deposit(sec.passivePoolAccountId, sec.ramber, 1e18);
+
         vm.stopPrank();
     }
 }

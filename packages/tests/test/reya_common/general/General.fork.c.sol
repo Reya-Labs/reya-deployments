@@ -561,7 +561,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceAERO);
         ls.maxDeviationMarket.push(ls.maxDeviationAERO);
 
-        ls.meanPriceKAITO = 0.46 * 1e18;
+        ls.meanPriceKAITO = 0.73 * 1e18;
         ls.maxDeviationKAITO = ls.meanPriceKAITO / 2;
         ls.meanPriceMarket.push(ls.meanPriceKAITO);
         ls.maxDeviationMarket.push(ls.maxDeviationKAITO);
