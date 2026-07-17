@@ -431,7 +431,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPricePENGU);
         ls.maxDeviationMarket.push(ls.maxDeviationPENGU);
 
-        ls.meanPriceTRUMP = 3.1 * 1e18;
+        // refreshed 2026-07-17 (was 3.1)
+        ls.meanPriceTRUMP = 1.55 * 1e18;
         ls.maxDeviationTRUMP = ls.meanPriceTRUMP / 2;
         ls.meanPriceMarket.push(ls.meanPriceTRUMP);
         ls.maxDeviationMarket.push(ls.maxDeviationTRUMP);
@@ -561,7 +562,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceAERO);
         ls.maxDeviationMarket.push(ls.maxDeviationAERO);
 
-        ls.meanPriceKAITO = 0.46 * 1e18;
+        ls.meanPriceKAITO = 0.73 * 1e18;
         ls.maxDeviationKAITO = ls.meanPriceKAITO / 2;
         ls.meanPriceMarket.push(ls.meanPriceKAITO);
         ls.maxDeviationMarket.push(ls.maxDeviationKAITO);
