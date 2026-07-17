@@ -9,6 +9,7 @@ import { ICoreProxy, ParentCollateralConfig } from "../../src/interfaces/ICorePr
 import { IOracleManagerProxy, NodeDefinition, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
 import { IPassivePerpProxy, MarketConfigurationData } from "../../src/interfaces/IPassivePerpProxy.sol";
 import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
+import { ITokenProxy } from "../../src/interfaces/ITokenProxy.sol";
 
 contract ReyaForkTest is BaseReyaForkTest {
     constructor() {
@@ -751,6 +752,14 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         // (*) allow anyone to withdraw from the pool
         IPassivePoolProxy(sec.pool).setFeatureFlagAllowAll(getWithdrawalFeatureFlagId(1), true);
+
+        // (*) add little amount of rAmber to the pool
+        {
+            uint256 amount = 1e18;
+            deal(sec.ramber, sec.multisig, amount);
+            ITokenProxy(sec.ramber).approve(sec.core, amount);
+            ICoreProxy(sec.core).deposit(sec.passivePoolAccountId, sec.ramber, amount);
+        }
 
         vm.stopPrank();
     }
