@@ -77,8 +77,7 @@ interface IPassivePerpProxyV2 {
         view
         returns (
             /* UD60x18 */ uint256 takerFeeParameter,
-            /* UD60x18 */ uint256 makerFeeParameter,
-            /* UD60x18 */ uint256 makerRebateParameter
+            /* UD60x18 */ uint256 takerRebateParameter
         );
 
     // ─── V2 Market Data (20-field struct) ────────────────────────────────
