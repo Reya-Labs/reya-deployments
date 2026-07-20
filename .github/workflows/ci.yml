@@ -52,12 +52,29 @@ jobs:
         run: "yarn lint:check"
       - name: Build
         run: "yarn build"
+      - name: Verify PerpOB devnet router packages
+        env:
+          CANNON_REGISTRY_RPC_URL: https://mainnet.optimism.io
+        run: |
+          inspect_router() {
+            package_ref="$1"
+            expected_url="$2"
+            output=$(node node_modules/@usecannon/cli-devnet/bin/cannon.js inspect "$package_ref" --chain-id 13370 --out overview --quiet)
+            grep -Fq "Package URL: $expected_url" <<< "$output"
+          }
+
+          inspect_router reya-core:1.1.2@router ipfs://QmYFzxQikLbrQFms3rpJPVtChJJeQhSDAKeR74aZaPvjjh
+          inspect_router reya-instrument-passive-perp:1.1.2@router ipfs://QmV2wAP1iP4zbwioUDthic5qPB6FQ7GaynbiiFz79BW4r5
+          inspect_router reya-orders-gateway:1.1.2@router ipfs://QmZ13ZDNqR6MBRzt3854cxJWoZF831mcaYZoQkQJCiXHcj
+          inspect_router reya-periphery:1.1.2@router ipfs://QmUg9zk164ofiZgyVUBYakqZtq2quNechMmgbwXAfWGssM
       - name: Reya Devnet Simulate
         env:
+          CANNON_REGISTRY_RPC_URL: https://mainnet.optimism.io
           RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_devnet:simulate"
       - name: Reya Devnet Cannon Test
         env:
+          CANNON_REGISTRY_RPC_URL: https://mainnet.optimism.io
           RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_devnet:test"
       - name: Reya Network Cannon Test
