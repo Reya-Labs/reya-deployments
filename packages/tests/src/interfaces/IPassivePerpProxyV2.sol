@@ -68,6 +68,10 @@ interface IPassivePerpProxyV2 {
 
     function getFeeTierParameters(uint256 tierId) external view returns (FeeTierParameters memory);
 
+    function setGlobalFeeParameters(GlobalFeeParametersV2 memory params) external;
+
+    function getGlobalFeeParameters() external view returns (GlobalFeeParametersV2 memory);
+
     function getAccountOwnerFeeParameters(address accountOwner)
         external
         view
@@ -91,16 +95,27 @@ interface IPassivePerpProxyV2 {
     error UnauthorizedOraclePusher(address pusher);
     error FillPriceDeviationExceeded(uint128 marketId, uint256 fillPrice, uint256 markPrice, uint256 maxDeviation);
     error MarkPriceDeviationExceeded(uint128 marketId, uint256 markPrice, uint256 oraclePrice, uint256 maxDeviation);
-    error MakerFeeAndRebateBothNonZero();
+    error TakerFeeParameterTooLarge();
 }
 
 // ─── Fee Structs (perpOB) ────────────────────────────────────────────────
 
-// At most one of makerFee / makerRebate may be nonzero.
+// Fee model V3 charges only the taker. The former maker fields remain in storage for compatibility.
 struct FeeTierParameters {
     /* UD60x18 */ uint256 takerFee;
-    /* UD60x18 */ uint256 makerFee;
-    /* UD60x18 */ uint256 makerRebate;
+    /* UD60x18 */ uint256 makerFee_DEPRECATED;
+    /* UD60x18 */ uint256 makerRebate_DEPRECATED;
+}
+
+struct GlobalFeeParametersV2 {
+    /* UD60x18 */ uint256 ogRebateRate;
+    /* UD60x18 */ uint256 refereeRebateRate;
+    /* UD60x18 */ uint256 referrerRebate;
+    /* UD60x18 */ uint256 affiliateReferrerRebate_DEPRECATED;
+    /* UD60x18 */ uint256 vltzRebateRate;
+    /* UD60x18 */ uint256 spreadDiscount_DEPRECATED;
+    /* UD60x18 */ uint256 poolRebate;
+    uint128 poolAccountId;
 }
 
 // ─── perpOB Enums ────────────────────────────────────────────────────────
@@ -116,7 +131,7 @@ enum ExecutionType {
     RankedLiquidation,
     BackstopLiquidation,
     ADL,
-    Dust
+    MarketClose
 }
 
 // ─── perpOB Structs ──────────────────────────────────────────────────────
@@ -131,10 +146,9 @@ struct OracleDataPayload {
 
 struct PerpFillFees {
     uint256 protocolFeeCredit;
-    uint256 exchangeFeeCredit;
-    uint256 makerFeeCredit;
-    uint256 makerFeeDebit;
     uint256 referrerFeeCredit;
+    uint256 takerRebateCredit;
+    uint256 poolFeeCredit;
 }
 
 // perpOB MarketConfigurationData with deprecated AMM fields and new orderbook fields

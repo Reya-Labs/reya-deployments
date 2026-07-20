@@ -42,8 +42,8 @@ contract PerpFillForkTest is ReyaForkTest, PerpFillForkCheck {
         check_PerpFillFees(ETH_MARKET_ID);
     }
 
-    function test_Devnet_PerpFillZeroFees_ETH() public {
-        check_PerpFillZeroFees(ETH_MARKET_ID, sec.setMarketZeroFeeBot);
+    function test_Devnet_PerpFillDeprecatedMarketZeroFeesFlag_ETH() public {
+        check_PerpFillDeprecatedMarketZeroFeesFlag(ETH_MARKET_ID, sec.setMarketZeroFeeBot);
     }
 
     function test_Devnet_PerpFillInsufficientMargin_ETH() public {
@@ -64,29 +64,27 @@ contract PerpFillForkTest is ReyaForkTest, PerpFillForkCheck {
 
     // Fee model checks
 
-    function test_Devnet_PerpFillFeeDiscounts_OG_ETH() public {
-        check_PerpFillFeeDiscounts(ETH_MARKET_ID, true, false);
+    function test_Devnet_PerpFillTakerRebate_OG_ETH() public {
+        check_PerpFillTakerRebates(ETH_MARKET_ID, true, false);
     }
 
-    function test_Devnet_PerpFillFeeDiscounts_VLTZ_ETH() public {
-        check_PerpFillFeeDiscounts(ETH_MARKET_ID, false, true);
+    function test_Devnet_PerpFillTakerRebate_VLTZ_ETH() public {
+        check_PerpFillTakerRebates(ETH_MARKET_ID, false, true);
     }
 
-    function test_Devnet_PerpFillFeeDiscounts_OG_VLTZ_ETH() public {
-        check_PerpFillFeeDiscounts(ETH_MARKET_ID, true, true);
+    function test_Devnet_PerpFillTakerRebate_OG_VLTZ_ETH() public {
+        check_PerpFillTakerRebates(ETH_MARKET_ID, true, true);
     }
 
-    function test_Devnet_PerpFillExchangeZeroFees_ETH() public {
-        check_PerpFillExchangeZeroFees(ETH_MARKET_ID);
+    function test_Devnet_PerpFillDeprecatedExchangeZeroFeesFlag_ETH() public {
+        check_PerpFillDeprecatedExchangeZeroFeesFlag(ETH_MARKET_ID);
     }
 
-    // --- perpOB 1.0.52 enrichment ---
-
-    function test_Devnet_PerpFillMakerRebate_ETH() public {
-        check_PerpFillMakerRebate(ETH_MARKET_ID);
+    function test_Devnet_PerpFillDeprecatedMakerParametersIgnored_ETH() public {
+        check_PerpFillDeprecatedMakerParametersIgnored(ETH_MARKET_ID);
     }
 
-    function test_Devnet_MakerFeeAndRebateMutuallyExclusive() public {
-        check_MakerFeeAndRebateMutuallyExclusive();
+    function test_Devnet_TakerFeeParameterUpperBound() public {
+        check_TakerFeeParameterUpperBound();
     }
 }
