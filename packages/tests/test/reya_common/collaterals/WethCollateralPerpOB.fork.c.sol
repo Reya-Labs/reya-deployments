@@ -13,13 +13,12 @@ import {
 
 import { IPassivePerpProxy, PerpPosition } from "../../../src/interfaces/IPassivePerpProxy.sol";
 
+import { EIP712Signature } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
 import {
-    IOrdersGatewayProxy,
-    EIP712Signature,
-    SignedMatchingEnginePayload
-} from "../../../src/interfaces/IOrdersGatewayProxy.sol";
-import {
-    IOrdersGatewayProxyV2, OrderDetails, ExecuteFillInputV2
+    IOrdersGatewayProxyV2,
+    OrderDetails,
+    SignedOrderV2,
+    ExecuteFillInputV2
 } from "../../../src/interfaces/IOrdersGatewayProxyV2.sol";
 
 import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
@@ -112,20 +111,17 @@ contract WethCollateralPerpOBForkCheck is PerpFillForkCheck {
                 signerPk: perpBuyerPk
             });
 
-            SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
-                price: entryPrice,
-                baseDelta: shortSize,
-                accountOrderId: 1,
-                counterpartyOrderId: 2,
-                nonce: 1
-            });
-
-            ExecuteFillInputV2 memory fillInput = ExecuteFillInputV2({
+            ExecuteFillInputV2 memory fillInput;
+            fillInput.accountOrder = SignedOrderV2({ orderDetails: longOrder, signature: longSig });
+            fillInput.counterpartyOrder = SignedOrderV2({ orderDetails: shortOrder, signature: shortSig });
+            fillInput.metadata = new bytes(0);
+            fillInput.mePayload = createPerpMatchingEnginePayload({
                 accountOrder: longOrder,
                 counterpartyOrder: shortOrder,
-                accountSignature: longSig,
-                counterpartySignature: shortSig,
-                mePayload: mePayload
+                price: entryPrice,
+                baseDelta: shortSize,
+                nonce: 1,
+                metadata: fillInput.metadata
             });
 
             vm.prank(sec.coExecutionBot);

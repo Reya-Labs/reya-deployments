@@ -25,7 +25,7 @@ import {
 } from "../../../src/interfaces/IOrdersGatewayProxyV2.sol";
 import { OracleDataPayloadHashing } from "../../../src/utils/OracleDataPayloadHashing.sol";
 import { OrderDetailsHashing } from "../../../src/utils/OrderDetailsHashing.sol";
-import { FillHashing } from "../../../src/utils/FillHashing.sol";
+import { FillHashingV2 } from "../../../src/utils/FillHashingV2.sol";
 
 /**
  * @title PermissionsPerpOBForkCheck
@@ -176,8 +176,8 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
             (uint8 v, bytes32 r, bytes32 s) =
                 vm.sign(buyerPk, OrderDetailsHashing.mockCalculateDigest(buyerOrder, deadline, sec.ordersGateway));
 
-            fillInput.accountOrder = buyerOrder;
-            fillInput.accountSignature = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
+            fillInput.accountOrder.orderDetails = buyerOrder;
+            fillInput.accountOrder.signature = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
         }
 
         // Build seller order + signature in scoped block
@@ -202,17 +202,28 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
             (uint8 v, bytes32 r, bytes32 s) =
                 vm.sign(sellerPk, OrderDetailsHashing.mockCalculateDigest(sellerOrder, deadline, sec.ordersGateway));
 
-            fillInput.counterpartyOrder = sellerOrder;
-            fillInput.counterpartySignature = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
+            fillInput.counterpartyOrder.orderDetails = sellerOrder;
+            fillInput.counterpartyOrder.signature = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
         }
+
+        fillInput.metadata = new bytes(0);
 
         // Build ME payload signed by unauthorized key in scoped block
         {
             FillDetails memory fillDetails =
                 FillDetails({ accountOrderId: 1, counterpartyOrderId: 2, baseDelta: 0.1e18, price: 3000e18, nonce: 1 });
 
-            (uint8 v, bytes32 r, bytes32 s) =
-                vm.sign(unauthorizedMEPk, FillHashing.mockCalculateDigest(fillDetails, deadline, sec.ordersGateway));
+            (uint8 v, bytes32 r, bytes32 s) = vm.sign(
+                unauthorizedMEPk,
+                FillHashingV2.mockCalculateDigest(
+                    fillDetails,
+                    deadline,
+                    OrderDetailsHashing.hashOrderDetails(fillInput.accountOrder.orderDetails),
+                    OrderDetailsHashing.hashOrderDetails(fillInput.counterpartyOrder.orderDetails),
+                    fillInput.metadata,
+                    sec.ordersGateway
+                )
+            );
 
             fillInput.mePayload = SignedMatchingEnginePayload({
                 fillDetails: fillDetails,

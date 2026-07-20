@@ -43,12 +43,16 @@ struct OrderDetails {
     uint256 nonce;
 }
 
+struct SignedOrderV2 {
+    OrderDetails orderDetails;
+    EIP712Signature signature;
+}
+
 struct ExecuteFillInputV2 {
-    OrderDetails accountOrder;
-    OrderDetails counterpartyOrder;
-    EIP712Signature accountSignature;
-    EIP712Signature counterpartySignature;
+    SignedOrderV2 accountOrder;
+    SignedOrderV2 counterpartyOrder;
     SignedMatchingEnginePayload mePayload;
+    bytes metadata;
 }
 
 interface IOrdersGatewayProxyV2 {

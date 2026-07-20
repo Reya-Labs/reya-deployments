@@ -10,6 +10,10 @@ contract PerpFillForkTest is ReyaForkTest, PerpFillForkCheck {
         check_PerpExecuteFill(ETH_MARKET_ID);
     }
 
+    function test_Devnet_PerpFillMetadataBinding_ETH() public {
+        check_PerpFillMetadataBinding(ETH_MARKET_ID);
+    }
+
     function test_Devnet_PerpMarkPriceStaleness_ETH() public {
         check_PerpMarkPriceStaleness(ETH_MARKET_ID);
     }
