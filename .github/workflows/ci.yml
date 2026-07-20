@@ -66,6 +66,22 @@ jobs:
       - name: Warn on Cronos Test Failure
         if: steps.reya_cronos_test.outcome == 'failure'
         run: echo "::warning::Reya Cronos (testnet) tests failed"
+      - name: Checkout PerpOB router sources
+        uses: actions/checkout@v4
+        with:
+          repository: Reya-Labs/reya-network
+          ref: 1b09e14698f2ab83f2ad9a4dd63d265bf0efde32
+          path: .cannon/reya-network
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Build PerpOB devnet routers
+        working-directory: .cannon/reya-network
+        run: |
+          yarn install --immutable
+          yarn run -T cannon build --wipe core/cannonfiles/router.toml
+          yarn run -T cannon build --wipe instruments/passive-perp/cannonfiles/router.toml
+          yarn run -T cannon build --wipe orders-gateway/cannonfiles/router.toml
+          yarn run -T cannon build --wipe periphery/cannonfiles/router.toml
       - name: Reya Devnet Simulate
         env:
           RPC_KEY: ${{ secrets.RPC_KEY }}
