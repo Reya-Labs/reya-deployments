@@ -21,7 +21,7 @@ jobs:
   reya-deployments-check:
     name: Reya Deployments Check
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 90
     env:
       # Cannon's default hosted IPFS read endpoint is chosen by timezone
       # (getCannonRepoRegistryUrl -> https+ipfs://<region>.repo.usecannon.com;
@@ -52,6 +52,14 @@ jobs:
         run: "yarn lint:check"
       - name: Build
         run: "yarn build"
+      - name: Reya Devnet Simulate
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
+        run: "yarn reya_devnet:simulate"
+      - name: Reya Devnet Cannon Test
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
+        run: "yarn reya_devnet:test"
       - name: Reya Network Cannon Test
         id: reya_network_test
         env:
@@ -66,11 +74,3 @@ jobs:
       - name: Warn on Cronos Test Failure
         if: steps.reya_cronos_test.outcome == 'failure'
         run: echo "::warning::Reya Cronos (testnet) tests failed"
-      - name: Reya Devnet Simulate
-        env:
-          RPC_KEY: ${{ secrets.RPC_KEY }}
-        run: "yarn reya_devnet:simulate"
-      - name: Reya Devnet Cannon Test
-        env:
-          RPC_KEY: ${{ secrets.RPC_KEY }}
-        run: "yarn reya_devnet:test"
