@@ -1266,8 +1266,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         FeeTierParameters memory originalTier0 = IPassivePerpProxyV2(sec.perp).getFeeTierParameters(0);
         vm.prank(sec.multisig);
         IPassivePerpProxyV2(sec.perp).setFeeTierParameters(
-            0,
-            FeeTierParameters({ takerFee: 4e14, makerFee_DEPRECATED: 4e14, makerRebate_DEPRECATED: 5e17 })
+            0, FeeTierParameters({ takerFee: 4e14, makerFee_DEPRECATED: 4e14, makerRebate_DEPRECATED: 5e17 })
         );
 
         FeeTierParameters memory configuredTier0 = IPassivePerpProxyV2(sec.perp).getFeeTierParameters(0);
@@ -1314,8 +1313,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         vm.prank(sec.multisig);
         vm.expectRevert(IPassivePerpProxyV2.TakerFeeParameterTooLarge.selector);
         IPassivePerpProxyV2(sec.perp).setFeeTierParameters(
-            0,
-            FeeTierParameters({ takerFee: 1e18 + 1, makerFee_DEPRECATED: 4e14, makerRebate_DEPRECATED: 2e14 })
+            0, FeeTierParameters({ takerFee: 1e18 + 1, makerFee_DEPRECATED: 4e14, makerRebate_DEPRECATED: 2e14 })
         );
 
         // Nothing should have changed.
