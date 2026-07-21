@@ -484,32 +484,32 @@ wstethEthereumConnector = "0x880997ed94Dd2098395D2b3ECDb1c93026894106"
 
 [var.periphery_socket_withdraw_fees]
 usdcEthereumWithdrawFeeUnscaled = "7.0"
-usdcArbitrumWithdrawFeeUnscaled = "2.5"
-usdcOptimismWithdrawFeeUnscaled = "2.1"
-usdcPolygonWithdrawFeeUnscaled = "2.1"
-usdcBaseWithdrawFeeUnscaled = "2.1"
+usdcArbitrumWithdrawFeeUnscaled = "5"
+usdcOptimismWithdrawFeeUnscaled = "0"
+usdcPolygonWithdrawFeeUnscaled = "0"
+usdcBaseWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
 wethEthereumWithdrawFeeUnscaled = "0.00415"
-wethArbitrumWithdrawFeeUnscaled = "0.0014"
-wethOptimismWithdrawFeeUnscaled = "0.0012"
-wethPolygonWithdrawFeeUnscaled = "0.0012"
-wethBaseWithdrawFeeUnscaled = "0.0012"
+wethArbitrumWithdrawFeeUnscaled = "0.00259"
+wethOptimismWithdrawFeeUnscaled = "0"
+wethPolygonWithdrawFeeUnscaled = "0"
+wethBaseWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
 wbtcEthereumWithdrawFeeUnscaled = "0.000096"
-wbtcArbitrumWithdrawFeeUnscaled = "0.000039"
-wbtcOptimismWithdrawFeeUnscaled = "0.000033"
-wbtcPolygonWithdrawFeeUnscaled = "0.000033"
+wbtcArbitrumWithdrawFeeUnscaled = "0"
+wbtcOptimismWithdrawFeeUnscaled = "0"
+wbtcPolygonWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
-usdeEthereumWithdrawFeeUnscaled = "7.0"
+usdeEthereumWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
-susdeEthereumWithdrawFeeUnscaled = "7.0"
-susdeArbitrumWithdrawFeeUnscaled = "2.5"
-susdeOptimismWithdrawFeeUnscaled = "2.1"
-susdeBaseWithdrawFeeUnscaled = "2.1"
+susdeEthereumWithdrawFeeUnscaled = "0"
+susdeArbitrumWithdrawFeeUnscaled = "0"
+susdeOptimismWithdrawFeeUnscaled = "0"
+susdeBaseWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
-deusdEthereumWithdrawFeeUnscaled = "7.0"
+deusdEthereumWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
-sdeusdEthereumWithdrawFeeUnscaled = "7.0"
+sdeusdEthereumWithdrawFeeUnscaled = "0"
 # -------------------------------------------------------------------
 wstethEthereumWithdrawFeeUnscaled = "0.00415"
 # -------------------------------------------------------------------
