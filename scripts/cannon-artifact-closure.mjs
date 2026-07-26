@@ -430,7 +430,10 @@ function deploymentIdentity(deployment) {
   const commit = deployment.meta?.commitHash;
   const gitUrl = deployment.meta?.gitUrl;
 
-  if (commit !== undefined && !/^[0-9a-f]{40}$/i.test(commit)) {
+  if (
+    commit !== undefined &&
+    (typeof commit !== "string" || !/^[0-9a-f]{40}$/i.test(commit))
+  ) {
     throw new ArtifactVerificationError(
       "ARTIFACT_SOURCE_INVALID",
       `Artifact ${packageRef} contains an invalid source commit`,
@@ -659,31 +662,30 @@ export async function verifyArtifactClosure(config) {
       `Initial root and metadata references exceed the ${options.maxReferences}-reference limit`,
     );
   }
-  const queue = [
-    { cid: rootCid, kind: "root", reference: "root" },
-    ...providedMetaCids.map((metaCid, index) => ({
-      cid: metaCid,
-      kind: "meta",
-      reference: `providedMeta[${index}]`,
-    })),
-  ];
-  let queueIndex = 0;
-  let referenceCount = queue.length;
+  const deploymentQueue = [{ cid: rootCid, kind: "root", reference: "root" }];
+  const auxiliaryQueue = providedMetaCids.map((metaCid, index) => ({
+    cid: metaCid,
+    kind: "meta",
+    reference: `providedMeta[${index}]`,
+  }));
+  let deploymentQueueIndex = 0;
+  let auxiliaryQueueIndex = 0;
+  let referenceCount = deploymentQueue.length + auxiliaryQueue.length;
   let rootDeployment;
   let rootIdentity;
   let totalCompressedBytes = 0;
   let totalInflatedBytes = 0;
 
-  const inspectDeployment = (record, current) => {
+  const inspectDeployment = (record, current, value) => {
     const references = deploymentReferences(
-      record.value,
+      value,
       current.reference,
       options.maxReferences - referenceCount,
     );
-    const identity = deploymentIdentity(record.value);
+    const identity = deploymentIdentity(value);
     record.deployment = identity;
     if (current.kind === "root") {
-      rootDeployment = record.value;
+      rootDeployment = value;
       rootIdentity = identity;
       validateRootIdentity(identity, {
         ...config,
@@ -692,14 +694,23 @@ export async function verifyArtifactClosure(config) {
       });
     }
     for (const reference of references) {
-      queue.push(reference);
+      if (reference.kind === "deployment") {
+        deploymentQueue.push(reference);
+      } else {
+        auxiliaryQueue.push(reference);
+      }
     }
     referenceCount += references.length;
   };
 
-  while (queueIndex < queue.length) {
-    const current = queue[queueIndex];
-    queueIndex += 1;
+  while (
+    deploymentQueueIndex < deploymentQueue.length ||
+    auxiliaryQueueIndex < auxiliaryQueue.length
+  ) {
+    const current =
+      deploymentQueueIndex < deploymentQueue.length
+        ? deploymentQueue[deploymentQueueIndex++]
+        : auxiliaryQueue[auxiliaryQueueIndex++];
     const existing = records.get(current.cid);
     if (existing) {
       existing.kinds.add(current.kind);
@@ -708,7 +719,10 @@ export async function verifyArtifactClosure(config) {
         (current.kind === "root" || current.kind === "deployment") &&
         !existing.deployment
       ) {
-        inspectDeployment(existing, current);
+        throw new ArtifactVerificationError(
+          "ARTIFACT_TRAVERSAL_INVALID",
+          `Deployment reference ${current.reference} was processed after auxiliary artifact ${current.cid}`,
+        );
       }
       continue;
     }
@@ -743,10 +757,9 @@ export async function verifyArtifactClosure(config) {
     }
     record.compressedBytes = raw.length;
     record.inflatedBytes = decoded.byteLength;
-    record.value = decoded.value;
 
     if (current.kind === "root" || current.kind === "deployment") {
-      inspectDeployment(record, current);
+      inspectDeployment(record, current, decoded.value);
     } else if (current.kind === "meta") {
       if (!isRecord(decoded.value)) {
         throw new ArtifactVerificationError(

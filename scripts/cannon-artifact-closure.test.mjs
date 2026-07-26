@@ -241,7 +241,7 @@ test("deduplicates repeated imports while retaining every reference", async () =
   }
 });
 
-test("processes a deduplicated CID when a later reference identifies it as a deployment", async () => {
+test("deduplicates a CID shared by deployment and auxiliary references", async () => {
   const childMisc = await artifact({ child: true });
   const child = await artifact(
     deployment({
@@ -288,6 +288,43 @@ test("processes a deduplicated CID when a later reference identifies it as a dep
     assert.ok(
       manifest.closure.some(({ cid }) => cid === childMisc.cid),
       "child deployment miscUrl should be traversed",
+    );
+  } finally {
+    await server.close();
+  }
+});
+
+test("rejects a non-string source commit with the typed source error", async () => {
+  const misc = await artifact({ root: true });
+  const root = await artifact(
+    deployment({
+      generator: "cannon cli 2.23.0",
+      def: { name: "reya-omnibus", version: "1.2.3", preset: "main" },
+      state: {},
+      options: {},
+      meta: {
+        gitUrl: "https://github.com/Reya-Labs/reya-deployments",
+        commitHash: ["2".repeat(40)],
+      },
+      miscUrl: `ipfs://${misc.cid}`,
+      chainId: 1729,
+    }),
+  );
+  const server = await fixtureServer(
+    new Map([misc, root].map(({ cid, raw }) => [cid, raw])),
+  );
+
+  try {
+    await assert.rejects(
+      verifyArtifactClosure({
+        endpoint: server.endpoint,
+        rootCid: root.cid,
+        verificationSha: "8".repeat(40),
+        allowInsecureLocalhost: true,
+      }),
+      (error) =>
+        error instanceof ArtifactVerificationError &&
+        error.code === "ARTIFACT_SOURCE_INVALID",
     );
   } finally {
     await server.close();
@@ -391,6 +428,34 @@ test("rejects hosted Cannon and enforces the strict Reya endpoint allowlist", ()
       allowedHosts: ["artifacts.example.internal"],
     }).hostname,
     "artifacts.example.internal",
+  );
+
+  assert.throws(
+    () => normalizeArtifactEndpoint("http+ipfs://artifacts.example.internal"),
+    (error) =>
+      error instanceof ArtifactVerificationError &&
+      error.code === "ARTIFACT_ENDPOINT_INSECURE",
+  );
+
+  assert.throws(
+    () =>
+      normalizeArtifactEndpoint("https+ipfs://artifacts.example.internal", {
+        requireReyaEndpoint: true,
+      }),
+    (error) =>
+      error instanceof ArtifactVerificationError &&
+      error.code === "ARTIFACT_ENDPOINT_ALLOWLIST_MISSING",
+  );
+
+  assert.throws(
+    () =>
+      normalizeArtifactEndpoint("https+ipfs://artifacts.example.internal", {
+        requireReyaEndpoint: true,
+        allowedHosts: ["Artifacts.Example.Internal"],
+      }),
+    (error) =>
+      error instanceof ArtifactVerificationError &&
+      error.code === "ARTIFACT_ENDPOINT_ALLOWLIST_INVALID",
   );
 });
 

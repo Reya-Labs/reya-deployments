@@ -46,9 +46,12 @@ yarn cannon:artifact-closure:verify \
 
 The verifier never sends credentials to the supplied read endpoint and always
 rejects hosted `usecannon.com` endpoints. In strict rehearsal mode, the
-endpoint hostname must also exactly match an explicit `--allowed-host`. Local
-fixture tests may explicitly opt into an insecure localhost endpoint;
-non-local endpoints must use HTTPS.
+endpoint hostname must also exactly match an explicit `--allowed-host`, and
+`--package-ref`, `--chain-id`, `--artifact-source-sha`, and
+`--verification-repository` all become mandatory. Omitting any of those
+identity arguments fails with `ARTIFACT_EXPECTED_IDENTITY_MISSING`. Local fixture
+tests may explicitly opt into an insecure localhost endpoint; non-local
+endpoints must use HTTPS.
 
 `yarn cannon:artifact-closure:test` is a fixture-only unit suite; it does not
 perform a live endpoint rehearsal. Production verification still requires the
