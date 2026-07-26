@@ -3655,7 +3655,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ipfs-only-hash@npm:^4.0.0":
+"ipfs-only-hash@npm:4.0.0, ipfs-only-hash@npm:^4.0.0":
   version: 4.0.0
   resolution: "ipfs-only-hash@npm:4.0.0"
   dependencies:
@@ -4832,7 +4832,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"multiformats@npm:^9.4.2":
+"multiformats@npm:9.9.0, multiformats@npm:^9.4.2":
   version: 9.9.0
   resolution: "multiformats@npm:9.9.0"
   checksum: d3e8c1be400c09a014f557ea02251a2710dbc9fca5aa32cc702ff29f636c5471e17979f30bdcb0a9cbb556f162a8591dc2e1219c24fc21394a56115b820bb84e
@@ -6174,7 +6174,9 @@ __metadata:
     "@usecannon/cli": 2.23.0
     "@usecannon/cli-devnet": "npm:@usecannon/cli@2.26.0"
     forge-std: "github:foundry-rs/forge-std#v1.8.0"
+    ipfs-only-hash: 4.0.0
     lerna: ^8.1.2
+    multiformats: 9.9.0
     prettier: 3.2.5
     prettier-plugin-toml: 2.0.1
     solc: 0.8.21
