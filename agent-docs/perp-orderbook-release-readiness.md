@@ -91,7 +91,7 @@ The perpOB release fundamentally transitions Reya's perpetual futures system fro
 |----------|-------|
 | **Chain** | Reya Cronos testnet (shared) |
 | **Chain ID** | 89346162 |
-| **RPC** | `https://rpc.reya-cronos.gelato.digital/` |
+| **RPC** | `https://rpc-reya-cronos.t.conduit.xyz` |
 | **Deployment Strategy** | Fresh proxy deployments, reuse existing Cronos token contracts |
 
 ### 3.2 Shared Infrastructure (from Cronos)
