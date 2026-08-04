@@ -19,8 +19,9 @@ import { IOracleManagerProxy } from "../../src/interfaces/IOracleManagerProxy.so
  */
 contract ReyaForkTest is BaseReyaForkTest {
     constructor() {
+        string memory rpcKey = vm.envString("CONDUIT_RPC_KEY");
         // network (same chain as cronos testnet)
-        sec.REYA_RPC = "https://rpc-reya-cronos.t.conduit.xyz";
+        sec.REYA_RPC = string.concat("https://rpc-reya-cronos.t.conduit.xyz/", rpcKey);
         sec.MAINNET_RPC = "https://gateway.tenderly.co/public/sepolia";
 
         // other (external) chain id

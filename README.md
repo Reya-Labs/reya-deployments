@@ -6,5 +6,5 @@
 ```
 yarn
 RPC_KEY=... yarn reya_network:test
-yarn reya_cronos:test
+CONDUIT_RPC_KEY=... yarn reya_cronos:test
 ```
