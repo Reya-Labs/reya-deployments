@@ -5,14 +5,14 @@ import { ICoreProxy, MarginInfo, RiskMultipliers, CollateralInfo } from "../../.
 import {
     IPassivePerpProxy,
     PerpPosition,
-    EIP712Signature as PerpEIP712Signature,
-    GlobalFeeParameters
+    EIP712Signature as PerpEIP712Signature
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import {
     IPassivePerpProxyV2,
     OracleDataPayload,
     OracleDataType,
-    FeeTierParameters
+    FeeTierParameters,
+    GlobalFeeParametersV2
 } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import {
     IOrdersGatewayProxy,
@@ -24,10 +24,11 @@ import {
     IOrdersGatewayProxyV2,
     OrderDetails,
     OrderTypeV2,
+    SignedOrderV2,
     ExecuteFillInputV2
 } from "../../../src/interfaces/IOrdersGatewayProxyV2.sol";
 import { OrderDetailsHashing } from "../../../src/utils/OrderDetailsHashing.sol";
-import { FillHashing } from "../../../src/utils/FillHashing.sol";
+import { FillHashingV2 } from "../../../src/utils/FillHashingV2.sol";
 import { OracleDataPayloadHashing } from "../../../src/utils/OracleDataPayloadHashing.sol";
 
 import { sd, SD59x18, UNIT as ONE_sd } from "@prb/math/SD59x18.sol";
@@ -115,31 +116,81 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     }
 
     function createPerpMatchingEnginePayload(
+        OrderDetails memory accountOrder,
+        OrderDetails memory counterpartyOrder,
         uint256 price,
         uint256 baseDelta,
-        uint64 accountOrderId,
-        uint64 counterpartyOrderId,
-        uint256 nonce
+        uint256 nonce,
+        bytes memory metadata
     )
         internal
         view
         returns (SignedMatchingEnginePayload memory)
     {
         FillDetails memory fillDetails = FillDetails({
-            accountOrderId: accountOrderId,
-            counterpartyOrderId: counterpartyOrderId,
+            accountOrderId: uint64(nonce * 2 - 1),
+            counterpartyOrderId: uint64(nonce * 2),
             baseDelta: baseDelta,
             price: price,
             nonce: nonce
         });
 
         uint256 deadline = block.timestamp + 3600;
-        (uint8 v, bytes32 r, bytes32 s) =
-            vm.sign(perpMatchingEnginePk, FillHashing.mockCalculateDigest(fillDetails, deadline, sec.ordersGateway));
+        bytes32 digest = calculatePerpFillDigest(fillDetails, deadline, accountOrder, counterpartyOrder, metadata);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(perpMatchingEnginePk, digest);
 
         EIP712Signature memory sig = EIP712Signature({ v: v, r: r, s: s, deadline: deadline });
 
         return SignedMatchingEnginePayload({ fillDetails: fillDetails, signature: sig });
+    }
+
+    function calculatePerpFillDigest(
+        FillDetails memory fillDetails,
+        uint256 deadline,
+        OrderDetails memory accountOrder,
+        OrderDetails memory counterpartyOrder,
+        bytes memory metadata
+    )
+        internal
+        view
+        returns (bytes32)
+    {
+        bytes32 accountOrderHash = OrderDetailsHashing.hashOrderDetails(accountOrder);
+        bytes32 counterpartyOrderHash = OrderDetailsHashing.hashOrderDetails(counterpartyOrder);
+        return FillHashingV2.mockCalculateDigest(
+            fillDetails, deadline, accountOrderHash, counterpartyOrderHash, metadata, sec.ordersGateway
+        );
+    }
+
+    function createPerpFillInput(
+        OrderDetails memory accountOrder,
+        EIP712Signature memory accountSignature,
+        OrderDetails memory counterpartyOrder,
+        EIP712Signature memory counterpartySignature,
+        uint256 price,
+        uint256 baseDelta,
+        uint256 nonce
+    )
+        internal
+        view
+        returns (ExecuteFillInputV2 memory)
+    {
+        bytes memory metadata = new bytes(0);
+        SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
+            accountOrder: accountOrder,
+            counterpartyOrder: counterpartyOrder,
+            price: price,
+            baseDelta: baseDelta,
+            nonce: nonce,
+            metadata: metadata
+        });
+
+        return ExecuteFillInputV2({
+            accountOrder: SignedOrderV2({ orderDetails: accountOrder, signature: accountSignature }),
+            counterpartyOrder: SignedOrderV2({ orderDetails: counterpartyOrder, signature: counterpartySignature }),
+            mePayload: mePayload,
+            metadata: metadata
+        });
     }
 
     function pushMarkPrice(uint128 marketId, uint256 price) internal {
@@ -214,22 +265,14 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             signerPk: perpSellerPk
         });
 
-        // Matching engine payload
-        SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
+        ExecuteFillInputV2 memory fillInput = createPerpFillInput({
+            accountOrder: buyerOrder,
+            accountSignature: buyerSig,
+            counterpartyOrder: sellerOrder,
+            counterpartySignature: sellerSig,
             price: price,
             baseDelta: baseDelta,
-            accountOrderId: 1,
-            counterpartyOrderId: 2,
             nonce: meNonce
-        });
-
-        // Execute fill
-        ExecuteFillInputV2 memory fillInput = ExecuteFillInputV2({
-            accountOrder: buyerOrder,
-            counterpartyOrder: sellerOrder,
-            accountSignature: buyerSig,
-            counterpartySignature: sellerSig,
-            mePayload: mePayload
         });
 
         vm.prank(sec.coExecutionBot);
@@ -293,6 +336,66 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
         assertEq(buyerPosition.base, int256(baseDelta), "Buyer should be long");
         assertEq(sellerPosition.base, -int256(baseDelta), "Seller should be short");
+    }
+
+    /**
+     * @notice Verify that the deployed Orders Gateway binds the exact metadata bytes into the ME signature.
+     * @dev The input is signed with empty metadata, then mutated before submission. A router that still uses
+     *      the pre-binding digest would accept it; the current router must reject the recovered ME signer.
+     */
+    function check_PerpFillMetadataBinding(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPrice(marketId, 3000e18);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
+
+        ExecuteFillInputV2 memory fillInput;
+        {
+            (OrderDetails memory buyerOrder, EIP712Signature memory buyerSig) = createLimitOrderPerp({
+                accountId: buyerAccountId,
+                marketId: marketId,
+                baseDelta: int256(0.1e18),
+                price: 3000e18,
+                nonce: 1,
+                signer: perpBuyer,
+                signerPk: perpBuyerPk
+            });
+
+            (OrderDetails memory sellerOrder, EIP712Signature memory sellerSig) = createLimitOrderPerp({
+                accountId: sellerAccountId,
+                marketId: marketId,
+                baseDelta: -int256(0.1e18),
+                price: 3000e18,
+                nonce: 1,
+                signer: perpSeller,
+                signerPk: perpSellerPk
+            });
+
+            fillInput = createPerpFillInput({
+                accountOrder: buyerOrder,
+                accountSignature: buyerSig,
+                counterpartyOrder: sellerOrder,
+                counterpartySignature: sellerSig,
+                price: 3000e18,
+                baseDelta: 0.1e18,
+                nonce: 1
+            });
+        }
+
+        fillInput.metadata = hex"01";
+
+        vm.prank(sec.coExecutionBot);
+        try IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput) {
+            revert("Expected metadata-bound matching-engine signature to fail");
+        } catch (bytes memory revertData) {
+            assertEq(
+                bytes4(revertData),
+                IOrdersGatewayProxy.UnauthorizedMatchingEnginePublisher.selector,
+                "Should reject the mutated metadata signature"
+            );
+        }
     }
 
     /**
@@ -371,20 +474,14 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 signerPk: perpSellerPk
             });
 
-            SignedMatchingEnginePayload memory mePayload1 = createPerpMatchingEnginePayload({
+            fills[0] = createPerpFillInput({
+                accountOrder: buyerOrder1,
+                accountSignature: buyerSig1,
+                counterpartyOrder: sellerOrder1,
+                counterpartySignature: sellerSig1,
                 price: 3000e18,
                 baseDelta: 0.1e18,
-                accountOrderId: 1,
-                counterpartyOrderId: 2,
                 nonce: 1
-            });
-
-            fills[0] = ExecuteFillInputV2({
-                accountOrder: buyerOrder1,
-                counterpartyOrder: sellerOrder1,
-                accountSignature: buyerSig1,
-                counterpartySignature: sellerSig1,
-                mePayload: mePayload1
             });
         }
 
@@ -410,20 +507,14 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 signerPk: perpSellerPk
             });
 
-            SignedMatchingEnginePayload memory mePayload2 = createPerpMatchingEnginePayload({
+            fills[1] = createPerpFillInput({
+                accountOrder: buyerOrder2,
+                accountSignature: buyerSig2,
+                counterpartyOrder: sellerOrder2,
+                counterpartySignature: sellerSig2,
                 price: 3010e18,
                 baseDelta: 0.2e18,
-                accountOrderId: 3,
-                counterpartyOrderId: 4,
                 nonce: 2
-            });
-
-            fills[1] = ExecuteFillInputV2({
-                accountOrder: buyerOrder2,
-                counterpartyOrder: sellerOrder2,
-                accountSignature: buyerSig2,
-                counterpartySignature: sellerSig2,
-                mePayload: mePayload2
             });
         }
 
@@ -587,21 +678,15 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 signerPk: perpSellerPk
             });
 
-            // ME payload: seller (buying) is the "account", buyer (selling) is the "counterparty"
-            SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
+            // Seller (buying) is the account order; buyer (selling) is the counterparty order.
+            ExecuteFillInputV2 memory fillInput = createPerpFillInput({
+                accountOrder: sellerCloseOrder,
+                accountSignature: sellerCloseSig,
+                counterpartyOrder: buyerCloseOrder,
+                counterpartySignature: buyerCloseSig,
                 price: 3000e18,
                 baseDelta: 0.5e18,
-                accountOrderId: 3,
-                counterpartyOrderId: 4,
                 nonce: 2
-            });
-
-            ExecuteFillInputV2 memory fillInput = ExecuteFillInputV2({
-                accountOrder: sellerCloseOrder,
-                counterpartyOrder: buyerCloseOrder,
-                accountSignature: sellerCloseSig,
-                counterpartySignature: buyerCloseSig,
-                mePayload: mePayload
             });
 
             vm.prank(sec.coExecutionBot);
@@ -682,9 +767,9 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     }
 
     /**
-     * @notice Test that fees are correctly deducted from both buyer and seller on a perp fill
-     * @dev Devnet fee config: tier0 taker=0.04%, maker=0.04%, no discounts, no maker rebate.
-     *      Fee per side = |baseDelta| * fillPrice * 0.0004.
+     * @notice Test that the taker fee is deducted and the maker is fee-neutral on a perp fill
+     * @dev Devnet fee config: tier0 taker=0.04%.
+     *      Taker fee = |baseDelta| * fillPrice * 0.0004.
      *      We verify by checking getCollateralInfo(accountId, rusd).realBalance before/after.
      *      Unrealized PnL only affects marginBalance, not realBalance, so only fees change realBalance.
      */
@@ -717,20 +802,19 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         int256 buyerPaid = buyerBalBefore - buyerBalAfter;
         int256 sellerPaid = sellerBalBefore - sellerBalAfter;
 
-        // Expected fee per side = 1 ETH * $3000 * 0.0004 = $1.20 = 1.2e6 rUSD
+        // Expected taker fee = 1 ETH * $3000 * 0.0004 = $1.20 = 1.2e6 rUSD
         int256 expectedFee = 1.2e6;
 
         assertEq(buyerPaid, expectedFee, "Buyer should pay exactly 4bps taker fee");
-        assertEq(sellerPaid, expectedFee, "Seller should pay exactly 4bps maker fee");
+        assertEq(sellerPaid, 0, "Maker should be fee-neutral");
         assertGt(buyerPaid, 0, "Buyer fee should be positive");
-        assertGt(sellerPaid, 0, "Seller fee should be positive");
     }
 
     /**
-     * @notice Test zero fees when market zero-fee flag is enabled
-     * @dev Enables the marketZeroFees flag, executes a fill, and verifies no fees are charged.
+     * @notice Test that the deprecated market zero-fee flag cannot bypass taker fees
+     * @dev Existing flag state remains readable after the upgrade, but fee model V3 no longer consults it.
      */
-    function check_PerpFillZeroFees(uint128 marketId, address zeroFeeBot) internal {
+    function check_PerpFillDeprecatedMarketZeroFeesFlag(uint128 marketId, address zeroFeeBot) internal {
         setupPerpTestActors();
         mockFreshPrices();
 
@@ -763,8 +847,8 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         int256 sellerPaid =
             sellerBalBefore - ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
 
-        assertEq(buyerPaid, 0, "Buyer should pay zero fees");
-        assertEq(sellerPaid, 0, "Seller should pay zero fees");
+        assertEq(buyerPaid, int256(1.2e6), "Deprecated market flag must not bypass taker fee");
+        assertEq(sellerPaid, 0, "Maker should remain fee-neutral");
 
         // Restore default (fees on)
         vm.prank(zeroFeeBot);
@@ -772,10 +856,10 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     }
 
     /**
-     * @notice Test that insufficient margin blocks a perp fill
+     * @notice Test that insufficient liquidation margin blocks a perp fill
      * @dev Attempts to open a position larger than what the margin can support.
      *      With $10 deposit and 1 ETH at $3000 → ~300x leverage, well beyond the 25x limit.
-     *      Verifies that the revert is specifically AccountBelowIM for the buyer's account
+     *      Verifies that the revert is specifically AccountBelowLm for the buyer's account
      *      (the seller has $100k collateral and should not be the one failing).
      */
     function check_PerpFillInsufficientMargin(uint128 marketId) internal {
@@ -811,29 +895,25 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 signerPk: perpSellerPk
             });
 
-            fillInput = ExecuteFillInputV2({
+            fillInput = createPerpFillInput({
                 accountOrder: buyerOrder,
-                counterpartyOrder: sellerOrder,
                 accountSignature: buyerSig,
+                counterpartyOrder: sellerOrder,
                 counterpartySignature: sellerSig,
-                mePayload: createPerpMatchingEnginePayload({
-                    price: 3000e18,
-                    baseDelta: 1e18,
-                    accountOrderId: 1,
-                    counterpartyOrderId: 2,
-                    nonce: 1
-                })
+                price: 3000e18,
+                baseDelta: 1e18,
+                nonce: 1
             });
         }
 
-        // Execute and verify the revert is AccountBelowIM for the buyer's account specifically
+        // Execute and verify the revert is AccountBelowLm for the buyer's account specifically
         vm.prank(sec.coExecutionBot);
         try IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput) {
-            revert("Expected AccountBelowIM revert for underfunded buyer");
+            revert("Expected AccountBelowLm revert for underfunded buyer");
         } catch (bytes memory revertData) {
-            assertEq(bytes4(revertData), ICoreProxy.AccountBelowIM.selector, "Should revert with AccountBelowIM");
+            assertEq(bytes4(revertData), ICoreProxy.AccountBelowLm.selector, "Should revert with AccountBelowLm");
 
-            // Decode accountId: AccountBelowIM(uint128 accountId, int256 delta)
+            // Decode accountId: AccountBelowLm(uint128 accountId, int256 delta)
             uint128 failedAccountId;
             assembly {
                 failedAccountId := mload(add(revertData, 36))
@@ -907,20 +987,14 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 signerPk: perpSellerPk
             });
 
-            SignedMatchingEnginePayload memory mePayload = createPerpMatchingEnginePayload({
+            ExecuteFillInputV2 memory fillInput = createPerpFillInput({
+                accountOrder: reduceOrder,
+                accountSignature: reduceSig,
+                counterpartyOrder: sellerOrder,
+                counterpartySignature: sellerSig,
                 price: 3000e18,
                 baseDelta: 0.5e18,
-                accountOrderId: 3,
-                counterpartyOrderId: 4,
                 nonce: 2
-            });
-
-            ExecuteFillInputV2 memory fillInput = ExecuteFillInputV2({
-                accountOrder: reduceOrder,
-                counterpartyOrder: sellerOrder,
-                accountSignature: reduceSig,
-                counterpartySignature: sellerSig,
-                mePayload: mePayload
             });
 
             vm.prank(sec.coExecutionBot);
@@ -1041,18 +1115,14 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                 signerPk: perpSellerPk
             });
 
-            fillInput = ExecuteFillInputV2({
+            fillInput = createPerpFillInput({
                 accountOrder: reduceOrder,
-                counterpartyOrder: sellerOrder,
                 accountSignature: reduceSig,
+                counterpartyOrder: sellerOrder,
                 counterpartySignature: sellerSig,
-                mePayload: createPerpMatchingEnginePayload({
-                    price: 3000e18,
-                    baseDelta: 0.5e18,
-                    accountOrderId: 3,
-                    counterpartyOrderId: 4,
-                    nonce: 2
-                })
+                price: 3000e18,
+                baseDelta: 0.5e18,
+                nonce: 2
             });
         }
 
@@ -1071,12 +1141,11 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     int256 private constant BASIC_TIER_FEE_PERCENTAGE = 0.0004e18;
 
     /**
-     * @notice Test that OG/VLTZ fee discounts apply to perpOB fills
-     * @dev Mirrors the AMM-based check_MatchOrder_FeeDiscounts in Order.fork.c.sol.
-     *      Applies OG and/or VLTZ discount to the buyer, verifies reduced fee.
-     *      Seller has no discounts and should pay the full 4bps fee.
+     * @notice Test that OG/VLTZ taker rebates apply to perpOB fills
+     * @dev Applies OG and/or VLTZ status to the buyer and verifies the multiplicative net fee.
+     *      The seller is the maker and remains fee-neutral.
      */
-    function check_PerpFillFeeDiscounts(uint128 marketId, bool ogDiscount, bool vltzDiscount) internal {
+    function check_PerpFillTakerRebates(uint128 marketId, bool ogRebate, bool vltzRebate) internal {
         setupPerpTestActors();
         mockFreshPrices();
         pushMarkPrice(marketId, 3000e18);
@@ -1089,14 +1158,14 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         vm.prank(sec.multisig);
         perp.addToFeatureFlagAllowlist(keccak256(bytes("configureFees")), feeBot);
 
-        // Configure global discount parameters
-        GlobalFeeParameters memory config = perp.getGlobalFeeParameters();
-        config.ogDiscount = ogDiscount ? 0.2e18 : 0; // 20% OG discount
-        config.vltzDiscount = vltzDiscount ? 0.1e18 : 0; // 10% VLTZ discount
+        // Preserve the appended pool fee fields while configuring the taker's rebate rates.
+        GlobalFeeParametersV2 memory config = IPassivePerpProxyV2(sec.perp).getGlobalFeeParameters();
+        config.ogRebateRate = ogRebate ? 0.2e18 : 0;
+        config.vltzRebateRate = vltzRebate ? 0.1e18 : 0;
         vm.prank(sec.multisig);
-        perp.setGlobalFeeParameters(config);
+        IPassivePerpProxyV2(sec.perp).setGlobalFeeParameters(config);
 
-        // Apply discounts to buyer only — seller gets no discounts
+        // Apply rebate statuses to the taker only.
         vm.prank(feeBot);
         perp.setAccountOwnerOgStatusFeeConfig(perpBuyer, true);
         vm.prank(feeBot);
@@ -1123,31 +1192,26 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         int256 sellerPaid =
             sellerBalBefore - ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
 
-        // Compute expected discounted fee for buyer
+        // Compute the expected net fee after the taker's compounded rebates.
         // Base fee = 1 ETH * $3000 * 0.0004 = $1.20 = 1.2e6 rUSD
         SD59x18 feeRate = sd(BASIC_TIER_FEE_PERCENTAGE);
-        if (ogDiscount) feeRate = feeRate.mul(ONE_sd.sub(sd(0.2e18)));
-        if (vltzDiscount) feeRate = feeRate.mul(ONE_sd.sub(sd(0.1e18)));
+        if (ogRebate) feeRate = feeRate.mul(ONE_sd.sub(sd(0.2e18)));
+        if (vltzRebate) feeRate = feeRate.mul(ONE_sd.sub(sd(0.1e18)));
         int256 expectedBuyerFee = sd(3000e18).mul(sd(1e18)).mul(feeRate).unwrap() / 1e12;
 
-        // Seller pays full fee (no discounts applied)
-        int256 expectedSellerFee = sd(3000e18).mul(sd(1e18)).mul(sd(BASIC_TIER_FEE_PERCENTAGE)).unwrap() / 1e12;
+        assertEq(buyerPaid, expectedBuyerFee, "Buyer should pay net fee after taker rebates");
+        assertEq(sellerPaid, 0, "Maker should be fee-neutral");
 
-        assertEq(buyerPaid, expectedBuyerFee, "Buyer should pay discounted fee");
-        assertEq(sellerPaid, expectedSellerFee, "Seller should pay full fee (no discount)");
-
-        // Verify discounts actually reduced the buyer's fee vs the base rate
-        if (ogDiscount || vltzDiscount) {
-            assertLt(buyerPaid, expectedSellerFee, "Buyer fee should be less than seller fee due to discounts");
+        if (ogRebate || vltzRebate) {
+            assertLt(buyerPaid, int256(1.2e6), "Taker rebate should reduce the buyer's net fee");
         }
     }
 
     /**
-     * @notice Test that exchange-level zero-fee flag disables fees for perpOB fills
-     * @dev Similar to check_PerpFillZeroFees (market-level), but uses the exchangeZeroFees flag.
-     *      PerpOB fills use exchangeId=1, so we toggle that flag.
+     * @notice Test that the deprecated exchange zero-fee flag cannot bypass taker fees
+     * @dev PerpOB fills use exchangeId=1. The flag remains in storage but is no longer consulted.
      */
-    function check_PerpFillExchangeZeroFees(uint128 marketId) internal {
+    function check_PerpFillDeprecatedExchangeZeroFeesFlag(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
         pushMarkPrice(marketId, 3000e18);
@@ -1179,8 +1243,8 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         int256 sellerPaid =
             sellerBalBefore - ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
 
-        assertEq(buyerPaid, 0, "Buyer should pay zero fees (exchange zero-fee)");
-        assertEq(sellerPaid, 0, "Seller should pay zero fees (exchange zero-fee)");
+        assertEq(buyerPaid, int256(1.2e6), "Deprecated exchange flag must not bypass taker fee");
+        assertEq(sellerPaid, 0, "Maker should remain fee-neutral");
 
         // Restore default (fees on)
         vm.prank(sec.multisig);
@@ -1188,31 +1252,26 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     }
 
     /**
-     * @notice Exercise the maker-rebate fee path (1.0.52 feature).
-     * @dev makerRebate is the UD60x18 fraction of REMAINING taker fee (after referrer & exchange
-     *      rebates) that is credited back to the maker — not a rate on notional. With a 50%
-     *      rebate and the devnet passive-pool exchange rebate of 20%, the math is:
-     *        takerFeeDebit    = takerFeeParameter * exposure = 4bps * 3000 rUSD = 1.20 rUSD
-     *        exchangeFeeCredit = 20% * 1.20                                    = 0.24 rUSD
-     *        remaining        = 1.20 - 0 - 0.24                                = 0.96 rUSD
-     *        makerFeeCredit   = 50% * 0.96                                     = 0.48 rUSD
-     *
-     *      TODO: revisit once the fee / rebate logic is finalised with the team — the
-     *      numeric assertions below assume the current "% of remaining" semantics and
-     *      will drift if the formula or the passive-pool exchange rebate cut changes.
+     * @notice Test that deprecated maker parameters remain stored but do not affect settlement
+     * @dev Existing deployments may contain non-zero values in these slots. The upgrade must preserve
+     *      them without charging or crediting the maker.
      */
-    function check_PerpFillMakerRebate(uint128 marketId) internal {
+    function check_PerpFillDeprecatedMakerParametersIgnored(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
         pushMarkPrice(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
-        // Configure tier 0: taker 4bps, no maker fee, 50% maker rebate (fraction of remaining).
+        // Configure a 4bps taker fee and deliberately non-zero deprecated maker fields.
         FeeTierParameters memory originalTier0 = IPassivePerpProxyV2(sec.perp).getFeeTierParameters(0);
         vm.prank(sec.multisig);
         IPassivePerpProxyV2(sec.perp).setFeeTierParameters(
-            0, FeeTierParameters({ takerFee: 4e14, makerFee: 0, makerRebate: 5e17 })
+            0, FeeTierParameters({ takerFee: 4e14, makerFee_DEPRECATED: 4e14, makerRebate_DEPRECATED: 5e17 })
         );
+
+        FeeTierParameters memory configuredTier0 = IPassivePerpProxyV2(sec.perp).getFeeTierParameters(0);
+        assertEq(configuredTier0.makerFee_DEPRECATED, 4e14, "Deprecated maker fee slot should round-trip");
+        assertEq(configuredTier0.makerRebate_DEPRECATED, 5e17, "Deprecated maker rebate slot should round-trip");
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 100_000e6);
         uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 100_000e6);
@@ -1238,8 +1297,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
         // Taker (buyer) pays 4bps of 3000 rUSD/ETH on 1 ETH = 1.2 rUSD debit (6-decimal rUSD).
         assertEq(buyerDelta, -int256(1.2e6), "Taker should pay 4bps fee");
-        // Maker (seller) receives 50% of remaining (after 20% exchange rebate) = 0.48 rUSD credit.
-        assertEq(sellerDelta, int256(0.48e6), "Maker should receive 50% of remaining as rebate credit");
+        assertEq(sellerDelta, 0, "Deprecated maker parameters must not affect maker balance");
 
         // Restore tier 0 so any subsequent tests see defaults.
         vm.prank(sec.multisig);
@@ -1247,22 +1305,21 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     }
 
     /**
-     * @notice Assert that setFeeTierParameters rejects both maker fee and rebate being nonzero.
-     * @dev Mutual-exclusion invariant introduced with the rebate field in 1.0.52.
+     * @notice Assert that the live taker fee cannot exceed 100% of exposure
      */
-    function check_MakerFeeAndRebateMutuallyExclusive() internal {
+    function check_TakerFeeParameterUpperBound() internal {
         FeeTierParameters memory originalTier0 = IPassivePerpProxyV2(sec.perp).getFeeTierParameters(0);
 
         vm.prank(sec.multisig);
-        vm.expectRevert(IPassivePerpProxyV2.MakerFeeAndRebateBothNonZero.selector);
+        vm.expectRevert(IPassivePerpProxyV2.TakerFeeParameterTooLarge.selector);
         IPassivePerpProxyV2(sec.perp).setFeeTierParameters(
-            0, FeeTierParameters({ takerFee: 4e14, makerFee: 4e14, makerRebate: 2e14 })
+            0, FeeTierParameters({ takerFee: 1e18 + 1, makerFee_DEPRECATED: 4e14, makerRebate_DEPRECATED: 2e14 })
         );
 
         // Nothing should have changed.
         FeeTierParameters memory after_ = IPassivePerpProxyV2(sec.perp).getFeeTierParameters(0);
         assertEq(after_.takerFee, originalTier0.takerFee, "takerFee unchanged");
-        assertEq(after_.makerFee, originalTier0.makerFee, "makerFee unchanged");
-        assertEq(after_.makerRebate, originalTier0.makerRebate, "makerRebate unchanged");
+        assertEq(after_.makerFee_DEPRECATED, originalTier0.makerFee_DEPRECATED, "maker fee slot unchanged");
+        assertEq(after_.makerRebate_DEPRECATED, originalTier0.makerRebate_DEPRECATED, "maker rebate slot unchanged");
     }
 }

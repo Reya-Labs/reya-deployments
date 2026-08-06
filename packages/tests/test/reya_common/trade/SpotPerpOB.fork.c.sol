@@ -13,10 +13,11 @@ import {
     IOrdersGatewayProxyV2,
     OrderDetails,
     OrderTypeV2,
+    SignedOrderV2,
     ExecuteFillInputV2
 } from "../../../src/interfaces/IOrdersGatewayProxyV2.sol";
 import { OrderDetailsHashing } from "../../../src/utils/OrderDetailsHashing.sol";
-import { FillHashing } from "../../../src/utils/FillHashing.sol";
+import { FillHashingV2 } from "../../../src/utils/FillHashingV2.sol";
 
 /**
  * @title SpotPerpOBForkCheck
@@ -105,31 +106,81 @@ contract SpotPerpOBForkCheck is BaseReyaForkTest {
     }
 
     function createMatchingEnginePayload(
+        OrderDetails memory accountOrder,
+        OrderDetails memory counterpartyOrder,
         uint256 price,
         uint256 baseDelta,
-        uint64 accountOrderId,
-        uint64 counterpartyOrderId,
-        uint256 nonce
+        uint256 nonce,
+        bytes memory metadata
     )
         internal
         view
         returns (SignedMatchingEnginePayload memory)
     {
         FillDetails memory fillDetails = FillDetails({
-            accountOrderId: accountOrderId,
-            counterpartyOrderId: counterpartyOrderId,
+            accountOrderId: uint64(nonce * 2 - 1),
+            counterpartyOrderId: uint64(nonce * 2),
             baseDelta: baseDelta,
             price: price,
             nonce: nonce
         });
 
         uint256 deadline = block.timestamp + 3600;
-        (uint8 v, bytes32 r, bytes32 s) =
-            vm.sign(spotMatchingEnginePk, FillHashing.mockCalculateDigest(fillDetails, deadline, sec.ordersGateway));
+        bytes32 digest = calculateSpotFillDigest(fillDetails, deadline, accountOrder, counterpartyOrder, metadata);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(spotMatchingEnginePk, digest);
 
         return SignedMatchingEnginePayload({
             fillDetails: fillDetails,
             signature: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })
+        });
+    }
+
+    function calculateSpotFillDigest(
+        FillDetails memory fillDetails,
+        uint256 deadline,
+        OrderDetails memory accountOrder,
+        OrderDetails memory counterpartyOrder,
+        bytes memory metadata
+    )
+        internal
+        view
+        returns (bytes32)
+    {
+        bytes32 accountOrderHash = OrderDetailsHashing.hashOrderDetails(accountOrder);
+        bytes32 counterpartyOrderHash = OrderDetailsHashing.hashOrderDetails(counterpartyOrder);
+        return FillHashingV2.mockCalculateDigest(
+            fillDetails, deadline, accountOrderHash, counterpartyOrderHash, metadata, sec.ordersGateway
+        );
+    }
+
+    function createSpotFillInput(
+        OrderDetails memory accountOrder,
+        EIP712Signature memory accountSignature,
+        OrderDetails memory counterpartyOrder,
+        EIP712Signature memory counterpartySignature,
+        uint256 price,
+        uint256 baseDelta,
+        uint256 nonce
+    )
+        internal
+        view
+        returns (ExecuteFillInputV2 memory)
+    {
+        bytes memory metadata = new bytes(0);
+        SignedMatchingEnginePayload memory mePayload = createMatchingEnginePayload({
+            accountOrder: accountOrder,
+            counterpartyOrder: counterpartyOrder,
+            price: price,
+            baseDelta: baseDelta,
+            nonce: nonce,
+            metadata: metadata
+        });
+
+        return ExecuteFillInputV2({
+            accountOrder: SignedOrderV2({ orderDetails: accountOrder, signature: accountSignature }),
+            counterpartyOrder: SignedOrderV2({ orderDetails: counterpartyOrder, signature: counterpartySignature }),
+            mePayload: mePayload,
+            metadata: metadata
         });
     }
 
@@ -183,20 +234,14 @@ contract SpotPerpOBForkCheck is BaseReyaForkTest {
             signerPk: spotSellerPk
         });
 
-        SignedMatchingEnginePayload memory mePayload = createMatchingEnginePayload({
+        ExecuteFillInputV2 memory fillInput = createSpotFillInput({
+            accountOrder: buyerOrder,
+            accountSignature: buyerSig,
+            counterpartyOrder: sellerOrder,
+            counterpartySignature: sellerSig,
             price: price,
             baseDelta: baseDelta,
-            accountOrderId: 1,
-            counterpartyOrderId: 2,
             nonce: meNonce
-        });
-
-        ExecuteFillInputV2 memory fillInput = ExecuteFillInputV2({
-            accountOrder: buyerOrder,
-            counterpartyOrder: sellerOrder,
-            accountSignature: buyerSig,
-            counterpartySignature: sellerSig,
-            mePayload: mePayload
         });
 
         vm.prank(sec.coExecutionBot);
@@ -313,20 +358,14 @@ contract SpotPerpOBForkCheck is BaseReyaForkTest {
                 signerPk: spotSellerPk
             });
 
-            SignedMatchingEnginePayload memory mePayload1 = createMatchingEnginePayload({
+            fills[0] = createSpotFillInput({
+                accountOrder: buyerOrder1,
+                accountSignature: buyerSig1,
+                counterpartyOrder: sellerOrder1,
+                counterpartySignature: sellerSig1,
                 price: 3000e18,
                 baseDelta: 0.1e18,
-                accountOrderId: 1,
-                counterpartyOrderId: 2,
                 nonce: 1
-            });
-
-            fills[0] = ExecuteFillInputV2({
-                accountOrder: buyerOrder1,
-                counterpartyOrder: sellerOrder1,
-                accountSignature: buyerSig1,
-                counterpartySignature: sellerSig1,
-                mePayload: mePayload1
             });
         }
 
@@ -351,20 +390,14 @@ contract SpotPerpOBForkCheck is BaseReyaForkTest {
                 signerPk: spotSellerPk
             });
 
-            SignedMatchingEnginePayload memory mePayload2 = createMatchingEnginePayload({
+            fills[1] = createSpotFillInput({
+                accountOrder: buyerOrder2,
+                accountSignature: buyerSig2,
+                counterpartyOrder: sellerOrder2,
+                counterpartySignature: sellerSig2,
                 price: 3000e18,
                 baseDelta: 0.2e18,
-                accountOrderId: 3,
-                counterpartyOrderId: 4,
                 nonce: 2
-            });
-
-            fills[1] = ExecuteFillInputV2({
-                accountOrder: buyerOrder2,
-                counterpartyOrder: sellerOrder2,
-                accountSignature: buyerSig2,
-                counterpartySignature: sellerSig2,
-                mePayload: mePayload2
             });
         }
 
