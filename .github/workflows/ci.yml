@@ -61,7 +61,7 @@ jobs:
         id: reya_cronos_test
         continue-on-error: true
         env:
-          RPC_KEY: ${{ secrets.RPC_KEY }}
+          CONDUIT_RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
         run: "yarn reya_cronos:test"
       - name: Warn on Cronos Test Failure
         if: steps.reya_cronos_test.outcome == 'failure'
@@ -70,7 +70,7 @@ jobs:
         id: reya_devnet_simulate
         continue-on-error: true
         env:
-          RPC_KEY: ${{ secrets.RPC_KEY }}
+          CONDUIT_RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
         run: "yarn reya_devnet:simulate"
       - name: Warn on Devnet Simulate Failure
         if: steps.reya_devnet_simulate.outcome == 'failure'
@@ -79,7 +79,7 @@ jobs:
         id: reya_devnet_test
         continue-on-error: true
         env:
-          RPC_KEY: ${{ secrets.RPC_KEY }}
+          CONDUIT_RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
         run: "yarn reya_devnet:test"
       - name: Warn on Devnet Test Failure
         if: steps.reya_devnet_test.outcome == 'failure'
