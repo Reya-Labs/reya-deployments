@@ -769,7 +769,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     /**
      * @notice Test that the taker fee is deducted and the maker is fee-neutral on a perp fill
      * @dev Devnet fee config: tier0 taker=0.03%.
-     *      Taker fee = |baseDelta| * fillPrice * 0.0003.
+     *      Taker fee = |baseDelta| * markPrice * 0.0003.
      *      We verify by checking getCollateralInfo(accountId, rusd).realBalance before/after.
      *      Unrealized PnL only affects marginBalance, not realBalance, so only fees change realBalance.
      */
