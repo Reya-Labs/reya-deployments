@@ -790,7 +790,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             sellerAccountId: sellerAccountId,
             marketId: marketId,
             baseDelta: 1e18,
-            price: 3000e18,
+            price: 3010e18, // Differ from mark price to prove fee exposure uses the mark price.
             buyerNonce: 1,
             sellerNonce: 1,
             meNonce: 1
@@ -1284,7 +1284,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             sellerAccountId: sellerAccountId,
             marketId: marketId,
             baseDelta: 1e18,
-            price: 3000e18,
+            price: 3010e18, // Differ from mark price to prove fee exposure uses the mark price.
             buyerNonce: 1,
             sellerNonce: 1,
             meNonce: 1
