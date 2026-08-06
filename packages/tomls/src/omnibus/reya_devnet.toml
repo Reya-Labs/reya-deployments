@@ -22,7 +22,7 @@ include = [
     "../devnet/collateral_pools/collateral_pool_1.toml",
 ]
 
-version = "1.0.10"
+version = "1.0.11"
 
 ###############################################################################
 # Existing Cronos Contract Addresses (reused, not redeployed)
@@ -194,15 +194,35 @@ srusdWithdrawalTvlPercentageLimitUnscaled = "1.0"
 maxAbsFundingRateUnscaled = "0.1"
 
 ###############################################################################
-# Fees (simplified for devnet — single tier, same discounts as cronos)
+# Fees (canonical regular-tier schedule for devnet)
+# Fee model V3 charges only takers. The former maker fields remain as
+# storage-compatible placeholders and are kept at zero.
 ###############################################################################
 [var.fees]
 passivePoolExchangeRebateUnscaled = "0.2"
 
 [var.fees_configs]
-takerFeeTier0Unscaled = "0.00040"
-makerFeeTier0Unscaled = "0.00040"
+takerFeeTier0Unscaled = "0.00030"
+makerFeeTier0Unscaled = "0"
 makerRebateTier0Unscaled = "0"
+takerFeeTier1Unscaled = "0.00028"
+makerFeeTier1Unscaled = "0"
+makerRebateTier1Unscaled = "0"
+takerFeeTier2Unscaled = "0.00026"
+makerFeeTier2Unscaled = "0"
+makerRebateTier2Unscaled = "0"
+takerFeeTier3Unscaled = "0.00024"
+makerFeeTier3Unscaled = "0"
+makerRebateTier3Unscaled = "0"
+takerFeeTier4Unscaled = "0.00022"
+makerFeeTier4Unscaled = "0"
+makerRebateTier4Unscaled = "0"
+takerFeeTier5Unscaled = "0.00021"
+makerFeeTier5Unscaled = "0"
+makerRebateTier5Unscaled = "0"
+takerFeeTier6Unscaled = "0.00020"
+makerFeeTier6Unscaled = "0"
+makerRebateTier6Unscaled = "0"
 
 [var.global_fee_params]
 ogDiscountUnscaled = "0.3"
