@@ -768,8 +768,8 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
     /**
      * @notice Test that the taker fee is deducted and the maker is fee-neutral on a perp fill
-     * @dev Devnet fee config: tier0 taker=0.04%.
-     *      Taker fee = |baseDelta| * fillPrice * 0.0004.
+     * @dev Devnet fee config: tier0 taker=0.03%.
+     *      Taker fee = |baseDelta| * fillPrice * 0.0003.
      *      We verify by checking getCollateralInfo(accountId, rusd).realBalance before/after.
      *      Unrealized PnL only affects marginBalance, not realBalance, so only fees change realBalance.
      */
@@ -802,10 +802,10 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         int256 buyerPaid = buyerBalBefore - buyerBalAfter;
         int256 sellerPaid = sellerBalBefore - sellerBalAfter;
 
-        // Expected taker fee = 1 ETH * $3000 * 0.0004 = $1.20 = 1.2e6 rUSD
-        int256 expectedFee = 1.2e6;
+        // Expected taker fee = 1 ETH * $3000 * 0.0003 = $0.90 = 0.9e6 rUSD
+        int256 expectedFee = 0.9e6;
 
-        assertEq(buyerPaid, expectedFee, "Buyer should pay exactly 4bps taker fee");
+        assertEq(buyerPaid, expectedFee, "Buyer should pay exactly 3bps taker fee");
         assertEq(sellerPaid, 0, "Maker should be fee-neutral");
         assertGt(buyerPaid, 0, "Buyer fee should be positive");
     }
@@ -847,7 +847,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         int256 sellerPaid =
             sellerBalBefore - ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
 
-        assertEq(buyerPaid, int256(1.2e6), "Deprecated market flag must not bypass taker fee");
+        assertEq(buyerPaid, int256(0.9e6), "Deprecated market flag must not bypass taker fee");
         assertEq(sellerPaid, 0, "Maker should remain fee-neutral");
 
         // Restore default (fees on)
@@ -1138,7 +1138,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                         FEE MODEL CHECKS
     //////////////////////////////////////////////////////////////*/
 
-    int256 private constant BASIC_TIER_FEE_PERCENTAGE = 0.0004e18;
+    int256 private constant BASIC_TIER_FEE_PERCENTAGE = 0.0003e18;
 
     /**
      * @notice Test that OG/VLTZ taker rebates apply to perpOB fills
@@ -1193,7 +1193,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             sellerBalBefore - ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
 
         // Compute the expected net fee after the taker's compounded rebates.
-        // Base fee = 1 ETH * $3000 * 0.0004 = $1.20 = 1.2e6 rUSD
+        // Base fee = 1 ETH * $3000 * 0.0003 = $0.90 = 0.9e6 rUSD
         SD59x18 feeRate = sd(BASIC_TIER_FEE_PERCENTAGE);
         if (ogRebate) feeRate = feeRate.mul(ONE_sd.sub(sd(0.2e18)));
         if (vltzRebate) feeRate = feeRate.mul(ONE_sd.sub(sd(0.1e18)));
@@ -1203,7 +1203,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         assertEq(sellerPaid, 0, "Maker should be fee-neutral");
 
         if (ogRebate || vltzRebate) {
-            assertLt(buyerPaid, int256(1.2e6), "Taker rebate should reduce the buyer's net fee");
+            assertLt(buyerPaid, int256(0.9e6), "Taker rebate should reduce the buyer's net fee");
         }
     }
 
@@ -1243,7 +1243,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         int256 sellerPaid =
             sellerBalBefore - ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
 
-        assertEq(buyerPaid, int256(1.2e6), "Deprecated exchange flag must not bypass taker fee");
+        assertEq(buyerPaid, int256(0.9e6), "Deprecated exchange flag must not bypass taker fee");
         assertEq(sellerPaid, 0, "Maker should remain fee-neutral");
 
         // Restore default (fees on)
