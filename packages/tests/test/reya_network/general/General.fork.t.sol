@@ -65,7 +65,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     }
 
     function test_MarketsMaxOiAndOi() public view {
-        uint128[] memory reduceOnlyMarkets = new uint128[](28);
+        uint128[] memory reduceOnlyMarkets = new uint128[](18);
         reduceOnlyMarkets[0] = 45; // AI16Z
         reduceOnlyMarkets[1] = 58; // BERA
         reduceOnlyMarkets[2] = 25; // JTO
@@ -85,17 +85,6 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         reduceOnlyMarkets[15] = 49; // GRIFFAIN
         reduceOnlyMarkets[16] = 52; // APE
         reduceOnlyMarkets[17] = 61; // IP
-        // markets set to reduce-only on 17 Jul 2026
-        reduceOnlyMarkets[18] = 19; // POPCAT
-        reduceOnlyMarkets[19] = 21; // kSHIB
-        reduceOnlyMarkets[20] = 22; // kBONK
-        reduceOnlyMarkets[21] = 47; // S (Sonic)
-        reduceOnlyMarkets[22] = 48; // FARTCOIN
-        reduceOnlyMarkets[23] = 51; // ATOM
-        reduceOnlyMarkets[24] = 63; // PUMP
-        reduceOnlyMarkets[25] = 64; // MORPHO
-        reduceOnlyMarkets[26] = 65; // SYRUP
-        reduceOnlyMarkets[27] = 75; // MEGA
         // todo: add markets here after they are fully closed
         uint128[] memory inactiveMarkets = new uint128[](0);
         check_marketsMaxOiAndOi(reduceOnlyMarkets, inactiveMarkets);
