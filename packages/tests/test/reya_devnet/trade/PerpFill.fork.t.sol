@@ -11,6 +11,38 @@ contract PerpFillForkTest is ReyaForkTest, PerpFillForkCheck {
         check_PerpExecuteFill(ETH_MARKET_ID);
     }
 
+    function test_Devnet_PerpFillPriceDeviationCollar_ETH() public {
+        setupPerpTestActors();
+        mockFreshPrices();
+
+        uint256 markPrice = 3000e18;
+        uint256 outOfBandFillPrice = 3200e18;
+        pushMarkPrice(ETH_MARKET_ID, markPrice);
+
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IPassivePerpProxyV2.PriceDeviationTooLarge.selector,
+                ETH_MARKET_ID,
+                outOfBandFillPrice,
+                markPrice,
+                uint256(0.05e18)
+            )
+        );
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: ETH_MARKET_ID,
+            baseDelta: 0.1e18,
+            price: outOfBandFillPrice,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+    }
+
     function test_Devnet_PerpFillMetadataBinding_ETH() public {
         check_PerpFillMetadataBinding(ETH_MARKET_ID);
     }

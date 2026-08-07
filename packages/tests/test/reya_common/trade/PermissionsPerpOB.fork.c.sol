@@ -9,7 +9,8 @@ import {
     IPassivePerpProxyV2,
     OracleDataPayload,
     OracleDataType,
-    MarketDataResponseV2
+    MarketDataResponseV2,
+    MarketConfigurationDataV2
 } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import {
     IOrdersGatewayProxy,
@@ -49,6 +50,9 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
      */
     function seedMarkPrice(uint128 marketId, uint256 price) internal {
         (address publisher, uint256 publisherPk) = makeAddrAndKey("seedPublisher");
+
+        MarketConfigurationDataV2 memory marketConfig = IPassivePerpProxyV2(sec.perp).getMarketConfiguration(marketId);
+        mockFreshPrice(marketConfig.oracleNodeId, price);
 
         vm.prank(sec.multisig);
         IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUSHERS_FLAG, publisher);
@@ -103,6 +107,9 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
      */
     function check_AuthorizedOraclePusher(uint128 marketId) internal {
         (address publisher, uint256 publisherPk) = makeAddrAndKey("authorizedPublisher");
+
+        MarketConfigurationDataV2 memory marketConfig = IPassivePerpProxyV2(sec.perp).getMarketConfiguration(marketId);
+        mockFreshPrice(marketConfig.oracleNodeId, 3000e18);
 
         // Grant pusher access (checks msg.sender)
         vm.prank(sec.multisig);

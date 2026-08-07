@@ -12,7 +12,8 @@ import {
     OracleDataPayload,
     OracleDataType,
     FeeTierParameters,
-    GlobalFeeParametersV2
+    GlobalFeeParametersV2,
+    MarketConfigurationDataV2
 } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import {
     IOrdersGatewayProxy,
@@ -194,6 +195,9 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     }
 
     function pushMarkPrice(uint128 marketId, uint256 price) internal {
+        MarketConfigurationDataV2 memory marketConfig = IPassivePerpProxyV2(sec.perp).getMarketConfiguration(marketId);
+        mockFreshPrice(marketConfig.oracleNodeId, price);
+
         OracleDataPayload memory payload = OracleDataPayload({
             marketId: marketId,
             timestamp: block.timestamp,
@@ -413,8 +417,11 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
         uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
 
-        // Warp forward past max stale duration (e.g., 1 hour + 1 second)
-        vm.warp(block.timestamp + 3601);
+        uint256 maxStaleDuration =
+            IPassivePerpProxyV2(sec.perp).getMarketConfiguration(marketId).markPriceMaxStaleDuration;
+
+        // Warp forward one second past the configured maximum stale duration.
+        vm.warp(block.timestamp + maxStaleDuration + 1);
         mockFreshPrices();
 
         // Attempt fill should revert due to stale mark price
