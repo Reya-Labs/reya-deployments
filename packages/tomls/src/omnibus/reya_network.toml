@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.159"
+version = "1.0.160"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -50,14 +50,14 @@ zeuzAccountId = "46092"
 progCompAccountId = "110684"
 
 [var.cannonClonePackages]
-coreRouterPackage = "reya-core:1.0.26@router"
+coreRouterPackage = "reya-core:1.0.34@router"
 coreAccountNftRouterPackage = "reya-core:1.0.2@account-nft-router"
 rUSDRouterPackage = "reya-rusd:1.0.0@router"
 tokensProxyPackage = "reya-tokens:1.0.0@proxy"
 tokensRouterPackage = "reya-tokens:1.0.1@router"
-passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.13@router"
-passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.56@router"
-peripheryRouterPackage = "reya-periphery:1.0.14@router"
+passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.14@router"
+passivePerpRouterPackage = "reya-instrument-passive-perp:1.0.57@router"
+peripheryRouterPackage = "reya-periphery:1.0.18@router"
 oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
 exchangePassRouterPackage = "reya-exchange-pass-nft:1.0.0@router"
 ranksRouterPackage = "reya-ranks:1.0.0@router"
