@@ -17,7 +17,7 @@ contract PerpFillForkTest is ReyaForkTest, PerpFillForkCheck {
 
         uint256 markPrice = 3000e18;
         uint256 outOfBandFillPrice = 3200e18;
-        pushMarkPrice(ETH_MARKET_ID, markPrice);
+        pushMarkPriceWithinCollar(ETH_MARKET_ID, markPrice);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
         uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);

@@ -252,8 +252,10 @@ market1Eth_markPriceMaxStaleDuration = "60"
 market1Eth_fundingRateMaxStaleDuration = "600"
 # Preserve the existing no-minimum-interval behavior while making the router 1.1.2 tuple explicit.
 market1Eth_minFundingInterval = "0"
-# Keep pushed marks and matching-engine fills within 5% of their independent reference prices.
+# Bound pushed marks to 5% vs Stork and fills to 5% vs the last accepted on-chain mark.
+# The composed fill-vs-reference envelope is 10.25%, plus up to 60 seconds of market drift.
 market1Eth_markPriceMaxDeviationUnscaled = "0.05"
+# Until a targeted dust exception ships, PRO-661 requires an atomic temporary disable/settle/restore batch.
 market1Eth_fillPriceMaxDeviationUnscaled = "0.05"
 # Need to deprecate
 market1Eth_priceSpreadUnscaled = "0"

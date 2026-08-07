@@ -64,7 +64,7 @@ contract WethCollateralPerpOBForkCheck is PerpFillForkCheck {
         mockFreshPrice(sec.ethUsdcStorkNodeId, entryPrice);
         mockFreshPrice(sec.ethUsdcStorkMarkNodeId, entryPrice);
 
-        pushMarkPrice(marketId, entryPrice);
+        pushMarkPriceWithinCollar(marketId, entryPrice);
         pushFundingRate(marketId, 0);
 
         // Get haircut to calculate perfect hedge amount
@@ -158,7 +158,7 @@ contract WethCollateralPerpOBForkCheck is PerpFillForkCheck {
             mockFreshPrice(sec.ethUsdcStorkMarkNodeId, testPrices[i]);
 
             // 3. Pushed mark price -> actual PnL and margin requirements
-            pushMarkPrice(marketId, testPrices[i]);
+            pushMarkPriceWithinCollar(marketId, testPrices[i]);
 
             int256 marginBalance1 = ICoreProxy(sec.core).getNodeMarginInfo(shortAccountId, sec.rusd).marginBalance;
 

@@ -93,8 +93,8 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
      * @notice Test that pushing a stale funding rate payload reverts.
      * @dev validateFundingRatePush (push-time check) reverts with FundingRateStale when
      *      blockTimestamp > payloadTimestamp + fundingRateMaxStaleDuration.
-     *      There is no trade-path equivalent for funding rate; staleness is enforced
-     *      only at push time.
+     *      Ordinary match-order execution has a separate read-side funding-staleness gate;
+     *      liquidations and ADL deliberately bypass that gate so risk reduction remains live.
      */
     function check_FundingRateStaleness(uint128 marketId) internal {
         setupFundingTestActors();
@@ -119,6 +119,59 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
             )
         );
         _pushOracleDataAt(marketId, OracleDataType.FundingRate, abi.encode(int256(1e16)), stalePayloadTimestamp);
+    }
+
+    /**
+     * @notice Test that stale funding blocks an ordinary full close.
+     * @dev The execution gate runs before the position delta is applied, so it blocks
+     *      risk-reducing user closes as well as risk-increasing ordinary fills.
+     */
+    function check_FundingRateStalenessForTrade(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPriceWithinCollar(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        uint256 fundingRateTimestamp = block.timestamp;
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
+
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 0.5e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        uint256 maxStaleDuration =
+            IPassivePerpProxyV2(sec.perp).getMarketConfiguration(marketId).fundingRateMaxStaleDuration;
+        vm.warp(block.timestamp + maxStaleDuration + 1);
+        mockFreshPrices();
+        pushMarkPriceWithinCollar(marketId, 3000e18);
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IPassivePerpProxyV2.FundingRateStale.selector,
+                marketId,
+                fundingRateTimestamp,
+                block.timestamp,
+                maxStaleDuration
+            )
+        );
+        executePerpClose({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 0.5e18,
+            price: 3000e18,
+            buyerNonce: 2,
+            sellerNonce: 2,
+            meNonce: 2
+        });
     }
 
     /**
@@ -165,7 +218,7 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
 
         // Establish baseline: push mark price and zero funding at t0.
         // This stamps lastFundingTimestamp = t0 so the next push has a defined window.
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         // Open position: buyer goes long 1 ETH, seller goes short 1 ETH
@@ -201,7 +254,7 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
 
         // Keep the mark live under the configured staleness gate. Mark pushes do not
         // accrue funding, so the funding delta remains isolated to the next rate push.
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
 
         // Push the SAME rate again at the new timestamp. This is the call that actually
         // accrues funding: it computes fundingValueDelta = dailyRate * markPrice * elapsed / one day

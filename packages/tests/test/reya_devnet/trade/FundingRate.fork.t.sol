@@ -49,6 +49,10 @@ contract FundingRateForkTest is ReyaForkTest, FundingRatePerpOBForkCheck {
         check_FundingRateStaleness(ETH_MARKET_ID);
     }
 
+    function test_Devnet_FundingRateStalenessForTrade_ETH() public {
+        check_FundingRateStalenessForTrade(ETH_MARKET_ID);
+    }
+
     function test_Devnet_PushMarkPrice_ETH() public {
         check_PushMarkPrice(ETH_MARKET_ID);
     }
