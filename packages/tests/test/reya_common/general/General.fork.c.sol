@@ -472,7 +472,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceGRIFFAIN);
         ls.maxDeviationMarket.push(ls.maxDeviationGRIFFAIN);
 
-        ls.meanPriceWLD = 0.30 * 1e18;
+        ls.meanPriceWLD = 0.3 * 1e18;
         ls.maxDeviationWLD = ls.meanPriceWLD / 2;
         ls.meanPriceMarket.push(ls.meanPriceWLD);
         ls.maxDeviationMarket.push(ls.maxDeviationWLD);
