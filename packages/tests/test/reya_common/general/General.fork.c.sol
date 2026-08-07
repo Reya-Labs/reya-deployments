@@ -329,7 +329,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceKSHIB);
         ls.maxDeviationMarket.push(ls.maxDeviationKSHIB);
 
-        ls.meanPriceKBONK = 0.006 * 1e18;
+        ls.meanPriceKBONK = 0.0025 * 1e18;
         ls.maxDeviationKBONK = ls.meanPriceKBONK / 2;
         ls.meanPriceMarket.push(ls.meanPriceKBONK);
         ls.maxDeviationMarket.push(ls.maxDeviationKBONK);
@@ -472,8 +472,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceGRIFFAIN);
         ls.maxDeviationMarket.push(ls.maxDeviationGRIFFAIN);
 
-        // refreshed 2026-06-16 (was 0.36)
-        ls.meanPriceWLD = 0.65 * 1e18;
+        ls.meanPriceWLD = 0.30 * 1e18;
         ls.maxDeviationWLD = ls.meanPriceWLD / 2;
         ls.meanPriceMarket.push(ls.meanPriceWLD);
         ls.maxDeviationMarket.push(ls.maxDeviationWLD);
@@ -508,7 +507,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceINJ);
         ls.maxDeviationMarket.push(ls.maxDeviationINJ);
 
-        ls.meanPriceMOVE = 0.02 * 1e18;
+        ls.meanPriceMOVE = 0.007 * 1e18;
         ls.maxDeviationMOVE = ls.meanPriceMOVE / 2;
         ls.meanPriceMarket.push(ls.meanPriceMOVE);
         ls.maxDeviationMarket.push(ls.maxDeviationMOVE);
@@ -573,7 +572,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceZORA);
         ls.maxDeviationMarket.push(ls.maxDeviationZORA);
 
-        ls.meanPricePROVE = 0.31 * 1e18;
+        ls.meanPricePROVE = 0.15 * 1e18;
         ls.maxDeviationPROVE = ls.meanPricePROVE / 2;
         ls.meanPriceMarket.push(ls.meanPricePROVE);
         ls.maxDeviationMarket.push(ls.maxDeviationPROVE);
