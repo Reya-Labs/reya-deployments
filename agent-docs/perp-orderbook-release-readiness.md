@@ -150,6 +150,11 @@ New proxies deployed for:
 Until the targeted dust-settlement exemption ships, zero-price dust fills require the atomic
 temporary disable/settle/restore procedure tracked in PRO-661; the mark collar remains enabled.
 
+If funding receives no fresh push for 600 seconds, ordinary matching-engine fills—including a
+full user close—halt until a fresh funding rate is pushed. Liquidation, ADL, and locked
+market-close flows deliberately bypass that funding gate so time-critical risk reduction remains
+available.
+
 **Collateral Pool:**
 - `maxMarkets`: 1
 - `maxCollaterals`: 2
