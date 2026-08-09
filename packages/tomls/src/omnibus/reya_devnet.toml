@@ -146,6 +146,12 @@ oraclePusher2 = "0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3"
 co_execution_bot1 = "0xc9A01c03AEE926B89b83F7781b15B822807E1d33"
 co_execution_bot2 = "0x6623C4a8e54549d5dB1ACb666B13f9c046DFD5B2" # ws-exec relayer
 co_execution_bot3 = "0xB04ce54876A8017ae7785A3f4218308BC8fBb724" # rust wallet-manager relayer
+# Additional ws-exec relayers for horizontal scale to 4 replicas (P16 launch-gate).
+# One executor key per ws-exec pod ordinal; each must be on the conditional_orders
+# allowlist. See reya-devops #922.
+co_execution_bot4 = "0xCD08Ed0e34C45D0d6a21919582AF0495385Fd37b" # ws-exec relayer (pod ordinal 1)
+co_execution_bot5 = "0xfBF7e64C435bE05a0Dac2ac69fB61D0a18832053" # ws-exec relayer (pod ordinal 2)
+co_execution_bot6 = "0x5683356F9Bb41261412c0b78231d93f7a48B7f8C" # ws-exec relayer (pod ordinal 3)
 
 ###############################################################################
 # Fee Configuration Bots
