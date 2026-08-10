@@ -29,6 +29,13 @@ func = "addToFeatureFlagAllowlist"
 args = ["<%= keccak256(hexlify('configureFees')) %>", "<%= settings.owner %>"]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
+[invoke.passive_perp_market_config_system_owner]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('configureMarket')) %>", "<%= settings.owner %>"]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
 # PerpOB oracle push permissions
 # - oraclePushers: msg.sender of pushOracleData (two relay bots)
 # - oraclePublishers: EIP-712 signer (single = matching engine publisher)

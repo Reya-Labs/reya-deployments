@@ -12,7 +12,8 @@ import {
     OracleDataPayload,
     OracleDataType,
     FeeTierParameters,
-    GlobalFeeParametersV2
+    GlobalFeeParametersV2,
+    MarketConfigurationDataV2
 } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import {
     IOrdersGatewayProxy,
@@ -193,7 +194,10 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         });
     }
 
-    function pushMarkPrice(uint128 marketId, uint256 price) internal {
+    function pushMarkPriceWithinCollar(uint128 marketId, uint256 price) internal {
+        MarketConfigurationDataV2 memory marketConfig = IPassivePerpProxyV2(sec.perp).getMarketConfiguration(marketId);
+        mockFreshPrice(marketConfig.oracleNodeId, price);
+
         OracleDataPayload memory payload = OracleDataPayload({
             marketId: marketId,
             timestamp: block.timestamp,
@@ -279,6 +283,52 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput);
     }
 
+    function executePerpClose(
+        uint128 buyerAccountId,
+        uint128 sellerAccountId,
+        uint128 marketId,
+        uint256 baseDelta,
+        uint256 price,
+        uint256 buyerNonce,
+        uint256 sellerNonce,
+        uint256 meNonce
+    )
+        internal
+    {
+        (OrderDetails memory buyerCloseOrder, EIP712Signature memory buyerCloseSig) = createLimitOrderPerp({
+            accountId: buyerAccountId,
+            marketId: marketId,
+            baseDelta: -int256(baseDelta),
+            price: price,
+            nonce: buyerNonce,
+            signer: perpBuyer,
+            signerPk: perpBuyerPk
+        });
+
+        (OrderDetails memory sellerCloseOrder, EIP712Signature memory sellerCloseSig) = createLimitOrderPerp({
+            accountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: int256(baseDelta),
+            price: price,
+            nonce: sellerNonce,
+            signer: perpSeller,
+            signerPk: perpSellerPk
+        });
+
+        ExecuteFillInputV2 memory fillInput = createPerpFillInput({
+            accountOrder: sellerCloseOrder,
+            accountSignature: sellerCloseSig,
+            counterpartyOrder: buyerCloseOrder,
+            counterpartySignature: buyerCloseSig,
+            price: price,
+            baseDelta: baseDelta,
+            nonce: meNonce
+        });
+
+        vm.prank(sec.coExecutionBot);
+        IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput);
+    }
+
     /**
      * @notice Public wrapper for executePerpFill, callable via this.executePerpFillExternal()
      *         so it can be used in try-catch blocks (which require external calls).
@@ -308,7 +358,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
         // Push mark price before trade
         uint256 markPrice = 3000e18;
-        pushMarkPrice(marketId, markPrice);
+        pushMarkPriceWithinCollar(marketId, markPrice);
 
         // Create margin accounts with collateral
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
@@ -346,7 +396,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_PerpFillMetadataBinding(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
         uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
@@ -407,14 +457,17 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         mockFreshPrices();
 
         // Push mark price
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
 
         // Create accounts
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
         uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
 
-        // Warp forward past max stale duration (e.g., 1 hour + 1 second)
-        vm.warp(block.timestamp + 3601);
+        uint256 maxStaleDuration =
+            IPassivePerpProxyV2(sec.perp).getMarketConfiguration(marketId).markPriceMaxStaleDuration;
+
+        // Warp forward one second past the configured maximum stale duration.
+        vm.warp(block.timestamp + maxStaleDuration + 1);
         mockFreshPrices();
 
         // Attempt fill should revert due to stale mark price
@@ -443,7 +496,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_PerpBatchExecuteFill(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
 
         // Create accounts with sufficient collateral
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 50_000e6);
@@ -540,7 +593,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_PerpFillMarginImpact(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
@@ -584,7 +637,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_PerpFillNonceReplay(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 50_000e6);
@@ -632,7 +685,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_PerpFillClosePosition(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
@@ -653,45 +706,17 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         PerpPosition memory buyerPos = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, buyerAccountId);
         assertEq(buyerPos.base, int256(0.5e18), "Buyer should be long 0.5 ETH");
 
-        // Close: buyer sells 0.5 ETH (negative baseDelta), seller buys 0.5 ETH (positive baseDelta)
-        // Build orders manually since executePerpFill assumes perpBuyer=long
-        {
-            // perpBuyer's order: sell 0.5 ETH (negative baseDelta = short/close)
-            (OrderDetails memory buyerCloseOrder, EIP712Signature memory buyerCloseSig) = createLimitOrderPerp({
-                accountId: buyerAccountId,
-                marketId: marketId,
-                baseDelta: -int256(0.5e18),
-                price: 3000e18,
-                nonce: 2,
-                signer: perpBuyer,
-                signerPk: perpBuyerPk
-            });
-
-            // perpSeller's order: buy 0.5 ETH (positive baseDelta = long/close short)
-            (OrderDetails memory sellerCloseOrder, EIP712Signature memory sellerCloseSig) = createLimitOrderPerp({
-                accountId: sellerAccountId,
-                marketId: marketId,
-                baseDelta: int256(0.5e18),
-                price: 3000e18,
-                nonce: 2,
-                signer: perpSeller,
-                signerPk: perpSellerPk
-            });
-
-            // Seller (buying) is the account order; buyer (selling) is the counterparty order.
-            ExecuteFillInputV2 memory fillInput = createPerpFillInput({
-                accountOrder: sellerCloseOrder,
-                accountSignature: sellerCloseSig,
-                counterpartyOrder: buyerCloseOrder,
-                counterpartySignature: buyerCloseSig,
-                price: 3000e18,
-                baseDelta: 0.5e18,
-                nonce: 2
-            });
-
-            vm.prank(sec.coExecutionBot);
-            IOrdersGatewayProxyV2(sec.ordersGateway).executeFill(fillInput);
-        }
+        // Close: buyer sells 0.5 ETH (negative baseDelta), seller buys 0.5 ETH (positive baseDelta).
+        executePerpClose({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 0.5e18,
+            price: 3000e18,
+            buyerNonce: 2,
+            sellerNonce: 2,
+            meNonce: 2
+        });
 
         // Both should be flat
         PerpPosition memory buyerPosAfter = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, buyerAccountId);
@@ -709,7 +734,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_PerpMarkPriceImpactsMargin(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
@@ -730,7 +755,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         MarginInfo memory sellerMarginAtOpen = ICoreProxy(sec.core).getUsdNodeMarginInfo(sellerAccountId);
 
         // Price goes up $100 — long gains, short loses
-        pushMarkPrice(marketId, 3100e18);
+        pushMarkPriceWithinCollar(marketId, 3100e18);
         mockFreshPrices();
 
         MarginInfo memory buyerMarginAfterUp = ICoreProxy(sec.core).getUsdNodeMarginInfo(buyerAccountId);
@@ -748,7 +773,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         );
 
         // Price goes down $200 from initial (to $2800) — long loses, short gains
-        pushMarkPrice(marketId, 2800e18);
+        pushMarkPriceWithinCollar(marketId, 2800e18);
         mockFreshPrices();
 
         MarginInfo memory buyerMarginAfterDown = ICoreProxy(sec.core).getUsdNodeMarginInfo(buyerAccountId);
@@ -768,15 +793,15 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
     /**
      * @notice Test that the taker fee is deducted and the maker is fee-neutral on a perp fill
-     * @dev Devnet fee config: tier0 taker=0.04%.
-     *      Taker fee = |baseDelta| * fillPrice * 0.0004.
+     * @dev Devnet fee config: tier0 taker=0.03%.
+     *      Taker fee = |baseDelta| * markPrice * 0.0003.
      *      We verify by checking getCollateralInfo(accountId, rusd).realBalance before/after.
      *      Unrealized PnL only affects marginBalance, not realBalance, so only fees change realBalance.
      */
     function check_PerpFillFees(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 100_000e6);
@@ -790,7 +815,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             sellerAccountId: sellerAccountId,
             marketId: marketId,
             baseDelta: 1e18,
-            price: 3000e18,
+            price: 3010e18, // Differ from mark price to prove fee exposure uses the mark price.
             buyerNonce: 1,
             sellerNonce: 1,
             meNonce: 1
@@ -802,10 +827,10 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         int256 buyerPaid = buyerBalBefore - buyerBalAfter;
         int256 sellerPaid = sellerBalBefore - sellerBalAfter;
 
-        // Expected taker fee = 1 ETH * $3000 * 0.0004 = $1.20 = 1.2e6 rUSD
-        int256 expectedFee = 1.2e6;
+        // Expected taker fee = 1 ETH * $3000 * 0.0003 = $0.90 = 0.9e6 rUSD
+        int256 expectedFee = 0.9e6;
 
-        assertEq(buyerPaid, expectedFee, "Buyer should pay exactly 4bps taker fee");
+        assertEq(buyerPaid, expectedFee, "Buyer should pay exactly 3bps taker fee");
         assertEq(sellerPaid, 0, "Maker should be fee-neutral");
         assertGt(buyerPaid, 0, "Buyer fee should be positive");
     }
@@ -823,7 +848,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         vm.prank(zeroFeeBot);
         IPassivePerpProxy(sec.perp).setFeatureFlagAllowAll(flagId, true);
 
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 100_000e6);
@@ -847,7 +872,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         int256 sellerPaid =
             sellerBalBefore - ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
 
-        assertEq(buyerPaid, int256(1.2e6), "Deprecated market flag must not bypass taker fee");
+        assertEq(buyerPaid, int256(0.9e6), "Deprecated market flag must not bypass taker fee");
         assertEq(sellerPaid, 0, "Maker should remain fee-neutral");
 
         // Restore default (fees on)
@@ -865,7 +890,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_PerpFillInsufficientMargin(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         // Tiny collateral: $10 rUSD
@@ -929,7 +954,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_PerpFillReduceOnly(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
@@ -1014,7 +1039,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_WithdrawWithOpenPosition(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
@@ -1061,7 +1086,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_PerpFillReduceOnlyRevert(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
@@ -1138,7 +1163,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
                         FEE MODEL CHECKS
     //////////////////////////////////////////////////////////////*/
 
-    int256 private constant BASIC_TIER_FEE_PERCENTAGE = 0.0004e18;
+    int256 private constant BASIC_TIER_FEE_PERCENTAGE = 0.0003e18;
 
     /**
      * @notice Test that OG/VLTZ taker rebates apply to perpOB fills
@@ -1148,7 +1173,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_PerpFillTakerRebates(uint128 marketId, bool ogRebate, bool vltzRebate) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         IPassivePerpProxy perp = IPassivePerpProxy(sec.perp);
@@ -1193,7 +1218,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             sellerBalBefore - ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
 
         // Compute the expected net fee after the taker's compounded rebates.
-        // Base fee = 1 ETH * $3000 * 0.0004 = $1.20 = 1.2e6 rUSD
+        // Base fee = 1 ETH * $3000 * 0.0003 = $0.90 = 0.9e6 rUSD
         SD59x18 feeRate = sd(BASIC_TIER_FEE_PERCENTAGE);
         if (ogRebate) feeRate = feeRate.mul(ONE_sd.sub(sd(0.2e18)));
         if (vltzRebate) feeRate = feeRate.mul(ONE_sd.sub(sd(0.1e18)));
@@ -1203,7 +1228,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         assertEq(sellerPaid, 0, "Maker should be fee-neutral");
 
         if (ogRebate || vltzRebate) {
-            assertLt(buyerPaid, int256(1.2e6), "Taker rebate should reduce the buyer's net fee");
+            assertLt(buyerPaid, int256(0.9e6), "Taker rebate should reduce the buyer's net fee");
         }
     }
 
@@ -1214,7 +1239,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_PerpFillDeprecatedExchangeZeroFeesFlag(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         // Enable zero fees for exchange 1 (used by all perpOB fills)
@@ -1243,7 +1268,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         int256 sellerPaid =
             sellerBalBefore - ICoreProxy(sec.core).getCollateralInfo(sellerAccountId, sec.rusd).realBalance;
 
-        assertEq(buyerPaid, int256(1.2e6), "Deprecated exchange flag must not bypass taker fee");
+        assertEq(buyerPaid, int256(0.9e6), "Deprecated exchange flag must not bypass taker fee");
         assertEq(sellerPaid, 0, "Maker should remain fee-neutral");
 
         // Restore default (fees on)
@@ -1259,7 +1284,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
     function check_PerpFillDeprecatedMakerParametersIgnored(uint128 marketId) internal {
         setupPerpTestActors();
         mockFreshPrices();
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         // Configure a 4bps taker fee and deliberately non-zero deprecated maker fields.
@@ -1284,7 +1309,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             sellerAccountId: sellerAccountId,
             marketId: marketId,
             baseDelta: 1e18,
-            price: 3000e18,
+            price: 3010e18, // Differ from mark price to prove fee exposure uses the mark price.
             buyerNonce: 1,
             sellerNonce: 1,
             meNonce: 1
