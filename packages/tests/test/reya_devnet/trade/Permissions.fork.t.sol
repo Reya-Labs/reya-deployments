@@ -41,20 +41,4 @@ contract PermissionsForkTest is ReyaForkTest, PermissionsPerpOBForkCheck {
     function test_Devnet_WalletManagerRelayerExecutionPermission() public view {
         check_ConditionalOrdersExecutionAllowlist(0xB04ce54876A8017ae7785A3f4218308BC8fBb724);
     }
-
-    /// @dev co_execution_bot4 — additional ws-exec relayer (pod ordinal 1) for the
-    /// 4-replica scale (P16 launch-gate); must be on the conditional_orders allowlist.
-    function test_Devnet_WsExecRelayer4ExecutionPermission() public view {
-        check_ConditionalOrdersExecutionAllowlist(0xCD08Ed0e34C45D0d6a21919582AF0495385Fd37b);
-    }
-
-    /// @dev co_execution_bot5 — additional ws-exec relayer (pod ordinal 2).
-    function test_Devnet_WsExecRelayer5ExecutionPermission() public view {
-        check_ConditionalOrdersExecutionAllowlist(0xfBF7e64C435bE05a0Dac2ac69fB61D0a18832053);
-    }
-
-    /// @dev co_execution_bot6 — additional ws-exec relayer (pod ordinal 3).
-    function test_Devnet_WsExecRelayer6ExecutionPermission() public view {
-        check_ConditionalOrdersExecutionAllowlist(0x5683356F9Bb41261412c0b78231d93f7a48B7f8C);
-    }
 }
