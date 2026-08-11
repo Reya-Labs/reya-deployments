@@ -1,0 +1,174 @@
+####################################################################################################
+# Market close — Week 1 batch (10-14 Aug 2026)
+#
+# Phase B.1 of the two-phase closure documented in reya-network/agent-docs/market-close-scope.md §1:
+# `freezeMarketForClosure` snapshots the live oracle price (enforcing `marketOrderMaxStaleDuration`,
+# which is 11s for every market below), settles funding up to that instant and pins it to zero, and
+# rewires the market's `oracleNodeId` to a freshly-registered CONSTANT node holding that price.
+#
+# Covers the 17 markets scheduled to be force-closed in W1 of the compressed 5-week plan:
+#   Group 0  (11, reduce-only since June): ZRO, JTO, TON, ZORA, XPL, WLFI, BERA, YZY, AI16Z, MOVE, PROVE
+#   RO batch (6,  reduce-only since 6 Aug): GOAT, kNEIRO, AIXBT, GRIFFAIN, APE, IP
+#
+# Preconditions enforced on-chain by `MarketCloseModule.freezeMarketForClosure`:
+#   - caller is `owner`                       -> `fromCall.func = "owner"` below
+#   - market is ENABLED (`ensureEnabledMarket`) -> see the AIXBT re-enable at the top of this file
+#   - market is reduce-only (`maxOpenBase == 0`) -> already true in the omnibus for all 17
+#
+# Each freeze `depends` on its market's `set_market_config` so that, on any build where the market
+# config is re-rendered (this batch zeroes `velocityMultiplierUnscaled` for all 17), the config write
+# lands BEFORE the freeze. Otherwise `setMarketConfiguration` would write the Stork `oracleNodeId`
+# back over the CONSTANT node and silently un-freeze the market.
+#
+# !! FOLLOW-UP REQUIRED AFTER THIS BATCH EXECUTES !!
+# `freezeMarketForClosure` registers the CONSTANT node at execution time, so its node id is not known
+# until the tx lands. The omnibus still renders `marketNNXxx_oracleNodeId = <%= settings.xxxUsdcMark
+# NodeIdStork %>`. Any FUTURE change to any var in one of these 17 `[var.market_NN*]` blocks re-runs
+# that market's `set_market_config` and un-freezes it. Once this batch has run, read the registered
+# node ids back off-chain and pin them in the omnibus the way MKR / FTM / LAYER already are
+# (`market7Mkr_oracleNodeId = <%= settings.mkrUsdcNodeIdClosing %>`).
+####################################################################################################
+
+# AIXBT (46) was disabled on-chain ahead of this plan (`marketEnabled` deny-all == true). Both
+# `freezeMarketForClosure` and `forceCloseMarket` call `FeatureFlagSupport.ensureEnabledMarket`
+# first, so the market has to be re-enabled for the duration of the close. It is disabled again in
+# the force-close batch, once it is actually closed.
+[invoke.market_close_w1_reenable_46aixbt]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market46AixbtId])) %>",
+    false,
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+####################################################################################################
+# Group 0 — reduce-only since June
+####################################################################################################
+
+[invoke.market_close_w1_freeze_15zro]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market15ZroId %>"]
+depends = ["invoke.market_15zro_set_market_config"]
+
+[invoke.market_close_w1_freeze_25jto]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market25JtoId %>"]
+depends = ["invoke.market_25jto_set_market_config"]
+
+[invoke.market_close_w1_freeze_45ai16z]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market45Ai16zId %>"]
+depends = ["invoke.market_45ai16z_set_market_config"]
+
+[invoke.market_close_w1_freeze_53ton]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market53TonId %>"]
+depends = ["invoke.market_53ton_set_market_config"]
+
+[invoke.market_close_w1_freeze_57move]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market57MoveId %>"]
+depends = ["invoke.market_57move_set_market_config"]
+
+[invoke.market_close_w1_freeze_58bera]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market58BeraId %>"]
+depends = ["invoke.market_58bera_set_market_config"]
+
+[invoke.market_close_w1_freeze_68zora]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market68ZoraId %>"]
+depends = ["invoke.market_68zora_set_market_config"]
+
+[invoke.market_close_w1_freeze_69prove]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market69ProveId %>"]
+depends = ["invoke.market_69prove_set_market_config"]
+
+[invoke.market_close_w1_freeze_71yzy]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market71YzyId %>"]
+depends = ["invoke.market_71yzy_set_market_config"]
+
+[invoke.market_close_w1_freeze_72xpl]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market72XplId %>"]
+depends = ["invoke.market_72xpl_set_market_config"]
+
+[invoke.market_close_w1_freeze_73wlfi]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market73WlfiId %>"]
+depends = ["invoke.market_73wlfi_set_market_config"]
+
+####################################################################################################
+# RO batch — announced and set to reduce-only on 6 Aug 2026
+####################################################################################################
+
+[invoke.market_close_w1_freeze_34goat]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market34GoatId %>"]
+depends = ["invoke.market_34goat_set_market_config"]
+
+[invoke.market_close_w1_freeze_36kneiro]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market36KNeiroId %>"]
+depends = ["invoke.market_36kneiro_set_market_config"]
+
+[invoke.market_close_w1_freeze_46aixbt]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market46AixbtId %>"]
+depends = [
+    "invoke.market_46aixbt_set_market_config",
+    "invoke.market_close_w1_reenable_46aixbt",
+]
+
+[invoke.market_close_w1_freeze_49griffain]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market49GriffainId %>"]
+depends = ["invoke.market_49griffain_set_market_config"]
+
+[invoke.market_close_w1_freeze_52ape]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market52ApeId %>"]
+depends = ["invoke.market_52ape_set_market_config"]
+
+[invoke.market_close_w1_freeze_61ip]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market61IpId %>"]
+depends = ["invoke.market_61ip_set_market_config"]
