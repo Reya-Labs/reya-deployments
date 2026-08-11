@@ -136,10 +136,12 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         uint128[] memory activeMarkets = getActiveMarkets();
         uint128 lastMarketIdd = lastMarketId();
 
-        uint128[] memory pausedMarkets = new uint128[](3);
+        // AIXBT (46) is re-enabled by this batch: `freezeMarketForClosure` / `forceCloseMarket` both call
+        // `FeatureFlagSupport.ensureEnabledMarket`, so a disabled market cannot be frozen or closed. It is
+        // disabled again in the force-close batch, once it has actually been closed.
+        uint128[] memory pausedMarkets = new uint128[](2);
         pausedMarkets[0] = 28;
         pausedMarkets[1] = 37;
-        pausedMarkets[2] = 46;
 
         assertEq(activeMarkets.length, lastMarketIdd - pausedMarkets.length);
 

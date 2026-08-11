@@ -12,4 +12,5 @@ include = [
     "configs/pool_node_margin_info.toml",
     "configs/initialize_depth_factors.toml",
     "configs/initialize_velocity_multipliers.toml",
+    "configs/market_close_w1.toml",
 ]

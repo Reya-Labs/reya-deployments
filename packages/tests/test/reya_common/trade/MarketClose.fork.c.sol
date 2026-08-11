@@ -46,6 +46,15 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
         return IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).maxOpenBase == 0;
     }
 
+    /// @notice True if `marketId`'s price has been locked by `freezeMarketForClosure` — the oracle node is CONSTANT.
+    /// @dev This is the same signal `forceCloseMarket` itself trusts as proof the price was locked (scope doc §3.4).
+    ///      It does NOT catch the legacy closing markets (MKR/FTM/LAYER), whose `oracleNodeId` is a DIV_REDUCER over
+    ///      a toml-registered CONSTANT node rather than a CONSTANT node itself.
+    function isFrozen(uint128 marketId) internal view returns (bool) {
+        bytes32 nodeId = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).oracleNodeId;
+        return IOracleManagerProxy(sec.oracleManager).getNode(nodeId).nodeType == CONSTANT_NODE_TYPE;
+    }
+
     // ----------------------------------------------------------------------------------------------------------------
     // Phase A — reduce-only
     // ----------------------------------------------------------------------------------------------------------------
@@ -103,6 +112,38 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
 
         uint256 priceBefore = IOracleManagerProxy(sec.oracleManager).process(nodeId).price;
         assertGt(priceBefore, 0, "constant oracle price is zero");
+    }
+
+    /// @notice Assert `marketId` is ALREADY frozen on-chain — that `freezeMarketForClosure` has run against it and
+    ///         nothing has since re-armed it. Unlike {check_FreezeMarketForClosure}, this does not perform the freeze;
+    ///         it only observes, so it is the check to run over the markets a close batch has already frozen.
+    /// @dev Mirrors the three things the freeze establishes: the oracle pinned to a CONSTANT node at a non-zero price,
+    ///      and funding rate and velocity both zero. Velocity is the one that can be silently re-armed afterwards by
+    ///      `batchSetMarketConfigurationVelocity` (market-close-scope.md §3.9) — which is why it is asserted here and
+    ///      not only at freeze time.
+    function check_MarketIsFrozen(uint128 marketId) internal view {
+        bytes32 nodeId = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).oracleNodeId;
+
+        assertEq(
+            uint256(IOracleManagerProxy(sec.oracleManager).getNode(nodeId).nodeType),
+            uint256(CONSTANT_NODE_TYPE),
+            string.concat("oracle node is not CONSTANT for market ", vm.toString(marketId))
+        );
+        assertGt(
+            IOracleManagerProxy(sec.oracleManager).process(nodeId).price,
+            0,
+            string.concat("frozen price is zero for market ", vm.toString(marketId))
+        );
+        assertEq(
+            IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId),
+            0,
+            string.concat("funding rate is not zero for market ", vm.toString(marketId))
+        );
+        assertEq(
+            IPassivePerpProxy(sec.perp).getFundingVelocity(marketId),
+            0,
+            string.concat("funding velocity is not zero for market ", vm.toString(marketId))
+        );
     }
 
     /// @notice A frozen market can still be wound down: positions remain reducible. A fresh account trades against the
