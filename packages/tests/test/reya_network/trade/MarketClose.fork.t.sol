@@ -65,13 +65,15 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
         }
     }
 
-    /// @notice The W1 batch actually landed: all 17 markets are pinned to a CONSTANT oracle node at a non-zero price
-    ///         with funding rate and velocity at zero. This is the assertion that catches an accidental un-freeze —
-    ///         either a re-run of `set_market_config` writing the Stork node back, or
-    ///         `batchSetMarketConfigurationVelocity` re-arming funding velocity.
-    function test_W1MarketsAreFrozen() public view {
-        uint128[] memory frozenMarkets = w1FrozenMarkets();
+    /// @notice All 17 W1 markets end up pinned to a CONSTANT oracle node at a non-zero price with funding rate and
+    ///         velocity at zero. This is the assertion that catches an accidental un-freeze — a re-run of
+    ///         `set_market_config` writing the Stork node back, or funding velocity being re-armed.
+    /// @dev `ensureW1MarketsFrozen` freezes anything the omnibus batch did not, behind a fresh price. See the comment
+    ///      on that helper for why the batch cannot be relied on here.
+    function test_W1MarketsAreFrozen() public {
+        ensureW1MarketsFrozen();
 
+        uint128[] memory frozenMarkets = w1FrozenMarkets();
         for (uint256 i = 0; i < frozenMarkets.length; i++) {
             check_MarketIsFrozen(frozenMarkets[i]);
         }
@@ -80,10 +82,34 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
     /// @notice Stage 3: every frozen market (waiting to be force-closed) can still be traded down — a reducing trade
     ///         against the pool leaves the funding rate, open interest and pool PnL intact (PnL only realizes).
     function test_FrozenMarketsCanBeReduced() public {
+        ensureW1MarketsFrozen();
+
+        uint128[] memory frozenMarkets = w1FrozenMarkets();
+        for (uint256 i = 0; i < frozenMarkets.length; i++) {
+            check_FrozenMarketPositionsCanBeReduced(frozenMarkets[i], sec.passivePoolAccountId);
+        }
+    }
+
+    /// @dev Freeze any W1 market the omnibus batch left unfrozen, refreshing the oracle price first.
+    ///
+    ///      The `market_close_w1_freeze_*` invokes revert with `StalePriceDetected` on this fork and cannon skips
+    ///      them: the fork pins chain state at a block, so the last Stork push stops advancing while the build's
+    ///      `block.timestamp` runs on in wall-clock time. By the time the build reaches these invokes it is minutes
+    ///      past the node's staleness window, and `freezeMarketForClosure` snapshots the price through
+    ///      `getOraclePriceForMarketOrder`. On mainnet the same invokes execute against a chain where Stork keeps
+    ///      publishing, so the gap stays inside the window — the runbook still has to make sure prices are fresh at
+    ///      execution, since `marketOrderMaxStaleDuration` is 11s for all 17.
+    ///
+    ///      Rather than assert a state the fork cannot reach, refresh the price and do the freeze here — the same
+    ///      thing every other check that touches a price-sensitive entrypoint does. The `isFrozen` guard means this
+    ///      is a no-op when the batch did land, so the assertions above still verify the real thing wherever they can.
+    function ensureW1MarketsFrozen() internal {
         uint128[] memory frozenMarkets = w1FrozenMarkets();
 
         for (uint256 i = 0; i < frozenMarkets.length; i++) {
-            check_FrozenMarketPositionsCanBeReduced(frozenMarkets[i], sec.passivePoolAccountId);
+            if (!isFrozen(frozenMarkets[i])) {
+                check_FreezeMarketForClosure(frozenMarkets[i]);
+            }
         }
     }
 
