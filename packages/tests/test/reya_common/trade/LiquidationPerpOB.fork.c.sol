@@ -33,7 +33,7 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
         mockFreshPrices();
 
         // Push initial mark price at $3000
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0); // zero funding to simplify
 
         // Create a backstop LP account for the collateral pool.
@@ -94,7 +94,7 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
         // User has $500 collateral, long 1 ETH from $3000.
         // LMR ≈ P * 0.03077, ADL threshold = LMR * 0.65.
         // At $2565: PnL = -$435, remaining margin ≈ $65 — below LMR (~$79) but above ADL (~$51).
-        pushMarkPrice(marketId, 2565e18);
+        pushMarkPriceWithinCollar(marketId, 2565e18);
         mockFreshPrices();
 
         // Execute Dutch liquidation (perpSeller owns liqLiquidatorAccountId)
@@ -157,7 +157,7 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
 
         // Drop price severely to trigger backstop eligibility
         // At $2100: unrealized PnL = -$900, total margin ~= -$400 -> deeply underwater
-        pushMarkPrice(marketId, 2100e18);
+        pushMarkPriceWithinCollar(marketId, 2100e18);
         mockFreshPrices();
 
         // Record state before backstop
@@ -266,7 +266,7 @@ contract LiquidationPerpOBForkCheck is PerpFillForkCheck {
         // Drop price to Dutch territory (below LMR but above ADL threshold)
         // Same price as Dutch test: $2565
         // PnL = -$435, remaining margin ≈ $65 — below LMR (~$79) but above ADL (~$51)
-        pushMarkPrice(marketId, 2565e18);
+        pushMarkPriceWithinCollar(marketId, 2565e18);
         mockFreshPrices();
 
         // Verify account IS eligible for Dutch liquidation (sanity check)

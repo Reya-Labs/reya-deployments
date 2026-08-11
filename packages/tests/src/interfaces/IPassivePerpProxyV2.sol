@@ -55,7 +55,7 @@ interface IPassivePerpProxyV2 {
 
     // ─── V2 Configuration ────────────────────────────────────────────────
 
-    function getMarketConfigurationV2(uint128 marketId)
+    function getMarketConfiguration(uint128 marketId)
         external
         view
         returns (MarketConfigurationDataV2 memory config);
@@ -92,8 +92,7 @@ interface IPassivePerpProxyV2 {
     error MarkPriceStale(uint128 marketId, uint256 priceTimestamp, uint256 blockTimestamp, uint256 maxStaleDuration);
     error FundingRateStale(uint128 marketId, uint256 fundingRateTimestamp, uint256 blockTimestamp, uint256 maxStaleDuration);
     error UnauthorizedOraclePusher(address pusher);
-    error FillPriceDeviationExceeded(uint128 marketId, uint256 fillPrice, uint256 markPrice, uint256 maxDeviation);
-    error MarkPriceDeviationExceeded(uint128 marketId, uint256 markPrice, uint256 oraclePrice, uint256 maxDeviation);
+    error PriceDeviationTooLarge(uint128 marketId, uint256 price, uint256 referencePrice, uint256 maxDeviation);
     error TakerFeeParameterTooLarge();
 }
 
@@ -171,6 +170,7 @@ struct MarketConfigurationDataV2 {
     uint256 fundingRateMaxStaleDuration;
     /* UD60x18 */ uint256 markPriceMaxDeviation;
     /* UD60x18 */ uint256 fillPriceMaxDeviation;
+    uint256 minFundingInterval;
 }
 
 /// @dev 20-field struct matching the perpOB on-chain MarketData.

@@ -91,7 +91,7 @@ The perpOB release fundamentally transitions Reya's perpetual futures system fro
 |----------|-------|
 | **Chain** | Reya Cronos testnet (shared) |
 | **Chain ID** | 89346162 |
-| **RPC** | `https://rpc.reya-cronos.gelato.digital/` |
+| **RPC** | `https://rpc-reya-cronos.t.conduit.xyz` |
 | **Deployment Strategy** | Fresh proxy deployments, reuse existing Cronos token contracts |
 
 ### 3.2 Shared Infrastructure (from Cronos)
@@ -140,11 +140,20 @@ New proxies deployed for:
 - `minimumOrderBase`: 0.010
 - `dutchConfig.lambda`: 1, `dutchConfig.minBase`: 0
 - `slippageParams.phi`: 0, `slippageParams.beta`: 0
-- `markPriceMaxStaleDuration`: 3600 (1 hour, configurable)
-- `fundingRateMaxStaleDuration`: 3600 (1 hour, configurable)
-- `markPriceMaxDeviation`: 0 (disabled initially)
-- `fillPriceMaxDeviation`: 0 (disabled initially)
+- `markPriceMaxStaleDuration`: 60 (1 minute)
+- `fundingRateMaxStaleDuration`: 600 (10 minutes)
+- `markPriceMaxDeviation`: 0.05 (5% vs the Stork reference)
+- `fillPriceMaxDeviation`: 0.05 (5% vs the last accepted on-chain mark)
+- `minFundingInterval`: 0 (disabled)
 - All `_DEPRECATED` fields: 0
+
+Until the targeted dust-settlement exemption ships, zero-price dust fills require the atomic
+temporary disable/settle/restore procedure tracked in PRO-661; the mark collar remains enabled.
+
+If funding receives no fresh push for 600 seconds, ordinary matching-engine fills—including a
+full user close—halt until a fresh funding rate is pushed. Liquidation, ADL, and locked
+market-close flows deliberately bypass that funding gate so time-critical risk reduction remains
+available.
 
 **Collateral Pool:**
 - `maxMarkets`: 1
@@ -385,17 +394,17 @@ include = [
 - `getMarkPriceTimestamp(uint128 marketId) returns (uint256)` -- timestamp of last mark price push
 - `getFundingRate(uint128 marketId) returns (int256)` -- get latest pushed funding rate
 - `getFundingRateTimestamp(uint128 marketId) returns (uint256)` -- timestamp of last funding rate push
-- `getMarketConfigurationV2(uint128 marketId) returns (MarketConfigurationDataV2)` -- read full perpOB config
+- `getMarketConfiguration(uint128 marketId) returns (MarketConfigurationDataV2)` -- read full perpOB config
 
 **New structs added:**
-- `MarketConfigurationDataV2` -- full perpOB layout with deprecated AMM fields and new orderbook fields (`markPriceMaxStaleDuration`, `fundingRateMaxStaleDuration`, `markPriceMaxDeviation`, `fillPriceMaxDeviation`)
+- `MarketConfigurationDataV2` -- full perpOB layout with deprecated AMM fields and new orderbook fields (`markPriceMaxStaleDuration`, `fundingRateMaxStaleDuration`, `markPriceMaxDeviation`, `fillPriceMaxDeviation`, `minFundingInterval`)
 - `PerpFillFees` with: `protocolFeeCredit`, `exchangeFeeCredit`, `makerFeeCredit`, `makerFeeDebit`, `referrerFeeCredit`
 - `ExecutionType` enum: `MatchOrder`, `DutchLiquidation`, `RankedLiquidation`, `BackstopLiquidation`, `ADL`
 - `OracleDataType` enum: `MarkPrice`, `FundingRate`
 - `OracleDataPayload` struct
 
 **New errors added:**
-- `StaleMarkPrice`, `StaleFundingRate`, `FillPriceDeviationExceeded`, `MarkPriceDeviationExceeded`
+- `MarkPriceStale`, `FundingRateStale`, `PriceDeviationTooLarge`
 
 **Backward compat note:** The original `MarketConfigurationData` struct is preserved unchanged for cronos/mainnet ABI compatibility. `MarketConfigurationDataV2` is used by perpOB-specific tests.
 

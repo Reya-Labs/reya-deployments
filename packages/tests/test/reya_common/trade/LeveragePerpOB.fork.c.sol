@@ -53,7 +53,7 @@ contract LeveragePerpOBForkCheck is PerpFillForkCheck {
         }
 
         // Push mark price and zero funding
-        pushMarkPrice(marketId, markPrice);
+        pushMarkPriceWithinCollar(marketId, markPrice);
         pushFundingRate(marketId, 0);
 
         // Remove collateral cap

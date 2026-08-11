@@ -11,7 +11,8 @@ import {
     IPassivePerpProxyV2,
     OracleDataPayload,
     OracleDataType,
-    MarketDataResponseV2
+    MarketDataResponseV2,
+    MarketConfigurationDataV2
 } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import { ICoreProxy, MarginInfo } from "../../../src/interfaces/ICoreProxy.sol";
 import { OracleDataPayloadHashing } from "../../../src/utils/OracleDataPayloadHashing.sol";
@@ -92,8 +93,8 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
      * @notice Test that pushing a stale funding rate payload reverts.
      * @dev validateFundingRatePush (push-time check) reverts with FundingRateStale when
      *      blockTimestamp > payloadTimestamp + fundingRateMaxStaleDuration.
-     *      There is no trade-path equivalent for funding rate; staleness is enforced
-     *      only at push time.
+     *      Ordinary match-order execution has a separate read-side funding-staleness gate;
+     *      liquidations and ADL deliberately bypass that gate so risk reduction remains live.
      */
     function check_FundingRateStaleness(uint128 marketId) internal {
         setupFundingTestActors();
@@ -102,8 +103,11 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
         // Seed lastFundingTimestamp at the current block by pushing a fresh zero rate.
         _pushOracleData(marketId, OracleDataType.FundingRate, abi.encode(int256(0)));
 
-        // Construct a payload one second older than fundingRateMaxStaleDuration (3600s).
-        uint256 stalePayloadTimestamp = block.timestamp - 3601;
+        uint256 maxStaleDuration =
+            IPassivePerpProxyV2(sec.perp).getMarketConfiguration(marketId).fundingRateMaxStaleDuration;
+
+        // Construct a payload one second older than the configured maximum stale duration.
+        uint256 stalePayloadTimestamp = block.timestamp - maxStaleDuration - 1;
 
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -111,10 +115,63 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
                 marketId,
                 stalePayloadTimestamp,
                 block.timestamp,
-                uint256(3600)
+                maxStaleDuration
             )
         );
         _pushOracleDataAt(marketId, OracleDataType.FundingRate, abi.encode(int256(1e16)), stalePayloadTimestamp);
+    }
+
+    /**
+     * @notice Test that stale funding blocks an ordinary full close.
+     * @dev The execution gate runs before the position delta is applied, so it blocks
+     *      risk-reducing user closes as well as risk-increasing ordinary fills.
+     */
+    function check_FundingRateStalenessForTrade(uint128 marketId) internal {
+        setupPerpTestActors();
+        mockFreshPrices();
+        pushMarkPriceWithinCollar(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
+
+        uint256 fundingRateTimestamp = block.timestamp;
+        uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
+        uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
+
+        executePerpFill({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 0.5e18,
+            price: 3000e18,
+            buyerNonce: 1,
+            sellerNonce: 1,
+            meNonce: 1
+        });
+
+        uint256 maxStaleDuration =
+            IPassivePerpProxyV2(sec.perp).getMarketConfiguration(marketId).fundingRateMaxStaleDuration;
+        vm.warp(block.timestamp + maxStaleDuration + 1);
+        mockFreshPrices();
+        pushMarkPriceWithinCollar(marketId, 3000e18);
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IPassivePerpProxyV2.FundingRateStale.selector,
+                marketId,
+                fundingRateTimestamp,
+                block.timestamp,
+                maxStaleDuration
+            )
+        );
+        executePerpClose({
+            buyerAccountId: buyerAccountId,
+            sellerAccountId: sellerAccountId,
+            marketId: marketId,
+            baseDelta: 0.5e18,
+            price: 3000e18,
+            buyerNonce: 2,
+            sellerNonce: 2,
+            meNonce: 2
+        });
     }
 
     /**
@@ -125,6 +182,8 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
         mockFreshPrices();
 
         uint256 markPrice = 3000e18;
+        MarketConfigurationDataV2 memory marketConfig = IPassivePerpProxyV2(sec.perp).getMarketConfiguration(marketId);
+        mockFreshPrice(marketConfig.oracleNodeId, markPrice);
         _pushOracleData(marketId, OracleDataType.MarkPrice, abi.encode(markPrice));
 
         // Read back via getMarketData (standalone getters not on router)
@@ -149,9 +208,9 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
      *        fundingValueDelta = rate * markPrice * (secondsElapsed / 86400) * baseMultiplier
      *        positionFundingPnL = fundingValueDelta / oldBaseMultiplier * (-base)
      *
-     *      For rate=0.1e18 (10%/day), markPrice=3000, elapsed=3600s, base=+1e18:
-     *        delta = 0.1 * 3000 * (3600/86400) * 1 = 12.5 USD
-     *        long PnL = -12.5 USD, short PnL = +12.5 USD
+     *      For rate=0.1e18 (10%/day), markPrice=3000, elapsed=600s, base=+1e18:
+     *        delta = 0.1 * 3000 * (600/86400) * 1 = 2.083333... USD
+     *        long PnL is negative and short PnL is positive by the same amount.
      */
     function check_FundingRateAccrual(uint128 marketId) internal {
         setupPerpTestActors();
@@ -159,7 +218,7 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
 
         // Establish baseline: push mark price and zero funding at t0.
         // This stamps lastFundingTimestamp = t0 so the next push has a defined window.
-        pushMarkPrice(marketId, 3000e18);
+        pushMarkPriceWithinCollar(marketId, 3000e18);
         pushFundingRate(marketId, 0);
 
         // Open position: buyer goes long 1 ETH, seller goes short 1 ETH
@@ -188,20 +247,21 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
         int256 dailyRate = 0.1e18;
         pushFundingRate(marketId, dailyRate);
 
-        // Warp forward exactly 1 hour.
-        uint256 elapsed = 3600;
+        // Accrue across the full configured funding-freshness window.
+        uint256 elapsed = IPassivePerpProxyV2(sec.perp).getMarketConfiguration(marketId).fundingRateMaxStaleDuration;
         vm.warp(block.timestamp + elapsed);
         mockFreshPrices();
 
+        // Keep the mark live under the configured staleness gate. Mark pushes do not
+        // accrue funding, so the funding delta remains isolated to the next rate push.
+        pushMarkPriceWithinCollar(marketId, 3000e18);
+
         // Push the SAME rate again at the new timestamp. This is the call that actually
-        // accrues funding: it computes fundingValueDelta = dailyRate * markPrice * (3600/86400) * 1
+        // accrues funding: it computes fundingValueDelta = dailyRate * markPrice * elapsed / one day
         // and adds it to both long and short trackers, then stamps lastFundingTimestamp.
         pushFundingRate(marketId, dailyRate);
 
-        // Expected funding PnL for a 1 ETH position over 1 hour at 10%/day and $3000 markPrice:
-        //   delta = 0.1 * 3000 * (3600/86400) * 1 = 12.5 USD (wad: 12.5e18)
-        // Long pays +12.5, short receives +12.5.
-        int256 expectedFundingDelta = 12.5e18;
+        int256 expectedFundingDelta = dailyRate * int256(3000e18) / int256(1e18) * int256(elapsed) / int256(1 days);
 
         MarginInfo memory buyerMarginAfterFunding = ICoreProxy(sec.core).getUsdNodeMarginInfo(buyerAccountId);
         MarginInfo memory sellerMarginAfterFunding = ICoreProxy(sec.core).getUsdNodeMarginInfo(sellerAccountId);
@@ -211,10 +271,10 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
 
         // Tolerance: 1e12 (1e-6 USD) to absorb fixed-point rounding in UD60x18/SD59x18 math.
         assertApproxEqAbsDecimal(
-            buyerFundingPnL, -expectedFundingDelta, 1e12, 18, "Long funding PnL should be -12.5 USD"
+            buyerFundingPnL, -expectedFundingDelta, 1e12, 18, "Long funding PnL should match the configured window"
         );
         assertApproxEqAbsDecimal(
-            sellerFundingPnL, expectedFundingDelta, 1e12, 18, "Short funding PnL should be +12.5 USD"
+            sellerFundingPnL, expectedFundingDelta, 1e12, 18, "Short funding PnL should match the configured window"
         );
     }
 }

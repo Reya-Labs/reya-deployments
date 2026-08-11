@@ -6,6 +6,10 @@ on:
   push:
     branches:
       - main
+permissions:
+  contents: read
+  # Required to publish the non-blocking "Testnet Suites" check run below.
+  checks: write
 env:
   # Point cannon's on-chain package registry (Optimism mainnet) at our own RPC instead of the shared
   # public Infura key baked into cannon's DEFAULT_REGISTRY_CONFIG, which gets rate-limited (429) and
@@ -61,26 +65,53 @@ jobs:
         id: reya_cronos_test
         continue-on-error: true
         env:
-          RPC_KEY: ${{ secrets.RPC_KEY }}
+          CONDUIT_RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
         run: "yarn reya_cronos:test"
-      - name: Warn on Cronos Test Failure
-        if: steps.reya_cronos_test.outcome == 'failure'
-        run: echo "::warning::Reya Cronos (testnet) tests failed"
-      - name: Reya Devnet Simulate
-        id: reya_devnet_simulate
-        continue-on-error: true
-        env:
-          RPC_KEY: ${{ secrets.RPC_KEY }}
-        run: "yarn reya_devnet:simulate"
-      - name: Warn on Devnet Simulate Failure
-        if: steps.reya_devnet_simulate.outcome == 'failure'
-        run: echo "::warning::Reya Devnet simulation failed"
       - name: Reya Devnet Cannon Test
         id: reya_devnet_test
         continue-on-error: true
         env:
-          RPC_KEY: ${{ secrets.RPC_KEY }}
+          CONDUIT_RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
         run: "yarn reya_devnet:test"
-      - name: Warn on Devnet Test Failure
-        if: steps.reya_devnet_test.outcome == 'failure'
-        run: echo "::warning::Reya Devnet fork tests failed"
+      # Publishes the advisory testnet result as its OWN check run, separate from this job.
+      # This job stays the merge gate (mainnet/lint/build only); the check run below reports
+      # `neutral` when a testnet suite fails, which GitHub counts as passing for branch
+      # protection while still rendering as a non-green icon on the PR.
+      # continue-on-error is deliberate: a failure to publish must never redden the merge gate
+      # (notably on fork PRs, where the token is read-only and `checks: write` is not granted).
+      - name: Publish Testnet Suites Check
+        if: always() && steps.reya_network_test.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CRONOS_TEST: ${{ steps.reya_cronos_test.outcome }}
+          DEVNET_TEST: ${{ steps.reya_devnet_test.outcome }}
+          # On pull_request, github.sha is the ephemeral merge commit; a check run attached to it
+          # does not surface on the PR. The PR head SHA is the one that does.
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          summary=""
+          if [ "$CRONOS_TEST" = "failure" ]; then
+            summary="${summary}- Reya Cronos (testnet) tests failed"$'\n'
+          fi
+          if [ "$DEVNET_TEST" = "failure" ]; then
+            summary="${summary}- Reya Devnet fork tests failed"$'\n'
+          fi
+
+          if [ -n "$summary" ]; then
+            conclusion="neutral"
+            title="Testnet suites reported failures (non-blocking)"
+            summary="${summary}"$'\n'"Mainnet tests passed, so this does not block the merge. Check the job log before merging."
+          else
+            conclusion="success"
+            title="All testnet suites passed"
+            summary="Reya Cronos and Reya Devnet suites completed successfully."
+          fi
+
+          gh api "repos/${GITHUB_REPOSITORY}/check-runs" \
+            -f name="Testnet Suites" \
+            -f head_sha="$HEAD_SHA" \
+            -f status="completed" \
+            -f conclusion="$conclusion" \
+            -f "output[title]=$title" \
+            -f "output[summary]=$summary"
