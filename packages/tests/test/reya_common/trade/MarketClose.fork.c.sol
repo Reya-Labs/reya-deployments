@@ -156,21 +156,35 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
     ///             pool-favourable slippage the pool pockets on the unit it closed.
     /// @dev Assumes `marketId` has already been frozen (oracle pinned to a CONSTANT node).
     function check_FrozenMarketPositionsCanBeReduced(uint128 marketId, uint128 poolAccountId) internal {
+        // Both sides of the warp below need mocked prices, and the mocks have to be installed here — while the real
+        // feeds are still fresh enough to read — so that the post-warp refresh has something to re-stamp.
         mockFreshPrices();
+        mockFreshCollateralPrices();
         _assertFrozen(marketId);
 
         FrozenReduceSnapshot memory snap = _snapshotPool(marketId, poolAccountId);
-        if (snap.poolBase == 0) {
-            return; // nothing to reduce
-        }
 
         // Let time pass: with price and funding frozen, nothing should accrue to the pool's PnL.
         vm.warp(block.timestamp + 1 days);
-        mockFreshPrices(); // refresh the (mocked) collateral/oracle timestamps for the post-warp trade
+        // Re-stamp both the market mark nodes and the collateral nodes to the new timestamp. The collateral half
+        // matters: margin computation on the reducing trade reads `ParentCollateralConfig.oracleNodeId`, which
+        // `mockFreshPrices` does not cover, and a day-old collateral price reverts with `StalePriceDetected`.
+        mockFreshPrices();
+        mockFreshCollateralPrices();
         PnLComponents memory afterWarp = IPassivePerpProxy(sec.perp).getAccountPnLComponents(marketId, poolAccountId);
         assertEq(
             afterWarp.realizedPnL + afterWarp.unrealizedPnL, snap.totalPnLBefore, "frozen market accrued PnL over time"
         );
+
+        // A reducing trade needs at least one `minimumOrderBase` of pool inventory to close against. Below that
+        // there is nothing an ordinary order can shave off — that residue is exactly what force close exists for —
+        // and trading a whole unit anyway would carry the pool through zero and grow open interest on the other
+        // side, which a reduce-only market rejects with `OpenInterestExceeded`. Most of the W1 markets sit here:
+        // they have been reduce-only for weeks and are down to dust. The time-passes assertion above still ran.
+        int256 minimumOrderBase = int256(IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).minimumOrderBase);
+        if (_abs(snap.poolBase) < minimumOrderBase) {
+            return;
+        }
 
         _reducePoolByOneUnit(marketId, poolAccountId, snap.poolBase);
 
