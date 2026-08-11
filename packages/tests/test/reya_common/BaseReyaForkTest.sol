@@ -11,6 +11,7 @@ import {
     MarginInfo,
     CollateralConfig,
     ParentCollateralConfig,
+    CachedCollateralConfig,
     GlobalCollateralConfig,
     ManagePoolStakeCommand
 } from "../../src/interfaces/ICoreProxy.sol";
@@ -484,6 +485,57 @@ contract BaseReyaForkTest is StorageReyaForkTest {
             NodeOutput.Data memory output = IOracleManagerProxy(sec.oracleManager).process(nodeId);
             mockFreshPrice(nodeId, output.price);
         }
+    }
+
+    /// @notice Re-stamp every registered collateral's oracle node with the current `block.timestamp`.
+    /// @dev {mockFreshPrices} only covers the per-market mark nodes. Collateral prices come from a different set of
+    ///      nodes — `ParentCollateralConfig.oracleNodeId` — and margin computation reads them on every trade, so
+    ///      after a `vm.warp` they are stale and the trade reverts with `StalePriceDetected` even though every
+    ///      market node was refreshed.
+    ///
+    ///      Call this alongside {mockFreshPrices} on BOTH sides of a warp: the pre-warp call installs the mocks
+    ///      while the real prices are still readable, and the post-warp call re-stamps them (`process` then returns
+    ///      the already-mocked value, so it cannot revert on the way through).
+    function mockFreshCollateralPrices() internal {
+        address[] memory collaterals = new address[](12);
+        collaterals[0] = sec.usdc;
+        collaterals[1] = sec.rusd;
+        collaterals[2] = sec.weth;
+        collaterals[3] = sec.wbtc;
+        collaterals[4] = sec.usde;
+        collaterals[5] = sec.susde;
+        collaterals[6] = sec.deusd;
+        collaterals[7] = sec.sdeusd;
+        collaterals[8] = sec.wsteth;
+        collaterals[9] = sec.srusd;
+        collaterals[10] = sec.rselini;
+        collaterals[11] = sec.ramber;
+
+        for (uint256 i = 0; i < collaterals.length; i++) {
+            if (collaterals[i] != address(0)) {
+                mockFreshCollateralPrice(collaterals[i]);
+            }
+        }
+    }
+
+    /// @dev Best-effort refresh of one collateral's oracle node. Silently skips a token that is not registered in
+    ///      collateral pool 1, carries no oracle node (the quote token), or whose feed cannot be read — this is a
+    ///      test convenience, and the checks that rely on it fail loudly on their own if it did not take.
+    function mockFreshCollateralPrice(address collateral) internal {
+        try ICoreProxy(sec.core).getCollateralConfig(1, collateral) returns (
+            CollateralConfig memory,
+            ParentCollateralConfig memory parentCollateralConfig,
+            CachedCollateralConfig memory
+        ) {
+            bytes32 nodeId = parentCollateralConfig.oracleNodeId;
+            if (nodeId == bytes32(0)) {
+                return;
+            }
+
+            try IOracleManagerProxy(sec.oracleManager).process(nodeId) returns (NodeOutput.Data memory output) {
+                mockFreshPrice(nodeId, output.price);
+            } catch { }
+        } catch { }
     }
 
     function removeCollateralCap(address collateral) internal {
