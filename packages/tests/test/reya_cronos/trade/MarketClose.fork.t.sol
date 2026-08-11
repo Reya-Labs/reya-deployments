@@ -59,11 +59,12 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
         }
     }
 
-    /// @notice The W1 batch actually landed: all 17 markets are pinned to a CONSTANT oracle node at a non-zero price
-    ///         with funding rate and velocity at zero.
-    function test_W1MarketsAreFrozen() public view {
-        uint128[] memory frozenMarkets = w1FrozenMarkets();
+    /// @notice All 17 W1 markets end up pinned to a CONSTANT oracle node at a non-zero price with funding rate and
+    ///         velocity at zero.
+    function test_W1MarketsAreFrozen() public {
+        ensureW1MarketsFrozen();
 
+        uint128[] memory frozenMarkets = w1FrozenMarkets();
         for (uint256 i = 0; i < frozenMarkets.length; i++) {
             check_MarketIsFrozen(frozenMarkets[i]);
         }
@@ -72,10 +73,26 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
     /// @notice Stage 3: every frozen market (waiting to be force-closed) can still be traded down — a reducing trade
     ///         against the pool leaves the funding rate, open interest and pool PnL intact (PnL only realizes).
     function test_FrozenMarketsCanBeReduced() public {
+        ensureW1MarketsFrozen();
+
+        uint128[] memory frozenMarkets = w1FrozenMarkets();
+        for (uint256 i = 0; i < frozenMarkets.length; i++) {
+            check_FrozenMarketPositionsCanBeReduced(frozenMarkets[i], sec.passivePoolAccountId);
+        }
+    }
+
+    /// @dev Freeze any W1 market the omnibus batch left unfrozen, refreshing the oracle price first. The
+    ///      `market_close_w1_freeze_*` invokes revert with `StalePriceDetected` on a fork — chain state is pinned at
+    ///      a block so the last Stork push stops advancing, while the build's `block.timestamp` runs on in wall-clock
+    ///      time, and `freezeMarketForClosure` snapshots the price through `getOraclePriceForMarketOrder`. The
+    ///      `isFrozen` guard makes this a no-op wherever the batch did land.
+    function ensureW1MarketsFrozen() internal {
         uint128[] memory frozenMarkets = w1FrozenMarkets();
 
         for (uint256 i = 0; i < frozenMarkets.length; i++) {
-            check_FrozenMarketPositionsCanBeReduced(frozenMarkets[i], sec.passivePoolAccountId);
+            if (!isFrozen(frozenMarkets[i])) {
+                check_FreezeMarketForClosure(frozenMarkets[i]);
+            }
         }
     }
 

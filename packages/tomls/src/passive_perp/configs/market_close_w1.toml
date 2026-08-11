@@ -15,10 +15,30 @@
 #   - market is ENABLED (`ensureEnabledMarket`) -> see the AIXBT re-enable at the top of this file
 #   - market is reduce-only (`maxOpenBase == 0`) -> already true in the omnibus for all 17
 #
-# Each freeze `depends` on its market's `set_market_config` so that, on any build where the market
-# config is re-rendered (this batch zeroes `velocityMultiplierUnscaled` for all 17), the config write
-# lands BEFORE the freeze. Otherwise `setMarketConfiguration` would write the Stork `oracleNodeId`
-# back over the CONSTANT node and silently un-freeze the market.
+# Each freeze `depends` on its market's `set_market_config`, so that on any build where that market's
+# config is re-rendered the config write lands BEFORE the freeze. Otherwise `setMarketConfiguration`
+# would write the Stork `oracleNodeId` back over the CONSTANT node and silently un-freeze the market.
+#
+# !! FRESH PRICES ARE REQUIRED AT EXECUTION !!
+# `freezeMarketForClosure` snapshots the price through `getOraclePriceForMarketOrder`, which enforces
+# the market's staleness window — 11 seconds for all 17 of these. If any of the 17 Stork feeds is
+# older than that when the batch executes, that market's freeze reverts with `StalePriceDetected` and
+# cannon SKIPS it with a warning rather than aborting the build: a partially-frozen batch is a silent
+# outcome, not a loud one. Push fresh Stork prices immediately before execution, split the batch if
+# needed, and check the build output for skipped invokes afterwards.
+#
+# This is also why CI cannot execute these: the fork pins chain state at a block, so the last Stork
+# push stops advancing while the build's `block.timestamp` runs on in wall-clock time, and every
+# freeze here is minutes past the window by the time it runs. The fork checks compensate by
+# refreshing the price and performing the freeze themselves — see `ensureW1MarketsFrozen` in
+# packages/tests/test/reya_*/trade/MarketClose.fork.t.sol.
+#
+# Funding velocity: the freeze zeroes the live velocity via `freezeFunding`, and the fork check
+# asserts it stays zero. Note the toml's `velocityMultiplierUnscaled` values are NOT the live ones —
+# velocity is pushed on-chain by the dynamic-depth executor — so zeroing them here would not make the
+# freeze durable, it would only re-run `batchSetMarketConfigurationVelocity` over all 75 markets and
+# overwrite every live value with a stale one. Keeping funding from being re-armed is a devops change
+# (drop these markets from DYNAMIC_DEPTH_MARKETS), not a change to this file.
 #
 # !! FOLLOW-UP REQUIRED AFTER THIS BATCH EXECUTES !!
 # `freezeMarketForClosure` registers the CONSTANT node at execution time, so its node id is not known
