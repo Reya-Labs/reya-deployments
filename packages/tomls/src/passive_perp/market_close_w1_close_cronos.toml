@@ -26,6 +26,11 @@
 # Ordering: deactivation MUST come after the close. Both `freezeMarketForClosure` and
 # `forceCloseMarket` call `FeatureFlagSupport.ensureEnabledMarket`, so disabling the market first
 # would make the close itself revert.
+#
+# Also note each close depends on that market's freeze having actually executed — `forceCloseMarket`
+# rejects a market whose oracle node is not CONSTANT. The freeze is skipped by cannon (not fatal) if
+# the Stork feed is stale at execution, so verify all 17 are frozen before running this batch,
+# otherwise the closes silently skip too. See the header of market_close_w1.toml.
 ####################################################################################################
 
 ####################################################################################################

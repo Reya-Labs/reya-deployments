@@ -63,11 +63,32 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
     ///         funding at zero, open interest back to zero, and the market disabled. This is the assertion that
     ///         catches a market left half-closed, or one accidentally un-frozen by a `set_market_config` re-run
     ///         writing the Stork node back / `batchSetMarketConfigurationVelocity` re-arming funding velocity.
-    function test_W1MarketsAreClosed() public view {
-        uint128[] memory closedMarkets = w1ClosedMarkets();
+    function test_W1MarketsAreClosed() public {
+        ensureW1MarketsFrozen();
 
+        uint128[] memory closedMarkets = w1ClosedMarkets();
         for (uint256 i = 0; i < closedMarkets.length; i++) {
             check_MarketIsClosed(closedMarkets[i]);
+        }
+    }
+
+    /// @dev Freeze any W1 market the omnibus batch left unfrozen, refreshing the oracle price first.
+    ///
+    ///      The `market_close_w1_freeze_*` invokes revert with `StalePriceDetected` on a fork and cannon skips them:
+    ///      the fork pins chain state at a block, so the last Stork push stops advancing while the build's
+    ///      `block.timestamp` runs on in wall-clock time, and `freezeMarketForClosure` snapshots the price through
+    ///      `getOraclePriceForMarketOrder`. Without this the frozen precondition inside `check_MarketIsClosed` trips
+    ///      first and hides what this test is actually here to check — that the close emptied the market and the
+    ///      market was then disabled.
+    ///
+    ///      The `isFrozen` guard makes this a no-op wherever the batch did land.
+    function ensureW1MarketsFrozen() internal {
+        uint128[] memory frozenMarkets = w1ClosedMarkets();
+
+        for (uint256 i = 0; i < frozenMarkets.length; i++) {
+            if (!isFrozen(frozenMarkets[i])) {
+                check_FreezeMarketForClosure(frozenMarkets[i]);
+            }
         }
     }
 
