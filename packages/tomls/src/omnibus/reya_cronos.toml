@@ -15,9 +15,16 @@ include = [
     "../oracle_adapters/testnet.toml",
     "../share_token/mainnet.toml",
     "../sbt/testnet.toml",
+    "../passive_perp/market_close_w1_close_cronos.toml",
 ]
 
-version = "1.0.146"
+version = "1.0.147"
+
+[var.market_close]
+# Residue tolerance passed to `forceCloseMarket`. Must exceed the real dust printed by
+# CheckMarketCloseReadiness.s.sol and stay strictly below every closing market's baseSpacing
+# (ZRO is the tightest at 1e16). 1e6 wei matches the bound the fork checks use.
+marketClose_maxResidualBaseUnscaled = "0.000000000001"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"

@@ -1,0 +1,496 @@
+####################################################################################################
+# Market close — Week 1 batch, Phase B.2: force close + deactivate (reya_cronos)
+#
+# !!! PLACEHOLDER ACCOUNT IDS — NOT EXECUTABLE AS-IS !!!
+# Every `forceCloseMarket` below carries a placeholder `accountIds` array. The real list must cover
+# EVERY account holding a non-zero base in that market, including the passive pool account, or the
+# call reverts with `ForceClosureResidueAboveMax` (closed longs and shorts must net out AND match the
+# snapshotted open interest, each within `maxResidualBase`). Until the lists are filled in, the
+# mainnet cannon test and simulate will fail on every market with non-zero open interest.
+#
+# To fill them in, per market, immediately before execution:
+#   1. Pull every account with a non-zero base in the market off-chain (reuse the liquidator query).
+#   2. Run packages/tests/script/CheckMarketCloseReadiness.s.sol against a fork with MARKET_ID,
+#      EXPECTED_OI and that account list. It prints:
+#        - any account below its initial margin requirement — must be ZERO of them. The close does
+#          NOT check account health and does NOT socialise a shortfall or draw the insurance fund
+#          (scope doc §3.8 / §3.10), so a shortfall at the locked price is simply left as bad debt.
+#        - |closedLong - closedShort| and |closedLong - openInterest| — the two residuals below.
+#   3. Set `marketClose_maxResidualBaseUnscaled` above both residuals and strictly below the market's
+#      baseSpacing. Sixteen of these markets have baseSpacing 1e17 (0.1 base); ZRO (market 15) has
+#      1e16 (0.01 base), so ZRO is the binding constraint for a single shared value. The default
+#      below is 1e6 wei, matching the bound the fork check and CheckMarketCloseReadiness.s.sol use.
+#
+# The close is atomic and must fit in one block — there is no batching or resumable settlement.
+#
+# Ordering: deactivation MUST come after the close. Both `freezeMarketForClosure` and
+# `forceCloseMarket` call `FeatureFlagSupport.ensureEnabledMarket`, so disabling the market first
+# would make the close itself revert.
+####################################################################################################
+
+####################################################################################################
+# Group 0
+####################################################################################################
+
+[invoke.market_close_w1_force_close_15zro]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market15ZroId %>",
+    [
+        # TODO(ZRO, market 15): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_15zro"]
+
+[invoke.market_close_w1_deactivate_15zro]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market15ZroId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_15zro"]
+
+[invoke.market_close_w1_force_close_25jto]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market25JtoId %>",
+    [
+        # TODO(JTO, market 25): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_25jto"]
+
+[invoke.market_close_w1_deactivate_25jto]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market25JtoId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_25jto"]
+
+[invoke.market_close_w1_force_close_45ai16z]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market45Ai16zId %>",
+    [
+        # TODO(AI16Z, market 45): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_45ai16z"]
+
+[invoke.market_close_w1_deactivate_45ai16z]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market45Ai16zId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_45ai16z"]
+
+[invoke.market_close_w1_force_close_53ton]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market53TonId %>",
+    [
+        # TODO(TON, market 53): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_53ton"]
+
+[invoke.market_close_w1_deactivate_53ton]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market53TonId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_53ton"]
+
+[invoke.market_close_w1_force_close_57move]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market57MoveId %>",
+    [
+        # TODO(MOVE, market 57): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_57move"]
+
+[invoke.market_close_w1_deactivate_57move]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market57MoveId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_57move"]
+
+[invoke.market_close_w1_force_close_58bera]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market58BeraId %>",
+    [
+        # TODO(BERA, market 58): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_58bera"]
+
+[invoke.market_close_w1_deactivate_58bera]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market58BeraId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_58bera"]
+
+[invoke.market_close_w1_force_close_68zora]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market68ZoraId %>",
+    [
+        # TODO(ZORA, market 68): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_68zora"]
+
+[invoke.market_close_w1_deactivate_68zora]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market68ZoraId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_68zora"]
+
+[invoke.market_close_w1_force_close_69prove]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market69ProveId %>",
+    [
+        # TODO(PROVE, market 69): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_69prove"]
+
+[invoke.market_close_w1_deactivate_69prove]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market69ProveId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_69prove"]
+
+[invoke.market_close_w1_force_close_71yzy]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market71YzyId %>",
+    [
+        # TODO(YZY, market 71): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_71yzy"]
+
+[invoke.market_close_w1_deactivate_71yzy]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market71YzyId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_71yzy"]
+
+[invoke.market_close_w1_force_close_72xpl]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market72XplId %>",
+    [
+        # TODO(XPL, market 72): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_72xpl"]
+
+[invoke.market_close_w1_deactivate_72xpl]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market72XplId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_72xpl"]
+
+[invoke.market_close_w1_force_close_73wlfi]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market73WlfiId %>",
+    [
+        # TODO(WLFI, market 73): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_73wlfi"]
+
+[invoke.market_close_w1_deactivate_73wlfi]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market73WlfiId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_73wlfi"]
+
+####################################################################################################
+# RO batch
+####################################################################################################
+
+[invoke.market_close_w1_force_close_34goat]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market34GoatId %>",
+    [
+        # TODO(GOAT, market 34): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_34goat"]
+
+[invoke.market_close_w1_deactivate_34goat]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market34GoatId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_34goat"]
+
+[invoke.market_close_w1_force_close_36kneiro]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market36KNeiroId %>",
+    [
+        # TODO(kNEIRO, market 36): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_36kneiro"]
+
+[invoke.market_close_w1_deactivate_36kneiro]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market36KNeiroId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_36kneiro"]
+
+[invoke.market_close_w1_force_close_46aixbt]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market46AixbtId %>",
+    [
+        # TODO(AIXBT, market 46): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_46aixbt"]
+
+[invoke.market_close_w1_deactivate_46aixbt]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market46AixbtId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_46aixbt"]
+
+[invoke.market_close_w1_force_close_49griffain]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market49GriffainId %>",
+    [
+        # TODO(GRIFFAIN, market 49): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_49griffain"]
+
+[invoke.market_close_w1_deactivate_49griffain]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market49GriffainId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_49griffain"]
+
+[invoke.market_close_w1_force_close_52ape]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market52ApeId %>",
+    [
+        # TODO(APE, market 52): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_52ape"]
+
+[invoke.market_close_w1_deactivate_52ape]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market52ApeId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_52ape"]
+
+[invoke.market_close_w1_force_close_61ip]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market61IpId %>",
+    [
+        # TODO(IP, market 61): replace with every account holding a non-zero base.
+        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 4)
+        "111111",                             # PLACEHOLDER
+        "222222",                             # PLACEHOLDER
+        "333333",                             # PLACEHOLDER
+    ],
+    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+]
+depends = ["invoke.market_close_w1_freeze_61ip"]
+
+[invoke.market_close_w1_deactivate_61ip]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market61IpId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_61ip"]
