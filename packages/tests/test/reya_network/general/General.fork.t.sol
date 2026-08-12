@@ -65,7 +65,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     }
 
     function test_MarketsMaxOiAndOi() public view {
-        uint128[] memory reduceOnlyMarkets = new uint128[](18);
+        uint128[] memory reduceOnlyMarkets = new uint128[](43);
         reduceOnlyMarkets[0] = 45; // AI16Z
         reduceOnlyMarkets[1] = 58; // BERA
         reduceOnlyMarkets[2] = 25; // JTO
@@ -85,6 +85,32 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         reduceOnlyMarkets[15] = 49; // GRIFFAIN
         reduceOnlyMarkets[16] = 52; // APE
         reduceOnlyMarkets[17] = 61; // IP
+        // Group A of the compressed 5-week plan — set to reduce-only in W1 (10-14 Aug 2026), force-closed in W2.
+        reduceOnlyMarkets[18] = 9; // AAVE
+        reduceOnlyMarkets[19] = 10; // CRV
+        reduceOnlyMarkets[20] = 14; // SEI
+        reduceOnlyMarkets[21] = 17; // WIF
+        reduceOnlyMarkets[22] = 19; // POPCAT
+        reduceOnlyMarkets[23] = 21; // kSHIB
+        reduceOnlyMarkets[24] = 22; // kBONK
+        reduceOnlyMarkets[25] = 32; // EIGEN
+        reduceOnlyMarkets[26] = 39; // PYTH
+        reduceOnlyMarkets[27] = 40; // JUP
+        reduceOnlyMarkets[28] = 41; // PENGU
+        reduceOnlyMarkets[29] = 42; // TRUMP
+        reduceOnlyMarkets[30] = 44; // VIRTUAL
+        reduceOnlyMarkets[31] = 47; // S (Sonic)
+        reduceOnlyMarkets[32] = 48; // FARTCOIN
+        reduceOnlyMarkets[33] = 51; // ATOM
+        reduceOnlyMarkets[34] = 54; // ONDO
+        reduceOnlyMarkets[35] = 55; // TRX
+        reduceOnlyMarkets[36] = 56; // INJ
+        reduceOnlyMarkets[37] = 60; // TAO
+        reduceOnlyMarkets[38] = 63; // PUMP
+        reduceOnlyMarkets[39] = 64; // MORPHO
+        reduceOnlyMarkets[40] = 65; // SYRUP
+        reduceOnlyMarkets[41] = 67; // KAITO
+        reduceOnlyMarkets[42] = 75; // MEGA
         // todo: add markets here after they are fully closed
         uint128[] memory inactiveMarkets = new uint128[](0);
         check_marketsMaxOiAndOi(reduceOnlyMarkets, inactiveMarkets);
