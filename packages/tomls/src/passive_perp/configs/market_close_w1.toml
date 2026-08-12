@@ -6,9 +6,15 @@
 # which is 11s for every market below), settles funding up to that instant and pins it to zero, and
 # rewires the market's `oracleNodeId` to a freshly-registered CONSTANT node holding that price.
 #
-# Covers the 17 markets scheduled to be force-closed in W1 of the compressed 5-week plan:
+# Covers the 18 markets scheduled to be force-closed in W1 of the compressed 5-week plan:
 #   Group 0  (11, reduce-only since June): ZRO, JTO, TON, ZORA, XPL, WLFI, BERA, YZY, AI16Z, MOVE, PROVE
 #   RO batch (6,  reduce-only since 6 Aug): GOAT, kNEIRO, AIXBT, GRIFFAIN, APE, IP
+#   Group A  (1,  reduce-only since #507): KAITO — pulled forward from the W2 batch
+#
+# This file is included from `passive_perp/mainnet.toml`, which `passive_perp/testnet.toml` also includes, so every
+# invoke below runs on BOTH reya_network and reya_cronos. Cronos is the rehearsal: all 18 are already reduce-only
+# there except KAITO, whose `set_market_config` (from #507) has not been applied to cronos yet — the `depends` below
+# orders that write before the freeze, so the reduce-only precondition holds on both networks.
 #
 # Preconditions enforced on-chain by `MarketCloseModule.freezeMarketForClosure`:
 #   - caller is `owner`                       -> `fromCall.func = "owner"` below
@@ -192,3 +198,14 @@ fromCall.func = "owner"
 func = "freezeMarketForClosure"
 args = ["<%= settings.market61IpId %>"]
 depends = ["invoke.market_61ip_set_market_config"]
+
+####################################################################################################
+# Group A — reduce-only since #507, pulled forward into the W1 close
+####################################################################################################
+
+[invoke.market_close_w1_freeze_67kaito]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "freezeMarketForClosure"
+args = ["<%= settings.market67KaitoId %>"]
+depends = ["invoke.market_67kaito_set_market_config"]

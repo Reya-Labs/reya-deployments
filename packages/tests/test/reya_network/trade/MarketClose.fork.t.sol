@@ -5,11 +5,11 @@ import { ReyaForkTest } from "../ReyaForkTest.sol";
 import { MarketCloseForkCheck } from "../../reya_common/trade/MarketClose.fork.c.sol";
 
 contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
-    /// @notice The 17 markets frozen by the W1 close batch (10-14 Aug 2026) — Group 0 (reduce-only since June) plus
+    /// @notice The 18 markets frozen by the W1 close batch (10-14 Aug 2026) — Group 0 (reduce-only since June) plus
     ///         the RO batch announced on 6 Aug. These are the markets force-closed at the end of W1.
     /// @dev Keep in sync with packages/tomls/src/passive_perp/configs/market_close_w1.toml.
     function w1FrozenMarkets() internal pure returns (uint128[] memory ids) {
-        ids = new uint128[](17);
+        ids = new uint128[](18);
         // Group 0 — reduce-only since June
         ids[0] = 15; // ZRO
         ids[1] = 25; // JTO
@@ -29,6 +29,8 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
         ids[14] = 49; // GRIFFAIN
         ids[15] = 52; // APE
         ids[16] = 61; // IP
+        // Group A — reduce-only since #507, pulled forward into the W1 close
+        ids[17] = 67; // KAITO
     }
 
     /// @dev Use this test as a script to check the full lifecycle of closing a market
