@@ -50,7 +50,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     function test_MarketsMaxOiAndOi() public view {
         // Reduce-only but not yet closed: Group A (closes in W2). kBONK (22) is already fully inactive on
         // cronos, so it sits in `inactiveMarkets` instead.
-        uint128[] memory reduceOnlyMarkets = new uint128[](24);
+        uint128[] memory reduceOnlyMarkets = new uint128[](23);
         reduceOnlyMarkets[0] = 9; // AAVE
         reduceOnlyMarkets[1] = 10; // CRV
         reduceOnlyMarkets[2] = 14; // SEI
@@ -73,13 +73,11 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         reduceOnlyMarkets[19] = 63; // PUMP
         reduceOnlyMarkets[20] = 64; // MORPHO
         reduceOnlyMarkets[21] = 65; // SYRUP
-        reduceOnlyMarkets[22] = 67; // KAITO
-        reduceOnlyMarkets[23] = 75; // MEGA
+        reduceOnlyMarkets[22] = 75; // MEGA
 
         // Force-closed and deactivated by the W1 batch, plus kBONK which was already inactive.
-        uint128[] memory inactiveMarkets = new uint128[](18);
+        uint128[] memory inactiveMarkets = new uint128[](19);
         inactiveMarkets[0] = 22; // kBONK (pre-existing)
-        // Group 0 - reduce-only since June
         inactiveMarkets[1] = 15; // ZRO
         inactiveMarkets[2] = 25; // JTO
         inactiveMarkets[3] = 45; // AI16Z
@@ -91,13 +89,13 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         inactiveMarkets[9] = 71; // YZY
         inactiveMarkets[10] = 72; // XPL
         inactiveMarkets[11] = 73; // WLFI
-        // RO batch - reduce-only since 6 Aug
         inactiveMarkets[12] = 34; // GOAT
         inactiveMarkets[13] = 36; // KNEIRO
         inactiveMarkets[14] = 46; // AIXBT
         inactiveMarkets[15] = 49; // GRIFFAIN
         inactiveMarkets[16] = 52; // APE
         inactiveMarkets[17] = 61; // IP
+        inactiveMarkets[18] = 67; // KAITO
         check_marketsMaxOiAndOi(reduceOnlyMarkets, inactiveMarkets);
     }
 

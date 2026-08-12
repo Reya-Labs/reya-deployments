@@ -66,7 +66,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
 
     function test_MarketsMaxOiAndOi() public view {
         // Reduce-only but not yet closed: MKR, plus Group A (closes in W2).
-        uint128[] memory reduceOnlyMarkets = new uint128[](26);
+        uint128[] memory reduceOnlyMarkets = new uint128[](25);
         reduceOnlyMarkets[0] = 7; // MKR (network-only: reduce-only on reya_network, active on cronos)
         reduceOnlyMarkets[1] = 9; // AAVE
         reduceOnlyMarkets[2] = 10; // CRV
@@ -91,11 +91,10 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         reduceOnlyMarkets[21] = 63; // PUMP
         reduceOnlyMarkets[22] = 64; // MORPHO
         reduceOnlyMarkets[23] = 65; // SYRUP
-        reduceOnlyMarkets[24] = 67; // KAITO
-        reduceOnlyMarkets[25] = 75; // MEGA
+        reduceOnlyMarkets[24] = 75; // MEGA
 
         // Force-closed and deactivated by the W1 batch — open interest must be zero.
-        uint128[] memory inactiveMarkets = new uint128[](17);
+        uint128[] memory inactiveMarkets = new uint128[](18);
         // Group 0 - reduce-only since June
         inactiveMarkets[0] = 15; // ZRO
         inactiveMarkets[1] = 25; // JTO
@@ -108,13 +107,13 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         inactiveMarkets[8] = 71; // YZY
         inactiveMarkets[9] = 72; // XPL
         inactiveMarkets[10] = 73; // WLFI
-        // RO batch - reduce-only since 6 Aug
         inactiveMarkets[11] = 34; // GOAT
         inactiveMarkets[12] = 36; // KNEIRO
         inactiveMarkets[13] = 46; // AIXBT
         inactiveMarkets[14] = 49; // GRIFFAIN
         inactiveMarkets[15] = 52; // APE
         inactiveMarkets[16] = 61; // IP
+        inactiveMarkets[17] = 67; // KAITO
         check_marketsMaxOiAndOi(reduceOnlyMarkets, inactiveMarkets);
     }
 
@@ -141,7 +140,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         // 28 (POL) and 37 (DOT) were already disabled; the other 17 are disabled by this batch, right
         // after each is force-closed. AIXBT (46) is back here: PR1 re-enabled it only so the freeze and
         // close could run, since both call `ensureEnabledMarket`. Must stay sorted ascending.
-        uint128[] memory pausedMarkets = new uint128[](19);
+        uint128[] memory pausedMarkets = new uint128[](20);
         pausedMarkets[0] = 15; // ZRO
         pausedMarkets[1] = 25; // JTO
         pausedMarkets[2] = 28; // POL (pre-existing)
@@ -156,11 +155,12 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         pausedMarkets[11] = 57; // MOVE
         pausedMarkets[12] = 58; // BERA
         pausedMarkets[13] = 61; // IP
-        pausedMarkets[14] = 68; // ZORA
-        pausedMarkets[15] = 69; // PROVE
-        pausedMarkets[16] = 71; // YZY
-        pausedMarkets[17] = 72; // XPL
-        pausedMarkets[18] = 73; // WLFI
+        pausedMarkets[14] = 67; // KAITO
+        pausedMarkets[15] = 68; // ZORA
+        pausedMarkets[16] = 69; // PROVE
+        pausedMarkets[17] = 71; // YZY
+        pausedMarkets[18] = 72; // XPL
+        pausedMarkets[19] = 73; // WLFI
 
         assertEq(activeMarkets.length, lastMarketIdd - pausedMarkets.length);
 

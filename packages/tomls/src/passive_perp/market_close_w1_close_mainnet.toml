@@ -1,42 +1,36 @@
 ####################################################################################################
 # Market close — Week 1 batch, Phase B.2: force close + deactivate (reya_network)
 #
-# !!! PLACEHOLDER ACCOUNT IDS — NOT EXECUTABLE AS-IS !!!
-# Every `forceCloseMarket` below carries a placeholder `accountIds` array. The real list must cover
-# EVERY account holding a non-zero base in that market, including the passive pool account, or the
-# call reverts with `ForceClosureResidueAboveMax` (closed longs and shorts must net out AND match the
-# snapshotted open interest, each within `maxResidualBase`). Until the lists are filled in, the
-# mainnet cannon test and simulate will fail on every market with non-zero open interest.
+# For each of the 18 markets frozen in the previous batch: `forceCloseMarket` at the locked price,
+# then `setFeatureFlagDenyAll` on `marketEnabled`. The module does not disable the market itself
+# (market-close-scope.md §3.6), so that is a separate call — ordered AFTER the close, because
+# `forceCloseMarket` calls `ensureEnabledMarket` and would revert on an already-disabled market.
 #
-# To fill them in, per market, immediately before execution:
-#   1. Pull every account with a non-zero base in the market off-chain (reuse the liquidator query).
-#   2. Run packages/tests/script/CheckMarketCloseReadiness.s.sol against a fork with MARKET_ID,
-#      EXPECTED_OI and that account list. It prints:
-#        - any account below its initial margin requirement — must be ZERO of them. The close does
-#          NOT check account health and does NOT socialise a shortfall or draw the insurance fund
-#          (scope doc §3.8 / §3.10), so a shortfall at the locked price is simply left as bad debt.
-#        - |closedLong - closedShort| and |closedLong - openInterest| — the two residuals below.
-#   3. Set `marketClose_maxResidualBaseUnscaled` above both residuals and strictly below the market's
-#      baseSpacing. Sixteen of these markets have baseSpacing 1e17 (0.1 base); ZRO (market 15) has
-#      1e16 (0.01 base), so ZRO is the binding constraint for a single shared value. The default
-#      below is 1e6 wei, matching the bound the fork check and CheckMarketCloseReadiness.s.sol use.
+# ACCOUNT LISTS. Every `accountIds` array below is the complete set of accounts holding a non-zero
+# base in that market, read from `getUpdatedPositionInfo` on reya_network at the snapshot below. Each list
+# was reconciled against the market's own `getOpenBaseInterest`: summed longs equal summed shorts and
+# equal open interest, to within the residual quoted per market. That reconciliation is the evidence
+# the list is complete — `forceCloseMarket` reverts with `ForceClosureResidueAboveMax` if it is not.
 #
-# The close is atomic and must fit in one block — there is no batching or resumable settlement.
+# MAX RESIDUAL BASE. Passed per market as raw wei (UD60x18). It is the measured residual plus one
+# wei, not a round number: the residual is real dust left by ADL base-multiplier scaling, and the
+# on-chain guard additionally requires `maxResidualBase < baseSpacing`, so it can never be set loose
+# enough to hide a genuinely missing position. Every value below is many orders of magnitude inside
+# that ceiling (baseSpacing is 0.1 base for every market here except ZRO, which is 0.01).
 #
-# Ordering: deactivation MUST come after the close. Both `freezeMarketForClosure` and
-# `forceCloseMarket` call `FeatureFlagSupport.ensureEnabledMarket`, so disabling the market first
-# would make the close itself revert.
-#
-# Also note each close depends on that market's freeze having actually executed — `forceCloseMarket`
-# rejects a market whose oracle node is not CONSTANT. The freeze is skipped by cannon (not fatal) if
-# the Stork feed is stale at execution, so verify all 17 are frozen before running this batch,
-# otherwise the closes silently skip too. See the header of market_close_w1.toml.
+# !! RE-MEASURE BEFORE EXECUTING !!
+# Both the account list and the residual move with every trade, and these markets are reduce-only,
+# not halted — trading and liquidations continue right up to the close (§3.1). Snapshot taken
+# against reya_network at the block current on 12 Aug 2026. Re-run CheckMarketCloseReadiness.s.sol per market immediately before submitting: it
+# reprints the account list, the two residuals, and flags any account below its initial margin. The
+# close does not check account health and does not socialise a shortfall (§3.8 / §3.10).
 ####################################################################################################
-
 ####################################################################################################
 # Group 0
 ####################################################################################################
 
+# ZRO (market 15) — open interest 2,041.910000 base = $1,689.03 at $0.82717926/ZRO
+# 13 accounts with non-zero base; longs = shorts = OI to within 10,013 wei
 [invoke.market_close_w1_force_close_15zro]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -44,13 +38,21 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market15ZroId %>",
     [
-        # TODO(ZRO, market 15): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "2",      #          -1,807.083097 ZRO (passive pool)
+        "17251",  #          +1,000.000000 ZRO
+        "41476",  #            +555.000000 ZRO
+        "18073",  #            -234.526903 ZRO
+        "128904", #            +209.000000 ZRO
+        "135288", #            +200.000000 ZRO
+        "18225",  #             +50.000000 ZRO
+        "134477", #             +20.450000 ZRO
+        "40887",  #              +5.240000 ZRO
+        "23724",  #              +1.680000 ZRO
+        "79924",  #              +0.430000 ZRO
+        "127173", #              -0.300000 ZRO
+        "60666",  #              +0.110000 ZRO
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "10014", # 10,014 wei = 0.000000000000010014 base
 ]
 depends = ["invoke.market_close_w1_freeze_15zro"]
 
@@ -64,6 +66,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_15zro"]
 
+# JTO (market 25) — open interest 566.000000 base = $315.02 at $0.55657386/JTO
+# 5 accounts with non-zero base; longs = shorts = OI to within 0 wei
 [invoke.market_close_w1_force_close_25jto]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -71,13 +75,13 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market25JtoId %>",
     [
-        # TODO(JTO, market 25): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "129611", #            -566.000000 JTO
+        "20303",  #            +390.000000 JTO
+        "4935",   #            +100.000000 JTO
+        "18073",  #             +52.800000 JTO
+        "2",      #             +23.200000 JTO (passive pool)
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "1", # 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_25jto"]
 
@@ -91,6 +95,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_25jto"]
 
+# AI16Z (market 45) — open interest 19.800000 base = $0.69 at $0.03500894/AI16Z
+# 3 accounts with non-zero base; longs = shorts = OI to within 3,354 wei
 [invoke.market_close_w1_force_close_45ai16z]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -98,13 +104,11 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market45Ai16zId %>",
     [
-        # TODO(AI16Z, market 45): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "2",      #             -19.800000 AI16Z (passive pool)
+        "128623", #             +19.200000 AI16Z
+        "43829",  #              +0.600000 AI16Z
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "3355", # 3,355 wei = 0.000000000000003355 base
 ]
 depends = ["invoke.market_close_w1_freeze_45ai16z"]
 
@@ -118,6 +122,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_45ai16z"]
 
+# TON (market 53) — open interest 393.100000 base = $525.32 at $1.33635678/TON
+# 7 accounts with non-zero base; longs = shorts = OI to within 162 wei
 [invoke.market_close_w1_force_close_53ton]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -125,13 +131,15 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market53TonId %>",
     [
-        # TODO(TON, market 53): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "127253", #            -320.000000 TON
+        "98897",  #            +253.400000 TON
+        "15678",  #            +100.000000 TON
+        "2",      #             -59.300000 TON (passive pool)
+        "11117",  #             +36.800000 TON
+        "839",    #             -13.800000 TON
+        "105367", #              +2.900000 TON
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "163", # 163 wei = 0.000000000000000163 base
 ]
 depends = ["invoke.market_close_w1_freeze_53ton"]
 
@@ -145,6 +153,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_53ton"]
 
+# MOVE (market 57) — open interest 0.140290 base = $0.00 at $0.00623292/MOVE
+# 3 accounts with non-zero base; longs = shorts = OI to within 54,893 wei
 [invoke.market_close_w1_force_close_57move]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -152,13 +162,11 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market57MoveId %>",
     [
-        # TODO(MOVE, market 57): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "2",      #              +0.140290 MOVE (passive pool)
+        "79924",  #              -0.099918 MOVE
+        "100547", #              -0.040373 MOVE
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "54894", # 54,894 wei = 0.000000000000054894 base
 ]
 depends = ["invoke.market_close_w1_freeze_57move"]
 
@@ -172,6 +180,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_57move"]
 
+# BERA (market 58) — open interest 9.688451 base = $1.39 at $0.14325245/BERA
+# 3 accounts with non-zero base; longs = shorts = OI to within 119 wei
 [invoke.market_close_w1_force_close_58bera]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -179,13 +189,11 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market58BeraId %>",
     [
-        # TODO(BERA, market 58): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "23735",  #              -9.688451 BERA
+        "2",      #              +7.588451 BERA (passive pool)
+        "107180", #              +2.100000 BERA
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "120", # 120 wei = 0.000000000000000120 base
 ]
 depends = ["invoke.market_close_w1_freeze_58bera"]
 
@@ -199,6 +207,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_58bera"]
 
+# ZORA (market 68) — open interest 13,622.900000 base = $66.91 at $0.00491155/ZORA
+# 4 accounts with non-zero base; longs = shorts = OI to within 8,398 wei
 [invoke.market_close_w1_force_close_68zora]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -206,13 +216,12 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market68ZoraId %>",
     [
-        # TODO(ZORA, market 68): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "120595", #         -13,448.600000 ZORA
+        "2",      #         +13,142.000000 ZORA (passive pool)
+        "38256",  #            +480.900000 ZORA
+        "125390", #            -174.300000 ZORA
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "8399", # 8,399 wei = 0.000000000000008399 base
 ]
 depends = ["invoke.market_close_w1_freeze_68zora"]
 
@@ -226,6 +235,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_68zora"]
 
+# PROVE (market 69) — open interest 0.100000 base = $0.01 at $0.14837307/PROVE
+# 2 accounts with non-zero base; longs = shorts = OI to within 0 wei
 [invoke.market_close_w1_force_close_69prove]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -233,13 +244,10 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market69ProveId %>",
     [
-        # TODO(PROVE, market 69): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "2",     #              -0.100000 PROVE (passive pool)
+        "72493", #              +0.100000 PROVE
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "1", # 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_69prove"]
 
@@ -253,6 +261,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_69prove"]
 
+# YZY (market 71) — open interest 5.800000 base = $1.75 at $0.30184570/YZY
+# 2 accounts with non-zero base; longs = shorts = OI to within 0 wei
 [invoke.market_close_w1_force_close_71yzy]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -260,13 +270,10 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market71YzyId %>",
     [
-        # TODO(YZY, market 71): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "2",    #              -5.800000 YZY (passive pool)
+        "3176", #              +5.800000 YZY
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "1", # 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_71yzy"]
 
@@ -280,6 +287,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_71yzy"]
 
+# XPL (market 72) — open interest 461.025587 base = $34.93 at $0.07575769/XPL
+# 8 accounts with non-zero base; longs = shorts = OI to within 21,020 wei
 [invoke.market_close_w1_force_close_72xpl]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -287,13 +296,16 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market72XplId %>",
     [
-        # TODO(XPL, market 72): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "2",      #            -454.391354 XPL (passive pool)
+        "134477", #            +295.900000 XPL
+        "14378",  #            +132.124229 XPL
+        "11117",  #             +32.301358 XPL
+        "47927",  #              -5.627278 XPL
+        "112901", #              -0.987242 XPL
+        "71259",  #              +0.700000 XPL
+        "11363",  #              -0.019714 XPL
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "21021", # 21,021 wei = 0.000000000000021021 base
 ]
 depends = ["invoke.market_close_w1_freeze_72xpl"]
 
@@ -307,6 +319,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_72xpl"]
 
+# WLFI (market 73) — open interest 56.900000 base = $3.12 at $0.05489804/WLFI
+# 2 accounts with non-zero base; longs = shorts = OI to within 6,863 wei
 [invoke.market_close_w1_force_close_73wlfi]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -314,13 +328,10 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market73WlfiId %>",
     [
-        # TODO(WLFI, market 73): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "2",      #             -56.900000 WLFI (passive pool)
+        "128260", #             +56.900000 WLFI
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "6864", # 6,864 wei = 0.000000000000006864 base
 ]
 depends = ["invoke.market_close_w1_freeze_73wlfi"]
 
@@ -338,6 +349,8 @@ depends = ["invoke.market_close_w1_force_close_73wlfi"]
 # RO batch
 ####################################################################################################
 
+# GOAT (market 34) — open interest 2,000,000.000000 base = $27,636.36 at $0.01381818/GOAT
+# 5 accounts with non-zero base; longs = shorts = OI to within 0 wei
 [invoke.market_close_w1_force_close_34goat]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -345,13 +358,13 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market34GoatId %>",
     [
-        # TODO(GOAT, market 34): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "35169",  #      +2,000,000.000000 GOAT
+        "17695",  #      -1,770,341.100000 GOAT
+        "127253", #        -110,000.000000 GOAT
+        "126268", #         -88,517.000000 GOAT
+        "2",      #         -31,141.900000 GOAT (passive pool)
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "1", # 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_34goat"]
 
@@ -365,6 +378,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_34goat"]
 
+# kNEIRO (market 36) — open interest 736.400000 base = $47.93 at $0.06508932/kNEIRO
+# 3 accounts with non-zero base; longs = shorts = OI to within 0 wei
 [invoke.market_close_w1_force_close_36kneiro]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -372,13 +387,11 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market36KNeiroId %>",
     [
-        # TODO(kNEIRO, market 36): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "2",      #            +736.400000 kNEIRO (passive pool)
+        "17695",  #            -701.400000 kNEIRO
+        "126268", #             -35.000000 kNEIRO
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "1", # 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_36kneiro"]
 
@@ -392,20 +405,16 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_36kneiro"]
 
+# AIXBT (market 46) — open interest 0.000000 base = $0.00 at $0.01850667/AIXBT
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
 [invoke.market_close_w1_force_close_46aixbt]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market46AixbtId %>",
-    [
-        # TODO(AIXBT, market 46): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
-    ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    [],
+    "1",                               # 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_46aixbt"]
 
@@ -419,6 +428,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_46aixbt"]
 
+# GRIFFAIN (market 49) — open interest 50,000.000000 base = $587.50 at $0.01174995/GRIFFAIN
+# 2 accounts with non-zero base; longs = shorts = OI to within 0 wei
 [invoke.market_close_w1_force_close_49griffain]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -426,13 +437,10 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market49GriffainId %>",
     [
-        # TODO(GRIFFAIN, market 49): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "2",      #         -50,000.000000 GRIFFAIN (passive pool)
+        "131432", #         +50,000.000000 GRIFFAIN
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "1", # 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_49griffain"]
 
@@ -446,6 +454,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_49griffain"]
 
+# APE (market 52) — open interest 158.500000 base = $20.01 at $0.12623451/APE
+# 3 accounts with non-zero base; longs = shorts = OI to within 1,091 wei
 [invoke.market_close_w1_force_close_52ape]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -453,13 +463,11 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market52ApeId %>",
     [
-        # TODO(APE, market 52): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "134477", #            +158.500000 APE
+        "48720",  #             -91.100000 APE
+        "2",      #             -67.400000 APE (passive pool)
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "1092", # 1,092 wei = 0.000000000000001092 base
 ]
 depends = ["invoke.market_close_w1_freeze_52ape"]
 
@@ -473,6 +481,8 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_52ape"]
 
+# IP (market 61) — open interest 20,000.000000 base = $5,984.72 at $0.29923598/IP
+# 5 accounts with non-zero base; longs = shorts = OI to within 4 wei
 [invoke.market_close_w1_force_close_61ip]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -480,13 +490,13 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market61IpId %>",
     [
-        # TODO(IP, market 61): replace with every account holding a non-zero base.
-        "<%= settings.pool1RusdAccountId %>", # passive pool account (id 2)
-        "111111",                             # PLACEHOLDER
-        "222222",                             # PLACEHOLDER
-        "333333",                             # PLACEHOLDER
+        "135288", #         -20,000.000000 IP
+        "127253", #         +12,000.000000 IP
+        "7301",   #          +6,684.900000 IP
+        "20303",  #          +1,300.000000 IP
+        "2",      #             +15.100000 IP (passive pool)
     ],
-    "<%= parseEther(settings.marketClose_maxResidualBaseUnscaled) %>",
+    "5", # 5 wei = 0.000000000000000005 base
 ]
 depends = ["invoke.market_close_w1_freeze_61ip"]
 
@@ -499,3 +509,41 @@ args = [
     true,
 ]
 depends = ["invoke.market_close_w1_force_close_61ip"]
+
+####################################################################################################
+# Group A
+####################################################################################################
+
+# KAITO (market 67) — open interest 67,742.900000 base = $30,984.50 at $0.45738372/KAITO
+# 10 accounts with non-zero base; longs = shorts = OI to within 0 wei
+[invoke.market_close_w1_force_close_67kaito]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market67KaitoId %>",
+    [
+        "102387", #         +40,000.000000 KAITO
+        "129339", #         -35,000.000000 KAITO
+        "7301",   #         -29,226.900000 KAITO
+        "2",      #         +21,992.600000 KAITO (passive pool)
+        "48720",  #          +3,550.300000 KAITO
+        "129450", #          -2,500.000000 KAITO
+        "135845", #          +2,200.000000 KAITO
+        "134542", #            -506.000000 KAITO
+        "131432", #            -500.000000 KAITO
+        "123082", #             -10.000000 KAITO
+    ],
+    "1", # 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_67kaito"]
+
+[invoke.market_close_w1_deactivate_67kaito]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market67KaitoId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_67kaito"]

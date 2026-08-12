@@ -19,13 +19,7 @@ include = [
     "../passive_perp/market_close_w1_close_mainnet.toml",
 ]
 
-version = "1.0.162"
-
-[var.market_close]
-# Residue tolerance passed to `forceCloseMarket`. Must exceed the real dust printed by
-# CheckMarketCloseReadiness.s.sol and stay strictly below every closing market's baseSpacing
-# (ZRO is the tightest at 1e16). 1e6 wei matches the bound the fork checks use.
-marketClose_maxResidualBaseUnscaled = "0.000000000001"
+version = "1.0.163"
 
 [var.chain_ids]
 ethereumChainId = "1"
