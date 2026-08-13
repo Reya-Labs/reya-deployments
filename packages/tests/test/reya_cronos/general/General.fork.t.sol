@@ -48,56 +48,54 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     }
 
     function test_MarketsMaxOiAndOi() public view {
-        uint128[] memory reduceOnlyMarkets = new uint128[](41);
-        reduceOnlyMarkets[0] = 45; // AI16Z
-        reduceOnlyMarkets[1] = 58; // BERA
-        reduceOnlyMarkets[2] = 25; // JTO
-        reduceOnlyMarkets[3] = 57; // MOVE
-        reduceOnlyMarkets[4] = 69; // PROVE
-        reduceOnlyMarkets[5] = 73; // WLFI
-        reduceOnlyMarkets[6] = 72; // XPL
-        reduceOnlyMarkets[7] = 71; // YZY
-        reduceOnlyMarkets[8] = 68; // ZORA
-        reduceOnlyMarkets[9] = 15; // ZRO
-        reduceOnlyMarkets[10] = 53; // TON
-        // markets decided to be closed on 7 Jul 2026
-        reduceOnlyMarkets[11] = 34; // GOAT
-        reduceOnlyMarkets[12] = 36; // KNEIRO
-        reduceOnlyMarkets[13] = 46; // AIXBT
-        reduceOnlyMarkets[14] = 49; // GRIFFAIN
-        reduceOnlyMarkets[15] = 52; // APE
-        reduceOnlyMarkets[16] = 61; // IP
-        // Group A of the compressed 5-week plan — set to reduce-only in W1 (10-14 Aug 2026), force-closed in W2.
-        // The first nine were briefly reduce-only from 17 Jul and reverted on 7 Aug (#502) when the waves were
-        // re-cut; that revert dropped them from the omnibus but left them in this list, so this test was red on
-        // main. They are back in reduce-only here, as part of Group A.
-        reduceOnlyMarkets[17] = 19; // POPCAT
-        reduceOnlyMarkets[18] = 21; // kSHIB
-        reduceOnlyMarkets[19] = 47; // S (Sonic)
-        reduceOnlyMarkets[20] = 48; // FARTCOIN
-        reduceOnlyMarkets[21] = 51; // ATOM
-        reduceOnlyMarkets[22] = 63; // PUMP
-        reduceOnlyMarkets[23] = 64; // MORPHO
-        reduceOnlyMarkets[24] = 65; // SYRUP
-        reduceOnlyMarkets[25] = 75; // MEGA
-        reduceOnlyMarkets[26] = 9; // AAVE
-        reduceOnlyMarkets[27] = 10; // CRV
-        reduceOnlyMarkets[28] = 14; // SEI
-        reduceOnlyMarkets[29] = 17; // WIF
-        reduceOnlyMarkets[30] = 32; // EIGEN
-        reduceOnlyMarkets[31] = 39; // PYTH
-        reduceOnlyMarkets[32] = 40; // JUP
-        reduceOnlyMarkets[33] = 41; // PENGU
-        reduceOnlyMarkets[34] = 42; // TRUMP
-        reduceOnlyMarkets[35] = 44; // VIRTUAL
-        reduceOnlyMarkets[36] = 54; // ONDO
-        reduceOnlyMarkets[37] = 55; // TRX
-        reduceOnlyMarkets[38] = 56; // INJ
-        reduceOnlyMarkets[39] = 60; // TAO
-        reduceOnlyMarkets[40] = 67; // KAITO
-        // kBONK (22) is Group A too, but it is already fully inactive on cronos — it stays in `inactiveMarkets`.
-        uint128[] memory inactiveMarkets = new uint128[](1);
-        inactiveMarkets[0] = 22; // kBONK
+        // Reduce-only but not yet closed: Group A (closes in W2). kBONK (22) is already fully inactive on
+        // cronos, so it sits in `inactiveMarkets` instead.
+        uint128[] memory reduceOnlyMarkets = new uint128[](23);
+        reduceOnlyMarkets[0] = 9; // AAVE
+        reduceOnlyMarkets[1] = 10; // CRV
+        reduceOnlyMarkets[2] = 14; // SEI
+        reduceOnlyMarkets[3] = 17; // WIF
+        reduceOnlyMarkets[4] = 19; // POPCAT
+        reduceOnlyMarkets[5] = 21; // kSHIB
+        reduceOnlyMarkets[6] = 32; // EIGEN
+        reduceOnlyMarkets[7] = 39; // PYTH
+        reduceOnlyMarkets[8] = 40; // JUP
+        reduceOnlyMarkets[9] = 41; // PENGU
+        reduceOnlyMarkets[10] = 42; // TRUMP
+        reduceOnlyMarkets[11] = 44; // VIRTUAL
+        reduceOnlyMarkets[12] = 47; // S (Sonic)
+        reduceOnlyMarkets[13] = 48; // FARTCOIN
+        reduceOnlyMarkets[14] = 51; // ATOM
+        reduceOnlyMarkets[15] = 54; // ONDO
+        reduceOnlyMarkets[16] = 55; // TRX
+        reduceOnlyMarkets[17] = 56; // INJ
+        reduceOnlyMarkets[18] = 60; // TAO
+        reduceOnlyMarkets[19] = 63; // PUMP
+        reduceOnlyMarkets[20] = 64; // MORPHO
+        reduceOnlyMarkets[21] = 65; // SYRUP
+        reduceOnlyMarkets[22] = 75; // MEGA
+
+        // Force-closed and deactivated by the W1 batch, plus kBONK which was already inactive.
+        uint128[] memory inactiveMarkets = new uint128[](19);
+        inactiveMarkets[0] = 22; // kBONK (pre-existing)
+        inactiveMarkets[1] = 15; // ZRO
+        inactiveMarkets[2] = 25; // JTO
+        inactiveMarkets[3] = 45; // AI16Z
+        inactiveMarkets[4] = 53; // TON
+        inactiveMarkets[5] = 57; // MOVE
+        inactiveMarkets[6] = 58; // BERA
+        inactiveMarkets[7] = 68; // ZORA
+        inactiveMarkets[8] = 69; // PROVE
+        inactiveMarkets[9] = 71; // YZY
+        inactiveMarkets[10] = 72; // XPL
+        inactiveMarkets[11] = 73; // WLFI
+        inactiveMarkets[12] = 34; // GOAT
+        inactiveMarkets[13] = 36; // KNEIRO
+        inactiveMarkets[14] = 46; // AIXBT
+        inactiveMarkets[15] = 49; // GRIFFAIN
+        inactiveMarkets[16] = 52; // APE
+        inactiveMarkets[17] = 61; // IP
+        inactiveMarkets[18] = 67; // KAITO
         check_marketsMaxOiAndOi(reduceOnlyMarkets, inactiveMarkets);
     }
 

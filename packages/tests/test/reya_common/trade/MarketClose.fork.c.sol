@@ -175,6 +175,93 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
         );
     }
 
+    /// @notice Assert `marketId` has been fully closed out: `forceCloseMarket` has run, and the market has since been
+    ///         disabled by the separate call the module deliberately does not make itself (scope doc §3.6).
+    /// @dev The close leaves the oracle pinned to the CONSTANT node the freeze installed — `forceCloseMarket` never
+    ///      touches `oracleNodeId` — and `resetMarketStateOnClosure` zeroes open interest and the funding trackers.
+    ///      Per-account bases are not asserted here: that needs the closed account list, which the force-close batch
+    ///      carries and {check_ForceClose} already asserts at close time.
+    function check_MarketIsClosed(uint128 marketId) internal view {
+        check_MarketIsFrozen(marketId);
+
+        assertEq(
+            IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId),
+            0,
+            string.concat("open interest is not zero for closed market ", vm.toString(marketId))
+        );
+        assertFalse(isMarketActive(marketId), string.concat("closed market is still enabled ", vm.toString(marketId)));
+    }
+
+    /// @notice Force-close `marketId` with `accountIds` and disable it, reproducing on the fork exactly what the
+    ///         force-close batch does on-chain — including the AIXBT dance of enabling a disabled market for the
+    ///         instant of the call (`ensureEnabledMarket` gates the lever) and disabling it again straight after.
+    ///
+    /// @dev **This is the check that proves the batch's account lists are complete.** `maxResidualBase` is derived
+    ///      from the residual measured on-chain right now rather than taken from the toml, because the fork is
+    ///      pinned at a different block than the snapshot the lists were captured at — but it is derived only after
+    ///      asserting the residual is below one `baseSpacing`. A genuinely missing position is at least one
+    ///      `baseSpacing`, so an incomplete list fails here with a clear message instead of being papered over by a
+    ///      generous cap. On-chain the same completeness is enforced by `ForceClosureResidueAboveMax`.
+    function check_ForceCloseMarketAndDisable(uint128 marketId, uint128[] memory accountIds) internal {
+        MarketConfigurationData memory cfg = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+        uint256 openInterest = IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId);
+
+        uint256 closedLong;
+        uint256 closedShort;
+        for (uint256 i = 0; i < accountIds.length; i++) {
+            int256 base = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, accountIds[i]).base;
+            if (base > 0) {
+                closedLong += uint256(base);
+            } else if (base < 0) {
+                closedShort += uint256(-base);
+            }
+        }
+
+        uint256 residualNet = closedLong > closedShort ? closedLong - closedShort : closedShort - closedLong;
+        uint256 residualOi = closedLong > openInterest ? closedLong - openInterest : openInterest - closedLong;
+
+        assertLt(
+            residualNet,
+            cfg.baseSpacing,
+            string.concat("account list incomplete, longs and shorts do not net out, market ", vm.toString(marketId))
+        );
+        assertLt(
+            residualOi,
+            cfg.baseSpacing,
+            string.concat("account list incomplete, closed longs != open interest, market ", vm.toString(marketId))
+        );
+
+        uint256 maxResidualBase = (residualNet > residualOi ? residualNet : residualOi) + 1;
+        assertLt(maxResidualBase, cfg.baseSpacing, "maxResidualBase must stay below baseSpacing");
+
+        bytes32 flagId = keccak256(abi.encode(keccak256(bytes("marketEnabled")), marketId));
+
+        if (!isMarketActive(marketId)) {
+            vm.prank(sec.multisig);
+            IPassivePerpProxy(sec.perp).setFeatureFlagDenyAll(flagId, false);
+        }
+
+        vm.prank(sec.multisig);
+        IMarketCloseModule(sec.perp).forceCloseMarket(marketId, accountIds, ud(maxResidualBase));
+
+        // The module deliberately does not disable the market itself (scope doc §3.6) — the batch does it separately.
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setFeatureFlagDenyAll(flagId, true);
+
+        assertEq(
+            IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId),
+            0,
+            string.concat("open interest not zero after force close, market ", vm.toString(marketId))
+        );
+        for (uint256 i = 0; i < accountIds.length; i++) {
+            assertEq(
+                IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, accountIds[i]).base,
+                0,
+                string.concat("position not closed, market ", vm.toString(marketId))
+            );
+        }
+    }
+
     /// @notice A frozen market can still be wound down: positions remain reducible. A fresh account trades against the
     ///         pool to shrink the pool's base by one unit, and afterwards:
     ///           - the funding rate has not moved (it stays frozen at zero);
