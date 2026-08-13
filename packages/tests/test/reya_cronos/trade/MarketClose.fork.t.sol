@@ -72,7 +72,6 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
         }
     }
 
-
     /// @notice Stage 3: every frozen market (waiting to be force-closed) can still be traded down — a reducing trade
     ///         against the pool leaves the funding rate, open interest and pool PnL intact (PnL only realizes).
     function test_FrozenMarketsCanBeReduced() public {
