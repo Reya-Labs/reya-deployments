@@ -137,9 +137,11 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         uint128[] memory activeMarkets = getActiveMarkets();
         uint128 lastMarketIdd = lastMarketId();
 
-        // 28 (POL) and 37 (DOT) were already disabled; the other 17 are disabled by this batch, right
-        // after each is force-closed. AIXBT (46) is back here: PR1 re-enabled it only so the freeze and
-        // close could run, since both call `ensureEnabledMarket`. Must stay sorted ascending.
+        // 28 (POL) and 37 (DOT) were already disabled; the 17 force-closed markets are disabled by this
+        // batch, right after each close. AIXBT (46) is disabled by the FREEZE batch, not this one: at
+        // open interest 0 in reduce-only there is nothing to unwind, so freezing its price and disabling
+        // it there is the whole of its closure and this batch does not touch it. Must stay sorted
+        // ascending.
         uint128[] memory pausedMarkets = new uint128[](20);
         pausedMarkets[0] = 15; // ZRO
         pausedMarkets[1] = 25; // JTO

@@ -1,7 +1,7 @@
 ####################################################################################################
 # Market close — Week 1 batch, Phase B.2: force close + deactivate (reya_cronos)
 #
-# For each of the 18 markets frozen in the previous batch: `forceCloseMarket` at the locked price,
+# For 17 of the 18 markets frozen in the previous batch: `forceCloseMarket` at the locked price,
 # then `setFeatureFlagDenyAll` on `marketEnabled`. The module does not disable the market itself
 # (market-close-scope.md §3.6), so that is a separate call — ordered AFTER the close, because
 # `forceCloseMarket` calls `ensureEnabledMarket` and would revert on an already-disabled market.
@@ -12,11 +12,16 @@
 # equal open interest, to within the residual quoted per market. That reconciliation is the evidence
 # the list is complete — `forceCloseMarket` reverts with `ForceClosureResidueAboveMax` if it is not.
 #
-# MAX RESIDUAL BASE. Passed per market as raw wei (UD60x18). It is the measured residual plus one
-# wei, not a round number: the residual is real dust left by ADL base-multiplier scaling, and the
-# on-chain guard additionally requires `maxResidualBase < baseSpacing`, so it can never be set loose
-# enough to hide a genuinely missing position. Every value below is many orders of magnitude inside
-# that ceiling (baseSpacing is 0.1 base for every market here except ZRO, which is 0.01).
+# MAX RESIDUAL BASE. Passed per market as raw wei (UD60x18), a flat 1e9 wei (1e-9 base) for every
+# market. The measured residual is kept in the comment on each line so the real dust — left by ADL
+# base-multiplier scaling — stays visible and reviewable; the largest is 54,894 wei (MOVE), so 1e9
+# leaves ~4 orders of magnitude of headroom for the list drifting between snapshot and execution.
+#
+# A flat cap cannot hide a missing position: the on-chain guard additionally requires
+# `maxResidualBase < baseSpacing`, and baseSpacing is 1e17 (0.1 base) for every market here except
+# ZRO at 1e16 (0.01 base) — so 1e9 is 7-8 orders of magnitude below the smallest position that could
+# possibly be omitted. Anything genuinely missing is at least one baseSpacing and still reverts with
+# `ForceClosureResidueAboveMax`.
 #
 # !! RE-MEASURE BEFORE EXECUTING !!
 # Both the account list and the residual move with every trade, and these markets are reduce-only,
@@ -38,7 +43,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market15ZroId %>",
     [],
-    "1",                             # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_15zro"]
 
@@ -61,7 +66,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market25JtoId %>",
     [],
-    "1",                             # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_25jto"]
 
@@ -84,7 +89,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market45Ai16zId %>",
     [],
-    "1",                               # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_45ai16z"]
 
@@ -107,7 +112,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market53TonId %>",
     [],
-    "1",                             # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_53ton"]
 
@@ -130,7 +135,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market57MoveId %>",
     [],
-    "1",                              # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_57move"]
 
@@ -153,7 +158,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market58BeraId %>",
     [],
-    "1",                              # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_58bera"]
 
@@ -179,7 +184,7 @@ args = [
         "4",    #              +5.000000 ZORA (passive pool)
         "8015", #              -5.000000 ZORA
     ],
-    "1", # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_68zora"]
 
@@ -202,7 +207,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market69ProveId %>",
     [],
-    "1",                               # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_69prove"]
 
@@ -225,7 +230,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market71YzyId %>",
     [],
-    "1",                             # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_71yzy"]
 
@@ -248,7 +253,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market72XplId %>",
     [],
-    "1",                             # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_72xpl"]
 
@@ -271,7 +276,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market73WlfiId %>",
     [],
-    "1",                              # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_73wlfi"]
 
@@ -298,7 +303,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market34GoatId %>",
     [],
-    "1",                              # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_34goat"]
 
@@ -321,7 +326,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market36KNeiroId %>",
     [],
-    "1",                                # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_36kneiro"]
 
@@ -335,31 +340,6 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_36kneiro"]
 
-# AIXBT (market 46) — open interest 0.000000 base = $0.00 at $0.01850667/AIXBT
-# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
-[invoke.market_close_w1_force_close_46aixbt]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "forceCloseMarket"
-args = [
-    "<%= settings.market46AixbtId %>",
-    [],
-    "1",                               # 1 wei = 0.000000000000000001 base
-]
-depends = ["invoke.market_close_w1_freeze_46aixbt"]
-
-[invoke.market_close_w1_deactivate_46aixbt]
-target = ["PassivePerpProxy"]
-fromCall.func = "owner"
-func = "setFeatureFlagDenyAll"
-args = [
-    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market46AixbtId])) %>",
-    true,
-]
-depends = ["invoke.market_close_w1_force_close_46aixbt"]
-
-# GRIFFAIN (market 49) — open interest 0.000000 base = $0.00 at $0.01174995/GRIFFAIN
-# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
 [invoke.market_close_w1_force_close_49griffain]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -367,7 +347,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market49GriffainId %>",
     [],
-    "1",                                  # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_49griffain"]
 
@@ -390,7 +370,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market52ApeId %>",
     [],
-    "1",                             # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_52ape"]
 
@@ -413,7 +393,7 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market61IpId %>",
     [],
-    "1",                            # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_61ip"]
 
@@ -443,7 +423,7 @@ args = [
         "4",    #              +5.000000 KAITO (passive pool)
         "8015", #              -5.000000 KAITO
     ],
-    "1", # 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_67kaito"]
 

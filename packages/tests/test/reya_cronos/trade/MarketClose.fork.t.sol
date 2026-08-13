@@ -3,13 +3,14 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
 import { MarketCloseForkCheck } from "../../reya_common/trade/MarketClose.fork.c.sol";
+import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
 
 contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
-    /// @notice The 18 markets frozen and then force-closed by the W1 batch (10-14 Aug 2026) — Group 0 (reduce-only
+    /// @notice The 17 markets frozen and then force-closed by the W1 batch (10-14 Aug 2026) — Group 0 (reduce-only
     ///         since June) plus the RO batch announced on 6 Aug. Market ids are identical on cronos and reya_network.
     /// @dev Keep in sync with packages/tomls/src/passive_perp/market_close_w1_close_*.toml.
     function w1ClosedMarkets() internal pure returns (uint128[] memory ids) {
-        ids = new uint128[](18);
+        ids = new uint128[](17);
         // Group 0 — reduce-only since June
         ids[0] = 15; // ZRO
         ids[1] = 25; // JTO
@@ -25,12 +26,11 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
         // RO batch — reduce-only since 6 Aug
         ids[11] = 34; // GOAT
         ids[12] = 36; // KNEIRO
-        ids[13] = 46; // AIXBT
-        ids[14] = 49; // GRIFFAIN
-        ids[15] = 52; // APE
-        ids[16] = 61; // IP
+        ids[13] = 49; // GRIFFAIN
+        ids[14] = 52; // APE
+        ids[15] = 61; // IP
         // Group A — reduce-only since #507, pulled forward into the W1 close
-        ids[17] = 67; // KAITO
+        ids[16] = 67; // KAITO
     }
 
     /// @dev Use this test as a script to check the full lifecycle of closing a market: reduce-only -> no-extend ->
@@ -66,7 +66,7 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
     ///         catches a market left half-closed, or one accidentally un-frozen by a `set_market_config` re-run
     ///         writing the Stork node back / `batchSetMarketConfigurationVelocity` re-arming funding velocity.
     function test_W1MarketsAreClosed() public {
-        ensureW1MarketsFrozen();
+        ensureW1MarketsClosed();
 
         uint128[] memory closedMarkets = w1ClosedMarkets();
         for (uint256 i = 0; i < closedMarkets.length; i++) {
@@ -74,22 +74,109 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
         }
     }
 
-    /// @dev Freeze any W1 market the omnibus batch left unfrozen, refreshing the oracle price first.
-    ///
-    ///      The `market_close_w1_freeze_*` invokes revert with `StalePriceDetected` on a fork and cannon skips them:
-    ///      the fork pins chain state at a block, so the last Stork push stops advancing while the build's
-    ///      `block.timestamp` runs on in wall-clock time, and `freezeMarketForClosure` snapshots the price through
-    ///      `getOraclePriceForMarketOrder`. Without this the frozen precondition inside `check_MarketIsClosed` trips
-    ///      first and hides what this test is actually here to check — that the close emptied the market and the
-    ///      market was then disabled.
-    ///
-    ///      The `isFrozen` guard makes this a no-op wherever the batch did land.
-    function ensureW1MarketsFrozen() internal {
-        uint128[] memory frozenMarkets = w1ClosedMarkets();
+    /// @dev The account list the force-close batch passes for `marketId` — every account holding a
+    ///      non-zero base in that market, including the passive pool (account 4 on reya_cronos). Keyed by market id, not
+    ///      by position in `w1ClosedMarkets()`, so the two lists cannot silently drift out of step.
+    /// @dev Keep in sync with packages/tomls/src/passive_perp/market_close_w1_close_*.toml.
+    function w1CloseAccounts(uint128 marketId) internal pure returns (uint128[] memory a) {
+        if (marketId == 15) { // ZRO
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 25) { // JTO
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 34) { // GOAT
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 36) { // kNEIRO
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 45) { // AI16Z
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 49) { // GRIFFAIN
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 52) { // APE
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 53) { // TON
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 57) { // MOVE
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 58) { // BERA
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 61) { // IP
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 67) { // KAITO
+            a = new uint128[](2);
+            a[0] = 4;
+            a[1] = 8015;
+            return a;
+        }
+        if (marketId == 68) { // ZORA
+            a = new uint128[](2);
+            a[0] = 4;
+            a[1] = 8015;
+            return a;
+        }
+        if (marketId == 69) { // PROVE
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 71) { // YZY
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 72) { // XPL
+            a = new uint128[](0);
+            return a;
+        }
+        if (marketId == 73) { // WLFI
+            a = new uint128[](0);
+            return a;
+        }
+        revert(string.concat("no close account list for market ", vm.toString(marketId)));
+    }
 
-        for (uint256 i = 0; i < frozenMarkets.length; i++) {
-            if (!isFrozen(frozenMarkets[i])) {
-                check_FreezeMarketForClosure(frozenMarkets[i]);
+    /// @dev Bring every W1 market to the state the two batches leave it in: frozen, emptied, disabled.
+    ///
+    ///      Neither batch can execute on a fork. The `market_close_w1_freeze_*` invokes revert with
+    ///      `StalePriceDetected` — the fork pins chain state at a block so the last Stork push stops advancing while
+    ///      the build's `block.timestamp` runs on in wall-clock time — and cannon skips them, after which every
+    ///      dependent `forceCloseMarket` reverts with `ClosePriceNotLocked` and is skipped too. Asserting the closed
+    ///      state without this would be asserting something the fork cannot reach.
+    ///
+    ///      So do both halves here, with the same account lists the batch passes, and let the assertions in
+    ///      {check_MarketIsClosed} verify the result. The guards make each half a no-op wherever the batch did land,
+    ///      so on any environment where it executed for real this still checks the real thing.
+    function ensureW1MarketsClosed() internal {
+        uint128[] memory closedMarkets = w1ClosedMarkets();
+
+        for (uint256 i = 0; i < closedMarkets.length; i++) {
+            uint128 marketId = closedMarkets[i];
+
+            if (!isFrozen(marketId)) {
+                check_FreezeMarketForClosurePreservingEnabled(marketId);
+            }
+
+            if (IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId) != 0 || isMarketActive(marketId)) {
+                check_ForceCloseMarketAndDisable(marketId, w1CloseAccounts(marketId));
             }
         }
     }
