@@ -67,7 +67,7 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
         }
     }
 
-    /// @notice All 17 W1 markets end up pinned to a CONSTANT oracle node at a non-zero price with funding rate and
+    /// @notice All 18 W1 markets end up pinned to a CONSTANT oracle node at a non-zero price with funding rate and
     ///         velocity at zero. This is the assertion that catches an accidental un-freeze — a re-run of
     ///         `set_market_config` writing the Stork node back, or funding velocity being re-armed.
     /// @dev `ensureW1MarketsFrozen` freezes anything the omnibus batch did not, behind a fresh price. See the comment
@@ -81,6 +81,7 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
         }
     }
 
+
     /// @notice Stage 3: every frozen market (waiting to be force-closed) can still be traded down — a reducing trade
     ///         against the pool leaves the funding rate, open interest and pool PnL intact (PnL only realizes).
     function test_FrozenMarketsCanBeReduced() public {
@@ -88,6 +89,11 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
 
         uint128[] memory frozenMarkets = w1FrozenMarkets();
         for (uint256 i = 0; i < frozenMarkets.length; i++) {
+            // AIXBT (46) is disabled again at the end of this batch, so no trade can reach it. It is at open
+            // interest 0 with no holders, so there is nothing to reduce anyway.
+            if (!isMarketActive(frozenMarkets[i])) {
+                continue;
+            }
             check_FrozenMarketPositionsCanBeReduced(frozenMarkets[i], sec.passivePoolAccountId);
         }
     }
@@ -100,7 +106,7 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
     ///      past the node's staleness window, and `freezeMarketForClosure` snapshots the price through
     ///      `getOraclePriceForMarketOrder`. On mainnet the same invokes execute against a chain where Stork keeps
     ///      publishing, so the gap stays inside the window — the runbook still has to make sure prices are fresh at
-    ///      execution, since `marketOrderMaxStaleDuration` is 11s for all 17.
+    ///      execution, since `marketOrderMaxStaleDuration` is 11s for all 18.
     ///
     ///      Rather than assert a state the fork cannot reach, refresh the price and do the freeze here — the same
     ///      thing every other check that touches a price-sensitive entrypoint does. The `isFrozen` guard means this
@@ -110,7 +116,9 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
 
         for (uint256 i = 0; i < frozenMarkets.length; i++) {
             if (!isFrozen(frozenMarkets[i])) {
-                check_FreezeMarketForClosure(frozenMarkets[i]);
+                // Preserving the flag matters for AIXBT (46): this batch disables it again right after freezing it,
+                // so it arrives here disabled and must leave here disabled.
+                check_FreezeMarketForClosurePreservingEnabled(frozenMarkets[i]);
             }
         }
     }

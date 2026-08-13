@@ -114,6 +114,35 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
         assertGt(priceBefore, 0, "constant oracle price is zero");
     }
 
+    /// @notice {check_FreezeMarketForClosure}, but tolerant of a market that is meant to sit DISABLED either side of
+    ///         the freeze: it enables the market, freezes it, and restores the deny-all flag to what it was.
+    /// @dev This is exactly what the W1 batches do for AIXBT (46). Both `freezeMarketForClosure` and
+    ///      `forceCloseMarket` call `FeatureFlagSupport.ensureEnabledMarket` before the owner check, so a market can
+    ///      only be frozen or closed while it is enabled — yet AIXBT must not be tradeable in the window between the
+    ///      two batches. The batches therefore enable it for the instant of each call and disable it again straight
+    ///      after; this helper reproduces that so the fork checks exercise the same end state.
+    function check_FreezeMarketForClosurePreservingEnabled(uint128 marketId) internal {
+        bool wasDisabled = !isMarketActive(marketId);
+
+        if (wasDisabled) {
+            setMarketEnabled(marketId, true);
+        }
+
+        check_FreezeMarketForClosure(marketId);
+
+        if (wasDisabled) {
+            setMarketEnabled(marketId, false);
+        }
+    }
+
+    /// @dev Flip a market's `marketEnabled` deny-all flag as the owner. `enabled = false` sets deny-all to true.
+    function setMarketEnabled(uint128 marketId, bool enabled) internal {
+        bytes32 flagId = keccak256(abi.encode(keccak256(bytes("marketEnabled")), marketId));
+
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setFeatureFlagDenyAll(flagId, !enabled);
+    }
+
     /// @notice Assert `marketId` is ALREADY frozen on-chain — that `freezeMarketForClosure` has run against it and
     ///         nothing has since re-armed it. Unlike {check_FreezeMarketForClosure}, this does not perform the freeze;
     ///         it only observes, so it is the check to run over the markets a close batch has already frozen.
