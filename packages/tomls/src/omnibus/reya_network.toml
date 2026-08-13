@@ -18,7 +18,7 @@ include = [
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.161"
+version = "1.0.162"
 
 [var.chain_ids]
 ethereumChainId = "1"
@@ -583,18 +583,18 @@ zeuzExchangeRebateUnscaled = "0.2"
 pool1RusdRebateUnscaled = "0.2"
 
 [var.fees_configs]
-takerFeeTier0Unscaled = "0.00040"
-makerFeeTier0Unscaled = "0.00040"
-takerFeeTier1Unscaled = "0.00035"
-makerFeeTier1Unscaled = "0.00035"
-takerFeeTier2Unscaled = "0.00030"
-makerFeeTier2Unscaled = "0.00030"
-takerFeeTier3Unscaled = "0.00027"
-makerFeeTier3Unscaled = "0.00027"
-takerFeeTier4Unscaled = "0.00025"
-makerFeeTier4Unscaled = "0.00025"
-takerFeeTier5Unscaled = "0.00022"
-makerFeeTier5Unscaled = "0.00022"
+takerFeeTier0Unscaled = "0.00030"
+makerFeeTier0Unscaled = "0.00030"
+takerFeeTier1Unscaled = "0.00028"
+makerFeeTier1Unscaled = "0.00028"
+takerFeeTier2Unscaled = "0.00026"
+makerFeeTier2Unscaled = "0.00026"
+takerFeeTier3Unscaled = "0.00024"
+makerFeeTier3Unscaled = "0.00024"
+takerFeeTier4Unscaled = "0.00022"
+makerFeeTier4Unscaled = "0.00022"
+takerFeeTier5Unscaled = "0.00021"
+makerFeeTier5Unscaled = "0.00021"
 takerFeeTier6Unscaled = "0.00020"
 makerFeeTier6Unscaled = "0.00020"
 takerFeeTier100Unscaled = "0.00010"

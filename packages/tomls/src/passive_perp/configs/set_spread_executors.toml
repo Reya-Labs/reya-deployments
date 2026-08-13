@@ -67,3 +67,17 @@ args = [
     "<%= settings.co_execution_bot7 %>",
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_spread_config_owner]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('configureSpread')) %>", "<%= settings.owner %>"]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_reset_eth_market_spread]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setMarketConfigurationSpread"
+args = ["<%= settings.market1EthId %>", "0"]
+depends = ["invoke.upgrade_passive_perp_proxy"]

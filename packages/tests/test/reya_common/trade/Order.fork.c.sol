@@ -14,7 +14,7 @@ import { sd, SD59x18, UNIT as ONE_sd } from "@prb/math/SD59x18.sol";
 import { ud, UD60x18 } from "@prb/math/UD60x18.sol";
 
 contract OrderForkCheck is BaseReyaForkTest {
-    int256 private constant BASIC_TIER_FEE_PERCENTAGE = 0.0004e18;
+    int256 private constant BASIC_TIER_FEE_PERCENTAGE = 0.0003e18;
 
     function getMarketZeroFeesFeatureFlagId(uint128 marketId) internal pure returns (bytes32) {
         return keccak256(abi.encode(keccak256(bytes("marketZeroFees")), marketId));

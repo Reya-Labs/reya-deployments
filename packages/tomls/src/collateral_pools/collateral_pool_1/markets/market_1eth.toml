@@ -88,6 +88,27 @@ args = [
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
+[invoke.market_1eth_disabled_zero_fee_option]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAdmins"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market1EthId])) %>",
+    [
+    ],
+]
+depends = ["invoke.market_1eth_enabled_zero_fee_option"]
+
+[invoke.market_1eth_lifted_zero_fee]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market1EthId])) %>",
+    false,
+]
+depends = ["invoke.market_1eth_disabled_zero_fee_option"]
+
 #####################################
 # Market Configuration
 #####################################

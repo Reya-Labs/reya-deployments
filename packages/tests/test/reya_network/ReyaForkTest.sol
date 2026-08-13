@@ -9,6 +9,7 @@ import { ICoreProxy, ParentCollateralConfig } from "../../src/interfaces/ICorePr
 import { IOracleManagerProxy, NodeDefinition, NodeOutput } from "../../src/interfaces/IOracleManagerProxy.sol";
 import { IPassivePerpProxy, MarketConfigurationData } from "../../src/interfaces/IPassivePerpProxy.sol";
 import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
+import { IPeripheryProxy } from "../../src/interfaces/IPeripheryProxy.sol";
 import { ITokenProxy } from "../../src/interfaces/ITokenProxy.sol";
 
 contract ReyaForkTest is BaseReyaForkTest {
@@ -759,6 +760,28 @@ contract ReyaForkTest is BaseReyaForkTest {
             deal(sec.ramber, sec.multisig, amount);
             ITokenProxy(sec.ramber).approve(sec.core, amount);
             ICoreProxy(sec.core).deposit(sec.passivePoolAccountId, sec.ramber, amount);
+        }
+
+        // (*) increase the withdrawal fees to 1 to allow for periphery withdrawal tests
+        {
+            address[] memory nonwithdrawableTokens = new address[](4);
+            nonwithdrawableTokens[0] = sec.usde;
+            nonwithdrawableTokens[1] = sec.susde;
+            nonwithdrawableTokens[2] = sec.deusd;
+            nonwithdrawableTokens[3] = sec.sdeusd;
+
+            for (uint256 i = 0; i < nonwithdrawableTokens.length; i++) {
+                address token = nonwithdrawableTokens[i];
+                uint256 staticWithdrawFee = IPeripheryProxy(sec.periphery).getTokenStaticWithdrawFee(
+                    token, dec.socketConnector[token][sec.destinationChainId]
+                );
+
+                assertEq(staticWithdrawFee, 0);
+
+                IPeripheryProxy(sec.periphery).setTokenStaticWithdrawFee(
+                    token, dec.socketConnector[token][sec.destinationChainId], 1
+                );
+            }
         }
 
         vm.stopPrank();
