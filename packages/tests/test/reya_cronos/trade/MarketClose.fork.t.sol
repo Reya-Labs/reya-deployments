@@ -75,79 +75,97 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
     }
 
     /// @dev The account list the force-close batch passes for `marketId` — every account holding a
-    ///      non-zero base in that market, including the passive pool (account 4 on reya_cronos). Keyed by market id, not
-    ///      by position in `w1ClosedMarkets()`, so the two lists cannot silently drift out of step.
-    /// @dev Keep in sync with packages/tomls/src/passive_perp/market_close_w1_close_*.toml.
+    ///      non-zero base in that market, including the passive pool (account 4 on reya_cronos).
+    /// @dev Keyed by market id rather than by position in `w1ClosedMarkets()`, so the two cannot
+    ///      silently drift out of step. Keep in sync with
+    ///      packages/tomls/src/passive_perp/market_close_w1_close_*.toml.
     function w1CloseAccounts(uint128 marketId) internal pure returns (uint128[] memory a) {
-        if (marketId == 15) { // ZRO
+        // ZRO
+        if (marketId == 15) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 25) { // JTO
+        // JTO
+        if (marketId == 25) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 34) { // GOAT
+        // GOAT
+        if (marketId == 34) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 36) { // kNEIRO
+        // kNEIRO
+        if (marketId == 36) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 45) { // AI16Z
+        // kNEIRO
+        if (marketId == 36) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 49) { // GRIFFAIN
+        // AI16Z
+        if (marketId == 45) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 52) { // APE
+        // APE
+        if (marketId == 52) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 53) { // TON
+        // TON
+        if (marketId == 53) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 57) { // MOVE
+        // MOVE
+        if (marketId == 57) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 58) { // BERA
+        // BERA
+        if (marketId == 58) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 61) { // IP
+        // IP
+        if (marketId == 61) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 67) { // KAITO
+        // KAITO
+        if (marketId == 67) {
             a = new uint128[](2);
             a[0] = 4;
             a[1] = 8015;
             return a;
         }
-        if (marketId == 68) { // ZORA
+        // ZORA
+        if (marketId == 68) {
             a = new uint128[](2);
             a[0] = 4;
             a[1] = 8015;
             return a;
         }
-        if (marketId == 69) { // PROVE
+        // PROVE
+        if (marketId == 69) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 71) { // YZY
+        // YZY
+        if (marketId == 71) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 72) { // XPL
+        // XPL
+        if (marketId == 72) {
             a = new uint128[](0);
             return a;
         }
-        if (marketId == 73) { // WLFI
+        // WLFI
+        if (marketId == 73) {
             a = new uint128[](0);
             return a;
         }

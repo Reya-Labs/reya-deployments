@@ -81,156 +81,174 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
     }
 
     /// @dev The account list the force-close batch passes for `marketId` — every account holding a
-    ///      non-zero base in that market, including the passive pool (account 2 on reya_network). Keyed by market id, not
-    ///      by position in `w1ClosedMarkets()`, so the two lists cannot silently drift out of step.
-    /// @dev Keep in sync with packages/tomls/src/passive_perp/market_close_w1_close_*.toml.
+    ///      non-zero base in that market, including the passive pool (account 2 on reya_network).
+    /// @dev Keyed by market id rather than by position in `w1ClosedMarkets()`, so the two cannot
+    ///      silently drift out of step. Keep in sync with
+    ///      packages/tomls/src/passive_perp/market_close_w1_close_*.toml.
     function w1CloseAccounts(uint128 marketId) internal pure returns (uint128[] memory a) {
-        if (marketId == 15) { // ZRO
+        // ZRO
+        if (marketId == 15) {
             a = new uint128[](13);
             a[0] = 2;
-            a[1] = 17251;
-            a[2] = 41476;
-            a[3] = 18073;
-            a[4] = 128904;
-            a[5] = 135288;
-            a[6] = 18225;
-            a[7] = 134477;
-            a[8] = 40887;
-            a[9] = 23724;
-            a[10] = 79924;
-            a[11] = 127173;
-            a[12] = 60666;
+            a[1] = 17_251;
+            a[2] = 41_476;
+            a[3] = 18_073;
+            a[4] = 128_904;
+            a[5] = 135_288;
+            a[6] = 18_225;
+            a[7] = 134_477;
+            a[8] = 40_887;
+            a[9] = 23_724;
+            a[10] = 79_924;
+            a[11] = 127_173;
+            a[12] = 60_666;
             return a;
         }
-        if (marketId == 25) { // JTO
+        // JTO
+        if (marketId == 25) {
             a = new uint128[](5);
-            a[0] = 129611;
-            a[1] = 20303;
+            a[0] = 129_611;
+            a[1] = 20_303;
             a[2] = 4935;
-            a[3] = 18073;
+            a[3] = 18_073;
             a[4] = 2;
             return a;
         }
-        if (marketId == 34) { // GOAT
+        // GOAT
+        if (marketId == 34) {
             a = new uint128[](5);
-            a[0] = 35169;
-            a[1] = 17695;
-            a[2] = 127253;
-            a[3] = 126268;
+            a[0] = 35_169;
+            a[1] = 17_695;
+            a[2] = 127_253;
+            a[3] = 126_268;
             a[4] = 2;
             return a;
         }
-        if (marketId == 36) { // kNEIRO
+        // kNEIRO
+        if (marketId == 36) {
             a = new uint128[](3);
             a[0] = 2;
-            a[1] = 17695;
-            a[2] = 126268;
+            a[1] = 17_695;
+            a[2] = 126_268;
             return a;
         }
-        if (marketId == 45) { // AI16Z
-            a = new uint128[](3);
-            a[0] = 2;
-            a[1] = 128623;
-            a[2] = 43829;
-            return a;
-        }
-        if (marketId == 49) { // GRIFFAIN
+        // kNEIRO
+        if (marketId == 36) {
             a = new uint128[](2);
             a[0] = 2;
-            a[1] = 131432;
+            a[1] = 131_432;
             return a;
         }
-        if (marketId == 52) { // APE
+        // AI16Z
+        if (marketId == 45) {
             a = new uint128[](3);
-            a[0] = 134477;
-            a[1] = 48720;
+            a[0] = 2;
+            a[1] = 128_623;
+            a[2] = 43_829;
+            return a;
+        }
+        // APE
+        if (marketId == 52) {
+            a = new uint128[](3);
+            a[0] = 134_477;
+            a[1] = 48_720;
             a[2] = 2;
             return a;
         }
-        if (marketId == 53) { // TON
+        // TON
+        if (marketId == 53) {
             a = new uint128[](7);
-            a[0] = 127253;
-            a[1] = 98897;
-            a[2] = 15678;
+            a[0] = 127_253;
+            a[1] = 98_897;
+            a[2] = 15_678;
             a[3] = 2;
-            a[4] = 11117;
+            a[4] = 11_117;
             a[5] = 839;
-            a[6] = 105367;
+            a[6] = 105_367;
             return a;
         }
-        if (marketId == 57) { // MOVE
+        // MOVE
+        if (marketId == 57) {
             a = new uint128[](3);
             a[0] = 2;
-            a[1] = 79924;
-            a[2] = 100547;
+            a[1] = 79_924;
+            a[2] = 100_547;
             return a;
         }
-        if (marketId == 58) { // BERA
+        // BERA
+        if (marketId == 58) {
             a = new uint128[](3);
-            a[0] = 23735;
+            a[0] = 23_735;
             a[1] = 2;
-            a[2] = 107180;
+            a[2] = 107_180;
             return a;
         }
-        if (marketId == 61) { // IP
+        // IP
+        if (marketId == 61) {
             a = new uint128[](5);
-            a[0] = 135288;
-            a[1] = 127253;
+            a[0] = 135_288;
+            a[1] = 127_253;
             a[2] = 7301;
-            a[3] = 20303;
+            a[3] = 20_303;
             a[4] = 2;
             return a;
         }
-        if (marketId == 67) { // KAITO
+        // KAITO
+        if (marketId == 67) {
             a = new uint128[](10);
-            a[0] = 102387;
-            a[1] = 129339;
+            a[0] = 102_387;
+            a[1] = 129_339;
             a[2] = 7301;
             a[3] = 2;
-            a[4] = 48720;
-            a[5] = 129450;
-            a[6] = 135845;
-            a[7] = 134542;
-            a[8] = 131432;
-            a[9] = 123082;
+            a[4] = 48_720;
+            a[5] = 129_450;
+            a[6] = 135_845;
+            a[7] = 134_542;
+            a[8] = 131_432;
+            a[9] = 123_082;
             return a;
         }
-        if (marketId == 68) { // ZORA
+        // ZORA
+        if (marketId == 68) {
             a = new uint128[](4);
-            a[0] = 120595;
+            a[0] = 120_595;
             a[1] = 2;
-            a[2] = 38256;
-            a[3] = 125390;
+            a[2] = 38_256;
+            a[3] = 125_390;
             return a;
         }
-        if (marketId == 69) { // PROVE
+        // PROVE
+        if (marketId == 69) {
             a = new uint128[](2);
             a[0] = 2;
-            a[1] = 72493;
+            a[1] = 72_493;
             return a;
         }
-        if (marketId == 71) { // YZY
+        // YZY
+        if (marketId == 71) {
             a = new uint128[](2);
             a[0] = 2;
             a[1] = 3176;
             return a;
         }
-        if (marketId == 72) { // XPL
+        // XPL
+        if (marketId == 72) {
             a = new uint128[](8);
             a[0] = 2;
-            a[1] = 134477;
-            a[2] = 14378;
-            a[3] = 11117;
-            a[4] = 47927;
-            a[5] = 112901;
-            a[6] = 71259;
-            a[7] = 11363;
+            a[1] = 134_477;
+            a[2] = 14_378;
+            a[3] = 11_117;
+            a[4] = 47_927;
+            a[5] = 112_901;
+            a[6] = 71_259;
+            a[7] = 11_363;
             return a;
         }
-        if (marketId == 73) { // WLFI
+        // WLFI
+        if (marketId == 73) {
             a = new uint128[](2);
             a[0] = 2;
-            a[1] = 128260;
+            a[1] = 128_260;
             return a;
         }
         revert(string.concat("no close account list for market ", vm.toString(marketId)));
