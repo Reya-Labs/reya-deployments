@@ -19,7 +19,7 @@
 # Preconditions enforced on-chain by `MarketCloseModule.freezeMarketForClosure`:
 #   - caller is `owner`                       -> `fromCall.func = "owner"` below
 #   - market is ENABLED (`ensureEnabledMarket`) -> see the AIXBT re-enable at the top of this file
-#   - market is reduce-only (`maxOpenBase == 0`) -> already true in the omnibus for all 17
+#   - market is reduce-only (`maxOpenBase == 0`) -> already true in the omnibus for all 18
 #
 # Each freeze `depends` on its market's `set_market_config`, so that on any build where that market's
 # config is re-rendered the config write lands BEFORE the freeze. Otherwise `setMarketConfiguration`
@@ -27,7 +27,7 @@
 #
 # !! FRESH PRICES ARE REQUIRED AT EXECUTION !!
 # `freezeMarketForClosure` snapshots the price through `getOraclePriceForMarketOrder`, which enforces
-# the market's staleness window — 11 seconds for all 17 of these. If any of the 17 Stork feeds is
+# the market's staleness window — 11 seconds for all 18 of these. If any of the 18 Stork feeds is
 # older than that when the batch executes, that market's freeze reverts with `StalePriceDetected` and
 # cannon SKIPS it with a warning rather than aborting the build: a partially-frozen batch is a silent
 # outcome, not a loud one. Push fresh Stork prices immediately before execution, split the batch if
@@ -49,7 +49,7 @@
 # !! FOLLOW-UP REQUIRED AFTER THIS BATCH EXECUTES !!
 # `freezeMarketForClosure` registers the CONSTANT node at execution time, so its node id is not known
 # until the tx lands. The omnibus still renders `marketNNXxx_oracleNodeId = <%= settings.xxxUsdcMark
-# NodeIdStork %>`. Any FUTURE change to any var in one of these 17 `[var.market_NN*]` blocks re-runs
+# NodeIdStork %>`. Any FUTURE change to any var in one of these 18 `[var.market_NN*]` blocks re-runs
 # that market's `set_market_config` and un-freezes it. Once this batch has run, read the registered
 # node ids back off-chain and pin them in the omnibus the way MKR / FTM / LAYER already are
 # (`market7Mkr_oracleNodeId = <%= settings.mkrUsdcNodeIdClosing %>`).
@@ -57,8 +57,11 @@
 
 # AIXBT (46) was disabled on-chain ahead of this plan (`marketEnabled` deny-all == true). Both
 # `freezeMarketForClosure` and `forceCloseMarket` call `FeatureFlagSupport.ensureEnabledMarket`
-# first, so the market has to be re-enabled for the duration of the close. It is disabled again in
-# the force-close batch, once it is actually closed.
+# first, so the market has to be enabled at the instant each of them runs. It is therefore re-enabled
+# here, frozen, and disabled again at the END of this same batch — see
+# `market_close_w1_predisable_46aixbt` at the bottom of this file — so that AIXBT is never tradeable
+# in the window between this batch and the force-close batch. The force-close batch re-enables it once
+# more immediately before its `forceCloseMarket`, then disables it for good.
 [invoke.market_close_w1_reenable_46aixbt]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -209,3 +212,47 @@ fromCall.func = "owner"
 func = "freezeMarketForClosure"
 args = ["<%= settings.market67KaitoId %>"]
 depends = ["invoke.market_67kaito_set_market_config"]
+
+####################################################################################################
+# AIXBT — disable again, at the very end of this batch
+####################################################################################################
+
+# AIXBT was re-enabled at the top of this file only so `freezeMarketForClosure` could run on it
+# (`ensureEnabledMarket`). Put it straight back to disabled here, so it is not tradeable during the
+# freeze -> force-close window. Every other market in this batch stays enabled through that window on
+# purpose: they hold open positions that must remain liquidatable at the locked price (scope doc
+# §4a), whereas AIXBT is already at open interest 0 with no holders, so nothing is lost by shutting
+# it now.
+#
+# AIXBT is NOT force-closed. At open interest 0 in reduce-only there is nothing to unwind, so the
+# force-close batch does not touch it at all — freezing the price and disabling the market here is the
+# whole of its closure. That is why this disable is final rather than a temporary state the next batch
+# undoes.
+#
+# !! VERIFY THIS LANDED — IT CAN BE SKIPPED SILENTLY !!
+# Cannon does NOT run an invoke whose dependency was skipped; it cascades with
+# "dependency operation not completed". So if the AIXBT freeze above reverts with
+# `StalePriceDetected` (see the staleness note at the top of this file), cannon skips it AND skips
+# this disable — while `market_close_w1_reenable_46aixbt` has already succeeded, because it is not
+# price-sensitive. The net result is AIXBT left ENABLED and un-frozen, warned about but not aborted.
+#
+# There is no way to express "run this even if the freeze was skipped" in cannon's dependency model:
+# dropping the `depends` would let this run BEFORE the freeze and break it. So this is an operational
+# gate, not a structural guarantee — after executing this batch, confirm:
+#
+#   cast call $PERP "getFeatureFlagDenyAll(bytes32)(bool)" \
+#     $(cast keccak $(cast abi-encode "f(bytes32,uint128)" $(cast keccak "marketEnabled") 46)) \
+#     --rpc-url https://rpc.reya.network
+#
+# It must return true. If it returns false, the freeze was skipped: re-push a fresh Stork price, re-run
+# the batch, and re-check. The same cascade is also why the fork checks cannot assert this end state —
+# the fork always skips the freeze, so AIXBT always ends enabled there.
+[invoke.market_close_w1_predisable_46aixbt]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market46AixbtId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_freeze_46aixbt"]
