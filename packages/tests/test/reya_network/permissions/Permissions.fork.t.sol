@@ -195,7 +195,7 @@ contract PermissionsForkTest is ReyaForkTest {
         bytes32 flagId = keccak256(bytes("configureSpread"));
         address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flagId);
 
-        address[] memory expectedAllowlist = new address[](7);
+        address[] memory expectedAllowlist = new address[](8);
         expectedAllowlist[0] = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
         expectedAllowlist[1] = 0xa7a43DFe3353DFf531bc4faDDE5840B9182C2688;
         expectedAllowlist[2] = 0x10eE819bc1E25cd2Eb3CE023724209f6f56Ef103;
@@ -203,6 +203,7 @@ contract PermissionsForkTest is ReyaForkTest {
         expectedAllowlist[4] = 0x496c1408B34353Cd14067DF45a643b9F6Ea1aaa4;
         expectedAllowlist[5] = 0xbf59e78614F97fDbA523238AefDbe64E2efb28C3;
         expectedAllowlist[6] = 0xbAF944384b46eB8609c3A5C7894028cE60c15354;
+        expectedAllowlist[7] = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9;
 
         assertEq(allowlist, expectedAllowlist);
         assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagAllowAll(flagId));
