@@ -42,7 +42,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market15ZroId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_15zro"]
@@ -65,7 +66,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market25JtoId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_25jto"]
@@ -88,7 +90,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market45Ai16zId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_45ai16z"]
@@ -111,7 +114,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market53TonId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_53ton"]
@@ -134,7 +138,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market57MoveId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_57move"]
@@ -157,7 +162,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market58BeraId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_58bera"]
@@ -206,7 +212,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market69ProveId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_69prove"]
@@ -229,7 +236,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market71YzyId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_71yzy"]
@@ -252,7 +260,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market72XplId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_72xpl"]
@@ -275,7 +284,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market73WlfiId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_73wlfi"]
@@ -302,7 +312,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market34GoatId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_34goat"]
@@ -325,7 +336,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market36KNeiroId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_36kneiro"]
@@ -348,7 +360,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market49GriffainId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_49griffain"]
@@ -371,7 +384,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market52ApeId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_52ape"]
@@ -394,7 +408,8 @@ fromCall.func = "owner"
 func = "forceCloseMarket"
 args = [
     "<%= settings.market61IpId %>",
-    [],
+    [
+    ],
     "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
 ]
 depends = ["invoke.market_close_w1_freeze_61ip"]

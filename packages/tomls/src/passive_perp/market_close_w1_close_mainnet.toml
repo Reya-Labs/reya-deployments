@@ -43,19 +43,19 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market15ZroId %>",
     [
-        "17251", #          +1,000.000000 ZRO
-        "41476", #            +555.000000 ZRO
-        "128904",#            +209.000000 ZRO
-        "135288",#            +200.000000 ZRO
-        "18225", #             +50.000000 ZRO
-        "134477",#             +20.450000 ZRO
-        "40887", #              +5.240000 ZRO
-        "23724", #              +1.680000 ZRO
-        "79924", #              +0.430000 ZRO
-        "60666", #              +0.110000 ZRO
-        "127173",#              -0.300000 ZRO
-        "18073", #            -234.526902 ZRO
-        "2",     #          -1,807.083097 ZRO (passive pool)
+        "17251",  #          +1,000.000000 ZRO
+        "41476",  #            +555.000000 ZRO
+        "128904", #            +209.000000 ZRO
+        "135288", #            +200.000000 ZRO
+        "18225",  #             +50.000000 ZRO
+        "134477", #             +20.450000 ZRO
+        "40887",  #              +5.240000 ZRO
+        "23724",  #              +1.680000 ZRO
+        "79924",  #              +0.430000 ZRO
+        "60666",  #              +0.110000 ZRO
+        "127173", #              -0.300000 ZRO
+        "18073",  #            -234.526902 ZRO
+        "2",      #          -1,807.083097 ZRO (passive pool)
     ],
     "1000000000", # 1e9 wei cap; measured residual 10,013 wei = 0.000000000000010013 base
 ]
@@ -80,11 +80,11 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market25JtoId %>",
     [
-        "20303", #            +390.000000 JTO
-        "4935",  #            +100.000000 JTO
-        "18073", #             +52.800000 JTO
-        "2",     #             +23.200000 JTO (passive pool)
-        "129611",#            -566.000000 JTO
+        "20303",  #            +390.000000 JTO
+        "4935",   #            +100.000000 JTO
+        "18073",  #             +52.800000 JTO
+        "2",      #             +23.200000 JTO (passive pool)
+        "129611", #            -566.000000 JTO
     ],
     "1000000000", # 1e9 wei cap; measured residual 0 wei (list reconciles exactly)
 ]
@@ -109,9 +109,9 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market45Ai16zId %>",
     [
-        "128623",#             +18.200000 AI16Z
-        "43829", #              +0.600000 AI16Z
-        "2",     #             -18.799999 AI16Z (passive pool)
+        "128623", #             +18.200000 AI16Z
+        "43829",  #              +0.600000 AI16Z
+        "2",      #             -18.799999 AI16Z (passive pool)
     ],
     "1000000000", # 1e9 wei cap; measured residual 3,354 wei = 0.000000000000003354 base
 ]
@@ -136,13 +136,13 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market53TonId %>",
     [
-        "98897", #            +253.400000 TON
-        "15678", #            +100.000000 TON
-        "11117", #             +36.800000 TON
-        "105367",#              +2.900000 TON
-        "839",   #             -13.800000 TON
-        "2",     #             -59.299999 TON (passive pool)
-        "127253",#            -320.000000 TON
+        "98897",  #            +253.400000 TON
+        "15678",  #            +100.000000 TON
+        "11117",  #             +36.800000 TON
+        "105367", #              +2.900000 TON
+        "839",    #             -13.800000 TON
+        "2",      #             -59.299999 TON (passive pool)
+        "127253", #            -320.000000 TON
     ],
     "1000000000", # 1e9 wei cap; measured residual 162 wei = 0.000000000000000162 base
 ]
@@ -167,9 +167,9 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market57MoveId %>",
     [
-        "2",     #              +0.140290 MOVE (passive pool)
-        "100547",#              -0.040372 MOVE
-        "79924", #              -0.099917 MOVE
+        "2",      #              +0.140290 MOVE (passive pool)
+        "100547", #              -0.040372 MOVE
+        "79924",  #              -0.099917 MOVE
     ],
     "1000000000", # 1e9 wei cap; measured residual 54,893 wei = 0.000000000000054893 base
 ]
@@ -194,9 +194,9 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market58BeraId %>",
     [
-        "2",     #              +7.588450 BERA (passive pool)
-        "107180",#              +2.100000 BERA
-        "23735", #              -9.688450 BERA
+        "2",      #              +7.588450 BERA (passive pool)
+        "107180", #              +2.100000 BERA
+        "23735",  #              -9.688450 BERA
     ],
     "1000000000", # 1e9 wei cap; measured residual 119 wei = 0.000000000000000119 base
 ]
@@ -221,10 +221,10 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market68ZoraId %>",
     [
-        "2",     #         +13,141.999999 ZORA (passive pool)
-        "38256", #            +480.900000 ZORA
-        "125390",#            -174.300000 ZORA
-        "120595",#         -13,448.600000 ZORA
+        "2",      #         +13,141.999999 ZORA (passive pool)
+        "38256",  #            +480.900000 ZORA
+        "125390", #            -174.300000 ZORA
+        "120595", #         -13,448.600000 ZORA
     ],
     "1000000000", # 1e9 wei cap; measured residual 8,398 wei = 0.000000000000008398 base
 ]
@@ -249,8 +249,8 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market69ProveId %>",
     [
-        "72493",#              +0.100000 PROVE
-        "2",    #              -0.100000 PROVE (passive pool)
+        "72493", #              +0.100000 PROVE
+        "2",     #              -0.100000 PROVE (passive pool)
     ],
     "1000000000", # 1e9 wei cap; measured residual 0 wei (list reconciles exactly)
 ]
@@ -275,8 +275,8 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market71YzyId %>",
     [
-        "3176",#              +5.800000 YZY
-        "2",   #              -5.800000 YZY (passive pool)
+        "3176", #              +5.800000 YZY
+        "2",    #              -5.800000 YZY (passive pool)
     ],
     "1000000000", # 1e9 wei cap; measured residual 0 wei (list reconciles exactly)
 ]
@@ -301,14 +301,14 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market72XplId %>",
     [
-        "134477",#            +295.900000 XPL
-        "14378", #            +132.124229 XPL
-        "11117", #             +32.301357 XPL
-        "71259", #              +0.700000 XPL
-        "11363", #              -0.019714 XPL
-        "112901",#              -0.987241 XPL
-        "47927", #              -5.627277 XPL
-        "2",     #            -454.391353 XPL (passive pool)
+        "134477", #            +295.900000 XPL
+        "14378",  #            +132.124229 XPL
+        "11117",  #             +32.301357 XPL
+        "71259",  #              +0.700000 XPL
+        "11363",  #              -0.019714 XPL
+        "112901", #              -0.987241 XPL
+        "47927",  #              -5.627277 XPL
+        "2",      #            -454.391353 XPL (passive pool)
     ],
     "1000000000", # 1e9 wei cap; measured residual 21,020 wei = 0.000000000000021020 base
 ]
@@ -333,8 +333,8 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market73WlfiId %>",
     [
-        "128260",#             +56.900000 WLFI
-        "2",     #             -56.900000 WLFI (passive pool)
+        "128260", #             +56.900000 WLFI
+        "2",      #             -56.900000 WLFI (passive pool)
     ],
     "1000000000", # 1e9 wei cap; measured residual 6,863 wei = 0.000000000000006863 base
 ]
@@ -363,11 +363,11 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market34GoatId %>",
     [
-        "35169", #      +2,000,000.000000 GOAT
-        "2",     #         -31,141.900000 GOAT (passive pool)
-        "126268",#         -88,517.000000 GOAT
-        "127253",#        -110,000.000000 GOAT
-        "17695", #      -1,770,341.100000 GOAT
+        "35169",  #      +2,000,000.000000 GOAT
+        "2",      #         -31,141.900000 GOAT (passive pool)
+        "126268", #         -88,517.000000 GOAT
+        "127253", #        -110,000.000000 GOAT
+        "17695",  #      -1,770,341.100000 GOAT
     ],
     "1000000000", # 1e9 wei cap; measured residual 0 wei (list reconciles exactly)
 ]
@@ -392,9 +392,9 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market36KNeiroId %>",
     [
-        "2",     #            +736.400000 kNEIRO (passive pool)
-        "126268",#             -35.000000 kNEIRO
-        "17695", #            -701.400000 kNEIRO
+        "2",      #            +736.400000 kNEIRO (passive pool)
+        "126268", #             -35.000000 kNEIRO
+        "17695",  #            -701.400000 kNEIRO
     ],
     "1000000000", # 1e9 wei cap; measured residual 0 wei (list reconciles exactly)
 ]
@@ -419,9 +419,9 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market49GriffainId %>",
     [
-        "131432",#         +50,000.000000 GRIFFAIN
-        "2",     #         -15,929.500000 GRIFFAIN (passive pool)
-        "11236", #         -34,070.500000 GRIFFAIN
+        "131432", #         +50,000.000000 GRIFFAIN
+        "2",      #         -15,929.500000 GRIFFAIN (passive pool)
+        "11236",  #         -34,070.500000 GRIFFAIN
     ],
     "1000000000", # 1e9 wei cap; measured residual 0 wei (list reconciles exactly)
 ]
@@ -446,9 +446,9 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market52ApeId %>",
     [
-        "134477",#            +158.500000 APE
-        "2",     #             -67.399999 APE (passive pool)
-        "48720", #             -91.100000 APE
+        "134477", #            +158.500000 APE
+        "2",      #             -67.399999 APE (passive pool)
+        "48720",  #             -91.100000 APE
     ],
     "1000000000", # 1e9 wei cap; measured residual 1,091 wei = 0.000000000000001091 base
 ]
@@ -473,11 +473,11 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market61IpId %>",
     [
-        "127253",#         +12,000.000000 IP
-        "7301",  #          +6,684.900000 IP
-        "20303", #          +1,300.000000 IP
-        "2",     #             +15.099999 IP (passive pool)
-        "135288",#         -20,000.000000 IP
+        "127253", #         +12,000.000000 IP
+        "7301",   #          +6,684.900000 IP
+        "20303",  #          +1,300.000000 IP
+        "2",      #             +15.099999 IP (passive pool)
+        "135288", #         -20,000.000000 IP
     ],
     "1000000000", # 1e9 wei cap; measured residual 4 wei = 0.000000000000000004 base
 ]
@@ -506,16 +506,16 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market67KaitoId %>",
     [
-        "102387",#         +46,666.000000 KAITO
-        "48720", #          +3,550.300000 KAITO
-        "135845",#          +2,200.000000 KAITO
-        "134542",#             +37.800000 KAITO
-        "129339",#              +0.000000 KAITO  <- flat, kept: a reduce-only market can still be re-entered OI-neutrally (scope doc 3.1)
-        "7301",  #              +0.000000 KAITO  <- flat, kept: a reduce-only market can still be re-entered OI-neutrally (scope doc 3.1)
-        "129450",#              +0.000000 KAITO  <- flat, kept: a reduce-only market can still be re-entered OI-neutrally (scope doc 3.1)
-        "131432",#              +0.000000 KAITO  <- flat, kept: a reduce-only market can still be re-entered OI-neutrally (scope doc 3.1)
-        "123082",#             -10.000000 KAITO
-        "2",     #         -52,444.100000 KAITO (passive pool)
+        "102387", #         +46,666.000000 KAITO
+        "48720",  #          +3,550.300000 KAITO
+        "135845", #          +2,200.000000 KAITO
+        "134542", #             +37.800000 KAITO
+        "129339", #              +0.000000 KAITO  <- flat, kept: a reduce-only market can still be re-entered OI-neutrally (scope doc 3.1)
+        "7301",   #              +0.000000 KAITO  <- flat, kept: a reduce-only market can still be re-entered OI-neutrally (scope doc 3.1)
+        "129450", #              +0.000000 KAITO  <- flat, kept: a reduce-only market can still be re-entered OI-neutrally (scope doc 3.1)
+        "131432", #              +0.000000 KAITO  <- flat, kept: a reduce-only market can still be re-entered OI-neutrally (scope doc 3.1)
+        "123082", #             -10.000000 KAITO
+        "2",      #         -52,444.100000 KAITO (passive pool)
     ],
     "1000000000", # 1e9 wei cap; measured residual 0 wei (list reconciles exactly)
 ]
