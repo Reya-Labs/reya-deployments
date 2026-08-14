@@ -16,9 +16,10 @@ include = [
     "../share_token/mainnet.toml",
     "../sbt/mainnet.toml",
     "../rotations/mainnet.toml",
+    "../passive_perp/market_close_w1_close_mainnet.toml",
 ]
 
-version = "1.0.162"
+version = "1.0.163"
 
 [var.chain_ids]
 ethereumChainId = "1"

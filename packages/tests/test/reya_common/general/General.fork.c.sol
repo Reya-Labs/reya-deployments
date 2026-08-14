@@ -1384,15 +1384,19 @@ contract GeneralForkCheck is BaseReyaForkTest {
         string memory mismatches;
 
         for (uint128 i = lastMarketId(); i >= 1; i--) {
-            // FTM, LAYER, MKR are currently set to constant node
-            bool inactiveMarket = i == 30 || i == 59 || i == 7;
-
-            if (inactiveMarket) {
-                continue;
-            }
+            // FTM, LAYER, MKR are closed markets: their oracleNodeId points at a *UsdcNodeIdClosing feed (a
+            // DIV_REDUCER over a toml-registered CONSTANT node), so the price is pinned and does not track the live
+            // mean below.
+            bool closedMarket = i == 30 || i == 59 || i == 7;
 
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
             bytes32 nodeId = marketConfig.oracleNodeId;
+
+            // Same reasoning for markets frozen by `freezeMarketForClosure`: the oracle is pinned to a CONSTANT node
+            // holding the snapshotted close price, which drifts away from the live mean as the close window runs.
+            if (closedMarket || _isConstantOracleNode(nodeId)) {
+                continue;
+            }
 
             NodeOutput.Data memory nodeOutput = IOracleManagerProxy(sec.oracleManager).process(nodeId);
 
@@ -1416,10 +1420,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
         for (uint128 i = lastMarketId(); i >= 1; i--) {
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
 
-            // FTM, LAYER, MKR are currently set to constant node
-            bool inactiveMarket = i == 30 || i == 59 || i == 7;
+            // FTM, LAYER, MKR are closed markets pinned to a *UsdcNodeIdClosing feed; they keep
+            // marketOrderMaxStaleDuration == 0. Markets frozen by `freezeMarketForClosure` are NOT skipped: the
+            // freeze does not touch marketOrderMaxStaleDuration, and it is that same window the freeze enforces when
+            // it snapshots the close price — so it must still be the expected value.
+            bool closedMarket = i == 30 || i == 59 || i == 7;
 
-            if (inactiveMarket) {
+            if (closedMarket) {
                 continue;
             }
 
@@ -1486,6 +1493,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
             0,
             string.concat("reduce-only markets (maxOpenBase == 0) missing from reduceOnly/inactive lists: ", unlisted)
         );
+    }
+
+    /// @dev True if `nodeId` is a CONSTANT oracle node — i.e. the market's price has been locked by
+    ///      `freezeMarketForClosure`. `NodeDefinition.NodeType.CONSTANT` is enum member 3
+    ///      (NONE, DIV_REDUCER, REDSTONE, CONSTANT, ...).
+    function _isConstantOracleNode(bytes32 nodeId) private view returns (bool) {
+        return IOracleManagerProxy(sec.oracleManager).getNode(nodeId).nodeType == 3;
     }
 
     /// @dev Membership test for the market-id lists in {check_marketsMaxOiAndOi}.
