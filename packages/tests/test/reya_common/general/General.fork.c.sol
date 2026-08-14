@@ -615,8 +615,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviationWSTETH = ls.meanPriceWSTETH / 2;
 
         if (sec.destinationChainId == 1) {
-            ls.meanPriceSRUSD = 1.05 * 1e18;
-            ls.maxDeviationSRUSD = 0.02 * 1e18;
+            // srUSD is yield-bearing: its rUSD redemption rate only ratchets upward, so a band centred on the rate
+            // at the time of writing expires as soon as enough yield accrues. The old 1.05 +/- 0.02 ceiling of 1.07
+            // was crossed on 14 Aug 2026 (live 1.070063) and started failing CI on unrelated PRs. Re-centred with a
+            // floor at exactly 1.00 — srUSD should never redeem below par, so that edge stays a real depeg guard —
+            // and a ceiling far enough out to absorb years of accrual. Same treatment as rSELINI below.
+            ls.meanPriceSRUSD = 1.1 * 1e18;
+            ls.maxDeviationSRUSD = 0.1 * 1e18;
 
             // rSELINI is a yield-bearing LM share token that drifts upward
             // over time. Widened to ±0.05 (matching RAMBER / SUSDE) so a few
@@ -1309,10 +1314,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(ls.meanPriceSDEUSD);
         ls.maxDeviations.push(ls.maxDeviationSDEUSD);
 
-        // Stork is connected to mainnet
+        // Stork is connected to mainnet. Kept as literals rather than reusing ls.meanPriceSRUSD: that pair is the
+        // srUSD *collateral* price, which is 11.11 +/- 11 off mainnet, so sharing it here would loosen this band to
+        // [0.11, 22.11] on cronos. Widened in place for the same reason as the collateral band — this is the same
+        // yield-bearing rate, and it crossed the old 1.07 ceiling on 14 Aug 2026 (live 1.070063).
         ls.nodeIds.push(sec.srusdRusd_RRStorkNodeId);
-        ls.meanPrices.push(1.05 * 1e18);
-        ls.maxDeviations.push(0.02 * 1e18);
+        ls.meanPrices.push(1.1 * 1e18);
+        ls.maxDeviations.push(0.1 * 1e18);
 
         ls.nodeIds.push(sec.rseliniUsdcReyaLmNodeId);
         ls.meanPrices.push(ls.meanPriceRSELINI);
