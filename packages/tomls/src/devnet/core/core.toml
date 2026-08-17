@@ -6,6 +6,7 @@ include = [
     "../../core/configs/instruments.toml",
     "exchanges.toml",
     "tokens/rusd.toml",
+    "tokens/usdc.toml",
     "tokens/weth.toml",
     "tokens/srusd.toml",
 ]

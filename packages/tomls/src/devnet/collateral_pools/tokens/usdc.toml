@@ -1,0 +1,18 @@
+# Register USDC in pool 1 solely as the mandatory USDCUSD price denominator.
+# Deposits are deliberately disabled and the cap is zero.
+[invoke.cp_1rusd_set_usdc_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setCollateralConfig"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= settings.usdcProxyAddress %>",
+    { depositingEnabled = false, cap = "<%= parseUnits(settings.cp1Rusd_usdc_capUnscaled, parseInt(settings.usdcTokenDecimals)) %>", withdrawalWindowSize_DEPRECATED = "0", withdrawalTvlPercentageLimit_DEPRECATED = "0", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_usdc_autoExchangeThresholdUnscaled, parseInt(settings.usdcTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_usdc_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_usdc_autoExchangeDustThresholdUnscaled, parseInt(settings.usdcTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_usdc_bidSubmissionFeeUnscaled, parseInt(settings.usdcTokenDecimals)) %>" },
+    { collateralAddress = "<%= settings.cp1Rusd_usdcParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_usdcParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_usdcParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.cp1Rusd_usdcParentConfig_oracleNodeId %>" },
+]
+depends = [
+    "var.cp_1rusd_vars",
+    "invoke.rusd_global_collateral_config",
+    "invoke.usdc_global_collateral_config",
+    "invoke.cp_1rusd_set_rusd_config",
+]

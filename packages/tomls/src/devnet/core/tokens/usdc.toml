@@ -1,0 +1,11 @@
+# Devnet USDC registration for the risk engine's USDCUSD denominator.
+# The token is reused from Cronos and is not enabled for deposits in pool 1.
+[invoke.usdc_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= settings.usdcProxyAddress %>",
+    { collateralAdapter_DEPRECATED = "<%= settings.usdcCollateralAdapter %>", withdrawalWindowSize = "<%= settings.usdcWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.usdcWithdrawalTvlPercentageLimitUnscaled) %>" },
+]
+depends = ["invoke.upgrade_core_proxy", "var.global_collateral_configs"]

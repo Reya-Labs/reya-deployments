@@ -13,7 +13,7 @@ import { IOracleManagerProxy } from "../../src/interfaces/IOracleManagerProxy.so
  * @dev Shares the Cronos testnet chain (chainId 89346162) but uses fresh proxy deployments.
  *      Minimal setup: 1 perp market (ETH), 2 spot markets (WETHRUSD enabled,
  *      SRUSDRUSD created+configured but not orderbook-enabled — mirrors
- *      cronos/mainnet), 3 collaterals (rUSD, wETH, sRUSD).
+ *      cronos/mainnet), 4 collaterals (rUSD, USDC denominator, wETH, sRUSD).
  *      No passive pool counterparty — uses dedicated backstop liquidator account.
  *
  */

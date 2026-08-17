@@ -9,7 +9,7 @@
 # Deploys fresh proxies for: Core, PassivePerp, OrdersGateway, Periphery.
 #
 # Markets: 1 perp (ETH), 2 spot (WETH/rUSD, sRUSD/rUSD)
-# Collaterals: rUSD, wETH, sRUSD
+# Collaterals: rUSD, USDC (risk denominator only), wETH, sRUSD
 ###############################################################################
 
 include = [
@@ -22,7 +22,7 @@ include = [
     "../devnet/collateral_pools/collateral_pool_1.toml",
 ]
 
-version = "1.0.12"
+version = "1.0.13"
 
 ###############################################################################
 # Existing Cronos Contract Addresses (reused, not redeployed)
@@ -172,12 +172,16 @@ wethTokenDecimals = "18"
 srusdTokenDecimals = "30"
 
 ###############################################################################
-# Global Collateral Configs (rUSD, wETH, sRUSD)
+# Global Collateral Configs (rUSD, USDC, wETH, sRUSD)
 ###############################################################################
 [var.global_collateral_configs]
 rusdCollateralAdapter = "<%= AddressZero %>"
 rusdWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
 rusdWithdrawalTvlPercentageLimitUnscaled = "1.0"
+# -------------------------------------------------------------------
+usdcCollateralAdapter = "<%= AddressZero %>"
+usdcWithdrawalWindowSize = "1"
+usdcWithdrawalTvlPercentageLimitUnscaled = "1.0"
 # -------------------------------------------------------------------
 wethCollateralAdapter = "<%= AddressZero %>"
 wethWithdrawalWindowSize = "1"
@@ -322,6 +326,18 @@ cp1Rusd_rusdParentConfig_priceHaircutUnscaled = "0"
 cp1Rusd_rusdParentConfig_autoExchangeDiscountUnscaled = "0"
 cp1Rusd_rusdParentConfig_oracleNodeId = "<%= settings.rusdUsdNodeId %>"
 
+# USDC is registered only to make the mandatory USDCUSD denominator available
+# to the off-chain risk engine. Deposits remain disabled and the cap remains 0.
+cp1Rusd_usdc_capUnscaled = "0"
+cp1Rusd_usdc_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_usdc_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_usdc_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_usdc_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_usdcParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_usdcParentConfig_priceHaircutUnscaled = "0"
+cp1Rusd_usdcParentConfig_autoExchangeDiscountUnscaled = "0"
+cp1Rusd_usdcParentConfig_oracleNodeId = "<%= settings.usdcUsdNodeIdStork %>"
+
 # wETH collateral pool config
 cp1Rusd_weth_capUnscaled = "<%= formatEther(MaxUint256) %>"
 cp1Rusd_weth_autoExchangeThresholdUnscaled = "0"
@@ -383,6 +399,7 @@ srusdRusdSpot_oracleNodeId = "0x000000000000000000000000000000000000000000000000
 ###############################################################################
 [var.stork_oracle_node_ids]
 rusdUsdNodeId = "0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857"
+usdcUsdNodeIdStork = "0x28c79729ca502a5cd2565613c087a3bda098a1c78e3f3f45733d03c3482f099d"
 ethUsdcNodeIdStork = "0xb19e4d8ea5f0a3752fbd19515075063f7486e6954b8aa2b3d462c61726c46619"
 ethUsdcMarkNodeIdStork = "0x14dba23a7f8775bceefeedb4266fbe135b949ae40fe08e491f2a476d3448c66f"
 # Stork sRUSD/USDC pool node — already registered on the Cronos OracleManager
