@@ -11,6 +11,8 @@
     "packages/*"
   ],
   "scripts": {
+    "cannon:artifact-closure:test": "node --test scripts/cannon-artifact-closure.test.mjs",
+    "cannon:artifact-closure:verify": "node scripts/cannon-artifact-closure.mjs",
     "build": "lerna run build --scope=@reya-deployments/tests",
     "lint:check": "lerna run lint:check",
     "lint:write": "lerna run lint:write",
@@ -27,7 +29,9 @@
     "@usecannon/cli": "2.23.0",
     "@usecannon/cli-devnet": "npm:@usecannon/cli@2.26.0",
     "forge-std": "github:foundry-rs/forge-std#v1.8.0",
+    "ipfs-only-hash": "4.0.0",
     "lerna": "^8.1.2",
+    "multiformats": "9.9.0",
     "prettier": "3.2.5",
     "prettier-plugin-toml": "2.0.1",
     "solc": "0.8.21"

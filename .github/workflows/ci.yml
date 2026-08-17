@@ -54,6 +54,8 @@ jobs:
         run: "yarn"
       - name: Lint Check
         run: "yarn lint:check"
+      - name: Cannon Artifact Closure Verifier Test
+        run: "yarn cannon:artifact-closure:test"
       - name: Build
         run: "yarn build"
       - name: Reya Network Cannon Test
