@@ -243,7 +243,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceARB);
         ls.maxDeviationMarket.push(ls.maxDeviationARB);
 
-        ls.meanPriceOP = 0.17 * 1e18;
+        ls.meanPriceOP = 0.084 * 1e18;
         ls.maxDeviationOP = ls.meanPriceOP / 2;
         ls.meanPriceMarket.push(ls.meanPriceOP);
         ls.maxDeviationMarket.push(ls.maxDeviationOP);
@@ -561,7 +561,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceAERO);
         ls.maxDeviationMarket.push(ls.maxDeviationAERO);
 
-        ls.meanPriceKAITO = 0.73 * 1e18;
+        ls.meanPriceKAITO = 0.33 * 1e18;
         ls.maxDeviationKAITO = ls.meanPriceKAITO / 2;
         ls.meanPriceMarket.push(ls.meanPriceKAITO);
         ls.maxDeviationMarket.push(ls.maxDeviationKAITO);
@@ -615,8 +615,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviationWSTETH = ls.meanPriceWSTETH / 2;
 
         if (sec.destinationChainId == 1) {
-            ls.meanPriceSRUSD = 1.05 * 1e18;
-            ls.maxDeviationSRUSD = 0.02 * 1e18;
+            // srUSD is yield-bearing: its rUSD redemption rate only ratchets upward, so a band centred on the rate
+            // at the time of writing expires as soon as enough yield accrues. The old 1.05 +/- 0.02 ceiling of 1.07
+            // was crossed on 14 Aug 2026 (live 1.070063) and started failing CI on unrelated PRs. Re-centred with a
+            // floor at exactly 1.00 — srUSD should never redeem below par, so that edge stays a real depeg guard —
+            // and a ceiling far enough out to absorb years of accrual. Same treatment as rSELINI below.
+            ls.meanPriceSRUSD = 1.1 * 1e18;
+            ls.maxDeviationSRUSD = 0.1 * 1e18;
 
             // rSELINI is a yield-bearing LM share token that drifts upward
             // over time. Widened to ±0.05 (matching RAMBER / SUSDE) so a few
@@ -1309,10 +1314,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(ls.meanPriceSDEUSD);
         ls.maxDeviations.push(ls.maxDeviationSDEUSD);
 
-        // Stork is connected to mainnet
+        // Stork is connected to mainnet. Kept as literals rather than reusing ls.meanPriceSRUSD: that pair is the
+        // srUSD *collateral* price, which is 11.11 +/- 11 off mainnet, so sharing it here would loosen this band to
+        // [0.11, 22.11] on cronos. Widened in place for the same reason as the collateral band — this is the same
+        // yield-bearing rate, and it crossed the old 1.07 ceiling on 14 Aug 2026 (live 1.070063).
         ls.nodeIds.push(sec.srusdRusd_RRStorkNodeId);
-        ls.meanPrices.push(1.05 * 1e18);
-        ls.maxDeviations.push(0.02 * 1e18);
+        ls.meanPrices.push(1.1 * 1e18);
+        ls.maxDeviations.push(0.1 * 1e18);
 
         ls.nodeIds.push(sec.rseliniUsdcReyaLmNodeId);
         ls.meanPrices.push(ls.meanPriceRSELINI);
@@ -1384,15 +1392,19 @@ contract GeneralForkCheck is BaseReyaForkTest {
         string memory mismatches;
 
         for (uint128 i = lastMarketId(); i >= 1; i--) {
-            // FTM, LAYER, MKR are currently set to constant node
-            bool inactiveMarket = i == 30 || i == 59 || i == 7;
-
-            if (inactiveMarket) {
-                continue;
-            }
+            // FTM, LAYER, MKR are closed markets: their oracleNodeId points at a *UsdcNodeIdClosing feed (a
+            // DIV_REDUCER over a toml-registered CONSTANT node), so the price is pinned and does not track the live
+            // mean below.
+            bool closedMarket = i == 30 || i == 59 || i == 7;
 
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
             bytes32 nodeId = marketConfig.oracleNodeId;
+
+            // Same reasoning for markets frozen by `freezeMarketForClosure`: the oracle is pinned to a CONSTANT node
+            // holding the snapshotted close price, which drifts away from the live mean as the close window runs.
+            if (closedMarket || _isConstantOracleNode(nodeId)) {
+                continue;
+            }
 
             NodeOutput.Data memory nodeOutput = IOracleManagerProxy(sec.oracleManager).process(nodeId);
 
@@ -1416,10 +1428,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
         for (uint128 i = lastMarketId(); i >= 1; i--) {
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(i);
 
-            // FTM, LAYER, MKR are currently set to constant node
-            bool inactiveMarket = i == 30 || i == 59 || i == 7;
+            // FTM, LAYER, MKR are closed markets pinned to a *UsdcNodeIdClosing feed; they keep
+            // marketOrderMaxStaleDuration == 0. Markets frozen by `freezeMarketForClosure` are NOT skipped: the
+            // freeze does not touch marketOrderMaxStaleDuration, and it is that same window the freeze enforces when
+            // it snapshots the close price — so it must still be the expected value.
+            bool closedMarket = i == 30 || i == 59 || i == 7;
 
-            if (inactiveMarket) {
+            if (closedMarket) {
                 continue;
             }
 
@@ -1486,6 +1501,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
             0,
             string.concat("reduce-only markets (maxOpenBase == 0) missing from reduceOnly/inactive lists: ", unlisted)
         );
+    }
+
+    /// @dev True if `nodeId` is a CONSTANT oracle node — i.e. the market's price has been locked by
+    ///      `freezeMarketForClosure`. `NodeDefinition.NodeType.CONSTANT` is enum member 3
+    ///      (NONE, DIV_REDUCER, REDSTONE, CONSTANT, ...).
+    function _isConstantOracleNode(bytes32 nodeId) private view returns (bool) {
+        return IOracleManagerProxy(sec.oracleManager).getNode(nodeId).nodeType == 3;
     }
 
     /// @dev Membership test for the market-id lists in {check_marketsMaxOiAndOi}.

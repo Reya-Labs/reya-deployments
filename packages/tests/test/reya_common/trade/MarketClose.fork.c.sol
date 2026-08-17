@@ -46,6 +46,15 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
         return IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).maxOpenBase == 0;
     }
 
+    /// @notice True if `marketId`'s price has been locked by `freezeMarketForClosure` — the oracle node is CONSTANT.
+    /// @dev This is the same signal `forceCloseMarket` itself trusts as proof the price was locked (scope doc §3.4).
+    ///      It does NOT catch the legacy closing markets (MKR/FTM/LAYER), whose `oracleNodeId` is a DIV_REDUCER over
+    ///      a toml-registered CONSTANT node rather than a CONSTANT node itself.
+    function isFrozen(uint128 marketId) internal view returns (bool) {
+        bytes32 nodeId = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).oracleNodeId;
+        return IOracleManagerProxy(sec.oracleManager).getNode(nodeId).nodeType == CONSTANT_NODE_TYPE;
+    }
+
     // ----------------------------------------------------------------------------------------------------------------
     // Phase A — reduce-only
     // ----------------------------------------------------------------------------------------------------------------
@@ -105,6 +114,154 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
         assertGt(priceBefore, 0, "constant oracle price is zero");
     }
 
+    /// @notice {check_FreezeMarketForClosure}, but tolerant of a market that is meant to sit DISABLED either side of
+    ///         the freeze: it enables the market, freezes it, and restores the deny-all flag to what it was.
+    /// @dev This is exactly what the W1 batches do for AIXBT (46). Both `freezeMarketForClosure` and
+    ///      `forceCloseMarket` call `FeatureFlagSupport.ensureEnabledMarket` before the owner check, so a market can
+    ///      only be frozen or closed while it is enabled — yet AIXBT must not be tradeable in the window between the
+    ///      two batches. The batches therefore enable it for the instant of each call and disable it again straight
+    ///      after; this helper reproduces that so the fork checks exercise the same end state.
+    function check_FreezeMarketForClosurePreservingEnabled(uint128 marketId) internal {
+        bool wasDisabled = !isMarketActive(marketId);
+
+        if (wasDisabled) {
+            setMarketEnabled(marketId, true);
+        }
+
+        check_FreezeMarketForClosure(marketId);
+
+        if (wasDisabled) {
+            setMarketEnabled(marketId, false);
+        }
+    }
+
+    /// @dev Flip a market's `marketEnabled` deny-all flag as the owner. `enabled = false` sets deny-all to true.
+    function setMarketEnabled(uint128 marketId, bool enabled) internal {
+        bytes32 flagId = keccak256(abi.encode(keccak256(bytes("marketEnabled")), marketId));
+
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setFeatureFlagDenyAll(flagId, !enabled);
+    }
+
+    /// @notice Assert `marketId` is ALREADY frozen on-chain — that `freezeMarketForClosure` has run against it and
+    ///         nothing has since re-armed it. Unlike {check_FreezeMarketForClosure}, this does not perform the freeze;
+    ///         it only observes, so it is the check to run over the markets a close batch has already frozen.
+    /// @dev Mirrors the three things the freeze establishes: the oracle pinned to a CONSTANT node at a non-zero price,
+    ///      and funding rate and velocity both zero. Velocity is the one that can be silently re-armed afterwards by
+    ///      `batchSetMarketConfigurationVelocity` (market-close-scope.md §3.9) — which is why it is asserted here and
+    ///      not only at freeze time.
+    function check_MarketIsFrozen(uint128 marketId) internal view {
+        bytes32 nodeId = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).oracleNodeId;
+
+        assertEq(
+            uint256(IOracleManagerProxy(sec.oracleManager).getNode(nodeId).nodeType),
+            uint256(CONSTANT_NODE_TYPE),
+            string.concat("oracle node is not CONSTANT for market ", vm.toString(marketId))
+        );
+        assertGt(
+            IOracleManagerProxy(sec.oracleManager).process(nodeId).price,
+            0,
+            string.concat("frozen price is zero for market ", vm.toString(marketId))
+        );
+        assertEq(
+            IPassivePerpProxy(sec.perp).getLatestFundingRate(marketId),
+            0,
+            string.concat("funding rate is not zero for market ", vm.toString(marketId))
+        );
+        assertEq(
+            IPassivePerpProxy(sec.perp).getFundingVelocity(marketId),
+            0,
+            string.concat("funding velocity is not zero for market ", vm.toString(marketId))
+        );
+    }
+
+    /// @notice Assert `marketId` has been fully closed out: `forceCloseMarket` has run, and the market has since been
+    ///         disabled by the separate call the module deliberately does not make itself (scope doc §3.6).
+    /// @dev The close leaves the oracle pinned to the CONSTANT node the freeze installed — `forceCloseMarket` never
+    ///      touches `oracleNodeId` — and `resetMarketStateOnClosure` zeroes open interest and the funding trackers.
+    ///      Per-account bases are not asserted here: that needs the closed account list, which the force-close batch
+    ///      carries and {check_ForceClose} already asserts at close time.
+    function check_MarketIsClosed(uint128 marketId) internal view {
+        check_MarketIsFrozen(marketId);
+
+        assertEq(
+            IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId),
+            0,
+            string.concat("open interest is not zero for closed market ", vm.toString(marketId))
+        );
+        assertFalse(isMarketActive(marketId), string.concat("closed market is still enabled ", vm.toString(marketId)));
+    }
+
+    /// @notice Force-close `marketId` with `accountIds` and disable it, reproducing on the fork exactly what the
+    ///         force-close batch does on-chain — including the AIXBT dance of enabling a disabled market for the
+    ///         instant of the call (`ensureEnabledMarket` gates the lever) and disabling it again straight after.
+    ///
+    /// @dev **This is the check that proves the batch's account lists are complete.** `maxResidualBase` is derived
+    ///      from the residual measured on-chain right now rather than taken from the toml, because the fork is
+    ///      pinned at a different block than the snapshot the lists were captured at — but it is derived only after
+    ///      asserting the residual is below one `baseSpacing`. A genuinely missing position is at least one
+    ///      `baseSpacing`, so an incomplete list fails here with a clear message instead of being papered over by a
+    ///      generous cap. On-chain the same completeness is enforced by `ForceClosureResidueAboveMax`.
+    function check_ForceCloseMarketAndDisable(uint128 marketId, uint128[] memory accountIds) internal {
+        MarketConfigurationData memory cfg = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+        uint256 openInterest = IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId);
+
+        uint256 closedLong;
+        uint256 closedShort;
+        for (uint256 i = 0; i < accountIds.length; i++) {
+            int256 base = IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, accountIds[i]).base;
+            if (base > 0) {
+                closedLong += uint256(base);
+            } else if (base < 0) {
+                closedShort += uint256(-base);
+            }
+        }
+
+        uint256 residualNet = closedLong > closedShort ? closedLong - closedShort : closedShort - closedLong;
+        uint256 residualOi = closedLong > openInterest ? closedLong - openInterest : openInterest - closedLong;
+
+        assertLt(
+            residualNet,
+            cfg.baseSpacing,
+            string.concat("account list incomplete, longs and shorts do not net out, market ", vm.toString(marketId))
+        );
+        assertLt(
+            residualOi,
+            cfg.baseSpacing,
+            string.concat("account list incomplete, closed longs != open interest, market ", vm.toString(marketId))
+        );
+
+        uint256 maxResidualBase = (residualNet > residualOi ? residualNet : residualOi) + 1;
+        assertLt(maxResidualBase, cfg.baseSpacing, "maxResidualBase must stay below baseSpacing");
+
+        bytes32 flagId = keccak256(abi.encode(keccak256(bytes("marketEnabled")), marketId));
+
+        if (!isMarketActive(marketId)) {
+            vm.prank(sec.multisig);
+            IPassivePerpProxy(sec.perp).setFeatureFlagDenyAll(flagId, false);
+        }
+
+        vm.prank(sec.multisig);
+        IMarketCloseModule(sec.perp).forceCloseMarket(marketId, accountIds, ud(maxResidualBase));
+
+        // The module deliberately does not disable the market itself (scope doc §3.6) — the batch does it separately.
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).setFeatureFlagDenyAll(flagId, true);
+
+        assertEq(
+            IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId),
+            0,
+            string.concat("open interest not zero after force close, market ", vm.toString(marketId))
+        );
+        for (uint256 i = 0; i < accountIds.length; i++) {
+            assertEq(
+                IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(marketId, accountIds[i]).base,
+                0,
+                string.concat("position not closed, market ", vm.toString(marketId))
+            );
+        }
+    }
+
     /// @notice A frozen market can still be wound down: positions remain reducible. A fresh account trades against the
     ///         pool to shrink the pool's base by one unit, and afterwards:
     ///           - the funding rate has not moved (it stays frozen at zero);
@@ -115,21 +272,35 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
     ///             pool-favourable slippage the pool pockets on the unit it closed.
     /// @dev Assumes `marketId` has already been frozen (oracle pinned to a CONSTANT node).
     function check_FrozenMarketPositionsCanBeReduced(uint128 marketId, uint128 poolAccountId) internal {
+        // Both sides of the warp below need mocked prices, and the mocks have to be installed here — while the real
+        // feeds are still fresh enough to read — so that the post-warp refresh has something to re-stamp.
         mockFreshPrices();
+        mockFreshCollateralPrices();
         _assertFrozen(marketId);
 
         FrozenReduceSnapshot memory snap = _snapshotPool(marketId, poolAccountId);
-        if (snap.poolBase == 0) {
-            return; // nothing to reduce
-        }
 
         // Let time pass: with price and funding frozen, nothing should accrue to the pool's PnL.
         vm.warp(block.timestamp + 1 days);
-        mockFreshPrices(); // refresh the (mocked) collateral/oracle timestamps for the post-warp trade
+        // Re-stamp both the market mark nodes and the collateral nodes to the new timestamp. The collateral half
+        // matters: margin computation on the reducing trade reads `ParentCollateralConfig.oracleNodeId`, which
+        // `mockFreshPrices` does not cover, and a day-old collateral price reverts with `StalePriceDetected`.
+        mockFreshPrices();
+        mockFreshCollateralPrices();
         PnLComponents memory afterWarp = IPassivePerpProxy(sec.perp).getAccountPnLComponents(marketId, poolAccountId);
         assertEq(
             afterWarp.realizedPnL + afterWarp.unrealizedPnL, snap.totalPnLBefore, "frozen market accrued PnL over time"
         );
+
+        // A reducing trade needs at least one `minimumOrderBase` of pool inventory to close against. Below that
+        // there is nothing an ordinary order can shave off — that residue is exactly what force close exists for —
+        // and trading a whole unit anyway would carry the pool through zero and grow open interest on the other
+        // side, which a reduce-only market rejects with `OpenInterestExceeded`. Most of the W1 markets sit here:
+        // they have been reduce-only for weeks and are down to dust. The time-passes assertion above still ran.
+        int256 minimumOrderBase = int256(IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).minimumOrderBase);
+        if (_abs(snap.poolBase) < minimumOrderBase) {
+            return;
+        }
 
         _reducePoolByOneUnit(marketId, poolAccountId, snap.poolBase);
 

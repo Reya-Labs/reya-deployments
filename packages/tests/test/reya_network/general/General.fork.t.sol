@@ -136,11 +136,61 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         uint128[] memory activeMarkets = getActiveMarkets();
         uint128 lastMarketIdd = lastMarketId();
 
-        uint128[] memory pausedMarkets = new uint128[](3);
-        pausedMarkets[0] = 28;
-        pausedMarkets[1] = 37;
-        pausedMarkets[2] = 46;
+        // Every market this wave disables, ascending: 28 (POL) and 37 (DOT) pre-date the close plan; AIXBT (46) is
+        // disabled by the FREEZE batch (at open interest 0 in reduce-only there is nothing to unwind, so freezing
+        // its price and disabling it there is the whole of its closure); the other 17 are disabled by this batch,
+        // right after each force close.
+        uint128[] memory candidates = new uint128[](20);
+        candidates[0] = 15; // ZRO
+        candidates[1] = 25; // JTO
+        candidates[2] = 28; // POL (pre-existing)
+        candidates[3] = 34; // GOAT
+        candidates[4] = 36; // KNEIRO
+        candidates[5] = 37; // DOT (pre-existing)
+        candidates[6] = 45; // AI16Z
+        candidates[7] = 46; // AIXBT (freeze batch)
+        candidates[8] = 49; // GRIFFAIN
+        candidates[9] = 52; // APE
+        candidates[10] = 53; // TON
+        candidates[11] = 57; // MOVE
+        candidates[12] = 58; // BERA
+        candidates[13] = 61; // IP
+        candidates[14] = 67; // KAITO
+        candidates[15] = 68; // ZORA
+        candidates[16] = 69; // PROVE
+        candidates[17] = 71; // YZY
+        candidates[18] = 72; // XPL
+        candidates[19] = 73; // WLFI
 
+        // Which of those are actually disabled is not assertable on a fork. Every `freezeMarketForClosure` reverts
+        // here with `StalePriceDetected` — the fork pins chain state at a block so the last Stork push stops
+        // advancing, while `block.timestamp` runs on in wall-clock time — and cannon skips the invoke. Cannon does
+        // not run dependents of a skipped invoke, so the `forceCloseMarket` that `depends` on each freeze is skipped
+        // too, and so is the `setFeatureFlagDenyAll` that depends on that. A successful mainnet run disables all 20;
+        // this fork disables only the 2 that pre-date the plan. Asserting either fails in the other environment.
+        //
+        // So assert the shape rather than the membership: the active set is exactly the ascending complement of
+        // whatever is disabled, and 28 and 37 are disabled unconditionally. The close end state — frozen, open
+        // interest zero, market disabled — is owned by MarketClose.fork.t.sol, where `ensureW1MarketsClosed`
+        // performs the freeze and close itself instead of depending on the batch having landed.
+        uint256 pausedCount = 0;
+        for (uint256 i = 0; i < candidates.length; i++) {
+            if (!isMarketActive(candidates[i])) {
+                pausedCount++;
+            }
+        }
+
+        uint128[] memory pausedMarkets = new uint128[](pausedCount);
+        uint256 p = 0;
+        for (uint256 i = 0; i < candidates.length; i++) {
+            if (!isMarketActive(candidates[i])) {
+                pausedMarkets[p] = candidates[i];
+                p++;
+            }
+        }
+
+        assertFalse(isMarketActive(28), "POL (28) must be disabled");
+        assertFalse(isMarketActive(37), "DOT (37) must be disabled");
         assertEq(activeMarkets.length, lastMarketIdd - pausedMarkets.length);
 
         uint128 a = 0;

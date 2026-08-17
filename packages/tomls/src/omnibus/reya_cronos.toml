@@ -15,9 +15,10 @@ include = [
     "../oracle_adapters/testnet.toml",
     "../share_token/mainnet.toml",
     "../sbt/testnet.toml",
+    "../passive_perp/market_close_w1_close_cronos.toml",
 ]
 
-version = "1.0.147"
+version = "1.0.148"
 
 [var.chain_ids]
 ethereumSepoliaChainId = "11155111"

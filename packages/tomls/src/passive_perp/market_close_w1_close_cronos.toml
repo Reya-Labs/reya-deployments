@@ -1,0 +1,455 @@
+####################################################################################################
+# Market close — Week 1 batch, Phase B.2: force close + deactivate (reya_cronos)
+#
+# For 17 of the 18 markets frozen in the previous batch: `forceCloseMarket` at the locked price,
+# then `setFeatureFlagDenyAll` on `marketEnabled`. The module does not disable the market itself
+# (market-close-scope.md §3.6), so that is a separate call — ordered AFTER the close, because
+# `forceCloseMarket` calls `ensureEnabledMarket` and would revert on an already-disabled market.
+#
+# ACCOUNT LISTS. Every `accountIds` array below is the complete set of accounts holding a non-zero
+# base in that market, read from `getUpdatedPositionInfo` on reya_cronos at the snapshot below. Each list
+# was reconciled against the market's own `getOpenBaseInterest`: summed longs equal summed shorts and
+# equal open interest, to within the residual quoted per market. That reconciliation is the evidence
+# the list is complete — `forceCloseMarket` reverts with `ForceClosureResidueAboveMax` if it is not.
+#
+# MAX RESIDUAL BASE. Passed per market as raw wei (UD60x18), a flat 1e9 wei (1e-9 base) for every
+# market. The measured residual is kept in the comment on each line so the real dust — left by ADL
+# base-multiplier scaling — stays visible and reviewable; the largest is 54,894 wei (MOVE), so 1e9
+# leaves ~4 orders of magnitude of headroom for the list drifting between snapshot and execution.
+#
+# A flat cap cannot hide a missing position: the on-chain guard additionally requires
+# `maxResidualBase < baseSpacing`, and baseSpacing is 1e17 (0.1 base) for every market here except
+# ZRO at 1e16 (0.01 base) — so 1e9 is 7-8 orders of magnitude below the smallest position that could
+# possibly be omitted. Anything genuinely missing is at least one baseSpacing and still reverts with
+# `ForceClosureResidueAboveMax`.
+#
+# !! RE-MEASURE BEFORE EXECUTING !!
+# Both the account list and the residual move with every trade, and these markets are reduce-only,
+# not halted — trading and liquidations continue right up to the close (§3.1). Snapshot taken
+# against reya_cronos at the block current on 12 Aug 2026. Re-run CheckMarketCloseReadiness.s.sol per market immediately before submitting: it
+# reprints the account list, the two residuals, and flags any account below its initial margin. The
+# close does not check account health and does not socialise a shortfall (§3.8 / §3.10).
+####################################################################################################
+####################################################################################################
+# Group 0
+####################################################################################################
+
+# ZRO (market 15) — open interest 0.000000 base = $0.00 at $0.82717926/ZRO
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_15zro]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market15ZroId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_15zro"]
+
+[invoke.market_close_w1_deactivate_15zro]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market15ZroId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_15zro"]
+
+# JTO (market 25) — open interest 0.000000 base = $0.00 at $0.55657386/JTO
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_25jto]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market25JtoId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_25jto"]
+
+[invoke.market_close_w1_deactivate_25jto]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market25JtoId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_25jto"]
+
+# AI16Z (market 45) — open interest 0.000000 base = $0.00 at $0.03500894/AI16Z
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_45ai16z]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market45Ai16zId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_45ai16z"]
+
+[invoke.market_close_w1_deactivate_45ai16z]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market45Ai16zId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_45ai16z"]
+
+# TON (market 53) — open interest 0.000000 base = $0.00 at $1.33635678/TON
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_53ton]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market53TonId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_53ton"]
+
+[invoke.market_close_w1_deactivate_53ton]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market53TonId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_53ton"]
+
+# MOVE (market 57) — open interest 0.000000 base = $0.00 at $0.00623292/MOVE
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_57move]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market57MoveId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_57move"]
+
+[invoke.market_close_w1_deactivate_57move]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market57MoveId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_57move"]
+
+# BERA (market 58) — open interest 0.000000 base = $0.00 at $0.14325245/BERA
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_58bera]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market58BeraId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_58bera"]
+
+[invoke.market_close_w1_deactivate_58bera]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market58BeraId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_58bera"]
+
+# ZORA (market 68) — open interest 5.000000 base = $0.02 at $0.00488967/ZORA
+# 2 accounts with non-zero base; longs = shorts = OI to within 0 wei
+[invoke.market_close_w1_force_close_68zora]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market68ZoraId %>",
+    [
+        "4",    #              +5.000000 ZORA (passive pool)
+        "8015", #              -5.000000 ZORA
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_68zora"]
+
+[invoke.market_close_w1_deactivate_68zora]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market68ZoraId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_68zora"]
+
+# PROVE (market 69) — open interest 0.000000 base = $0.00 at $0.14837307/PROVE
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_69prove]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market69ProveId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_69prove"]
+
+[invoke.market_close_w1_deactivate_69prove]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market69ProveId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_69prove"]
+
+# YZY (market 71) — open interest 0.000000 base = $0.00 at $0.30184570/YZY
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_71yzy]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market71YzyId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_71yzy"]
+
+[invoke.market_close_w1_deactivate_71yzy]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market71YzyId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_71yzy"]
+
+# XPL (market 72) — open interest 0.000000 base = $0.00 at $0.07575769/XPL
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_72xpl]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market72XplId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_72xpl"]
+
+[invoke.market_close_w1_deactivate_72xpl]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market72XplId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_72xpl"]
+
+# WLFI (market 73) — open interest 0.000000 base = $0.00 at $0.05489804/WLFI
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_73wlfi]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market73WlfiId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_73wlfi"]
+
+[invoke.market_close_w1_deactivate_73wlfi]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market73WlfiId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_73wlfi"]
+
+####################################################################################################
+# RO batch
+####################################################################################################
+
+# GOAT (market 34) — open interest 0.000000 base = $0.00 at $0.01381818/GOAT
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_34goat]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market34GoatId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_34goat"]
+
+[invoke.market_close_w1_deactivate_34goat]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market34GoatId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_34goat"]
+
+# kNEIRO (market 36) — open interest 0.000000 base = $0.00 at $0.06508932/kNEIRO
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_36kneiro]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market36KNeiroId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_36kneiro"]
+
+[invoke.market_close_w1_deactivate_36kneiro]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market36KNeiroId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_36kneiro"]
+
+# GRIFFAIN (market 49) — open interest 0.000000 base = $0.00 at $0.01174995/GRIFFAIN
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_49griffain]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market49GriffainId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_49griffain"]
+
+[invoke.market_close_w1_deactivate_49griffain]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market49GriffainId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_49griffain"]
+
+# APE (market 52) — open interest 0.000000 base = $0.00 at $0.12623451/APE
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_52ape]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market52ApeId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_52ape"]
+
+[invoke.market_close_w1_deactivate_52ape]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market52ApeId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_52ape"]
+
+# IP (market 61) — open interest 0.000000 base = $0.00 at $0.29923598/IP
+# No accounts hold a non-zero base — nothing to unwind, the close only resets market state
+[invoke.market_close_w1_force_close_61ip]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market61IpId %>",
+    [
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_61ip"]
+
+[invoke.market_close_w1_deactivate_61ip]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market61IpId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_61ip"]
+
+####################################################################################################
+# Group A
+####################################################################################################
+
+# KAITO (market 67) — open interest 5.000000 base = $2.30 at $0.46021855/KAITO
+# 2 accounts with non-zero base; longs = shorts = OI to within 0 wei
+[invoke.market_close_w1_force_close_67kaito]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "forceCloseMarket"
+args = [
+    "<%= settings.market67KaitoId %>",
+    [
+        "4",    #              +5.000000 KAITO (passive pool)
+        "8015", #              -5.000000 KAITO
+    ],
+    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+]
+depends = ["invoke.market_close_w1_freeze_67kaito"]
+
+[invoke.market_close_w1_deactivate_67kaito]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagDenyAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market67KaitoId])) %>",
+    true,
+]
+depends = ["invoke.market_close_w1_force_close_67kaito"]
