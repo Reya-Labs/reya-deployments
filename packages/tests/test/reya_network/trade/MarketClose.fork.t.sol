@@ -90,7 +90,7 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
         if (marketId == 15) {
             a = new uint128[](13);
             a[0] = 17_251;
-            a[1] = 41_476;
+            a[1] = 97_865;
             a[2] = 128_904;
             a[3] = 135_288;
             a[4] = 18_225;

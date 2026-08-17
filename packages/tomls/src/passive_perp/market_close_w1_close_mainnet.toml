@@ -34,8 +34,10 @@
 # Group 0
 ####################################################################################################
 
-# ZRO (market 15) — open interest 2,041.910000 base = $1,598.81 at $0.78299615/ZRO
+# ZRO (market 15) — open interest 1,486.910000 base = $1,148.14 at $0.77216541/ZRO
 # 13 accounts with non-zero base; longs = shorts = OI to within 10,013 wei
+# (97865 opened -145.900000 out of the pool at block 209447886, after the original snapshot;
+#  41476 closed its +555.000000 and is dropped)
 [invoke.market_close_w1_force_close_15zro]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -44,7 +46,6 @@ args = [
     "<%= settings.market15ZroId %>",
     [
         "17251",  #          +1,000.000000 ZRO
-        "41476",  #            +555.000000 ZRO
         "128904", #            +209.000000 ZRO
         "135288", #            +200.000000 ZRO
         "18225",  #             +50.000000 ZRO
@@ -54,8 +55,9 @@ args = [
         "79924",  #              +0.430000 ZRO
         "60666",  #              +0.110000 ZRO
         "127173", #              -0.300000 ZRO
+        "97865",  #            -145.900000 ZRO
         "18073",  #            -234.526902 ZRO
-        "2",      #          -1,807.083097 ZRO (passive pool)
+        "2",      #          -1,106.183097 ZRO (passive pool)
     ],
     "1000000000", # 1e9 wei cap; measured residual 10,013 wei = 0.000000000000010013 base
 ]
