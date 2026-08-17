@@ -116,7 +116,7 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
 
     /// @notice {check_FreezeMarketForClosure}, but tolerant of a market that is meant to sit DISABLED either side of
     ///         the freeze: it enables the market, freezes it, and restores the deny-all flag to what it was.
-    /// @dev This is exactly what the W1 batches do for AIXBT (46). Both `freezeMarketForClosure` and
+    /// @dev This is exactly what the close batches do for AIXBT (46). Both `freezeMarketForClosure` and
     ///      `forceCloseMarket` call `FeatureFlagSupport.ensureEnabledMarket` before the owner check, so a market can
     ///      only be frozen or closed while it is enabled — yet AIXBT must not be tradeable in the window between the
     ///      two batches. The batches therefore enable it for the instant of each call and disable it again straight
@@ -148,8 +148,7 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
     ///         it only observes, so it is the check to run over the markets a close batch has already frozen.
     /// @dev Mirrors the three things the freeze establishes: the oracle pinned to a CONSTANT node at a non-zero price,
     ///      and funding rate and velocity both zero. Velocity is the one that can be silently re-armed afterwards by
-    ///      `batchSetMarketConfigurationVelocity` (market-close-scope.md §3.9) — which is why it is asserted here and
-    ///      not only at freeze time.
+    ///      `batchSetMarketConfigurationVelocity` — which is why it is asserted here and not only at freeze time.
     function check_MarketIsFrozen(uint128 marketId) internal view {
         bytes32 nodeId = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).oracleNodeId;
 

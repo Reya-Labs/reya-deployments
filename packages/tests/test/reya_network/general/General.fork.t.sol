@@ -85,7 +85,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         reduceOnlyMarkets[15] = 49; // GRIFFAIN
         reduceOnlyMarkets[16] = 52; // APE
         reduceOnlyMarkets[17] = 61; // IP
-        // Group A of the compressed 5-week plan — set to reduce-only in W1 (10-14 Aug 2026), force-closed in W2.
+        // Group A — reduce-only since #507.
         reduceOnlyMarkets[18] = 9; // AAVE
         reduceOnlyMarkets[19] = 10; // CRV
         reduceOnlyMarkets[20] = 14; // SEI

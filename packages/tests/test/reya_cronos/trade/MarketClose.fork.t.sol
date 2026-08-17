@@ -29,7 +29,7 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
         ids[14] = 49; // GRIFFAIN
         ids[15] = 52; // APE
         ids[16] = 61; // IP
-        // Group A — reduce-only since #507, pulled forward into the W1 close
+        // Group A — reduce-only since #507
         ids[17] = 67; // KAITO
     }
 
@@ -52,7 +52,7 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
     }
 
     /// @notice Stage 2: every market already in reduce-only (`maxOpenBase == 0`) can be frozen for closure. Markets
-    ///         the W1 batch has already frozen are skipped — `test_W1MarketsAreFrozen` covers those.
+    ///         an earlier close batch has already frozen are skipped — `test_W1MarketsAreFrozen` covers those.
     function test_ReduceOnlyMarketsCanBeFrozen() public {
         for (uint128 marketId = 1; marketId <= lastMarketId(); marketId++) {
             if (isMarketActive(marketId) && isReduceOnly(marketId) && !isFrozen(marketId)) {
