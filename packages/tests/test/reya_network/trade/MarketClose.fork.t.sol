@@ -88,20 +88,19 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
     function w1CloseAccounts(uint128 marketId) internal pure returns (uint128[] memory a) {
         // ZRO
         if (marketId == 15) {
-            a = new uint128[](13);
+            a = new uint128[](12);
             a[0] = 2;
             a[1] = 17_251;
-            a[2] = 41_476;
-            a[3] = 18_073;
-            a[4] = 128_904;
-            a[5] = 135_288;
-            a[6] = 18_225;
-            a[7] = 134_477;
-            a[8] = 40_887;
-            a[9] = 23_724;
-            a[10] = 79_924;
-            a[11] = 127_173;
-            a[12] = 60_666;
+            a[2] = 18_073;
+            a[3] = 128_904;
+            a[4] = 135_288;
+            a[5] = 18_225;
+            a[6] = 134_477;
+            a[7] = 40_887;
+            a[8] = 23_724;
+            a[9] = 79_924;
+            a[10] = 127_173;
+            a[11] = 60_666;
             return a;
         }
         // JTO
@@ -132,11 +131,11 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
             a[2] = 126_268;
             return a;
         }
-        // kNEIRO
-        if (marketId == 36) {
+        // GRIFFAIN
+        if (marketId == 49) {
             a = new uint128[](2);
             a[0] = 2;
-            a[1] = 131_432;
+            a[1] = 11_236;
             return a;
         }
         // AI16Z
@@ -195,17 +194,12 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
         }
         // KAITO
         if (marketId == 67) {
-            a = new uint128[](10);
-            a[0] = 102_387;
-            a[1] = 129_339;
-            a[2] = 7301;
-            a[3] = 2;
-            a[4] = 48_720;
-            a[5] = 129_450;
-            a[6] = 135_845;
-            a[7] = 134_542;
-            a[8] = 131_432;
-            a[9] = 123_082;
+            a = new uint128[](5);
+            a[0] = 2;
+            a[1] = 48_720;
+            a[2] = 135_845;
+            a[3] = 123_082;
+            a[4] = 134_542;
             return a;
         }
         // ZORA

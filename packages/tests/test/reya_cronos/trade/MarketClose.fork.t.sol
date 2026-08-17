@@ -100,8 +100,8 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
             a = new uint128[](0);
             return a;
         }
-        // kNEIRO
-        if (marketId == 36) {
+        // GRIFFAIN
+        if (marketId == 49) {
             a = new uint128[](0);
             return a;
         }

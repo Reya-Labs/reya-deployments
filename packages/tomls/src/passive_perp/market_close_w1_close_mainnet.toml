@@ -25,17 +25,28 @@
 #
 # !! RE-MEASURE BEFORE EXECUTING !!
 # Both the account list and the residual move with every trade, and these markets are reduce-only,
-# not halted — trading and liquidations continue right up to the close (§3.1). Snapshot taken
-# against reya_network at the block current on 12 Aug 2026. Re-run CheckMarketCloseReadiness.s.sol per market immediately before submitting: it
+# not halted — trading and liquidations continue right up to the close (§3.1). Snapshot re-measured
+# against reya_network at block 209240419 (17 Aug 2026 07:20 UTC), superseding the 12 Aug snapshot.
+# Re-run CheckMarketCloseReadiness.s.sol per market immediately before submitting: it
 # reprints the account list, the two residuals, and flags any account below its initial margin. The
 # close does not check account health and does not socialise a shortfall (§3.8 / §3.10).
+#
+# Reduce-only does NOT freeze the account set, so these lists are guaranteed to be stale-able right up
+# to execution. Market.sol only runs the maxOpenBase cap check when openInterestDelta > 0, and that
+# delta counts positive base only — so a brand-new account taking the side that does not grow the
+# positive-base sum can open a first-ever position with maxOpenBase == 0. Observed twice in five days:
+# 135674 opened -16,055.100000 GOAT at block 206228589 (since closed), and market 49's entire short
+# side changed hands at block 206713383 (131432 out, 11236 in). Failure is fail-safe — the close
+# reverts with ForceClosureResidueAboveMax rather than stranding a position — but cannon submits one
+# transaction per invoke, so a drifted market aborts the run with that market frozen and not closed.
 ####################################################################################################
 ####################################################################################################
 # Group 0
 ####################################################################################################
 
-# ZRO (market 15) — open interest 2,041.910000 base = $1,689.03 at $0.82717926/ZRO
-# 13 accounts with non-zero base; longs = shorts = OI to within 10,013 wei
+# ZRO (market 15) — open interest 1,486.910000 base = $1,177.51 at $0.79191559/ZRO
+# 12 accounts with non-zero base; longs = shorts = OI to within 10,013 wei
+# (41476 dropped: closed its +555.000000 since the 12 Aug snapshot, base now 0)
 [invoke.market_close_w1_force_close_15zro]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -43,9 +54,8 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market15ZroId %>",
     [
-        "2",      #          -1,807.083097 ZRO (passive pool)
+        "2",      #          -1,252.083097 ZRO (passive pool)
         "17251",  #          +1,000.000000 ZRO
-        "41476",  #            +555.000000 ZRO
         "18073",  #            -234.526903 ZRO
         "128904", #            +209.000000 ZRO
         "135288", #            +200.000000 ZRO
@@ -57,7 +67,7 @@ args = [
         "127173", #              -0.300000 ZRO
         "60666",  #              +0.110000 ZRO
     ],
-    "1000000000", # 1e9 wei cap; measured residual 10,014 wei = 0.000000000000010014 base
+    "1000000000", # 1e9 wei cap; measured residual 10,013 wei = 0.000000000000010013 base
 ]
 depends = ["invoke.market_close_w1_freeze_15zro"]
 
@@ -410,6 +420,10 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_36kneiro"]
 
+# GRIFFAIN (market 49) — open interest 30,437.900000 base = $375.25 at $0.01232829/GRIFFAIN
+# 2 accounts with non-zero base; longs = shorts = OI exactly
+# (the book turned over after the 12 Aug snapshot: the pool flipped from -50,000 to +30,437.900000,
+#  131432 closed out entirely, and 11236 is the new short — see block 206713383)
 [invoke.market_close_w1_force_close_49griffain]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -417,10 +431,10 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market49GriffainId %>",
     [
-        "2",      #         -50,000.000000 GRIFFAIN (passive pool)
-        "131432", #         +50,000.000000 GRIFFAIN
+        "2",      #         +30,437.900000 GRIFFAIN (passive pool)
+        "11236",  #         -30,437.900000 GRIFFAIN
     ],
-    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 0 wei
 ]
 depends = ["invoke.market_close_w1_freeze_49griffain"]
 
@@ -494,8 +508,10 @@ depends = ["invoke.market_close_w1_force_close_61ip"]
 # Group A
 ####################################################################################################
 
-# KAITO (market 67) — open interest 67,742.900000 base = $30,984.50 at $0.45738372/KAITO
-# 10 accounts with non-zero base; longs = shorts = OI to within 0 wei
+# KAITO (market 67) — open interest 5,751.200000 base = $1,946.08 at $0.33837854/KAITO
+# 5 accounts with non-zero base; longs = shorts = OI exactly
+# (the book turned over almost entirely after the 12 Aug snapshot: the pool flipped from +21,992.600000
+#  to -5,741.200000, and 102387 / 129339 / 7301 / 129450 / 131432 all closed out)
 [invoke.market_close_w1_force_close_67kaito]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -503,18 +519,13 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market67KaitoId %>",
     [
-        "102387", #         +40,000.000000 KAITO
-        "129339", #         -35,000.000000 KAITO
-        "7301",   #         -29,226.900000 KAITO
-        "2",      #         +21,992.600000 KAITO (passive pool)
+        "2",      #          -5,741.200000 KAITO (passive pool)
         "48720",  #          +3,550.300000 KAITO
-        "129450", #          -2,500.000000 KAITO
         "135845", #          +2,200.000000 KAITO
-        "134542", #            -506.000000 KAITO
-        "131432", #            -500.000000 KAITO
         "123082", #             -10.000000 KAITO
+        "134542", #              +0.900000 KAITO
     ],
-    "1000000000", # 1e9 wei cap; measured residual 1 wei = 0.000000000000000001 base
+    "1000000000", # 1e9 wei cap; measured residual 0 wei
 ]
 depends = ["invoke.market_close_w1_freeze_67kaito"]
 
