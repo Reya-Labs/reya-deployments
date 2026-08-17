@@ -1,15 +1,11 @@
 ####################################################################################################
-# Market close — Week 1 batch (10-14 Aug 2026)
+# Market close — freeze batch 1
 #
-# Phase B.1 of the two-phase closure documented in reya-network/agent-docs/market-close-scope.md §1:
 # `freezeMarketForClosure` snapshots the live oracle price (enforcing `marketOrderMaxStaleDuration`,
 # which is 11s for every market below), settles funding up to that instant and pins it to zero, and
 # rewires the market's `oracleNodeId` to a freshly-registered CONSTANT node holding that price.
 #
-# Covers the 18 markets scheduled to be force-closed in W1 of the compressed 5-week plan:
-#   Group 0  (11, reduce-only since June): ZRO, JTO, TON, ZORA, XPL, WLFI, BERA, YZY, AI16Z, MOVE, PROVE
-#   RO batch (6,  reduce-only since 6 Aug): GOAT, kNEIRO, AIXBT, GRIFFAIN, APE, IP
-#   Group A  (1,  reduce-only since #507): KAITO — pulled forward from the W2 batch
+# Covers the 18 markets below (all already reduce-only on-chain).
 #
 # This file is included from `passive_perp/mainnet.toml`, which `passive_perp/testnet.toml` also includes, so every
 # invoke below runs on BOTH reya_network and reya_cronos. Cronos is the rehearsal: all 18 are already reduce-only
@@ -203,7 +199,7 @@ args = ["<%= settings.market61IpId %>"]
 depends = ["invoke.market_61ip_set_market_config"]
 
 ####################################################################################################
-# Group A — reduce-only since #507, pulled forward into the W1 close
+# Group A — reduce-only since #507
 ####################################################################################################
 
 [invoke.market_close_w1_freeze_67kaito]
