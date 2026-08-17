@@ -211,11 +211,12 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
 
         // ZORA
         if (marketId == 68) {
-            a = new uint128[](4);
+            a = new uint128[](5);
             a[0] = 2;
             a[1] = 38_256;
             a[2] = 125_390;
             a[3] = 120_595;
+            a[4] = 134_477;
         }
 
         // PROVE

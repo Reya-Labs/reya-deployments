@@ -212,8 +212,9 @@ args = [
 ]
 depends = ["invoke.market_close_w1_force_close_58bera"]
 
-# ZORA (market 68) — open interest 13,622.899999 base = $65.17 at $0.00478349/ZORA
-# 4 accounts with non-zero base; longs = shorts = OI to within 8,398 wei
+# ZORA (market 68) — open interest 13,622.900000 base = $67.89 at $0.00498353/ZORA
+# 5 accounts with non-zero base; longs = shorts = OI to within 8,398 wei
+# (134477 opened +2,201.900000 out of the pool at block 209247627, after the original snapshot)
 [invoke.market_close_w1_force_close_68zora]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
@@ -221,10 +222,11 @@ func = "forceCloseMarket"
 args = [
     "<%= settings.market68ZoraId %>",
     [
-        "2",      #         +13,141.999999 ZORA (passive pool)
+        "120595", #         -13,448.600000 ZORA
+        "2",      #         +10,940.100000 ZORA (passive pool)
+        "134477", #          +2,201.900000 ZORA
         "38256",  #            +480.900000 ZORA
         "125390", #            -174.300000 ZORA
-        "120595", #         -13,448.600000 ZORA
     ],
     "1000000000", # 1e9 wei cap; measured residual 8,398 wei = 0.000000000000008398 base
 ]
