@@ -52,6 +52,7 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
 
     /// @notice Stage 2: every market already in reduce-only (`maxOpenBase == 0`) can be frozen for closure. Markets
     ///         an earlier close batch has already frozen are skipped — `test_W1MarketsAreFrozen` covers those.
+    ///         an earlier close batch has already frozen are skipped — `test_W1MarketsAreFrozen` covers those.
     function test_ReduceOnlyMarketsCanBeFrozen() public {
         for (uint128 marketId = 1; marketId <= lastMarketId(); marketId++) {
             if (isMarketActive(marketId) && isReduceOnly(marketId) && !isFrozen(marketId)) {
