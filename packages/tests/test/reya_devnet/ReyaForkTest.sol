@@ -67,13 +67,16 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
         sec.usdcUsdStorkNodeId = 0x76198d2abe821744bfde51ad90bae8c01223a679080456c90bec798f19f55b40;
 
-        // sRUSD parent-collateral pool oracle, registered on devnet's own
-        // manager (see devnet/oracle_manager/pool_srusd_usdc.toml). Staleness
-        // bumped to 10_000s so the fork (which may be pointed at an older
-        // block) doesn't trip OracleStale.
-        sec.srusdUsdcPoolNodeId = 0x76f80a6a7a5b76465f117c56f41ecdcb7fe9fde5d817693fd12672e4508b4e12;
-        vm.prank(sec.multisig);
-        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.srusdUsdcPoolNodeId, 10_000);
+        // sRUSD parent-collateral pool oracle. On devnet this is a CONSTANT
+        // 1.0 node, not the Stork REYAPOOL#1 lookup cronos/mainnet use — see
+        // devnet/oracle_manager/pool_srusd_usdc.toml for why, and for the
+        // plan to converge back onto the Stork feed. Because a node id is
+        // keccak(nodeType, params, parents), CONSTANT(1e18) is the same
+        // stored node as rusdUsdNodeId above; the two are aliases while
+        // devnet is on the constant. No staleness override is applied: a
+        // CONSTANT node reports block.timestamp so it is never stale, and
+        // setting it here would move rUSD/USD's staleness too.
+        sec.srusdUsdcPoolNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
 
         // Mark price node ids — devnet's own registrations.
         sec.ethUsdStorkMarkNodeId = 0x219a6c2e6d962bc56fc11095c36c345d3b6071844e66aa48310c098aea07016b;

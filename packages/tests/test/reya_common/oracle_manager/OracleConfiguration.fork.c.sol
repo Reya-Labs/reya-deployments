@@ -41,6 +41,19 @@ contract OracleConfigurationForkCheck is BaseReyaForkTest {
         }
     }
 
+    /// The sRUSD parent-collateral node must return a usable price without
+    /// any pusher having run. On devnet it is a CONSTANT 1.0 node (see
+    /// devnet/oracle_manager/pool_srusd_usdc.toml); on cronos/mainnet it is
+    /// the Stork REYAPOOL#1 lookup, which serves whatever the pool-price
+    /// publisher last wrote. Either way `process` must succeed and return a
+    /// non-zero price — a node that reverts here mis-prices sRUSD collateral
+    /// on collateral pool 1 at liquidation time.
+    function check_srusdPoolNode_producesPrice() public view {
+        NodeOutput.Data memory out = IOracleManagerProxy(sec.oracleManager).process(sec.srusdUsdcPoolNodeId);
+        require(out.price > 0, "srusdUsdcPool node produced a zero price");
+        require(out.timestamp > 0, "srusdUsdcPool node produced a zero timestamp");
+    }
+
     /// The registered nodes must actually produce prices through THIS
     /// adapters instance: publish a signed payload for the exact asset-pair
     /// id the node was registered with ("ETHUSD" — the node params embed the
