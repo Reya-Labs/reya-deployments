@@ -6,6 +6,11 @@ import { BaseReyaForkTest } from "../reya_common/BaseReyaForkTest.sol";
 import "../reya_common/DataTypes.sol";
 
 import { IOracleManagerProxy } from "../../src/interfaces/IOracleManagerProxy.sol";
+import {
+    IOracleAdaptersProxy,
+    StorkSignedPayload,
+    StorkPricePayload
+} from "../../src/interfaces/IOracleAdaptersProxy.sol";
 
 /**
  * @title ReyaForkTest (Devnet)
@@ -97,5 +102,52 @@ contract ReyaForkTest is BaseReyaForkTest {
         catch {
             vm.createSelectFork(sec.REYA_RPC);
         }
+    }
+
+    /// Seed devnet's OracleAdapters with the base Stork pairs.
+    ///
+    /// Unlike cronos and mainnet, devnet's adapters are a FRESH instance that
+    /// no real pusher has ever written to, so every STORK_OFFCHAIN_LOOKUP node
+    /// reads zero until one does. That is not a problem the existing helpers
+    /// can solve: {mockFreshPrices} re-stamps an EXISTING price, and it calls
+    /// `process` to read that price first — which is precisely where a
+    /// div-reducer whose denominator is zero reverts with `InvalidPrice()`.
+    /// So the prices have to exist before any test touches the node graph.
+    ///
+    /// Only the base pairs are published. Every derived node on devnet is a
+    /// div-reducer over these (e.g. ethUsdcMark = ETHUSDMARK / USDCUSD), so
+    /// seeding the leaves resolves the whole graph. Values are nominal: no
+    /// devnet test asserts an absolute price, only relative behaviour.
+    function setUp() public virtual {
+        (address publisher, uint256 publisherPK) = makeAddrAndKey("devnetSeedPublisher");
+        vm.prank(sec.multisig);
+        IOracleAdaptersProxy(sec.oracleAdaptersProxy).addToFeatureFlagAllowlist(
+            keccak256(bytes("publishers")), publisher
+        );
+
+        string[3] memory pairs = ["USDCUSD", "ETHUSD", "ETHUSDMARK"];
+        uint256[3] memory prices = [uint256(1e18), 3000e18, 3000e18];
+        for (uint256 i = 0; i < pairs.length; i++) {
+            seedStorkPrice(publisher, publisherPK, pairs[i], prices[i]);
+        }
+    }
+
+    function seedStorkPrice(
+        address publisher,
+        uint256 publisherPK,
+        string memory assetPairId,
+        uint256 price
+    )
+        internal
+    {
+        StorkPricePayload memory pricePayload =
+            StorkPricePayload({ assetPairId: assetPairId, timestamp: block.timestamp, price: price });
+        bytes32 digest = calculatePricePayloadDigest(publisher, pricePayload);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(publisherPK, digest);
+        IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(
+            abi.encode(
+                StorkSignedPayload({ oraclePubKey: publisher, pricePayload: pricePayload, r: r, s: s, v: v })
+            )
+        );
     }
 }
