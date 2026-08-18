@@ -1,0 +1,13 @@
+# Devnet oracle-manager proxy: uses a devnet-specific salt to avoid a CREATE2
+# collision with Cronos.
+#
+# The shared oracle_manager/utils/deploy_proxy.toml clones with
+# `settings.salt`, which is "" on Cronos. Devnet uses the same owner as
+# Cronos, so cloning with that salt would resolve to the SAME address as the
+# existing Cronos proxy instead of deploying devnet's own.
+[clone.reyaOracleManagerProxy]
+source = "<%= settings.oracleManagerProxyPackage %>"
+target = "<%= settings.oracleManagerProxyPackage %>"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.oracleManagerSalt %>"
+depends = ["var.cannonClonePackages"]

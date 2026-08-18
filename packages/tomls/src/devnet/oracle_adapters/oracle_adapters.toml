@@ -1,0 +1,18 @@
+# Devnet oracle adapters: devnet's own proxy plus the shared config set.
+#
+# Composed piecewise rather than including ../../oracle_adapters/mainnet.toml,
+# because that file includes the shared utils/deploy_proxy.toml. Including it
+# here would both clone with the shared (Cronos) salt and collide on the
+# `reyaOracleAdaptersProxy` clone key with the devnet proxy below.
+include = [
+    "deploy_proxy.toml",
+    "../../oracle_adapters/utils/upgrade_proxy.toml",
+    "../../oracle_adapters/configs/feature_flags.toml",
+    "../../oracle_adapters/configs/global_config.toml",
+    "../../oracle_adapters/configs/set_publishers.toml",
+    "../../oracle_adapters/configs/set_executors.toml",
+    "../../oracle_adapters/configs/set_sub_second_executors.toml",
+    "../../oracle_adapters/configs/allow_all_executors.toml",
+    "../../oracle_adapters/configs/init_lm_token_prices.toml",
+    "../../oracle_adapters/configs/set_standalone_executors.toml",
+]

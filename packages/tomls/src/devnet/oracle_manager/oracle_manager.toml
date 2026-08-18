@@ -1,0 +1,10 @@
+# Devnet oracle manager: devnet's own proxy plus the shared node/config set.
+#
+# ../../oracle_manager/mainnet.toml supplies utils/upgrade_proxy.toml and the
+# full node configuration (constants, stork, storkMark). It deliberately does
+# NOT clone a proxy, so pairing it with the devnet deploy_proxy below yields
+# devnet's own instance rather than reusing Cronos's.
+include = [
+    "deploy_proxy.toml",
+    "../../oracle_manager/mainnet.toml",
+]

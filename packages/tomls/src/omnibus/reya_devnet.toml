@@ -3,8 +3,10 @@
 #
 # Minimal environment for perp orderbook (perpOB) release testing.
 # Shares the Cronos testnet chain (chainId 89346162) and reuses existing
-# Cronos deployments for tokens, rUSD, passive pool, oracle manager,
-# exchange pass, oracle adapters, ranks, and SBT.
+# Cronos deployments for tokens, rUSD, passive pool, exchange pass, ranks,
+# and SBT. The oracle manager and oracle adapters are deployed per-devnet
+# (see ../devnet/oracle_manager, ../devnet/oracle_adapters) so registering a
+# node for a new devnet market or collateral does not mutate Cronos.
 #
 # Deploys fresh proxies for: Core, PassivePerp, OrdersGateway, Periphery.
 #
@@ -15,6 +17,8 @@
 include = [
     "../devnet/commons.toml",
     "utils/constants.toml",
+    "../devnet/oracle_manager/oracle_manager.toml",
+    "../devnet/oracle_adapters/oracle_adapters.toml",
     "../devnet/core/core.toml",
     "../devnet/passive_perp/passive_perp.toml",
     "../devnet/orders_gateway/orders_gateway.toml",
@@ -36,7 +40,6 @@ wethProxyAddress = "0x2CF56315ACC7E791B1A0135c09d8D5C8dBCD2F14"
 # packages/tests/deployments/test/SRUSDProxy.json, ReyaForkTest.sol:51.
 srusdProxyAddress = "0xb9F531A54Fc0E9AdCa1b931d9533B4e49bB2fAD6"
 passivePoolProxyAddress = "0x9A3A664987b88790A6FDC1632e3b607813fd94fF"
-oracleManagerProxyAddress = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
 exchangePassProxyAddress = "0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB"
 
 ###############################################################################
@@ -57,6 +60,10 @@ passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.1.2@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
 ordersGatewayRouterPackage = "reya-orders-gateway:1.1.2@router"
+oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
+oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
+oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
+oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.8@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.1.2@router"
 
@@ -75,7 +82,8 @@ accountNftUri = "https://reya.xyz/"
 ###############################################################################
 [var.cronos_compat_vars]
 passivePoolProxy = "0x9A3A664987b88790A6FDC1632e3b607813fd94fF"
-oracleManagerProxy = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
+oracleManagerProxy = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>"
+oracleAdaptersProxy = "<%= imports.reyaOracleAdaptersProxy.contracts.InitialProxy.address %>"
 
 ###############################################################################
 # Initial Proxy Salts (devnet-specific to avoid collision with Cronos)
@@ -85,6 +93,8 @@ coreSalt = "core-devnet3"
 passivePerpSalt = "passive-perp-devnet3"
 ordersGatewaySalt = "orders-gateway-devnet3"
 peripherySalt = "periphery-devnet3"
+oracleManagerSalt = "oracle-manager-devnet3"
+oracleAdaptersSalt = "oracle-adapters-devnet3"
 
 ###############################################################################
 # Proxy Upgrade Variables (the 4 fresh proxies)
@@ -349,7 +359,7 @@ cp1Rusd_srusd_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_srusdParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
 cp1Rusd_srusdParentConfig_priceHaircutUnscaled = "0.1"
 cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
-# Reuse the Cronos Stork sRUSD/USDC pool node — devnet shares the Cronos
+# sRUSD/USDC pool node, registered on devnet's own
 # OracleManager proxy (sec.oracleManager = 0x689f...64eA, see
 # `tests/test/reya_devnet/ReyaForkTest.sol`), so any node registered for
 # cronos is reachable here. Required because margin / IM checks traverse
@@ -379,16 +389,15 @@ srusdRusdSpot_priceSpacingUnscaled = "0"
 srusdRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 ###############################################################################
-# Stork Oracle Node IDs (reuse Cronos stork nodes)
+# Stork Oracle Node IDs
+#
+# Not declared here. Devnet now registers its own nodes via the oracle-manager
+# configs, each of which exports its id from the NodeRegistered event
+# (rusdUsdNodeId, ethUsdcNodeIdStork, ethUsdcMarkNodeIdStork,
+# srusdUsdcPoolNodeId and the rest of the stork/storkMark set). Re-declaring
+# them as literals here would shadow those registrations with ids belonging to
+# a different OracleManager instance.
 ###############################################################################
-[var.stork_oracle_node_ids]
-rusdUsdNodeId = "0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857"
-ethUsdcNodeIdStork = "0xb19e4d8ea5f0a3752fbd19515075063f7486e6954b8aa2b3d462c61726c46619"
-ethUsdcMarkNodeIdStork = "0x14dba23a7f8775bceefeedb4266fbe135b949ae40fe08e491f2a476d3448c66f"
-# Stork sRUSD/USDC pool node — already registered on the Cronos OracleManager
-# (devnet reuses the same proxy), so we just need to reference the id.
-# Source: reya_cronos.toml / ReyaForkTest.sol:150.
-srusdUsdcPoolNodeId = "0xc380c1273590e190bc15a196fdb2b5750abdd0eeb868cc8385dd384761e21ddb"
 
 ###############################################################################
 # Chain IDs (for periphery bridging connectors)
