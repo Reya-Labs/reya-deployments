@@ -33,14 +33,19 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Stage allowlisted tree
+      - name: Stage allowlisted tree (tracked files only)
         run: |
           set -euo pipefail
           test -f public-mirror.allow || { echo "::error::public-mirror.allow missing"; exit 1; }
           mkdir -p /tmp/pub
-          # Copy ONLY paths listed in the allowlist (comments/blank lines ignored).
-          grep -vE '^[[:space:]]*(#|$)' public-mirror.allow > /tmp/allow.list
-          rsync -a --files-from=/tmp/allow.list --ignore-missing-args ./ /tmp/pub/
+          # Read the allowlist (ignore comments/blank lines) and export exactly
+          # those paths at HEAD via `git archive`. This recurses directories
+          # correctly and includes ONLY tracked files — untracked/ignored local
+          # files can never leak (unlike `rsync` over the working tree). A missing
+          # path fails the run loudly, which is the desired behaviour.
+          mapfile -t PATHS < <(grep -vE '^[[:space:]]*(#|$)' public-mirror.allow)
+          [ "${#PATHS[@]}" -gt 0 ] || { echo "::error::allowlist is empty"; exit 1; }
+          git archive --format=tar HEAD -- "${PATHS[@]}" | tar -x -C /tmp/pub
           # Guard: refuse to publish an empty tree (a broken allowlist would wipe the mirror).
           if [ -z "$(find /tmp/pub -type f -print -quit)" ]; then
             echo "::error::staged tree is empty — check public-mirror.allow"; exit 1
