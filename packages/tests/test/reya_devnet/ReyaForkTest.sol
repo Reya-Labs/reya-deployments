@@ -32,7 +32,7 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         // Reya contracts (deterministic CREATE2 addresses from devnet cannon deployment)
         sec.core = payable(0xC33D0A4FC05aF98447126f1680cA7316de29e5d4);
-        sec.pool = payable(0x9A3A664987b88790A6FDC1632e3b607813fd94fF); // reused Cronos PassivePool
+        sec.pool = payable(0x9fDba948aC22448C310B15C04D9A3DCB4bA8abA2); // devnet's own (CREATE2, passive-pool-devnet3)
         sec.perp = payable(0x6f42DB6d75Da0B85bDd386b96Cbfb73416AB37A4);
         sec.oracleManager = 0xEA0F138fa958a7beeA2b448C5a27141056c45A97; // devnet's own (CREATE2, oracle-manager-devnet3)
         sec.periphery = payable(0xDEDbde7e82B66E499b8FC8a472a5E857be1494DE);
@@ -41,15 +41,18 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.exchangePass = 0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB; // reused Cronos
         sec.accountNft = 0x73e29C9EeE1db0725A6c352D705137416870E870;
 
-        // Reya tokens (reuse Cronos testnet token deployments)
+        // Reya tokens (rUSD / USDC / wETH reuse the Cronos testnet deployments)
         sec.rusd = 0x9DE724e7b3facF87Ce39465D3D712717182e3e55;
         sec.usdc = 0xfA27c7c6051344263533cc365274d9569b0272A8;
         sec.weth = 0x2CF56315ACC7E791B1A0135c09d8D5C8dBCD2F14;
-        sec.srusd = 0xb9F531A54Fc0E9AdCa1b931d9533B4e49bB2fAD6;
+        // sRUSD is devnet's OWN token, not the Cronos one: its supply
+        // represents claims on exactly one pool, so it could not stay shared
+        // once devnet stopped borrowing the Cronos pool.
+        sec.srusd = 0x8A04495Ed90DE2cC1e0e620F01210c6A6fE63bdb; // devnet's own (CREATE2, srusd-devnet3)
 
         // Reya variables
         sec.passivePoolId = 1;
-        sec.passivePoolAccountId = 0; // no passive pool counterparty in devnet
+        sec.passivePoolAccountId = 360; // Core account created by devnet's own pool
 
         // Reya bots
         sec.coExecutionBot = 0xc9A01c03AEE926B89b83F7781b15B822807E1d33;

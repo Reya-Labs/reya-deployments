@@ -1,5 +1,5 @@
-# Devnet CP1 sRUSD collateral config: uses the reused Cronos sRUSD address
-# (settings.srusdProxyAddress). Mirrors the shared
+# Devnet CP1 sRUSD collateral config: uses devnet's own sRUSD instance
+# (settings.srusdProxyAddress, resolved from the clone import). Mirrors the shared
 # `packages/tomls/src/collateral_pools/collateral_pool_1/tokens/srusd.toml`,
 # rewritten to reference devnet setting paths instead of `contracts.*.address`.
 
@@ -14,4 +14,16 @@ args = [
     { depositingEnabled = true, cap = "<%= parseUnits(settings.cp1Rusd_srusd_capUnscaled, parseInt(settings.srusdTokenDecimals)) %>", withdrawalWindowSize_DEPRECATED = "0", withdrawalTvlPercentageLimit_DEPRECATED = "0", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_srusd_autoExchangeThresholdUnscaled, parseInt(settings.srusdTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_srusd_autoExchangeDustThresholdUnscaled, parseInt(settings.srusdTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_srusd_bidSubmissionFeeUnscaled, parseInt(settings.srusdTokenDecimals)) %>" },
     { collateralAddress = "<%= settings.cp1Rusd_srusdParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_srusdParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.cp1Rusd_srusdParentConfig_oracleNodeId %>" },
 ]
-depends = ["var.cp_1rusd_vars", "invoke.cp_1rusd_set_rusd_config"]
+# `oracle_manager_register_node_pool_srusd` is named explicitly because this
+# step's parent config reads `settings.cp1Rusd_srusdParentConfig_oracleNodeId`,
+# which resolves to the node id that step exports. Cannon's inference cannot be
+# relied on here: this step declares `depends`, and its args nest
+# `parseUnits(...)`/`parseEther(...)` calls, which is exactly the combination
+# that makes cannon silently fall back to the explicit list (the same fault
+# that kept passive_perp_global_config broken). Without it, the collateral
+# could be configured against an undefined node id.
+depends = [
+    "var.cp_1rusd_vars",
+    "invoke.cp_1rusd_set_rusd_config",
+    "invoke.oracle_manager_register_node_pool_srusd",
+]

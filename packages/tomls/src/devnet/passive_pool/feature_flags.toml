@@ -1,0 +1,109 @@
+# Devnet passive-pool feature flags.
+#
+# Mirrors ../../passive_pool/configs/feature_flags.toml, minus the
+# `whitelistedCollateral` entries for RSELINI / RAMBER / RHEDGE / SUSDE — none
+# of those tokens exist on devnet, and the shared file reaches them through
+# `contracts.*Proxy`, which devnet cannot resolve. rUSD is whitelisted via
+# `settings.rusdProxyAddress` since devnet reuses the Cronos rUSD token.
+#
+# The unstaking test-wallet deposit/withdrawal allowlists are also dropped:
+# ../../passive_pool/configs/open_pool.toml sets deposit and withdrawal to
+# allow-all for this pool anyway, so per-wallet entries add nothing on devnet.
+#
+# Deliberately NOT carried over from the shared file, and worth knowing about
+# before relying on them here:
+#
+#   * `autoRebalance` allowlists (rebalancer1/2/3/5/6). Those are Cronos
+#     operational wallets; granting them rights over devnet's pool would
+#     repeat the mistake the devnet oracle-adapters executor allowlist exists
+#     to avoid. Auto-rebalance is therefore unallowlisted on devnet. If a test
+#     needs it, add devnet's own rebalancer wallet rather than the Cronos set.
+#   * `stakedAssetAutoExchange` allowlists (ae_liquidator1/2/3) — same
+#     reasoning.
+#
+# Neither is required for orderbook throughput testing, which is what this
+# environment exists for.
+[invoke.passive_pool_unpause]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_set_pausers]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_set_v2_liquidity_access]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('v2Liquidity')),settings.pool1RusdId])) %>",
+    true,
+]
+depends = ["invoke.passive_pool_create_pool_1rusd"]
+
+[invoke.passive_pool_set_tokenized_liquidity_access]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('tokenizedLiquidity')),settings.pool1RusdId])) %>",
+    true,
+]
+depends = ["invoke.passive_pool_create_pool_1rusd"]
+
+[invoke.passive_pool_set_action_metadata_overwrite_access_periphery]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('actionMetadataOverwrite')) %>",
+    "<%= settings.peripheryProxy %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_set_action_metadata_overwrite_access_core]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('actionMetadataOverwrite')) %>",
+    "<%= settings.coreProxy %>",
+]
+depends = ["invoke.upgrade_passive_pool_proxy"]
+
+[invoke.passive_pool_allow_rusd_for_auto_rebalance]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('whitelistedCollateral')),settings.pool1RusdId])) %>",
+    "<%= settings.rusdProxyAddress %>",
+]
+depends = ["invoke.passive_pool_create_pool_1rusd"]
+
+[invoke.passive_pool_allow_srusd_for_auto_rebalance]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('whitelistedCollateral')),settings.pool1RusdId])) %>",
+    "<%= contracts.SRUSDProxy.address %>",
+]
+depends = [
+    "invoke.passive_pool_create_pool_1rusd",
+    "invoke.upgrade_srusd_proxy",
+]

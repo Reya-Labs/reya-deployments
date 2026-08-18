@@ -9,11 +9,29 @@
 # template evaluation when combined with parseEther in the same args struct,
 # which is why the address is a literal; the OracleConfiguration fork checks
 # assert the deployed stack matches it.)
+#
+# Field name is `dustAccountId_DEPRECATED`, not `dustAccountId`. That single
+# character difference is what made this step fail for so long: cannon encodes
+# the struct by field name, so a mismatched key leaves the real `uint128` field
+# undefined and the encoder dies with "Cannot convert undefined to a BigInt" —
+# an error that reads like a template-evaluation fault and sent an earlier
+# investigation chasing `imports.*` / `parseEther` interactions. It is a plain
+# ABI mismatch. The step took ~40 downstream market and collateral-pool steps
+# with it, and their fork tests, because cannon skips rather than fails.
+#
+# NB the shared passive_perp/configs/global_config.toml is stale in the same
+# direction: it passes only `coreProxy` and `exchangeProxy`, while the deployed
+# struct is {coreProxy, exchangeProxy_DEPRECATED, oracleManagerAddress,
+# maxAbsFundingRate, dustAccountId_DEPRECATED}. Raised separately.
 [invoke.passive_perp_global_config]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setGlobalConfiguration"
 args = [
-    { coreProxy = "<%= contracts.CoreProxy.address %>", exchangeProxy_DEPRECATED = "<%= AddressZero %>", oracleManagerAddress = "0xEA0F138fa958a7beeA2b448C5a27141056c45A97", maxAbsFundingRate = "<%= parseEther(settings.maxAbsFundingRateUnscaled) %>", dustAccountId = "0" },
+    { coreProxy = "<%= contracts.CoreProxy.address %>", exchangeProxy_DEPRECATED = "<%= AddressZero %>", oracleManagerAddress = "0xEA0F138fa958a7beeA2b448C5a27141056c45A97", maxAbsFundingRate = "<%= parseEther(settings.maxAbsFundingRateUnscaled) %>", dustAccountId_DEPRECATED = "0" },
 ]
-depends = ["invoke.upgrade_passive_perp_proxy", "invoke.upgrade_oracle_manager_proxy"]
+depends = [
+    "invoke.upgrade_passive_perp_proxy",
+    "invoke.upgrade_oracle_manager_proxy",
+    "var.passive_perp_global",
+]

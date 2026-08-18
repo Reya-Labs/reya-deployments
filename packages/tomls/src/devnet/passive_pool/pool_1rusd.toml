@@ -1,0 +1,64 @@
+# Devnet pool 1 (rUSD-quoted) on devnet's OWN PassivePool proxy.
+#
+# Mirrors ../../passive_pool/configs/pools/pool_1rusd.toml with two
+# devnet-specific differences:
+#
+#   1. rUSD is referenced through `settings.rusdProxyAddress` (devnet reuses
+#      the Cronos rUSD token) rather than `contracts.RUSDProxy.address`,
+#      because devnet does not deploy the token package.
+#   2. The `setAllocationConfiguration` step and the `setTargetRatioPostQuote`
+#      steps (DEUSD / SDEUSD / RSELINI / RAMBER / RHEDGE) are dropped. Two
+#      independent reasons, and the second is worth knowing about:
+#        - devnet deploys none of those collateral tokens, and the shared file
+#          reaches them via `contracts.*Proxy`, which devnet cannot resolve;
+#        - NEITHER FUNCTION EXISTS. `setAllocationConfiguration` and
+#          `setTargetRatioPostQuote` are absent from the passive-pool source
+#          (only the `AllocationConfiguration` storage library exists) and from
+#          the deployed router ABI, and cronos / mainnet / devnet all pin the
+#          same `reya-exchange-passive-pool:1.0.14@router`. So those six steps
+#          fail on every environment, not just here — cannon skips them with a
+#          warning rather than failing the build, which is why it has gone
+#          unnoticed. Raised separately; not fixed here.
+#
+# Tokenization DOES run here, against devnet's own sRUSD (see
+# ../token/srusd.toml). It must not be pointed at the Cronos sRUSD instance:
+# that token's supply represents claims on the Cronos pool, and a second pool
+# minting it would give holders ambiguous claims across two pools. The
+# pool-side guard would not catch that — `tokenizePool` only reverts when THIS
+# pool's storage is already tokenized, and a fresh proxy's storage is empty.
+[invoke.passive_pool_create_pool_1rusd]
+target = ["PassivePoolProxy"]
+abi = "<%= JSON.stringify(contracts.PassivePoolProxy.abi.concat([{'type':'event','name':'PoolCreated','inputs':[{'name':'poolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'quoteToken','type':'address','indexed':true,'internalType':'address'},{'name':'accountId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false}])) %>"
+fromCall.func = "owner"
+func = "createPool"
+args = ["<%= settings.rusdProxyAddress %>"]
+var.pool1RusdId.event = "PoolCreated"
+var.pool1RusdId.arg = 0
+var.pool1RusdAccountId.event = "PoolCreated"
+var.pool1RusdAccountId.arg = 2
+depends = ["invoke.passive_pool_global_config"]
+
+[invoke.passive_pool_unpause_pool_1rusd]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('poolEnabled')),settings.pool1RusdId])) %>",
+    true,
+]
+depends = ["invoke.passive_pool_create_pool_1rusd"]
+
+[invoke.passive_pool_tokenize_pool_1rusd]
+target = ["PassivePoolProxy"]
+fromCall.func = "owner"
+func = "tokenizePool"
+args = ["<%= settings.pool1RusdId %>", "<%= contracts.SRUSDProxy.address %>"]
+depends = [
+    "invoke.passive_pool_create_pool_1rusd",
+    "invoke.passive_pool_unpause_pool_1rusd",
+    "invoke.upgrade_srusd_proxy",
+    "invoke.srusd_initialize",
+    "invoke.srusd_mint_permission",
+    "invoke.srusd_burn_permission",
+    "invoke.srusd_authorized_holders_allow_pool",
+]
