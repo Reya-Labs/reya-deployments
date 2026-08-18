@@ -34,10 +34,10 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.core = payable(0xC33D0A4FC05aF98447126f1680cA7316de29e5d4);
         sec.pool = payable(0x9A3A664987b88790A6FDC1632e3b607813fd94fF); // reused Cronos PassivePool
         sec.perp = payable(0x6f42DB6d75Da0B85bDd386b96Cbfb73416AB37A4);
-        sec.oracleManager = 0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA; // reused Cronos
+        sec.oracleManager = 0xEA0F138fa958a7beeA2b448C5a27141056c45A97; // devnet's own (CREATE2, oracle-manager-devnet3)
         sec.periphery = payable(0xDEDbde7e82B66E499b8FC8a472a5E857be1494DE);
         sec.ordersGateway = payable(0x7Ec89E555c771D2B5939aBE5C4E4291852633D4D);
-        sec.oracleAdaptersProxy = payable(0xc501A2356703CD351703D68963c6F4136120f7CF); // reused Cronos
+        sec.oracleAdaptersProxy = payable(0x689D019d351688895858dAB41C3d5CDAea8Aa1a5); // devnet's own (CREATE2, oracle-adapters-devnet3)
         sec.exchangePass = 0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB; // reused Cronos
         sec.accountNft = 0x73e29C9EeE1db0725A6c352D705137416870E870;
 
@@ -57,24 +57,27 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.oraclePusher1 = 0x61548af5B40Ee331a30aBecA9Ff2237D6C753462;
         sec.oraclePusher2 = 0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3;
 
-        // Spot oracle node ids (reuse Cronos Stork nodes for ETH spot price)
-        sec.ethUsdStorkNodeId = 0x6f1442b15af1cde852d45cdd67336b330257c9df23834909159097b25b57936c;
-        sec.ethUsdcStorkNodeId = 0xb19e4d8ea5f0a3752fbd19515075063f7486e6954b8aa2b3d462c61726c46619;
+        // Spot oracle node ids — registered on devnet's OWN OracleManager.
+        // Node ids are keccak of (type, params, parents); the stork params
+        // embed the adapters address, so every stork id changed with the new
+        // adapters instance. rusdUsd is a constant node (no adapters in its
+        // params) and keeps the same id as Cronos.
+        sec.ethUsdStorkNodeId = 0xeb5886347879cc2497571f36a89c3a62b62da0fe2a5599d1cbe41bac44db041a;
+        sec.ethUsdcStorkNodeId = 0xd2de21b980e97d72e706548c6be1972993347dc5c046c9ed05766a21e60a319b;
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
-        sec.usdcUsdStorkNodeId = 0x28c79729ca502a5cd2565613c087a3bda098a1c78e3f3f45733d03c3482f099d;
+        sec.usdcUsdStorkNodeId = 0x76198d2abe821744bfde51ad90bae8c01223a679080456c90bec798f19f55b40;
 
-        // sRUSD parent-collateral oracle (reused from Cronos). Devnet's
-        // sRUSD entry on collateral_pool_1 uses this for parent-config
-        // pricing — see `cp1Rusd_srusdParentConfig_oracleNodeId` in the
-        // devnet omnibus. Staleness bumped to 10_000s so the fork (which
-        // may be pointed at an older block) doesn't trip OracleStale.
-        sec.srusdUsdcPoolNodeId = 0xc380c1273590e190bc15a196fdb2b5750abdd0eeb868cc8385dd384761e21ddb;
+        // sRUSD parent-collateral pool oracle, registered on devnet's own
+        // manager (see devnet/oracle_manager/pool_srusd_usdc.toml). Staleness
+        // bumped to 10_000s so the fork (which may be pointed at an older
+        // block) doesn't trip OracleStale.
+        sec.srusdUsdcPoolNodeId = 0x76f80a6a7a5b76465f117c56f41ecdcb7fe9fde5d817693fd12672e4508b4e12;
         vm.prank(sec.multisig);
         IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(sec.srusdUsdcPoolNodeId, 10_000);
 
-        // Mark price node ids (ETH only — may differ from cronos after perpOB deploy)
-        sec.ethUsdStorkMarkNodeId = 0x3f4c9f3d5efcbd98002f057a6c0acd0313aa63ab20334e611a30261b89acc1fa;
-        sec.ethUsdcStorkMarkNodeId = 0x14dba23a7f8775bceefeedb4266fbe135b949ae40fe08e491f2a476d3448c66f;
+        // Mark price node ids — devnet's own registrations.
+        sec.ethUsdStorkMarkNodeId = 0x219a6c2e6d962bc56fc11095c36c345d3b6071844e66aa48310c098aea07016b;
+        sec.ethUsdcStorkMarkNodeId = 0xe6f7d670990c134af7d1811041c691729e0770a38af6c79a8c13b0c984aa7a63;
 
         // Socket variables (reuse Cronos socket deployments for token bridging)
         dec.socketController[sec.usdc] = 0xf565F766EcafEE809EBaF0c71dCd60ad5EfE0F9e;
