@@ -1,0 +1,82 @@
+name: Publish public mirror
+
+# Type A: on every push to main, publish the allowlisted CURRENT tree to a
+# separate public repo as a single orphan commit — no source history, no commit
+# messages, no author info, no branches/tags. See PUBLIC_MIRROR.md.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read # source repo; the push to the mirror uses the App token below
+
+concurrency:
+  group: publish-public-mirror
+  cancel-in-progress: false # never interleave force-pushes
+
+env:
+  PUBLIC_REPO: Reya-Labs/reya-deployments-public # TODO: confirm public repo name
+  PUBLIC_BRANCH: main
+  COMMIT_MESSAGE: Publish
+  BOT_NAME: reya-bot
+  BOT_EMAIL: bot@reya.xyz
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source (current tree only, no history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Stage allowlisted tree
+        run: |
+          set -euo pipefail
+          test -f public-mirror.allow || { echo "::error::public-mirror.allow missing"; exit 1; }
+          mkdir -p /tmp/pub
+          # Copy ONLY paths listed in the allowlist (comments/blank lines ignored).
+          grep -vE '^[[:space:]]*(#|$)' public-mirror.allow > /tmp/allow.list
+          rsync -a --files-from=/tmp/allow.list --ignore-missing-args ./ /tmp/pub/
+          # Guard: refuse to publish an empty tree (a broken allowlist would wipe the mirror).
+          if [ -z "$(find /tmp/pub -type f -print -quit)" ]; then
+            echo "::error::staged tree is empty — check public-mirror.allow"; exit 1
+          fi
+          echo "Staged $(find /tmp/pub -type f | wc -l) files."
+
+      - name: Secret scan (fail on any finding)
+        run: |
+          docker run --rm -v /tmp/pub:/scan zricethezav/gitleaks:latest \
+            detect --source=/scan --no-git --redact --exit-code=1
+
+      - name: Mint token for the public repo
+        id: app
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MIRROR_APP_ID }}
+          private-key: ${{ secrets.MIRROR_APP_PRIVATE_KEY }}
+          owner: Reya-Labs
+          repositories: reya-deployments-public
+
+      - name: Publish scrubbed single-commit snapshot
+        working-directory: /tmp/pub
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          GIT_AUTHOR_NAME: ${{ env.BOT_NAME }}
+          GIT_AUTHOR_EMAIL: ${{ env.BOT_EMAIL }}
+          GIT_COMMITTER_NAME: ${{ env.BOT_NAME }}
+          GIT_COMMITTER_EMAIL: ${{ env.BOT_EMAIL }}
+          # Uncomment to ALSO strip sync timing (deterministic commit date):
+          # GIT_AUTHOR_DATE: "2000-01-01T00:00:00Z"
+          # GIT_COMMITTER_DATE: "2000-01-01T00:00:00Z"
+        run: |
+          set -euo pipefail
+          git init -q
+          git checkout -q --orphan "${PUBLIC_BRANCH}"
+          git add -A
+          git commit -q -m "${COMMIT_MESSAGE}"
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${PUBLIC_REPO}.git"
+          git push -f origin "HEAD:${PUBLIC_BRANCH}"
