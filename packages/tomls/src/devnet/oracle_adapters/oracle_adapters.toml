@@ -10,9 +10,7 @@ include = [
     "../../oracle_adapters/configs/feature_flags.toml",
     "../../oracle_adapters/configs/global_config.toml",
     "../../oracle_adapters/configs/set_publishers.toml",
-    "../../oracle_adapters/configs/set_executors.toml",
-    "../../oracle_adapters/configs/set_sub_second_executors.toml",
+    "set_executors.toml",
     "../../oracle_adapters/configs/allow_all_executors.toml",
     "../../oracle_adapters/configs/init_lm_token_prices.toml",
-    "../../oracle_adapters/configs/set_standalone_executors.toml",
 ]

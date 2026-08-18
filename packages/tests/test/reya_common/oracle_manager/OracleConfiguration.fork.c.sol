@@ -83,11 +83,16 @@ contract OracleConfigurationForkCheck is BaseReyaForkTest {
             keccak256(bytes("publishers")), publisher
         );
         address[2] memory pushers = [sec.oraclePusher1, sec.oraclePusher2];
-        for (uint256 i = 0; i < pushers.length; i++) {
-            vm.prank(pushers[i]);
-            IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(
-                abi.encode(createSignedPricePayload(publisher, publisherPK, block.timestamp + i + 1))
-            );
+        // The adapter rejects timestamps beyond block.timestamp, and re-submits
+        // at the stored timestamp are only accepted from subSecondExecutors, so
+        // round 1 exercises the executor gate and round 2 the sub-second gate.
+        for (uint256 round = 0; round < 2; round++) {
+            for (uint256 i = 0; i < pushers.length; i++) {
+                vm.prank(pushers[i]);
+                IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(
+                    abi.encode(createSignedPricePayload(publisher, publisherPK, block.timestamp))
+                );
+            }
         }
     }
 }
