@@ -6,6 +6,7 @@ import { BaseReyaForkTest } from "../reya_common/BaseReyaForkTest.sol";
 import "../reya_common/DataTypes.sol";
 
 import { IOracleManagerProxy } from "../../src/interfaces/IOracleManagerProxy.sol";
+import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IOracleAdaptersProxy,
     StorkSignedPayload,
@@ -19,7 +20,9 @@ import {
  *      Minimal setup: 1 perp market (ETH), 2 spot markets (WETHRUSD enabled,
  *      SRUSDRUSD created+configured but not orderbook-enabled — mirrors
  *      cronos/mainnet), 3 collaterals (rUSD, wETH, sRUSD).
- *      No passive pool counterparty — uses dedicated backstop liquidator account.
+ *      devnet runs its OWN PassivePool and sRUSD (not Cronos's), so it has a
+ *      real pool counterparty; the backstop LP is still a standalone margin
+ *      account (see cp1Rusd_backstopLpAccountId in the devnet omnibus).
  *
  */
 contract ReyaForkTest is BaseReyaForkTest {
@@ -57,7 +60,12 @@ contract ReyaForkTest is BaseReyaForkTest {
 
         // Reya variables
         sec.passivePoolId = 1;
-        sec.passivePoolAccountId = 360; // Core account created by devnet's own pool
+        // passivePoolAccountId is resolved on-chain in setUp(), not hardcoded.
+        // Core account ids are sequential state, not deterministic CREATE2: the
+        // id devnet's pool gets depends on how many accounts exist when the
+        // deployment actually runs, and devnet1 accumulates accounts
+        // continuously (perpOB load fleets create them by the hundred). A
+        // literal captured from a simulation goes stale before it deploys.
 
         // Reya bots
         sec.coExecutionBot = 0xc9A01c03AEE926B89b83F7781b15B822807E1d33;
@@ -119,6 +127,9 @@ contract ReyaForkTest is BaseReyaForkTest {
     /// seeding the leaves resolves the whole graph. Values are nominal: no
     /// devnet test asserts an absolute price, only relative behaviour.
     function setUp() public virtual {
+        sec.passivePoolAccountId = IPassivePoolProxy(sec.pool).getPoolAccountId(sec.passivePoolId);
+        require(sec.passivePoolAccountId != 0, "devnet pool has no Core account -- is the pool deployed?");
+
         (address publisher, uint256 publisherPK) = makeAddrAndKey("devnetSeedPublisher");
         vm.prank(sec.multisig);
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).addToFeatureFlagAllowlist(

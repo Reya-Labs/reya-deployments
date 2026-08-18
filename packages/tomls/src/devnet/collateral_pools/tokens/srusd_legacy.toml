@@ -1,0 +1,44 @@
+# Repair of the LEGACY (Cronos) sRUSD collateral entry on devnet's Core.
+#
+# devnet used to borrow the Cronos sRUSD, so `0xb9F531A5…` is registered as a
+# collateral on collateral pool 1 with a parent config whose oracleNodeId is
+# `0xc380c127…` — the REYAPOOL#1 Stork lookup against the CRONOS OracleAdapters.
+# Once devnet got its own OracleManager, that node stopped being resolvable
+# here: devnet's manager has never registered it.
+#
+# That is not a dormant leftover. Core walks the collateral set when it computes
+# margin, so EVERY margin computation — every fill, liquidation, funding accrual
+# — reverts with `UnprocessableNode(0xc380c127…)`, regardless of whether the
+# account holds any sRUSD at all. It went unnoticed only because the devnet fork
+# tests could not run until the passive_perp_global_config ABI fix landed.
+#
+# Registering devnet's own sRUSD (see ./srusd.toml) does not help: that writes a
+# NEW entry keyed on the new token address and leaves this one untouched.
+#
+# The values below are deliberately the SAME settings ./srusd.toml applies to
+# the new token, not hand-copied literals. Both entries mean the same thing on
+# devnet — sRUSD held against rUSD at parity — and the live on-chain values for
+# this legacy entry were verified to already match those settings on every
+# field (cap MaxUint256, autoExchangeInsuranceFee 0.005, priceHaircut 0.1,
+# autoExchangeDiscount 0, parent rUSD). So this step changes exactly one thing:
+# the oracle node, from the unresolvable Cronos one to devnet's own. It is a
+# repair, not a policy change — depositing is left enabled, as it is today.
+[invoke.cp_1rusd_repair_legacy_srusd_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setCollateralConfig"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= settings.legacyCronosSrusdProxyAddress %>",
+    { depositingEnabled = true, cap = "<%= parseUnits(settings.cp1Rusd_srusd_capUnscaled, parseInt(settings.srusdTokenDecimals)) %>", withdrawalWindowSize_DEPRECATED = "0", withdrawalTvlPercentageLimit_DEPRECATED = "0", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_srusd_autoExchangeThresholdUnscaled, parseInt(settings.srusdTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_srusd_autoExchangeDustThresholdUnscaled, parseInt(settings.srusdTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_srusd_bidSubmissionFeeUnscaled, parseInt(settings.srusdTokenDecimals)) %>" },
+    { collateralAddress = "<%= settings.cp1Rusd_srusdParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_srusdParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.cp1Rusd_srusdParentConfig_oracleNodeId %>" },
+]
+# oracle_manager_register_node_pool_srusd is named explicitly for the same
+# reason as in ./srusd.toml: this step declares `depends` and nests parseUnits /
+# parseEther in its args, which is the combination that makes cannon fall back
+# to the explicit list instead of inferring the settings dependency.
+depends = [
+    "var.cp_1rusd_vars",
+    "invoke.cp_1rusd_set_srusd_config",
+    "invoke.oracle_manager_register_node_pool_srusd",
+]
