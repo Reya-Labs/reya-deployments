@@ -1,0 +1,11 @@
+# Gitleaks config for the public-mirror scan. Extends the default ruleset and
+# allowlists vendored/minified tooling that is not secret material — the Yarn
+# Berry release + plugins (minified JS that trips the generic-api-key rule).
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Vendored Yarn Berry release/plugins (minified JS, false positives)"
+paths = [
+  '''\.yarn/''',
+]

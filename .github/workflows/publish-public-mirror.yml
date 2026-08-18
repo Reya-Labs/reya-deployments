@@ -54,8 +54,11 @@ jobs:
 
       - name: Secret scan (fail on any finding)
         run: |
-          docker run --rm -v /tmp/pub:/scan zricethezav/gitleaks:latest \
-            detect --source=/scan --no-git --redact --exit-code=1
+          docker run --rm \
+            -v /tmp/pub:/scan \
+            -v "${GITHUB_WORKSPACE}/.gitleaks.toml:/gitleaks.toml:ro" \
+            ghcr.io/gitleaks/gitleaks:v8.30.1 \
+            detect --source=/scan --no-git --redact --exit-code=1 --config=/gitleaks.toml
 
       - name: Mint token for the public repo
         id: app
