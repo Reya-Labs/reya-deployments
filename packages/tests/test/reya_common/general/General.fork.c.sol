@@ -243,7 +243,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceARB);
         ls.maxDeviationMarket.push(ls.maxDeviationARB);
 
-        ls.meanPriceOP = 0.17 * 1e18;
+        // refreshed 2026-08-18 (was 0.17)
+        ls.meanPriceOP = 0.08 * 1e18;
         ls.maxDeviationOP = ls.meanPriceOP / 2;
         ls.meanPriceMarket.push(ls.meanPriceOP);
         ls.maxDeviationMarket.push(ls.maxDeviationOP);
@@ -561,7 +562,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceAERO);
         ls.maxDeviationMarket.push(ls.maxDeviationAERO);
 
-        ls.meanPriceKAITO = 0.73 * 1e18;
+        // refreshed 2026-08-18 (was 0.73)
+        ls.meanPriceKAITO = 0.34 * 1e18;
         ls.maxDeviationKAITO = ls.meanPriceKAITO / 2;
         ls.meanPriceMarket.push(ls.meanPriceKAITO);
         ls.maxDeviationMarket.push(ls.maxDeviationKAITO);
@@ -615,8 +617,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.maxDeviationWSTETH = ls.meanPriceWSTETH / 2;
 
         if (sec.destinationChainId == 1) {
-            ls.meanPriceSRUSD = 1.05 * 1e18;
-            ls.maxDeviationSRUSD = 0.02 * 1e18;
+            // refreshed 2026-08-18 (was 1.05 ± 0.02); srUSD accrues yield and its share price has drifted
+            // above 1.07, so widen the window in line with the other yield-bearing LM shares.
+            ls.meanPriceSRUSD = 1.08 * 1e18;
+            ls.maxDeviationSRUSD = 0.05 * 1e18;
 
             // rSELINI is a yield-bearing LM share token that drifts upward
             // over time. Widened to ±0.05 (matching RAMBER / SUSDE) so a few
@@ -1309,10 +1313,10 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPrices.push(ls.meanPriceSDEUSD);
         ls.maxDeviations.push(ls.maxDeviationSDEUSD);
 
-        // Stork is connected to mainnet
+        // Stork is connected to mainnet. Refreshed 2026-08-18 (was 1.05 ± 0.02) — yield accrual.
         ls.nodeIds.push(sec.srusdRusd_RRStorkNodeId);
-        ls.meanPrices.push(1.05 * 1e18);
-        ls.maxDeviations.push(0.02 * 1e18);
+        ls.meanPrices.push(1.08 * 1e18);
+        ls.maxDeviations.push(0.05 * 1e18);
 
         ls.nodeIds.push(sec.rseliniUsdcReyaLmNodeId);
         ls.meanPrices.push(ls.meanPriceRSELINI);

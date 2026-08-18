@@ -67,10 +67,9 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         reduceOnlyMarkets[14] = 49; // GRIFFAIN
         reduceOnlyMarkets[15] = 52; // APE
         reduceOnlyMarkets[16] = 61; // IP
-        // Group A of the compressed 5-week plan — set to reduce-only in W1 (10-14 Aug 2026), force-closed in W2.
-        // The first nine were briefly reduce-only from 17 Jul and reverted on 7 Aug (#502) when the waves were
-        // re-cut; that revert dropped them from the omnibus but left them in this list, so this test was red on
-        // main. They are back in reduce-only here, as part of Group A.
+        // Group A — reduce-only since #507. The first nine were briefly reduce-only from 17 Jul and reverted on
+        // 7 Aug (#502); that revert dropped them from the omnibus but left them in this list, so this test was red
+        // on main. They are back in reduce-only here, as part of Group A.
         reduceOnlyMarkets[17] = 19; // POPCAT
         reduceOnlyMarkets[18] = 21; // kSHIB
         reduceOnlyMarkets[19] = 47; // S (Sonic)

@@ -7,13 +7,12 @@ import { ICoreProxy, MarginInfo } from "../src/interfaces/ICoreProxy.sol";
 import { IPassivePerpProxy } from "../src/interfaces/IPassivePerpProxy.sol";
 
 /// @title CheckMarketCloseReadiness
-/// @notice Read-only pre-flight check run immediately before `forceCloseMarket`, mirroring the runbook's Step-2/Step-3
-///         fork checks (see reya-network/agent-docs/market-close-scope.md §2). For a hardcoded market and account list
-/// it:
+/// @notice Read-only pre-flight check run immediately before `forceCloseMarket`. For a hardcoded market and account
+///         list it:
 ///
 ///           1. Account health — flags every account whose USD initial-margin delta is negative (i.e. below its
-///              initial margin requirement). §3.8/§3.10: the close skips the per-account health check and does not
-///              socialise shortfalls, so every account MUST be above margin at the locked price before closing.
+///              initial margin requirement): the close itself performs no per-account health check, so every
+///              account MUST be above margin at the locked price before closing.
 ///           2. Open interest — checks a hardcoded expected OI equals the market's live `getOpenBaseInterest`.
 ///           3. Dust — sums the closed long and short base across the accounts (exactly what `forceCloseMarket` does
 ///              internally) and prints the residuals the on-chain `ForceClosureResidueAboveMax` invariant guards:

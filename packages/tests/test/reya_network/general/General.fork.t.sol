@@ -85,7 +85,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         reduceOnlyMarkets[15] = 49; // GRIFFAIN
         reduceOnlyMarkets[16] = 52; // APE
         reduceOnlyMarkets[17] = 61; // IP
-        // Group A of the compressed 5-week plan — set to reduce-only in W1 (10-14 Aug 2026), force-closed in W2.
+        // Group A — reduce-only since #507.
         reduceOnlyMarkets[18] = 9; // AAVE
         reduceOnlyMarkets[19] = 10; // CRV
         reduceOnlyMarkets[20] = 14; // SEI
@@ -138,21 +138,42 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
 
         // 28 (POL) and 37 (DOT) are disabled independently of this batch, so they are always asserted.
         //
-        // AIXBT (46) is this batch's own doing and cannot be asserted either way here. The batch re-enables it for
-        // the instant of its `freezeMarketForClosure` (`ensureEnabledMarket` gates the lever) and disables it again
-        // immediately afterwards, so a successful mainnet run leaves it PAUSED. On this fork the freeze reverts with
-        // `StalePriceDetected` and cannon skips it — which cascades to the disable, since that `depends` on the
-        // freeze — while the re-enable has already succeeded, so AIXBT is left ACTIVE. Asserting either state fails
-        // in the other environment. Accept what is there, and let `MarketClose.fork.t.sol` own the frozen/disabled
-        // end state: `ensureW1MarketsFrozen` performs the freeze itself rather than depending on the batch landing.
+        // The 17 W1-closed markets (15 ZRO, 25 JTO, 34 GOAT, 36 kNEIRO, 45 AI16Z, 49 GRIFFAIN, 52 APE, 53 TON,
+        // 57 MOVE, 58 BERA, 61 IP, 67 KAITO, 68 ZORA, 69 PROVE, 71 YZY, 72 XPL, 73 WLFI) end the constructor
+        // disabled: `ReyaForkTest` replays the on-mainnet force-close batch, whose second sub-CALL per market
+        // is `setFeatureFlagDenyAll(marketEnabled, true)`. `test_W1MarketsAreClosed` owns the frozen/disabled
+        // end state; here we just account for them so the sequential active-list walk lines up.
+        //
+        // AIXBT (46) is left untouched by the two replayed batches — the on-mainnet enable/freeze/disable
+        // dance isn't reproduced here — so it keeps whatever state the fork is pinned at. Asserting either
+        // direction breaks in the other environment; probe it live.
         bool aixbtPaused = !isMarketActive(46);
 
-        uint128[] memory pausedMarkets = new uint128[](aixbtPaused ? 3 : 2);
-        pausedMarkets[0] = 28;
-        pausedMarkets[1] = 37;
+        // Sorted ascending — the loop below advances a sequential pointer through `pausedMarkets`.
+        uint128[] memory pausedMarkets = new uint128[](aixbtPaused ? 20 : 19);
+        uint256 n = 0;
+        pausedMarkets[n++] = 15; // ZRO
+        pausedMarkets[n++] = 25; // JTO
+        pausedMarkets[n++] = 28; // POL
+        pausedMarkets[n++] = 34; // GOAT
+        pausedMarkets[n++] = 36; // kNEIRO
+        pausedMarkets[n++] = 37; // DOT
+        pausedMarkets[n++] = 45; // AI16Z
         if (aixbtPaused) {
-            pausedMarkets[2] = 46;
+            pausedMarkets[n++] = 46; // AIXBT
         }
+        pausedMarkets[n++] = 49; // GRIFFAIN
+        pausedMarkets[n++] = 52; // APE
+        pausedMarkets[n++] = 53; // TON
+        pausedMarkets[n++] = 57; // MOVE
+        pausedMarkets[n++] = 58; // BERA
+        pausedMarkets[n++] = 61; // IP
+        pausedMarkets[n++] = 67; // KAITO
+        pausedMarkets[n++] = 68; // ZORA
+        pausedMarkets[n++] = 69; // PROVE
+        pausedMarkets[n++] = 71; // YZY
+        pausedMarkets[n++] = 72; // XPL
+        pausedMarkets[n++] = 73; // WLFI
 
         assertEq(activeMarkets.length, lastMarketIdd - pausedMarkets.length);
 
