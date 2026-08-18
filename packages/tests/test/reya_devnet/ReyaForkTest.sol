@@ -127,8 +127,18 @@ contract ReyaForkTest is BaseReyaForkTest {
     /// seeding the leaves resolves the whole graph. Values are nominal: no
     /// devnet test asserts an absolute price, only relative behaviour.
     function setUp() public virtual {
+        // Check for code first. A staticcall to an address with no code returns
+        // empty, and decoding that reverts before any require below can run --
+        // surfacing as a bare "EvmError: Revert" in setUp across every suite,
+        // which says nothing about the cause. The pool genuinely can be absent
+        // here: a flaked package fetch skips clone.reyaPassivePoolRouter and
+        // silently takes the whole pool deployment with it.
+        require(
+            sec.pool.code.length > 0,
+            "devnet PassivePool has no code -- pool deployment was skipped (check the build log for skipped steps)"
+        );
         sec.passivePoolAccountId = IPassivePoolProxy(sec.pool).getPoolAccountId(sec.passivePoolId);
-        require(sec.passivePoolAccountId != 0, "devnet pool has no Core account -- is the pool deployed?");
+        require(sec.passivePoolAccountId != 0, "devnet pool is deployed but has no Core account");
 
         (address publisher, uint256 publisherPK) = makeAddrAndKey("devnetSeedPublisher");
         vm.prank(sec.multisig);

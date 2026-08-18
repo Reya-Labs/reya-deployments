@@ -5,7 +5,8 @@ import { IOracleManagerProxy, NodeDefinition, NodeOutput } from "../../../src/in
 import {
     IOracleAdaptersProxy,
     StorkSignedPayload,
-    StorkPricePayload
+    StorkPricePayload,
+    LmTokenPriceConfigurationData
 } from "../../../src/interfaces/IOracleAdaptersProxy.sol";
 
 interface IOwnable {
@@ -38,6 +39,58 @@ contract OracleConfigurationForkCheck is BaseReyaForkTest {
             require(nodeIds[i] != bytes32(0), string.concat(names[i], ": node id unset"));
             NodeDefinition.Data memory node = IOracleManagerProxy(sec.oracleManager).getNode(nodeIds[i]);
             require(node.nodeType != 0, string.concat(names[i], ": not registered on this manager"));
+        }
+    }
+
+    /// The shared OracleAdapters config set must have actually been APPLIED to
+    /// this adapters instance, not merely wired into the include list.
+    ///
+    /// This is the check that a file-level include comparison cannot make.
+    /// cannon skips a failing step with a warning rather than failing the
+    /// build, so a config can be correctly included and still silently no-op —
+    /// which is exactly how passive_perp_global_config stayed broken, and how
+    /// setAllocationConfiguration is dead on every environment today. Asserting
+    /// the on-chain effect catches both that and a config never wired up at all.
+    ///
+    /// global_config is deliberately not re-asserted here: it is already
+    /// covered transitively, since signature verification in
+    /// {check_criticalNodes_priceThroughThisAdapters} reverts if the Stork
+    /// verify contract was never set.
+    function check_adaptersSharedConfig_applied() public view {
+        // configs/feature_flags.toml
+        require(
+            IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowAll(keccak256(bytes("global"))),
+            "adapters: global feature flag not opened (feature_flags.toml did not take)"
+        );
+        require(
+            IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowlist(
+                keccak256(bytes("lmTokenPriceUpdaters"))
+            ).length > 0,
+            "adapters: lmTokenPriceUpdaters allowlist empty (feature_flags.toml did not take)"
+        );
+
+        // configs/set_publishers.toml
+        require(
+            IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowlist(keccak256(bytes("publishers")))
+                .length > 0,
+            "adapters: publishers allowlist empty (set_publishers.toml did not take)"
+        );
+
+        // configs/allow_all_executors.toml
+        require(
+            IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowAll(keccak256(bytes("executors"))),
+            "adapters: executors not allow-all (allow_all_executors.toml did not take)"
+        );
+
+        // configs/init_lm_token_prices.toml -- same pair ids on every environment
+        string[3] memory lmPairs = ["REYALM#SELINIUSDC", "REYALM#AMBERUSDC", "REYALM#HEDGEUSDC"];
+        for (uint256 i = 0; i < lmPairs.length; i++) {
+            LmTokenPriceConfigurationData memory cfg =
+                IOracleAdaptersProxy(sec.oracleAdaptersProxy).getLmTokenPriceConfiguration(lmPairs[i]);
+            require(
+                cfg.priceUpperBound > cfg.priceLowerBound,
+                string.concat("adapters: no LM price bounds for ", lmPairs[i], " (init_lm_token_prices.toml did not take)")
+            );
         }
     }
 

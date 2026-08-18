@@ -12,6 +12,10 @@ contract OracleConfigurationForkTest is ReyaForkTest, OracleConfigurationForkChe
         check_criticalNodes_registeredOnThisManager();
     }
 
+    function test_Devnet_adaptersSharedConfig_applied() public view {
+        check_adaptersSharedConfig_applied();
+    }
+
     function test_Devnet_srusdPoolNode_producesPrice() public view {
         check_srusdPoolNode_producesPrice();
     }
