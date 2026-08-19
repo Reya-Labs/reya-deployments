@@ -58,6 +58,8 @@ interface IOracleAdaptersProxy {
 
     function getFeatureFlagAllowAll(bytes32 feature) external view returns (bool);
 
+    function isFeatureAllowed(bytes32 feature, address account) external view returns (bool);
+
     function getFeatureFlagAllowlist(bytes32 feature) external view returns (address[] memory);
 
     function getFeatureFlagDenyAll(bytes32 feature) external view returns (bool);

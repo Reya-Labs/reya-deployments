@@ -1,14 +1,11 @@
-# Devnet passive perp global config: uses hardcoded Cronos PassivePool address
+# Devnet passive perp global config.
 #
-# oracleManagerAddress is the LITERAL CREATE2 address of devnet's own
-# OracleManager proxy (owner + oracleManagerSalt; byte-identical across 4
-# independent dry-runs). setGlobalConfiguration validates the manager
-# on-chain, so this step must run after the manager proxy is cloned AND
-# upgraded — hence the explicit upgrade_oracle_manager_proxy dependency.
-# (An imports.reyaOracleManagerProxy reference here also failed cli-devnet
-# template evaluation when combined with parseEther in the same args struct,
-# which is why the address is a literal; the OracleConfiguration fork checks
-# assert the deployed stack matches it.)
+# oracleManagerAddress resolves from the clone import. setGlobalConfiguration
+# validates the manager on-chain, so this step must run after the manager
+# proxy is cloned AND upgraded — hence the explicit
+# upgrade_oracle_manager_proxy dependency. (An earlier revision hardcoded the
+# CREATE2 address here, blaming an imports+parseEther template fault; the
+# real failure was the ABI field name below, so the literal was unnecessary.)
 #
 # Field name is `dustAccountId_DEPRECATED`, not `dustAccountId`. That single
 # character difference is what made this step fail for so long: cannon encodes
@@ -28,7 +25,7 @@ target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setGlobalConfiguration"
 args = [
-    { coreProxy = "<%= contracts.CoreProxy.address %>", exchangeProxy_DEPRECATED = "<%= AddressZero %>", oracleManagerAddress = "0xEA0F138fa958a7beeA2b448C5a27141056c45A97", maxAbsFundingRate = "<%= parseEther(settings.maxAbsFundingRateUnscaled) %>", dustAccountId_DEPRECATED = "0" },
+    { coreProxy = "<%= contracts.CoreProxy.address %>", exchangeProxy_DEPRECATED = "<%= AddressZero %>", oracleManagerAddress = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>", maxAbsFundingRate = "<%= parseEther(settings.maxAbsFundingRateUnscaled) %>", dustAccountId_DEPRECATED = "0" },
 ]
 depends = [
     "invoke.upgrade_passive_perp_proxy",

@@ -1,42 +1,38 @@
-# sRUSD (passive-pool share) price node on devnet's OWN OracleManager.
-#
-# Devnet anchors this to a CONSTANT 1.0 node instead of the Stork
-# `REYAPOOL#1` off-chain-lookup that cronos/mainnet use. Devnet's
-# OracleAdapters is a fresh instance with no stored REYAPOOL#1 payload,
-# and nothing publishes that pair here, so a lookup node would have no
-# price to serve.
-#
-# MAINNET MUST KEEP THE STORK FEED. The pool share price only equals 1.0
-# at genesis — it drifts as the pool accrues PnL — so a constant would
-# misprice sRUSD as collateral. The real registration lives in
-# ../../oracle_manager/configs/pool/srusd_usdc.toml and is unchanged;
-# devnet is the only environment that substitutes a constant.
-#
-# TODO(PRO-498): check whether the Stork REYAPOOL#1 feed can be published
-# on devnet/testnet as well, and switch this back to the shared
-# STORK_OFFCHAIN_LOOKUP registration if so. Running a pricing shape here
-# that mainnet never sees is a deliberate stopgap, not the end state —
-# aligning the environments is the goal.
-#
-# NB on node identity: a node id is keccak(nodeType ‖ parameters ‖ parents),
-# so CONSTANT(1e18) with no parents is THE SAME STORED NODE as the
-# rUSD/USD constant (`rusdUsdNodeId` = 0xee1b130d…). `registerNode` is
-# idempotent and still emits `NodeRegistered` on re-registration, so the
-# id export below works — but treat `srusdUsdcPoolNodeId` and
-# `rusdUsdNodeId` as aliases for one node while devnet is on the constant.
-# That is also why no `setMaxStaleDuration` step follows: it would move
-# rUSD/USD's staleness too, and a CONSTANT node reports `block.timestamp`
-# as its price timestamp so it can never be stale anyway.
+# Devnet registration of the sRUSD/USDC passive-pool node — the SAME
+# STORK_OFFCHAIN_LOOKUP shape as ../../oracle_manager/configs/pool/
+# srusd_usdc.toml, duplicated here for one reason: ordering. Registration
+# calls the node's isValid, which routes getLatestPricePayload("REYAPOOL#1")
+# through PassivePool.getSharePrice — and that reverts ZeroStakedSupply until
+# the genesis seed has staked. The shared config's depends stop at the
+# tokenize step (sufficient on cronos/mainnet, whose pools were funded long
+# before this node existed), so devnet adds the seed dependency. Everything
+# else — node type, params, exported id, staleness — is identical to the
+# shared file; the node id is keccak(type, params, parents) so both
+# definitions yield the same id.
 [invoke.oracle_manager_register_node_pool_srusd]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"
 func = "registerNode"
 args = [
-    "<%= settings.ORACLE_MANAGER_NODE_TYPE_CONSTANT %>",
-    "<%= defaultAbiCoder.encode(['uint256'], [parseEther('1')]) %>",
+    "<%= settings.ORACLE_MANAGER_NODE_TYPE_STORK_OFFCHAIN_LOOKUP %>",
+    "<%= defaultAbiCoder.encode(['address','string'], [contracts.OracleAdaptersProxy.address, settings.poolAssetPairIdSRUSD]) %>",
     [
     ],
 ]
 var.srusdUsdcPoolNodeId.event = "NodeRegistered"
 var.srusdUsdcPoolNodeId.arg = 0
-depends = ["invoke.upgrade_oracle_manager_proxy"]
+depends = [
+    "invoke.upgrade_oracle_manager_proxy",
+    "invoke.oracle_adapters_global_config",
+    "invoke.passive_pool_seed_pool_1rusd",
+]
+
+[invoke.oracle_manager_pool_srusd_max_stale_duration]
+target = ["OracleManagerProxy"]
+fromCall.func = "owner"
+func = "setMaxStaleDuration"
+args = [
+    "<%= settings.srusdUsdcPoolNodeId %>",
+    "<%= settings.srusdUsdcPoolMaxDuration %>",
+]
+depends = ["invoke.oracle_manager_register_node_pool_srusd"]

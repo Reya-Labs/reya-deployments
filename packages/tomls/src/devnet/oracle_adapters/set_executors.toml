@@ -1,150 +1,42 @@
 # Devnet executor authorization for devnet's OWN OracleAdapters.
 #
 # Replaces the shared set_executors / set_sub_second_executors /
-# set_standalone_executors configs, whose storkExecutor1..20 and
-# co_execution_bot4..7 slots carry CRONOS wallets. The set below is DEVNET's
-# live wallet inventory, each address derived from the signing key in the
-# named GCP secret (or declared next to it) on 2026-08-18 — not copied from
-# another environment.
+# set_standalone_executors configs, whose slots carry CRONOS wallets.
+#
+# The set is deliberately minimal: the oracle-update-onchain task keys are
+# the ONLY wallets that write prices through the adapters. Everything else
+# that once appeared in the shared configs was verified NOT to push here:
+# the perp-ob mark/funding pushers write to PassivePerp.pushOracleData (and
+# are gated there via the oraclePushers flag); the orders gateway on
+# feat/perpOB no longer submits oracle updates (its adapters reference is
+# literally `oracleAdaptersProxy_DEPRECATED`); autoexchange, the liquidator
+# and the api executor submit their calls without oracle prepends; ws-exec
+# holds no signing key at all (PRO-460); and the KMS fallback pusher is
+# being deprecated.
 #
 # The gate that matters is `subSecondExecutors`: `executors` is set
-# allow-all by allow_all_executors.toml, but fresh (sub-second) payloads are
-# additionally gated on subSecondExecutors membership, which has NO
-# allow-all. A wallet missing here can read but not push fresh prices.
-
-# perp-ob-oracle-push, mark-price key
-# (devnet1-euwest3-reya-cronos-perp-ob-oracle-push / PERP_OB_ORACLE_PUSH_PRIVATE_KEY)
-[invoke.oracle_adapters_subsecond_perp_ob_mark_pusher]
+# allow-all by allow_all_executors.toml, but a payload landing at the SAME
+# second as the stored one is additionally gated on subSecondExecutors
+# membership, which has NO allow-all — and payload timestamps are truncated
+# to seconds, so same-second collisions are the norm for a continuous
+# pusher, not the exception. A wallet missing here can read but not
+# reliably push fresh prices.
+[invoke.oracle_adapters_subsecond_oracle_updater1]
 target = ["OracleAdaptersProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('subSecondExecutors')) %>",
-    "0x61548af5B40Ee331a30aBecA9Ff2237D6C753462",
+    "<%= settings.oracleUpdater1 %>",
 ]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
+depends = ["invoke.upgrade_oracle_adapters_proxy", "var.oracle_updaters"]
 
-# perp-ob-oracle-push, funding-rate key
-# (same secret / PERP_OB_ORACLE_PUSH_FUNDING_RATE_PRIVATE_KEY)
-[invoke.oracle_adapters_subsecond_perp_ob_funding_pusher]
+[invoke.oracle_adapters_subsecond_oracle_updater2]
 target = ["OracleAdaptersProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('subSecondExecutors')) %>",
-    "0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3",
+    "<%= settings.oracleUpdater2 %>",
 ]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-# oracle-onchain spot pushers
-# (devnet1-euwest3-reya-cronos-oracle-update-onchain / PRIVATE_KEYS[0..1])
-[invoke.oracle_adapters_subsecond_spot_pusher1]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('subSecondExecutors')) %>",
-    "0xe97ad1AC9b001920EF9A2a96a8437a676Dd3Fa24",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-[invoke.oracle_adapters_subsecond_spot_pusher2]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('subSecondExecutors')) %>",
-    "0xD337938a74f707BAEf728Ef694d9aA55d9ce4dEA",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-# oracle-onchain-fallback KMS signer
-# (KMS_EXPECTED_ADDRESS in values-devnet1-oracle-onchain-fallback.yaml)
-[invoke.oracle_adapters_subsecond_kms_fallback_pusher]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('subSecondExecutors')) %>",
-    "0xe9701ed80e0360afdfaa00f454389ed01b9ea48b",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-# autoexchange-rpc
-# (devnet1-euwest3-reya-cronos-autoexchange-sql / PRIVATE_KEY)
-[invoke.oracle_adapters_subsecond_autoexchange]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('subSecondExecutors')) %>",
-    "0xCAcB92a4FA1d80222553f35842C181F23C803456",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-# api-executor == co_execution_bot1 (devnet1-euwest3-reya-cronos-api / PRIVATE_KEYS[0])
-[invoke.oracle_adapters_subsecond_api_executor]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('subSecondExecutors')) %>",
-    "0xc9A01c03AEE926B89b83F7781b15B822807E1d33",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-# ws-exec relayer == co_execution_bot2 (declared in reya_devnet.toml)
-[invoke.oracle_adapters_subsecond_ws_exec_relayer]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('subSecondExecutors')) %>",
-    "0x6623C4a8e54549d5dB1ACb666B13f9c046DFD5B2",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-# rust wallet-manager relayer == co_execution_bot3 (declared in reya_devnet.toml)
-[invoke.oracle_adapters_subsecond_wallet_manager_relayer]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('subSecondExecutors')) %>",
-    "0xB04ce54876A8017ae7785A3f4218308BC8fBb724",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-# liquidator == liquidator1 (declared in reya_devnet.toml; liquidations
-# prepend oracle updates)
-[invoke.oracle_adapters_subsecond_liquidator]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('subSecondExecutors')) %>",
-    "0x343Dcbb57A7ded3d4236C15373E52aB8436A2f11",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-# Orders gateway CONTRACT — mirrors the shared set_standalone_executors
-# entries (the gateway itself submits prepended oracle updates).
-[invoke.oracle_adapters_set_orders_gateway_subsecond_executor]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('subSecondExecutors')) %>",
-    "<%= contracts.OrdersGatewayProxy.address %>",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
-
-[invoke.oracle_adapters_set_orders_gateway_executor]
-target = ["OracleAdaptersProxy"]
-fromCall.func = "owner"
-func = "addToFeatureFlagAllowlist"
-args = [
-    "<%= keccak256(hexlify('executors')) %>",
-    "<%= contracts.OrdersGatewayProxy.address %>",
-]
-depends = ["invoke.upgrade_oracle_adapters_proxy"]
+depends = ["invoke.upgrade_oracle_adapters_proxy", "var.oracle_updaters"]

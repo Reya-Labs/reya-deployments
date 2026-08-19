@@ -172,6 +172,15 @@ matching_engine_publisher1 = "0xD3D5911FE8ab109645f931Cf65B341d5dd672eFB"
 # Publisher (EIP-712 signer) is matching_engine_publisher1, whitelisted as
 # oraclePublishers in devnet/passive_perp/feature_flags.toml.
 ###############################################################################
+# The oracle-update-onchain task keys: the ONLY wallets that push prices
+# through the OracleAdapters (fulfillOracleQuery). Everything else reads.
+# The fallback (KMS) variant is being deprecated and is deliberately absent;
+# the perp-ob pushers below write to PassivePerp.pushOracleData instead and
+# are gated there, not on the adapters.
+[var.oracle_updaters]
+oracleUpdater1 = "0xe97ad1AC9b001920EF9A2a96a8437a676Dd3Fa24"
+oracleUpdater2 = "0xD337938a74f707BAEf728Ef694d9aA55d9ce4dEA"
+
 [var.oracle_pushers]
 oraclePusher1 = "0x61548af5B40Ee331a30aBecA9Ff2237D6C753462"
 oraclePusher2 = "0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3"
@@ -396,6 +405,19 @@ cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
 # cronos is reachable here. Required because margin / IM checks traverse
 # pool-collateral parent oracles and revert with UnprocessableNode if the
 # id is zero — the perp test suite tripped on that before this fix.
+
+###############################################################################
+# The new sRUSD collateral's oracle node.
+#
+# Split out of [var.cp_1rusd] deliberately: this is the ONLY cp setting that
+# waits on the pool-node registration, and the registration transitively
+# waits on the genesis pool seed — which itself performs a margin walk that
+# needs the OTHER collateral configs (wETH, rUSD, the legacy repair) already
+# re-pointed at this manager's nodes. Keeping this line inside the main block
+# made the whole collateral-pool chain wait on the node and closed a
+# dependency cycle through live on-chain state.
+###############################################################################
+[var.cp_1rusd_srusd_oracle]
 cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdUsdcPoolNodeId %>"
 
 ###############################################################################
@@ -429,6 +451,302 @@ srusdRusdSpot_oracleNodeId = "0x000000000000000000000000000000000000000000000000
 # them as literals here would shadow those registrations with ids belonging to
 # a different OracleManager instance.
 ###############################################################################
+
+###############################################################################
+# Oracle settings (devnet's own OracleManager/OracleAdapters)
+#
+# Kept in the omnibus like cronos/mainnet do. Copied from reya_cronos.toml:
+# devnet runs on the SAME chain with the SAME Stork feeds, so asset-pair ids
+# and the chain-level Stork verifier are identical by construction. Stale
+# durations deliberately differ: 180s here vs 0 (disabled) on cronos.
+###############################################################################
+
+[var.devnet_oracle_stork_publishers]
+# STORK's payload-SIGNER keys (identical to cronos/mainnet: same Stork
+# network signs for the shared chain). "publishers" gates whose SIGNATURE a
+# payload may carry — it is NOT the Reya pusher wallets, which submit
+# payloads and are gated by the "executors" flag (allow-all on devnet via
+# oracle_adapters_allow_all_executors).
+storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
+storkPublisher2 = "0xb91C675E0c0Ecfd4c16f97B110376C3C224061d8"
+storkPublisher3 = "0x51aa9e9c781f85a2c0636a835eb80114c4553098"
+storkPublisher4 = "0xf024a9aa110798e5cd0d698fba6523113eaa7fb2"
+storkPublisher5 = "0xf2e72022eb19352f488526e835c4b17248aa6c03"
+storkPublisherAggregate = "0x0a803F9b1CCe32e2773e0d2e98b37E0775cA5d44"
+
+
+[var.devnet_oracle_stork_asset_pair_ids]
+storkAssetPairIdUSDC = "USDCUSD"
+storkAssetPairIdETH = "ETHUSD"
+storkAssetPairIdWBTC = "WBTCUSD"
+storkAssetPairIdWSTETH = "WSTETHUSD"
+storkAssetPairIdUSDE = "USDEUSD"
+storkAssetPairIdSUSDE = "SUSDEUSD"
+storkAssetPairIdDEUSD = "DEUSDUSD"
+storkAssetPairIdSDEUSDDEUSD = "SDEUSDDEUSD"
+storkAssetPairIdSRUSDRUSD_RR = "SRUSDRUSD_RR"
+
+[var.devnet_oracle_stork_asset_pair_ids_mark]
+storkAssetPairIdETHMark = "ETHUSDMARK"
+storkAssetPairIdBTCMark = "BTCUSDMARK"
+storkAssetPairIdSOLMark = "SOLUSDMARK"
+storkAssetPairIdARBMark = "ARBUSDMARK"
+storkAssetPairIdOPMark = "OPUSDMARK"
+storkAssetPairIdAVAXMark = "AVAXUSDMARK"
+storkAssetPairIdMKRMark = "MKRUSDMARK"
+storkAssetPairIdLINKMark = "LINKUSDMARK"
+storkAssetPairIdAAVEMark = "AAVEUSDMARK"
+storkAssetPairIdCRVMark = "CRVUSDMARK"
+storkAssetPairIdUNIMark = "UNIUSDMARK"
+storkAssetPairIdSUIMark = "SUIUSDMARK"
+storkAssetPairIdTIAMark = "TIAUSDMARK"
+storkAssetPairIdSEIMark = "SEIUSDMARK"
+storkAssetPairIdZROMark = "ZROUSDMARK"
+storkAssetPairIdXRPMark = "XRPUSDMARK"
+storkAssetPairIdWIFMark = "WIFUSDMARK"
+storkAssetPairId1000PEPEMark = "1000PEPEUSDMARK"
+storkAssetPairIdPOPCATMark = "POPCATUSDMARK"
+storkAssetPairIdDOGEMark = "DOGEUSDMARK"
+storkAssetPairIdKSHIBMark = "1000SHIBUSDMARK"
+storkAssetPairIdKBONKMark = "1000BONKUSDMARK"
+storkAssetPairIdAPTMark = "APTUSDMARK"
+storkAssetPairIdBNBMark = "BNBUSDMARK"
+storkAssetPairIdJTOMark = "JTOUSDMARK"
+storkAssetPairIdADAMark = "ADAUSDMARK"
+storkAssetPairIdLDOMark = "LDOUSDMARK"
+storkAssetPairIdPOLMark = "POLUSDMARK"
+storkAssetPairIdNEARMark = "NEARUSDMARK"
+storkAssetPairIdENAMark = "ENAUSDMARK"
+storkAssetPairIdEIGENMark = "EIGENUSDMARK"
+storkAssetPairIdPENDLEMark = "PENDLEUSDMARK"
+storkAssetPairIdGOATMark = "GOATUSDMARK"
+storkAssetPairIdGRASSMark = "GRASSUSDMARK"
+storkAssetPairIdKNEIROMark = "1000NEIROUSDMARK"
+storkAssetPairIdDOTMark = "DOTUSDMARK"
+storkAssetPairIdLTCMark = "LTCUSDMARK"
+storkAssetPairIdPYTHMark = "PYTHUSDMARK"
+storkAssetPairIdJUPMark = "JUPUSDMARK"
+storkAssetPairIdPENGUMark = "PENGUUSDMARK"
+storkAssetPairIdTRUMPMark = "TRUMPUSDMARK"
+storkAssetPairIdHYPEMark = "HYPEUSDMARK"
+storkAssetPairIdVIRTUALMark = "VIRTUALUSDMARK"
+storkAssetPairIdAI16ZMark = "AI16ZUSDMARK"
+storkAssetPairIdAIXBTMark = "AIXBTUSDMARK"
+storkAssetPairIdSONICMark = "SUSDMARK"
+storkAssetPairIdFARTCOINMark = "FARTCOINUSDMARK"
+storkAssetPairIdGRIFFAINMark = "GRIFFAINUSDMARK"
+storkAssetPairIdWLDMark = "WLDUSDMARK"
+storkAssetPairIdATOMMark = "ATOMUSDMARK"
+storkAssetPairIdAPEMark = "APEUSDMARK"
+storkAssetPairIdTONMark = "TONUSDMARK"
+storkAssetPairIdONDOMark = "ONDOUSDMARK"
+storkAssetPairIdTRXMark = "TRXUSDMARK"
+storkAssetPairIdINJMark = "INJUSDMARK"
+storkAssetPairIdMOVEMark = "MOVEUSDMARK"
+storkAssetPairIdBERAMark = "BERAUSDMARK"
+storkAssetPairIdLAYERMark = "LAYERUSDMARK"
+storkAssetPairIdTAOMark = "TAOUSDMARK"
+storkAssetPairIdIPMark = "IPUSDMARK"
+storkAssetPairIdMEMark = "MEUSDMARK"
+storkAssetPairIdPUMPMark = "PUMPUSDMARK"
+storkAssetPairIdMORPHOMark = "MORPHOUSDMARK"
+storkAssetPairIdSYRUPMark = "SYRUPUSDMARK"
+storkAssetPairIdAEROMark = "AEROUSDMARK"
+storkAssetPairIdKAITOMark = "KAITOUSDMARK"
+storkAssetPairIdZORAMark = "ZORAUSDMARK"
+storkAssetPairIdPROVEMark = "PROVEUSDMARK"
+storkAssetPairIdPAXGMark = "PAXGUSDMARK"
+storkAssetPairIdYZYMark = "YZYUSDMARK"
+storkAssetPairIdXPLMark = "XPLUSDMARK"
+storkAssetPairIdWLFIMark = "WLFIUSDMARK"
+storkAssetPairIdLINEAMark = "LINEAUSDMARK"
+storkAssetPairIdMEGAMark = "MEGAUSDMARK"
+
+[var.devnet_oracle_reya_lm_asset_pair_ids]
+reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
+reyaLmAssetPairIdAMBER = "REYALM#AMBERUSDC"
+reyaLmAssetPairIdHEDGE = "REYALM#HEDGEUSDC"
+
+[var.devnet_oracle_pool_asset_pair_ids]
+poolAssetPairIdSRUSD = "REYAPOOL#1"
+
+[var.stork_contracts]
+storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
+
+[var.devnet_oracle_oracleNodeMaxStaleDuration]
+# 180s on every node (mainnet enforces 60s; cronos disables the check with 0).
+# devnet takes 3 minutes so a long cannon simulation does not trip staleness
+# mid-build while still exercising the enforcement path devnet1 runs with.
+srusdUsdcPoolMaxDuration = "180"
+rusdUsdMaxStaleDuration = "180"
+usdcUsdMaxStaleDurationStork = "180"
+wbtcUsdMaxStaleDurationStork = "180"
+wbtcUsdcMaxStaleDurationStork = "180"
+btcUsdMarkMaxStaleDurationStork = "180"
+btcUsdcMarkMaxStaleDurationStork = "180"
+ethUsdMaxStaleDurationStork = "180"
+ethUsdcMaxStaleDurationStork = "180"
+ethUsdMarkMaxStaleDurationStork = "180"
+ethUsdcMarkMaxStaleDurationStork = "180"
+solUsdMarkMaxStaleDurationStork = "180"
+solUsdcMarkMaxStaleDurationStork = "180"
+arbUsdMarkMaxStaleDurationStork = "180"
+arbUsdcMarkMaxStaleDurationStork = "180"
+opUsdMarkMaxStaleDurationStork = "180"
+opUsdcMarkMaxStaleDurationStork = "180"
+avaxUsdMarkMaxStaleDurationStork = "180"
+avaxUsdcMarkMaxStaleDurationStork = "180"
+wstethUsdMaxStaleDurationStork = "180"
+wstethUsdcMaxStaleDurationStork = "180"
+usdeUsdMaxStaleDurationStork = "180"
+usdeUsdcMaxStaleDurationStork = "180"
+mkrUsdMarkMaxStaleDurationStork = "180"
+mkrUsdcMarkMaxStaleDurationStork = "180"
+linkUsdMarkMaxStaleDurationStork = "180"
+linkUsdcMarkMaxStaleDurationStork = "180"
+aaveUsdMarkMaxStaleDurationStork = "180"
+aaveUsdcMarkMaxStaleDurationStork = "180"
+crvUsdMarkMaxStaleDurationStork = "180"
+crvUsdcMarkMaxStaleDurationStork = "180"
+uniUsdMarkMaxStaleDurationStork = "180"
+uniUsdcMarkMaxStaleDurationStork = "180"
+suiUsdMarkMaxStaleDurationStork = "180"
+suiUsdcMarkMaxStaleDurationStork = "180"
+tiaUsdMarkMaxStaleDurationStork = "180"
+tiaUsdcMarkMaxStaleDurationStork = "180"
+seiUsdMarkMaxStaleDurationStork = "180"
+seiUsdcMarkMaxStaleDurationStork = "180"
+zroUsdMarkMaxStaleDurationStork = "180"
+zroUsdcMarkMaxStaleDurationStork = "180"
+xrpUsdMarkMaxStaleDurationStork = "180"
+xrpUsdcMarkMaxStaleDurationStork = "180"
+wifUsdMarkMaxStaleDurationStork = "180"
+wifUsdcMarkMaxStaleDurationStork = "180"
+pepe1kUsdMarkMaxStaleDurationStork = "180"
+pepe1kUsdcMarkMaxStaleDurationStork = "180"
+popcatUsdMarkMaxStaleDurationStork = "180"
+popcatUsdcMarkMaxStaleDurationStork = "180"
+dogeUsdMarkMaxStaleDurationStork = "180"
+dogeUsdcMarkMaxStaleDurationStork = "180"
+kshibUsdMarkMaxStaleDurationStork = "180"
+kshibUsdcMarkMaxStaleDurationStork = "180"
+kbonkUsdMarkMaxStaleDurationStork = "180"
+kbonkUsdcMarkMaxStaleDurationStork = "180"
+aptUsdMarkMaxStaleDurationStork = "180"
+aptUsdcMarkMaxStaleDurationStork = "180"
+bnbUsdMarkMaxStaleDurationStork = "180"
+bnbUsdcMarkMaxStaleDurationStork = "180"
+jtoUsdMarkMaxStaleDurationStork = "180"
+jtoUsdcMarkMaxStaleDurationStork = "180"
+adaUsdMarkMaxStaleDurationStork = "180"
+adaUsdcMarkMaxStaleDurationStork = "180"
+ldoUsdMarkMaxStaleDurationStork = "180"
+ldoUsdcMarkMaxStaleDurationStork = "180"
+polUsdMarkMaxStaleDurationStork = "180"
+polUsdcMarkMaxStaleDurationStork = "180"
+nearUsdMarkMaxStaleDurationStork = "180"
+nearUsdcMarkMaxStaleDurationStork = "180"
+enaUsdMarkMaxStaleDurationStork = "180"
+enaUsdcMarkMaxStaleDurationStork = "180"
+eigenUsdMarkMaxStaleDurationStork = "180"
+eigenUsdcMarkMaxStaleDurationStork = "180"
+pendleUsdMarkMaxStaleDurationStork = "180"
+pendleUsdcMarkMaxStaleDurationStork = "180"
+goatUsdMarkMaxStaleDurationStork = "180"
+goatUsdcMarkMaxStaleDurationStork = "180"
+grassUsdMarkMaxStaleDurationStork = "180"
+grassUsdcMarkMaxStaleDurationStork = "180"
+kneiroUsdMarkMaxStaleDurationStork = "180"
+kneiroUsdcMarkMaxStaleDurationStork = "180"
+dotUsdMarkMaxStaleDurationStork = "180"
+dotUsdcMarkMaxStaleDurationStork = "180"
+ltcUsdMarkMaxStaleDurationStork = "180"
+ltcUsdcMarkMaxStaleDurationStork = "180"
+pythUsdMarkMaxStaleDurationStork = "180"
+pythUsdcMarkMaxStaleDurationStork = "180"
+jupUsdMarkMaxStaleDurationStork = "180"
+jupUsdcMarkMaxStaleDurationStork = "180"
+penguUsdMarkMaxStaleDurationStork = "180"
+penguUsdcMarkMaxStaleDurationStork = "180"
+trumpUsdMarkMaxStaleDurationStork = "180"
+trumpUsdcMarkMaxStaleDurationStork = "180"
+hypeUsdMarkMaxStaleDurationStork = "180"
+hypeUsdcMarkMaxStaleDurationStork = "180"
+virtualUsdMarkMaxStaleDurationStork = "180"
+virtualUsdcMarkMaxStaleDurationStork = "180"
+ai16zUsdMarkMaxStaleDurationStork = "180"
+ai16zUsdcMarkMaxStaleDurationStork = "180"
+aixbtUsdMarkMaxStaleDurationStork = "180"
+aixbtUsdcMarkMaxStaleDurationStork = "180"
+sonicUsdMarkMaxStaleDurationStork = "180"
+sonicUsdcMarkMaxStaleDurationStork = "180"
+fartcoinUsdMarkMaxStaleDurationStork = "180"
+fartcoinUsdcMarkMaxStaleDurationStork = "180"
+griffainUsdMarkMaxStaleDurationStork = "180"
+griffainUsdcMarkMaxStaleDurationStork = "180"
+wldUsdMarkMaxStaleDurationStork = "180"
+wldUsdcMarkMaxStaleDurationStork = "180"
+atomUsdMarkMaxStaleDurationStork = "180"
+atomUsdcMarkMaxStaleDurationStork = "180"
+apeUsdMarkMaxStaleDurationStork = "180"
+apeUsdcMarkMaxStaleDurationStork = "180"
+tonUsdMarkMaxStaleDurationStork = "180"
+tonUsdcMarkMaxStaleDurationStork = "180"
+ondoUsdMarkMaxStaleDurationStork = "180"
+ondoUsdcMarkMaxStaleDurationStork = "180"
+trxUsdMarkMaxStaleDurationStork = "180"
+trxUsdcMarkMaxStaleDurationStork = "180"
+injUsdMarkMaxStaleDurationStork = "180"
+injUsdcMarkMaxStaleDurationStork = "180"
+moveUsdMarkMaxStaleDurationStork = "180"
+moveUsdcMarkMaxStaleDurationStork = "180"
+beraUsdMarkMaxStaleDurationStork = "180"
+beraUsdcMarkMaxStaleDurationStork = "180"
+layerUsdMarkMaxStaleDurationStork = "180"
+layerUsdcMarkMaxStaleDurationStork = "180"
+taoUsdMarkMaxStaleDurationStork = "180"
+taoUsdcMarkMaxStaleDurationStork = "180"
+ipUsdMarkMaxStaleDurationStork = "180"
+ipUsdcMarkMaxStaleDurationStork = "180"
+meUsdMarkMaxStaleDurationStork = "180"
+meUsdcMarkMaxStaleDurationStork = "180"
+pumpUsdMarkMaxStaleDurationStork = "180"
+pumpUsdcMarkMaxStaleDurationStork = "180"
+morphoUsdMarkMaxStaleDurationStork = "180"
+morphoUsdcMarkMaxStaleDurationStork = "180"
+syrupUsdMarkMaxStaleDurationStork = "180"
+syrupUsdcMarkMaxStaleDurationStork = "180"
+aeroUsdMarkMaxStaleDurationStork = "180"
+aeroUsdcMarkMaxStaleDurationStork = "180"
+kaitoUsdMarkMaxStaleDurationStork = "180"
+kaitoUsdcMarkMaxStaleDurationStork = "180"
+zoraUsdMarkMaxStaleDurationStork = "180"
+zoraUsdcMarkMaxStaleDurationStork = "180"
+proveUsdMarkMaxStaleDurationStork = "180"
+proveUsdcMarkMaxStaleDurationStork = "180"
+paxgUsdMarkMaxStaleDurationStork = "180"
+paxgUsdcMarkMaxStaleDurationStork = "180"
+yzyUsdMarkMaxStaleDurationStork = "180"
+yzyUsdcMarkMaxStaleDurationStork = "180"
+xplUsdMarkMaxStaleDurationStork = "180"
+xplUsdcMarkMaxStaleDurationStork = "180"
+wlfiUsdMarkMaxStaleDurationStork = "180"
+wlfiUsdcMarkMaxStaleDurationStork = "180"
+lineaUsdMarkMaxStaleDurationStork = "180"
+lineaUsdcMarkMaxStaleDurationStork = "180"
+megaUsdMarkMaxStaleDurationStork = "180"
+megaUsdcMarkMaxStaleDurationStork = "180"
+susdeUsdMaxStaleDurationStork = "180"
+susdeUsdcMaxStaleDurationStork = "180"
+deusdUsdMaxStaleDurationStork = "180"
+deusdUsdcMaxStaleDurationStork = "180"
+usdcDeusdMaxStaleDurationStork = "180"
+sdeusdDeusdMaxStaleDurationStork = "180"
+sdeusdUsdcMaxStaleDurationStork = "180"
+srusdRusd_RRMaxStaleDurationStork = "180"
+seliniUsdcReyaLmMaxStaleDuration = "180"
+amberUsdcReyaLmMaxStaleDuration = "180"
+hedgeUsdcReyaLmMaxStaleDuration = "180"
 
 ###############################################################################
 # Chain IDs (for periphery bridging connectors)

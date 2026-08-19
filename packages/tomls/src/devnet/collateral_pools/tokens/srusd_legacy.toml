@@ -30,15 +30,18 @@ func = "setCollateralConfig"
 args = [
     "<%= settings.cp1RusdId %>",
     "<%= settings.legacyCronosSrusdProxyAddress %>",
-    { depositingEnabled = true, cap = "<%= parseUnits(settings.cp1Rusd_srusd_capUnscaled, parseInt(settings.srusdTokenDecimals)) %>", withdrawalWindowSize_DEPRECATED = "0", withdrawalTvlPercentageLimit_DEPRECATED = "0", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_srusd_autoExchangeThresholdUnscaled, parseInt(settings.srusdTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_srusd_autoExchangeDustThresholdUnscaled, parseInt(settings.srusdTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_srusd_bidSubmissionFeeUnscaled, parseInt(settings.srusdTokenDecimals)) %>" },
-    { collateralAddress = "<%= settings.cp1Rusd_srusdParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_srusdParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.cp1Rusd_srusdParentConfig_oracleNodeId %>" },
+    { depositingEnabled = false, cap = "0", withdrawalWindowSize_DEPRECATED = "0", withdrawalTvlPercentageLimit_DEPRECATED = "0", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_srusd_autoExchangeThresholdUnscaled, parseInt(settings.srusdTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_srusd_autoExchangeDustThresholdUnscaled, parseInt(settings.srusdTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_srusd_bidSubmissionFeeUnscaled, parseInt(settings.srusdTokenDecimals)) %>" },
+    { collateralAddress = "<%= settings.cp1Rusd_srusdParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_srusdParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.rusdUsdNodeId %>" },
 ]
-# oracle_manager_register_node_pool_srusd is named explicitly for the same
-# reason as in ./srusd.toml: this step declares `depends` and nests parseUnits /
-# parseEther in its args, which is the combination that makes cannon fall back
-# to the explicit list instead of inferring the settings dependency.
+# Points at the rUSD/USD CONSTANT 1.0 node, NOT the pool node, for two
+# reasons. Correctness: this token's true price is the CRONOS pool's share
+# price, which no devnet node can serve — but the entry is deposits-disabled
+# with cap 0 and zero balances, so the node only ever needs to RESOLVE
+# during the margin walk; a constant is inert. Ordering: the pool node
+# transitively requires the genesis seed, whose deposit performs a margin
+# walk that already reads THIS entry — depending on the pool node here
+# would close a cycle.
 depends = [
     "var.cp_1rusd_vars",
-    "invoke.cp_1rusd_set_srusd_config",
-    "invoke.oracle_manager_register_node_pool_srusd",
+    "invoke.oracle_manager_register_node_rusd_usd",
 ]

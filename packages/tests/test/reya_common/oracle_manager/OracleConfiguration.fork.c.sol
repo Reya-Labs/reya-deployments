@@ -1,7 +1,8 @@
 pragma solidity >=0.8.19 <0.9.0;
 
-import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
-import { IOracleManagerProxy, NodeDefinition, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
+import {BaseReyaForkTest} from "../BaseReyaForkTest.sol";
+import {IOracleManagerProxy, NodeDefinition, NodeOutput} from "../../../src/interfaces/IOracleManagerProxy.sol";
+import {IPassivePoolProxy} from "../../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IOracleAdaptersProxy,
     StorkSignedPayload,
@@ -69,12 +70,30 @@ contract OracleConfigurationForkCheck is BaseReyaForkTest {
             "adapters: lmTokenPriceUpdaters allowlist empty (feature_flags.toml did not take)"
         );
 
-        // configs/set_publishers.toml
-        require(
-            IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowlist(keccak256(bytes("publishers")))
-                .length > 0,
-            "adapters: publishers allowlist empty (set_publishers.toml did not take)"
-        );
+        // configs/set_publishers.toml — assert the exact Stork signer keys.
+        // A length>0 check is false-green here: the devnet fixture's setUp
+        // seeds a synthetic publisher before every test body, so a non-empty
+        // allowlist proves nothing about the deployment. These six keys are
+        // Stork's payload-signing keys, identical on mainnet, cronos and
+        // devnet (verified against all three omnibus files), so asserting
+        // membership is environment-agnostic and unaffected by any
+        // test-only publisher the fixture adds alongside them.
+        address[6] memory storkPublishers = [
+            0xa3C28D4e939cE2927D3B29b7bF53d3AeaAb09350,
+            0xb91C675E0c0Ecfd4c16f97B110376C3C224061d8,
+            0x51aa9e9C781F85a2C0636A835EB80114c4553098,
+            0xF024A9AA110798e5CD0d698FBA6523113Eaa7FB2,
+            0xF2e72022EB19352f488526E835c4b17248Aa6c03,
+            0x0a803F9b1CCe32e2773e0d2e98b37E0775cA5d44
+        ];
+        for (uint256 i = 0; i < storkPublishers.length; i++) {
+            require(
+                IOracleAdaptersProxy(sec.oracleAdaptersProxy).isFeatureAllowed(
+                    keccak256(bytes("publishers")), storkPublishers[i]
+                ),
+                "adapters: a Stork signer key is missing (set_publishers.toml did not take)"
+            );
+        }
 
         // configs/allow_all_executors.toml
         require(
@@ -89,22 +108,28 @@ contract OracleConfigurationForkCheck is BaseReyaForkTest {
                 IOracleAdaptersProxy(sec.oracleAdaptersProxy).getLmTokenPriceConfiguration(lmPairs[i]);
             require(
                 cfg.priceUpperBound > cfg.priceLowerBound,
-                string.concat("adapters: no LM price bounds for ", lmPairs[i], " (init_lm_token_prices.toml did not take)")
+                string.concat(
+                    "adapters: no LM price bounds for ", lmPairs[i], " (init_lm_token_prices.toml did not take)"
+                )
             );
         }
     }
 
-    /// The sRUSD parent-collateral node must return a usable price without
-    /// any pusher having run. On devnet it is a CONSTANT 1.0 node (see
-    /// devnet/oracle_manager/pool_srusd_usdc.toml); on cronos/mainnet it is
-    /// the Stork REYAPOOL#1 lookup, which serves whatever the pool-price
-    /// publisher last wrote. Either way `process` must succeed and return a
-    /// non-zero price — a node that reverts here mis-prices sRUSD collateral
-    /// on collateral pool 1 at liquidation time.
+    /// The sRUSD parent-collateral node must serve THE POOL'S ACTUAL share
+    /// price, not merely a price. REYAPOOL# pairs are never pushed: the
+    /// adapters compute them live from PassivePool.getSharePrice at read
+    /// time, so a working node equals the pool by construction — and a node
+    /// wired to the wrong pool, the wrong adapters, or replaced by a stub
+    /// fails the equality. This is the margin/liquidation price of sRUSD
+    /// collateral on collateral pool 1.
     function check_srusdPoolNode_producesPrice() public view {
         NodeOutput.Data memory out = IOracleManagerProxy(sec.oracleManager).process(sec.srusdUsdcPoolNodeId);
         require(out.price > 0, "srusdUsdcPool node produced a zero price");
         require(out.timestamp > 0, "srusdUsdcPool node produced a zero timestamp");
+        require(
+            out.price == IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId),
+            "srusdUsdcPool node price != pool.getSharePrice (node is not reading this pool)"
+        );
     }
 
     /// The registered nodes must actually produce prices through THIS
@@ -121,13 +146,13 @@ contract OracleConfigurationForkCheck is BaseReyaForkTest {
         );
 
         StorkPricePayload memory pricePayload =
-            StorkPricePayload({ assetPairId: "ETHUSD", timestamp: block.timestamp, price: 3000e18 });
+            StorkPricePayload({assetPairId: "ETHUSD", timestamp: block.timestamp, price: 3000e18});
         bytes32 digest = calculatePricePayloadDigest(publisher, pricePayload);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(publisherPK, digest);
         StorkSignedPayload memory signedPayload =
-            StorkSignedPayload({ oraclePubKey: publisher, pricePayload: pricePayload, r: r, s: s, v: v });
+            StorkSignedPayload({oraclePubKey: publisher, pricePayload: pricePayload, r: r, s: s, v: v});
 
-        vm.prank(sec.oraclePusher1);
+        vm.prank(sec.oracleUpdater1);
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(abi.encode(signedPayload));
 
         NodeOutput.Data memory out = IOracleManagerProxy(sec.oracleManager).process(sec.ethUsdStorkNodeId);
@@ -148,7 +173,7 @@ contract OracleConfigurationForkCheck is BaseReyaForkTest {
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).addToFeatureFlagAllowlist(
             keccak256(bytes("publishers")), publisher
         );
-        address[2] memory pushers = [sec.oraclePusher1, sec.oraclePusher2];
+        address[2] memory pushers = [sec.oracleUpdater1, sec.oracleUpdater2];
         // The adapter rejects timestamps beyond block.timestamp, and re-submits
         // at the stored timestamp are only accepted from subSecondExecutors, so
         // round 1 exercises the executor gate and round 2 the sub-second gate.

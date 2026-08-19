@@ -19,3 +19,17 @@ include = ["../../token/tokens/srusd.toml"]
 source = "<%= settings.tokensRouterPackage %>"
 target = "<%= settings.tokensRouterPackage %>"
 depends = ["var.cannonClonePackages"]
+
+# The owner holds the genesis pool stake (see ../passive_pool/pool_1rusd.toml),
+# and sRUSD only moves between authorizedHolder addresses. Devnet-only: on
+# cronos/mainnet the genesis liquidity predates tokenization and no EOA holds
+# raw sRUSD from the deployment.
+[invoke.srusd_authorized_holders_allow_owner]
+target = ["SRUSDProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('authorizedHolder')) %>",
+    "<%= settings.owner %>",
+]
+depends = ["invoke.upgrade_srusd_proxy"]

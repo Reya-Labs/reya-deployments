@@ -2,15 +2,13 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import "forge-std/Test.sol";
 
-import { BaseReyaForkTest } from "../reya_common/BaseReyaForkTest.sol";
+import {BaseReyaForkTest} from "../reya_common/BaseReyaForkTest.sol";
 import "../reya_common/DataTypes.sol";
 
-import { IOracleManagerProxy } from "../../src/interfaces/IOracleManagerProxy.sol";
-import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
+import {IOracleManagerProxy} from "../../src/interfaces/IOracleManagerProxy.sol";
+import {IPassivePoolProxy} from "../../src/interfaces/IPassivePoolProxy.sol";
 import {
-    IOracleAdaptersProxy,
-    StorkSignedPayload,
-    StorkPricePayload
+    IOracleAdaptersProxy, StorkSignedPayload, StorkPricePayload
 } from "../../src/interfaces/IOracleAdaptersProxy.sol";
 
 /**
@@ -70,8 +68,14 @@ contract ReyaForkTest is BaseReyaForkTest {
         // Reya bots
         sec.coExecutionBot = 0xc9A01c03AEE926B89b83F7781b15B822807E1d33;
         sec.setMarketZeroFeeBot = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+        // perp-ob mark/funding pushers: write to PassivePerp.pushOracleData,
+        // gated by its oraclePushers flag (NOT adapters executors).
         sec.oraclePusher1 = 0x61548af5B40Ee331a30aBecA9Ff2237D6C753462;
         sec.oraclePusher2 = 0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3;
+        // adapters pushers = the oracle-update-onchain task keys, the only
+        // wallets in the adapters' subSecondExecutors allowlist.
+        sec.oracleUpdater1 = 0xe97ad1AC9b001920EF9A2a96a8437a676Dd3Fa24;
+        sec.oracleUpdater2 = 0xD337938a74f707BAEf728Ef694d9aA55d9ce4dEA;
 
         // Spot oracle node ids — registered on devnet's OWN OracleManager.
         // Node ids are keccak of (type, params, parents); the stork params
@@ -83,16 +87,13 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.rusdUsdNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
         sec.usdcUsdStorkNodeId = 0x76198d2abe821744bfde51ad90bae8c01223a679080456c90bec798f19f55b40;
 
-        // sRUSD parent-collateral pool oracle. On devnet this is a CONSTANT
-        // 1.0 node, not the Stork REYAPOOL#1 lookup cronos/mainnet use — see
-        // devnet/oracle_manager/pool_srusd_usdc.toml for why, and for the
-        // plan to converge back onto the Stork feed. Because a node id is
-        // keccak(nodeType, params, parents), CONSTANT(1e18) is the same
-        // stored node as rusdUsdNodeId above; the two are aliases while
-        // devnet is on the constant. No staleness override is applied: a
-        // CONSTANT node reports block.timestamp so it is never stale, and
-        // setting it here would move rUSD/USD's staleness too.
-        sec.srusdUsdcPoolNodeId = 0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857;
+        // sRUSD parent-collateral pool oracle: the SAME shared Stork-lookup
+        // registration mainnet uses (REYAPOOL#1 against devnet's adapters).
+        // REYAPOOL# pairs need no pusher — the adapters compute the price
+        // live from PassivePool.getSharePrice at read time, stamped
+        // block.timestamp, so the node is always fresh and always equal to
+        // the actual share price of devnet's own pool.
+        sec.srusdUsdcPoolNodeId = 0x76f80a6a7a5b76465f117c56f41ecdcb7fe9fde5d817693fd12672e4508b4e12;
 
         // Mark price node ids — devnet's own registrations.
         sec.ethUsdStorkMarkNodeId = 0x219a6c2e6d962bc56fc11095c36c345d3b6071844e66aa48310c098aea07016b;
@@ -106,7 +107,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         dec.socketExecutionHelper[sec.weth] = 0xF1e0f8B07Eb4928922448CBD6f77ac5918f8e032;
 
         // create fork
-        try vm.activeFork() { }
+        try vm.activeFork() {}
         catch {
             vm.createSelectFork(sec.REYA_RPC);
         }
@@ -140,6 +141,32 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.passivePoolAccountId = IPassivePoolProxy(sec.pool).getPoolAccountId(sec.passivePoolId);
         require(sec.passivePoolAccountId != 0, "devnet pool is deployed but has no Core account");
 
+        // Deployment-config assertion, made here because it must read PRISTINE
+        // post-cannon state: devnet deploys 180s staleness on every stork node
+        // (mainnet enforces 60s; cronos disables the check with 0).
+        require(
+            IOracleManagerProxy(sec.oracleManager).getNode(sec.ethUsdStorkNodeId).maxStaleDuration == 180,
+            "devnet stork nodes should deploy with 180s maxStaleDuration"
+        );
+
+        // With the 180s deployment staleness asserted above, relax it for the
+        // test run: several suites warp hours-to-days and re-stamp prices via
+        // vm.mockCall, but any UNMOCKED process() of a stork node after a warp
+        // would revert StalePriceDetected. Same prank-bump pattern the cronos
+        // fixture uses. Constant and pool nodes need no bump (they report
+        // block.timestamp).
+        bytes32[5] memory stalenessBumped = [
+            sec.ethUsdStorkNodeId,
+            sec.usdcUsdStorkNodeId,
+            sec.ethUsdcStorkNodeId,
+            sec.ethUsdStorkMarkNodeId,
+            sec.ethUsdcStorkMarkNodeId
+        ];
+        for (uint256 i = 0; i < stalenessBumped.length; i++) {
+            vm.prank(sec.multisig);
+            IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(stalenessBumped[i], 30 days);
+        }
+
         (address publisher, uint256 publisherPK) = makeAddrAndKey("devnetSeedPublisher");
         vm.prank(sec.multisig);
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).addToFeatureFlagAllowlist(
@@ -153,22 +180,15 @@ contract ReyaForkTest is BaseReyaForkTest {
         }
     }
 
-    function seedStorkPrice(
-        address publisher,
-        uint256 publisherPK,
-        string memory assetPairId,
-        uint256 price
-    )
+    function seedStorkPrice(address publisher, uint256 publisherPK, string memory assetPairId, uint256 price)
         internal
     {
         StorkPricePayload memory pricePayload =
-            StorkPricePayload({ assetPairId: assetPairId, timestamp: block.timestamp, price: price });
+            StorkPricePayload({assetPairId: assetPairId, timestamp: block.timestamp, price: price});
         bytes32 digest = calculatePricePayloadDigest(publisher, pricePayload);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(publisherPK, digest);
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(
-            abi.encode(
-                StorkSignedPayload({ oraclePubKey: publisher, pricePayload: pricePayload, r: r, s: s, v: v })
-            )
+            abi.encode(StorkSignedPayload({oraclePubKey: publisher, pricePayload: pricePayload, r: r, s: s, v: v}))
         );
     }
 }

@@ -1,16 +1,19 @@
 # Devnet oracle manager: devnet's own proxy plus the shared node/config set.
 #
 # ../../oracle_manager/nodes.toml supplies utils/upgrade_proxy.toml and every
-# node configuration EXCEPT the passive-pool sRUSD node, whose shared config
-# depends on a pool-tokenize step devnet does not run — pool_srusd_usdc.toml
-# is the devnet registration without that dependency. settings.toml carries
-# the asset-pair ids, stale durations, publisher/executor lists and the
-# chain-level Stork verifier, copied from cronos (same chain, same feeds).
+# node configuration except the passive-pool sRUSD node. That one is the
+# SAME STORK_OFFCHAIN_LOOKUP shape mainnet uses, registered from the local
+# pool_srusd_usdc.toml only to add a genesis-seed ordering dependency the
+# shared file does not need (see its header). The node needs no pusher —
+# REYAPOOL# pairs are computed live by the adapters from
+# PassivePool.getSharePrice at read time, so devnet gets a correct share
+# price with zero feed infrastructure. Oracle settings live in the devnet
+# omnibus, mirroring how cronos/mainnet keep theirs.
+#
 # None of these files clone a proxy, so pairing them with the devnet
 # deploy_proxy below yields devnet's own instance rather than Cronos's.
 include = [
     "deploy_proxy.toml",
-    "settings.toml",
     "../../oracle_manager/nodes.toml",
     "pool_srusd_usdc.toml",
 ]

@@ -24,6 +24,7 @@ args = [
 # could be configured against an undefined node id.
 depends = [
     "var.cp_1rusd_vars",
+    "var.cp_1rusd_srusd_oracle",
     "invoke.cp_1rusd_set_rusd_config",
     "invoke.oracle_manager_register_node_pool_srusd",
 ]
