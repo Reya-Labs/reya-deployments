@@ -7,7 +7,11 @@ func = "createAccount"
 args = ["<%= settings.owner %>"]
 var.internalCoreFeeCollectorAccountId.event = "AccountCreated"
 var.internalCoreFeeCollectorAccountId.arg = 0
-depends = ["invoke.core_unpause", "invoke.core_enable_account_creation", "clone.reyaOracleManagerProxy"]
+depends = [
+    "invoke.core_unpause",
+    "invoke.core_enable_account_creation",
+    "clone.reyaOracleManagerProxy",
+]
 
 [var.core_fee_collector_account_id]
 coreFeeCollectorAccountId = "<%= settings.internalCoreFeeCollectorAccountId %>"

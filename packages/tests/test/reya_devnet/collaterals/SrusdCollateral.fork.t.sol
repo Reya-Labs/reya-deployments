@@ -56,7 +56,8 @@ contract SrusdCollateralForkTest is ReyaForkTest, SrusdCollateralForkCheck, Perp
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 100_000e6);
         // 100k sRUSD (30 decimals) on the short side — ample margin for a
-        // 1 ETH position at 3000, well under the 50M collateral cap.
+        // 1 ETH position at 3000; the devnet sRUSD cap is MaxUint256, so this is purely a
+        // sizing choice.
         uint128 sellerAccountId = depositNewMA(perpSeller, sec.srusd, 100_000e30);
 
         executePerpFill(buyerAccountId, sellerAccountId, ETH_MARKET_ID, 1e18, entryPrice, 1, 1, 1);

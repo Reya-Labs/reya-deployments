@@ -1,4 +1,1 @@
-include = [
-    "./nodes.toml",
-    "configs/pool/srusd_usdc.toml",
-]
+include = ["./nodes.toml", "configs/pool/srusd_usdc.toml"]

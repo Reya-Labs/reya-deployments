@@ -20,9 +20,14 @@ for attempt in $(seq 1 "$ATTEMPTS"); do
   "$@" 2>&1 | tee "$LOG"
   status="${PIPESTATUS[0]}"
 
-  # A fetch flake surfaces as a skipped clone step, NOT as a non-zero exit.
-  if grep -qE 'Skipping \[clone\.' "$LOG"; then
-    echo "==> package fetch flaked (clone step skipped); retrying"
+  # Retry on ANY skipped step, not just `clone.*`. A healthy devnet build
+  # has zero skips, and cannon RESUMES from cached state: on a retry after a
+  # flaked fetch it often re-reports only the downstream
+  # `Skipping [invoke.*]` cascade without re-attempting the clone, so a
+  # clone-only trigger silently accepts a broken build. (Learned the hard
+  # way — this wrapper exited "successfully" on a 29-skip run.)
+  if grep -q 'Skipping \[' "$LOG"; then
+    echo "==> build skipped steps (likely a flaked package fetch); retrying"
     continue
   fi
 

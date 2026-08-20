@@ -9,7 +9,8 @@ import {
     ParentCollateralConfig,
     LimitConfig,
     InsuranceFundConfig,
-    RiskMultipliers
+    RiskMultipliers,
+    BackstopLPConfig
 } from "../../../src/interfaces/ICoreProxy.sol";
 import { IPassivePerpProxyV2, FeeTierParameters } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import { IOrdersGatewayProxy } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
@@ -85,10 +86,26 @@ contract DevnetConfigForkTest is ReyaForkTest, PerpFillForkCheck {
 
     /// perpOB settlement authorization hangs on these two allowlists; both
     /// are asserted as EXACT sets so a dropped or extra entry fails.
+    ///
+    /// The allowAll/denyAll assertions are load-bearing, not decoration: an
+    /// allowlist only restricts anything while allowAll is FALSE. With it
+    /// set, the arrays below are unchanged and every expected bot still
+    /// reports allowed — but so does every unlisted caller, so a membership
+    /// check alone is a false green. denyAll is asserted for the opposite
+    /// failure: it would silently disable settlement entirely.
     function test_Devnet_OrdersGatewayAuthorization() public view {
         IOrdersGatewayProxy og = IOrdersGatewayProxy(sec.ordersGateway);
 
         require(og.getFeatureFlagAllowAll(GLOBAL_FLAG), "og: global flag not opened");
+
+        bytes32 mePublisherFlag = keccak256(bytes("matching_engine_publisher"));
+        bytes32 coBotsFlag = keccak256(bytes("conditional_orders"));
+        require(
+            !og.getFeatureFlagAllowAll(mePublisherFlag), "og: matching_engine_publisher is allow-all (unrestricted)"
+        );
+        require(!og.getFeatureFlagDenyAll(mePublisherFlag), "og: matching_engine_publisher is deny-all");
+        require(!og.getFeatureFlagAllowAll(coBotsFlag), "og: conditional_orders is allow-all (unrestricted)");
+        require(!og.getFeatureFlagDenyAll(coBotsFlag), "og: conditional_orders is deny-all");
 
         address[] memory publishers = og.getFeatureFlagAllowlist(keccak256(bytes("matching_engine_publisher")));
         require(publishers.length == 1, "og: expected exactly one matching-engine publisher");
@@ -169,10 +186,15 @@ contract DevnetConfigForkTest is ReyaForkTest, PerpFillForkCheck {
         require(srusdParent.oracleNodeId == sec.srusdUsdcPoolNodeId, "srusd: wrong oracle node");
     }
 
-    /// The standalone backstop account (created + funded out-of-band) is
-    /// load-bearing for every liquidation test and for real backstop
-    /// liquidations, but nothing else asserts it is still alive.
-    function test_Devnet_BackstopAccountFundedAndActive() public {
+    /// Core's CONFIGURED backstop LP, read from Core rather than assumed.
+    ///
+    /// Reading getBackstopLPConfig is the point: hard-coding account 23 and
+    /// checking that account is funded proves only that an independently
+    /// chosen account exists — it stays green if the config step is skipped,
+    /// if Core points at a different account, or if the 15% liquidation
+    /// economics drift. The configured account is then what the funded and
+    /// market-active checks below run against.
+    function test_Devnet_BackstopLPConfig() public {
         // Any margin read on a market-active account walks its exposure and
         // trips MarkPriceStale once the fork drifts past the live pusher's
         // last mark — so push a fresh one first (same fix as the funding
@@ -181,7 +203,14 @@ contract DevnetConfigForkTest is ReyaForkTest, PerpFillForkCheck {
         mockFreshPrices();
         pushMarkPriceWithinCollar(1, 3000e18);
 
-        uint128 backstopAccountId = 23;
+        BackstopLPConfig memory backstop = ICoreProxy(sec.core).getBackstopLPConfig(1);
+        require(backstop.accountId == 23, "cp1: backstop LP account != 23");
+        require(backstop.liquidationFee == 0.15e18, "cp1: backstop liquidation fee != 0.15");
+        require(backstop.minFreeCollateralThresholdInUSD == 0, "cp1: backstop free-collateral threshold != 0");
+        require(backstop.withdrawCooldownDurationInSeconds_DEPRECATED == 0, "cp1: deprecated cooldown non-zero");
+        require(backstop.withdrawDurationInSeconds_DEPRECATED == 0, "cp1: deprecated withdraw duration non-zero");
+
+        uint128 backstopAccountId = backstop.accountId;
         InsuranceFundConfig memory ifCfg = ICoreProxy(sec.core).getCollateralPoolInsuranceFundConfiguration(1);
         require(ifCfg.accountId != backstopAccountId, "backstop must not be the IF account");
         require(

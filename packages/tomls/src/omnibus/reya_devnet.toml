@@ -466,7 +466,6 @@ storkPublisher4 = "0xf024a9aa110798e5cd0d698fba6523113eaa7fb2"
 storkPublisher5 = "0xf2e72022eb19352f488526e835c4b17248aa6c03"
 storkPublisherAggregate = "0x0a803F9b1CCe32e2773e0d2e98b37E0775cA5d44"
 
-
 [var.devnet_oracle_stork_asset_pair_ids]
 storkAssetPairIdUSDC = "USDCUSD"
 storkAssetPairIdETH = "ETHUSD"
