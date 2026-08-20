@@ -2,11 +2,11 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import "forge-std/Test.sol";
 
-import {BaseReyaForkTest} from "../reya_common/BaseReyaForkTest.sol";
+import { BaseReyaForkTest } from "../reya_common/BaseReyaForkTest.sol";
 import "../reya_common/DataTypes.sol";
 
-import {IOracleManagerProxy} from "../../src/interfaces/IOracleManagerProxy.sol";
-import {IPassivePoolProxy} from "../../src/interfaces/IPassivePoolProxy.sol";
+import { IOracleManagerProxy } from "../../src/interfaces/IOracleManagerProxy.sol";
+import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IOracleAdaptersProxy, StorkSignedPayload, StorkPricePayload
 } from "../../src/interfaces/IOracleAdaptersProxy.sol";
@@ -40,10 +40,12 @@ contract ReyaForkTest is BaseReyaForkTest {
         sec.core = payable(0xC33D0A4FC05aF98447126f1680cA7316de29e5d4);
         sec.pool = payable(0x9fDba948aC22448C310B15C04D9A3DCB4bA8abA2); // devnet's own (CREATE2, passive-pool-devnet3)
         sec.perp = payable(0x6f42DB6d75Da0B85bDd386b96Cbfb73416AB37A4);
-        sec.oracleManager = 0xEA0F138fa958a7beeA2b448C5a27141056c45A97; // devnet's own (CREATE2, oracle-manager-devnet3)
+        sec.oracleManager = 0xEA0F138fa958a7beeA2b448C5a27141056c45A97; // devnet's own (CREATE2,
+            // oracle-manager-devnet3)
         sec.periphery = payable(0xDEDbde7e82B66E499b8FC8a472a5E857be1494DE);
         sec.ordersGateway = payable(0x7Ec89E555c771D2B5939aBE5C4E4291852633D4D);
-        sec.oracleAdaptersProxy = payable(0x689D019d351688895858dAB41C3d5CDAea8Aa1a5); // devnet's own (CREATE2, oracle-adapters-devnet3)
+        sec.oracleAdaptersProxy = payable(0x689D019d351688895858dAB41C3d5CDAea8Aa1a5); // devnet's own (CREATE2,
+            // oracle-adapters-devnet3)
         sec.exchangePass = 0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB; // reused Cronos
         sec.accountNft = 0x73e29C9EeE1db0725A6c352D705137416870E870;
 
@@ -107,7 +109,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         dec.socketExecutionHelper[sec.weth] = 0xF1e0f8B07Eb4928922448CBD6f77ac5918f8e032;
 
         // create fork
-        try vm.activeFork() {}
+        try vm.activeFork() { }
         catch {
             vm.createSelectFork(sec.REYA_RPC);
         }
@@ -180,15 +182,20 @@ contract ReyaForkTest is BaseReyaForkTest {
         }
     }
 
-    function seedStorkPrice(address publisher, uint256 publisherPK, string memory assetPairId, uint256 price)
+    function seedStorkPrice(
+        address publisher,
+        uint256 publisherPK,
+        string memory assetPairId,
+        uint256 price
+    )
         internal
     {
         StorkPricePayload memory pricePayload =
-            StorkPricePayload({assetPairId: assetPairId, timestamp: block.timestamp, price: price});
+            StorkPricePayload({ assetPairId: assetPairId, timestamp: block.timestamp, price: price });
         bytes32 digest = calculatePricePayloadDigest(publisher, pricePayload);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(publisherPK, digest);
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(
-            abi.encode(StorkSignedPayload({oraclePubKey: publisher, pricePayload: pricePayload, r: r, s: s, v: v}))
+            abi.encode(StorkSignedPayload({ oraclePubKey: publisher, pricePayload: pricePayload, r: r, s: s, v: v }))
         );
     }
 }

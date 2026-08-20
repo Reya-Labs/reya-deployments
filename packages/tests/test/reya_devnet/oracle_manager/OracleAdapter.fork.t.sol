@@ -1,7 +1,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
-import {ReyaForkTest} from "../ReyaForkTest.sol";
-import {OracleAdapterForkCheck} from "../../reya_common/oracle_manager/OracleAdapter.fork.c.sol";
+import { ReyaForkTest } from "../ReyaForkTest.sol";
+import { OracleAdapterForkCheck } from "../../reya_common/oracle_manager/OracleAdapter.fork.c.sol";
 
 /// Mirrors the Cronos adapter check onto devnet's own adapters instance —
 /// previously meaningless here because devnet borrowed Cronos's adapters.

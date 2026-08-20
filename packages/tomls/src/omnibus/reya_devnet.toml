@@ -385,12 +385,10 @@ cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 
 # sRUSD collateral pool config. Cap / fee / threshold values mirror
 # `reya_cronos.toml` and `reya_network.toml` byte-for-byte. ParentConfig
-# uses rUSD as the parent collateral (`contracts.RUSDProxy.address` on
-# cronos/mainnet) and leaves the oracle node id zero — devnet doesn't host
-# a Stork sRUSD/USDC pool node, and we don't need oracle-validated price
-# routing for the SDK suite's `test_asset_definitions` check. If sRUSD-as-
-# collateral ever needs to be exercised under load on devnet, swap the
-# zero oracleNodeId for a real node + add the staleness setup.
+# uses rUSD as the parent collateral, and the oracle node is the LIVE
+# REYAPOOL#1 pool-share node on devnet's own manager (see
+# [var.cp_1rusd_srusd_oracle] below) — deposits are enabled and sRUSD is a
+# fully priced collateral here, same shape as cronos.
 cp1Rusd_srusd_capUnscaled = "<%= formatUnits(MaxUint256, parseInt(settings.srusdTokenDecimals)) %>"
 cp1Rusd_srusd_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled = "0.005"
@@ -399,12 +397,6 @@ cp1Rusd_srusd_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_srusdParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
 cp1Rusd_srusdParentConfig_priceHaircutUnscaled = "0.1"
 cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
-# sRUSD/USDC pool node, registered on devnet's own
-# OracleManager proxy (sec.oracleManager = 0x689f...64eA, see
-# `tests/test/reya_devnet/ReyaForkTest.sol`), so any node registered for
-# cronos is reachable here. Required because margin / IM checks traverse
-# pool-collateral parent oracles and revert with UnprocessableNode if the
-# id is zero — the perp test suite tripped on that before this fix.
 
 ###############################################################################
 # The new sRUSD collateral's oracle node.

@@ -27,4 +27,8 @@ depends = [
     "var.cp_1rusd_srusd_oracle",
     "invoke.cp_1rusd_set_rusd_config",
     "invoke.oracle_manager_register_node_pool_srusd",
+    # After the manager switch: this entry's node lives on the NEW manager,
+    # and registering it earlier would break the pool-bootstrap margin walks
+    # that still resolve against the Cronos manager.
+    "invoke.core_configure_protocol",
 ]

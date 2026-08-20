@@ -1,6 +1,6 @@
 pragma solidity >=0.8.19 <0.9.0;
 
-import {BaseReyaForkTest} from "../BaseReyaForkTest.sol";
+import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import {
     IOracleAdaptersProxy,
     StorkSignedPayload,

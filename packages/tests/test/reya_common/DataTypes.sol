@@ -66,9 +66,7 @@ struct StaticEcosystem {
     // The adapters (fulfillOracleQuery) pushers — distinct from the perp-ob
 
     // oraclePushers above, which write to PassivePerp.pushOracleData.
-
     address oracleUpdater1;
-
     address oracleUpdater2;
     address rseliniCustodian;
     address rseliniSubscriber;

@@ -5,10 +5,12 @@
 # through PassivePool.getSharePrice — and that reverts ZeroStakedSupply until
 # the genesis seed has staked. The shared config's depends stop at the
 # tokenize step (sufficient on cronos/mainnet, whose pools were funded long
-# before this node existed), so devnet adds the seed dependency. Everything
-# else — node type, params, exported id, staleness — is identical to the
-# shared file; the node id is keccak(type, params, parents) so both
-# definitions yield the same id.
+# before this node existed), so devnet adds the seed dependency. This step
+# runs BEFORE the Core manager switch (core_configure_protocol waits on it):
+# the getSharePrice probe's margin walk therefore resolves the CRONOS
+# manager's live nodes with real prices. Everything else — node type,
+# params, exported id, staleness — is identical to the shared file; the node
+# id is keccak(type, params, parents) so both definitions yield the same id.
 [invoke.oracle_manager_register_node_pool_srusd]
 target = ["OracleManagerProxy"]
 fromCall.func = "owner"

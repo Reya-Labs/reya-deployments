@@ -1,8 +1,8 @@
 pragma solidity >=0.8.19 <0.9.0;
 
-import {BaseReyaForkTest} from "../BaseReyaForkTest.sol";
-import {IOracleManagerProxy, NodeDefinition, NodeOutput} from "../../../src/interfaces/IOracleManagerProxy.sol";
-import {IPassivePoolProxy} from "../../../src/interfaces/IPassivePoolProxy.sol";
+import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
+import { IOracleManagerProxy, NodeDefinition, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
+import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IOracleAdaptersProxy,
     StorkSignedPayload,
@@ -146,11 +146,11 @@ contract OracleConfigurationForkCheck is BaseReyaForkTest {
         );
 
         StorkPricePayload memory pricePayload =
-            StorkPricePayload({assetPairId: "ETHUSD", timestamp: block.timestamp, price: 3000e18});
+            StorkPricePayload({ assetPairId: "ETHUSD", timestamp: block.timestamp, price: 3000e18 });
         bytes32 digest = calculatePricePayloadDigest(publisher, pricePayload);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(publisherPK, digest);
         StorkSignedPayload memory signedPayload =
-            StorkSignedPayload({oraclePubKey: publisher, pricePayload: pricePayload, r: r, s: s, v: v});
+            StorkSignedPayload({ oraclePubKey: publisher, pricePayload: pricePayload, r: r, s: s, v: v });
 
         vm.prank(sec.oracleUpdater1);
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(abi.encode(signedPayload));

@@ -55,7 +55,11 @@ depends = ["invoke.passive_pool_create_pool_1rusd"]
 # getSharePrice. Cronos and mainnet never hit this because their pools held
 # liquidity long before the node registration existed. So devnet stakes a
 # small genesis deposit from the owner (which holds ample devnet rUSD; no
-# mint involved). Ordering is tokenize -> seed -> register node: this
+# mint involved). The deposit's margin walk runs while Core still points at
+# the CRONOS manager (the switch in core/protocol_config.toml waits for the
+# pool bootstrap), so every live collateral resolves its existing node with
+# real prices — no interim re-pointing is needed for the seed.
+# Ordering is tokenize -> seed -> register node: this
 # router's addLiquidity requires a tokenized pool (PoolNotTokenized
 # otherwise), and the shares it mints land on the owner as sRUSD, which is
 # why the owner is an sRUSD authorizedHolder (see ../token/srusd.toml).
@@ -118,12 +122,6 @@ depends = [
     "invoke.passive_pool_activate_market_for_pool_account",
     "invoke.srusd_authorized_holders_allow_owner",
     "invoke.rusd_approve_pool_seed",
-    # The deposit performs a margin walk over the LIVE collateral set, so
-    # every already-registered collateral must point at nodes THIS manager
-    # can process before the seed lands.
-    "invoke.cp_1rusd_set_rusd_config",
-    "invoke.cp_1rusd_set_weth_config",
-    "invoke.cp_1rusd_repair_legacy_srusd_config",
 ]
 
 [invoke.passive_pool_tokenize_pool_1rusd]
