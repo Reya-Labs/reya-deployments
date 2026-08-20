@@ -41,6 +41,10 @@ contract OracleConfigurationForkTest is ReyaForkTest, OracleConfigurationForkChe
         );
     }
 
+    function test_Devnet_configClosure_allNodesResolve() public view {
+        check_configClosure_allNodesResolve();
+    }
+
     function test_Devnet_srusdPoolNode_producesPrice() public view {
         check_srusdPoolNode_producesPrice();
     }

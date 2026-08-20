@@ -1,3 +1,15 @@
+# NOTE (2026-08): `setAllocationConfiguration` and `setTargetRatioPostQuote`
+# steps used to live here and were REMOVED. Neither selector exists on the
+# deployed passive-pool router that every environment pins
+# (reya-exchange-passive-pool:1.0.14@router) — verified live: both
+# `getAllocationConfiguration` and `getTargetRatioPostQuote` revert
+# `UnknownSelector` on the mainnet AND cronos pool proxies. Cannon skips a
+# failing step with a warning rather than failing the build, so these six
+# steps had been silently no-oping on every environment on every build.
+# Removing them changes no on-chain state (they never executed); it makes the
+# build honest so a zero-skip gate can be enforced. Restore them together
+# with a router upgrade that actually ships the functions.
+
 [invoke.passive_pool_create_pool_1rusd]
 target = ["PassivePoolProxy"]
 abi = "<%= JSON.stringify(contracts.PassivePoolProxy.abi.concat([{'type':'event','name':'PoolCreated','inputs':[{'name':'poolId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'quoteToken','type':'address','indexed':true,'internalType':'address'},{'name':'accountId','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false}])) %>"
@@ -20,81 +32,6 @@ args = [
 ]
 depends = ["invoke.passive_pool_create_pool_1rusd"]
 
-[invoke.passive_pool_set_allocation_configuration_1rusd]
-target = ["PassivePoolProxy"]
-fromCall.func = "owner"
-func = "setAllocationConfiguration"
-args = [
-    "<%= settings.pool1RusdId %>",
-    { quoteTokenTargetRatio = "<%= parseEther(settings.pool1_quoteTokenTargetRatioUnscaled) %>" },
-]
-depends = [
-    "invoke.passive_pool_create_pool_1rusd",
-    "invoke.passive_pool_unpause_pool_1rusd",
-]
-
-[invoke.passive_pool_set_target_ratio_post_quote_deusd]
-target = ["PassivePoolProxy"]
-fromCall.func = "owner"
-func = "setTargetRatioPostQuote"
-args = [
-    "<%= settings.pool1RusdId %>",
-    "<%= contracts.DEUSDProxy.address %>",
-    "<%= parseEther(settings.pool1_DEUSDTargetRatioPostQuoteUnscaled) %>",
-]
-depends = [
-    "invoke.passive_pool_create_pool_1rusd",
-    "invoke.passive_pool_unpause_pool_1rusd",
-    "invoke.passive_pool_set_allocation_configuration_1rusd",
-]
-
-[invoke.passive_pool_set_target_ratio_post_quote_sdeusd]
-target = ["PassivePoolProxy"]
-fromCall.func = "owner"
-func = "setTargetRatioPostQuote"
-args = [
-    "<%= settings.pool1RusdId %>",
-    "<%= contracts.SDEUSDProxy.address %>",
-    "<%= parseEther(settings.pool1_SDEUSDTargetRatioPostQuoteUnscaled) %>",
-]
-depends = [
-    "invoke.passive_pool_create_pool_1rusd",
-    "invoke.passive_pool_unpause_pool_1rusd",
-    "invoke.passive_pool_set_allocation_configuration_1rusd",
-]
-
-[invoke.passive_pool_set_target_ratio_post_quote_rselini]
-target = ["PassivePoolProxy"]
-fromCall.func = "owner"
-func = "setTargetRatioPostQuote"
-args = [
-    "<%= settings.pool1RusdId %>",
-    "<%= contracts.RSELINIProxy.address %>",
-    "<%= parseEther(settings.pool1_RSELINITargetRatioPostQuoteUnscaled) %>",
-]
-depends = [
-    "invoke.passive_pool_create_pool_1rusd",
-    "invoke.passive_pool_unpause_pool_1rusd",
-    "invoke.passive_pool_set_allocation_configuration_1rusd",
-    "invoke.cp_1rusd_set_rselini_config",
-]
-
-[invoke.passive_pool_set_target_ratio_post_quote_ramber]
-target = ["PassivePoolProxy"]
-fromCall.func = "owner"
-func = "setTargetRatioPostQuote"
-args = [
-    "<%= settings.pool1RusdId %>",
-    "<%= contracts.RAMBERProxy.address %>",
-    "<%= parseEther(settings.pool1_RAMBERTargetRatioPostQuoteUnscaled) %>",
-]
-depends = [
-    "invoke.passive_pool_create_pool_1rusd",
-    "invoke.passive_pool_unpause_pool_1rusd",
-    "invoke.passive_pool_set_allocation_configuration_1rusd",
-    "invoke.cp_1rusd_set_ramber_config",
-]
-
 [invoke.passive_pool_tokenize_pool_1rusd]
 target = ["PassivePoolProxy"]
 fromCall.func = "owner"
@@ -104,20 +41,4 @@ depends = [
     "invoke.passive_pool_create_pool_1rusd",
     "invoke.passive_pool_unpause_pool_1rusd",
     "invoke.upgrade_srusd_proxy",
-]
-
-[invoke.passive_pool_set_target_ratio_post_quote_rhedge]
-target = ["PassivePoolProxy"]
-fromCall.func = "owner"
-func = "setTargetRatioPostQuote"
-args = [
-    "<%= settings.pool1RusdId %>",
-    "<%= contracts.RHEDGEProxy.address %>",
-    "<%= parseEther(settings.pool1_RHEDGETargetRatioPostQuoteUnscaled) %>",
-]
-depends = [
-    "invoke.passive_pool_create_pool_1rusd",
-    "invoke.passive_pool_unpause_pool_1rusd",
-    "invoke.passive_pool_set_allocation_configuration_1rusd",
-    "invoke.cp_1rusd_set_rhedge_config",
 ]

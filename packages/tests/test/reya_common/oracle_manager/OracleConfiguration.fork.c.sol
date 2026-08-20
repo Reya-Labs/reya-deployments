@@ -3,6 +3,8 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import { IOracleManagerProxy, NodeDefinition, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
+import { ICoreProxy, ParentCollateralConfig } from "../../../src/interfaces/ICoreProxy.sol";
+import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import {
     IOracleAdaptersProxy,
     StorkSignedPayload,
@@ -40,6 +42,58 @@ contract OracleConfigurationForkCheck is BaseReyaForkTest {
             require(nodeIds[i] != bytes32(0), string.concat(names[i], ": node id unset"));
             NodeDefinition.Data memory node = IOracleManagerProxy(sec.oracleManager).getNode(nodeIds[i]);
             require(node.nodeType != 0, string.concat(names[i], ": not registered on this manager"));
+        }
+    }
+
+    /// CONFIG-CLOSURE WALK. The check above pins four node ids by name; this
+    /// one derives the set from LIVE ON-CHAIN CONFIG and asserts every node
+    /// the margin path can reach both resolves on this manager and produces
+    /// a usable price.
+    ///
+    /// Why it matters: Core walks the collateral set on EVERY margin
+    /// computation (AccountExposure iterates
+    /// supportingCollaterals[quoteCollateral]), so a single unresolvable
+    /// parent oracle bricks every fill, liquidation and funding accrual for
+    /// every account — regardless of who holds that collateral. That is
+    /// exactly how the legacy Cronos sRUSD entry took the whole environment
+    /// down, and a name-pinned check could not see it because nobody had
+    /// added the legacy entry to the list.
+    ///
+    /// Because the set comes from chain, every collateral and market added
+    /// later — the ~9 remaining mainnet-mirror collaterals included — is
+    /// covered with no edit to this test.
+    function check_configClosure_allNodesResolve() public view {
+        address quoteCollateral = IPassivePoolProxy(sec.pool).getPoolQuoteToken(sec.passivePoolId);
+        uint128 collateralPoolId = ICoreProxy(sec.core).getCollateralPoolIdOfAccount(sec.passivePoolAccountId);
+
+        // 1. Every SUPPORTING collateral's parent oracle.
+        address[] memory supporting = ICoreProxy(sec.core).getSupportingCollaterals(collateralPoolId, quoteCollateral);
+        require(supporting.length > 0, "config closure: no supporting collaterals found");
+        for (uint256 i = 0; i < supporting.length; i++) {
+            (, ParentCollateralConfig memory parent,) =
+                ICoreProxy(sec.core).getCollateralConfig(collateralPoolId, supporting[i]);
+            require(
+                parent.oracleNodeId != bytes32(0),
+                string.concat("config closure: zero oracle node for collateral ", vm.toString(supporting[i]))
+            );
+            NodeOutput.Data memory out = IOracleManagerProxy(sec.oracleManager).process(parent.oracleNodeId);
+            require(
+                out.price > 0,
+                string.concat("config closure: zero price for collateral ", vm.toString(supporting[i]))
+            );
+        }
+
+        // 2. Every MARKET's oracle node (the mark-price path).
+        for (uint128 marketId = 1; marketId <= lastMarketId(); marketId++) {
+            bytes32 marketNode = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).oracleNodeId;
+            require(
+                marketNode != bytes32(0),
+                string.concat("config closure: zero oracle node for market ", vm.toString(uint256(marketId)))
+            );
+            NodeOutput.Data memory out = IOracleManagerProxy(sec.oracleManager).process(marketNode);
+            require(
+                out.price > 0, string.concat("config closure: zero price for market ", vm.toString(uint256(marketId)))
+            );
         }
     }
 
