@@ -35,18 +35,7 @@ jobs:
       # at "Checking for existing package...". Pin reads to the live, non-regional
       # base host, which still serves the packages over the Kubo /api/v0 API.
       CANNON_IPFS_URL: https+ipfs://repo.usecannon.com
-      # Package RESOLUTION needs more than the IPFS URL: cannon first asks the
-      # on-chain registry for each package's IPFS hash, and by default that
-      # lookup goes through viem's public Ethereum/Optimism RPCs — which
-      # rate-limit GitHub's shared runner IPs hard. On a cold-cache runner
-      # every clone.* source then fails "deployment not found:
-      # <pkg>@<preset>... network 13370" and the whole deployment skips
-      # (locally this is masked by the warm ~/.local/share/cannon cache).
-      # Pin the registry read to one explicit endpoint and give the IPFS
-      # fetches real retry headroom.
-      CANNON_REGISTRY_ADDRESS: "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
-      CANNON_REGISTRY_RPC_URL: "https://ethereum-rpc.publicnode.com"
-      CANNON_REGISTRY_CHAIN_ID: "1"
+      # Give the IPFS fetches real retry headroom on flaky runner networks.
       CANNON_IPFS_RETRIES: "10"
       CANNON_IPFS_TIMEOUT: "300000"
     steps:
@@ -66,6 +55,37 @@ jobs:
           cache: 'yarn'
       - name: "Install the Node.js dependencies"
         run: "yarn"
+      # Package resolution asks the on-chain cannon registry for each package's
+      # IPFS hash, and the reya packages are SPLIT across the two registry
+      # chains (older proxies on Ethereum, newer routers and the omnibus
+      # baselines on Optimism) — so BOTH must be reachable. Cannon's default
+      # config reaches them through globally-shared Infura/Alchemy keys that
+      # rate-limit GitHub's runner IPs, which is how every clone.* source used
+      # to die "deployment not found" and the devnet deployment silently
+      # skipped. The env vars can only pin ONE registry (an ETH-only pin broke
+      # baseline resolution, which lives on OP), so write a settings.json
+      # carrying both chains on public endpoints instead.
+      - name: Configure cannon registries
+        run: |
+          mkdir -p ~/.local/share/cannon
+          cat > ~/.local/share/cannon/settings.json <<'EOF'
+          {
+            "registries": [
+              {
+                "name": "OP Mainnet",
+                "chainId": 10,
+                "rpcUrl": ["https://optimism-rpc.publicnode.com", "https://mainnet.optimism.io"],
+                "address": "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
+              },
+              {
+                "name": "Ethereum Mainnet",
+                "chainId": 1,
+                "rpcUrl": ["https://ethereum-rpc.publicnode.com", "https://eth.llamarpc.com"],
+                "address": "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
+              }
+            ]
+          }
+          EOF
       - name: Lint Check
         run: "yarn lint:check"
       - name: Build
