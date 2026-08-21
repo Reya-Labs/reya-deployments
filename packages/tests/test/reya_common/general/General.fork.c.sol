@@ -402,7 +402,9 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceGRASS);
         ls.maxDeviationMarket.push(ls.maxDeviationGRASS);
 
-        ls.meanPriceKNEIRO = 0.07 * 1e18;
+        // refreshed 2026-08-21 (was 0.07; live ~0.109 -- the market is W1-closed
+        // but the Stork feed still publishes, so the raw node keeps drifting)
+        ls.meanPriceKNEIRO = 0.11 * 1e18;
         ls.maxDeviationKNEIRO = ls.meanPriceKNEIRO / 2;
         ls.meanPriceMarket.push(ls.meanPriceKNEIRO);
         ls.maxDeviationMarket.push(ls.maxDeviationKNEIRO);
@@ -547,7 +549,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPricePUMP);
         ls.maxDeviationMarket.push(ls.maxDeviationPUMP);
 
-        ls.meanPriceMORPHO = 1.62 * 1e18;
+        // refreshed 2026-08-21 (was 1.62; live ~2.47)
+        ls.meanPriceMORPHO = 2.5 * 1e18;
         ls.maxDeviationMORPHO = ls.meanPriceMORPHO / 2;
         ls.meanPriceMarket.push(ls.meanPriceMORPHO);
         ls.maxDeviationMarket.push(ls.maxDeviationMORPHO);
