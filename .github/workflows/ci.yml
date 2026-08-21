@@ -72,6 +72,13 @@ jobs:
         continue-on-error: true
         env:
           CONDUIT_RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
+          # Without an IPFS URL cannon cannot fetch the source packages the
+          # clone.* steps reference, so the entire devnet deployment silently
+          # skips and every fork test fails in setUp with "PassivePool has no
+          # code". The mainnet/cronos jobs tolerate missing clones because
+          # they test the LIVE deployed state; the devnet suite exists to
+          # test the NEW deployment, so for it the fetch is load-bearing.
+          CANNON_IPFS_URL: "https+ipfs://repo.usecannon.com"
         run: "yarn reya_devnet:test"
       # Publishes the advisory testnet result as its OWN check run, separate from this job.
       # This job stays the merge gate (mainnet/lint/build only); the check run below reports
