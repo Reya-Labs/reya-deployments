@@ -79,13 +79,15 @@ jobs:
         id: reya_cronos_test
         continue-on-error: true
         env:
-          CONDUIT_RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
+          # Same env name for every suite (review feedback); the Conduit secret
+          # is the value known to work on the cronos endpoint.
+          RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
         run: "yarn reya_cronos:test"
       - name: Reya Devnet Cannon Test
         id: reya_devnet_test
         continue-on-error: true
         env:
-          CONDUIT_RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
+          RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
         run: "yarn reya_devnet:test"
       # Publishes the advisory testnet result as its OWN check run, separate from this job.
       # This job stays the merge gate (mainnet/lint/build only); the check run below reports
