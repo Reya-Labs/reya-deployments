@@ -259,7 +259,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceMKR);
         ls.maxDeviationMarket.push(ls.maxDeviationMKR);
 
-        ls.meanPriceLINK = 8.2 * 1e18;
+        // refreshed 2026-08-21 (was 8.2; live ~11.5)
+        ls.meanPriceLINK = 11.5 * 1e18;
         ls.maxDeviationLINK = ls.meanPriceLINK / 2;
         ls.meanPriceMarket.push(ls.meanPriceLINK);
         ls.maxDeviationMarket.push(ls.maxDeviationLINK);
@@ -397,7 +398,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceGOAT);
         ls.maxDeviationMarket.push(ls.maxDeviationGOAT);
 
-        ls.meanPriceGRASS = 0.56 * 1e18;
+        // refreshed 2026-08-21 (was 0.56; live ~0.33)
+        ls.meanPriceGRASS = 0.33 * 1e18;
         ls.maxDeviationGRASS = ls.meanPriceGRASS / 2;
         ls.meanPriceMarket.push(ls.meanPriceGRASS);
         ls.maxDeviationMarket.push(ls.maxDeviationGRASS);
@@ -440,7 +442,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceTRUMP);
         ls.maxDeviationMarket.push(ls.maxDeviationTRUMP);
 
-        ls.meanPriceHYPE = 51 * 1e18;
+        // refreshed 2026-08-21 (was 51; live ~76.6)
+        ls.meanPriceHYPE = 75 * 1e18;
         ls.maxDeviationHYPE = ls.meanPriceHYPE / 2;
         ls.meanPriceMarket.push(ls.meanPriceHYPE);
         ls.maxDeviationMarket.push(ls.maxDeviationHYPE);
@@ -470,7 +473,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceFARTCOIN);
         ls.maxDeviationMarket.push(ls.maxDeviationFARTCOIN);
 
-        ls.meanPriceGRIFFAIN = 0.009 * 1e18;
+        // refreshed 2026-08-21 (was 0.009; live ~0.0133)
+        ls.meanPriceGRIFFAIN = 0.013 * 1e18;
         ls.maxDeviationGRIFFAIN = ls.meanPriceGRIFFAIN / 2;
         ls.meanPriceMarket.push(ls.meanPriceGRIFFAIN);
         ls.maxDeviationMarket.push(ls.maxDeviationGRIFFAIN);
@@ -555,8 +559,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceMORPHO);
         ls.maxDeviationMarket.push(ls.maxDeviationMORPHO);
 
-        // refreshed 2026-06-16 (was 0.28)
-        ls.meanPriceSYRUP = 0.14 * 1e18;
+        // refreshed 2026-08-21 (was 0.14, before that 0.28; live ~0.198)
+        ls.meanPriceSYRUP = 0.2 * 1e18;
         ls.maxDeviationSYRUP = ls.meanPriceSYRUP / 2;
         ls.meanPriceMarket.push(ls.meanPriceSYRUP);
         ls.maxDeviationMarket.push(ls.maxDeviationSYRUP);
