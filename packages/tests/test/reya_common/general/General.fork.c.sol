@@ -541,7 +541,8 @@ contract GeneralForkCheck is BaseReyaForkTest {
         ls.meanPriceMarket.push(ls.meanPriceME);
         ls.maxDeviationMarket.push(ls.maxDeviationME);
 
-        ls.meanPricePUMP = 0.002 * 1e18;
+        // refreshed 2026-08-21: live ~0.00404, the old 0.002 pin put it outside its own +-50% band
+        ls.meanPricePUMP = 0.004 * 1e18;
         ls.maxDeviationPUMP = ls.meanPricePUMP / 2;
         ls.meanPriceMarket.push(ls.meanPricePUMP);
         ls.maxDeviationMarket.push(ls.maxDeviationPUMP);
