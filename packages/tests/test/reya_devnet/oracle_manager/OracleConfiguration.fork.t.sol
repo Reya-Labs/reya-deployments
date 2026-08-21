@@ -45,6 +45,17 @@ contract OracleConfigurationForkTest is ReyaForkTest, OracleConfigurationForkChe
         check_configClosure_allNodesResolve();
     }
 
+    /// Spot leg of the closure: both devnet spot markets. WETHRUSD (1) must
+    /// resolve -- Core processes its node on every fill now the collar is on.
+    /// SRUSDRUSD (2) is zero-node by design (never orderbook-enabled) and the
+    /// walk skips it; test_Devnet_SpotCollarConfig pins that zero.
+    function test_Devnet_spotMarketNodes_resolve() public view {
+        uint128[] memory spotIds = new uint128[](2);
+        spotIds[0] = 1;
+        spotIds[1] = 2;
+        check_spotMarketNodes_resolve(spotIds);
+    }
+
     function test_Devnet_srusdPoolNode_producesPrice() public view {
         check_srusdPoolNode_producesPrice();
     }

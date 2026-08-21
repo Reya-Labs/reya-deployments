@@ -416,11 +416,18 @@ cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdUsdcPoolNodeId %>"
 # Spot Markets (WETH/rUSD, sRUSD/rUSD)
 ###############################################################################
 [var.spotMarkets]
-wethRusdSpot_oracleDeviationUnscaled = "0"
+# Mainnet parity: mainnet runs this book with the ETHUSDC node and a 5%
+# deviation collar; cronos runs it with the collar OFF (deviation 0 skips the
+# whole oracle block in Core's SpotExecutionModule, so fills get NO oracle
+# validation). Devnet exists to rehearse the mainnet migration, so it mirrors
+# mainnet -- otherwise the collar's admission path is first exercised in
+# production. NOTE: with the collar on, Core processes this node on every
+# spot fill, so a broken node fails spot fills closed.
+wethRusdSpot_oracleDeviationUnscaled = "0.05"
 wethRusdSpot_minimumOrderBaseUnscaled = "0.001"
 wethRusdSpot_baseSpacingUnscaled = "0.001"
 wethRusdSpot_priceSpacingUnscaled = "0.01"
-wethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+wethRusdSpot_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 # -------------------------------------------------------------------
 # sRUSD/rUSD spot market. All params zero — matches `reya_cronos.toml` and
 # `reya_network.toml` byte-for-byte. The market isn't allowlisted for
@@ -431,6 +438,9 @@ srusdRusdSpot_oracleDeviationUnscaled = "0"
 srusdRusdSpot_minimumOrderBaseUnscaled = "0"
 srusdRusdSpot_baseSpacingUnscaled = "0"
 srusdRusdSpot_priceSpacingUnscaled = "0"
+# Deliberately no collar: the SRUSDRUSD market is never orderbook-enabled on
+# devnet (see devnet/core/tokens/srusd.toml), so a collar here would be dead
+# config. Pinned by test_Devnet_SpotCollarConfig.
 srusdRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 ###############################################################################

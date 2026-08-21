@@ -3,7 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 import { IOracleManagerProxy, NodeDefinition, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
-import { ICoreProxy, ParentCollateralConfig } from "../../../src/interfaces/ICoreProxy.sol";
+import { ICoreProxy, ParentCollateralConfig, SpotMarketConfig } from "../../../src/interfaces/ICoreProxy.sol";
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import {
     IOracleAdaptersProxy,
@@ -34,10 +34,30 @@ contract OracleConfigurationForkCheck is BaseReyaForkTest {
     /// references must be REGISTERED on this manager. A node id resolved
     /// against the wrong manager instance reverts with NodeNotRegistered only
     /// at use-time; this catches it at configuration-time.
+    /// Includes the DIV_REDUCER parents (ethUsdc = ETHUSD/USDCUSD,
+    /// ethUsdcMark = ETHUSDMARK/USDCUSD): getNode on a reducer root passes
+    /// even when a parent is unregistered -- the failure only appears at
+    /// process() time. The closure walk catches that as UnprocessableNode on
+    /// the ROOT; listing the parents here names the actual broken node.
     function check_criticalNodes_registeredOnThisManager() public view {
-        bytes32[4] memory nodeIds =
-            [sec.rusdUsdNodeId, sec.ethUsdcStorkNodeId, sec.ethUsdcStorkMarkNodeId, sec.srusdUsdcPoolNodeId];
-        string[4] memory names = ["rusdUsd", "ethUsdc", "ethUsdcMark", "srusdUsdcPool"];
+        bytes32[7] memory nodeIds = [
+            sec.rusdUsdNodeId,
+            sec.ethUsdcStorkNodeId,
+            sec.ethUsdcStorkMarkNodeId,
+            sec.srusdUsdcPoolNodeId,
+            sec.ethUsdStorkNodeId,
+            sec.usdcUsdStorkNodeId,
+            sec.ethUsdStorkMarkNodeId
+        ];
+        string[7] memory names = [
+            "rusdUsd",
+            "ethUsdc",
+            "ethUsdcMark",
+            "srusdUsdcPool",
+            "ethUsd (parent)",
+            "usdcUsd (parent)",
+            "ethUsdMark (parent)"
+        ];
         for (uint256 i = 0; i < nodeIds.length; i++) {
             require(nodeIds[i] != bytes32(0), string.concat(names[i], ": node id unset"));
             NodeDefinition.Data memory node = IOracleManagerProxy(sec.oracleManager).getNode(nodeIds[i]);
@@ -62,6 +82,21 @@ contract OracleConfigurationForkCheck is BaseReyaForkTest {
     /// Because the set comes from chain, every collateral and market added
     /// later — the ~9 remaining mainnet-mirror collaterals included — is
     /// covered with no edit to this test.
+    /// Spot-market leg of the config closure: every spot market with a
+    /// nonzero oracleNodeId must resolve AND price on this manager. Core
+    /// processes that node on every fill of the market (whenever
+    /// oracleDeviation > 0), so a broken node fails the book closed. A zero
+    /// node is legitimate config (collar off) and is skipped -- callers pin
+    /// WHICH markets are allowed to be zero separately.
+    function check_spotMarketNodes_resolve(uint128[] memory spotMarketIds) public view {
+        for (uint256 i = 0; i < spotMarketIds.length; i++) {
+            SpotMarketConfig memory cfg = ICoreProxy(sec.core).getSpotMarketData(spotMarketIds[i]).config;
+            if (cfg.oracleNodeId == bytes32(0)) continue;
+            NodeOutput.Data memory out = IOracleManagerProxy(sec.oracleManager).process(cfg.oracleNodeId);
+            require(out.price > 0, "spot market oracle node returned zero price");
+        }
+    }
+
     function check_configClosure_allNodesResolve() public view {
         address quoteCollateral = IPassivePoolProxy(sec.pool).getPoolQuoteToken(sec.passivePoolId);
         uint128 collateralPoolId = ICoreProxy(sec.core).getCollateralPoolIdOfAccount(sec.passivePoolAccountId);
@@ -78,8 +113,7 @@ contract OracleConfigurationForkCheck is BaseReyaForkTest {
             );
             NodeOutput.Data memory out = IOracleManagerProxy(sec.oracleManager).process(parent.oracleNodeId);
             require(
-                out.price > 0,
-                string.concat("config closure: zero price for collateral ", vm.toString(supporting[i]))
+                out.price > 0, string.concat("config closure: zero price for collateral ", vm.toString(supporting[i]))
             );
         }
 
