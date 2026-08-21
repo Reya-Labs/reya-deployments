@@ -6,7 +6,7 @@ import { SpotPerpOBForkCheck } from "../../reya_common/trade/SpotPerpOB.fork.c.s
 import { ICoreProxy, SpotMarketConfig } from "../../../src/interfaces/ICoreProxy.sol";
 
 contract SpotForkTest is ReyaForkTest, SpotPerpOBForkCheck {
-    uint128 constant WETH_SPOT_MARKET_ID = 1;
+    uint128 internal constant WETH_SPOT_MARKET_ID = 1;
 
     function test_Devnet_SpotExecuteFill_WETH() public {
         check_SpotExecuteFill_WETH(WETH_SPOT_MARKET_ID);
@@ -20,7 +20,7 @@ contract SpotForkTest is ReyaForkTest, SpotPerpOBForkCheck {
         check_SpotExecuteFill_SmallQuantity_And_Price_WETH(WETH_SPOT_MARKET_ID);
     }
 
-    uint128 constant SRUSD_SPOT_MARKET_ID = 2;
+    uint128 internal constant SRUSD_SPOT_MARKET_ID = 2;
 
     /// Core's spot deviation error (UD60x18 ABI-encodes as uint256). Distinct
     /// from the passive-perp 4-arg error of the same name.

@@ -5,7 +5,7 @@ import { PerpFillForkCheck } from "../../reya_common/trade/PerpFill.fork.c.sol";
 import { IPassivePerpProxyV2, FeeTierParameters } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 
 contract PerpFillForkTest is ReyaForkTest, PerpFillForkCheck {
-    uint128 constant ETH_MARKET_ID = 1;
+    uint128 internal constant ETH_MARKET_ID = 1;
 
     function test_Devnet_PerpExecuteFill_ETH() public {
         check_PerpExecuteFill(ETH_MARKET_ID);

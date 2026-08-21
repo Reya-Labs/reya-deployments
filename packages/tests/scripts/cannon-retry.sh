@@ -8,6 +8,14 @@
 # invocation is the safe granularity: cannon resumes from cached state, so a
 # retry is cheap when most steps already succeeded.
 #
+# Scoped to the DEVNET test script only: a healthy devnet build has zero
+# skips, so any skip is retryable flake. The cronos/mainnet builds currently
+# have ~24 persistent root failures (source packages whose IPFS pins are
+# missing from repo.usecannon.com, e.g. reya-core:1.0.34@router) that cascade
+# into ~1800 dependency skips on EVERY branch -- wrapping those scripts would
+# turn a pre-existing condition into a hard red. Wrap them once the pins are
+# restored.
+#
 # Usage: cannon-retry.sh <command...>
 set -uo pipefail
 

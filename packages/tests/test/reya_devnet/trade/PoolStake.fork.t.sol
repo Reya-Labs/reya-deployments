@@ -20,7 +20,7 @@ import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracle
  *      owner for the seed.
  */
 contract PoolStakeForkTest is ReyaForkTest {
-    uint128 constant POOL_ID = 1;
+    uint128 internal constant POOL_ID = 1;
 
     function _allowlistedStaker(string memory name) internal returns (address staker) {
         staker = makeAddr(name);

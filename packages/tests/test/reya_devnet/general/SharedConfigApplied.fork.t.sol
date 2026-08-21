@@ -39,8 +39,8 @@ interface IPerpGlobalConfig {
  *      membership is known; a dropped AND an extra entry both fail.
  */
 contract SharedConfigAppliedForkTest is ReyaForkTest {
-    bytes32 constant GLOBAL_FLAG = keccak256(bytes("global"));
-    address constant ME_PUBLISHER = 0xD3D5911FE8ab109645f931Cf65B341d5dd672eFB;
+    bytes32 internal constant GLOBAL_FLAG = keccak256(bytes("global"));
+    address internal constant ME_PUBLISHER = 0xD3D5911FE8ab109645f931Cf65B341d5dd672eFB;
 
     function test_Devnet_CoreSharedConfig_Applied() public view {
         ICoreProxy core = ICoreProxy(sec.core);

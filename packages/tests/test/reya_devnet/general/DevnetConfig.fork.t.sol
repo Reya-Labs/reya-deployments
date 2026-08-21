@@ -39,7 +39,7 @@ interface IOwnableProxy {
  *      changes there, this file is the paired change.
  */
 contract DevnetConfigForkTest is ReyaForkTest, PerpFillForkCheck {
-    bytes32 constant GLOBAL_FLAG = keccak256(bytes("global"));
+    bytes32 internal constant GLOBAL_FLAG = keccak256(bytes("global"));
 
     // ------------------------------------------------------------------
     // A2: ownership across every fresh proxy

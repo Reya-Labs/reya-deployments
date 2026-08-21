@@ -4,9 +4,9 @@ import { ReyaForkTest } from "../ReyaForkTest.sol";
 import { LeveragePerpOBForkCheck } from "../../reya_common/trade/LeveragePerpOB.fork.c.sol";
 
 contract LeverageForkTest is ReyaForkTest, LeveragePerpOBForkCheck {
-    uint128 constant ETH_MARKET_ID = 1;
-    uint256 constant ETH_LEVERAGE = 25e18;
-    uint256 constant ETH_MARK_PRICE = 3000e18;
+    uint128 internal constant ETH_MARKET_ID = 1;
+    uint256 internal constant ETH_LEVERAGE = 25e18;
+    uint256 internal constant ETH_MARK_PRICE = 3000e18;
 
     function test_Devnet_Leverage_ETH_rUSD() public {
         check_trade_leverage_perpOB(ETH_MARKET_ID, ETH_LEVERAGE, ETH_MARK_PRICE, sec.rusd);

@@ -25,7 +25,7 @@ import { ITokenProxy } from "../../../src/interfaces/ITokenProxy.sol";
  *      configured discount.
  */
 contract AutoExchangeForkTest is ReyaForkTest, PerpFillForkCheck {
-    uint128 constant ETH_MARKET_ID = 1;
+    uint128 internal constant ETH_MARKET_ID = 1;
 
     function test_Devnet_AutoExchange_WethCollateral() public {
         setupPerpTestActors();

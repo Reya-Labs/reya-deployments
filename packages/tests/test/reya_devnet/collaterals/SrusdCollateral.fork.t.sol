@@ -20,7 +20,7 @@ import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol
  *      perpOB-native test below instead.
  */
 contract SrusdCollateralForkTest is ReyaForkTest, SrusdCollateralForkCheck, PerpFillForkCheck {
-    uint128 constant ETH_MARKET_ID = 1;
+    uint128 internal constant ETH_MARKET_ID = 1;
 
     function testFuzz_Devnet_SRUSDMintBurn(address attacker) public {
         vm.assume(attacker != sec.pool);
