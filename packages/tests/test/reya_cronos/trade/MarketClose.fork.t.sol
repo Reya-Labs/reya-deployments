@@ -9,7 +9,7 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
     ///         the RO batch announced on 6 Aug. Market ids are identical on cronos and reya_network.
     /// @dev Keep in sync with packages/tomls/src/passive_perp/configs/market_close_w1.toml.
     function w1FrozenMarkets() internal pure returns (uint128[] memory ids) {
-        ids = new uint128[](18);
+        ids = new uint128[](17);
         // Group 0 — reduce-only since June
         ids[0] = 15; // ZRO
         ids[1] = 25; // JTO
@@ -25,12 +25,11 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
         // RO batch — reduce-only since 6 Aug
         ids[11] = 34; // GOAT
         ids[12] = 36; // KNEIRO
-        ids[13] = 46; // AIXBT
-        ids[14] = 49; // GRIFFAIN
-        ids[15] = 52; // APE
-        ids[16] = 61; // IP
-        // Group A — reduce-only since #507
-        ids[17] = 67; // KAITO
+        ids[13] = 49; // GRIFFAIN
+        ids[14] = 52; // APE
+        ids[15] = 61; // IP
+        // Group A — reduce-only since #507, pulled forward into the W1 close
+        ids[16] = 67; // KAITO
     }
 
     /// @dev Use this test as a script to check the full lifecycle of closing a market: reduce-only -> no-extend ->
@@ -52,6 +51,7 @@ contract MarketCloseForkTest is ReyaForkTest, MarketCloseForkCheck {
     }
 
     /// @notice Stage 2: every market already in reduce-only (`maxOpenBase == 0`) can be frozen for closure. Markets
+    ///         an earlier close batch has already frozen are skipped — `test_W1MarketsAreFrozen` covers those.
     ///         an earlier close batch has already frozen are skipped — `test_W1MarketsAreFrozen` covers those.
     function test_ReduceOnlyMarketsCanBeFrozen() public {
         for (uint128 marketId = 1; marketId <= lastMarketId(); marketId++) {

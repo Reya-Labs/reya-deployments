@@ -60,9 +60,10 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(14, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_zro() public {
-        check_trade_leverage(15, sec.usdc);
-    }
+    // note: market ZRO is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_zro() public {
+    //     check_trade_leverage(15, sec.usdc);
+    // }
 
     function test_trade_rusdCollateral_leverage_xrp() public {
         check_trade_leverage(16, sec.usdc);
@@ -100,9 +101,10 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(24, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_jto() public {
-        check_trade_leverage(25, sec.usdc);
-    }
+    // note: market JTO is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_jto() public {
+    //     check_trade_leverage(25, sec.usdc);
+    // }
 
     function test_trade_rusdCollateral_leverage_ada() public {
         check_trade_leverage(26, sec.usdc);
@@ -137,17 +139,19 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(33, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_goat() public {
-        check_trade_leverage(34, sec.usdc);
-    }
+    // note: market GOAT is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_goat() public {
+    //     check_trade_leverage(34, sec.usdc);
+    // }
 
     function test_trade_rusdCollateral_leverage_grass() public {
         check_trade_leverage(35, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_kneiro() public {
-        check_trade_leverage(36, sec.usdc);
-    }
+    // note: market kNEIRO is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_kneiro() public {
+    //     check_trade_leverage(36, sec.usdc);
+    // }
 
     // note: market paused
     // function test_trade_rusdCollateral_leverage_dot() public {
@@ -182,9 +186,10 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(44, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_ai16z() public {
-        check_trade_leverage(45, sec.usdc);
-    }
+    // note: market AI16Z is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_ai16z() public {
+    //     check_trade_leverage(45, sec.usdc);
+    // }
 
     // note: market paused
     // function test_trade_rusdCollateral_leverage_aixbt() public {
@@ -199,9 +204,10 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(48, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_griffain() public {
-        check_trade_leverage(49, sec.usdc);
-    }
+    // note: market GRIFFAIN is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_griffain() public {
+    //     check_trade_leverage(49, sec.usdc);
+    // }
 
     function test_trade_rusdCollateral_leverage_wld() public {
         check_trade_leverage(50, sec.usdc);
@@ -211,13 +217,15 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(51, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_ape() public {
-        check_trade_leverage(52, sec.usdc);
-    }
+    // note: market APE is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_ape() public {
+    //     check_trade_leverage(52, sec.usdc);
+    // }
 
-    function test_trade_rusdCollateral_leverage_ton() public {
-        check_trade_leverage(53, sec.usdc);
-    }
+    // note: market TON is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_ton() public {
+    //     check_trade_leverage(53, sec.usdc);
+    // }
 
     function test_trade_rusdCollateral_leverage_ondo() public {
         check_trade_leverage(54, sec.usdc);
@@ -231,13 +239,15 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(56, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_move() public {
-        check_trade_leverage(57, sec.usdc);
-    }
+    // note: market MOVE is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_move() public {
+    //     check_trade_leverage(57, sec.usdc);
+    // }
 
-    function test_trade_rusdCollateral_leverage_bera() public {
-        check_trade_leverage(58, sec.usdc);
-    }
+    // note: market BERA is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_bera() public {
+    //     check_trade_leverage(58, sec.usdc);
+    // }
 
     function test_trade_rusdCollateral_leverage_layer() public {
         check_trade_leverage(59, sec.usdc);
@@ -247,9 +257,10 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(60, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_ip() public {
-        check_trade_leverage(61, sec.usdc);
-    }
+    // note: market IP is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_ip() public {
+    //     check_trade_leverage(61, sec.usdc);
+    // }
 
     function test_trade_rusdCollateral_leverage_me() public {
         check_trade_leverage(62, sec.usdc);
@@ -271,33 +282,39 @@ contract LeverageForkTest is ReyaForkTest, LeverageForkCheck {
         check_trade_leverage(66, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_kaito() public {
-        check_trade_leverage(67, sec.usdc);
-    }
+    // note: market KAITO is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_kaito() public {
+    //     check_trade_leverage(67, sec.usdc);
+    // }
 
-    function test_trade_rusdCollateral_leverage_zora() public {
-        check_trade_leverage(68, sec.usdc);
-    }
+    // note: market ZORA is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_zora() public {
+    //     check_trade_leverage(68, sec.usdc);
+    // }
 
-    function test_trade_rusdCollateral_leverage_prove() public {
-        check_trade_leverage(69, sec.usdc);
-    }
+    // note: market PROVE is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_prove() public {
+    //     check_trade_leverage(69, sec.usdc);
+    // }
 
     function test_trade_rusdCollateral_leverage_paxg() public {
         check_trade_leverage(70, sec.usdc);
     }
 
-    function test_trade_rusdCollateral_leverage_yzy() public {
-        check_trade_leverage(71, sec.usdc);
-    }
+    // note: market YZY is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_yzy() public {
+    //     check_trade_leverage(71, sec.usdc);
+    // }
 
-    function test_trade_rusdCollateral_leverage_xpl() public {
-        check_trade_leverage(72, sec.usdc);
-    }
+    // note: market XPL is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_xpl() public {
+    //     check_trade_leverage(72, sec.usdc);
+    // }
 
-    function test_trade_rusdCollateral_leverage_wlfi() public {
-        check_trade_leverage(73, sec.usdc);
-    }
+    // note: market WLFI is closed and fully unwound
+    // function test_trade_rusdCollateral_leverage_wlfi() public {
+    //     check_trade_leverage(73, sec.usdc);
+    // }
 
     function test_trade_rusdCollateral_leverage_linea() public {
         check_trade_leverage(74, sec.usdc);
