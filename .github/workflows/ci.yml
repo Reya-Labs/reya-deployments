@@ -66,21 +66,28 @@ jobs:
       # baseline resolution, which lives on OP), so write a settings.json
       # carrying both chains on public endpoints instead.
       - name: Configure cannon registries
+        env:
+          INFURA_KEY: ${{ secrets.INFURA_KEY }}
+        # Keyed Infura endpoints first — the public endpoints (publicnode,
+        # llamarpc) rate-limit GitHub's shared runner IPs, which the 6c045c2
+        # run proved empirically: identical settings resolve fine from a
+        # cold cache on a developer IP and return "deployment not found"
+        # for everything on a runner. Public endpoints stay as fallback.
         run: |
           mkdir -p ~/.local/share/cannon
-          cat > ~/.local/share/cannon/settings.json <<'EOF'
+          cat > ~/.local/share/cannon/settings.json <<EOF
           {
             "registries": [
               {
                 "name": "OP Mainnet",
                 "chainId": 10,
-                "rpcUrl": ["https://optimism-rpc.publicnode.com", "https://mainnet.optimism.io"],
+                "rpcUrl": ["https://optimism-mainnet.infura.io/v3/${INFURA_KEY}", "https://optimism-rpc.publicnode.com"],
                 "address": "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
               },
               {
                 "name": "Ethereum Mainnet",
                 "chainId": 1,
-                "rpcUrl": ["https://ethereum-rpc.publicnode.com", "https://eth.llamarpc.com"],
+                "rpcUrl": ["https://mainnet.infura.io/v3/${INFURA_KEY}", "https://ethereum-rpc.publicnode.com"],
                 "address": "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
               }
             ]
