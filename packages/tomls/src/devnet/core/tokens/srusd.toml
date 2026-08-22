@@ -1,5 +1,6 @@
-# Devnet sRUSD config: reuses the Cronos sRUSD proxy (see srusdProxyAddress
-# in reya_devnet.toml). Mirrors weth.toml's pattern — register sRUSD as a
+# Devnet sRUSD config. sRUSD is devnet's OWN token (see
+# ../../token/srusd.toml); srusdProxyAddress resolves to that instance.
+# Mirrors weth.toml's pattern — register sRUSD as a
 # global collateral, allowlist for auto-exchange, then create + configure +
 # enable the SRUSDRUSD spot market.
 
@@ -18,8 +19,8 @@ target = ["CoreProxy"]
 fromCall.func = "owner"
 # Matches the shared `packages/tomls/src/core/configs/tokens/srusd.toml`
 # (cronos / mainnet): allowlist the passive pool specifically rather than
-# allowAll. devnet's `passivePoolProxy` compat alias maps to the existing
-# Cronos passive-pool proxy declared in `[var.cronos_compat_vars]`.
+# allowAll. devnet's `passivePoolProxy` alias resolves to devnet's OWN pool
+# proxy (see ../../passive_pool/passive_pool.toml).
 func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), settings.srusdProxyAddress])) %>",

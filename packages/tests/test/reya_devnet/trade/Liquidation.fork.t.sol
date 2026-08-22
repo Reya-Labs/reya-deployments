@@ -4,7 +4,7 @@ import { ReyaForkTest } from "../ReyaForkTest.sol";
 import { LiquidationPerpOBForkCheck } from "../../reya_common/trade/LiquidationPerpOB.fork.c.sol";
 
 contract LiquidationForkTest is ReyaForkTest, LiquidationPerpOBForkCheck {
-    uint128 constant ETH_MARKET_ID = 1;
+    uint128 internal constant ETH_MARKET_ID = 1;
 
     function test_Devnet_DutchLiquidation_ETH() public {
         check_DutchLiquidation_PerpOB(ETH_MARKET_ID);

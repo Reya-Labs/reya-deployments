@@ -1,4 +1,12 @@
-# Devnet CP1 wETH collateral config: uses hardcoded Cronos wETH address
+# Devnet CP1 wETH collateral config: uses hardcoded Cronos wETH address.
+#
+# Points at the ethUsdc div-reducer on devnet's OWN manager, and therefore
+# runs AFTER the manager switch (core_configure_protocol): before the switch
+# the live entry keeps its Cronos-manager node, which the pool-bootstrap
+# margin walks resolve with real prices; after the switch this step re-points
+# it in the new world. Between the two, margin actions revert (fail-closed
+# devnet downtime), and after the build they keep reverting until the
+# off-chain cutover (reya-devops #990) starts publishing to the new adapters.
 [invoke.cp_1rusd_set_weth_config]
 target = ["CoreProxy"]
 fromCall.func = "owner"
@@ -10,4 +18,8 @@ args = [
     { depositingEnabled = true, cap = "<%= parseUnits(settings.cp1Rusd_weth_capUnscaled, parseInt(settings.wethTokenDecimals)) %>", withdrawalWindowSize_DEPRECATED = "0", withdrawalTvlPercentageLimit_DEPRECATED = "0", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_weth_autoExchangeThresholdUnscaled, parseInt(settings.wethTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_weth_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_weth_autoExchangeDustThresholdUnscaled, parseInt(settings.wethTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_weth_bidSubmissionFeeUnscaled, parseInt(settings.wethTokenDecimals)) %>" },
     { collateralAddress = "<%= settings.cp1Rusd_wethParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_wethParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_wethParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.cp1Rusd_wethParentConfig_oracleNodeId %>" },
 ]
-depends = ["var.cp_1rusd_vars", "invoke.cp_1rusd_set_rusd_config"]
+depends = [
+    "var.cp_1rusd_vars",
+    "invoke.cp_1rusd_set_rusd_config",
+    "invoke.core_configure_protocol",
+]

@@ -1,0 +1,15 @@
+# Devnet's own PassivePool.
+#
+# Composed piecewise rather than including ../../passive_pool/testnet.toml,
+# because that pulls in the shared deploy_proxy (global `settings.salt`, which
+# would collide with Cronos) and the shared pool/feature-flag configs (which
+# reference collateral tokens devnet does not deploy). The upgrade, global
+# config and open-pool steps are environment-agnostic and are reused as-is.
+include = [
+    "./deploy_proxy.toml",
+    "../../passive_pool/utils/upgrade_proxy.toml",
+    "../../passive_pool/configs/global_config.toml",
+    "./feature_flags.toml",
+    "./pool_1rusd.toml",
+    "../../passive_pool/configs/open_pool.toml",
+]

@@ -35,6 +35,9 @@ jobs:
       # at "Checking for existing package...". Pin reads to the live, non-regional
       # base host, which still serves the packages over the Kubo /api/v0 API.
       CANNON_IPFS_URL: https+ipfs://repo.usecannon.com
+      # Give the IPFS fetches real retry headroom on flaky runner networks.
+      CANNON_IPFS_RETRIES: "10"
+      CANNON_IPFS_TIMEOUT: "300000"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,6 +55,44 @@ jobs:
           cache: 'yarn'
       - name: "Install the Node.js dependencies"
         run: "yarn"
+      # Package resolution asks the on-chain cannon registry for each package's
+      # IPFS hash, and the reya packages are SPLIT across the two registry
+      # chains (older proxies on Ethereum, newer routers and the omnibus
+      # baselines on Optimism) — so BOTH must be reachable. Cannon's default
+      # config reaches them through globally-shared Infura/Alchemy keys that
+      # rate-limit GitHub's runner IPs, which is how every clone.* source used
+      # to die "deployment not found" and the devnet deployment silently
+      # skipped. The env vars can only pin ONE registry (an ETH-only pin broke
+      # baseline resolution, which lives on OP), so write a settings.json
+      # carrying both chains on public endpoints instead.
+      - name: Configure cannon registries
+        env:
+          INFURA_KEY: ${{ secrets.INFURA_KEY }}
+        # Keyed Infura endpoints first — the public endpoints (publicnode,
+        # llamarpc) rate-limit GitHub's shared runner IPs, which the 6c045c2
+        # run proved empirically: identical settings resolve fine from a
+        # cold cache on a developer IP and return "deployment not found"
+        # for everything on a runner. Public endpoints stay as fallback.
+        run: |
+          mkdir -p ~/.local/share/cannon
+          cat > ~/.local/share/cannon/settings.json <<EOF
+          {
+            "registries": [
+              {
+                "name": "OP Mainnet",
+                "chainId": 10,
+                "rpcUrl": ["https://optimism-mainnet.infura.io/v3/${INFURA_KEY}", "https://optimism-rpc.publicnode.com"],
+                "address": "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
+              },
+              {
+                "name": "Ethereum Mainnet",
+                "chainId": 1,
+                "rpcUrl": ["https://mainnet.infura.io/v3/${INFURA_KEY}", "https://ethereum-rpc.publicnode.com"],
+                "address": "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
+              }
+            ]
+          }
+          EOF
       - name: Lint Check
         run: "yarn lint:check"
       - name: Build
@@ -65,13 +106,15 @@ jobs:
         id: reya_cronos_test
         continue-on-error: true
         env:
-          CONDUIT_RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
+          # Same env name for every suite (review feedback); the Conduit secret
+          # is the value known to work on the cronos endpoint.
+          RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
         run: "yarn reya_cronos:test"
       - name: Reya Devnet Cannon Test
         id: reya_devnet_test
         continue-on-error: true
         env:
-          CONDUIT_RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
+          RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
         run: "yarn reya_devnet:test"
       # Publishes the advisory testnet result as its OWN check run, separate from this job.
       # This job stays the merge gate (mainnet/lint/build only); the check run below reports

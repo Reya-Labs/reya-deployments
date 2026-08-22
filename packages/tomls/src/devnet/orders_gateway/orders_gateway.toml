@@ -4,3 +4,18 @@ include = [
     "feature_flags.toml",
     "global_config.toml",
 ]
+
+# Purge the pre-PRO-152 ws-exec signer from conditional_orders. PRO-152
+# pointed the allowlist at the live signer but never removed the retired
+# one, leaving a dead key with standing authority to execute conditional
+# orders. The DevnetConfig fork test pins the allowlist as an EXACT set,
+# so any future stale entry fails the suite instead of accumulating.
+[invoke.orders_gateway_remove_stale_ws_exec_signer]
+target = ["OrdersGatewayProxy"]
+fromCall.func = "owner"
+func = "removeFromFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('conditional_orders')) %>",
+    "0x9aF1E36612fcD94E3DBE5616261dA219416536Ae",
+]
+depends = ["invoke.upgrade_orders_gateway_proxy"]
