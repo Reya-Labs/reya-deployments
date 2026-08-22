@@ -410,7 +410,15 @@ cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
 # dependency cycle through live on-chain state.
 ###############################################################################
 [var.cp_1rusd_srusd_oracle]
-cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdUsdcPoolNodeId %>"
+# Mainnet parity (reya_network.toml uses this exact line): sRUSD margin is
+# priced via the Stork SRUSDRUSD_RR settlement feed, not the pool-share node.
+# Mainnet made this move in Oct 2025 for margin-walk gas (pool node ≈12.1M vs
+# ≈3.9M) and it is also what keeps Core and the matching engine consistent —
+# the ME risk engine settle-quotes sRUSD from the same RR feed and has no
+# pool-share source class. The REYAPOOL#1 node stays registered as the
+# share-price reference (getSharePrice telemetry + fork checks). NOTE the RR
+# feed tracks the CRONOS pool's share price; accepted devnet-only skew.
+cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdRusd_RRNodeIdStork %>"
 
 ###############################################################################
 # Spot Markets (WETH/rUSD, sRUSD/rUSD)

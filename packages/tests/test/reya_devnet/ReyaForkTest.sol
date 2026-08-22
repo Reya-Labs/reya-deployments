@@ -96,6 +96,10 @@ contract ReyaForkTest is BaseReyaForkTest {
         // block.timestamp, so the node is always fresh and always equal to
         // the actual share price of devnet's own pool.
         sec.srusdUsdcPoolNodeId = 0x76f80a6a7a5b76465f117c56f41ecdcb7fe9fde5d817693fd12672e4508b4e12;
+        // Stork SRUSDRUSD_RR on devnet's own adapters — the sRUSD margin
+        // oracle (mainnet parity); the pool node above stays the share-price
+        // reference.
+        sec.srusdRusd_RRStorkNodeId = 0x310cce1f355711c4398bc6c506679e714b38cb1bcb616a71a7d6b86c090465a1;
 
         // Mark price node ids — devnet's own registrations.
         sec.ethUsdStorkMarkNodeId = 0x219a6c2e6d962bc56fc11095c36c345d3b6071844e66aa48310c098aea07016b;
@@ -157,12 +161,16 @@ contract ReyaForkTest is BaseReyaForkTest {
         // would revert StalePriceDetected. Same prank-bump pattern the cronos
         // fixture uses. Constant and pool nodes need no bump (they report
         // block.timestamp).
-        bytes32[5] memory stalenessBumped = [
+        bytes32[6] memory stalenessBumped = [
             sec.ethUsdStorkNodeId,
             sec.usdcUsdStorkNodeId,
             sec.ethUsdcStorkNodeId,
             sec.ethUsdStorkMarkNodeId,
-            sec.ethUsdcStorkMarkNodeId
+            sec.ethUsdcStorkMarkNodeId,
+            // sRUSD margin oracle (SRUSDRUSD_RR) — in every collateral walk
+            // since the mainnet-parity re-point; time-warping tests go stale
+            // without this, same as the pairs above.
+            sec.srusdRusd_RRStorkNodeId
         ];
         for (uint256 i = 0; i < stalenessBumped.length; i++) {
             vm.prank(sec.multisig);

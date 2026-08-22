@@ -183,7 +183,13 @@ contract DevnetConfigForkTest is ReyaForkTest, PerpFillForkCheck {
         require(srusdCfg.autoExchangeInsuranceFee == 0.005e18, "srusd: AE insurance fee != 0.005");
         require(srusdParent.priceHaircut == 0.1e18, "srusd: haircut != 0.10");
         require(srusdParent.autoExchangeDiscount == 0, "srusd: AE discount != 0");
-        require(srusdParent.oracleNodeId == sec.srusdUsdcPoolNodeId, "srusd: wrong oracle node");
+        // Mainnet parity: sRUSD margin prices via the Stork SRUSDRUSD_RR feed
+        // (cheaper margin walks; consistent with the ME risk engine). The
+        // pool node stays registered as the share-price reference.
+        require(
+            srusdParent.oracleNodeId == sec.srusdRusd_RRStorkNodeId,
+            "srusd: parent oracle != SRUSDRUSD_RR (mainnet parity)"
+        );
     }
 
     /// Core's CONFIGURED backstop LP, read from Core rather than assumed.
