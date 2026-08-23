@@ -124,6 +124,12 @@ jobs:
       - name: Prime the local cannon registry with the published devnet package
         continue-on-error: true
         env:
+          # `cannon fetch` reads publishIpfsUrl (CANNON_PUBLISH_IPFS_URL) for its
+          # download loader -- NOT CANNON_IPFS_URL and not CANNON_WRITE_IPFS_URL.
+          # Unset, it falls back to getCannonRepoRegistryUrl(), the
+          # region-derived repo hosts that were decommissioned, and dies with an
+          # SSL handshake failure (EPROTO). Same trap as `cannon publish`.
+          CANNON_PUBLISH_IPFS_URL: https+ipfs://repo.usecannon.com
           CANNON_WRITE_IPFS_URL: https+ipfs://repo.usecannon.com
         run: |
           set -o pipefail
