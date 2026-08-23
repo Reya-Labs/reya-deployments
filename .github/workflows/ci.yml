@@ -133,12 +133,16 @@ jobs:
           CANNON_WRITE_IPFS_URL: https+ipfs://repo.usecannon.com
         run: |
           set -o pipefail
-          URL=$(node node_modules/@usecannon/cli-devnet/bin/cannon.js inspect \
-            reya-devnet-omnibus:latest@main --chain-id 89346162 \
-            | grep -oE "ipfs://Qm[A-Za-z0-9]+" | head -1)
-          echo "published devnet package: $URL"
-          node node_modules/@usecannon/cli-devnet/bin/cannon.js fetch "$URL" \
-            reya-devnet-omnibus:latest@main --chain-id 89346162
+          # Must use the VERSION-specific ref, not latest@main: the guard looks
+          # up the exact fullPackageRef being built (e.g.
+          # reya-devnet-omnibus:1.1.1@main), and fetching as `latest` stores the
+          # package under a `latest` tag that the lookup never consults.
+          VERSION=$(grep -m1 '^version' packages/tomls/src/omnibus/reya_devnet.toml | cut -d'"' -f2)
+          REF="reya-devnet-omnibus:${VERSION}@main"
+          echo "priming local registry with $REF"
+          URL=$(node node_modules/@usecannon/cli-devnet/bin/cannon.js inspect "$REF" --chain-id 89346162 | grep -oE "ipfs://Qm[A-Za-z0-9]+" | head -1)
+          echo "package url: $URL"
+          node node_modules/@usecannon/cli-devnet/bin/cannon.js fetch "$URL" "$REF" --chain-id 89346162
 
       - name: Reya Devnet Cannon Test
         id: reya_devnet_test
