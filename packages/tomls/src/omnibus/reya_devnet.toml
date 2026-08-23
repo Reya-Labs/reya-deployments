@@ -32,16 +32,14 @@ include = [
     "../devnet/collateral_pools/collateral_pool_1.toml",
 ]
 
-# CONVENTION: this is always the NEXT version to deploy, i.e. one that is NOT
-# yet published. cli-devnet's build refuses to rebuild an already-published
-# version unless it is in the machine's local cannon cache -- which a cold CI
-# runner never has -- so leaving a published version here hard-fails the devnet
-# CI step for every branch ("The package ... is already published on the
-# registry. Please bump the `version` field"). The standard cannon CLI used by
-# the network/cronos suites has no such check, which is why only devnet hits
-# it. So: deploy a version, publish it, then bump this line in the same PR.
-# 1.1.0 deployed+published 2026-08-22; 1.1.1 deployed+published 2026-08-23.
-version = "1.1.2"
+# Keep this EQUAL to the currently deployed+published version, exactly like
+# reya_network.toml (1.0.162) and reya_cronos.toml (1.0.147) do. The fork
+# suites build this version against the published package of the same name, so
+# every step cache-hits and the build is a no-op -- that is what makes the
+# suite test the DEPLOYED state rather than replaying 434 steps against a fork.
+# Bump it only when deploying a change, and publish that version as part of the
+# same deploy (see CANNON.md).
+version = "1.1.1"
 
 ###############################################################################
 # Existing Cronos Contract Addresses (reused, not redeployed)

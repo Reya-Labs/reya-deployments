@@ -111,6 +111,29 @@ jobs:
           # is the value known to work on the cronos endpoint.
           RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
         run: "yarn reya_cronos:test"
+      # cli-devnet (unlike the standard CLI the network/cronos suites use)
+      # refuses to build a version that is already published UNLESS the package
+      # is in the machine's LOCAL registry -- which a cold runner never has. So
+      # prime it: fetch the published package into the local registry, which
+      # both satisfies that guard and lets every step cache-hit, so the suite
+      # tests the DEPLOYED state instead of replaying the whole deployment
+      # against the fork (434 steps, and non-idempotent ones like
+      # passive_pool_tokenize_pool_1rusd then revert PoolAlreadyTokenized).
+      # CANNON_WRITE_IPFS_URL is required: fetch defaults to the decommissioned
+      # region-derived repo hosts and dies with an SSL handshake failure.
+      - name: Prime the local cannon registry with the published devnet package
+        continue-on-error: true
+        env:
+          CANNON_WRITE_IPFS_URL: https+ipfs://repo.usecannon.com
+        run: |
+          set -o pipefail
+          URL=$(node node_modules/@usecannon/cli-devnet/bin/cannon.js inspect \
+            reya-devnet-omnibus:latest@main --chain-id 89346162 \
+            | grep -oE "ipfs://Qm[A-Za-z0-9]+" | head -1)
+          echo "published devnet package: $URL"
+          node node_modules/@usecannon/cli-devnet/bin/cannon.js fetch "$URL" \
+            reya-devnet-omnibus:latest@main --chain-id 89346162
+
       - name: Reya Devnet Cannon Test
         id: reya_devnet_test
         continue-on-error: true
