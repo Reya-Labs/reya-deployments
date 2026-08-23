@@ -99,6 +99,15 @@ contract ReyaForkTest is BaseReyaForkTest {
         // Stork SRUSDRUSD_RR on devnet's own adapters — the sRUSD margin
         // oracle (mainnet parity); the pool node above stays the share-price
         // reference.
+        //
+        // DO NOT wire the shared `check_srUSD_feeds()` here. It asserts the RR
+        // feed tracks the pool share price within 0.001, which holds on
+        // mainnet (one pool, one feed) but is FALSE on devnet: the RR pair is
+        // published against the CRONOS pool (~1.0745) while devnet's own pool
+        // sits at 1.000 — a ~0.0745 gap, ~74x that tolerance. The divergence
+        // is deliberate and margin-safe (Core and the ME both read RR, so they
+        // agree with each other; the 10% haircut dominates the skew), and it
+        // resolves only if Stork publishes a devnet-pool pair.
         sec.srusdRusd_RRStorkNodeId = 0x310cce1f355711c4398bc6c506679e714b38cb1bcb616a71a7d6b86c090465a1;
 
         // Mark price node ids — devnet's own registrations.
