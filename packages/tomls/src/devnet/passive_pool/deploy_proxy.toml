@@ -1,0 +1,14 @@
+# Devnet passive-pool proxy: uses a devnet-specific salt to avoid a CREATE2
+# collision with Cronos.
+#
+# The shared passive_pool/utils/deploy_proxy.toml clones with
+# `settings.salt`, which is "" on Cronos. Devnet uses the same owner as
+# Cronos, so cloning with that salt would resolve to the SAME address as the
+# existing Cronos pool proxy instead of deploying devnet's own. Same reason
+# devnet has its own oracle-manager / oracle-adapters salts.
+[clone.reyaPassivePoolProxy]
+source = "<%= settings.passivePoolProxyPackage %>"
+target = "<%= settings.passivePoolProxyPackage %>"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.passivePoolSalt %>"
+depends = ["var.cannonClonePackages"]

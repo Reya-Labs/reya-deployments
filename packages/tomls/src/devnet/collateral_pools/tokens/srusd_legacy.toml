@@ -1,0 +1,46 @@
+# Repair of the LEGACY (Cronos) sRUSD collateral entry on devnet's Core.
+#
+# devnet used to borrow the Cronos sRUSD, so `0xb9F531A5…` is registered as a
+# collateral on collateral pool 1 with a parent config whose oracleNodeId is
+# `0xc380c127…` — the REYAPOOL#1 Stork lookup against the CRONOS OracleAdapters.
+# Once devnet got its own OracleManager, that node stopped being resolvable
+# here: devnet's manager has never registered it.
+#
+# That is not a dormant leftover. Core walks the collateral set when it computes
+# margin, so EVERY margin computation — every fill, liquidation, funding accrual
+# — reverts with `UnprocessableNode(0xc380c127…)`, regardless of whether the
+# account holds any sRUSD at all. It went unnoticed only because the devnet fork
+# tests could not run until the passive_perp_global_config ABI fix landed.
+#
+# Registering devnet's own sRUSD (see ./srusd.toml) does not help: that writes a
+# NEW entry keyed on the new token address and leaves this one untouched.
+#
+# This step retires the legacy entry as far as Core allows (there is no
+# deregistration path): depositing disabled, cap zero, and the oracle node
+# re-pointed at the rUSD constant so the mandatory margin-walk visit always
+# resolves. Devnet Core holds zero of this token, so nothing is ever priced
+# by the constant. The non-oracle fee/threshold fields reuse the same
+# settings ./srusd.toml applies to the new token, which the live on-chain
+# values were verified to already match.
+[invoke.cp_1rusd_repair_legacy_srusd_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setCollateralConfig"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= settings.legacyCronosSrusdProxyAddress %>",
+    { depositingEnabled = false, cap = "0", withdrawalWindowSize_DEPRECATED = "0", withdrawalTvlPercentageLimit_DEPRECATED = "0", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_srusd_autoExchangeThresholdUnscaled, parseInt(settings.srusdTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_srusd_autoExchangeDustThresholdUnscaled, parseInt(settings.srusdTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_srusd_bidSubmissionFeeUnscaled, parseInt(settings.srusdTokenDecimals)) %>" },
+    { collateralAddress = "<%= settings.cp1Rusd_srusdParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_srusdParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.rusdUsdNodeId %>" },
+]
+# Points at the rUSD/USD CONSTANT 1.0 node, NOT the pool node: this token's
+# true price is the CRONOS pool's share price, which no devnet node can
+# serve — but the entry is deposits-disabled with cap 0 and zero balances,
+# so the node only ever needs to RESOLVE during the margin walk; a constant
+# is inert. Runs after the manager switch alongside the other re-points
+# (pre-switch, the live entry's Cronos-manager node resolves fine for the
+# pool-bootstrap walks).
+depends = [
+    "var.cp_1rusd_vars",
+    "invoke.oracle_manager_register_node_rusd_usd",
+    "invoke.core_configure_protocol",
+]

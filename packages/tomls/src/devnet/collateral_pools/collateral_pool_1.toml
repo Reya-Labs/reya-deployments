@@ -7,6 +7,7 @@ include = [
     "tokens/rusd.toml",
     "tokens/weth.toml",
     "tokens/srusd.toml",
+    "tokens/srusd_legacy.toml",
 ]
 
 # Collateral pool anchor - only depends on market 1 ETH
