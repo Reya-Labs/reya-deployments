@@ -10,19 +10,18 @@ permissions:
   contents: read
   # Required to publish the non-blocking "Testnet Suites" check run below.
   checks: write
-env:
-  # NOTE: do NOT set CANNON_REGISTRY_{ADDRESS,RPC_URL,CHAIN_ID} here. They were
-  # set (July 2026) to move registry reads off cannon's rate-limited shared
-  # Infura key, which was the right problem — but per @usecannon/cli
-  # settings.js those env vars replace the registry LIST with a single "Custom
-  # Network" entry and make ~/.local/share/cannon/settings.json ignored
-  # entirely. The reya packages are SPLIT across BOTH registry chains (older
-  # proxies on Ethereum, newer routers and the omnibus baselines on Optimism),
-  # so a chain-10-only registry cannot resolve e.g. reya-core:1.0.0@proxy and
-  # every clone.* step is skipped ("deployment not found ... network 13370"),
-  # cascading into a whole skipped deployment and a red devnet suite.
-  # The "Configure cannon registries" step below covers BOTH chains on keyed
-  # endpoints, which is what these vars were reaching for.
+# NOTE: do NOT set CANNON_REGISTRY_{ADDRESS,RPC_URL,CHAIN_ID} as workflow env. They were
+# set (July 2026) to move registry reads off cannon's rate-limited shared
+# Infura key, which was the right problem — but per @usecannon/cli
+# settings.js those env vars replace the registry LIST with a single "Custom
+# Network" entry and make ~/.local/share/cannon/settings.json ignored
+# entirely. The reya packages are SPLIT across BOTH registry chains (older
+# proxies on Ethereum, newer routers and the omnibus baselines on Optimism),
+# so a chain-10-only registry cannot resolve e.g. reya-core:1.0.0@proxy and
+# every clone.* step is skipped ("deployment not found ... network 13370"),
+# cascading into a whole skipped deployment and a red devnet suite.
+# The "Configure cannon registries" step below covers BOTH chains on keyed
+# endpoints, which is what these vars were reaching for.
 jobs:
   reya-deployments-check:
     name: Reya Deployments Check
