@@ -65,7 +65,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     }
 
     function test_MarketsMaxOiAndOi() public view {
-        uint128[] memory reduceOnlyMarkets = new uint128[](43);
+        uint128[] memory reduceOnlyMarkets = new uint128[](55);
         reduceOnlyMarkets[0] = 45; // AI16Z
         reduceOnlyMarkets[1] = 58; // BERA
         reduceOnlyMarkets[2] = 25; // JTO
@@ -111,6 +111,20 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         reduceOnlyMarkets[40] = 65; // SYRUP
         reduceOnlyMarkets[41] = 67; // KAITO
         reduceOnlyMarkets[42] = 75; // MEGA
+        // W2 batch (24 Aug 2026) — part of Group B plus the four previously-unassigned markets (POL, FTM, DOT,
+        // LAYER). These close at the end of W3.
+        reduceOnlyMarkets[43] = 5; // OP
+        reduceOnlyMarkets[44] = 23; // APT
+        reduceOnlyMarkets[45] = 26; // ADA
+        reduceOnlyMarkets[46] = 28; // POL
+        reduceOnlyMarkets[47] = 30; // FTM
+        reduceOnlyMarkets[48] = 33; // PENDLE
+        reduceOnlyMarkets[49] = 35; // GRASS
+        reduceOnlyMarkets[50] = 37; // DOT
+        reduceOnlyMarkets[51] = 50; // WLD
+        reduceOnlyMarkets[52] = 59; // LAYER
+        reduceOnlyMarkets[53] = 62; // ME
+        reduceOnlyMarkets[54] = 74; // LINEA
         // todo: add markets here after they are fully closed
         uint128[] memory inactiveMarkets = new uint128[](0);
         check_marketsMaxOiAndOi(reduceOnlyMarkets, inactiveMarkets);
