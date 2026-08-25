@@ -16,6 +16,81 @@ into every step that `depends` on it, and the build reports success. So:
   on any skip. It is deliberately **not** applied to the mainnet/cronos
   suites — see "Partial builds are normal on mainnet/cronos" below.
 
+## Two cannon versions, and why devnet behaves differently
+
+`@usecannon/cli-devnet` is **not a fork**. It is an npm alias in the root
+`package.json`:
+
+```json
+"@usecannon/cli":        "2.23.0",
+"@usecannon/cli-devnet": "npm:@usecannon/cli@2.26.0",
+```
+
+Both are upstream `@usecannon/cli`; the repo simply installs two versions
+side by side. The name makes it look like a Reya variant, which has cost
+debugging time more than once — including a whole evening chasing a
+"cli-devnet bug" that is really an upstream 2.23 → 2.26 change.
+
+|                                         | network / cronos suites   | devnet suite                                                      |
+| --------------------------------------- | ------------------------- | ----------------------------------------------------------------- |
+| binary                                  | `@usecannon/cli` (2.23.0) | `@usecannon/cli-devnet` (2.26.0)                                  |
+| rebuilding an already-published version | allowed                   | **refused** unless the package is in the machine's LOCAL registry |
+
+**Why the split exists is not recorded.** #470 (13 May 2026) switched the
+devnet script from a globally-installed `cannon` to the pinned 2.26 binary,
+alongside unrelated WS-executor work; nothing in the PR explains the version
+choice, and no devnet toml appears to need a 2.26-only feature. Most likely
+it was simply "latest at the time" while pinning away from a global install.
+
+### The consequence you will actually hit
+
+2.26 added this to `build.js`:
+
+```js
+const localPackageUrl = await localOnlyResolver.getUrl(fullPackageRef, chainId);
+if (!localPackageUrl.url) {
+  // local cache miss only
+  if (isPackageAlreadyPublished.url) {
+    throw new Error('The package ${fullPackageRef} is already published ...');
+  }
+}
+```
+
+(The `${fullPackageRef}` is an upstream bug — single-quoted, so the error
+prints the literal template rather than the package name.)
+
+Because it fires only on a **local cache miss**, it never triggers on a
+developer machine that just built the package, and always triggers on a cold
+CI runner. That is why the devnet CI step can fail while the same command
+passes locally.
+
+The network/cronos suites keep their omnibus `version` **equal to the
+published version** (`reya_network.toml` 1.0.162 is published), so their build
+cache-hits the fetched package and executes ~0 steps — which is what makes a
+fork suite test the DEPLOYED state. The devnet suite must do the same, so
+bumping devnet's version to dodge the guard is the wrong fix: it makes cannon
+replay the entire deployment against the fork (434 steps), and non-idempotent
+steps then revert (`passive_pool_tokenize_pool_1rusd` →
+`PoolAlreadyTokenized`), cascading into a red suite.
+
+The right fix is to satisfy the guard by priming the local registry before the
+build — what the "Prime the local cannon registry" CI step does:
+
+```bash
+URL=$(cannon inspect reya-devnet-omnibus:latest@main --chain-id 89346162 \
+      | grep -oE "ipfs://Qm[A-Za-z0-9]+" | head -1)
+cannon fetch "$URL" reya-devnet-omnibus:latest@main --chain-id 89346162
+```
+
+`fetch` reads **`CANNON_PUBLISH_IPFS_URL`** for its download loader — not
+`CANNON_IPFS_URL`, not `CANNON_WRITE_IPFS_URL`. Unset, it falls back to the
+decommissioned region-derived repo hosts and dies with an SSL `EPROTO`
+handshake error, exactly like `publish`.
+
+Converging the two versions is tracked in PRO-994; until then, remember that
+any cannon behaviour that differs between devnet and the other environments is
+a version difference, not an environment one.
+
 ## Package resolution
 
 ### Registry packages live on TWO chains
@@ -105,7 +180,7 @@ CANNON_IPFS_URL=https+ipfs://repo.usecannon.com
 Without it, `--upgrade-from` cannot download the baseline and every step
 fails at "Checking for existing package".
 
-### Write URL is a *separate* setting
+### Write URL is a _separate_ setting
 
 `publish` uploads through `CANNON_PUBLISH_IPFS_URL`, which falls back to the
 same dead regional hosts. Symptom is an SSL handshake failure, not a 404:
@@ -140,7 +215,7 @@ cannon publish <pkg>:<ver>@<preset> --chain-id <id> --skip-confirm \
   cloned sub-packages; if any of those is already registered by another
   owner, the whole registry transaction reverts.
 - **`--registry-*` flags crash `publish`** (`Cannot read properties of
-  undefined (reading 'chainId')`) — it hard-requires the default two-registry
+undefined (reading 'chainId')`) — it hard-requires the default two-registry
   shape. Configure registries in the settings file instead.
 - Without `--skip-confirm` it prompts interactively for the registry, which
   hangs any non-interactive run.
@@ -219,13 +294,13 @@ the registry.
 
 ## Environment variables, collected
 
-| Variable | Why |
-|---|---|
-| `CANNON_IPFS_URL` | read endpoint; default regional hosts are dead |
-| `CANNON_PUBLISH_IPFS_URL` | **separate** write endpoint for `publish` |
-| `CANNON_IPFS_RETRIES`, `CANNON_IPFS_TIMEOUT` | fetch flakes on slow networks |
-| `CANNON_DIRECTORY` | point at a throwaway dir to test cold-cache resolution |
-| `RPC_KEY` | chain RPC key; one key works for both branded endpoints |
+| Variable                                     | Why                                                     |
+| -------------------------------------------- | ------------------------------------------------------- |
+| `CANNON_IPFS_URL`                            | read endpoint; default regional hosts are dead          |
+| `CANNON_PUBLISH_IPFS_URL`                    | **separate** write endpoint for `publish`               |
+| `CANNON_IPFS_RETRIES`, `CANNON_IPFS_TIMEOUT` | fetch flakes on slow networks                           |
+| `CANNON_DIRECTORY`                           | point at a throwaway dir to test cold-cache resolution  |
+| `RPC_KEY`                                    | chain RPC key; one key works for both branded endpoints |
 
 Registry endpoints belong in the settings file, not env vars — the env vars
 can only express one registry.
