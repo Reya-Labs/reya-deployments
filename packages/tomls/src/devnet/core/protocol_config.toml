@@ -7,17 +7,37 @@ func = "createAccount"
 args = ["<%= settings.owner %>"]
 var.internalCoreFeeCollectorAccountId.event = "AccountCreated"
 var.internalCoreFeeCollectorAccountId.arg = 0
-depends = ["invoke.core_unpause", "invoke.core_enable_account_creation"]
+depends = [
+    "invoke.core_unpause",
+    "invoke.core_enable_account_creation",
+    "clone.reyaOracleManagerProxy",
+]
 
 [var.core_fee_collector_account_id]
 coreFeeCollectorAccountId = "<%= settings.internalCoreFeeCollectorAccountId %>"
-depends = ["invoke.core_create_fee_collector_account"]
+depends = [
+    "invoke.core_create_fee_collector_account",
+    "invoke.oracle_manager_register_node_pool_srusd",
+]
 
+# B-lite sequencing: this step is THE manager switch, and it deliberately
+# waits for the pool bootstrap (activate -> tokenize -> seed -> pool-node
+# registration). Everything before it runs against the CRONOS manager that
+# live Core points at today, so margin walks during the bootstrap resolve
+# real nodes with real prices — no interim constant-node pricing anywhere.
+# Everything after it (the collateral node re-points below in
+# collateral_pools/) references nodes on the NEW manager. Between the switch
+# and those re-points, margin actions revert (fail-closed downtime — fine on
+# devnet), and after the build they keep reverting until reya-devops #990
+# points the pushers at the new adapters.
 [invoke.core_configure_protocol]
 target = ["CoreProxy"]
 fromCall.func = "owner"
 func = "configureProtocol"
 args = [
-    { oracleManagerAddress = "<%= settings.oracleManagerProxy %>", exchangePassNFTAddress = "<%= settings.exchangePassProxyAddress %>", feeCollectorAccountId = "<%= settings.coreFeeCollectorAccountId %>", yakRouterAddress_DEPRECATED = "<%= AddressZero %>", ordersGatewayAddress = "<%= contracts.OrdersGatewayProxy.address %>", passivePoolAddress = "<%= settings.passivePoolProxyAddress %>" },
+    { oracleManagerAddress = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>", exchangePassNFTAddress = "<%= settings.exchangePassProxyAddress %>", feeCollectorAccountId = "<%= settings.coreFeeCollectorAccountId %>", yakRouterAddress_DEPRECATED = "<%= AddressZero %>", ordersGatewayAddress = "<%= contracts.OrdersGatewayProxy.address %>", passivePoolAddress = "<%= settings.passivePoolProxyAddress %>" },
 ]
-depends = ["invoke.core_create_fee_collector_account"]
+depends = [
+    "invoke.core_create_fee_collector_account",
+    "invoke.oracle_manager_register_node_pool_srusd",
+]

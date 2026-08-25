@@ -1,0 +1,42 @@
+# Devnet executor authorization for devnet's OWN OracleAdapters.
+#
+# Replaces the shared set_executors / set_sub_second_executors /
+# set_standalone_executors configs, whose slots carry CRONOS wallets.
+#
+# The set is deliberately minimal: the oracle-update-onchain task keys are
+# the ONLY wallets that write prices through the adapters. Everything else
+# that once appeared in the shared configs was verified NOT to push here:
+# the perp-ob mark/funding pushers write to PassivePerp.pushOracleData (and
+# are gated there via the oraclePushers flag); the orders gateway on
+# feat/perpOB no longer submits oracle updates (its adapters reference is
+# literally `oracleAdaptersProxy_DEPRECATED`); autoexchange, the liquidator
+# and the api executor submit their calls without oracle prepends; ws-exec
+# holds no signing key at all (PRO-460); and the KMS fallback pusher is
+# being deprecated.
+#
+# The gate that matters is `subSecondExecutors`: `executors` is set
+# allow-all by allow_all_executors.toml, but a payload landing at the SAME
+# second as the stored one is additionally gated on subSecondExecutors
+# membership, which has NO allow-all — and payload timestamps are truncated
+# to seconds, so same-second collisions are the norm for a continuous
+# pusher, not the exception. A wallet missing here can read but not
+# reliably push fresh prices.
+[invoke.oracle_adapters_subsecond_oracle_updater1]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.oracleUpdater1 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy", "var.oracle_updaters"]
+
+[invoke.oracle_adapters_subsecond_oracle_updater2]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('subSecondExecutors')) %>",
+    "<%= settings.oracleUpdater2 %>",
+]
+depends = ["invoke.upgrade_oracle_adapters_proxy", "var.oracle_updaters"]

@@ -3,10 +3,16 @@
 #
 # Minimal environment for perp orderbook (perpOB) release testing.
 # Shares the Cronos testnet chain (chainId 89346162) and reuses existing
-# Cronos deployments for tokens, rUSD, passive pool, oracle manager,
-# exchange pass, oracle adapters, ranks, and SBT.
+# Cronos deployments for rUSD, USDC, wETH, exchange pass, ranks and SBT.
 #
-# Deploys fresh proxies for: Core, PassivePerp, OrdersGateway, Periphery.
+# Everything that would otherwise MUTATE Cronos state is deployed per-devnet:
+# the oracle manager and adapters (so registering a node for a devnet market
+# or collateral does not touch Cronos), and the passive pool together with
+# sRUSD (sRUSD's supply represents claims on exactly one pool, so the token
+# cannot be shared once the pool is not).
+#
+# Deploys fresh proxies for: Core, PassivePerp, OrdersGateway, Periphery,
+# OracleManager, OracleAdapters, PassivePool, sRUSD.
 #
 # Markets: 1 perp (ETH), 2 spot (WETH/rUSD, sRUSD/rUSD)
 # Collaterals: rUSD, wETH, sRUSD
@@ -15,6 +21,10 @@
 include = [
     "../devnet/commons.toml",
     "utils/constants.toml",
+    "../devnet/oracle_manager/oracle_manager.toml",
+    "../devnet/oracle_adapters/oracle_adapters.toml",
+    "../devnet/token/srusd.toml",
+    "../devnet/passive_pool/passive_pool.toml",
     "../devnet/core/core.toml",
     "../devnet/passive_perp/passive_perp.toml",
     "../devnet/orders_gateway/orders_gateway.toml",
@@ -22,7 +32,14 @@ include = [
     "../devnet/collateral_pools/collateral_pool_1.toml",
 ]
 
-version = "1.0.12"
+# Keep this EQUAL to the currently deployed+published version, exactly like
+# reya_network.toml (1.0.162) and reya_cronos.toml (1.0.147) do. The fork
+# suites build this version against the published package of the same name, so
+# every step cache-hits and the build is a no-op -- that is what makes the
+# suite test the DEPLOYED state rather than replaying 434 steps against a fork.
+# Bump it only when deploying a change, and publish that version as part of the
+# same deploy (see CANNON.md).
+version = "1.1.1"
 
 ###############################################################################
 # Existing Cronos Contract Addresses (reused, not redeployed)
@@ -31,13 +48,11 @@ version = "1.0.12"
 rusdProxyAddress = "0x9DE724e7b3facF87Ce39465D3D712717182e3e55"
 usdcProxyAddress = "0xfA27c7c6051344263533cc365274d9569b0272A8"
 wethProxyAddress = "0x2CF56315ACC7E791B1A0135c09d8D5C8dBCD2F14"
-# sRUSD proxy lives on Cronos already (deployed via srusd-main salt). We reuse
-# the existing instance on devnet1 rather than redeploying. Cross-ref:
-# packages/tests/deployments/test/SRUSDProxy.json, ReyaForkTest.sol:51.
-srusdProxyAddress = "0xb9F531A54Fc0E9AdCa1b931d9533B4e49bB2fAD6"
-passivePoolProxyAddress = "0x9A3A664987b88790A6FDC1632e3b607813fd94fF"
-oracleManagerProxyAddress = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
 exchangePassProxyAddress = "0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB"
+# The sRUSD devnet used to borrow from Cronos. devnet has its own now, but
+# this one stays registered as a collateral on Core and must keep a resolvable
+# oracle node -- see devnet/collateral_pools/tokens/srusd_legacy.toml.
+legacyCronosSrusdProxyAddress = "0xb9F531A54Fc0E9AdCa1b931d9533B4e49bB2fAD6"
 
 ###############################################################################
 # Wallet Addresses (simplified - single owner for devnet)
@@ -47,7 +62,7 @@ owner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 passivePoolExchangeFeeCollectorOwner = "0xaE173a960084903b1d278Ff9E3A81DeD82275556"
 
 ###############################################################################
-# Cannon Clone Packages (the 4 proxies we deploy fresh)
+# Cannon Clone Packages (the proxies we deploy fresh)
 ###############################################################################
 [var.cannonClonePackages]
 coreProxyPackage = "reya-core:1.0.0@proxy"
@@ -57,6 +72,14 @@ passivePerpProxyPackage = "reya-instrument-passive-perp:1.0.0@proxy"
 passivePerpRouterPackage = "reya-instrument-passive-perp:1.1.2@router"
 ordersGatewayProxyPackage = "reya-orders-gateway:1.0.1@proxy"
 ordersGatewayRouterPackage = "reya-orders-gateway:1.1.2@router"
+oracleManagerProxyPackage = "reya-oracle-manager:1.0.0@proxy"
+oracleManagerRouterPackage = "reya-oracle-manager:1.0.5@router"
+oracleAdaptersProxyPackage = "reya-oracle-adapters:1.0.1@proxy"
+oracleAdaptersRouterPackage = "reya-oracle-adapters:1.0.8@router"
+passivePoolProxyPackage = "reya-exchange-passive-pool:1.0.0@proxy"
+passivePoolRouterPackage = "reya-exchange-passive-pool:1.0.14@router"
+tokensProxyPackage = "reya-tokens:1.0.0@proxy"
+tokensRouterPackage = "reya-tokens:1.0.1@router"
 peripheryProxyPackage = "reya-periphery:1.0.0@proxy"
 peripheryRouterPackage = "reya-periphery:1.1.2@router"
 
@@ -74,8 +97,23 @@ accountNftUri = "https://reya.xyz/"
 # Some shared config files reference these var names (without "Address" suffix)
 ###############################################################################
 [var.cronos_compat_vars]
-passivePoolProxy = "0x9A3A664987b88790A6FDC1632e3b607813fd94fF"
-oracleManagerProxy = "0x689f13829e9b218841a0Cf59f44bD5c92F0d64eA"
+passivePoolProxy = "<%= imports.reyaPassivePoolProxy.contracts.InitialProxy.address %>"
+oracleManagerProxy = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>"
+oracleAdaptersProxy = "<%= imports.reyaOracleAdaptersProxy.contracts.InitialProxy.address %>"
+
+###############################################################################
+# sRUSD and PassivePool addresses
+#
+# Both used to be Cronos literals. devnet now deploys its own of each — the
+# pool so devnet stops mutating Cronos state, and the token because sRUSD's
+# supply represents claims on exactly one pool (see ../devnet/token/srusd.toml).
+# Resolved from the clone imports rather than hardcoded, so the CREATE2
+# addresses cannot drift out of sync with the salts above.
+###############################################################################
+[var.devnet_own_instance_addresses]
+srusdProxyAddress = "<%= imports.srusd.contracts.InitialProxy.address %>"
+passivePoolProxyAddress = "<%= imports.reyaPassivePoolProxy.contracts.InitialProxy.address %>"
+depends = ["clone.srusd", "clone.reyaPassivePoolProxy"]
 
 ###############################################################################
 # Initial Proxy Salts (devnet-specific to avoid collision with Cronos)
@@ -85,9 +123,15 @@ coreSalt = "core-devnet3"
 passivePerpSalt = "passive-perp-devnet3"
 ordersGatewaySalt = "orders-gateway-devnet3"
 peripherySalt = "periphery-devnet3"
+oracleManagerSalt = "oracle-manager-devnet3"
+oracleAdaptersSalt = "oracle-adapters-devnet3"
+passivePoolSalt = "passive-pool-devnet3"
+srusdSalt = "srusd-devnet3"
 
 ###############################################################################
-# Proxy Upgrade Variables (the 4 fresh proxies)
+# Proxy Upgrade Variables
+# (PassivePool and sRUSD resolve via [var.cronos_compat_vars] /
+#  [var.devnet_own_instance_addresses] instead)
 ###############################################################################
 [var.upgrade_proxy_vars]
 coreProxy = "<%= imports.reyaCoreProxy.contracts.InitialProxy.address %>"
@@ -135,6 +179,15 @@ matching_engine_publisher1 = "0xD3D5911FE8ab109645f931Cf65B341d5dd672eFB"
 # Publisher (EIP-712 signer) is matching_engine_publisher1, whitelisted as
 # oraclePublishers in devnet/passive_perp/feature_flags.toml.
 ###############################################################################
+# The oracle-update-onchain task keys: the ONLY wallets that push prices
+# through the OracleAdapters (fulfillOracleQuery). Everything else reads.
+# The fallback (KMS) variant is being deprecated and is deliberately absent;
+# the perp-ob pushers below write to PassivePerp.pushOracleData instead and
+# are gated there, not on the adapters.
+[var.oracle_updaters]
+oracleUpdater1 = "0xe97ad1AC9b001920EF9A2a96a8437a676Dd3Fa24"
+oracleUpdater2 = "0xD337938a74f707BAEf728Ef694d9aA55d9ce4dEA"
+
 [var.oracle_pushers]
 oraclePusher1 = "0x61548af5B40Ee331a30aBecA9Ff2237D6C753462"
 oraclePusher2 = "0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3"
@@ -168,8 +221,6 @@ matchOrderPublisherAdmin1 = "0xD3D5911FE8ab109645f931Cf65B341d5dd672eFB"
 rusdTokenDecimals = "6"
 usdcTokenDecimals = "6"
 wethTokenDecimals = "18"
-# Matches the Cronos sRUSD deployment (see packages/tomls/src/token/tokens/srusd.toml).
-srusdTokenDecimals = "30"
 
 ###############################################################################
 # Global Collateral Configs (rUSD, wETH, sRUSD)
@@ -301,11 +352,17 @@ cp1Rusd_adlExecutionKeeperFeeUnscaled = "0"
 cp1Rusd_dDutchMinUnscaled = "0.01"
 cp1Rusd_dMaxUnscaled = "0.4"
 
-# Backstop-LP config. Devnet has no PassivePool account linked to Core, so the
-# backstop account is a standalone margin account (hardcoded id below) that was
-# created + funded (1M rUSD) + market-activated out-of-band, rather than the
-# pool account used on cronos/mainnet. Economics mirror cronos/mainnet
-# (15% liquidation fee). Wired via setBackstopLPConfig in
+# Backstop-LP config. The backstop account is a standalone margin account
+# (hardcoded id below) that was created + funded (1M rUSD) + market-activated
+# out-of-band, rather than the pool account used on cronos/mainnet. Economics
+# mirror cronos/mainnet (15% liquidation fee).
+#
+# NB the original reason for this — "devnet has no PassivePool account linked to
+# Core" — no longer holds: devnet now runs its own pool, which creates a Core
+# account on createPool. Switching the backstop over to it would align devnet
+# with cronos/mainnet, but it moves real liquidation economics and the
+# standalone account is already funded and activated, so it is left alone here
+# deliberately rather than by omission. Wired via setBackstopLPConfig in
 # devnet/collateral_pools/liquidations.toml.
 cp1Rusd_backstopLpAccountId = "23"
 cp1Rusd_backstopLp_liquidationFeeUnscaled = "0.15"
@@ -335,12 +392,10 @@ cp1Rusd_wethParentConfig_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 
 # sRUSD collateral pool config. Cap / fee / threshold values mirror
 # `reya_cronos.toml` and `reya_network.toml` byte-for-byte. ParentConfig
-# uses rUSD as the parent collateral (`contracts.RUSDProxy.address` on
-# cronos/mainnet) and leaves the oracle node id zero — devnet doesn't host
-# a Stork sRUSD/USDC pool node, and we don't need oracle-validated price
-# routing for the SDK suite's `test_asset_definitions` check. If sRUSD-as-
-# collateral ever needs to be exercised under load on devnet, swap the
-# zero oracleNodeId for a real node + add the staleness setup.
+# uses rUSD as the parent collateral, and the oracle node is the LIVE
+# REYAPOOL#1 pool-share node on devnet's own manager (see
+# [var.cp_1rusd_srusd_oracle] below) — deposits are enabled and sRUSD is a
+# fully priced collateral here, same shape as cronos.
 cp1Rusd_srusd_capUnscaled = "<%= formatUnits(MaxUint256, parseInt(settings.srusdTokenDecimals)) %>"
 cp1Rusd_srusd_autoExchangeThresholdUnscaled = "0"
 cp1Rusd_srusd_autoExchangeInsuranceFeeUnscaled = "0.005"
@@ -349,23 +404,45 @@ cp1Rusd_srusd_bidSubmissionFeeUnscaled = "0"
 cp1Rusd_srusdParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
 cp1Rusd_srusdParentConfig_priceHaircutUnscaled = "0.1"
 cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
-# Reuse the Cronos Stork sRUSD/USDC pool node — devnet shares the Cronos
-# OracleManager proxy (sec.oracleManager = 0x689f...64eA, see
-# `tests/test/reya_devnet/ReyaForkTest.sol`), so any node registered for
-# cronos is reachable here. Required because margin / IM checks traverse
-# pool-collateral parent oracles and revert with UnprocessableNode if the
-# id is zero — the perp test suite tripped on that before this fix.
-cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdUsdcPoolNodeId %>"
+
+###############################################################################
+# The new sRUSD collateral's oracle node.
+#
+# Split out of [var.cp_1rusd] deliberately: this is the ONLY cp setting that
+# waits on the pool-node registration, and the registration transitively
+# waits on the genesis pool seed — which itself performs a margin walk that
+# needs the OTHER collateral configs (wETH, rUSD, the legacy repair) already
+# re-pointed at this manager's nodes. Keeping this line inside the main block
+# made the whole collateral-pool chain wait on the node and closed a
+# dependency cycle through live on-chain state.
+###############################################################################
+[var.cp_1rusd_srusd_oracle]
+# Mainnet parity (reya_network.toml uses this exact line): sRUSD margin is
+# priced via the Stork SRUSDRUSD_RR settlement feed, not the pool-share node.
+# Mainnet made this move in Oct 2025 for margin-walk gas (pool node ≈12.1M vs
+# ≈3.9M) and it is also what keeps Core and the matching engine consistent —
+# the ME risk engine settle-quotes sRUSD from the same RR feed and has no
+# pool-share source class. The REYAPOOL#1 node stays registered as the
+# share-price reference (getSharePrice telemetry + fork checks). NOTE the RR
+# feed tracks the CRONOS pool's share price; accepted devnet-only skew.
+cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdRusd_RRNodeIdStork %>"
 
 ###############################################################################
 # Spot Markets (WETH/rUSD, sRUSD/rUSD)
 ###############################################################################
 [var.spotMarkets]
-wethRusdSpot_oracleDeviationUnscaled = "0"
+# Mainnet parity: mainnet runs this book with the ETHUSDC node and a 5%
+# deviation collar; cronos runs it with the collar OFF (deviation 0 skips the
+# whole oracle block in Core's SpotExecutionModule, so fills get NO oracle
+# validation). Devnet exists to rehearse the mainnet migration, so it mirrors
+# mainnet -- otherwise the collar's admission path is first exercised in
+# production. NOTE: with the collar on, Core processes this node on every
+# spot fill, so a broken node fails spot fills closed.
+wethRusdSpot_oracleDeviationUnscaled = "0.05"
 wethRusdSpot_minimumOrderBaseUnscaled = "0.001"
 wethRusdSpot_baseSpacingUnscaled = "0.001"
 wethRusdSpot_priceSpacingUnscaled = "0.01"
-wethRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
+wethRusdSpot_oracleNodeId = "<%= settings.ethUsdcNodeIdStork %>"
 # -------------------------------------------------------------------
 # sRUSD/rUSD spot market. All params zero — matches `reya_cronos.toml` and
 # `reya_network.toml` byte-for-byte. The market isn't allowlisted for
@@ -376,19 +453,316 @@ srusdRusdSpot_oracleDeviationUnscaled = "0"
 srusdRusdSpot_minimumOrderBaseUnscaled = "0"
 srusdRusdSpot_baseSpacingUnscaled = "0"
 srusdRusdSpot_priceSpacingUnscaled = "0"
+# Deliberately no collar: the SRUSDRUSD market is never orderbook-enabled on
+# devnet (see devnet/core/tokens/srusd.toml), so a collar here would be dead
+# config. Pinned by test_Devnet_SpotCollarConfig.
 srusdRusdSpot_oracleNodeId = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 ###############################################################################
-# Stork Oracle Node IDs (reuse Cronos stork nodes)
+# Stork Oracle Node IDs
+#
+# Not declared here. Devnet now registers its own nodes via the oracle-manager
+# configs, each of which exports its id from the NodeRegistered event
+# (rusdUsdNodeId, ethUsdcNodeIdStork, ethUsdcMarkNodeIdStork,
+# srusdUsdcPoolNodeId and the rest of the stork/storkMark set). Re-declaring
+# them as literals here would shadow those registrations with ids belonging to
+# a different OracleManager instance.
 ###############################################################################
-[var.stork_oracle_node_ids]
-rusdUsdNodeId = "0xee1b130d36fb70e69aafd49dcf1a2d45d85927fb6ffbe7b83751df0190a95857"
-ethUsdcNodeIdStork = "0xb19e4d8ea5f0a3752fbd19515075063f7486e6954b8aa2b3d462c61726c46619"
-ethUsdcMarkNodeIdStork = "0x14dba23a7f8775bceefeedb4266fbe135b949ae40fe08e491f2a476d3448c66f"
-# Stork sRUSD/USDC pool node — already registered on the Cronos OracleManager
-# (devnet reuses the same proxy), so we just need to reference the id.
-# Source: reya_cronos.toml / ReyaForkTest.sol:150.
-srusdUsdcPoolNodeId = "0xc380c1273590e190bc15a196fdb2b5750abdd0eeb868cc8385dd384761e21ddb"
+
+###############################################################################
+# Oracle settings (devnet's own OracleManager/OracleAdapters)
+#
+# Kept in the omnibus like cronos/mainnet do. Copied from reya_cronos.toml:
+# devnet runs on the SAME chain with the SAME Stork feeds, so asset-pair ids
+# and the chain-level Stork verifier are identical by construction. Stale
+# durations deliberately differ: 180s here vs 0 (disabled) on cronos.
+###############################################################################
+
+[var.devnet_oracle_stork_publishers]
+# STORK's payload-SIGNER keys (identical to cronos/mainnet: same Stork
+# network signs for the shared chain). "publishers" gates whose SIGNATURE a
+# payload may carry — it is NOT the Reya pusher wallets, which submit
+# payloads and are gated by the "executors" flag (allow-all on devnet via
+# oracle_adapters_allow_all_executors).
+storkPublisher1 = "0xa3c28d4e939ce2927d3b29b7bf53d3aeaab09350"
+storkPublisher2 = "0xb91C675E0c0Ecfd4c16f97B110376C3C224061d8"
+storkPublisher3 = "0x51aa9e9c781f85a2c0636a835eb80114c4553098"
+storkPublisher4 = "0xf024a9aa110798e5cd0d698fba6523113eaa7fb2"
+storkPublisher5 = "0xf2e72022eb19352f488526e835c4b17248aa6c03"
+storkPublisherAggregate = "0x0a803F9b1CCe32e2773e0d2e98b37E0775cA5d44"
+
+[var.devnet_oracle_stork_asset_pair_ids]
+storkAssetPairIdUSDC = "USDCUSD"
+storkAssetPairIdETH = "ETHUSD"
+storkAssetPairIdWBTC = "WBTCUSD"
+storkAssetPairIdWSTETH = "WSTETHUSD"
+storkAssetPairIdUSDE = "USDEUSD"
+storkAssetPairIdSUSDE = "SUSDEUSD"
+storkAssetPairIdDEUSD = "DEUSDUSD"
+storkAssetPairIdSDEUSDDEUSD = "SDEUSDDEUSD"
+storkAssetPairIdSRUSDRUSD_RR = "SRUSDRUSD_RR"
+
+[var.devnet_oracle_stork_asset_pair_ids_mark]
+storkAssetPairIdETHMark = "ETHUSDMARK"
+storkAssetPairIdBTCMark = "BTCUSDMARK"
+storkAssetPairIdSOLMark = "SOLUSDMARK"
+storkAssetPairIdARBMark = "ARBUSDMARK"
+storkAssetPairIdOPMark = "OPUSDMARK"
+storkAssetPairIdAVAXMark = "AVAXUSDMARK"
+storkAssetPairIdMKRMark = "MKRUSDMARK"
+storkAssetPairIdLINKMark = "LINKUSDMARK"
+storkAssetPairIdAAVEMark = "AAVEUSDMARK"
+storkAssetPairIdCRVMark = "CRVUSDMARK"
+storkAssetPairIdUNIMark = "UNIUSDMARK"
+storkAssetPairIdSUIMark = "SUIUSDMARK"
+storkAssetPairIdTIAMark = "TIAUSDMARK"
+storkAssetPairIdSEIMark = "SEIUSDMARK"
+storkAssetPairIdZROMark = "ZROUSDMARK"
+storkAssetPairIdXRPMark = "XRPUSDMARK"
+storkAssetPairIdWIFMark = "WIFUSDMARK"
+storkAssetPairId1000PEPEMark = "1000PEPEUSDMARK"
+storkAssetPairIdPOPCATMark = "POPCATUSDMARK"
+storkAssetPairIdDOGEMark = "DOGEUSDMARK"
+storkAssetPairIdKSHIBMark = "1000SHIBUSDMARK"
+storkAssetPairIdKBONKMark = "1000BONKUSDMARK"
+storkAssetPairIdAPTMark = "APTUSDMARK"
+storkAssetPairIdBNBMark = "BNBUSDMARK"
+storkAssetPairIdJTOMark = "JTOUSDMARK"
+storkAssetPairIdADAMark = "ADAUSDMARK"
+storkAssetPairIdLDOMark = "LDOUSDMARK"
+storkAssetPairIdPOLMark = "POLUSDMARK"
+storkAssetPairIdNEARMark = "NEARUSDMARK"
+storkAssetPairIdENAMark = "ENAUSDMARK"
+storkAssetPairIdEIGENMark = "EIGENUSDMARK"
+storkAssetPairIdPENDLEMark = "PENDLEUSDMARK"
+storkAssetPairIdGOATMark = "GOATUSDMARK"
+storkAssetPairIdGRASSMark = "GRASSUSDMARK"
+storkAssetPairIdKNEIROMark = "1000NEIROUSDMARK"
+storkAssetPairIdDOTMark = "DOTUSDMARK"
+storkAssetPairIdLTCMark = "LTCUSDMARK"
+storkAssetPairIdPYTHMark = "PYTHUSDMARK"
+storkAssetPairIdJUPMark = "JUPUSDMARK"
+storkAssetPairIdPENGUMark = "PENGUUSDMARK"
+storkAssetPairIdTRUMPMark = "TRUMPUSDMARK"
+storkAssetPairIdHYPEMark = "HYPEUSDMARK"
+storkAssetPairIdVIRTUALMark = "VIRTUALUSDMARK"
+storkAssetPairIdAI16ZMark = "AI16ZUSDMARK"
+storkAssetPairIdAIXBTMark = "AIXBTUSDMARK"
+storkAssetPairIdSONICMark = "SUSDMARK"
+storkAssetPairIdFARTCOINMark = "FARTCOINUSDMARK"
+storkAssetPairIdGRIFFAINMark = "GRIFFAINUSDMARK"
+storkAssetPairIdWLDMark = "WLDUSDMARK"
+storkAssetPairIdATOMMark = "ATOMUSDMARK"
+storkAssetPairIdAPEMark = "APEUSDMARK"
+storkAssetPairIdTONMark = "TONUSDMARK"
+storkAssetPairIdONDOMark = "ONDOUSDMARK"
+storkAssetPairIdTRXMark = "TRXUSDMARK"
+storkAssetPairIdINJMark = "INJUSDMARK"
+storkAssetPairIdMOVEMark = "MOVEUSDMARK"
+storkAssetPairIdBERAMark = "BERAUSDMARK"
+storkAssetPairIdLAYERMark = "LAYERUSDMARK"
+storkAssetPairIdTAOMark = "TAOUSDMARK"
+storkAssetPairIdIPMark = "IPUSDMARK"
+storkAssetPairIdMEMark = "MEUSDMARK"
+storkAssetPairIdPUMPMark = "PUMPUSDMARK"
+storkAssetPairIdMORPHOMark = "MORPHOUSDMARK"
+storkAssetPairIdSYRUPMark = "SYRUPUSDMARK"
+storkAssetPairIdAEROMark = "AEROUSDMARK"
+storkAssetPairIdKAITOMark = "KAITOUSDMARK"
+storkAssetPairIdZORAMark = "ZORAUSDMARK"
+storkAssetPairIdPROVEMark = "PROVEUSDMARK"
+storkAssetPairIdPAXGMark = "PAXGUSDMARK"
+storkAssetPairIdYZYMark = "YZYUSDMARK"
+storkAssetPairIdXPLMark = "XPLUSDMARK"
+storkAssetPairIdWLFIMark = "WLFIUSDMARK"
+storkAssetPairIdLINEAMark = "LINEAUSDMARK"
+storkAssetPairIdMEGAMark = "MEGAUSDMARK"
+
+[var.devnet_oracle_reya_lm_asset_pair_ids]
+reyaLmAssetPairIdSELINI = "REYALM#SELINIUSDC"
+reyaLmAssetPairIdAMBER = "REYALM#AMBERUSDC"
+reyaLmAssetPairIdHEDGE = "REYALM#HEDGEUSDC"
+
+[var.devnet_oracle_pool_asset_pair_ids]
+poolAssetPairIdSRUSD = "REYAPOOL#1"
+
+[var.stork_contracts]
+storkVerifyContract = "0xF89CEf90CF229c564596cf105D19bc92e17b98C4"
+
+[var.devnet_oracle_oracleNodeMaxStaleDuration]
+# 180s on every node (mainnet enforces 60s; cronos disables the check with 0).
+# devnet takes 3 minutes so a long cannon simulation does not trip staleness
+# mid-build while still exercising the enforcement path devnet1 runs with.
+srusdUsdcPoolMaxDuration = "180"
+rusdUsdMaxStaleDuration = "180"
+usdcUsdMaxStaleDurationStork = "180"
+wbtcUsdMaxStaleDurationStork = "180"
+wbtcUsdcMaxStaleDurationStork = "180"
+btcUsdMarkMaxStaleDurationStork = "180"
+btcUsdcMarkMaxStaleDurationStork = "180"
+ethUsdMaxStaleDurationStork = "180"
+ethUsdcMaxStaleDurationStork = "180"
+ethUsdMarkMaxStaleDurationStork = "180"
+ethUsdcMarkMaxStaleDurationStork = "180"
+solUsdMarkMaxStaleDurationStork = "180"
+solUsdcMarkMaxStaleDurationStork = "180"
+arbUsdMarkMaxStaleDurationStork = "180"
+arbUsdcMarkMaxStaleDurationStork = "180"
+opUsdMarkMaxStaleDurationStork = "180"
+opUsdcMarkMaxStaleDurationStork = "180"
+avaxUsdMarkMaxStaleDurationStork = "180"
+avaxUsdcMarkMaxStaleDurationStork = "180"
+wstethUsdMaxStaleDurationStork = "180"
+wstethUsdcMaxStaleDurationStork = "180"
+usdeUsdMaxStaleDurationStork = "180"
+usdeUsdcMaxStaleDurationStork = "180"
+mkrUsdMarkMaxStaleDurationStork = "180"
+mkrUsdcMarkMaxStaleDurationStork = "180"
+linkUsdMarkMaxStaleDurationStork = "180"
+linkUsdcMarkMaxStaleDurationStork = "180"
+aaveUsdMarkMaxStaleDurationStork = "180"
+aaveUsdcMarkMaxStaleDurationStork = "180"
+crvUsdMarkMaxStaleDurationStork = "180"
+crvUsdcMarkMaxStaleDurationStork = "180"
+uniUsdMarkMaxStaleDurationStork = "180"
+uniUsdcMarkMaxStaleDurationStork = "180"
+suiUsdMarkMaxStaleDurationStork = "180"
+suiUsdcMarkMaxStaleDurationStork = "180"
+tiaUsdMarkMaxStaleDurationStork = "180"
+tiaUsdcMarkMaxStaleDurationStork = "180"
+seiUsdMarkMaxStaleDurationStork = "180"
+seiUsdcMarkMaxStaleDurationStork = "180"
+zroUsdMarkMaxStaleDurationStork = "180"
+zroUsdcMarkMaxStaleDurationStork = "180"
+xrpUsdMarkMaxStaleDurationStork = "180"
+xrpUsdcMarkMaxStaleDurationStork = "180"
+wifUsdMarkMaxStaleDurationStork = "180"
+wifUsdcMarkMaxStaleDurationStork = "180"
+pepe1kUsdMarkMaxStaleDurationStork = "180"
+pepe1kUsdcMarkMaxStaleDurationStork = "180"
+popcatUsdMarkMaxStaleDurationStork = "180"
+popcatUsdcMarkMaxStaleDurationStork = "180"
+dogeUsdMarkMaxStaleDurationStork = "180"
+dogeUsdcMarkMaxStaleDurationStork = "180"
+kshibUsdMarkMaxStaleDurationStork = "180"
+kshibUsdcMarkMaxStaleDurationStork = "180"
+kbonkUsdMarkMaxStaleDurationStork = "180"
+kbonkUsdcMarkMaxStaleDurationStork = "180"
+aptUsdMarkMaxStaleDurationStork = "180"
+aptUsdcMarkMaxStaleDurationStork = "180"
+bnbUsdMarkMaxStaleDurationStork = "180"
+bnbUsdcMarkMaxStaleDurationStork = "180"
+jtoUsdMarkMaxStaleDurationStork = "180"
+jtoUsdcMarkMaxStaleDurationStork = "180"
+adaUsdMarkMaxStaleDurationStork = "180"
+adaUsdcMarkMaxStaleDurationStork = "180"
+ldoUsdMarkMaxStaleDurationStork = "180"
+ldoUsdcMarkMaxStaleDurationStork = "180"
+polUsdMarkMaxStaleDurationStork = "180"
+polUsdcMarkMaxStaleDurationStork = "180"
+nearUsdMarkMaxStaleDurationStork = "180"
+nearUsdcMarkMaxStaleDurationStork = "180"
+enaUsdMarkMaxStaleDurationStork = "180"
+enaUsdcMarkMaxStaleDurationStork = "180"
+eigenUsdMarkMaxStaleDurationStork = "180"
+eigenUsdcMarkMaxStaleDurationStork = "180"
+pendleUsdMarkMaxStaleDurationStork = "180"
+pendleUsdcMarkMaxStaleDurationStork = "180"
+goatUsdMarkMaxStaleDurationStork = "180"
+goatUsdcMarkMaxStaleDurationStork = "180"
+grassUsdMarkMaxStaleDurationStork = "180"
+grassUsdcMarkMaxStaleDurationStork = "180"
+kneiroUsdMarkMaxStaleDurationStork = "180"
+kneiroUsdcMarkMaxStaleDurationStork = "180"
+dotUsdMarkMaxStaleDurationStork = "180"
+dotUsdcMarkMaxStaleDurationStork = "180"
+ltcUsdMarkMaxStaleDurationStork = "180"
+ltcUsdcMarkMaxStaleDurationStork = "180"
+pythUsdMarkMaxStaleDurationStork = "180"
+pythUsdcMarkMaxStaleDurationStork = "180"
+jupUsdMarkMaxStaleDurationStork = "180"
+jupUsdcMarkMaxStaleDurationStork = "180"
+penguUsdMarkMaxStaleDurationStork = "180"
+penguUsdcMarkMaxStaleDurationStork = "180"
+trumpUsdMarkMaxStaleDurationStork = "180"
+trumpUsdcMarkMaxStaleDurationStork = "180"
+hypeUsdMarkMaxStaleDurationStork = "180"
+hypeUsdcMarkMaxStaleDurationStork = "180"
+virtualUsdMarkMaxStaleDurationStork = "180"
+virtualUsdcMarkMaxStaleDurationStork = "180"
+ai16zUsdMarkMaxStaleDurationStork = "180"
+ai16zUsdcMarkMaxStaleDurationStork = "180"
+aixbtUsdMarkMaxStaleDurationStork = "180"
+aixbtUsdcMarkMaxStaleDurationStork = "180"
+sonicUsdMarkMaxStaleDurationStork = "180"
+sonicUsdcMarkMaxStaleDurationStork = "180"
+fartcoinUsdMarkMaxStaleDurationStork = "180"
+fartcoinUsdcMarkMaxStaleDurationStork = "180"
+griffainUsdMarkMaxStaleDurationStork = "180"
+griffainUsdcMarkMaxStaleDurationStork = "180"
+wldUsdMarkMaxStaleDurationStork = "180"
+wldUsdcMarkMaxStaleDurationStork = "180"
+atomUsdMarkMaxStaleDurationStork = "180"
+atomUsdcMarkMaxStaleDurationStork = "180"
+apeUsdMarkMaxStaleDurationStork = "180"
+apeUsdcMarkMaxStaleDurationStork = "180"
+tonUsdMarkMaxStaleDurationStork = "180"
+tonUsdcMarkMaxStaleDurationStork = "180"
+ondoUsdMarkMaxStaleDurationStork = "180"
+ondoUsdcMarkMaxStaleDurationStork = "180"
+trxUsdMarkMaxStaleDurationStork = "180"
+trxUsdcMarkMaxStaleDurationStork = "180"
+injUsdMarkMaxStaleDurationStork = "180"
+injUsdcMarkMaxStaleDurationStork = "180"
+moveUsdMarkMaxStaleDurationStork = "180"
+moveUsdcMarkMaxStaleDurationStork = "180"
+beraUsdMarkMaxStaleDurationStork = "180"
+beraUsdcMarkMaxStaleDurationStork = "180"
+layerUsdMarkMaxStaleDurationStork = "180"
+layerUsdcMarkMaxStaleDurationStork = "180"
+taoUsdMarkMaxStaleDurationStork = "180"
+taoUsdcMarkMaxStaleDurationStork = "180"
+ipUsdMarkMaxStaleDurationStork = "180"
+ipUsdcMarkMaxStaleDurationStork = "180"
+meUsdMarkMaxStaleDurationStork = "180"
+meUsdcMarkMaxStaleDurationStork = "180"
+pumpUsdMarkMaxStaleDurationStork = "180"
+pumpUsdcMarkMaxStaleDurationStork = "180"
+morphoUsdMarkMaxStaleDurationStork = "180"
+morphoUsdcMarkMaxStaleDurationStork = "180"
+syrupUsdMarkMaxStaleDurationStork = "180"
+syrupUsdcMarkMaxStaleDurationStork = "180"
+aeroUsdMarkMaxStaleDurationStork = "180"
+aeroUsdcMarkMaxStaleDurationStork = "180"
+kaitoUsdMarkMaxStaleDurationStork = "180"
+kaitoUsdcMarkMaxStaleDurationStork = "180"
+zoraUsdMarkMaxStaleDurationStork = "180"
+zoraUsdcMarkMaxStaleDurationStork = "180"
+proveUsdMarkMaxStaleDurationStork = "180"
+proveUsdcMarkMaxStaleDurationStork = "180"
+paxgUsdMarkMaxStaleDurationStork = "180"
+paxgUsdcMarkMaxStaleDurationStork = "180"
+yzyUsdMarkMaxStaleDurationStork = "180"
+yzyUsdcMarkMaxStaleDurationStork = "180"
+xplUsdMarkMaxStaleDurationStork = "180"
+xplUsdcMarkMaxStaleDurationStork = "180"
+wlfiUsdMarkMaxStaleDurationStork = "180"
+wlfiUsdcMarkMaxStaleDurationStork = "180"
+lineaUsdMarkMaxStaleDurationStork = "180"
+lineaUsdcMarkMaxStaleDurationStork = "180"
+megaUsdMarkMaxStaleDurationStork = "180"
+megaUsdcMarkMaxStaleDurationStork = "180"
+susdeUsdMaxStaleDurationStork = "180"
+susdeUsdcMaxStaleDurationStork = "180"
+deusdUsdMaxStaleDurationStork = "180"
+deusdUsdcMaxStaleDurationStork = "180"
+usdcDeusdMaxStaleDurationStork = "180"
+sdeusdDeusdMaxStaleDurationStork = "180"
+sdeusdUsdcMaxStaleDurationStork = "180"
+srusdRusd_RRMaxStaleDurationStork = "180"
+seliniUsdcReyaLmMaxStaleDuration = "180"
+amberUsdcReyaLmMaxStaleDuration = "180"
+hedgeUsdcReyaLmMaxStaleDuration = "180"
 
 ###############################################################################
 # Chain IDs (for periphery bridging connectors)

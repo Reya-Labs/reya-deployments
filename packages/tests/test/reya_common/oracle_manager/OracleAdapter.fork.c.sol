@@ -15,6 +15,14 @@ contract OracleAdapterForkCheck is BaseReyaForkTest {
         // so the feature-flag gate passes and the call reaches the publisher check below.
         address[] memory executors =
             IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowlist(keccak256(bytes("executors")));
+        if (executors.length == 0) {
+            // The executors gate can be allow-all with an empty per-wallet
+            // list (devnet); the operational pushers then live only in
+            // subSecondExecutors, so pick the caller from there.
+            executors = IOracleAdaptersProxy(sec.oracleAdaptersProxy).getFeatureFlagAllowlist(
+                keccak256(bytes("subSecondExecutors"))
+            );
+        }
         require(executors.length > 0, "no allowlisted executors");
         address executor = executors[0];
 

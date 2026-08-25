@@ -1,0 +1,9 @@
+# Devnet oracle-adapters proxy: devnet-specific salt, same reasoning as the
+# devnet oracle-manager proxy (shared owner with Cronos means the shared
+# empty salt would resolve to the existing Cronos address).
+[clone.reyaOracleAdaptersProxy]
+source = "<%= settings.oracleAdaptersProxyPackage %>"
+target = "<%= settings.oracleAdaptersProxyPackage %>"
+options.owner = "<%= settings.owner %>"
+options.salt = "<%= settings.oracleAdaptersSalt %>"
+depends = ["var.cannonClonePackages"]

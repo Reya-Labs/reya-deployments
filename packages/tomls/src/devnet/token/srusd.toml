@@ -1,0 +1,35 @@
+# Devnet's own sRUSD token.
+#
+# devnet previously reused the Cronos sRUSD proxy. That is safe only while
+# devnet also borrows the Cronos passive pool: sRUSD's supply represents
+# claims on exactly one pool's assets, so once devnet runs its own pool the
+# token has to be its own too, or holders end up with ambiguous claims across
+# two pools on the same chain.
+#
+# The token steps themselves are environment-agnostic — the shared
+# ../../token/tokens/srusd.toml is parameterised on `settings.srusdSalt`
+# (devnet-specific, so CREATE2 lands on a fresh address) and on
+# `settings.passivePoolProxy` / `coreProxy` / `peripheryProxy`, which on devnet
+# already resolve to devnet's own instances. So it is reused verbatim rather
+# than forked; only the token-router clone, which lives in
+# ../../token/testnet.toml alongside every other token, is declared here.
+include = ["../../token/tokens/srusd.toml"]
+
+[clone.reyaTokenRouter]
+source = "<%= settings.tokensRouterPackage %>"
+target = "<%= settings.tokensRouterPackage %>"
+depends = ["var.cannonClonePackages"]
+
+# The owner holds the genesis pool stake (see ../passive_pool/pool_1rusd.toml),
+# and sRUSD only moves between authorizedHolder addresses. Devnet-only: on
+# cronos/mainnet the genesis liquidity predates tokenization and no EOA holds
+# raw sRUSD from the deployment.
+[invoke.srusd_authorized_holders_allow_owner]
+target = ["SRUSDProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('authorizedHolder')) %>",
+    "<%= settings.owner %>",
+]
+depends = ["invoke.upgrade_srusd_proxy"]

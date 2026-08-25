@@ -1,9 +1,34 @@
-# Devnet passive perp global config: uses hardcoded Cronos PassivePool address
+# Devnet passive perp global config.
+#
+# oracleManagerAddress resolves from the clone import. setGlobalConfiguration
+# validates the manager on-chain, so this step must run after the manager
+# proxy is cloned AND upgraded — hence the explicit
+# upgrade_oracle_manager_proxy dependency. (An earlier revision hardcoded the
+# CREATE2 address here, blaming an imports+parseEther template fault; the
+# real failure was the ABI field name below, so the literal was unnecessary.)
+#
+# Field name is `dustAccountId_DEPRECATED`, not `dustAccountId`. That single
+# character difference is what made this step fail for so long: cannon encodes
+# the struct by field name, so a mismatched key leaves the real `uint128` field
+# undefined and the encoder dies with "Cannot convert undefined to a BigInt" —
+# an error that reads like a template-evaluation fault and sent an earlier
+# investigation chasing `imports.*` / `parseEther` interactions. It is a plain
+# ABI mismatch. The step took ~40 downstream market and collateral-pool steps
+# with it, and their fork tests, because cannon skips rather than fails.
+#
+# NB the shared passive_perp/configs/global_config.toml is stale in the same
+# direction: it passes only `coreProxy` and `exchangeProxy`, while the deployed
+# struct is {coreProxy, exchangeProxy_DEPRECATED, oracleManagerAddress,
+# maxAbsFundingRate, dustAccountId_DEPRECATED}. Raised separately.
 [invoke.passive_perp_global_config]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "setGlobalConfiguration"
 args = [
-    { coreProxy = "<%= contracts.CoreProxy.address %>", exchangeProxy_DEPRECATED = "<%= AddressZero %>", oracleManagerAddress = "<%= settings.oracleManagerProxyAddress %>", maxAbsFundingRate = "<%= parseEther(settings.maxAbsFundingRateUnscaled) %>", dustAccountId = "0" },
+    { coreProxy = "<%= contracts.CoreProxy.address %>", exchangeProxy_DEPRECATED = "<%= AddressZero %>", oracleManagerAddress = "<%= imports.reyaOracleManagerProxy.contracts.InitialProxy.address %>", maxAbsFundingRate = "<%= parseEther(settings.maxAbsFundingRateUnscaled) %>", dustAccountId_DEPRECATED = "0" },
 ]
-depends = ["invoke.upgrade_passive_perp_proxy"]
+depends = [
+    "invoke.upgrade_passive_perp_proxy",
+    "invoke.upgrade_oracle_manager_proxy",
+    "var.passive_perp_global",
+]

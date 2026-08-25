@@ -4,7 +4,7 @@ import { ReyaForkTest } from "../ReyaForkTest.sol";
 import { PermissionsPerpOBForkCheck } from "../../reya_common/trade/PermissionsPerpOB.fork.c.sol";
 
 contract PermissionsForkTest is ReyaForkTest, PermissionsPerpOBForkCheck {
-    uint128 constant ETH_MARKET_ID = 1;
+    uint128 internal constant ETH_MARKET_ID = 1;
 
     function test_Devnet_OraclePusherPermission_ETH() public {
         check_OraclePusherPermission(ETH_MARKET_ID);

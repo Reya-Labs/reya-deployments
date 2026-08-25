@@ -383,4 +383,21 @@ contract MarketCloseForkCheck is BaseReyaForkTest {
         vm.expectRevert(abi.encodeWithSelector(IPassivePerpProxy.Unauthorized.selector, attacker));
         IMarketCloseModule(sec.perp).forceCloseMarket(marketId, accountIds, ZERO_ud);
     }
+
+    /// @notice Assert `marketId` has been fully closed out: `forceCloseMarket` has run, and the market has since been
+    ///         disabled by the separate call the module deliberately does not make itself (scope doc §3.6).
+    /// @dev The close leaves the oracle pinned to the CONSTANT node the freeze installed — `forceCloseMarket` never
+    ///      touches `oracleNodeId` — and `resetMarketStateOnClosure` zeroes open interest and the funding trackers.
+    ///      Per-account bases are not asserted here: that needs the closed account list, which the force-close batch
+    ///      carries and {check_ForceClose} already asserts at close time.
+    function check_MarketIsClosed(uint128 marketId) internal view {
+        check_MarketIsFrozen(marketId);
+
+        assertEq(
+            IPassivePerpProxy(sec.perp).getOpenBaseInterest(marketId),
+            0,
+            string.concat("open interest is not zero for closed market ", vm.toString(marketId))
+        );
+        assertFalse(isMarketActive(marketId), string.concat("closed market is still enabled ", vm.toString(marketId)));
+    }
 }

@@ -9,7 +9,7 @@ import {
 } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 
 contract FundingRateForkTest is ReyaForkTest, FundingRatePerpOBForkCheck {
-    uint128 constant ETH_MARKET_ID = 1;
+    uint128 internal constant ETH_MARKET_ID = 1;
 
     function test_Devnet_PriceSafetyConfiguration_ETH() public view {
         MarketConfigurationDataV2 memory config = IPassivePerpProxyV2(sec.perp).getMarketConfiguration(ETH_MARKET_ID);

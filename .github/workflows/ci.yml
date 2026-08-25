@@ -10,17 +10,18 @@ permissions:
   contents: read
   # Required to publish the non-blocking "Testnet Suites" check run below.
   checks: write
-env:
-  # Point cannon's on-chain package registry (Optimism mainnet) at our own RPC instead of the shared
-  # public Infura key baked into cannon's DEFAULT_REGISTRY_CONFIG, which gets rate-limited (429) and
-  # times out while cloning packages — crashing builds before anvil starts, after which every forked
-  # test fails with "Connection refused". Mirrors the local ~/.local/share/cannon/settings.json. All
-  # three are required: cannon only uses a custom registry when ADDRESS is set alongside RPC_URL/CHAIN_ID
-  # (see @usecannon/cli settings.js). Set CANNON_REGISTRY_RPC_URL as a repo secret (an Optimism mainnet
-  # RPC URL with your own key).
-  CANNON_REGISTRY_RPC_URL: ${{ secrets.CANNON_REGISTRY_RPC_URL }}
-  CANNON_REGISTRY_CHAIN_ID: "10"
-  CANNON_REGISTRY_ADDRESS: "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
+# NOTE: do NOT set CANNON_REGISTRY_{ADDRESS,RPC_URL,CHAIN_ID} as workflow env. They were
+# set (July 2026) to move registry reads off cannon's rate-limited shared
+# Infura key, which was the right problem — but per @usecannon/cli
+# settings.js those env vars replace the registry LIST with a single "Custom
+# Network" entry and make ~/.local/share/cannon/settings.json ignored
+# entirely. The reya packages are SPLIT across BOTH registry chains (older
+# proxies on Ethereum, newer routers and the omnibus baselines on Optimism),
+# so a chain-10-only registry cannot resolve e.g. reya-core:1.0.0@proxy and
+# every clone.* step is skipped ("deployment not found ... network 13370"),
+# cascading into a whole skipped deployment and a red devnet suite.
+# The "Configure cannon registries" step below covers BOTH chains on keyed
+# endpoints, which is what these vars were reaching for.
 jobs:
   reya-deployments-check:
     name: Reya Deployments Check
@@ -35,6 +36,9 @@ jobs:
       # at "Checking for existing package...". Pin reads to the live, non-regional
       # base host, which still serves the packages over the Kubo /api/v0 API.
       CANNON_IPFS_URL: https+ipfs://repo.usecannon.com
+      # Give the IPFS fetches real retry headroom on flaky runner networks.
+      CANNON_IPFS_RETRIES: "10"
+      CANNON_IPFS_TIMEOUT: "300000"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,6 +56,44 @@ jobs:
           cache: 'yarn'
       - name: "Install the Node.js dependencies"
         run: "yarn"
+      # Package resolution asks the on-chain cannon registry for each package's
+      # IPFS hash, and the reya packages are SPLIT across the two registry
+      # chains (older proxies on Ethereum, newer routers and the omnibus
+      # baselines on Optimism) — so BOTH must be reachable. Cannon's default
+      # config reaches them through globally-shared Infura/Alchemy keys that
+      # rate-limit GitHub's runner IPs, which is how every clone.* source used
+      # to die "deployment not found" and the devnet deployment silently
+      # skipped. The env vars can only pin ONE registry (an ETH-only pin broke
+      # baseline resolution, which lives on OP), so write a settings.json
+      # carrying both chains on public endpoints instead.
+      - name: Configure cannon registries
+        env:
+          INFURA_KEY: ${{ secrets.INFURA_KEY }}
+        # Keyed Infura endpoints first — the public endpoints (publicnode,
+        # llamarpc) rate-limit GitHub's shared runner IPs, which the 6c045c2
+        # run proved empirically: identical settings resolve fine from a
+        # cold cache on a developer IP and return "deployment not found"
+        # for everything on a runner. Public endpoints stay as fallback.
+        run: |
+          mkdir -p ~/.local/share/cannon
+          cat > ~/.local/share/cannon/settings.json <<EOF
+          {
+            "registries": [
+              {
+                "name": "OP Mainnet",
+                "chainId": 10,
+                "rpcUrl": ["https://optimism-mainnet.infura.io/v3/${INFURA_KEY}", "https://optimism-rpc.publicnode.com"],
+                "address": "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
+              },
+              {
+                "name": "Ethereum Mainnet",
+                "chainId": 1,
+                "rpcUrl": ["https://mainnet.infura.io/v3/${INFURA_KEY}", "https://ethereum-rpc.publicnode.com"],
+                "address": "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
+              }
+            ]
+          }
+          EOF
       - name: Lint Check
         run: "yarn lint:check"
       - name: Build
@@ -65,13 +107,48 @@ jobs:
         id: reya_cronos_test
         continue-on-error: true
         env:
-          CONDUIT_RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
+          # Same env name for every suite (review feedback); the Conduit secret
+          # is the value known to work on the cronos endpoint.
+          RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
         run: "yarn reya_cronos:test"
+      # cli-devnet (unlike the standard CLI the network/cronos suites use)
+      # refuses to build a version that is already published UNLESS the package
+      # is in the machine's LOCAL registry -- which a cold runner never has. So
+      # prime it: fetch the published package into the local registry, which
+      # both satisfies that guard and lets every step cache-hit, so the suite
+      # tests the DEPLOYED state instead of replaying the whole deployment
+      # against the fork (434 steps, and non-idempotent ones like
+      # passive_pool_tokenize_pool_1rusd then revert PoolAlreadyTokenized).
+      # CANNON_WRITE_IPFS_URL is required: fetch defaults to the decommissioned
+      # region-derived repo hosts and dies with an SSL handshake failure.
+      - name: Prime the local cannon registry with the published devnet package
+        continue-on-error: true
+        env:
+          # `cannon fetch` reads publishIpfsUrl (CANNON_PUBLISH_IPFS_URL) for its
+          # download loader -- NOT CANNON_IPFS_URL and not CANNON_WRITE_IPFS_URL.
+          # Unset, it falls back to getCannonRepoRegistryUrl(), the
+          # region-derived repo hosts that were decommissioned, and dies with an
+          # SSL handshake failure (EPROTO). Same trap as `cannon publish`.
+          CANNON_PUBLISH_IPFS_URL: https+ipfs://repo.usecannon.com
+          CANNON_WRITE_IPFS_URL: https+ipfs://repo.usecannon.com
+        run: |
+          set -o pipefail
+          # Must use the VERSION-specific ref, not latest@main: the guard looks
+          # up the exact fullPackageRef being built (e.g.
+          # reya-devnet-omnibus:1.1.1@main), and fetching as `latest` stores the
+          # package under a `latest` tag that the lookup never consults.
+          VERSION=$(grep -m1 '^version' packages/tomls/src/omnibus/reya_devnet.toml | cut -d'"' -f2)
+          REF="reya-devnet-omnibus:${VERSION}@main"
+          echo "priming local registry with $REF"
+          URL=$(node node_modules/@usecannon/cli-devnet/bin/cannon.js inspect "$REF" --chain-id 89346162 | grep -oE "ipfs://Qm[A-Za-z0-9]+" | head -1)
+          echo "package url: $URL"
+          node node_modules/@usecannon/cli-devnet/bin/cannon.js fetch "$URL" "$REF" --chain-id 89346162
+
       - name: Reya Devnet Cannon Test
         id: reya_devnet_test
         continue-on-error: true
         env:
-          CONDUIT_RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
+          RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
         run: "yarn reya_devnet:test"
       # Publishes the advisory testnet result as its OWN check run, separate from this job.
       # This job stays the merge gate (mainnet/lint/build only); the check run below reports

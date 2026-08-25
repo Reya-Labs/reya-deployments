@@ -61,9 +61,10 @@ contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
         check_FundingVelocity(14);
     }
 
-    function test_FundingVelocity_zro() public {
-        check_FundingVelocity(15);
-    }
+    // note: market ZRO is closed and fully unwound
+    // function test_FundingVelocity_zro() public {
+    //     check_FundingVelocity(15);
+    // }
 
     function test_FundingVelocity_xrp() public {
         check_FundingVelocity(16);
@@ -101,9 +102,10 @@ contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
         check_FundingVelocity(24);
     }
 
-    function test_FundingVelocity_jto() public {
-        check_FundingVelocity(25);
-    }
+    // note: market JTO is closed and fully unwound
+    // function test_FundingVelocity_jto() public {
+    //     check_FundingVelocity(25);
+    // }
 
     function test_FundingVelocity_ada() public {
         check_FundingVelocity(26);
@@ -138,17 +140,19 @@ contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
         check_FundingVelocity(33);
     }
 
-    function test_FundingVelocity_goat() public {
-        check_FundingVelocity(34);
-    }
+    // note: market GOAT is closed and fully unwound
+    // function test_FundingVelocity_goat() public {
+    //     check_FundingVelocity(34);
+    // }
 
     function test_FundingVelocity_grass() public {
         check_FundingVelocity(35);
     }
 
-    function test_FundingVelocity_kneiro() public {
-        check_FundingVelocity(36);
-    }
+    // note: market kNEIRO is closed and fully unwound
+    // function test_FundingVelocity_kneiro() public {
+    //     check_FundingVelocity(36);
+    // }
 
     // note: market paused
     // function test_FundingVelocity_dot() public {
@@ -183,9 +187,10 @@ contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
         check_FundingVelocity(44);
     }
 
-    function test_FundingVelocity_ai16z() public {
-        check_FundingVelocity(45);
-    }
+    // note: market AI16Z is closed and fully unwound
+    // function test_FundingVelocity_ai16z() public {
+    //     check_FundingVelocity(45);
+    // }
 
     // note: market paused
     // function test_FundingVelocity_aixbt() public {
@@ -200,9 +205,10 @@ contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
         check_FundingVelocity(48);
     }
 
-    function test_FundingVelocity_griffain() public {
-        check_FundingVelocity(49);
-    }
+    // note: market GRIFFAIN is closed and fully unwound
+    // function test_FundingVelocity_griffain() public {
+    //     check_FundingVelocity(49);
+    // }
 
     function test_FundingVelocity_wld() public {
         check_FundingVelocity(50);
@@ -212,13 +218,15 @@ contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
         check_FundingVelocity(51);
     }
 
-    function test_FundingVelocity_ape() public {
-        check_FundingVelocity(52);
-    }
+    // note: market APE is closed and fully unwound
+    // function test_FundingVelocity_ape() public {
+    //     check_FundingVelocity(52);
+    // }
 
-    function test_FundingVelocity_ton() public {
-        check_FundingVelocity(53);
-    }
+    // note: market TON is closed and fully unwound
+    // function test_FundingVelocity_ton() public {
+    //     check_FundingVelocity(53);
+    // }
 
     function test_FundingVelocity_ondo() public {
         check_FundingVelocity(54);
@@ -232,13 +240,15 @@ contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
         check_FundingVelocity(56);
     }
 
-    function test_FundingVelocity_move() public {
-        check_FundingVelocity(57);
-    }
+    // note: market MOVE is closed and fully unwound
+    // function test_FundingVelocity_move() public {
+    //     check_FundingVelocity(57);
+    // }
 
-    function test_FundingVelocity_bera() public {
-        check_FundingVelocity(58);
-    }
+    // note: market BERA is closed and fully unwound
+    // function test_FundingVelocity_bera() public {
+    //     check_FundingVelocity(58);
+    // }
 
     function test_FundingVelocity_layer() public {
         check_FundingVelocity(59);
@@ -248,9 +258,10 @@ contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
         check_FundingVelocity(60);
     }
 
-    function test_FundingVelocity_ip() public {
-        check_FundingVelocity(61);
-    }
+    // note: market IP is closed and fully unwound
+    // function test_FundingVelocity_ip() public {
+    //     check_FundingVelocity(61);
+    // }
 
     function test_FundingVelocity_me() public {
         check_FundingVelocity(62);
@@ -272,33 +283,39 @@ contract FundingRateForkTest is ReyaForkTest, FundingRateForkCheck {
         check_FundingVelocity(66);
     }
 
-    function test_FundingVelocity_kaito() public {
-        check_FundingVelocity(67);
-    }
+    // note: market KAITO is closed and fully unwound
+    // function test_FundingVelocity_kaito() public {
+    //     check_FundingVelocity(67);
+    // }
 
-    function test_FundingVelocity_zora() public {
-        check_FundingVelocity(68);
-    }
+    // note: market ZORA is closed and fully unwound
+    // function test_FundingVelocity_zora() public {
+    //     check_FundingVelocity(68);
+    // }
 
-    function test_FundingVelocity_prove() public {
-        check_FundingVelocity(69);
-    }
+    // note: market PROVE is closed and fully unwound
+    // function test_FundingVelocity_prove() public {
+    //     check_FundingVelocity(69);
+    // }
 
     function test_FundingVelocity_paxg() public {
         check_FundingVelocity(70);
     }
 
-    function test_FundingVelocity_yzy() public {
-        check_FundingVelocity(71);
-    }
+    // note: market YZY is closed and fully unwound
+    // function test_FundingVelocity_yzy() public {
+    //     check_FundingVelocity(71);
+    // }
 
-    function test_FundingVelocity_xpl() public {
-        check_FundingVelocity(72);
-    }
+    // note: market XPL is closed and fully unwound
+    // function test_FundingVelocity_xpl() public {
+    //     check_FundingVelocity(72);
+    // }
 
-    function test_FundingVelocity_wlfi() public {
-        check_FundingVelocity(73);
-    }
+    // note: market WLFI is closed and fully unwound
+    // function test_FundingVelocity_wlfi() public {
+    //     check_FundingVelocity(73);
+    // }
 
     function test_FundingVelocity_linea() public {
         check_FundingVelocity(74);

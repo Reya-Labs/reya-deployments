@@ -15,19 +15,18 @@ interface IOracleAdaptersProxy {
      * @param assetPairId The asset pair id
      * @param config The configuration data
      */
-    function setLmTokenPriceConfiguration(
-        string memory assetPairId,
-        LmTokenPriceConfigurationData memory config
-    ) external;
+    function setLmTokenPriceConfiguration(string memory assetPairId, LmTokenPriceConfigurationData memory config)
+        external;
 
     /**
      * @notice Returns the share price configuration for a given asset pair id
      * @param assetPairId The asset pair id
      * @return The configuration data
      */
-    function getLmTokenPriceConfiguration(
-        string memory assetPairId
-    ) external view returns (LmTokenPriceConfigurationData memory);
+    function getLmTokenPriceConfiguration(string memory assetPairId)
+        external
+        view
+        returns (LmTokenPriceConfigurationData memory);
 
     function setConfiguration(Configuration memory config) external;
 
@@ -37,9 +36,7 @@ interface IOracleAdaptersProxy {
 
     function fulfillOracleQuery(bytes calldata signedOffchainData) external payable;
 
-    function getLatestPricePayload(
-        string memory assetPairId
-    ) external view returns (StorkPricePayload memory);
+    function getLatestPricePayload(string memory assetPairId) external view returns (StorkPricePayload memory);
 
     function addToFeatureFlagAllowlist(bytes32 feature, address account) external;
 
@@ -47,16 +44,15 @@ interface IOracleAdaptersProxy {
 
     error StorkPayloadSignatureInvalid(StorkSignedPayload storkSignedPayload);
 
-    error StorkPayloadOlderThanLatest(
-        StorkPricePayload currentPricePayload,
-        StorkPricePayload latestPricePayload
-    );
+    error StorkPayloadOlderThanLatest(StorkPricePayload currentPricePayload, StorkPricePayload latestPricePayload);
 
     error UnauthorizedPublisher(address unathorizedPublisher);
 
     error FeatureUnavailable(bytes32 which);
 
     function getFeatureFlagAllowAll(bytes32 feature) external view returns (bool);
+
+    function isFeatureAllowed(bytes32 feature, address account) external view returns (bool);
 
     function getFeatureFlagAllowlist(bytes32 feature) external view returns (address[] memory);
 

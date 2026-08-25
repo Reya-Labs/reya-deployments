@@ -77,7 +77,17 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
      */
     function check_PushFundingRate(uint128 marketId) internal {
         setupFundingTestActors();
+        // Also needed: pushMarkPriceWithinCollar signs with oraclePublisherPk,
+        // which only setupPerpTestActors initialises.
+        setupPerpTestActors();
         mockFreshPrices();
+
+        // Push a fresh mark price first: funding pushes validate the STORED
+        // mark price's age (MarkPriceStale, 60s), and without this the test
+        // inherits whatever the live pusher last wrote before the fork pin —
+        // making it fail whenever fork-pin age + accumulated anvil block time
+        // exceeds the window (every extra deployment step costs a block).
+        pushMarkPriceWithinCollar(marketId, 3000e18);
 
         // Push a positive funding rate (1% annualized = 1e16)
         int256 fundingRate = 1e16;
@@ -98,7 +108,17 @@ contract FundingRatePerpOBForkCheck is PerpFillForkCheck {
      */
     function check_FundingRateStaleness(uint128 marketId) internal {
         setupFundingTestActors();
+        // Also needed: pushMarkPriceWithinCollar signs with oraclePublisherPk,
+        // which only setupPerpTestActors initialises.
+        setupPerpTestActors();
         mockFreshPrices();
+
+        // Push a fresh mark price first: funding pushes validate the STORED
+        // mark price's age (MarkPriceStale, 60s), and without this the test
+        // inherits whatever the live pusher last wrote before the fork pin —
+        // making it fail whenever fork-pin age + accumulated anvil block time
+        // exceeds the window (every extra deployment step costs a block).
+        pushMarkPriceWithinCollar(marketId, 3000e18);
 
         // Seed lastFundingTimestamp at the current block by pushing a fresh zero rate.
         _pushOracleData(marketId, OracleDataType.FundingRate, abi.encode(int256(0)));
