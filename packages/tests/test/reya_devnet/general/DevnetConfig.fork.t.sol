@@ -147,7 +147,11 @@ contract DevnetConfigForkTest is ReyaForkTest, PerpFillForkCheck {
 
     function test_Devnet_CollateralPoolLimits() public view {
         LimitConfig memory limits = ICoreProxy(sec.core).getCollateralPoolLimits(1);
-        require(limits.maxMarkets == 1, "cp1: maxMarkets != 1");
+        // 75 mirrors mainnet: the full mainnet market list is registered
+        // on-chain. Was 1 (ETH only) -- every market past the first reverts
+        // CollateralLimitBreached at the old cap. Which of those 75 may
+        // actually take exposure is pinned by MarketMirror, not here.
+        require(limits.maxMarkets == 75, "cp1: maxMarkets != 75");
         // 12 (bumped from 2) is what makes sRUSD onboarding possible at all —
         // the old cap reverted CollateralLimitBreached on the third token.
         require(limits.maxCollaterals == 12, "cp1: maxCollaterals != 12");

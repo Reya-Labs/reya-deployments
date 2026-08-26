@@ -58,6 +58,19 @@ contract ReyaForkTest is BaseReyaForkTest {
         // once devnet stopped borrowing the Cronos pool.
         sec.srusd = 0x8A04495Ed90DE2cC1e0e620F01210c6A6fE63bdb; // devnet's own (CREATE2, srusd-devnet3)
 
+        // Mainnet collateral mirror: the existing Cronos deployments of the
+        // tokens mainnet accepts as collateral. Symbol and decimals verified
+        // on-chain -- wBTC is 8 decimals, the rest 18, and the omnibus scales
+        // every cap through parseUnits(.., <token>TokenDecimals) accordingly.
+        // The three LM tokens (rSelini/rAmber/rHedge) are deliberately absent:
+        // their REYALM# nodes do not resolve here. See CollateralMirror.
+        sec.wbtc = 0x459374F3f3E92728bCa838DfA8C95E706FE67E8a;
+        sec.wsteth = 0xDF52410A19298FE168c900513e762adaD00C42b1;
+        sec.usde = 0xDca6971c26fDEE0536Fdff076D063643f7810621;
+        sec.susde = 0x08A766935478A1632FA776DCEbD3E75Ce88A1034;
+        sec.deusd = 0x3b9D28dC180813a106d26778135Ac2A674F89957;
+        sec.sdeusd = 0xbEB316680B6fcd2dC3aF1fC933B3A27a2513d89D;
+
         // Reya variables
         sec.passivePoolId = 1;
         // passivePoolAccountId is resolved on-chain in setUp(), not hardcoded.
