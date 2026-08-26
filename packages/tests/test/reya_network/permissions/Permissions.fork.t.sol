@@ -191,6 +191,28 @@ contract PermissionsForkTest is ReyaForkTest {
         assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagDenyAll(flagId));
     }
 
+    /// perpOB cutover prerequisite. The deployed 1.0.x router authorizes
+    /// setRiskBlockId with per-collateral-pool RBAC and never reads this flag;
+    /// the 1.1.x router gates on it BEFORE any ownership check, so an empty
+    /// allowlist would fail closed for the owner too and revert the first
+    /// market onboarded after the upgrade. The grant is therefore inert today
+    /// and this test is the only thing that says it landed -- cannon skips a
+    /// failing step with a warning while the build still "succeeds".
+    ///
+    /// Exact set, and allowAll deliberately false: allowAll would make this
+    /// assertion vacuously green.
+    function test_perp_configure_risk_block_permissions() public view {
+        bytes32 flagId = keccak256(bytes("configureRiskBlock"));
+        address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flagId);
+
+        address[] memory expectedAllowlist = new address[](1);
+        expectedAllowlist[0] = 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9;
+
+        assertEq(allowlist, expectedAllowlist);
+        assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagAllowAll(flagId));
+        assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagDenyAll(flagId));
+    }
+
     function test_perp_configure_spread_permissions() public view {
         bytes32 flagId = keccak256(bytes("configureSpread"));
         address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flagId);

@@ -87,6 +87,41 @@ func = "addToFeatureFlagAllowlist"
 args = ["<%= keccak256(hexlify('configureFees')) %>", "<%= settings.owner %>"]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
+# perpOB CUTOVER PREREQUISITE -- inert on the routers deployed today.
+#
+# perpOB changes how `PassivePerp.setRiskBlockId` authorizes. The deployed
+# 1.0.x router does
+#     market.onlyAuthorized(msg.sender, COLLATERAL_POOL_RISK_MATRIX_CONFIGURATOR)
+# i.e. per-collateral-pool RBAC, which the system owner already satisfies. The
+# 1.1.x router replaces that with
+#     FeatureFlagSupport.ensureRiskBlockConfiguratorAccess()
+# -- a GLOBAL feature flag keyed keccak256("configureRiskBlock"), checked
+# BEFORE `Market.exists` and before any ownership check, so it fails closed for
+# EVERY caller including the owner.
+#
+# On both live PassivePerp proxies that flag is currently allowAll=false with an
+# EMPTY allowlist and no deniers, so the FIRST market onboarded after the router
+# upgrade would revert FeatureUnavailable(0xc0be49ae..). Existing markets are
+# unaffected -- their risk block is already stored, and the cached deploy steps
+# never re-run -- which is exactly why nothing surfaces this until a new market
+# is added. Devnet, already on the 1.1.x router, reverts here today; that is
+# what devnet/passive_perp/feature_flags.toml's identical grant fixes.
+#
+# Granting it now is a no-op against the deployed routers (the flag is not read)
+# and removes a cutover-day failure. Same allowlist shape as the configureFees
+# grant above; `settings.owner` is the PassivePerp owner on every environment
+# that includes this file. Deliberately NOT setFeatureFlagAllowAll: allowAll
+# makes every allowlist assertion vacuously green.
+[invoke.passive_perp_risk_block_config_system_owner]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureRiskBlock')) %>",
+    "<%= settings.owner %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
 [invoke.passive_perp_prog_comp_exchange_id_zero_fee_option]
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
