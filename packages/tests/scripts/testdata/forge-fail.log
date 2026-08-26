@@ -1,0 +1,13 @@
+Successfully built package reya-devnet-omnibus:1.1.1@main
+
+Running forge tests...
+Ran 42 tests for test/reya_devnet/ForkTests.sol:ForkTests
+[PASS] test_DepositRusd() (gas: 214512)
+[FAIL: assertion failed: 100 != 250] test_MatchOrderEth() (gas: 981233)
+Suite result: FAILED. 41 passed; 1 failed; 0 skipped; finished in 63.71s
+
+Failing tests:
+Encountered 1 failing test in test/reya_devnet/ForkTests.sol:ForkTests
+[FAIL: assertion failed: 100 != 250] test_MatchOrderEth()
+
+Encountered a total of 1 failing test, 41 tests succeeded

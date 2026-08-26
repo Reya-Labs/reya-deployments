@@ -1,0 +1,19 @@
+Checking for existing package...
+Building the chain (ID 89346162) via https://rpc-reya-cronos.t.conduit.xyz/***...
+
+  Executing [clone.core]...
+  ✔ Cloned reya-core:1.0.34@router
+  Executing [invoke.configure_markets]...
+  ✔ Invoked configure_markets
+  Executing [invoke.enable_market_eth]...
+  ✔ Invoked enable_market_eth
+
+Successfully built package reya-devnet-omnibus:1.1.1@main
+
+Running forge tests...
+Ran 42 tests for test/reya_devnet/ForkTests.sol:ForkTests
+[PASS] test_DepositRusd() (gas: 214512)
+[PASS] test_MatchOrderEth() (gas: 981233)
+Suite result: ok. 42 passed; 0 failed; 0 skipped; finished in 61.20s
+
+Ran 1 test suite: 42 tests passed, 0 failed, 0 skipped (42 total tests)

@@ -1,0 +1,8 @@
+Checking for existing package...
+Building the chain (ID 89346162) via https://rpc-reya-cronos.t.conduit.xyz/***...
+
+  ⚠️  Skipping [invoke.configure_markets] (Error: dependency operation not completed: clone.core)
+  ⚠️  Skipping [invoke.enable_market_eth] (Error: dependency operation not completed: clone.core)
+  ⚠️  Skipping [invoke.tokenize_pool] (Error: dependency operation not completed: invoke.configure_markets)
+
+Successfully built package reya-devnet-omnibus:1.1.1@main

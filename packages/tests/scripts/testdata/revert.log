@@ -1,0 +1,18 @@
+Checking for existing package...
+Building the chain (ID 89346162) via https://rpc-reya-cronos.t.conduit.xyz/***...
+
+  Executing [clone.core]...
+  ✔ Cloned reya-core:1.0.34@router
+  Executing [invoke.enable_market_eth]...
+  ⚠️  Skipping [invoke.enable_market_eth] (Error: transaction reverted in contract PassivePerp: FeatureUnavailable("0x9f3edb6c")
+
+  trace: PassivePerp.enableMarket(1)
+    -> FeatureFlagModule._checkFeatureFlag()
+    -> revert FeatureUnavailable(0x9f3edb6c))
+  ⚠️  Skipping [invoke.set_market_config] (Error: dependency operation not completed: invoke.enable_market_eth)
+  ⚠️  Skipping [invoke.tokenize_pool] (Error: dependency operation not completed: invoke.enable_market_eth)
+  ⚠️  Skipping [invoke.seed_pool] (Error: dependency operation not completed: invoke.tokenize_pool)
+  ⚠️  Skipping [invoke.set_fee_tiers] (Error: dependency operation not completed: invoke.tokenize_pool)
+  ⚠️  Skipping [invoke.configure_oracle] (Error: dependency operation not completed: invoke.set_market_config)
+
+Successfully built package reya-devnet-omnibus:1.1.1@main
