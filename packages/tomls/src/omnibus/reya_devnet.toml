@@ -65,9 +65,9 @@ sdeusdProxyAddress = "0xbEB316680B6fcd2dC3aF1fC933B3A27a2513d89D"
 # share_token/mainnet.toml) -- it reuses the Cronos deployments, so unlike
 # mainnet's `contracts.RSELINIProxy.address` these are literals. Verified
 # on-chain 2026-08-26: symbol rSelini / rAmber / rHedge, 18 decimals each.
-rseliniProxyAddress = "0xba8ae4D2a147c54c3ABA123e8E01937Af505FC3C"
-ramberProxyAddress = "0x125Fd68eC0Ab65Ce9606dED99e8F19c286f9E534"
-rhedgeProxyAddress = "0xfB9eed7A6f3100Db35C94b214917a0a64AeC1a97"
+rseliniProxyAddress = "0xbA8ae4D2A147c54c3aBA123e8e01937AF505FC3c"
+ramberProxyAddress = "0x125FD68Ec0ab65ce9606DeD99e8F19C286f9E534"
+rhedgeProxyAddress = "0xFB9eeD7a6F3100dB35c94B214917a0A64AEC1a97"
 
 ###############################################################################
 # Wallet Addresses (simplified - single owner for devnet)
