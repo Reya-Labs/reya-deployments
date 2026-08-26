@@ -8,4 +8,10 @@ include = [
     "tokens/rusd.toml",
     "tokens/weth.toml",
     "tokens/srusd.toml",
+    "tokens/wbtc.toml",
+    "tokens/wsteth.toml",
+    "tokens/usde.toml",
+    "tokens/susde.toml",
+    "tokens/deusd.toml",
+    "tokens/sdeusd.toml",
 ]

@@ -53,6 +53,14 @@ exchangePassProxyAddress = "0x1Acd15A57Aff698440262A2A13AE22F8Ff2FA0cB"
 # this one stays registered as a collateral on Core and must keep a resolvable
 # oracle node -- see devnet/collateral_pools/tokens/srusd_legacy.toml.
 legacyCronosSrusdProxyAddress = "0xb9F531A54Fc0E9AdCa1b931d9533B4e49bB2fAD6"
+# Mainnet collateral mirror: existing Cronos deployments of the tokens
+# mainnet accepts as collateral. Verified on-chain 2026-08-26 (symbol/decimals).
+wbtcProxyAddress = "0x459374F3f3E92728bCa838DfA8C95E706FE67E8a"
+wstethProxyAddress = "0xDF52410A19298FE168c900513e762adaD00C42b1"
+usdeProxyAddress = "0xDca6971c26fDEE0536Fdff076D063643f7810621"
+susdeProxyAddress = "0x08A766935478A1632FA776DCEbD3E75Ce88A1034"
+deusdProxyAddress = "0x3b9D28dC180813a106d26778135Ac2A674F89957"
+sdeusdProxyAddress = "0xbEB316680B6fcd2dC3aF1fC933B3A27a2513d89D"
 
 ###############################################################################
 # Wallet Addresses (simplified - single owner for devnet)
@@ -221,6 +229,12 @@ matchOrderPublisherAdmin1 = "0xD3D5911FE8ab109645f931Cf65B341d5dd672eFB"
 rusdTokenDecimals = "6"
 usdcTokenDecimals = "6"
 wethTokenDecimals = "18"
+wbtcTokenDecimals = "8"
+wstethTokenDecimals = "18"
+usdeTokenDecimals = "18"
+susdeTokenDecimals = "18"
+deusdTokenDecimals = "18"
+sdeusdTokenDecimals = "18"
 
 ###############################################################################
 # Global Collateral Configs (rUSD, wETH, sRUSD)
@@ -237,6 +251,30 @@ wethWithdrawalTvlPercentageLimitUnscaled = "1.0"
 srusdCollateralAdapter = "<%= AddressZero %>"
 srusdWithdrawalWindowSize = "1"
 srusdWithdrawalTvlPercentageLimitUnscaled = "1.0"
+# -------------------------------------------------------------------
+wbtcCollateralAdapter = "<%= AddressZero %>"
+wbtcWithdrawalWindowSize = "<%= settings.THREE_HOURS_IN_SECONDS %>"
+wbtcWithdrawalTvlPercentageLimitUnscaled = "0.25"
+# -------------------------------------------------------------------
+wstethCollateralAdapter = "<%= AddressZero %>"
+wstethWithdrawalWindowSize = "<%= settings.THREE_HOURS_IN_SECONDS %>"
+wstethWithdrawalTvlPercentageLimitUnscaled = "0.25"
+# -------------------------------------------------------------------
+usdeCollateralAdapter = "<%= AddressZero %>"
+usdeWithdrawalWindowSize = "1"
+usdeWithdrawalTvlPercentageLimitUnscaled = "1"
+# -------------------------------------------------------------------
+susdeCollateralAdapter = "<%= AddressZero %>"
+susdeWithdrawalWindowSize = "1"
+susdeWithdrawalTvlPercentageLimitUnscaled = "1"
+# -------------------------------------------------------------------
+deusdCollateralAdapter = "<%= AddressZero %>"
+deusdWithdrawalWindowSize = "1"
+deusdWithdrawalTvlPercentageLimitUnscaled = "1"
+# -------------------------------------------------------------------
+sdeusdCollateralAdapter = "<%= AddressZero %>"
+sdeusdWithdrawalWindowSize = "1"
+sdeusdWithdrawalTvlPercentageLimitUnscaled = "1"
 
 ###############################################################################
 # PassivePerp Global Config
@@ -2574,6 +2612,72 @@ cp1Rusd_srusdParentConfig_autoExchangeDiscountUnscaled = "0"
 # share-price reference (getSharePrice telemetry + fork checks). NOTE the RR
 # feed tracks the CRONOS pool's share price; accepted devnet-only skew.
 cp1Rusd_srusdParentConfig_oracleNodeId = "<%= settings.srusdRusd_RRNodeIdStork %>"
+
+# --- WBTC: caps, auto-exchange and parent config mirrored from mainnet
+cp1Rusd_wbtc_capUnscaled = "10"
+cp1Rusd_wbtc_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_wbtc_autoExchangeInsuranceFeeUnscaled = "0.01"
+cp1Rusd_wbtc_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_wbtc_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_wbtcParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_wbtcParentConfig_priceHaircutUnscaled = "0.10"
+cp1Rusd_wbtcParentConfig_autoExchangeDiscountUnscaled = "0.02"
+cp1Rusd_wbtcParentConfig_oracleNodeId = "<%= settings.wbtcUsdcNodeIdStork %>"
+
+# --- WSTETH: caps, auto-exchange and parent config mirrored from mainnet
+cp1Rusd_wsteth_capUnscaled = "225"
+cp1Rusd_wsteth_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_wsteth_autoExchangeInsuranceFeeUnscaled = "0.01"
+cp1Rusd_wsteth_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_wsteth_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_wstethParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_wstethParentConfig_priceHaircutUnscaled = "0.10"
+cp1Rusd_wstethParentConfig_autoExchangeDiscountUnscaled = "0.02"
+cp1Rusd_wstethParentConfig_oracleNodeId = "<%= settings.wstethUsdcNodeIdStork %>"
+
+# --- USDE: caps, auto-exchange and parent config mirrored from mainnet
+cp1Rusd_usde_capUnscaled = "1000"
+cp1Rusd_usde_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_usde_autoExchangeInsuranceFeeUnscaled = "0"
+cp1Rusd_usde_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_usde_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_usdeParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_usdeParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_usdeParentConfig_autoExchangeDiscountUnscaled = "0.01"
+cp1Rusd_usdeParentConfig_oracleNodeId = "<%= settings.usdeUsdcNodeIdStork %>"
+
+# --- sUSDe: caps, auto-exchange and parent config mirrored from mainnet
+cp1Rusd_susde_capUnscaled = "6000000"
+cp1Rusd_susde_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_susde_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_susde_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_susde_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_susdeParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_susdeParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_susdeParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_susdeParentConfig_oracleNodeId = "<%= settings.susdeUsdcNodeIdStork %>"
+
+# --- deUSD: caps, auto-exchange and parent config mirrored from mainnet
+cp1Rusd_deusd_capUnscaled = "1423"
+cp1Rusd_deusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_deusd_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_deusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_deusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_deusdParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_deusdParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_deusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_deusdParentConfig_oracleNodeId = "<%= settings.deusdUsdcNodeIdStork %>"
+
+# --- sdeUSD: caps, auto-exchange and parent config mirrored from mainnet
+cp1Rusd_sdeusd_capUnscaled = "2025"
+cp1Rusd_sdeusd_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_sdeusd_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_sdeusd_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_sdeusd_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_sdeusdParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_sdeusdParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_sdeusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdClosing %>"
 
 ###############################################################################
 # Spot Markets (WETH/rUSD, sRUSD/rUSD)

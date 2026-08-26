@@ -1,0 +1,21 @@
+# Devnet sdeUSD global collateral config -- mirrors mainnet sdeusd*.
+# No spot market: only wETH has one on devnet.
+[invoke.sdeusd_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= settings.sdeusdProxyAddress %>",
+    { collateralAdapter_DEPRECATED = "<%= settings.sdeusdCollateralAdapter %>", withdrawalWindowSize = "<%= settings.sdeusdWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.sdeusdWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = ['invoke.upgrade_core_proxy', 'var.global_collateral_configs']
+
+[invoke.sdeusd_auto_exchange_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), settings.sdeusdProxyAddress])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy"]

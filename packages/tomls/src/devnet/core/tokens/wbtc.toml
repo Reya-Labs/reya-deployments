@@ -1,0 +1,21 @@
+# Devnet WBTC global collateral config -- mirrors mainnet wbtc*.
+# No spot market: only wETH has one on devnet.
+[invoke.wbtc_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= settings.wbtcProxyAddress %>",
+    { collateralAdapter_DEPRECATED = "<%= settings.wbtcCollateralAdapter %>", withdrawalWindowSize = "<%= settings.wbtcWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.wbtcWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = ['invoke.upgrade_core_proxy', 'var.global_collateral_configs']
+
+[invoke.wbtc_auto_exchange_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), settings.wbtcProxyAddress])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy"]

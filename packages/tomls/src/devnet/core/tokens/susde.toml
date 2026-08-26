@@ -1,0 +1,21 @@
+# Devnet sUSDe global collateral config -- mirrors mainnet susde*.
+# No spot market: only wETH has one on devnet.
+[invoke.susde_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= settings.susdeProxyAddress %>",
+    { collateralAdapter_DEPRECATED = "<%= settings.susdeCollateralAdapter %>", withdrawalWindowSize = "<%= settings.susdeWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.susdeWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = ['invoke.upgrade_core_proxy', 'var.global_collateral_configs']
+
+[invoke.susde_auto_exchange_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), settings.susdeProxyAddress])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy"]

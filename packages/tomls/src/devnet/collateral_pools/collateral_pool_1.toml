@@ -1,5 +1,18 @@
 # Devnet collateral pool config: full mainnet market mirror (75 markets),
-# 3 collaterals (rUSD, wETH, sRUSD). Markets are created in mainnet id order so
+# 10 registered collaterals.
+#
+# Collateral set = mainnet's 12-token set MINUS the three LM tokens
+# (rSelini, rAmber, rHedge), PLUS the legacy Cronos sRUSD that devnet still
+# carries. The LM tokens are held back deliberately: their REYALM# parent
+# nodes do not resolve on devnet (process() reverts for SELINI and AMBER,
+# and HEDGE returns a flat 1.0 with no feed behind it), and Core walks the
+# whole supporting-collateral set on EVERY margin computation -- so
+# registering them would revert every fill, liquidation and funding update,
+# exactly as the legacy sRUSD node once did. They also carry zero margin
+# credit in the ME's devnet1 table, so excluding them costs no cross-margin
+# realism. Re-add them once REYALM# is pushed on devnet, or behind a
+# deliberate constant node; note that takes the set to 13 and needs
+# cp1Rusd_maxCollaterals raised from 12.. Markets are created in mainnet id order so
 # devnet ids match production; each asserts its own id.
 include = [
     "market_1eth.toml",
@@ -84,6 +97,12 @@ include = [
     "tokens/weth.toml",
     "tokens/srusd.toml",
     "tokens/srusd_legacy.toml",
+    "tokens/wbtc.toml",
+    "tokens/wsteth.toml",
+    "tokens/usde.toml",
+    "tokens/susde.toml",
+    "tokens/deusd.toml",
+    "tokens/sdeusd.toml",
 ]
 
 # Collateral pool anchor - only depends on market 1 ETH
