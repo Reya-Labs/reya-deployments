@@ -1,0 +1,85 @@
+{
+  "//": [
+    "Cannon clone-source lockfile for the devnet omnibus (PRO-998).",
+    "",
+    "Every ref below is a `clone.*` source in packages/tomls/src/devnet/**, declared as a",
+    "*Package setting in src/omnibus/reya_devnet.toml. Cannon resolves a clone source through",
+    "the on-chain registry, and for these refs the registry now serves DIFFERENT artifact bytes",
+    "than devnet was actually deployed from (they were rebuilt on a newer cannon toolchain and",
+    "republished). Cannon clones proxies via CREATE2, so different artifact bytes mean different",
+    "initcode, a different proxy address, and a devnet that only reproduces on the one machine",
+    "whose local cache still holds the original artifacts.",
+    "",
+    "`deploy` is the package's deployment blob -- the CID devnet was actually built from.",
+    "`misc` is the artifact blob that deployment blob points at (its `miscUrl`); the clone step",
+    "reads it unconditionally for contract bytecode, so a pin is only usable if BOTH are",
+    "reachable. Both are pinned here because both are inputs to the CREATE2 address.",
+    "",
+    "chainId 13370 is not a typo: cannon resolves `clone.source` at CANNON_CHAIN_ID (the",
+    "portable/cross-chain variant), never at the target chain -- see @usecannon/builder",
+    "steps/clone.js, `config.chainId ?? CANNON_CHAIN_ID`. Priming these under 89346162 writes",
+    "tags no clone step ever reads.",
+    "",
+    "Prime with `yarn reya_devnet:prime` BEFORE any devnet build. Cannon consults the local",
+    "registry before the on-chain ones, so priming makes every machine resolve these bytes.",
+    "",
+    "The other five devnet clone sources (core/passivePerp/ordersGateway/periphery 1.1.2@router",
+    "and passive-pool 1.0.14@router) are NOT pinned: the registry still serves the artifacts",
+    "devnet was built from for those, so there is nothing to correct.",
+    "",
+    "Verify a pin end-to-end with packages/tomls/scripts/verify-clone-source-pins.js, which",
+    "recomputes the devnet PassivePool CREATE2 address from these bytes."
+  ],
+  "chainId": 13370,
+  "ipfsRepo": "https+ipfs://repo.usecannon.com",
+  "packages": {
+    "reya-core:1.0.0@proxy": {
+      "deploy": "QmYJEYR9MUC3xb1Wn9HocjnTK1ynQCv75inuUn1y2oixwR",
+      "misc": "QmZ1vNM8RnrKGvGwTHf82Q67FVoVzhNrdmLHncsaJVL2bL"
+    },
+    "reya-core:1.0.2@account-nft-router": {
+      "deploy": "QmZMoQpCEAtF9KY48Z9YJzCGj2udPHpQjgnEzmRSAUspSq",
+      "misc": "QmQMnhXyvV9tRoqkHHB9nDq9ALGe8AMp1PXaw8UDbW2jxZ"
+    },
+    "reya-instrument-passive-perp:1.0.0@proxy": {
+      "deploy": "Qmae4D6VQ2h5HqygZeTLFe69Fjm5YVRNYFHrQe4tqGcw9o",
+      "misc": "QmfHfK9f4JqRuGkPM1pxMZnA2EQxCqDZ6uFupYCPg67kCo"
+    },
+    "reya-orders-gateway:1.0.1@proxy": {
+      "deploy": "QmPs1zaZxN4PmYH19hPdfyS7XvDLBt6tR5Gjt3nj52j42b",
+      "misc": "QmRsMqZ7sfb3upKTjkuUJMXMahBidwUrnnBFPm2NnndAZA"
+    },
+    "reya-oracle-manager:1.0.0@proxy": {
+      "deploy": "QmWugpn3Z4p6kYdLYUxEJPWvR6f7q2maGTjSE9UYnd5X97",
+      "misc": "QmVPi5VYsebU1mSXZ1u7mmdrRDfuESJ66pLnFNdKri19Yi"
+    },
+    "reya-oracle-manager:1.0.5@router": {
+      "deploy": "QmYBbxrnJBufTnz2sNvK2FzzBuBVKm55Xc23Fn2ne6BjkD",
+      "misc": "QmWi9vwrpZ7FmoDDJ5iFmyLqLXjU4Qm4GH6n41MCZM1f3p"
+    },
+    "reya-oracle-adapters:1.0.1@proxy": {
+      "deploy": "QmZJt5F351rCfqfEzVipB7N3Kv5eYMMKZVqP9hACnmMrBr",
+      "misc": "QmQGTS2vmFBwvqWoHgBY68HHj52sQxCaKdk5JCg44aujx8"
+    },
+    "reya-oracle-adapters:1.0.8@router": {
+      "deploy": "QmcFos6JXqeReaXT3rvTN9aQojipvpe8BaW4aC2G1U28Ka",
+      "misc": "QmU4ReYrJCYTAZ6aagCSFXogLGDAkXSL93JzgUQJpSQhtV"
+    },
+    "reya-exchange-passive-pool:1.0.0@proxy": {
+      "deploy": "QmbzKjkmpUXXvb9H2PU2EPX9bCQAJGGDRd3uiwFX1PXSxq",
+      "misc": "Qmd4bcY45NRwzyWXUaDoCUQYiD5dca15haL8TLKTvFUqn4"
+    },
+    "reya-tokens:1.0.0@proxy": {
+      "deploy": "QmRbmX7yHz8DVsG3MznVHSYtrmjL7BusFjs2DonrtQRM3R",
+      "misc": "QmZe2mtiwA54EFpRdjRqnrp4xyygY5ZcnkwhzKXtPKN3KH"
+    },
+    "reya-tokens:1.0.1@router": {
+      "deploy": "Qmc3VkFJnJwwdjj2yFyFKc29xYfpwTkpA41v9DVqKmA1us",
+      "misc": "QmU3dp46MUCctr9YDTYj4veC87Mi4voVWmjn1FztwpqtfX"
+    },
+    "reya-periphery:1.0.0@proxy": {
+      "deploy": "QmauWRKXDhWNn9qm6NEZMZ8Ud7kjmSDmhBz5TXsBQxepMt",
+      "misc": "QmeMvwkLH5ZC85RXRGEsaDJgJoU3GW9RUT7EvSxBHemiVd"
+    }
+  }
+}
