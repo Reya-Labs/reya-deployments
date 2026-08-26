@@ -14,4 +14,7 @@ include = [
     "tokens/susde.toml",
     "tokens/deusd.toml",
     "tokens/sdeusd.toml",
+    "tokens/rselini.toml",
+    "tokens/ramber.toml",
+    "tokens/rhedge.toml",
 ]

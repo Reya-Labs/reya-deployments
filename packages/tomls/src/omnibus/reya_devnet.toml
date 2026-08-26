@@ -61,6 +61,13 @@ usdeProxyAddress = "0xDca6971c26fDEE0536Fdff076D063643f7810621"
 susdeProxyAddress = "0x08A766935478A1632FA776DCEbD3E75Ce88A1034"
 deusdProxyAddress = "0x3b9D28dC180813a106d26778135Ac2A674F89957"
 sdeusdProxyAddress = "0xbEB316680B6fcd2dC3aF1fC933B3A27a2513d89D"
+# LM share tokens. Devnet does not deploy these (mainnet does, via
+# share_token/mainnet.toml) -- it reuses the Cronos deployments, so unlike
+# mainnet's `contracts.RSELINIProxy.address` these are literals. Verified
+# on-chain 2026-08-26: symbol rSelini / rAmber / rHedge, 18 decimals each.
+rseliniProxyAddress = "0xba8ae4D2a147c54c3ABA123e8E01937Af505FC3C"
+ramberProxyAddress = "0x125Fd68eC0Ab65Ce9606dED99e8F19c286f9E534"
+rhedgeProxyAddress = "0xfB9eed7A6f3100Db35C94b214917a0a64AeC1a97"
 
 ###############################################################################
 # Wallet Addresses (simplified - single owner for devnet)
@@ -235,6 +242,13 @@ usdeTokenDecimals = "18"
 susdeTokenDecimals = "18"
 deusdTokenDecimals = "18"
 sdeusdTokenDecimals = "18"
+# On mainnet these three come from share_token/share_tokens/<token>.toml, which
+# deploys the token; devnet reuses the Cronos deployments so it declares them
+# here. Load-bearing: every cap / auto-exchange / dust threshold below is scaled
+# through parseUnits(.., <token>TokenDecimals).
+rseliniTokenDecimals = "18"
+ramberTokenDecimals = "18"
+rhedgeTokenDecimals = "18"
 
 ###############################################################################
 # Global Collateral Configs (rUSD, wETH, sRUSD)
@@ -275,6 +289,21 @@ deusdWithdrawalTvlPercentageLimitUnscaled = "1"
 sdeusdCollateralAdapter = "<%= AddressZero %>"
 sdeusdWithdrawalWindowSize = "1"
 sdeusdWithdrawalTvlPercentageLimitUnscaled = "1"
+# -------------------------------------------------------------------
+# LM share tokens: window/limit mirrored verbatim from reya_network.toml.
+# The 0 TVL percentage limit means withdrawals of these are fully gated, same
+# as mainnet.
+rseliniCollateralAdapter = "<%= AddressZero %>"
+rseliniWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+rseliniWithdrawalTvlPercentageLimitUnscaled = "0"
+# -------------------------------------------------------------------
+ramberCollateralAdapter = "<%= AddressZero %>"
+ramberWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+ramberWithdrawalTvlPercentageLimitUnscaled = "0"
+# -------------------------------------------------------------------
+rhedgeCollateralAdapter = "<%= AddressZero %>"
+rhedgeWithdrawalWindowSize = "<%= settings.ONE_DAY_IN_SECONDS %>"
+rhedgeWithdrawalTvlPercentageLimitUnscaled = "0"
 
 ###############################################################################
 # PassivePerp Global Config
@@ -2490,12 +2519,15 @@ market75Mega_velocityMultiplierUnscaled = "0"
 # 75 to match mainnet: the full mainnet market list is now mirrored on-chain.
 # Was "1" (ETH only) -- every market beyond the first reverts without this.
 cp1Rusd_maxMarkets = "75"
-# Was "2" (rUSD + wETH). Bumped to "12" to match cronos / mainnet so devnet
-# can layer in more collaterals without breaching the limit (today the next
-# one is sRUSD; see `setCollateralConfig` in `devnet/collateral_pools/
-# tokens/srusd.toml` — it reverts with `CollateralLimitBreached("1","3","2")`
-# at the old cap).
-cp1Rusd_maxCollaterals = "12"
+# Was "2" (rUSD + wETH), then "12" to match cronos / mainnet. Now "13": devnet
+# registers mainnet's full 12-token set AND still carries the legacy Cronos
+# sRUSD entry, which Core cannot deregister. The limit counts the rUSD quote
+# collateral too (12 supporting + rUSD = 13), and it is checked in
+# CollateralPool.setCollateralParent AFTER the add, so the LAST registration
+# is what reverts -- `CollateralLimitBreached("1","13","12")` -- not the LM
+# token that "caused" it. Mainnet and cronos stay at 12 because neither has
+# the legacy sRUSD row.
+cp1Rusd_maxCollaterals = "13"
 
 cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
 
@@ -2734,6 +2766,43 @@ cp1Rusd_sdeusdParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>
 cp1Rusd_sdeusdParentConfig_priceHaircutUnscaled = "0.075"
 cp1Rusd_sdeusdParentConfig_autoExchangeDiscountUnscaled = "0.005"
 cp1Rusd_sdeusdParentConfig_oracleNodeId = "<%= settings.sdeusdUsdcNodeIdClosing %>"
+
+# --- rSelini: caps, auto-exchange and parent config mirrored from mainnet.
+# The oracle node ids below are the REYALM# STORK_OFFCHAIN_LOOKUP leaves
+# registered by oracle_manager/configs/reyaLm/*.toml against devnet's OWN
+# adapters. They resolve only because the LmTokenPrice storage behind them is
+# seeded -- see devnet/oracle_adapters/init_lm_token_prices.toml.
+cp1Rusd_rselini_capUnscaled = "12525209"
+cp1Rusd_rselini_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_rselini_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_rselini_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_rselini_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_rseliniParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_rseliniParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_rseliniParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_rseliniParentConfig_oracleNodeId = "<%= settings.seliniUsdcReyaLmNodeId %>"
+
+# --- rAmber: caps, auto-exchange and parent config mirrored from mainnet
+cp1Rusd_ramber_capUnscaled = "2000000"
+cp1Rusd_ramber_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_ramber_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_ramber_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_ramber_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_ramberParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_ramberParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_ramberParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_ramberParentConfig_oracleNodeId = "<%= settings.amberUsdcReyaLmNodeId %>"
+
+# --- rHedge: caps, auto-exchange and parent config mirrored from mainnet
+cp1Rusd_rhedge_capUnscaled = "500000"
+cp1Rusd_rhedge_autoExchangeThresholdUnscaled = "0"
+cp1Rusd_rhedge_autoExchangeInsuranceFeeUnscaled = "0.005"
+cp1Rusd_rhedge_autoExchangeDustThresholdUnscaled = "0"
+cp1Rusd_rhedge_bidSubmissionFeeUnscaled = "0"
+cp1Rusd_rhedgeParentConfig_collateralAddress = "<%= settings.rusdProxyAddress %>"
+cp1Rusd_rhedgeParentConfig_priceHaircutUnscaled = "0.075"
+cp1Rusd_rhedgeParentConfig_autoExchangeDiscountUnscaled = "0.005"
+cp1Rusd_rhedgeParentConfig_oracleNodeId = "<%= settings.hedgeUsdcReyaLmNodeId %>"
 
 ###############################################################################
 # Spot Markets (WETH/rUSD, sRUSD/rUSD)

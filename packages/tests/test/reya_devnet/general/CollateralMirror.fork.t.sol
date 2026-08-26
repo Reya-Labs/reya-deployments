@@ -3,7 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
 import { ICoreProxy, CollateralConfig, ParentCollateralConfig } from "../../../src/interfaces/ICoreProxy.sol";
-import { IOracleManagerProxy } from "../../../src/interfaces/IOracleManagerProxy.sol";
+import { IOracleManagerProxy, NodeOutput } from "../../../src/interfaces/IOracleManagerProxy.sol";
 import { IPassivePoolProxy } from "../../../src/interfaces/IPassivePoolProxy.sol";
 
 interface IERC20Decimals {
@@ -12,8 +12,7 @@ interface IERC20Decimals {
 
 /**
  * @title CollateralMirrorForkTest
- * @notice Pins devnet's mirror of mainnet's collateral set, and the three
- *         tokens deliberately left out of it.
+ * @notice Pins devnet's mirror of mainnet's full 12-token collateral set.
  * @dev Core walks the ENTIRE supporting-collateral set on every margin
  *      computation, so this set is not just a feature list -- one unresolvable
  *      parent oracle in it reverts every fill, liquidation and funding update
@@ -36,12 +35,13 @@ contract CollateralMirrorForkTest is ReyaForkTest {
     /// devnet quirk.
     uint256 internal constant SDEUSD_CLOSING_PRICE = 1_068_966_036_300_082_784;
 
-    // The three LM tokens, present on mainnet as collateral and deliberately
-    // NOT registered here. Addresses are the Cronos deployments.
     /// The legacy Cronos sRUSD: retired, but still a registered collateral,
     /// so it stays in the set Core walks. Same literal DevnetConfig uses.
     address internal constant LEGACY_SRUSD = 0xb9F531A54Fc0E9AdCa1b931d9533B4e49bB2fAD6;
 
+    // The three LM share tokens. Devnet does not deploy these -- it reuses the
+    // Cronos deployments, so these are the same addresses the omnibus carries
+    // as rselini/ramber/rhedgeProxyAddress.
     address internal constant RSELINI = 0xbA8ae4D2A147c54c3aBA123e8e01937AF505FC3c;
     address internal constant RAMBER = 0x125FD68Ec0ab65ce9606DeD99e8F19C286f9E534;
     address internal constant RHEDGE = 0xFB9eeD7a6F3100dB35c94B214917a0A64AEC1a97;
@@ -91,7 +91,7 @@ contract CollateralMirrorForkTest is ReyaForkTest {
     /// incomplete; an EXTRA one means an unreviewed token entered the margin
     /// walk, which is the failure mode that can brick the venue.
     function test_Devnet_CollateralMirror_ExactSupportingSet() public view {
-        address[] memory expected = new address[](9);
+        address[] memory expected = new address[](12);
         expected[0] = sec.weth;
         expected[1] = sec.srusd; // devnet's own
         expected[2] = LEGACY_SRUSD; // retired but still registered
@@ -101,6 +101,9 @@ contract CollateralMirrorForkTest is ReyaForkTest {
         expected[6] = sec.susde;
         expected[7] = sec.deusd;
         expected[8] = sec.sdeusd;
+        expected[9] = RSELINI;
+        expected[10] = RAMBER;
+        expected[11] = RHEDGE;
 
         address[] memory supporting = supportingCollaterals();
         require(
@@ -121,24 +124,47 @@ contract CollateralMirrorForkTest is ReyaForkTest {
         }
     }
 
-    /// Intent pin: the LM tokens stay OUT.
+    /// The three LM tokens are registered AND their REYALM# feeds resolve.
     ///
-    /// rSelini and rAmber have no price on devnet -- their REYALM# parent
-    /// nodes revert on this manager, because nothing publishes those pairs
-    /// here (they resolve on cronos, which has the feed). rHedge reads a flat
-    /// 1.0 from its own NAV updater rather than a real feed. Registering any
-    /// of them puts an unresolvable node into the set Core walks on EVERY
-    /// margin computation, reverting every fill, liquidation and funding
-    /// update -- so this is a venue-availability assertion, not a nice-to-have.
+    /// These two facts have to be asserted together. Core walks the entire
+    /// supporting-collateral set on EVERY margin computation, so a registered
+    /// LM token whose node does not resolve reverts every fill, liquidation
+    /// and funding update on the venue -- which is precisely what kept them
+    /// out until their prices were seeded (see
+    /// devnet/oracle_adapters/seed_lm_token_prices.toml).
     ///
-    /// The ME's devnet1 collateral table zero-credits all three anyway, so
-    /// their absence costs no cross-margin realism. Re-adding them needs
-    /// REYALM# published on devnet (or a deliberate constant node) AND
-    /// cp1Rusd_maxCollaterals raised from 12, since that takes the set to 13.
-    function test_Devnet_CollateralMirror_LmTokensNotRegistered() public view {
-        require(!isSupporting(RSELINI), "collateral mirror: rSelini registered but its REYALM# node does not resolve");
-        require(!isSupporting(RAMBER), "collateral mirror: rAmber registered but its REYALM# node does not resolve");
-        require(!isSupporting(RHEDGE), "collateral mirror: rHedge registered but it has no real feed on devnet");
+    /// The freshness half is the subtle one. Nothing pushes REYALM# on any
+    /// chain: reya-off-chain filters REYA* out of the Stork subscription
+    /// chain-wide, and the adapters serve these pairs from their own
+    /// LmTokenPrice storage instead. An UNSEEDED pair returns the empty
+    /// payload ("", 0, 0), and timestamp 0 fails the node's 180s
+    /// maxStaleDuration with StalePriceDetected -- so "unpriced" surfaces as
+    /// staleness, not as a zero price. A SEEDED pair is stamped with
+    /// block.timestamp at READ time, so it is permanently fresh with no
+    /// pusher at all. Asserting timestamp == block.timestamp pins that
+    /// mechanism: if someone ever re-points these at a pushed feed, this line
+    /// is the one that tells them the staleness model changed.
+    function test_Devnet_CollateralMirror_LmTokensRegisteredAndPriced() public view {
+        string[3] memory pairs = ["REYALM#SELINIUSDC", "REYALM#AMBERUSDC", "REYALM#HEDGEUSDC"];
+        address[3] memory tokens = [RSELINI, RAMBER, RHEDGE];
+
+        for (uint256 i = 0; i < tokens.length; i++) {
+            require(
+                isSupporting(tokens[i]),
+                string.concat("collateral mirror: LM token not registered ", vm.toString(tokens[i]))
+            );
+
+            NodeOutput.Data memory output = IOracleManagerProxy(sec.oracleManager).process(storkLeafNode(pairs[i]));
+            require(output.price > 0, string.concat("collateral mirror: ", pairs[i], " resolves to a zero price"));
+            require(
+                output.timestamp == block.timestamp,
+                string.concat(
+                    "collateral mirror: ",
+                    pairs[i],
+                    " no longer stamps the read time -- a static LM seed would now be able to go stale"
+                )
+            );
+        }
     }
 
     // ------------------------------------------------------------------
@@ -188,6 +214,14 @@ contract CollateralMirrorForkTest is ReyaForkTest {
         // sdeUSD is the one that does NOT price off a live feed, on either
         // environment: mainnet pins it to the same frozen closing constant.
         checkCollateral(sec.sdeusd, "sdeusd", 0.075e18, 0.005e18, 0.005e18, constantNode(SDEUSD_CLOSING_PRICE), 18);
+
+        // The LM tokens price off a BARE REYALM# leaf, not the base/USDC div
+        // node every other collateral uses -- the adapters already serve these
+        // pairs quoted in USDC, so there is nothing to divide by. Economics are
+        // mainnet's verbatim (cp1Rusd_rselini_* etc. in the omnibus).
+        checkCollateral(RSELINI, "rselini", 0.075e18, 0.005e18, 0.005e18, storkLeafNode("REYALM#SELINIUSDC"), 18);
+        checkCollateral(RAMBER, "ramber", 0.075e18, 0.005e18, 0.005e18, storkLeafNode("REYALM#AMBERUSDC"), 18);
+        checkCollateral(RHEDGE, "rhedge", 0.075e18, 0.005e18, 0.005e18, storkLeafNode("REYALM#HEDGEUSDC"), 18);
     }
 
     /// Every mirrored collateral prices. The config-closure walk covers this

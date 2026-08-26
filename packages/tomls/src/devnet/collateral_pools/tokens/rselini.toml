@@ -1,0 +1,38 @@
+# Devnet CP1 rSelini collateral config -- mirrors mainnet cp1Rusd_rselini_*.
+#
+# Reuses the existing Cronos rSelini deployment. Prices off the
+# REYALM#SELINIUSDC node on devnet's OWN oracle manager, which resolves only
+# because devnet/oracle_adapters/seed_lm_token_prices.toml has written a
+# price into the adapters' LmTokenPrice storage.
+#
+# Nothing pushes REYALM# on any chain -- reya-off-chain filters REYA* out of
+# the Stork subscription -- so that seed IS the feed.
+#
+# Ordering is load-bearing in both directions. Core walks the ENTIRE
+# supporting-collateral set on EVERY margin computation, so this entry must
+# not exist before the seed: an unresolvable node here reverts every fill,
+# liquidation and funding update, exactly as the legacy Cronos sRUSD node once
+# did. Proven on a fork of the devnet chain -- registering an LM token before
+# seeding its pair makes getUsdNodeMarginInfo revert StalePriceDetected, and
+# after seeding it returns cleanly.
+#
+# Like the other reused-Cronos collaterals this also runs AFTER
+# core_configure_protocol, and needs the global collateral config from
+# devnet/core/tokens/rselini.toml for its decimals.
+[invoke.cp_1rusd_set_rselini_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setCollateralConfig"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= settings.rseliniProxyAddress %>",
+    { depositingEnabled = true, cap = "<%= parseUnits(settings.cp1Rusd_rselini_capUnscaled, parseInt(settings.rseliniTokenDecimals)) %>", withdrawalWindowSize_DEPRECATED = "0", withdrawalTvlPercentageLimit_DEPRECATED = "0", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_rselini_autoExchangeThresholdUnscaled, parseInt(settings.rseliniTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_rselini_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_rselini_autoExchangeDustThresholdUnscaled, parseInt(settings.rseliniTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_rselini_bidSubmissionFeeUnscaled, parseInt(settings.rseliniTokenDecimals)) %>" },
+    { collateralAddress = "<%= settings.cp1Rusd_rseliniParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_rseliniParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_rseliniParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.cp1Rusd_rseliniParentConfig_oracleNodeId %>" },
+]
+depends = [
+    "var.cp_1rusd_vars",
+    "invoke.cp_1rusd_set_rusd_config",
+    "invoke.core_configure_protocol",
+    "invoke.rselini_global_collateral_config",
+    "invoke.devnet_oracle_adapters_reya_lm_selini_init_price",
+]
