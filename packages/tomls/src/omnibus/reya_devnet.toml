@@ -358,52 +358,38 @@ market1Eth_velocityMultiplierUnscaled = "0"
 ###############################################################################
 # MAINNET MARKET MIRROR (markets 2-75)
 #
-# Every mainnet market is registered on-chain so devnet1's contract state
-# matches production and id -> symbol resolves the same in both environments.
-# Only 30 are ACTIVATED off-chain (PRO-498). The other 45 carry
-# maxOpenBaseUnscaled = "0" -- the contract's reduce-only state -- so they
-# exist and they price, but they cannot take on exposure.
-#
-# The activated 30 are not a hand-picked list. They are exactly the mainnet
-# markets that can still take exposure (maxOpenBase > 0), minus the two priced
-# off a frozen constant node (30 FTM, 59 LAYER). 43 of mainnet's 75 markets are
-# ALREADY reduce-only in production, which is why the mirror lands on 30
-# without an arbitrary cut.
-#
-# ACTIVATED: 1eth 2btc 3sol 4arb 5op 6avax 8link 11uni 12sui 13tia 16xrp 18pepe1k 20doge 23apt 24bnb 26ada 27ldo 28pol 29near 31ena 33pendle 35grass 37dot 38ltc 43hype 50wld 62me 66aero 70paxg 74linea
-#
-# To activate one of the other 45: restore its maxOpenBaseUnscaled to the
-# mainnet value recorded in its comment, and add it to the off-chain lists in
-# reya-devops (ME MARKET_IDS + MARKET_CONFIG__PERP_MARKETS, PERP_OB_MARKET_IDS
-# on api-executor / ws-exec / perp-ob-oracle-push).
-###############################################################################
-
-###############################################################################
-# MAINNET MARKET MIRROR (markets 2-75)
-#
 # All 75 mainnet markets are registered on-chain so devnet1's contract state
 # matches production and id -> symbol resolves the same in both environments.
-# ACTIVATED OFF-CHAIN: 19 markets. Ids 1-30 minus the 10 mainnet already
-# holds reduce-only, minus 30 FTM (no mark feed). Everything else carries
-# maxOpenBaseUnscaled = "0" -- the contract's reduce-only state -- so they
-# exist and they price, but cannot take on exposure.
+# ACTIVATED OFF-CHAIN: 30. The other 45 carry maxOpenBaseUnscaled = "0" --
+# the contract's reduce-only state -- so they exist and they price, but cannot
+# take on exposure.
 #
-# KNOWN DIVERGENCE, recorded deliberately: 10 of the activated 30 are
-# ALREADY reduce-only on mainnet, so mirroring mainnet's value gives them a 0
-# cap here too and they will reject every fill despite being "activated":
-#   7mkr 9aave 10crv 14sei 15zro 17wif 19popcat 21kshib 22kbonk 25jto
-# The effective tradeable set is therefore 20 of 30. Market 30 FTM is
-# activated with real capacity but prices off a FROZEN constant closing node,
-# so it trades against a static mark -- fine for load, not for price realism. Giving them real
-# capacity would mean inventing risk numbers mainnet does not have, so the
-# mirror is kept faithful and the gap is documented instead. If the stress
-# campaign needs all 30 live, that is a deliberate follow-up decision.
+# The 30 are derived, not hand-picked: every mainnet market that can still take
+# exposure (maxOpenBase > 0 there), minus the two that price off a FROZEN
+# constant closing node (30 FTM, 59 LAYER). 43 of mainnet's 75 are already
+# reduce-only in production, so only 32 can take exposure at all -- which is
+# why this lands on exactly 30 without an arbitrary cut.
 #
-# Of the 45 non-activated: 33 inherit 0 from mainnet, 12 are set to 0
-# on devnet only (their mainnet value is recorded in each comment).
+#   1eth 2btc 3sol 4arb 5op 6avax 8link 11uni 12sui 13tia 16xrp 18pepe1k
+#   20doge 23apt 24bnb 26ada 27ldo 28pol 29near 31ena 33pendle 35grass 37dot
+#   38ltc 43hype 50wld 62me 66aero 70paxg 74linea
 #
-# To activate one of ids 31-75: restore its maxOpenBaseUnscaled to the mainnet
-# value in its comment, and add it to the off-chain lists in reya-devops.
+# 30 FTM is doubly disqualified and must never be activated here: besides the
+# frozen node, it has NO Stork mark feed on devnet at all (the omnibus carries
+# 74 mark pairs, not 75 -- the ticker was retired when Fantom became Sonic).
+# The matching engine would ACCEPT a book for it and run with no oracle input
+# rather than failing, so the reduce-only cap is the thing stopping it. This
+# was caught by test_Devnet_MarketMirror_NonActivatedMarketsAreReduceOnly,
+# not by inspection.
+#
+# Of the 45 non-activated: 43 inherit 0 from mainnet, 2 (30 FTM, 59 LAYER) are
+# set to 0 on devnet only; each records its mainnet value in its own comment.
+#
+# To activate one of the other 45: restore its maxOpenBaseUnscaled to the
+# mainnet value in its comment, add it to the off-chain lists in reya-devops
+# (ME MARKET_IDS + MARKET_CONFIG__PERP_MARKETS, PERP_OB_MARKET_IDS on
+# api-executor / ws-exec / perp-ob-oracle-push), and update the activated set
+# in MarketMirror.fork.t.sol -- the invariant test is the paired change.
 ###############################################################################
 
 ###############################################################################
@@ -1229,7 +1215,7 @@ market30Ftm_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_31ena]
 market31Ena_riskMatrixIndex = "0"
-market31Ena_maxOpenBaseUnscaled = "0"
+market31Ena_maxOpenBaseUnscaled = "1069465"
 market31Ena_oracleNodeId = "<%= settings.enaUsdcMarkNodeIdStork %>"
 market31Ena_dutchConfig_lambdaUnscaled = "1"
 market31Ena_dutchConfig_minBaseUnscaled = "0.11"
@@ -1285,7 +1271,7 @@ market32Eigen_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_33pendle]
 market33Pendle_riskMatrixIndex = "0"
-market33Pendle_maxOpenBaseUnscaled = "0"
+market33Pendle_maxOpenBaseUnscaled = "86908"
 market33Pendle_oracleNodeId = "<%= settings.pendleUsdcMarkNodeIdStork %>"
 market33Pendle_dutchConfig_lambdaUnscaled = "1"
 market33Pendle_dutchConfig_minBaseUnscaled = "0.11"
@@ -1341,7 +1327,7 @@ market34Goat_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_35grass]
 market35Grass_riskMatrixIndex = "0"
-market35Grass_maxOpenBaseUnscaled = "0"
+market35Grass_maxOpenBaseUnscaled = "307591"
 market35Grass_oracleNodeId = "<%= settings.grassUsdcMarkNodeIdStork %>"
 market35Grass_dutchConfig_lambdaUnscaled = "1"
 market35Grass_dutchConfig_minBaseUnscaled = "0.11"
@@ -1397,7 +1383,7 @@ market36KNeiro_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_37dot]
 market37Dot_riskMatrixIndex = "0"
-market37Dot_maxOpenBaseUnscaled = "0"
+market37Dot_maxOpenBaseUnscaled = "72104"
 market37Dot_oracleNodeId = "<%= settings.dotUsdcMarkNodeIdStork %>"
 market37Dot_dutchConfig_lambdaUnscaled = "1"
 market37Dot_dutchConfig_minBaseUnscaled = "0.11"
@@ -1425,7 +1411,7 @@ market37Dot_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_38ltc]
 market38Ltc_riskMatrixIndex = "0"
-market38Ltc_maxOpenBaseUnscaled = "0"
+market38Ltc_maxOpenBaseUnscaled = "2041"
 market38Ltc_oracleNodeId = "<%= settings.ltcUsdcMarkNodeIdStork %>"
 market38Ltc_dutchConfig_lambdaUnscaled = "1"
 market38Ltc_dutchConfig_minBaseUnscaled = "0.11"
@@ -1565,7 +1551,7 @@ market42Trump_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_43hype]
 market43Hype_riskMatrixIndex = "0"
-market43Hype_maxOpenBaseUnscaled = "0"
+market43Hype_maxOpenBaseUnscaled = "21148"
 market43Hype_oracleNodeId = "<%= settings.hypeUsdcMarkNodeIdStork %>"
 market43Hype_dutchConfig_lambdaUnscaled = "1"
 market43Hype_dutchConfig_minBaseUnscaled = "0.11"
@@ -1761,7 +1747,7 @@ market49Griffain_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_50wld]
 market50Wld_riskMatrixIndex = "0"
-market50Wld_maxOpenBaseUnscaled = "0"
+market50Wld_maxOpenBaseUnscaled = "309104"
 market50Wld_oracleNodeId = "<%= settings.wldUsdcMarkNodeIdStork %>"
 market50Wld_dutchConfig_lambdaUnscaled = "1"
 market50Wld_dutchConfig_minBaseUnscaled = "0.11"
@@ -2097,7 +2083,7 @@ market61Ip_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_62me]
 market62Me_riskMatrixIndex = "0"
-market62Me_maxOpenBaseUnscaled = "0"
+market62Me_maxOpenBaseUnscaled = "974696"
 market62Me_oracleNodeId = "<%= settings.meUsdcMarkNodeIdStork %>"
 market62Me_dutchConfig_lambdaUnscaled = "1"
 market62Me_dutchConfig_minBaseUnscaled = "0.11"
@@ -2209,7 +2195,7 @@ market65Syrup_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_66aero]
 market66Aero_riskMatrixIndex = "0"
-market66Aero_maxOpenBaseUnscaled = "0"
+market66Aero_maxOpenBaseUnscaled = "326393"
 market66Aero_oracleNodeId = "<%= settings.aeroUsdcMarkNodeIdStork %>"
 market66Aero_dutchConfig_lambdaUnscaled = "1"
 market66Aero_dutchConfig_minBaseUnscaled = "0.11"
@@ -2321,7 +2307,7 @@ market69Prove_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_70paxg]
 market70Paxg_riskMatrixIndex = "0"
-market70Paxg_maxOpenBaseUnscaled = "0"
+market70Paxg_maxOpenBaseUnscaled = "144"
 market70Paxg_oracleNodeId = "<%= settings.paxgUsdcMarkNodeIdStork %>"
 market70Paxg_dutchConfig_lambdaUnscaled = "1"
 market70Paxg_dutchConfig_minBaseUnscaled = "0.11"
@@ -2433,7 +2419,7 @@ market73Wlfi_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_74linea]
 market74Linea_riskMatrixIndex = "0"
-market74Linea_maxOpenBaseUnscaled = "0"
+market74Linea_maxOpenBaseUnscaled = "34482759"
 market74Linea_oracleNodeId = "<%= settings.lineaUsdcMarkNodeIdStork %>"
 market74Linea_dutchConfig_lambdaUnscaled = "1"
 market74Linea_dutchConfig_minBaseUnscaled = "0.11"

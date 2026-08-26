@@ -42,8 +42,8 @@ contract MarketMirrorForkTest is ReyaForkTest {
     ///     oracle input rather than failing.
     /// Leaving 19.
     function activatedMarketIds() internal pure returns (uint128[] memory ids) {
-        ids = new uint128[](19);
-        uint128[19] memory raw = [
+        ids = new uint128[](30);
+        uint128[30] memory raw = [
             uint128(1), // ETH
             2, // BTC
             3, // SOL
@@ -62,7 +62,18 @@ contract MarketMirrorForkTest is ReyaForkTest {
             26, // ADA
             27, // LDO
             28, // POL
-            29 // NEAR
+            29, // NEAR
+            31, // ENA
+            33, // PENDLE
+            35, // GRASS
+            37, // DOT
+            38, // LTC
+            43, // HYPE
+            50, // WLD
+            62, // ME
+            66, // AERO
+            70, // PAXG
+            74 // LINEA
         ];
         for (uint256 i = 0; i < raw.length; i++) {
             ids[i] = raw[i];
@@ -141,6 +152,6 @@ contract MarketMirrorForkTest is ReyaForkTest {
             }
         }
 
-        require(activatedSeen == 19, "market mirror: activated market count != 19");
+        require(activatedSeen == 30, "market mirror: activated market count != 30");
     }
 }
