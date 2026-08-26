@@ -1,0 +1,142 @@
+# Devnet market 41 PENGU (perpOB): createMarket takes the quoteToken
+# address, not a pool ID. registerMarket still opens a fresh collateral pool per
+# market, so the CP flags/limits below configure that pool and the final step
+# merges it into CP1 -- the same shape mainnet uses.
+#####################################
+# Create Market
+#####################################
+[invoke.create_market_41pengu]
+target = ["PassivePerpProxy"]
+abi = "<%= JSON.stringify(contracts.PassivePerpProxy.abi.concat({'type':'event','name':'MarketDataUpdated','inputs':[{'name':'eventSequenceNumber','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'marketData','type':'tuple','indexed':false,'internalType':'struct Market.Data','components':[{'name':'id','type':'uint128','internalType':'uint128'},{'name':'passivePoolId_DEPRECATED','type':'uint128','internalType':'uint128'},{'name':'poolAccountId_DEPRECATED','type':'uint128','internalType':'uint128'},{'name':'quoteToken','type':'address','internalType':'address'},{'name':'quoteTokenDecimals','type':'uint8','internalType':'uint8'},{'name':'lastFundingVelocity_DEPRECATED','type':'int256','internalType':'SD59x18'},{'name':'lastFundingRate_DEPRECATED','type':'int256','internalType':'SD59x18'},{'name':'lastFundingTimestamp','type':'uint256','internalType':'uint256'},{'name':'lastMTM_DEPRECATED','type':'tuple','internalType':'struct PriceData','components':[{'name':'price','type':'uint256','internalType':'UD60x18'},{'name':'timestamp','type':'uint256','internalType':'uint256'}]},{'name':'longTrackers','type':'tuple','internalType':'struct FundingAndADLTrackers','components':[{'name':'fundingValue','type':'int256','internalType':'SD59x18'},{'name':'baseMultiplier','type':'uint256','internalType':'UD60x18'},{'name':'adlUnwindPrice','type':'uint256','internalType':'UD60x18'}]},{'name':'shortTrackers','type':'tuple','internalType':'struct FundingAndADLTrackers','components':[{'name':'fundingValue','type':'int256','internalType':'SD59x18'},{'name':'baseMultiplier','type':'uint256','internalType':'UD60x18'},{'name':'adlUnwindPrice','type':'uint256','internalType':'UD60x18'}]},{'name':'openInterest','type':'uint256','internalType':'UD60x18'},{'name':'logPriceMultiplier_DEPRECATED','type':'int256','internalType':'SD59x18'},{'name':'depthFactor_DEPRECATED','type':'uint256','internalType':'UD60x18'},{'name':'priceSpread_DEPRECATED','type':'uint256','internalType':'UD60x18'},{'name':'velocityMultiplier_DEPRECATED','type':'uint256','internalType':'UD60x18'},{'name':'markPrice','type':'uint256','internalType':'UD60x18'},{'name':'markPriceTimestamp','type':'uint256','internalType':'uint256'},{'name':'fundingRate','type':'int256','internalType':'SD59x18'},{'name':'fundingRateTimestamp','type':'uint256','internalType':'uint256'}]},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+fromCall.func = "owner"
+func = "createMarket"
+args = ["Market PENGU", "<%= settings.rusdProxyAddress %>"]
+var.market_41pengu.event = "MarketDataUpdated"
+var.market_41pengu.arg = 1
+depends = [
+    "invoke.core_register_instrument_passive_perp",
+    "invoke.core_unpause",
+    "invoke.passive_perp_global_config",
+    "invoke.create_market_40jup",
+]
+
+[var.market_41pengu_vars]
+market41PenguId = "<%= (String(settings.market_41pengu.id) === '41') ? settings.market_41pengu.id : parseUnits('0', 'assert market_41pengu_vars failed') %>"
+depends = ["invoke.create_market_41pengu"]
+
+##################################################
+# Market's Collateral Pool Feature Flags
+##################################################
+[invoke.market_41pengu_unpause_cp]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market41PenguId %>"]
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market41PenguId])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy", "var.market_41pengu_vars"]
+
+[invoke.market_41pengu_set_pausers_cp]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market41PenguId %>"]
+func = "setDeniers"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market41PenguId])) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_core_proxy", "var.market_41pengu_vars"]
+
+##################################################
+# Market Feature Flags
+##################################################
+[invoke.market_41pengu_unpause_market]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market41PenguId])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy", "var.market_41pengu_vars"]
+
+[invoke.market_41pengu_set_pausers_market]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market41PenguId])) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_core_proxy", "var.market_41pengu_vars"]
+
+[invoke.market_41pengu_enabled_zero_fee_option]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAdmins"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market41PenguId])) %>",
+    [
+        "<%= settings.setMarketZeroFeeBot %>",
+    ],
+]
+depends = ["invoke.upgrade_passive_perp_proxy", "var.market_41pengu_vars"]
+
+#####################################
+# Market Configuration
+#####################################
+[invoke.market_41pengu_set_market_config]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setMarketConfiguration"
+args = [
+    "<%= settings.market41PenguId %>",
+    { riskMatrixIndex = "<%= settings.market41Pengu_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market41Pengu_maxOpenBaseUnscaled) %>", velocityMultiplier_DEPRECATED = "<%= parseEther(settings.market41Pengu_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market41Pengu_oracleNodeId %>", mtmWindow_DEPRECATED = "<%= settings.market41Pengu_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market41Pengu_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market41Pengu_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market41Pengu_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market41Pengu_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market41Pengu_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market41Pengu_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market41Pengu_priceSpacingUnscaled) %>", depthFactor_DEPRECATED = "<%= parseEther(settings.market41Pengu_depthFactorUnscaled) %>", maxExposureFactor_DEPRECATED = "<%= parseEther(settings.market41Pengu_maxExposureFactorUnscaled) %>", maxPSlippage_DEPRECATED = "<%= parseEther(settings.market41Pengu_maxPSlippageUnscaled) %>", markPriceMaxStaleDuration = "<%= settings.market41Pengu_markPriceMaxStaleDuration %>", priceSpread_DEPRECATED = "<%= parseEther(settings.market41Pengu_priceSpreadUnscaled) %>", volatilityIndexMultiplier_DEPRECATED = "<%= parseEther(settings.market41Pengu_volatilityIndexMultiplierUnscaled) %>", fundingRateMaxStaleDuration = "<%= settings.market41Pengu_fundingRateMaxStaleDuration %>", markPriceMaxDeviation = "<%= parseEther(settings.market41Pengu_markPriceMaxDeviationUnscaled) %>", fillPriceMaxDeviation = "<%= parseEther(settings.market41Pengu_fillPriceMaxDeviationUnscaled) %>", minFundingInterval = "<%= settings.market41Pengu_minFundingInterval %>" },
+]
+depends = [
+    "invoke.create_market_41pengu",
+    "invoke.passive_perp_market_config_system_owner",
+]
+
+#####################################
+# Market's Collateral Pool Limits
+#####################################
+[invoke.market_41pengu_set_cp_limits]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market41PenguId %>"]
+func = "setCollateralPoolLimits"
+args = [
+    "<%= settings.market41PenguId %>",
+    { maxMarkets = "1", maxCollaterals = "1" },
+]
+depends = ["invoke.create_market_41pengu"]
+
+##################################################
+# Merge Market's Collateral Pool into CP1
+##################################################
+[invoke.market_41pengu_merge_collateral_pool]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "mergeCollateralPools"
+args = ["<%= settings.market1EthId %>", "<%= settings.market41PenguId %>"]
+depends = [
+    "invoke.market_41pengu_unpause_cp",
+    "invoke.market_41pengu_set_pausers_cp",
+    "invoke.market_41pengu_unpause_market",
+    "invoke.market_41pengu_set_pausers_market",
+    "invoke.market_41pengu_set_market_config",
+    "invoke.market_41pengu_set_cp_limits",
+]

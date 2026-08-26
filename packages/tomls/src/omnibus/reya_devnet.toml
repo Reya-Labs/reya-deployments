@@ -318,10 +318,2084 @@ market1Eth_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
 market1Eth_velocityMultiplierUnscaled = "0"
 
 ###############################################################################
+# Market 2 BTC Configuration -- mirrored from mainnet market2Btc_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_2btc]
+market2Btc_riskMatrixIndex = "0"
+market2Btc_maxOpenBaseUnscaled = "145"
+market2Btc_oracleNodeId = "<%= settings.btcUsdcMarkNodeIdStork %>"
+market2Btc_dutchConfig_lambdaUnscaled = "1"
+market2Btc_dutchConfig_minBaseUnscaled = "0"
+market2Btc_slippageParams_phiUnscaled = "0"
+market2Btc_slippageParams_betaUnscaled = "0"
+market2Btc_minimumOrderBaseUnscaled = "0.001"
+market2Btc_baseSpacingUnscaled = "0.0001"
+market2Btc_priceSpacingUnscaled = "0.001"
+market2Btc_markPriceMaxStaleDuration = "60"
+market2Btc_fundingRateMaxStaleDuration = "600"
+market2Btc_minFundingInterval = "0"
+market2Btc_markPriceMaxDeviationUnscaled = "0.05"
+market2Btc_fillPriceMaxDeviationUnscaled = "0.05"
+market2Btc_priceSpreadUnscaled = "0"
+market2Btc_volatilityIndexMultiplierUnscaled = "0"
+market2Btc_maxPSlippageUnscaled = "0"
+market2Btc_maxExposureFactorUnscaled = "0.999"
+market2Btc_depthFactorUnscaled = "0"
+market2Btc_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market2Btc_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 3 SOL Configuration -- mirrored from mainnet market3Sol_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_3sol]
+market3Sol_riskMatrixIndex = "0"
+market3Sol_maxOpenBaseUnscaled = "17703"
+market3Sol_oracleNodeId = "<%= settings.solUsdcMarkNodeIdStork %>"
+market3Sol_dutchConfig_lambdaUnscaled = "1"
+market3Sol_dutchConfig_minBaseUnscaled = "0.11"
+market3Sol_slippageParams_phiUnscaled = "0"
+market3Sol_slippageParams_betaUnscaled = "0"
+market3Sol_minimumOrderBaseUnscaled = "0.1"
+market3Sol_baseSpacingUnscaled = "0.01"
+market3Sol_priceSpacingUnscaled = "0.001"
+market3Sol_markPriceMaxStaleDuration = "60"
+market3Sol_fundingRateMaxStaleDuration = "600"
+market3Sol_minFundingInterval = "0"
+market3Sol_markPriceMaxDeviationUnscaled = "0.05"
+market3Sol_fillPriceMaxDeviationUnscaled = "0.05"
+market3Sol_priceSpreadUnscaled = "0"
+market3Sol_volatilityIndexMultiplierUnscaled = "0"
+market3Sol_maxPSlippageUnscaled = "0"
+market3Sol_maxExposureFactorUnscaled = "0.999"
+market3Sol_depthFactorUnscaled = "0"
+market3Sol_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market3Sol_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 4 ARB Configuration -- mirrored from mainnet market4Arb_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_4arb]
+market4Arb_riskMatrixIndex = "0"
+market4Arb_maxOpenBaseUnscaled = "1103642"
+market4Arb_oracleNodeId = "<%= settings.arbUsdcMarkNodeIdStork %>"
+market4Arb_dutchConfig_lambdaUnscaled = "1"
+market4Arb_dutchConfig_minBaseUnscaled = "0.11"
+market4Arb_slippageParams_phiUnscaled = "0"
+market4Arb_slippageParams_betaUnscaled = "0"
+market4Arb_minimumOrderBaseUnscaled = "0.1"
+market4Arb_baseSpacingUnscaled = "0.01"
+market4Arb_priceSpacingUnscaled = "0.0001"
+market4Arb_markPriceMaxStaleDuration = "60"
+market4Arb_fundingRateMaxStaleDuration = "600"
+market4Arb_minFundingInterval = "0"
+market4Arb_markPriceMaxDeviationUnscaled = "0.05"
+market4Arb_fillPriceMaxDeviationUnscaled = "0.05"
+market4Arb_priceSpreadUnscaled = "0"
+market4Arb_volatilityIndexMultiplierUnscaled = "0"
+market4Arb_maxPSlippageUnscaled = "0"
+market4Arb_maxExposureFactorUnscaled = "0.999"
+market4Arb_depthFactorUnscaled = "0"
+market4Arb_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market4Arb_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 5 OP Configuration -- mirrored from mainnet market5Op_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_5op]
+market5Op_riskMatrixIndex = "0"
+market5Op_maxOpenBaseUnscaled = "916239"
+market5Op_oracleNodeId = "<%= settings.opUsdcMarkNodeIdStork %>"
+market5Op_dutchConfig_lambdaUnscaled = "1"
+market5Op_dutchConfig_minBaseUnscaled = "0.11"
+market5Op_slippageParams_phiUnscaled = "0"
+market5Op_slippageParams_betaUnscaled = "0"
+market5Op_minimumOrderBaseUnscaled = "0.1"
+market5Op_baseSpacingUnscaled = "0.01"
+market5Op_priceSpacingUnscaled = "0.001"
+market5Op_markPriceMaxStaleDuration = "60"
+market5Op_fundingRateMaxStaleDuration = "600"
+market5Op_minFundingInterval = "0"
+market5Op_markPriceMaxDeviationUnscaled = "0.05"
+market5Op_fillPriceMaxDeviationUnscaled = "0.05"
+market5Op_priceSpreadUnscaled = "0"
+market5Op_volatilityIndexMultiplierUnscaled = "0"
+market5Op_maxPSlippageUnscaled = "0"
+market5Op_maxExposureFactorUnscaled = "0.999"
+market5Op_depthFactorUnscaled = "0"
+market5Op_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market5Op_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 6 AVAX Configuration -- mirrored from mainnet market6Avax_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_6avax]
+market6Avax_riskMatrixIndex = "0"
+market6Avax_maxOpenBaseUnscaled = "11497"
+market6Avax_oracleNodeId = "<%= settings.avaxUsdcMarkNodeIdStork %>"
+market6Avax_dutchConfig_lambdaUnscaled = "1"
+market6Avax_dutchConfig_minBaseUnscaled = "0.11"
+market6Avax_slippageParams_phiUnscaled = "0"
+market6Avax_slippageParams_betaUnscaled = "0"
+market6Avax_minimumOrderBaseUnscaled = "0.1"
+market6Avax_baseSpacingUnscaled = "0.01"
+market6Avax_priceSpacingUnscaled = "0.001"
+market6Avax_markPriceMaxStaleDuration = "60"
+market6Avax_fundingRateMaxStaleDuration = "600"
+market6Avax_minFundingInterval = "0"
+market6Avax_markPriceMaxDeviationUnscaled = "0.05"
+market6Avax_fillPriceMaxDeviationUnscaled = "0.05"
+market6Avax_priceSpreadUnscaled = "0"
+market6Avax_volatilityIndexMultiplierUnscaled = "0"
+market6Avax_maxPSlippageUnscaled = "0"
+market6Avax_maxExposureFactorUnscaled = "0.999"
+market6Avax_depthFactorUnscaled = "0"
+market6Avax_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market6Avax_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 7 MKR Configuration -- mirrored from mainnet market7Mkr_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_7mkr]
+market7Mkr_riskMatrixIndex = "0"
+market7Mkr_maxOpenBaseUnscaled = "0"
+market7Mkr_oracleNodeId = "<%= settings.mkrUsdcNodeIdClosing %>"
+market7Mkr_dutchConfig_lambdaUnscaled = "1"
+market7Mkr_dutchConfig_minBaseUnscaled = "0.11"
+market7Mkr_slippageParams_phiUnscaled = "0"
+market7Mkr_slippageParams_betaUnscaled = "0"
+market7Mkr_minimumOrderBaseUnscaled = "0.010"
+market7Mkr_baseSpacingUnscaled = "0.0010"
+market7Mkr_priceSpacingUnscaled = "0.001"
+market7Mkr_markPriceMaxStaleDuration = "60"
+market7Mkr_fundingRateMaxStaleDuration = "600"
+market7Mkr_minFundingInterval = "0"
+market7Mkr_markPriceMaxDeviationUnscaled = "0.05"
+market7Mkr_fillPriceMaxDeviationUnscaled = "0.05"
+market7Mkr_priceSpreadUnscaled = "0"
+market7Mkr_volatilityIndexMultiplierUnscaled = "0"
+market7Mkr_maxPSlippageUnscaled = "0"
+market7Mkr_maxExposureFactorUnscaled = "0.999"
+market7Mkr_depthFactorUnscaled = "0"
+market7Mkr_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market7Mkr_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 8 LINK Configuration -- mirrored from mainnet market8Link_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_8link]
+market8Link_riskMatrixIndex = "0"
+market8Link_maxOpenBaseUnscaled = "12317"
+market8Link_oracleNodeId = "<%= settings.linkUsdcMarkNodeIdStork %>"
+market8Link_dutchConfig_lambdaUnscaled = "1"
+market8Link_dutchConfig_minBaseUnscaled = "0.11"
+market8Link_slippageParams_phiUnscaled = "0"
+market8Link_slippageParams_betaUnscaled = "0"
+market8Link_minimumOrderBaseUnscaled = "0.1"
+market8Link_baseSpacingUnscaled = "0.01"
+market8Link_priceSpacingUnscaled = "0.001"
+market8Link_markPriceMaxStaleDuration = "60"
+market8Link_fundingRateMaxStaleDuration = "600"
+market8Link_minFundingInterval = "0"
+market8Link_markPriceMaxDeviationUnscaled = "0.05"
+market8Link_fillPriceMaxDeviationUnscaled = "0.05"
+market8Link_priceSpreadUnscaled = "0"
+market8Link_volatilityIndexMultiplierUnscaled = "0"
+market8Link_maxPSlippageUnscaled = "0"
+market8Link_maxExposureFactorUnscaled = "0.999"
+market8Link_depthFactorUnscaled = "0"
+market8Link_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market8Link_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 9 AAVE Configuration -- mirrored from mainnet market9Aave_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_9aave]
+market9Aave_riskMatrixIndex = "0"
+market9Aave_maxOpenBaseUnscaled = "0"
+market9Aave_oracleNodeId = "<%= settings.aaveUsdcMarkNodeIdStork %>"
+market9Aave_dutchConfig_lambdaUnscaled = "1"
+market9Aave_dutchConfig_minBaseUnscaled = "0.11"
+market9Aave_slippageParams_phiUnscaled = "0"
+market9Aave_slippageParams_betaUnscaled = "0"
+market9Aave_minimumOrderBaseUnscaled = "0.1"
+market9Aave_baseSpacingUnscaled = "0.01"
+market9Aave_priceSpacingUnscaled = "0.001"
+market9Aave_markPriceMaxStaleDuration = "60"
+market9Aave_fundingRateMaxStaleDuration = "600"
+market9Aave_minFundingInterval = "0"
+market9Aave_markPriceMaxDeviationUnscaled = "0.05"
+market9Aave_fillPriceMaxDeviationUnscaled = "0.05"
+market9Aave_priceSpreadUnscaled = "0"
+market9Aave_volatilityIndexMultiplierUnscaled = "0"
+market9Aave_maxPSlippageUnscaled = "0"
+market9Aave_maxExposureFactorUnscaled = "0.999"
+market9Aave_depthFactorUnscaled = "0"
+market9Aave_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market9Aave_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 10 CRV Configuration -- mirrored from mainnet market10Crv_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_10crv]
+market10Crv_riskMatrixIndex = "0"
+market10Crv_maxOpenBaseUnscaled = "0"
+market10Crv_oracleNodeId = "<%= settings.crvUsdcMarkNodeIdStork %>"
+market10Crv_dutchConfig_lambdaUnscaled = "1"
+market10Crv_dutchConfig_minBaseUnscaled = "0.11"
+market10Crv_slippageParams_phiUnscaled = "0"
+market10Crv_slippageParams_betaUnscaled = "0"
+market10Crv_minimumOrderBaseUnscaled = "0.1"
+market10Crv_baseSpacingUnscaled = "0.01"
+market10Crv_priceSpacingUnscaled = "0.0001"
+market10Crv_markPriceMaxStaleDuration = "60"
+market10Crv_fundingRateMaxStaleDuration = "600"
+market10Crv_minFundingInterval = "0"
+market10Crv_markPriceMaxDeviationUnscaled = "0.05"
+market10Crv_fillPriceMaxDeviationUnscaled = "0.05"
+market10Crv_priceSpreadUnscaled = "0"
+market10Crv_volatilityIndexMultiplierUnscaled = "0"
+market10Crv_maxPSlippageUnscaled = "0"
+market10Crv_maxExposureFactorUnscaled = "0.999"
+market10Crv_depthFactorUnscaled = "0"
+market10Crv_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market10Crv_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 11 UNI Configuration -- mirrored from mainnet market11Uni_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_11uni]
+market11Uni_riskMatrixIndex = "0"
+market11Uni_maxOpenBaseUnscaled = "28478"
+market11Uni_oracleNodeId = "<%= settings.uniUsdcMarkNodeIdStork %>"
+market11Uni_dutchConfig_lambdaUnscaled = "1"
+market11Uni_dutchConfig_minBaseUnscaled = "0.11"
+market11Uni_slippageParams_phiUnscaled = "0"
+market11Uni_slippageParams_betaUnscaled = "0"
+market11Uni_minimumOrderBaseUnscaled = "0.100"
+market11Uni_baseSpacingUnscaled = "0.0100"
+market11Uni_priceSpacingUnscaled = "0.001"
+market11Uni_markPriceMaxStaleDuration = "60"
+market11Uni_fundingRateMaxStaleDuration = "600"
+market11Uni_minFundingInterval = "0"
+market11Uni_markPriceMaxDeviationUnscaled = "0.05"
+market11Uni_fillPriceMaxDeviationUnscaled = "0.05"
+market11Uni_priceSpreadUnscaled = "0"
+market11Uni_volatilityIndexMultiplierUnscaled = "0"
+market11Uni_maxPSlippageUnscaled = "0"
+market11Uni_maxExposureFactorUnscaled = "0.999"
+market11Uni_depthFactorUnscaled = "0"
+market11Uni_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market11Uni_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 12 SUI Configuration -- mirrored from mainnet market12Sui_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_12sui]
+market12Sui_riskMatrixIndex = "0"
+market12Sui_maxOpenBaseUnscaled = "115304"
+market12Sui_oracleNodeId = "<%= settings.suiUsdcMarkNodeIdStork %>"
+market12Sui_dutchConfig_lambdaUnscaled = "1"
+market12Sui_dutchConfig_minBaseUnscaled = "0.11"
+market12Sui_slippageParams_phiUnscaled = "0"
+market12Sui_slippageParams_betaUnscaled = "0"
+market12Sui_minimumOrderBaseUnscaled = "0.100"
+market12Sui_baseSpacingUnscaled = "0.0100"
+market12Sui_priceSpacingUnscaled = "0.001"
+market12Sui_markPriceMaxStaleDuration = "60"
+market12Sui_fundingRateMaxStaleDuration = "600"
+market12Sui_minFundingInterval = "0"
+market12Sui_markPriceMaxDeviationUnscaled = "0.05"
+market12Sui_fillPriceMaxDeviationUnscaled = "0.05"
+market12Sui_priceSpreadUnscaled = "0"
+market12Sui_volatilityIndexMultiplierUnscaled = "0"
+market12Sui_maxPSlippageUnscaled = "0"
+market12Sui_maxExposureFactorUnscaled = "0.999"
+market12Sui_depthFactorUnscaled = "0"
+market12Sui_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market12Sui_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 13 TIA Configuration -- mirrored from mainnet market13Tia_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_13tia]
+market13Tia_riskMatrixIndex = "0"
+market13Tia_maxOpenBaseUnscaled = "330363"
+market13Tia_oracleNodeId = "<%= settings.tiaUsdcMarkNodeIdStork %>"
+market13Tia_dutchConfig_lambdaUnscaled = "1"
+market13Tia_dutchConfig_minBaseUnscaled = "0.11"
+market13Tia_slippageParams_phiUnscaled = "0"
+market13Tia_slippageParams_betaUnscaled = "0"
+market13Tia_minimumOrderBaseUnscaled = "0.100"
+market13Tia_baseSpacingUnscaled = "0.0100"
+market13Tia_priceSpacingUnscaled = "0.001"
+market13Tia_markPriceMaxStaleDuration = "60"
+market13Tia_fundingRateMaxStaleDuration = "600"
+market13Tia_minFundingInterval = "0"
+market13Tia_markPriceMaxDeviationUnscaled = "0.05"
+market13Tia_fillPriceMaxDeviationUnscaled = "0.05"
+market13Tia_priceSpreadUnscaled = "0"
+market13Tia_volatilityIndexMultiplierUnscaled = "0"
+market13Tia_maxPSlippageUnscaled = "0"
+market13Tia_maxExposureFactorUnscaled = "0.999"
+market13Tia_depthFactorUnscaled = "0"
+market13Tia_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market13Tia_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 14 SEI Configuration -- mirrored from mainnet market14Sei_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_14sei]
+market14Sei_riskMatrixIndex = "0"
+market14Sei_maxOpenBaseUnscaled = "0"
+market14Sei_oracleNodeId = "<%= settings.seiUsdcMarkNodeIdStork %>"
+market14Sei_dutchConfig_lambdaUnscaled = "1"
+market14Sei_dutchConfig_minBaseUnscaled = "0.11"
+market14Sei_slippageParams_phiUnscaled = "0"
+market14Sei_slippageParams_betaUnscaled = "0"
+market14Sei_minimumOrderBaseUnscaled = "0.100"
+market14Sei_baseSpacingUnscaled = "0.0100"
+market14Sei_priceSpacingUnscaled = "0.00001"
+market14Sei_markPriceMaxStaleDuration = "60"
+market14Sei_fundingRateMaxStaleDuration = "600"
+market14Sei_minFundingInterval = "0"
+market14Sei_markPriceMaxDeviationUnscaled = "0.05"
+market14Sei_fillPriceMaxDeviationUnscaled = "0.05"
+market14Sei_priceSpreadUnscaled = "0"
+market14Sei_volatilityIndexMultiplierUnscaled = "0"
+market14Sei_maxPSlippageUnscaled = "0"
+market14Sei_maxExposureFactorUnscaled = "0.999"
+market14Sei_depthFactorUnscaled = "0"
+market14Sei_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market14Sei_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 15 ZRO Configuration -- mirrored from mainnet market15Zro_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_15zro]
+market15Zro_riskMatrixIndex = "0"
+market15Zro_maxOpenBaseUnscaled = "0"
+market15Zro_oracleNodeId = "<%= settings.zroUsdcMarkNodeIdStork %>"
+market15Zro_dutchConfig_lambdaUnscaled = "1"
+market15Zro_dutchConfig_minBaseUnscaled = "0.11"
+market15Zro_slippageParams_phiUnscaled = "0"
+market15Zro_slippageParams_betaUnscaled = "0"
+market15Zro_minimumOrderBaseUnscaled = "0.100"
+market15Zro_baseSpacingUnscaled = "0.0100"
+market15Zro_priceSpacingUnscaled = "0.001"
+market15Zro_markPriceMaxStaleDuration = "60"
+market15Zro_fundingRateMaxStaleDuration = "600"
+market15Zro_minFundingInterval = "0"
+market15Zro_markPriceMaxDeviationUnscaled = "0.05"
+market15Zro_fillPriceMaxDeviationUnscaled = "0.05"
+market15Zro_priceSpreadUnscaled = "0"
+market15Zro_volatilityIndexMultiplierUnscaled = "0"
+market15Zro_maxPSlippageUnscaled = "0"
+market15Zro_maxExposureFactorUnscaled = "0.999"
+market15Zro_depthFactorUnscaled = "0"
+market15Zro_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market15Zro_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 16 XRP Configuration -- mirrored from mainnet market16Xrp_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_16xrp]
+market16Xrp_riskMatrixIndex = "0"
+market16Xrp_maxOpenBaseUnscaled = "1090260"
+market16Xrp_oracleNodeId = "<%= settings.xrpUsdcMarkNodeIdStork %>"
+market16Xrp_dutchConfig_lambdaUnscaled = "1"
+market16Xrp_dutchConfig_minBaseUnscaled = "0.11"
+market16Xrp_slippageParams_phiUnscaled = "0"
+market16Xrp_slippageParams_betaUnscaled = "0"
+market16Xrp_minimumOrderBaseUnscaled = "0.100"
+market16Xrp_baseSpacingUnscaled = "0.0100"
+market16Xrp_priceSpacingUnscaled = "0.00001"
+market16Xrp_markPriceMaxStaleDuration = "60"
+market16Xrp_fundingRateMaxStaleDuration = "600"
+market16Xrp_minFundingInterval = "0"
+market16Xrp_markPriceMaxDeviationUnscaled = "0.05"
+market16Xrp_fillPriceMaxDeviationUnscaled = "0.05"
+market16Xrp_priceSpreadUnscaled = "0"
+market16Xrp_volatilityIndexMultiplierUnscaled = "0"
+market16Xrp_maxPSlippageUnscaled = "0"
+market16Xrp_maxExposureFactorUnscaled = "0.999"
+market16Xrp_depthFactorUnscaled = "0"
+market16Xrp_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market16Xrp_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 17 WIF Configuration -- mirrored from mainnet market17Wif_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_17wif]
+market17Wif_riskMatrixIndex = "0"
+market17Wif_maxOpenBaseUnscaled = "0"
+market17Wif_oracleNodeId = "<%= settings.wifUsdcMarkNodeIdStork %>"
+market17Wif_dutchConfig_lambdaUnscaled = "1"
+market17Wif_dutchConfig_minBaseUnscaled = "0.11"
+market17Wif_slippageParams_phiUnscaled = "0"
+market17Wif_slippageParams_betaUnscaled = "0"
+market17Wif_minimumOrderBaseUnscaled = "0.100"
+market17Wif_baseSpacingUnscaled = "0.0001"
+market17Wif_priceSpacingUnscaled = "0.001"
+market17Wif_markPriceMaxStaleDuration = "60"
+market17Wif_fundingRateMaxStaleDuration = "600"
+market17Wif_minFundingInterval = "0"
+market17Wif_markPriceMaxDeviationUnscaled = "0.05"
+market17Wif_fillPriceMaxDeviationUnscaled = "0.05"
+market17Wif_priceSpreadUnscaled = "0"
+market17Wif_volatilityIndexMultiplierUnscaled = "0"
+market17Wif_maxPSlippageUnscaled = "0"
+market17Wif_maxExposureFactorUnscaled = "0.999"
+market17Wif_depthFactorUnscaled = "0"
+market17Wif_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market17Wif_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 18 PEPE1K Configuration -- mirrored from mainnet market18Pepe1k_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_18pepe1k]
+market18Pepe1k_riskMatrixIndex = "0"
+market18Pepe1k_maxOpenBaseUnscaled = "33416220"
+market18Pepe1k_oracleNodeId = "<%= settings.pepe1kUsdcMarkNodeIdStork %>"
+market18Pepe1k_dutchConfig_lambdaUnscaled = "1"
+market18Pepe1k_dutchConfig_minBaseUnscaled = "0.11"
+market18Pepe1k_slippageParams_phiUnscaled = "0"
+market18Pepe1k_slippageParams_betaUnscaled = "0"
+market18Pepe1k_minimumOrderBaseUnscaled = "0.100"
+market18Pepe1k_baseSpacingUnscaled = "0.0100"
+market18Pepe1k_priceSpacingUnscaled = "<%= 1e-6 %>"
+market18Pepe1k_markPriceMaxStaleDuration = "60"
+market18Pepe1k_fundingRateMaxStaleDuration = "600"
+market18Pepe1k_minFundingInterval = "0"
+market18Pepe1k_markPriceMaxDeviationUnscaled = "0.05"
+market18Pepe1k_fillPriceMaxDeviationUnscaled = "0.05"
+market18Pepe1k_priceSpreadUnscaled = "0"
+market18Pepe1k_volatilityIndexMultiplierUnscaled = "0"
+market18Pepe1k_maxPSlippageUnscaled = "0"
+market18Pepe1k_maxExposureFactorUnscaled = "0.999"
+market18Pepe1k_depthFactorUnscaled = "0"
+market18Pepe1k_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market18Pepe1k_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 19 POPCAT Configuration -- mirrored from mainnet market19Popcat_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_19popcat]
+market19Popcat_riskMatrixIndex = "0"
+market19Popcat_maxOpenBaseUnscaled = "0"
+market19Popcat_oracleNodeId = "<%= settings.popcatUsdcMarkNodeIdStork %>"
+market19Popcat_dutchConfig_lambdaUnscaled = "1"
+market19Popcat_dutchConfig_minBaseUnscaled = "0.11"
+market19Popcat_slippageParams_phiUnscaled = "0"
+market19Popcat_slippageParams_betaUnscaled = "0"
+market19Popcat_minimumOrderBaseUnscaled = "0.100"
+market19Popcat_baseSpacingUnscaled = "0.0001"
+market19Popcat_priceSpacingUnscaled = "<%= 1e-4 %>"
+market19Popcat_markPriceMaxStaleDuration = "60"
+market19Popcat_fundingRateMaxStaleDuration = "600"
+market19Popcat_minFundingInterval = "0"
+market19Popcat_markPriceMaxDeviationUnscaled = "0.05"
+market19Popcat_fillPriceMaxDeviationUnscaled = "0.05"
+market19Popcat_priceSpreadUnscaled = "0"
+market19Popcat_volatilityIndexMultiplierUnscaled = "0"
+market19Popcat_maxPSlippageUnscaled = "0"
+market19Popcat_maxExposureFactorUnscaled = "0.999"
+market19Popcat_depthFactorUnscaled = "0"
+market19Popcat_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market19Popcat_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 20 DOGE Configuration -- mirrored from mainnet market20Doge_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_20doge]
+market20Doge_riskMatrixIndex = "0"
+market20Doge_maxOpenBaseUnscaled = "1193581"
+market20Doge_oracleNodeId = "<%= settings.dogeUsdcMarkNodeIdStork %>"
+market20Doge_dutchConfig_lambdaUnscaled = "1"
+market20Doge_dutchConfig_minBaseUnscaled = "0.11"
+market20Doge_slippageParams_phiUnscaled = "0"
+market20Doge_slippageParams_betaUnscaled = "0"
+market20Doge_minimumOrderBaseUnscaled = "1"
+market20Doge_baseSpacingUnscaled = "0.1"
+market20Doge_priceSpacingUnscaled = "<%= 1e-5 %>"
+market20Doge_markPriceMaxStaleDuration = "60"
+market20Doge_fundingRateMaxStaleDuration = "600"
+market20Doge_minFundingInterval = "0"
+market20Doge_markPriceMaxDeviationUnscaled = "0.05"
+market20Doge_fillPriceMaxDeviationUnscaled = "0.05"
+market20Doge_priceSpreadUnscaled = "0"
+market20Doge_volatilityIndexMultiplierUnscaled = "0"
+market20Doge_maxPSlippageUnscaled = "0"
+market20Doge_maxExposureFactorUnscaled = "0.999"
+market20Doge_depthFactorUnscaled = "0"
+market20Doge_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market20Doge_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 21 KSHIB Configuration -- mirrored from mainnet market21KShib_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_21kshib]
+market21KShib_riskMatrixIndex = "0"
+market21KShib_maxOpenBaseUnscaled = "0"
+market21KShib_oracleNodeId = "<%= settings.kshibUsdcMarkNodeIdStork %>"
+market21KShib_dutchConfig_lambdaUnscaled = "1"
+market21KShib_dutchConfig_minBaseUnscaled = "0.11"
+market21KShib_slippageParams_phiUnscaled = "0"
+market21KShib_slippageParams_betaUnscaled = "0"
+market21KShib_minimumOrderBaseUnscaled = "1"
+market21KShib_baseSpacingUnscaled = "0.1"
+market21KShib_priceSpacingUnscaled = "<%= 1e-6 %>"
+market21KShib_markPriceMaxStaleDuration = "60"
+market21KShib_fundingRateMaxStaleDuration = "600"
+market21KShib_minFundingInterval = "0"
+market21KShib_markPriceMaxDeviationUnscaled = "0.05"
+market21KShib_fillPriceMaxDeviationUnscaled = "0.05"
+market21KShib_priceSpreadUnscaled = "0"
+market21KShib_volatilityIndexMultiplierUnscaled = "0"
+market21KShib_maxPSlippageUnscaled = "0"
+market21KShib_maxExposureFactorUnscaled = "0.999"
+market21KShib_depthFactorUnscaled = "0"
+market21KShib_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market21KShib_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 22 KBONK Configuration -- mirrored from mainnet market22KBonk_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_22kbonk]
+market22KBonk_riskMatrixIndex = "0"
+market22KBonk_maxOpenBaseUnscaled = "0"
+market22KBonk_oracleNodeId = "<%= settings.kbonkUsdcMarkNodeIdStork %>"
+market22KBonk_dutchConfig_lambdaUnscaled = "1"
+market22KBonk_dutchConfig_minBaseUnscaled = "0.11"
+market22KBonk_slippageParams_phiUnscaled = "0"
+market22KBonk_slippageParams_betaUnscaled = "0"
+market22KBonk_minimumOrderBaseUnscaled = "1"
+market22KBonk_baseSpacingUnscaled = "0.1"
+market22KBonk_priceSpacingUnscaled = "<%= 1e-6 %>"
+market22KBonk_markPriceMaxStaleDuration = "60"
+market22KBonk_fundingRateMaxStaleDuration = "600"
+market22KBonk_minFundingInterval = "0"
+market22KBonk_markPriceMaxDeviationUnscaled = "0.05"
+market22KBonk_fillPriceMaxDeviationUnscaled = "0.05"
+market22KBonk_priceSpreadUnscaled = "0"
+market22KBonk_volatilityIndexMultiplierUnscaled = "0"
+market22KBonk_maxPSlippageUnscaled = "0"
+market22KBonk_maxExposureFactorUnscaled = "0.999"
+market22KBonk_depthFactorUnscaled = "0"
+market22KBonk_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market22KBonk_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 23 APT Configuration -- mirrored from mainnet market23Apt_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_23apt]
+market23Apt_riskMatrixIndex = "0"
+market23Apt_maxOpenBaseUnscaled = "116046"
+market23Apt_oracleNodeId = "<%= settings.aptUsdcMarkNodeIdStork %>"
+market23Apt_dutchConfig_lambdaUnscaled = "1"
+market23Apt_dutchConfig_minBaseUnscaled = "0.11"
+market23Apt_slippageParams_phiUnscaled = "0"
+market23Apt_slippageParams_betaUnscaled = "0"
+market23Apt_minimumOrderBaseUnscaled = "1"
+market23Apt_baseSpacingUnscaled = "0.1"
+market23Apt_priceSpacingUnscaled = "<%= 1e-6 %>"
+market23Apt_markPriceMaxStaleDuration = "60"
+market23Apt_fundingRateMaxStaleDuration = "600"
+market23Apt_minFundingInterval = "0"
+market23Apt_markPriceMaxDeviationUnscaled = "0.05"
+market23Apt_fillPriceMaxDeviationUnscaled = "0.05"
+market23Apt_priceSpreadUnscaled = "0"
+market23Apt_volatilityIndexMultiplierUnscaled = "0"
+market23Apt_maxPSlippageUnscaled = "0"
+market23Apt_maxExposureFactorUnscaled = "0.999"
+market23Apt_depthFactorUnscaled = "0"
+market23Apt_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market23Apt_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 24 BNB Configuration -- mirrored from mainnet market24Bnb_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_24bnb]
+market24Bnb_riskMatrixIndex = "0"
+market24Bnb_maxOpenBaseUnscaled = "172"
+market24Bnb_oracleNodeId = "<%= settings.bnbUsdcMarkNodeIdStork %>"
+market24Bnb_dutchConfig_lambdaUnscaled = "1"
+market24Bnb_dutchConfig_minBaseUnscaled = "0.11"
+market24Bnb_slippageParams_phiUnscaled = "0"
+market24Bnb_slippageParams_betaUnscaled = "0"
+market24Bnb_minimumOrderBaseUnscaled = "0.1"
+market24Bnb_baseSpacingUnscaled = "0.01"
+market24Bnb_priceSpacingUnscaled = "<%= 1e-6 %>"
+market24Bnb_markPriceMaxStaleDuration = "60"
+market24Bnb_fundingRateMaxStaleDuration = "600"
+market24Bnb_minFundingInterval = "0"
+market24Bnb_markPriceMaxDeviationUnscaled = "0.05"
+market24Bnb_fillPriceMaxDeviationUnscaled = "0.05"
+market24Bnb_priceSpreadUnscaled = "0"
+market24Bnb_volatilityIndexMultiplierUnscaled = "0"
+market24Bnb_maxPSlippageUnscaled = "0"
+market24Bnb_maxExposureFactorUnscaled = "0.999"
+market24Bnb_depthFactorUnscaled = "0"
+market24Bnb_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market24Bnb_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 25 JTO Configuration -- mirrored from mainnet market25Jto_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_25jto]
+market25Jto_riskMatrixIndex = "0"
+market25Jto_maxOpenBaseUnscaled = "0"
+market25Jto_oracleNodeId = "<%= settings.jtoUsdcMarkNodeIdStork %>"
+market25Jto_dutchConfig_lambdaUnscaled = "1"
+market25Jto_dutchConfig_minBaseUnscaled = "0.11"
+market25Jto_slippageParams_phiUnscaled = "0"
+market25Jto_slippageParams_betaUnscaled = "0"
+market25Jto_minimumOrderBaseUnscaled = "1"
+market25Jto_baseSpacingUnscaled = "0.1"
+market25Jto_priceSpacingUnscaled = "<%= 1e-6 %>"
+market25Jto_markPriceMaxStaleDuration = "60"
+market25Jto_fundingRateMaxStaleDuration = "600"
+market25Jto_minFundingInterval = "0"
+market25Jto_markPriceMaxDeviationUnscaled = "0.05"
+market25Jto_fillPriceMaxDeviationUnscaled = "0.05"
+market25Jto_priceSpreadUnscaled = "0"
+market25Jto_volatilityIndexMultiplierUnscaled = "0"
+market25Jto_maxPSlippageUnscaled = "0"
+market25Jto_maxExposureFactorUnscaled = "0.999"
+market25Jto_depthFactorUnscaled = "0"
+market25Jto_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market25Jto_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 26 ADA Configuration -- mirrored from mainnet market26Ada_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_26ada]
+market26Ada_riskMatrixIndex = "0"
+market26Ada_maxOpenBaseUnscaled = "423953"
+market26Ada_oracleNodeId = "<%= settings.adaUsdcMarkNodeIdStork %>"
+market26Ada_dutchConfig_lambdaUnscaled = "1"
+market26Ada_dutchConfig_minBaseUnscaled = "0.11"
+market26Ada_slippageParams_phiUnscaled = "0"
+market26Ada_slippageParams_betaUnscaled = "0"
+market26Ada_minimumOrderBaseUnscaled = "1"
+market26Ada_baseSpacingUnscaled = "0.1"
+market26Ada_priceSpacingUnscaled = "<%= 1e-5 %>"
+market26Ada_markPriceMaxStaleDuration = "60"
+market26Ada_fundingRateMaxStaleDuration = "600"
+market26Ada_minFundingInterval = "0"
+market26Ada_markPriceMaxDeviationUnscaled = "0.05"
+market26Ada_fillPriceMaxDeviationUnscaled = "0.05"
+market26Ada_priceSpreadUnscaled = "0"
+market26Ada_volatilityIndexMultiplierUnscaled = "0"
+market26Ada_maxPSlippageUnscaled = "0"
+market26Ada_maxExposureFactorUnscaled = "0.999"
+market26Ada_depthFactorUnscaled = "0"
+market26Ada_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market26Ada_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 27 LDO Configuration -- mirrored from mainnet market27Ldo_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_27ldo]
+market27Ldo_riskMatrixIndex = "0"
+market27Ldo_maxOpenBaseUnscaled = "375216"
+market27Ldo_oracleNodeId = "<%= settings.ldoUsdcMarkNodeIdStork %>"
+market27Ldo_dutchConfig_lambdaUnscaled = "1"
+market27Ldo_dutchConfig_minBaseUnscaled = "0.11"
+market27Ldo_slippageParams_phiUnscaled = "0"
+market27Ldo_slippageParams_betaUnscaled = "0"
+market27Ldo_minimumOrderBaseUnscaled = "1"
+market27Ldo_baseSpacingUnscaled = "0.1"
+market27Ldo_priceSpacingUnscaled = "<%= 1e-4 %>"
+market27Ldo_markPriceMaxStaleDuration = "60"
+market27Ldo_fundingRateMaxStaleDuration = "600"
+market27Ldo_minFundingInterval = "0"
+market27Ldo_markPriceMaxDeviationUnscaled = "0.05"
+market27Ldo_fillPriceMaxDeviationUnscaled = "0.05"
+market27Ldo_priceSpreadUnscaled = "0"
+market27Ldo_volatilityIndexMultiplierUnscaled = "0"
+market27Ldo_maxPSlippageUnscaled = "0"
+market27Ldo_maxExposureFactorUnscaled = "0.999"
+market27Ldo_depthFactorUnscaled = "0"
+market27Ldo_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market27Ldo_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 28 POL Configuration -- mirrored from mainnet market28Pol_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_28pol]
+market28Pol_riskMatrixIndex = "0"
+market28Pol_maxOpenBaseUnscaled = "1138836"
+market28Pol_oracleNodeId = "<%= settings.polUsdcMarkNodeIdStork %>"
+market28Pol_dutchConfig_lambdaUnscaled = "1"
+market28Pol_dutchConfig_minBaseUnscaled = "0.11"
+market28Pol_slippageParams_phiUnscaled = "0"
+market28Pol_slippageParams_betaUnscaled = "0"
+market28Pol_minimumOrderBaseUnscaled = "1"
+market28Pol_baseSpacingUnscaled = "0.1"
+market28Pol_priceSpacingUnscaled = "<%= 1e-5 %>"
+market28Pol_markPriceMaxStaleDuration = "60"
+market28Pol_fundingRateMaxStaleDuration = "600"
+market28Pol_minFundingInterval = "0"
+market28Pol_markPriceMaxDeviationUnscaled = "0.05"
+market28Pol_fillPriceMaxDeviationUnscaled = "0.05"
+market28Pol_priceSpreadUnscaled = "0"
+market28Pol_volatilityIndexMultiplierUnscaled = "0"
+market28Pol_maxPSlippageUnscaled = "0"
+market28Pol_maxExposureFactorUnscaled = "0.999"
+market28Pol_depthFactorUnscaled = "0"
+market28Pol_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market28Pol_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 29 NEAR Configuration -- mirrored from mainnet market29Near_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_29near]
+market29Near_riskMatrixIndex = "0"
+market29Near_maxOpenBaseUnscaled = "375765"
+market29Near_oracleNodeId = "<%= settings.nearUsdcMarkNodeIdStork %>"
+market29Near_dutchConfig_lambdaUnscaled = "1"
+market29Near_dutchConfig_minBaseUnscaled = "0.11"
+market29Near_slippageParams_phiUnscaled = "0"
+market29Near_slippageParams_betaUnscaled = "0"
+market29Near_minimumOrderBaseUnscaled = "1"
+market29Near_baseSpacingUnscaled = "0.1"
+market29Near_priceSpacingUnscaled = "<%= 1e-4 %>"
+market29Near_markPriceMaxStaleDuration = "60"
+market29Near_fundingRateMaxStaleDuration = "600"
+market29Near_minFundingInterval = "0"
+market29Near_markPriceMaxDeviationUnscaled = "0.05"
+market29Near_fillPriceMaxDeviationUnscaled = "0.05"
+market29Near_priceSpreadUnscaled = "0"
+market29Near_volatilityIndexMultiplierUnscaled = "0"
+market29Near_maxPSlippageUnscaled = "0"
+market29Near_maxExposureFactorUnscaled = "0.999"
+market29Near_depthFactorUnscaled = "0"
+market29Near_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market29Near_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 30 FTM Configuration -- mirrored from mainnet market30Ftm_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_30ftm]
+market30Ftm_riskMatrixIndex = "0"
+market30Ftm_maxOpenBaseUnscaled = "19000"
+market30Ftm_oracleNodeId = "<%= settings.ftmUsdcNodeIdClosing %>"
+market30Ftm_dutchConfig_lambdaUnscaled = "1"
+market30Ftm_dutchConfig_minBaseUnscaled = "0.11"
+market30Ftm_slippageParams_phiUnscaled = "0"
+market30Ftm_slippageParams_betaUnscaled = "0"
+market30Ftm_minimumOrderBaseUnscaled = "1"
+market30Ftm_baseSpacingUnscaled = "0.1"
+market30Ftm_priceSpacingUnscaled = "<%= 1e-5 %>"
+market30Ftm_markPriceMaxStaleDuration = "60"
+market30Ftm_fundingRateMaxStaleDuration = "600"
+market30Ftm_minFundingInterval = "0"
+market30Ftm_markPriceMaxDeviationUnscaled = "0.05"
+market30Ftm_fillPriceMaxDeviationUnscaled = "0.05"
+market30Ftm_priceSpreadUnscaled = "0"
+market30Ftm_volatilityIndexMultiplierUnscaled = "0"
+market30Ftm_maxPSlippageUnscaled = "0"
+market30Ftm_maxExposureFactorUnscaled = "0.999"
+market30Ftm_depthFactorUnscaled = "0"
+market30Ftm_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market30Ftm_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 31 ENA Configuration -- mirrored from mainnet market31Ena_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_31ena]
+market31Ena_riskMatrixIndex = "0"
+market31Ena_maxOpenBaseUnscaled = "1069465"
+market31Ena_oracleNodeId = "<%= settings.enaUsdcMarkNodeIdStork %>"
+market31Ena_dutchConfig_lambdaUnscaled = "1"
+market31Ena_dutchConfig_minBaseUnscaled = "0.11"
+market31Ena_slippageParams_phiUnscaled = "0"
+market31Ena_slippageParams_betaUnscaled = "0"
+market31Ena_minimumOrderBaseUnscaled = "1"
+market31Ena_baseSpacingUnscaled = "0.1"
+market31Ena_priceSpacingUnscaled = "<%= 1e-5 %>"
+market31Ena_markPriceMaxStaleDuration = "60"
+market31Ena_fundingRateMaxStaleDuration = "600"
+market31Ena_minFundingInterval = "0"
+market31Ena_markPriceMaxDeviationUnscaled = "0.05"
+market31Ena_fillPriceMaxDeviationUnscaled = "0.05"
+market31Ena_priceSpreadUnscaled = "0"
+market31Ena_volatilityIndexMultiplierUnscaled = "0"
+market31Ena_maxPSlippageUnscaled = "0"
+market31Ena_maxExposureFactorUnscaled = "0.999"
+market31Ena_depthFactorUnscaled = "0"
+market31Ena_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market31Ena_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 32 EIGEN Configuration -- mirrored from mainnet market32Eigen_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_32eigen]
+market32Eigen_riskMatrixIndex = "0"
+market32Eigen_maxOpenBaseUnscaled = "0"
+market32Eigen_oracleNodeId = "<%= settings.eigenUsdcMarkNodeIdStork %>"
+market32Eigen_dutchConfig_lambdaUnscaled = "1"
+market32Eigen_dutchConfig_minBaseUnscaled = "0.11"
+market32Eigen_slippageParams_phiUnscaled = "0"
+market32Eigen_slippageParams_betaUnscaled = "0"
+market32Eigen_minimumOrderBaseUnscaled = "1"
+market32Eigen_baseSpacingUnscaled = "0.1"
+market32Eigen_priceSpacingUnscaled = "<%= 1e-4 %>"
+market32Eigen_markPriceMaxStaleDuration = "60"
+market32Eigen_fundingRateMaxStaleDuration = "600"
+market32Eigen_minFundingInterval = "0"
+market32Eigen_markPriceMaxDeviationUnscaled = "0.05"
+market32Eigen_fillPriceMaxDeviationUnscaled = "0.05"
+market32Eigen_priceSpreadUnscaled = "0"
+market32Eigen_volatilityIndexMultiplierUnscaled = "0"
+market32Eigen_maxPSlippageUnscaled = "0"
+market32Eigen_maxExposureFactorUnscaled = "0.999"
+market32Eigen_depthFactorUnscaled = "0"
+market32Eigen_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market32Eigen_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 33 PENDLE Configuration -- mirrored from mainnet market33Pendle_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_33pendle]
+market33Pendle_riskMatrixIndex = "0"
+market33Pendle_maxOpenBaseUnscaled = "86908"
+market33Pendle_oracleNodeId = "<%= settings.pendleUsdcMarkNodeIdStork %>"
+market33Pendle_dutchConfig_lambdaUnscaled = "1"
+market33Pendle_dutchConfig_minBaseUnscaled = "0.11"
+market33Pendle_slippageParams_phiUnscaled = "0"
+market33Pendle_slippageParams_betaUnscaled = "0"
+market33Pendle_minimumOrderBaseUnscaled = "1"
+market33Pendle_baseSpacingUnscaled = "0.1"
+market33Pendle_priceSpacingUnscaled = "<%= 1e-4 %>"
+market33Pendle_markPriceMaxStaleDuration = "60"
+market33Pendle_fundingRateMaxStaleDuration = "600"
+market33Pendle_minFundingInterval = "0"
+market33Pendle_markPriceMaxDeviationUnscaled = "0.05"
+market33Pendle_fillPriceMaxDeviationUnscaled = "0.05"
+market33Pendle_priceSpreadUnscaled = "0"
+market33Pendle_volatilityIndexMultiplierUnscaled = "0"
+market33Pendle_maxPSlippageUnscaled = "0"
+market33Pendle_maxExposureFactorUnscaled = "0.999"
+market33Pendle_depthFactorUnscaled = "0"
+market33Pendle_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market33Pendle_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 34 GOAT Configuration -- mirrored from mainnet market34Goat_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_34goat]
+market34Goat_riskMatrixIndex = "0"
+market34Goat_maxOpenBaseUnscaled = "0"
+market34Goat_oracleNodeId = "<%= settings.goatUsdcMarkNodeIdStork %>"
+market34Goat_dutchConfig_lambdaUnscaled = "1"
+market34Goat_dutchConfig_minBaseUnscaled = "0.11"
+market34Goat_slippageParams_phiUnscaled = "0"
+market34Goat_slippageParams_betaUnscaled = "0"
+market34Goat_minimumOrderBaseUnscaled = "1"
+market34Goat_baseSpacingUnscaled = "0.1"
+market34Goat_priceSpacingUnscaled = "<%= 1e-5 %>"
+market34Goat_markPriceMaxStaleDuration = "60"
+market34Goat_fundingRateMaxStaleDuration = "600"
+market34Goat_minFundingInterval = "0"
+market34Goat_markPriceMaxDeviationUnscaled = "0.05"
+market34Goat_fillPriceMaxDeviationUnscaled = "0.05"
+market34Goat_priceSpreadUnscaled = "0"
+market34Goat_volatilityIndexMultiplierUnscaled = "0"
+market34Goat_maxPSlippageUnscaled = "0"
+market34Goat_maxExposureFactorUnscaled = "0.999"
+market34Goat_depthFactorUnscaled = "0"
+market34Goat_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market34Goat_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 35 GRASS Configuration -- mirrored from mainnet market35Grass_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_35grass]
+market35Grass_riskMatrixIndex = "0"
+market35Grass_maxOpenBaseUnscaled = "307591"
+market35Grass_oracleNodeId = "<%= settings.grassUsdcMarkNodeIdStork %>"
+market35Grass_dutchConfig_lambdaUnscaled = "1"
+market35Grass_dutchConfig_minBaseUnscaled = "0.11"
+market35Grass_slippageParams_phiUnscaled = "0"
+market35Grass_slippageParams_betaUnscaled = "0"
+market35Grass_minimumOrderBaseUnscaled = "1"
+market35Grass_baseSpacingUnscaled = "0.1"
+market35Grass_priceSpacingUnscaled = "<%= 1e-4 %>"
+market35Grass_markPriceMaxStaleDuration = "60"
+market35Grass_fundingRateMaxStaleDuration = "600"
+market35Grass_minFundingInterval = "0"
+market35Grass_markPriceMaxDeviationUnscaled = "0.05"
+market35Grass_fillPriceMaxDeviationUnscaled = "0.05"
+market35Grass_priceSpreadUnscaled = "0"
+market35Grass_volatilityIndexMultiplierUnscaled = "0"
+market35Grass_maxPSlippageUnscaled = "0"
+market35Grass_maxExposureFactorUnscaled = "0.999"
+market35Grass_depthFactorUnscaled = "0"
+market35Grass_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market35Grass_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 36 KNEIRO Configuration -- mirrored from mainnet market36KNeiro_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_36kneiro]
+market36KNeiro_riskMatrixIndex = "0"
+market36KNeiro_maxOpenBaseUnscaled = "0"
+market36KNeiro_oracleNodeId = "<%= settings.kneiroUsdcMarkNodeIdStork %>"
+market36KNeiro_dutchConfig_lambdaUnscaled = "1"
+market36KNeiro_dutchConfig_minBaseUnscaled = "0.11"
+market36KNeiro_slippageParams_phiUnscaled = "0"
+market36KNeiro_slippageParams_betaUnscaled = "0"
+market36KNeiro_minimumOrderBaseUnscaled = "1"
+market36KNeiro_baseSpacingUnscaled = "0.1"
+market36KNeiro_priceSpacingUnscaled = "<%= 1e-4 %>"
+market36KNeiro_markPriceMaxStaleDuration = "60"
+market36KNeiro_fundingRateMaxStaleDuration = "600"
+market36KNeiro_minFundingInterval = "0"
+market36KNeiro_markPriceMaxDeviationUnscaled = "0.05"
+market36KNeiro_fillPriceMaxDeviationUnscaled = "0.05"
+market36KNeiro_priceSpreadUnscaled = "0"
+market36KNeiro_volatilityIndexMultiplierUnscaled = "0"
+market36KNeiro_maxPSlippageUnscaled = "0"
+market36KNeiro_maxExposureFactorUnscaled = "0.999"
+market36KNeiro_depthFactorUnscaled = "0"
+market36KNeiro_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market36KNeiro_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 37 DOT Configuration -- mirrored from mainnet market37Dot_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_37dot]
+market37Dot_riskMatrixIndex = "0"
+market37Dot_maxOpenBaseUnscaled = "72104"
+market37Dot_oracleNodeId = "<%= settings.dotUsdcMarkNodeIdStork %>"
+market37Dot_dutchConfig_lambdaUnscaled = "1"
+market37Dot_dutchConfig_minBaseUnscaled = "0.11"
+market37Dot_slippageParams_phiUnscaled = "0"
+market37Dot_slippageParams_betaUnscaled = "0"
+market37Dot_minimumOrderBaseUnscaled = "1"
+market37Dot_baseSpacingUnscaled = "0.1"
+market37Dot_priceSpacingUnscaled = "<%= 1e-4 %>"
+market37Dot_markPriceMaxStaleDuration = "60"
+market37Dot_fundingRateMaxStaleDuration = "600"
+market37Dot_minFundingInterval = "0"
+market37Dot_markPriceMaxDeviationUnscaled = "0.05"
+market37Dot_fillPriceMaxDeviationUnscaled = "0.05"
+market37Dot_priceSpreadUnscaled = "0"
+market37Dot_volatilityIndexMultiplierUnscaled = "0"
+market37Dot_maxPSlippageUnscaled = "0"
+market37Dot_maxExposureFactorUnscaled = "0.999"
+market37Dot_depthFactorUnscaled = "0"
+market37Dot_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market37Dot_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 38 LTC Configuration -- mirrored from mainnet market38Ltc_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_38ltc]
+market38Ltc_riskMatrixIndex = "0"
+market38Ltc_maxOpenBaseUnscaled = "2041"
+market38Ltc_oracleNodeId = "<%= settings.ltcUsdcMarkNodeIdStork %>"
+market38Ltc_dutchConfig_lambdaUnscaled = "1"
+market38Ltc_dutchConfig_minBaseUnscaled = "0.11"
+market38Ltc_slippageParams_phiUnscaled = "0"
+market38Ltc_slippageParams_betaUnscaled = "0"
+market38Ltc_minimumOrderBaseUnscaled = "0.1"
+market38Ltc_baseSpacingUnscaled = "0.01"
+market38Ltc_priceSpacingUnscaled = "<%= 1e-3 %>"
+market38Ltc_markPriceMaxStaleDuration = "60"
+market38Ltc_fundingRateMaxStaleDuration = "600"
+market38Ltc_minFundingInterval = "0"
+market38Ltc_markPriceMaxDeviationUnscaled = "0.05"
+market38Ltc_fillPriceMaxDeviationUnscaled = "0.05"
+market38Ltc_priceSpreadUnscaled = "0"
+market38Ltc_volatilityIndexMultiplierUnscaled = "0"
+market38Ltc_maxPSlippageUnscaled = "0"
+market38Ltc_maxExposureFactorUnscaled = "0.999"
+market38Ltc_depthFactorUnscaled = "0"
+market38Ltc_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market38Ltc_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 39 PYTH Configuration -- mirrored from mainnet market39Pyth_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_39pyth]
+market39Pyth_riskMatrixIndex = "0"
+market39Pyth_maxOpenBaseUnscaled = "0"
+market39Pyth_oracleNodeId = "<%= settings.pythUsdcMarkNodeIdStork %>"
+market39Pyth_dutchConfig_lambdaUnscaled = "1"
+market39Pyth_dutchConfig_minBaseUnscaled = "0.11"
+market39Pyth_slippageParams_phiUnscaled = "0"
+market39Pyth_slippageParams_betaUnscaled = "0"
+market39Pyth_minimumOrderBaseUnscaled = "1"
+market39Pyth_baseSpacingUnscaled = "0.1"
+market39Pyth_priceSpacingUnscaled = "<%= 1e-5 %>"
+market39Pyth_markPriceMaxStaleDuration = "60"
+market39Pyth_fundingRateMaxStaleDuration = "600"
+market39Pyth_minFundingInterval = "0"
+market39Pyth_markPriceMaxDeviationUnscaled = "0.05"
+market39Pyth_fillPriceMaxDeviationUnscaled = "0.05"
+market39Pyth_priceSpreadUnscaled = "0"
+market39Pyth_volatilityIndexMultiplierUnscaled = "0"
+market39Pyth_maxPSlippageUnscaled = "0"
+market39Pyth_maxExposureFactorUnscaled = "0.999"
+market39Pyth_depthFactorUnscaled = "0"
+market39Pyth_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market39Pyth_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 40 JUP Configuration -- mirrored from mainnet market40Jup_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_40jup]
+market40Jup_riskMatrixIndex = "0"
+market40Jup_maxOpenBaseUnscaled = "0"
+market40Jup_oracleNodeId = "<%= settings.jupUsdcMarkNodeIdStork %>"
+market40Jup_dutchConfig_lambdaUnscaled = "1"
+market40Jup_dutchConfig_minBaseUnscaled = "0.11"
+market40Jup_slippageParams_phiUnscaled = "0"
+market40Jup_slippageParams_betaUnscaled = "0"
+market40Jup_minimumOrderBaseUnscaled = "1"
+market40Jup_baseSpacingUnscaled = "0.1"
+market40Jup_priceSpacingUnscaled = "<%= 1e-5 %>"
+market40Jup_markPriceMaxStaleDuration = "60"
+market40Jup_fundingRateMaxStaleDuration = "600"
+market40Jup_minFundingInterval = "0"
+market40Jup_markPriceMaxDeviationUnscaled = "0.05"
+market40Jup_fillPriceMaxDeviationUnscaled = "0.05"
+market40Jup_priceSpreadUnscaled = "0"
+market40Jup_volatilityIndexMultiplierUnscaled = "0"
+market40Jup_maxPSlippageUnscaled = "0"
+market40Jup_maxExposureFactorUnscaled = "0.999"
+market40Jup_depthFactorUnscaled = "0"
+market40Jup_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market40Jup_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 41 PENGU Configuration -- mirrored from mainnet market41Pengu_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_41pengu]
+market41Pengu_riskMatrixIndex = "0"
+market41Pengu_maxOpenBaseUnscaled = "0"
+market41Pengu_oracleNodeId = "<%= settings.penguUsdcMarkNodeIdStork %>"
+market41Pengu_dutchConfig_lambdaUnscaled = "1"
+market41Pengu_dutchConfig_minBaseUnscaled = "0.11"
+market41Pengu_slippageParams_phiUnscaled = "0"
+market41Pengu_slippageParams_betaUnscaled = "0"
+market41Pengu_minimumOrderBaseUnscaled = "1"
+market41Pengu_baseSpacingUnscaled = "0.1"
+market41Pengu_priceSpacingUnscaled = "<%= 1e-6 %>"
+market41Pengu_markPriceMaxStaleDuration = "60"
+market41Pengu_fundingRateMaxStaleDuration = "600"
+market41Pengu_minFundingInterval = "0"
+market41Pengu_markPriceMaxDeviationUnscaled = "0.05"
+market41Pengu_fillPriceMaxDeviationUnscaled = "0.05"
+market41Pengu_priceSpreadUnscaled = "0"
+market41Pengu_volatilityIndexMultiplierUnscaled = "0"
+market41Pengu_maxPSlippageUnscaled = "0"
+market41Pengu_maxExposureFactorUnscaled = "0.999"
+market41Pengu_depthFactorUnscaled = "0"
+market41Pengu_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market41Pengu_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 42 TRUMP Configuration -- mirrored from mainnet market42Trump_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_42trump]
+market42Trump_riskMatrixIndex = "0"
+market42Trump_maxOpenBaseUnscaled = "0"
+market42Trump_oracleNodeId = "<%= settings.trumpUsdcMarkNodeIdStork %>"
+market42Trump_dutchConfig_lambdaUnscaled = "1"
+market42Trump_dutchConfig_minBaseUnscaled = "0.11"
+market42Trump_slippageParams_phiUnscaled = "0"
+market42Trump_slippageParams_betaUnscaled = "0"
+market42Trump_minimumOrderBaseUnscaled = "1"
+market42Trump_baseSpacingUnscaled = "0.1"
+market42Trump_priceSpacingUnscaled = "<%= 1e-3 %>"
+market42Trump_markPriceMaxStaleDuration = "60"
+market42Trump_fundingRateMaxStaleDuration = "600"
+market42Trump_minFundingInterval = "0"
+market42Trump_markPriceMaxDeviationUnscaled = "0.05"
+market42Trump_fillPriceMaxDeviationUnscaled = "0.05"
+market42Trump_priceSpreadUnscaled = "0"
+market42Trump_volatilityIndexMultiplierUnscaled = "0"
+market42Trump_maxPSlippageUnscaled = "0"
+market42Trump_maxExposureFactorUnscaled = "0.999"
+market42Trump_depthFactorUnscaled = "0"
+market42Trump_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market42Trump_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 43 HYPE Configuration -- mirrored from mainnet market43Hype_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_43hype]
+market43Hype_riskMatrixIndex = "0"
+market43Hype_maxOpenBaseUnscaled = "21148"
+market43Hype_oracleNodeId = "<%= settings.hypeUsdcMarkNodeIdStork %>"
+market43Hype_dutchConfig_lambdaUnscaled = "1"
+market43Hype_dutchConfig_minBaseUnscaled = "0.11"
+market43Hype_slippageParams_phiUnscaled = "0"
+market43Hype_slippageParams_betaUnscaled = "0"
+market43Hype_minimumOrderBaseUnscaled = "1"
+market43Hype_baseSpacingUnscaled = "0.1"
+market43Hype_priceSpacingUnscaled = "<%= 1e-3 %>"
+market43Hype_markPriceMaxStaleDuration = "60"
+market43Hype_fundingRateMaxStaleDuration = "600"
+market43Hype_minFundingInterval = "0"
+market43Hype_markPriceMaxDeviationUnscaled = "0.05"
+market43Hype_fillPriceMaxDeviationUnscaled = "0.05"
+market43Hype_priceSpreadUnscaled = "0"
+market43Hype_volatilityIndexMultiplierUnscaled = "0"
+market43Hype_maxPSlippageUnscaled = "0"
+market43Hype_maxExposureFactorUnscaled = "0.999"
+market43Hype_depthFactorUnscaled = "0"
+market43Hype_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market43Hype_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 44 VIRTUAL Configuration -- mirrored from mainnet market44Virtual_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_44virtual]
+market44Virtual_riskMatrixIndex = "0"
+market44Virtual_maxOpenBaseUnscaled = "0"
+market44Virtual_oracleNodeId = "<%= settings.virtualUsdcMarkNodeIdStork %>"
+market44Virtual_dutchConfig_lambdaUnscaled = "1"
+market44Virtual_dutchConfig_minBaseUnscaled = "0.11"
+market44Virtual_slippageParams_phiUnscaled = "0"
+market44Virtual_slippageParams_betaUnscaled = "0"
+market44Virtual_minimumOrderBaseUnscaled = "1"
+market44Virtual_baseSpacingUnscaled = "0.1"
+market44Virtual_priceSpacingUnscaled = "<%= 1e-4 %>"
+market44Virtual_markPriceMaxStaleDuration = "60"
+market44Virtual_fundingRateMaxStaleDuration = "600"
+market44Virtual_minFundingInterval = "0"
+market44Virtual_markPriceMaxDeviationUnscaled = "0.05"
+market44Virtual_fillPriceMaxDeviationUnscaled = "0.05"
+market44Virtual_priceSpreadUnscaled = "0"
+market44Virtual_volatilityIndexMultiplierUnscaled = "0"
+market44Virtual_maxPSlippageUnscaled = "0"
+market44Virtual_maxExposureFactorUnscaled = "0.999"
+market44Virtual_depthFactorUnscaled = "0"
+market44Virtual_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market44Virtual_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 45 AI16Z Configuration -- mirrored from mainnet market45Ai16z_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_45ai16z]
+market45Ai16z_riskMatrixIndex = "0"
+market45Ai16z_maxOpenBaseUnscaled = "0"
+market45Ai16z_oracleNodeId = "<%= settings.ai16zUsdcMarkNodeIdStork %>"
+market45Ai16z_dutchConfig_lambdaUnscaled = "1"
+market45Ai16z_dutchConfig_minBaseUnscaled = "0.11"
+market45Ai16z_slippageParams_phiUnscaled = "0"
+market45Ai16z_slippageParams_betaUnscaled = "0"
+market45Ai16z_minimumOrderBaseUnscaled = "1"
+market45Ai16z_baseSpacingUnscaled = "0.1"
+market45Ai16z_priceSpacingUnscaled = "<%= 1e-5 %>"
+market45Ai16z_markPriceMaxStaleDuration = "60"
+market45Ai16z_fundingRateMaxStaleDuration = "600"
+market45Ai16z_minFundingInterval = "0"
+market45Ai16z_markPriceMaxDeviationUnscaled = "0.05"
+market45Ai16z_fillPriceMaxDeviationUnscaled = "0.05"
+market45Ai16z_priceSpreadUnscaled = "0"
+market45Ai16z_volatilityIndexMultiplierUnscaled = "0"
+market45Ai16z_maxPSlippageUnscaled = "0"
+market45Ai16z_maxExposureFactorUnscaled = "0.999"
+market45Ai16z_depthFactorUnscaled = "0"
+market45Ai16z_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market45Ai16z_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 46 AIXBT Configuration -- mirrored from mainnet market46Aixbt_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_46aixbt]
+market46Aixbt_riskMatrixIndex = "0"
+market46Aixbt_maxOpenBaseUnscaled = "0"
+market46Aixbt_oracleNodeId = "<%= settings.aixbtUsdcMarkNodeIdStork %>"
+market46Aixbt_dutchConfig_lambdaUnscaled = "1"
+market46Aixbt_dutchConfig_minBaseUnscaled = "0.11"
+market46Aixbt_slippageParams_phiUnscaled = "0"
+market46Aixbt_slippageParams_betaUnscaled = "0"
+market46Aixbt_minimumOrderBaseUnscaled = "1"
+market46Aixbt_baseSpacingUnscaled = "0.1"
+market46Aixbt_priceSpacingUnscaled = "<%= 1e-5 %>"
+market46Aixbt_markPriceMaxStaleDuration = "60"
+market46Aixbt_fundingRateMaxStaleDuration = "600"
+market46Aixbt_minFundingInterval = "0"
+market46Aixbt_markPriceMaxDeviationUnscaled = "0.05"
+market46Aixbt_fillPriceMaxDeviationUnscaled = "0.05"
+market46Aixbt_priceSpreadUnscaled = "0"
+market46Aixbt_volatilityIndexMultiplierUnscaled = "0"
+market46Aixbt_maxPSlippageUnscaled = "0"
+market46Aixbt_maxExposureFactorUnscaled = "0.999"
+market46Aixbt_depthFactorUnscaled = "0"
+market46Aixbt_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market46Aixbt_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 47 SONIC Configuration -- mirrored from mainnet market47Sonic_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_47sonic]
+market47Sonic_riskMatrixIndex = "0"
+market47Sonic_maxOpenBaseUnscaled = "0"
+market47Sonic_oracleNodeId = "<%= settings.sonicUsdcMarkNodeIdStork %>"
+market47Sonic_dutchConfig_lambdaUnscaled = "1"
+market47Sonic_dutchConfig_minBaseUnscaled = "0.11"
+market47Sonic_slippageParams_phiUnscaled = "0"
+market47Sonic_slippageParams_betaUnscaled = "0"
+market47Sonic_minimumOrderBaseUnscaled = "1"
+market47Sonic_baseSpacingUnscaled = "0.1"
+market47Sonic_priceSpacingUnscaled = "<%= 1e-5 %>"
+market47Sonic_markPriceMaxStaleDuration = "60"
+market47Sonic_fundingRateMaxStaleDuration = "600"
+market47Sonic_minFundingInterval = "0"
+market47Sonic_markPriceMaxDeviationUnscaled = "0.05"
+market47Sonic_fillPriceMaxDeviationUnscaled = "0.05"
+market47Sonic_priceSpreadUnscaled = "0"
+market47Sonic_volatilityIndexMultiplierUnscaled = "0"
+market47Sonic_maxPSlippageUnscaled = "0"
+market47Sonic_maxExposureFactorUnscaled = "0.999"
+market47Sonic_depthFactorUnscaled = "0"
+market47Sonic_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market47Sonic_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 48 FARTCOIN Configuration -- mirrored from mainnet market48Fartcoin_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_48fartcoin]
+market48Fartcoin_riskMatrixIndex = "0"
+market48Fartcoin_maxOpenBaseUnscaled = "0"
+market48Fartcoin_oracleNodeId = "<%= settings.fartcoinUsdcMarkNodeIdStork %>"
+market48Fartcoin_dutchConfig_lambdaUnscaled = "1"
+market48Fartcoin_dutchConfig_minBaseUnscaled = "0.11"
+market48Fartcoin_slippageParams_phiUnscaled = "0"
+market48Fartcoin_slippageParams_betaUnscaled = "0"
+market48Fartcoin_minimumOrderBaseUnscaled = "1"
+market48Fartcoin_baseSpacingUnscaled = "0.1"
+market48Fartcoin_priceSpacingUnscaled = "<%= 1e-4 %>"
+market48Fartcoin_markPriceMaxStaleDuration = "60"
+market48Fartcoin_fundingRateMaxStaleDuration = "600"
+market48Fartcoin_minFundingInterval = "0"
+market48Fartcoin_markPriceMaxDeviationUnscaled = "0.05"
+market48Fartcoin_fillPriceMaxDeviationUnscaled = "0.05"
+market48Fartcoin_priceSpreadUnscaled = "0"
+market48Fartcoin_volatilityIndexMultiplierUnscaled = "0"
+market48Fartcoin_maxPSlippageUnscaled = "0"
+market48Fartcoin_maxExposureFactorUnscaled = "0.999"
+market48Fartcoin_depthFactorUnscaled = "0"
+market48Fartcoin_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market48Fartcoin_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 49 GRIFFAIN Configuration -- mirrored from mainnet market49Griffain_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_49griffain]
+market49Griffain_riskMatrixIndex = "0"
+market49Griffain_maxOpenBaseUnscaled = "0"
+market49Griffain_oracleNodeId = "<%= settings.griffainUsdcMarkNodeIdStork %>"
+market49Griffain_dutchConfig_lambdaUnscaled = "1"
+market49Griffain_dutchConfig_minBaseUnscaled = "0.11"
+market49Griffain_slippageParams_phiUnscaled = "0"
+market49Griffain_slippageParams_betaUnscaled = "0"
+market49Griffain_minimumOrderBaseUnscaled = "1"
+market49Griffain_baseSpacingUnscaled = "0.1"
+market49Griffain_priceSpacingUnscaled = "<%= 1e-5 %>"
+market49Griffain_markPriceMaxStaleDuration = "60"
+market49Griffain_fundingRateMaxStaleDuration = "600"
+market49Griffain_minFundingInterval = "0"
+market49Griffain_markPriceMaxDeviationUnscaled = "0.05"
+market49Griffain_fillPriceMaxDeviationUnscaled = "0.05"
+market49Griffain_priceSpreadUnscaled = "0"
+market49Griffain_volatilityIndexMultiplierUnscaled = "0"
+market49Griffain_maxPSlippageUnscaled = "0"
+market49Griffain_maxExposureFactorUnscaled = "0.999"
+market49Griffain_depthFactorUnscaled = "0"
+market49Griffain_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market49Griffain_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 50 WLD Configuration -- mirrored from mainnet market50Wld_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_50wld]
+market50Wld_riskMatrixIndex = "0"
+market50Wld_maxOpenBaseUnscaled = "309104"
+market50Wld_oracleNodeId = "<%= settings.wldUsdcMarkNodeIdStork %>"
+market50Wld_dutchConfig_lambdaUnscaled = "1"
+market50Wld_dutchConfig_minBaseUnscaled = "0.11"
+market50Wld_slippageParams_phiUnscaled = "0"
+market50Wld_slippageParams_betaUnscaled = "0"
+market50Wld_minimumOrderBaseUnscaled = "1"
+market50Wld_baseSpacingUnscaled = "0.1"
+market50Wld_priceSpacingUnscaled = "<%= 1e-4 %>"
+market50Wld_markPriceMaxStaleDuration = "60"
+market50Wld_fundingRateMaxStaleDuration = "600"
+market50Wld_minFundingInterval = "0"
+market50Wld_markPriceMaxDeviationUnscaled = "0.05"
+market50Wld_fillPriceMaxDeviationUnscaled = "0.05"
+market50Wld_priceSpreadUnscaled = "0"
+market50Wld_volatilityIndexMultiplierUnscaled = "0"
+market50Wld_maxPSlippageUnscaled = "0"
+market50Wld_maxExposureFactorUnscaled = "0.999"
+market50Wld_depthFactorUnscaled = "0"
+market50Wld_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market50Wld_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 51 ATOM Configuration -- mirrored from mainnet market51Atom_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_51atom]
+market51Atom_riskMatrixIndex = "0"
+market51Atom_maxOpenBaseUnscaled = "0"
+market51Atom_oracleNodeId = "<%= settings.atomUsdcMarkNodeIdStork %>"
+market51Atom_dutchConfig_lambdaUnscaled = "1"
+market51Atom_dutchConfig_minBaseUnscaled = "0.11"
+market51Atom_slippageParams_phiUnscaled = "0"
+market51Atom_slippageParams_betaUnscaled = "0"
+market51Atom_minimumOrderBaseUnscaled = "1"
+market51Atom_baseSpacingUnscaled = "0.1"
+market51Atom_priceSpacingUnscaled = "<%= 1e-4 %>"
+market51Atom_markPriceMaxStaleDuration = "60"
+market51Atom_fundingRateMaxStaleDuration = "600"
+market51Atom_minFundingInterval = "0"
+market51Atom_markPriceMaxDeviationUnscaled = "0.05"
+market51Atom_fillPriceMaxDeviationUnscaled = "0.05"
+market51Atom_priceSpreadUnscaled = "0"
+market51Atom_volatilityIndexMultiplierUnscaled = "0"
+market51Atom_maxPSlippageUnscaled = "0"
+market51Atom_maxExposureFactorUnscaled = "0.999"
+market51Atom_depthFactorUnscaled = "0"
+market51Atom_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market51Atom_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 52 APE Configuration -- mirrored from mainnet market52Ape_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_52ape]
+market52Ape_riskMatrixIndex = "0"
+market52Ape_maxOpenBaseUnscaled = "0"
+market52Ape_oracleNodeId = "<%= settings.apeUsdcMarkNodeIdStork %>"
+market52Ape_dutchConfig_lambdaUnscaled = "1"
+market52Ape_dutchConfig_minBaseUnscaled = "0.11"
+market52Ape_slippageParams_phiUnscaled = "0"
+market52Ape_slippageParams_betaUnscaled = "0"
+market52Ape_minimumOrderBaseUnscaled = "1"
+market52Ape_baseSpacingUnscaled = "0.1"
+market52Ape_priceSpacingUnscaled = "<%= 1e-5 %>"
+market52Ape_markPriceMaxStaleDuration = "60"
+market52Ape_fundingRateMaxStaleDuration = "600"
+market52Ape_minFundingInterval = "0"
+market52Ape_markPriceMaxDeviationUnscaled = "0.05"
+market52Ape_fillPriceMaxDeviationUnscaled = "0.05"
+market52Ape_priceSpreadUnscaled = "0"
+market52Ape_volatilityIndexMultiplierUnscaled = "0"
+market52Ape_maxPSlippageUnscaled = "0"
+market52Ape_maxExposureFactorUnscaled = "0.999"
+market52Ape_depthFactorUnscaled = "0"
+market52Ape_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market52Ape_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 53 TON Configuration -- mirrored from mainnet market53Ton_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_53ton]
+market53Ton_riskMatrixIndex = "0"
+market53Ton_maxOpenBaseUnscaled = "0"
+market53Ton_oracleNodeId = "<%= settings.tonUsdcMarkNodeIdStork %>"
+market53Ton_dutchConfig_lambdaUnscaled = "1"
+market53Ton_dutchConfig_minBaseUnscaled = "0.11"
+market53Ton_slippageParams_phiUnscaled = "0"
+market53Ton_slippageParams_betaUnscaled = "0"
+market53Ton_minimumOrderBaseUnscaled = "1"
+market53Ton_baseSpacingUnscaled = "0.1"
+market53Ton_priceSpacingUnscaled = "<%= 1e-4 %>"
+market53Ton_markPriceMaxStaleDuration = "60"
+market53Ton_fundingRateMaxStaleDuration = "600"
+market53Ton_minFundingInterval = "0"
+market53Ton_markPriceMaxDeviationUnscaled = "0.05"
+market53Ton_fillPriceMaxDeviationUnscaled = "0.05"
+market53Ton_priceSpreadUnscaled = "0"
+market53Ton_volatilityIndexMultiplierUnscaled = "0"
+market53Ton_maxPSlippageUnscaled = "0"
+market53Ton_maxExposureFactorUnscaled = "0.999"
+market53Ton_depthFactorUnscaled = "0"
+market53Ton_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market53Ton_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 54 ONDO Configuration -- mirrored from mainnet market54Ondo_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_54ondo]
+market54Ondo_riskMatrixIndex = "0"
+market54Ondo_maxOpenBaseUnscaled = "0"
+market54Ondo_oracleNodeId = "<%= settings.ondoUsdcMarkNodeIdStork %>"
+market54Ondo_dutchConfig_lambdaUnscaled = "1"
+market54Ondo_dutchConfig_minBaseUnscaled = "0.11"
+market54Ondo_slippageParams_phiUnscaled = "0"
+market54Ondo_slippageParams_betaUnscaled = "0"
+market54Ondo_minimumOrderBaseUnscaled = "1"
+market54Ondo_baseSpacingUnscaled = "0.1"
+market54Ondo_priceSpacingUnscaled = "<%= 1e-4 %>"
+market54Ondo_markPriceMaxStaleDuration = "60"
+market54Ondo_fundingRateMaxStaleDuration = "600"
+market54Ondo_minFundingInterval = "0"
+market54Ondo_markPriceMaxDeviationUnscaled = "0.05"
+market54Ondo_fillPriceMaxDeviationUnscaled = "0.05"
+market54Ondo_priceSpreadUnscaled = "0"
+market54Ondo_volatilityIndexMultiplierUnscaled = "0"
+market54Ondo_maxPSlippageUnscaled = "0"
+market54Ondo_maxExposureFactorUnscaled = "0.999"
+market54Ondo_depthFactorUnscaled = "0"
+market54Ondo_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market54Ondo_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 55 TRX Configuration -- mirrored from mainnet market55Trx_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_55trx]
+market55Trx_riskMatrixIndex = "0"
+market55Trx_maxOpenBaseUnscaled = "0"
+market55Trx_oracleNodeId = "<%= settings.trxUsdcMarkNodeIdStork %>"
+market55Trx_dutchConfig_lambdaUnscaled = "1"
+market55Trx_dutchConfig_minBaseUnscaled = "0.11"
+market55Trx_slippageParams_phiUnscaled = "0"
+market55Trx_slippageParams_betaUnscaled = "0"
+market55Trx_minimumOrderBaseUnscaled = "1"
+market55Trx_baseSpacingUnscaled = "0.1"
+market55Trx_priceSpacingUnscaled = "<%= 1e-5 %>"
+market55Trx_markPriceMaxStaleDuration = "60"
+market55Trx_fundingRateMaxStaleDuration = "600"
+market55Trx_minFundingInterval = "0"
+market55Trx_markPriceMaxDeviationUnscaled = "0.05"
+market55Trx_fillPriceMaxDeviationUnscaled = "0.05"
+market55Trx_priceSpreadUnscaled = "0"
+market55Trx_volatilityIndexMultiplierUnscaled = "0"
+market55Trx_maxPSlippageUnscaled = "0"
+market55Trx_maxExposureFactorUnscaled = "0.999"
+market55Trx_depthFactorUnscaled = "0"
+market55Trx_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market55Trx_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 56 INJ Configuration -- mirrored from mainnet market56Inj_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_56inj]
+market56Inj_riskMatrixIndex = "0"
+market56Inj_maxOpenBaseUnscaled = "0"
+market56Inj_oracleNodeId = "<%= settings.injUsdcMarkNodeIdStork %>"
+market56Inj_dutchConfig_lambdaUnscaled = "1"
+market56Inj_dutchConfig_minBaseUnscaled = "0.11"
+market56Inj_slippageParams_phiUnscaled = "0"
+market56Inj_slippageParams_betaUnscaled = "0"
+market56Inj_minimumOrderBaseUnscaled = "1"
+market56Inj_baseSpacingUnscaled = "0.1"
+market56Inj_priceSpacingUnscaled = "<%= 1e-3 %>"
+market56Inj_markPriceMaxStaleDuration = "60"
+market56Inj_fundingRateMaxStaleDuration = "600"
+market56Inj_minFundingInterval = "0"
+market56Inj_markPriceMaxDeviationUnscaled = "0.05"
+market56Inj_fillPriceMaxDeviationUnscaled = "0.05"
+market56Inj_priceSpreadUnscaled = "0"
+market56Inj_volatilityIndexMultiplierUnscaled = "0"
+market56Inj_maxPSlippageUnscaled = "0"
+market56Inj_maxExposureFactorUnscaled = "0.999"
+market56Inj_depthFactorUnscaled = "0"
+market56Inj_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market56Inj_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 57 MOVE Configuration -- mirrored from mainnet market57Move_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_57move]
+market57Move_riskMatrixIndex = "0"
+market57Move_maxOpenBaseUnscaled = "0"
+market57Move_oracleNodeId = "<%= settings.moveUsdcMarkNodeIdStork %>"
+market57Move_dutchConfig_lambdaUnscaled = "1"
+market57Move_dutchConfig_minBaseUnscaled = "0.11"
+market57Move_slippageParams_phiUnscaled = "0"
+market57Move_slippageParams_betaUnscaled = "0"
+market57Move_minimumOrderBaseUnscaled = "1"
+market57Move_baseSpacingUnscaled = "0.1"
+market57Move_priceSpacingUnscaled = "<%= 1e-5 %>"
+market57Move_markPriceMaxStaleDuration = "60"
+market57Move_fundingRateMaxStaleDuration = "600"
+market57Move_minFundingInterval = "0"
+market57Move_markPriceMaxDeviationUnscaled = "0.05"
+market57Move_fillPriceMaxDeviationUnscaled = "0.05"
+market57Move_priceSpreadUnscaled = "0"
+market57Move_volatilityIndexMultiplierUnscaled = "0"
+market57Move_maxPSlippageUnscaled = "0"
+market57Move_maxExposureFactorUnscaled = "0.999"
+market57Move_depthFactorUnscaled = "0"
+market57Move_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market57Move_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 58 BERA Configuration -- mirrored from mainnet market58Bera_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_58bera]
+market58Bera_riskMatrixIndex = "0"
+market58Bera_maxOpenBaseUnscaled = "0"
+market58Bera_oracleNodeId = "<%= settings.beraUsdcMarkNodeIdStork %>"
+market58Bera_dutchConfig_lambdaUnscaled = "1"
+market58Bera_dutchConfig_minBaseUnscaled = "0.11"
+market58Bera_slippageParams_phiUnscaled = "0"
+market58Bera_slippageParams_betaUnscaled = "0"
+market58Bera_minimumOrderBaseUnscaled = "1"
+market58Bera_baseSpacingUnscaled = "0.1"
+market58Bera_priceSpacingUnscaled = "<%= 1e-4 %>"
+market58Bera_markPriceMaxStaleDuration = "60"
+market58Bera_fundingRateMaxStaleDuration = "600"
+market58Bera_minFundingInterval = "0"
+market58Bera_markPriceMaxDeviationUnscaled = "0.05"
+market58Bera_fillPriceMaxDeviationUnscaled = "0.05"
+market58Bera_priceSpreadUnscaled = "0"
+market58Bera_volatilityIndexMultiplierUnscaled = "0"
+market58Bera_maxPSlippageUnscaled = "0"
+market58Bera_maxExposureFactorUnscaled = "0.999"
+market58Bera_depthFactorUnscaled = "0"
+market58Bera_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market58Bera_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 59 LAYER Configuration -- mirrored from mainnet market59Layer_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_59layer]
+market59Layer_riskMatrixIndex = "0"
+market59Layer_maxOpenBaseUnscaled = "7000"
+market59Layer_oracleNodeId = "<%= settings.layerUsdcNodeIdClosing %>"
+market59Layer_dutchConfig_lambdaUnscaled = "1"
+market59Layer_dutchConfig_minBaseUnscaled = "0.11"
+market59Layer_slippageParams_phiUnscaled = "0"
+market59Layer_slippageParams_betaUnscaled = "0"
+market59Layer_minimumOrderBaseUnscaled = "1"
+market59Layer_baseSpacingUnscaled = "0.1"
+market59Layer_priceSpacingUnscaled = "<%= 1e-5 %>"
+market59Layer_markPriceMaxStaleDuration = "60"
+market59Layer_fundingRateMaxStaleDuration = "600"
+market59Layer_minFundingInterval = "0"
+market59Layer_markPriceMaxDeviationUnscaled = "0.05"
+market59Layer_fillPriceMaxDeviationUnscaled = "0.05"
+market59Layer_priceSpreadUnscaled = "0"
+market59Layer_volatilityIndexMultiplierUnscaled = "0"
+market59Layer_maxPSlippageUnscaled = "0"
+market59Layer_maxExposureFactorUnscaled = "0.999"
+market59Layer_depthFactorUnscaled = "0"
+market59Layer_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market59Layer_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 60 TAO Configuration -- mirrored from mainnet market60Tao_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_60tao]
+market60Tao_riskMatrixIndex = "0"
+market60Tao_maxOpenBaseUnscaled = "0"
+market60Tao_oracleNodeId = "<%= settings.taoUsdcMarkNodeIdStork %>"
+market60Tao_dutchConfig_lambdaUnscaled = "1"
+market60Tao_dutchConfig_minBaseUnscaled = "0.11"
+market60Tao_slippageParams_phiUnscaled = "0"
+market60Tao_slippageParams_betaUnscaled = "0"
+market60Tao_minimumOrderBaseUnscaled = ".1"
+market60Tao_baseSpacingUnscaled = "0.01"
+market60Tao_priceSpacingUnscaled = "<%= 1e-3 %>"
+market60Tao_markPriceMaxStaleDuration = "60"
+market60Tao_fundingRateMaxStaleDuration = "600"
+market60Tao_minFundingInterval = "0"
+market60Tao_markPriceMaxDeviationUnscaled = "0.05"
+market60Tao_fillPriceMaxDeviationUnscaled = "0.05"
+market60Tao_priceSpreadUnscaled = "0"
+market60Tao_volatilityIndexMultiplierUnscaled = "0"
+market60Tao_maxPSlippageUnscaled = "0"
+market60Tao_maxExposureFactorUnscaled = "0.999"
+market60Tao_depthFactorUnscaled = "0"
+market60Tao_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market60Tao_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 61 IP Configuration -- mirrored from mainnet market61Ip_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_61ip]
+market61Ip_riskMatrixIndex = "0"
+market61Ip_maxOpenBaseUnscaled = "0"
+market61Ip_oracleNodeId = "<%= settings.ipUsdcMarkNodeIdStork %>"
+market61Ip_dutchConfig_lambdaUnscaled = "1"
+market61Ip_dutchConfig_minBaseUnscaled = "0.11"
+market61Ip_slippageParams_phiUnscaled = "0"
+market61Ip_slippageParams_betaUnscaled = "0"
+market61Ip_minimumOrderBaseUnscaled = "1"
+market61Ip_baseSpacingUnscaled = "0.1"
+market61Ip_priceSpacingUnscaled = "<%= 1e-5 %>"
+market61Ip_markPriceMaxStaleDuration = "60"
+market61Ip_fundingRateMaxStaleDuration = "600"
+market61Ip_minFundingInterval = "0"
+market61Ip_markPriceMaxDeviationUnscaled = "0.05"
+market61Ip_fillPriceMaxDeviationUnscaled = "0.05"
+market61Ip_priceSpreadUnscaled = "0"
+market61Ip_volatilityIndexMultiplierUnscaled = "0"
+market61Ip_maxPSlippageUnscaled = "0"
+market61Ip_maxExposureFactorUnscaled = "0.999"
+market61Ip_depthFactorUnscaled = "0"
+market61Ip_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market61Ip_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 62 ME Configuration -- mirrored from mainnet market62Me_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_62me]
+market62Me_riskMatrixIndex = "0"
+market62Me_maxOpenBaseUnscaled = "974696"
+market62Me_oracleNodeId = "<%= settings.meUsdcMarkNodeIdStork %>"
+market62Me_dutchConfig_lambdaUnscaled = "1"
+market62Me_dutchConfig_minBaseUnscaled = "0.11"
+market62Me_slippageParams_phiUnscaled = "0"
+market62Me_slippageParams_betaUnscaled = "0"
+market62Me_minimumOrderBaseUnscaled = "1"
+market62Me_baseSpacingUnscaled = "0.1"
+market62Me_priceSpacingUnscaled = "<%= 1e-4 %>"
+market62Me_markPriceMaxStaleDuration = "60"
+market62Me_fundingRateMaxStaleDuration = "600"
+market62Me_minFundingInterval = "0"
+market62Me_markPriceMaxDeviationUnscaled = "0.05"
+market62Me_fillPriceMaxDeviationUnscaled = "0.05"
+market62Me_priceSpreadUnscaled = "0"
+market62Me_volatilityIndexMultiplierUnscaled = "0"
+market62Me_maxPSlippageUnscaled = "0"
+market62Me_maxExposureFactorUnscaled = "0.999"
+market62Me_depthFactorUnscaled = "0"
+market62Me_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market62Me_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 63 PUMP Configuration -- mirrored from mainnet market63Pump_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_63pump]
+market63Pump_riskMatrixIndex = "0"
+market63Pump_maxOpenBaseUnscaled = "0"
+market63Pump_oracleNodeId = "<%= settings.pumpUsdcMarkNodeIdStork %>"
+market63Pump_dutchConfig_lambdaUnscaled = "1"
+market63Pump_dutchConfig_minBaseUnscaled = "0.11"
+market63Pump_slippageParams_phiUnscaled = "0"
+market63Pump_slippageParams_betaUnscaled = "0"
+market63Pump_minimumOrderBaseUnscaled = "1"
+market63Pump_baseSpacingUnscaled = "0.1"
+market63Pump_priceSpacingUnscaled = "<%= 1e-6 %>"
+market63Pump_markPriceMaxStaleDuration = "60"
+market63Pump_fundingRateMaxStaleDuration = "600"
+market63Pump_minFundingInterval = "0"
+market63Pump_markPriceMaxDeviationUnscaled = "0.05"
+market63Pump_fillPriceMaxDeviationUnscaled = "0.05"
+market63Pump_priceSpreadUnscaled = "0"
+market63Pump_volatilityIndexMultiplierUnscaled = "0"
+market63Pump_maxPSlippageUnscaled = "0"
+market63Pump_maxExposureFactorUnscaled = "0.999"
+market63Pump_depthFactorUnscaled = "0"
+market63Pump_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market63Pump_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 64 MORPHO Configuration -- mirrored from mainnet market64Morpho_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_64morpho]
+market64Morpho_riskMatrixIndex = "0"
+market64Morpho_maxOpenBaseUnscaled = "0"
+market64Morpho_oracleNodeId = "<%= settings.morphoUsdcMarkNodeIdStork %>"
+market64Morpho_dutchConfig_lambdaUnscaled = "1"
+market64Morpho_dutchConfig_minBaseUnscaled = "0.11"
+market64Morpho_slippageParams_phiUnscaled = "0"
+market64Morpho_slippageParams_betaUnscaled = "0"
+market64Morpho_minimumOrderBaseUnscaled = "1"
+market64Morpho_baseSpacingUnscaled = "0.1"
+market64Morpho_priceSpacingUnscaled = "<%= 1e-4 %>"
+market64Morpho_markPriceMaxStaleDuration = "60"
+market64Morpho_fundingRateMaxStaleDuration = "600"
+market64Morpho_minFundingInterval = "0"
+market64Morpho_markPriceMaxDeviationUnscaled = "0.05"
+market64Morpho_fillPriceMaxDeviationUnscaled = "0.05"
+market64Morpho_priceSpreadUnscaled = "0"
+market64Morpho_volatilityIndexMultiplierUnscaled = "0"
+market64Morpho_maxPSlippageUnscaled = "0"
+market64Morpho_maxExposureFactorUnscaled = "0.999"
+market64Morpho_depthFactorUnscaled = "0"
+market64Morpho_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market64Morpho_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 65 SYRUP Configuration -- mirrored from mainnet market65Syrup_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_65syrup]
+market65Syrup_riskMatrixIndex = "0"
+market65Syrup_maxOpenBaseUnscaled = "0"
+market65Syrup_oracleNodeId = "<%= settings.syrupUsdcMarkNodeIdStork %>"
+market65Syrup_dutchConfig_lambdaUnscaled = "1"
+market65Syrup_dutchConfig_minBaseUnscaled = "0.11"
+market65Syrup_slippageParams_phiUnscaled = "0"
+market65Syrup_slippageParams_betaUnscaled = "0"
+market65Syrup_minimumOrderBaseUnscaled = "1"
+market65Syrup_baseSpacingUnscaled = "0.1"
+market65Syrup_priceSpacingUnscaled = "<%= 1e-5 %>"
+market65Syrup_markPriceMaxStaleDuration = "60"
+market65Syrup_fundingRateMaxStaleDuration = "600"
+market65Syrup_minFundingInterval = "0"
+market65Syrup_markPriceMaxDeviationUnscaled = "0.05"
+market65Syrup_fillPriceMaxDeviationUnscaled = "0.05"
+market65Syrup_priceSpreadUnscaled = "0"
+market65Syrup_volatilityIndexMultiplierUnscaled = "0"
+market65Syrup_maxPSlippageUnscaled = "0"
+market65Syrup_maxExposureFactorUnscaled = "0.999"
+market65Syrup_depthFactorUnscaled = "0"
+market65Syrup_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market65Syrup_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 66 AERO Configuration -- mirrored from mainnet market66Aero_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_66aero]
+market66Aero_riskMatrixIndex = "0"
+market66Aero_maxOpenBaseUnscaled = "326393"
+market66Aero_oracleNodeId = "<%= settings.aeroUsdcMarkNodeIdStork %>"
+market66Aero_dutchConfig_lambdaUnscaled = "1"
+market66Aero_dutchConfig_minBaseUnscaled = "0.11"
+market66Aero_slippageParams_phiUnscaled = "0"
+market66Aero_slippageParams_betaUnscaled = "0"
+market66Aero_minimumOrderBaseUnscaled = "1"
+market66Aero_baseSpacingUnscaled = "0.1"
+market66Aero_priceSpacingUnscaled = "<%= 1e-5 %>"
+market66Aero_markPriceMaxStaleDuration = "60"
+market66Aero_fundingRateMaxStaleDuration = "600"
+market66Aero_minFundingInterval = "0"
+market66Aero_markPriceMaxDeviationUnscaled = "0.05"
+market66Aero_fillPriceMaxDeviationUnscaled = "0.05"
+market66Aero_priceSpreadUnscaled = "0"
+market66Aero_volatilityIndexMultiplierUnscaled = "0"
+market66Aero_maxPSlippageUnscaled = "0"
+market66Aero_maxExposureFactorUnscaled = "0.999"
+market66Aero_depthFactorUnscaled = "0"
+market66Aero_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market66Aero_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 67 KAITO Configuration -- mirrored from mainnet market67Kaito_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_67kaito]
+market67Kaito_riskMatrixIndex = "0"
+market67Kaito_maxOpenBaseUnscaled = "0"
+market67Kaito_oracleNodeId = "<%= settings.kaitoUsdcMarkNodeIdStork %>"
+market67Kaito_dutchConfig_lambdaUnscaled = "1"
+market67Kaito_dutchConfig_minBaseUnscaled = "0.11"
+market67Kaito_slippageParams_phiUnscaled = "0"
+market67Kaito_slippageParams_betaUnscaled = "0"
+market67Kaito_minimumOrderBaseUnscaled = "1"
+market67Kaito_baseSpacingUnscaled = "0.1"
+market67Kaito_priceSpacingUnscaled = "<%= 1e-4 %>"
+market67Kaito_markPriceMaxStaleDuration = "60"
+market67Kaito_fundingRateMaxStaleDuration = "600"
+market67Kaito_minFundingInterval = "0"
+market67Kaito_markPriceMaxDeviationUnscaled = "0.05"
+market67Kaito_fillPriceMaxDeviationUnscaled = "0.05"
+market67Kaito_priceSpreadUnscaled = "0"
+market67Kaito_volatilityIndexMultiplierUnscaled = "0"
+market67Kaito_maxPSlippageUnscaled = "0"
+market67Kaito_maxExposureFactorUnscaled = "0.999"
+market67Kaito_depthFactorUnscaled = "0"
+market67Kaito_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market67Kaito_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 68 ZORA Configuration -- mirrored from mainnet market68Zora_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_68zora]
+market68Zora_riskMatrixIndex = "0"
+market68Zora_maxOpenBaseUnscaled = "0"
+market68Zora_oracleNodeId = "<%= settings.zoraUsdcMarkNodeIdStork %>"
+market68Zora_dutchConfig_lambdaUnscaled = "1"
+market68Zora_dutchConfig_minBaseUnscaled = "0.11"
+market68Zora_slippageParams_phiUnscaled = "0"
+market68Zora_slippageParams_betaUnscaled = "0"
+market68Zora_minimumOrderBaseUnscaled = "1"
+market68Zora_baseSpacingUnscaled = "0.1"
+market68Zora_priceSpacingUnscaled = "<%= 1e-6 %>"
+market68Zora_markPriceMaxStaleDuration = "60"
+market68Zora_fundingRateMaxStaleDuration = "600"
+market68Zora_minFundingInterval = "0"
+market68Zora_markPriceMaxDeviationUnscaled = "0.05"
+market68Zora_fillPriceMaxDeviationUnscaled = "0.05"
+market68Zora_priceSpreadUnscaled = "0"
+market68Zora_volatilityIndexMultiplierUnscaled = "0"
+market68Zora_maxPSlippageUnscaled = "0"
+market68Zora_maxExposureFactorUnscaled = "0.999"
+market68Zora_depthFactorUnscaled = "0"
+market68Zora_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market68Zora_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 69 PROVE Configuration -- mirrored from mainnet market69Prove_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_69prove]
+market69Prove_riskMatrixIndex = "0"
+market69Prove_maxOpenBaseUnscaled = "0"
+market69Prove_oracleNodeId = "<%= settings.proveUsdcMarkNodeIdStork %>"
+market69Prove_dutchConfig_lambdaUnscaled = "1"
+market69Prove_dutchConfig_minBaseUnscaled = "0.11"
+market69Prove_slippageParams_phiUnscaled = "0"
+market69Prove_slippageParams_betaUnscaled = "0"
+market69Prove_minimumOrderBaseUnscaled = "1"
+market69Prove_baseSpacingUnscaled = "0.1"
+market69Prove_priceSpacingUnscaled = "<%= 1e-5 %>"
+market69Prove_markPriceMaxStaleDuration = "60"
+market69Prove_fundingRateMaxStaleDuration = "600"
+market69Prove_minFundingInterval = "0"
+market69Prove_markPriceMaxDeviationUnscaled = "0.05"
+market69Prove_fillPriceMaxDeviationUnscaled = "0.05"
+market69Prove_priceSpreadUnscaled = "0"
+market69Prove_volatilityIndexMultiplierUnscaled = "0"
+market69Prove_maxPSlippageUnscaled = "0"
+market69Prove_maxExposureFactorUnscaled = "0.999"
+market69Prove_depthFactorUnscaled = "0"
+market69Prove_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market69Prove_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 70 PAXG Configuration -- mirrored from mainnet market70Paxg_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_70paxg]
+market70Paxg_riskMatrixIndex = "0"
+market70Paxg_maxOpenBaseUnscaled = "144"
+market70Paxg_oracleNodeId = "<%= settings.paxgUsdcMarkNodeIdStork %>"
+market70Paxg_dutchConfig_lambdaUnscaled = "1"
+market70Paxg_dutchConfig_minBaseUnscaled = "0.11"
+market70Paxg_slippageParams_phiUnscaled = "0"
+market70Paxg_slippageParams_betaUnscaled = "0"
+market70Paxg_minimumOrderBaseUnscaled = "0.01"
+market70Paxg_baseSpacingUnscaled = "0.001"
+market70Paxg_priceSpacingUnscaled = "<%= 1e-2 %>"
+market70Paxg_markPriceMaxStaleDuration = "60"
+market70Paxg_fundingRateMaxStaleDuration = "600"
+market70Paxg_minFundingInterval = "0"
+market70Paxg_markPriceMaxDeviationUnscaled = "0.05"
+market70Paxg_fillPriceMaxDeviationUnscaled = "0.05"
+market70Paxg_priceSpreadUnscaled = "0"
+market70Paxg_volatilityIndexMultiplierUnscaled = "0"
+market70Paxg_maxPSlippageUnscaled = "0"
+market70Paxg_maxExposureFactorUnscaled = "0.999"
+market70Paxg_depthFactorUnscaled = "0"
+market70Paxg_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market70Paxg_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 71 YZY Configuration -- mirrored from mainnet market71Yzy_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_71yzy]
+market71Yzy_riskMatrixIndex = "0"
+market71Yzy_maxOpenBaseUnscaled = "0"
+market71Yzy_oracleNodeId = "<%= settings.yzyUsdcMarkNodeIdStork %>"
+market71Yzy_dutchConfig_lambdaUnscaled = "1"
+market71Yzy_dutchConfig_minBaseUnscaled = "0.11"
+market71Yzy_slippageParams_phiUnscaled = "0"
+market71Yzy_slippageParams_betaUnscaled = "0"
+market71Yzy_minimumOrderBaseUnscaled = "1"
+market71Yzy_baseSpacingUnscaled = "0.1"
+market71Yzy_priceSpacingUnscaled = "<%= 1e-3 %>"
+market71Yzy_markPriceMaxStaleDuration = "60"
+market71Yzy_fundingRateMaxStaleDuration = "600"
+market71Yzy_minFundingInterval = "0"
+market71Yzy_markPriceMaxDeviationUnscaled = "0.05"
+market71Yzy_fillPriceMaxDeviationUnscaled = "0.05"
+market71Yzy_priceSpreadUnscaled = "0"
+market71Yzy_volatilityIndexMultiplierUnscaled = "0"
+market71Yzy_maxPSlippageUnscaled = "0"
+market71Yzy_maxExposureFactorUnscaled = "0.999"
+market71Yzy_depthFactorUnscaled = "0"
+market71Yzy_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market71Yzy_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 72 XPL Configuration -- mirrored from mainnet market72Xpl_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_72xpl]
+market72Xpl_riskMatrixIndex = "0"
+market72Xpl_maxOpenBaseUnscaled = "0"
+market72Xpl_oracleNodeId = "<%= settings.xplUsdcMarkNodeIdStork %>"
+market72Xpl_dutchConfig_lambdaUnscaled = "1"
+market72Xpl_dutchConfig_minBaseUnscaled = "0.11"
+market72Xpl_slippageParams_phiUnscaled = "0"
+market72Xpl_slippageParams_betaUnscaled = "0"
+market72Xpl_minimumOrderBaseUnscaled = "1"
+market72Xpl_baseSpacingUnscaled = "0.1"
+market72Xpl_priceSpacingUnscaled = "<%= 1e-4 %>"
+market72Xpl_markPriceMaxStaleDuration = "60"
+market72Xpl_fundingRateMaxStaleDuration = "600"
+market72Xpl_minFundingInterval = "0"
+market72Xpl_markPriceMaxDeviationUnscaled = "0.05"
+market72Xpl_fillPriceMaxDeviationUnscaled = "0.05"
+market72Xpl_priceSpreadUnscaled = "0"
+market72Xpl_volatilityIndexMultiplierUnscaled = "0"
+market72Xpl_maxPSlippageUnscaled = "0"
+market72Xpl_maxExposureFactorUnscaled = "0.999"
+market72Xpl_depthFactorUnscaled = "0"
+market72Xpl_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market72Xpl_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 73 WLFI Configuration -- mirrored from mainnet market73Wlfi_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_73wlfi]
+market73Wlfi_riskMatrixIndex = "0"
+market73Wlfi_maxOpenBaseUnscaled = "0"
+market73Wlfi_oracleNodeId = "<%= settings.wlfiUsdcMarkNodeIdStork %>"
+market73Wlfi_dutchConfig_lambdaUnscaled = "1"
+market73Wlfi_dutchConfig_minBaseUnscaled = "0.11"
+market73Wlfi_slippageParams_phiUnscaled = "0"
+market73Wlfi_slippageParams_betaUnscaled = "0"
+market73Wlfi_minimumOrderBaseUnscaled = "1"
+market73Wlfi_baseSpacingUnscaled = "0.1"
+market73Wlfi_priceSpacingUnscaled = "<%= 1e-5 %>"
+market73Wlfi_markPriceMaxStaleDuration = "60"
+market73Wlfi_fundingRateMaxStaleDuration = "600"
+market73Wlfi_minFundingInterval = "0"
+market73Wlfi_markPriceMaxDeviationUnscaled = "0.05"
+market73Wlfi_fillPriceMaxDeviationUnscaled = "0.05"
+market73Wlfi_priceSpreadUnscaled = "0"
+market73Wlfi_volatilityIndexMultiplierUnscaled = "0"
+market73Wlfi_maxPSlippageUnscaled = "0"
+market73Wlfi_maxExposureFactorUnscaled = "0.999"
+market73Wlfi_depthFactorUnscaled = "0"
+market73Wlfi_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market73Wlfi_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 74 LINEA Configuration -- mirrored from mainnet market74Linea_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_74linea]
+market74Linea_riskMatrixIndex = "0"
+market74Linea_maxOpenBaseUnscaled = "34482759"
+market74Linea_oracleNodeId = "<%= settings.lineaUsdcMarkNodeIdStork %>"
+market74Linea_dutchConfig_lambdaUnscaled = "1"
+market74Linea_dutchConfig_minBaseUnscaled = "0.11"
+market74Linea_slippageParams_phiUnscaled = "0"
+market74Linea_slippageParams_betaUnscaled = "0"
+market74Linea_minimumOrderBaseUnscaled = "1"
+market74Linea_baseSpacingUnscaled = "0.1"
+market74Linea_priceSpacingUnscaled = "<%= 1e-6 %>"
+market74Linea_markPriceMaxStaleDuration = "60"
+market74Linea_fundingRateMaxStaleDuration = "600"
+market74Linea_minFundingInterval = "0"
+market74Linea_markPriceMaxDeviationUnscaled = "0.05"
+market74Linea_fillPriceMaxDeviationUnscaled = "0.05"
+market74Linea_priceSpreadUnscaled = "0"
+market74Linea_volatilityIndexMultiplierUnscaled = "0"
+market74Linea_maxPSlippageUnscaled = "0"
+market74Linea_maxExposureFactorUnscaled = "0.999"
+market74Linea_depthFactorUnscaled = "0"
+market74Linea_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market74Linea_velocityMultiplierUnscaled = "0"
+
+###############################################################################
+# Market 75 MEGA Configuration -- mirrored from mainnet market75Mega_*
+# Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
+###############################################################################
+[var.market_75mega]
+market75Mega_riskMatrixIndex = "0"
+market75Mega_maxOpenBaseUnscaled = "0"
+market75Mega_oracleNodeId = "<%= settings.megaUsdcMarkNodeIdStork %>"
+market75Mega_dutchConfig_lambdaUnscaled = "1"
+market75Mega_dutchConfig_minBaseUnscaled = "0.11"
+market75Mega_slippageParams_phiUnscaled = "0"
+market75Mega_slippageParams_betaUnscaled = "0"
+market75Mega_minimumOrderBaseUnscaled = "1"
+market75Mega_baseSpacingUnscaled = "0.1"
+market75Mega_priceSpacingUnscaled = "<%= 1e-6 %>"
+market75Mega_markPriceMaxStaleDuration = "60"
+market75Mega_fundingRateMaxStaleDuration = "600"
+market75Mega_minFundingInterval = "0"
+market75Mega_markPriceMaxDeviationUnscaled = "0.05"
+market75Mega_fillPriceMaxDeviationUnscaled = "0.05"
+market75Mega_priceSpreadUnscaled = "0"
+market75Mega_volatilityIndexMultiplierUnscaled = "0"
+market75Mega_maxPSlippageUnscaled = "0"
+market75Mega_maxExposureFactorUnscaled = "0.999"
+market75Mega_depthFactorUnscaled = "0"
+market75Mega_mtmWindow = "<%= 500 * settings.ONE_YEAR_IN_SECONDS %>"
+market75Mega_velocityMultiplierUnscaled = "0"
+
+###############################################################################
 # Collateral Pool 1 Configuration
 ###############################################################################
 [var.cp_1rusd]
-cp1Rusd_maxMarkets = "1"
+# 75 to match mainnet: the full mainnet market list is now mirrored on-chain.
+# Was "1" (ETH only) -- every market beyond the first reverts without this.
+cp1Rusd_maxMarkets = "75"
 # Was "2" (rUSD + wETH). Bumped to "12" to match cronos / mainnet so devnet
 # can layer in more collaterals without breaching the limit (today the next
 # one is sRUSD; see `setCollateralConfig` in `devnet/collateral_pools/
@@ -333,6 +2407,80 @@ cp1Rusd_insuranceFund_liquidationFeeUnscaled = "0.35"
 
 # Risk matrix: ETH market only (25x leverage with IMR multiplier 1.3)
 cp1Rusd_market1Eth_riskMatrix00Unscaled = "0.000947"
+cp1Rusd_market2Btc_riskMatrix00Unscaled = "0.000370"
+cp1Rusd_market3Sol_riskMatrix00Unscaled = "0.000947"
+cp1Rusd_market4Arb_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market5Op_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market6Avax_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market7Mkr_riskMatrix00Unscaled = "0.000947"
+cp1Rusd_market8Link_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market9Aave_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market10Crv_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market11Uni_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market12Sui_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market13Tia_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market14Sei_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market15Zro_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market16Xrp_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market17Wif_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market18Pepe1k_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market19Popcat_riskMatrix00Unscaled = "0.005917"
+cp1Rusd_market20Doge_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market21KShib_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market22KBonk_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market23Apt_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market24Bnb_riskMatrix00Unscaled = "0.000370"
+cp1Rusd_market25Jto_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market26Ada_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market27Ldo_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market28Pol_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market29Near_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market30Ftm_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market31Ena_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market32Eigen_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market33Pendle_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market34Goat_riskMatrix00Unscaled = "0.005917"
+cp1Rusd_market35Grass_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market36KNeiro_riskMatrix00Unscaled = "0.005917"
+cp1Rusd_market37Dot_riskMatrix00Unscaled = "0.000947"
+cp1Rusd_market38Ltc_riskMatrix00Unscaled = "0.000947"
+cp1Rusd_market39Pyth_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market40Jup_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market41Pengu_riskMatrix00Unscaled = "0.005917"
+cp1Rusd_market42Trump_riskMatrix00Unscaled = "0.005917"
+cp1Rusd_market43Hype_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market44Virtual_riskMatrix00Unscaled = "0.005917"
+cp1Rusd_market45Ai16z_riskMatrix00Unscaled = "0.005917"
+cp1Rusd_market46Aixbt_riskMatrix00Unscaled = "0.023669"
+cp1Rusd_market47Sonic_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market48Fartcoin_riskMatrix00Unscaled = "0.023669"
+cp1Rusd_market49Griffain_riskMatrix00Unscaled = "0.005917"
+cp1Rusd_market50Wld_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market51Atom_riskMatrix00Unscaled = "0.000947"
+cp1Rusd_market52Ape_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market53Ton_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market54Ondo_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market55Trx_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market56Inj_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market57Move_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market58Bera_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market59Layer_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market60Tao_riskMatrix00Unscaled = "0.001479"
+cp1Rusd_market61Ip_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market62Me_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market63Pump_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market64Morpho_riskMatrix00Unscaled = "0.005917"
+cp1Rusd_market65Syrup_riskMatrix00Unscaled = "0.023669"
+cp1Rusd_market66Aero_riskMatrix00Unscaled = "0.002630"
+cp1Rusd_market67Kaito_riskMatrix00Unscaled = "0.005917"
+cp1Rusd_market68Zora_riskMatrix00Unscaled = "0.023669"
+cp1Rusd_market69Prove_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market70Paxg_riskMatrix00Unscaled = "0.00005917"
+cp1Rusd_market71Yzy_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market72Xpl_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market73Wlfi_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market74Linea_riskMatrix00Unscaled = "0.06575"
+cp1Rusd_market75Mega_riskMatrix00Unscaled = "0.06575"
 
 # Risk multipliers
 cp1Rusd_imMultiplierUnscaled = "1.3"
