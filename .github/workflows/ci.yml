@@ -144,6 +144,33 @@ jobs:
           echo "package url: $URL"
           node node_modules/@usecannon/cli-devnet/bin/cannon.js fetch "$URL" "$REF" --chain-id 89346162
 
+      # The step above primes the omnibus package; this one primes the packages
+      # the omnibus CLONES. They are separate problems: the omnibus prime
+      # satisfies cli-devnet's "already published" guard, while this one fixes
+      # WHICH BYTES the clone steps resolve. For 12 of the 17 devnet clone
+      # sources the registry now serves artifacts rebuilt on a newer cannon
+      # toolchain, and since cannon clones proxies via CREATE2, different
+      # artifact bytes give a different proxy address -- e.g. PassivePool
+      # resolves to 0xE93414D5...8652 here instead of the deployed
+      # 0x9fDba948...abA2, so every devnet fork assertion reads a nonexistent
+      # contract. Pins live in packages/tomls/src/omnibus/reya_devnet.lock.json.
+      #
+      # NOTE the chain id inside the script is 13370, NOT 89346162: cannon
+      # resolves clone sources at CANNON_CHAIN_ID (the portable variant), so
+      # priming them under the devnet chain id writes tags nothing reads.
+      #
+      # continue-on-error matches the devnet lane: the devnet suite is
+      # advisory (reported via the separate "Testnet Suites" check run), so a
+      # priming failure must not redden the merge gate.
+      - name: Prime the local cannon registry with devnet's clone sources
+        continue-on-error: true
+        env:
+          # Same trap as the step above: `cannon fetch` reads
+          # CANNON_PUBLISH_IPFS_URL for its download loader, not CANNON_IPFS_URL.
+          CANNON_PUBLISH_IPFS_URL: https+ipfs://repo.usecannon.com
+          CANNON_WRITE_IPFS_URL: https+ipfs://repo.usecannon.com
+        run: "yarn reya_devnet:prime"
+
       - name: Reya Devnet Cannon Test
         id: reya_devnet_test
         continue-on-error: true

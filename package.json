@@ -18,6 +18,7 @@
     "reya_cronos:simulate": "lerna run reya_cronos:simulate --scope=@reya-deployments/tomls",
     "reya_network:test": "lerna run reya_network:test --scope=@reya-deployments/tests",
     "reya_cronos:test": "lerna run reya_cronos:test --scope=@reya-deployments/tests",
+    "reya_devnet:prime": "lerna run reya_devnet:prime --scope=@reya-deployments/tomls",
     "reya_devnet:simulate": "lerna run reya_devnet:simulate --scope=@reya-deployments/tomls",
     "reya_devnet:test": "lerna run reya_devnet:test --scope=@reya-deployments/tests"
   },

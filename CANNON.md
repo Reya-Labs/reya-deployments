@@ -165,6 +165,50 @@ that works on a machine which previously built the packages can fail
 everywhere else. When a build works only for you, suspect the cache: test
 with a throwaway `CANNON_DIRECTORY` holding just the settings file.
 
+### Clone-source pinning
+
+A registry ref is **not** immutable in practice. A package can be rebuilt on a
+newer cannon toolchain and republished under the same `name:version@preset`,
+and the registry will then hand out bytes that are not what you deployed from.
+For 12 of devnet's 17 clone sources that already happened.
+
+This is not cosmetic, because **cannon clones proxies via arachnid CREATE2**:
+the address is a pure function of `(deployer, salt, initcode)`, and the
+initcode comes from the cloned package's artifacts. Different artifact bytes,
+different proxy address. For `reya-exchange-passive-pool:1.0.0@proxy`:
+
+| artifact                               | PassivePool proxy    |
+| -------------------------------------- | -------------------- |
+| what devnet was deployed from (2.23.0) | `0x9fDba948…abA2` ✅ |
+| what the registry now serves (2.12.4)  | `0xE93414D5…8652` ❌ |
+
+So devnet reproduced on exactly one machine — the one whose local cache still
+held the originals — and the devnet fork suite could not pass anywhere else.
+The fix is a lockfile plus a prime step, because **cannon consults the local
+registry before the on-chain ones**:
+
+```bash
+yarn reya_devnet:prime    # before reya_devnet:test / reya_devnet:simulate
+```
+
+- Pins: `packages/tomls/src/omnibus/reya_devnet.lock.json`, keyed by package
+  ref. Each entry pins **two** CIDs: the `deploy` blob and the `misc` (artifact)
+  blob it points at. Both matter — the clone step reads `deployInfo.miscUrl`
+  unconditionally for contract bytecode.
+- **Prime clone sources at chain id `13370`, not `89346162`.** Cannon resolves
+  `clone.source` at `CANNON_CHAIN_ID` regardless of the target chain
+  (`steps/clone.js`, `config.chainId ?? CANNON_CHAIN_ID`). Priming at the devnet
+  chain id writes tags no clone step reads, the build falls through to the
+  registry, and you get the wrong addresses with no error. Note this differs
+  from the omnibus prime step, which correctly uses `89346162` — the omnibus
+  really is an 89346162 deployment.
+- Verify a pin without a chain, an RPC key, or a build:
+  `node packages/tomls/scripts/verify-clone-source-pins.js` recomputes the
+  PassivePool CREATE2 address from the pinned bytes.
+
+When bumping a `*Package` ref in `reya_devnet.toml`, update the lockfile in the
+same commit — the prime script hard-fails on a pin the omnibus no longer clones.
+
 ## IPFS
 
 ### Read URL
