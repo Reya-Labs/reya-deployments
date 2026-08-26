@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 # Tests for cannon-retry.sh.
 #
-# Two layers:
+# Three layers:
 #   1. classify_log() against recorded cannon output (testdata/*.log), which
 #      pins the classification rules.
 #   2. the retry loop end-to-end against a fake cannon, which pins the thing
 #      that actually costs time: how many attempts each class burns.
+#   3. the wrapper's own configuration, which pins the difference between a
+#      misconfigured wrapper (exit 2, nothing invoked) and a failing build.
 #
 # Dependency-free and bash-3.2 safe. Run:  ./scripts/cannon-retry.test.sh
 set -uo pipefail
@@ -20,6 +22,9 @@ DATA="$HERE/testdata"
 PASS=0
 FAIL=0
 
+# ok <label> / bad <label> <detail> -- record one assertion. Nothing aborts on
+# a failure: the run reports every broken rule at once, since the classifier's
+# rules interact and one edit can break several.
 ok()   { PASS=$((PASS + 1)); printf '  ok   %s\n' "$1"; }
 bad()  { FAIL=$((FAIL + 1)); printf '  FAIL %s\n     %s\n' "$1" "$2"; }
 
@@ -109,25 +114,31 @@ echo "== ansi colour tolerance =="
 # back on -- so the patterns must stay unanchored and match a coloured line
 # just the same. Build coloured copies and re-classify.
 ANSI_TMP="$(mktemp -d)"
+ESC="$(printf '\033')"
+
+# colourise <file> -- echo <file> with every non-empty line wrapped in
+# yellowBright ... reset, the way chalk renders cannon's skip lines.
 colourise() {
-  # wrap every non-empty line in yellowBright ... reset
-  sed -e 's/^\(.*[^ ].*\)$/\'"$(printf '\033')"'[93m\1'"$(printf '\033')"'[39m/' "$1"
+  sed -e "s/^\\(.*[^ ].*\\)\$/${ESC}[93m\\1${ESC}[39m/" "$1"
 }
 for fx in revert.log fetch-flake.log clean.log forge-fail.log; do
   colourise "$DATA/$fx" > "$ANSI_TMP/$fx"
 done
 
+# plain_class / ansi_class <fixture> <exit-status> -- classify the recorded
+# fixture and its coloured copy respectively; the two must always agree.
 plain_class() { classify_log "$DATA/$1" "$2"; }
 ansi_class()  { classify_log "$ANSI_TMP/$1" "$2"; }
 
 for pair in "revert.log 0" "fetch-flake.log 0" "clean.log 0" "forge-fail.log 1"; do
-  set -- $pair
-  want="$(plain_class "$1" "$2")"
-  got="$(ansi_class "$1" "$2")"
+  fixture="${pair% *}"
+  status="${pair##* }"
+  want="$(plain_class "$fixture" "$status")"
+  got="$(ansi_class "$fixture" "$status")"
   if [ "$got" = "$want" ]; then
-    ok "ANSI-coloured $1 still classifies as $want"
+    ok "ANSI-coloured $fixture still classifies as $want"
   else
-    bad "ANSI $1" "plain gave '$want', coloured gave '$got'"
+    bad "ANSI $fixture" "plain gave '$want', coloured gave '$got'"
   fi
 done
 rm -rf "$ANSI_TMP"
@@ -190,6 +201,70 @@ run_case "upload flake then clean recovers"  "upload-failure.log:1 clean.log:0" 
 run_case "clean run exits immediately"       "clean.log:0"                       1 0
 # Unknown is retried, not silently accepted.
 run_case "unknown is retried, then fails"    "unknown.log:0"                     3 1
+
+echo
+echo "== config validation =="
+
+# Regression: a bad CANNON_RETRY_ATTEMPTS used to make the loop guard false on
+# its first evaluation. The loop body never ran, cannon was never invoked, and
+# CI went red with "still failing after abc attempts" for a run that never
+# happened. A bad CANNON_RETRY_REPORT_LINES used to break `head -n` and
+# swallow the root-cause listing instead. Both must now be rejected up front,
+# with exit 2 (configuration error) rather than 1 (build failure), and without
+# invoking the wrapped command at all.
+
+# expect_config_reject <VAR=value>
+expect_config_reject() {
+  local assignment="$1" var out code ran
+  var="${assignment%%=*}"
+  rm -f "$TMP/ran"
+  out="$(env "$assignment" "$SCRIPT" touch "$TMP/ran" 2>&1)"
+  code=$?
+  ran=absent
+  [ -e "$TMP/ran" ] && ran=created
+  if [ "$code" -eq 2 ] && [ "$ran" = absent ] && printf '%s' "$out" | grep -q "$var"; then
+    ok "$assignment rejected (exit 2, wrapped command not run)"
+  else
+    bad "$assignment" "expected exit=2 and no invocation, got exit=$code wrapped-command=$ran: $out"
+  fi
+}
+
+expect_config_reject "CANNON_RETRY_ATTEMPTS=abc"
+expect_config_reject "CANNON_RETRY_ATTEMPTS=0"
+expect_config_reject "CANNON_RETRY_ATTEMPTS=-1"
+expect_config_reject "CANNON_RETRY_REPORT_LINES=0"
+expect_config_reject "CANNON_RETRY_REPORT_LINES=xyz"
+
+# An *empty* setting is not a bad setting. "${VAR:-default}" treats empty as
+# unset, and empty is exactly what a GitHub Actions `env:` entry fed by an
+# unset input or an undefined secret expands to -- so it must fall back to the
+# default rather than abort the build.
+rm -f "$TMP/ran"
+if env CANNON_RETRY_ATTEMPTS= CANNON_RETRY_REPORT_LINES= "$SCRIPT" touch "$TMP/ran" >/dev/null 2>&1 &&
+  [ -e "$TMP/ran" ]; then
+  ok "empty settings fall back to the defaults"
+else
+  bad "empty settings" "an empty CANNON_RETRY_* setting aborted instead of using its default"
+fi
+
+# ... while every genuine positive integer still passes.
+for good in 1 3 12 100; do
+  if require_positive_int CANNON_RETRY_ATTEMPTS "$good" 2>/dev/null; then
+    ok "CANNON_RETRY_ATTEMPTS=$good accepted"
+  else
+    bad "CANNON_RETRY_ATTEMPTS=$good" "positive integer was rejected"
+  fi
+done
+
+# The validation lives in main(), not at top level, precisely so that sourcing
+# this file stays side-effect free -- a top-level `exit 2` would kill the
+# shell that sourced it, i.e. this suite.
+if CANNON_RETRY_ATTEMPTS=abc bash -c '. "$1"; echo sourced-ok' _ "$SCRIPT" 2>/dev/null |
+  grep -q sourced-ok; then
+  ok "sourcing with an invalid setting does not exit the caller"
+else
+  bad "sourcing side-effect" "sourcing cannon-retry.sh with a bad setting aborted the caller"
+fi
 
 echo
 echo "== $PASS passed, $FAIL failed =="

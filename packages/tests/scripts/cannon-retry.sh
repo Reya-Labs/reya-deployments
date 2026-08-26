@@ -35,16 +35,46 @@
 # colour codes around the line.
 #
 # Usage:  cannon-retry.sh <command...>
-# Env:    CANNON_RETRY_ATTEMPTS       (default 3)
-#         CANNON_RETRY_REPORT_LINES   (default 20)
+# Env:    CANNON_RETRY_ATTEMPTS       (default 3, positive integer)
+#         CANNON_RETRY_REPORT_LINES   (default 20, positive integer)
 #
-# Exit status: 0 only on a clean run. Non-zero on a deterministic failure and
-# on exhausted retries.
+# Exit status: 0 only on a clean run. 1 on a deterministic failure and on
+# exhausted retries. 2 on a usage or configuration error, so a misconfigured
+# wrapper is never mistaken for a genuinely failing build.
 
 set -uo pipefail
 
 ATTEMPTS="${CANNON_RETRY_ATTEMPTS:-3}"
 REPORT_LINES="${CANNON_RETRY_REPORT_LINES:-20}"
+
+# require_positive_int <env-var-name> <value>
+# Returns 0 when <value> is a positive decimal integer; otherwise prints a
+# named error on stderr and returns 1.
+#
+# Both settings feed integer contexts that fail *quietly* rather than loudly,
+# which is worse than useless in a wrapper whose whole job is to make a red
+# run legible:
+#
+#   * A non-numeric or zero ATTEMPTS makes the very first evaluation of
+#     [ "$attempt" -le "$ATTEMPTS" ] false, so the loop body never runs and
+#     the wrapped command is never invoked -- yet CI still goes red claiming
+#     cannon is "still failing after 0 attempts" on a run that never happened.
+#   * A non-numeric or zero REPORT_LINES makes the `head -n` calls in
+#     report_root_cause error out, swallowing the root-cause listing that is
+#     the entire point of the report.
+#
+# Deliberately called from main(), not at top level: the test suite sources
+# this file, and a top-level `exit` would kill the sourcing shell rather than
+# the wrapper.
+require_positive_int() {
+  local name="$1" value="$2"
+  case "$value" in
+    '' | *[!0-9]*) ;;
+    *) [ "$value" -gt 0 ] && return 0 ;;
+  esac
+  echo "cannon-retry.sh: ${name} must be a positive integer (got '${value}')" >&2
+  return 1
+}
 
 # The literal cannon emits for every failed step (builder logs it via
 # console.log, so it lands on stdout).
@@ -186,11 +216,21 @@ report_root_cause() {
   fi
 }
 
+# main <command...>
+# Runs <command...> under the classified retry policy described at the top of
+# this file. Exits 0 only on a clean run, 1 on a deterministic failure or an
+# exhausted retry budget, and 2 on a usage or configuration error.
 main() {
   if [ "$#" -eq 0 ]; then
     echo "usage: cannon-retry.sh <command...>" >&2
     exit 2
   fi
+
+  # Before the loop, so a bad setting can never present itself as a build
+  # failure: the loop is guaranteed to execute at least once from here on,
+  # which is also what keeps `class` and `status` set at the summary below.
+  require_positive_int CANNON_RETRY_ATTEMPTS "$ATTEMPTS" || exit 2
+  require_positive_int CANNON_RETRY_REPORT_LINES "$REPORT_LINES" || exit 2
 
   local log status class attempt
   log="$(mktemp)"
