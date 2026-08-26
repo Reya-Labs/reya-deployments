@@ -10,6 +10,9 @@ import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IOracleAdaptersProxy, StorkSignedPayload, StorkPricePayload
 } from "../../src/interfaces/IOracleAdaptersProxy.sol";
+import { ICoreProxy, ParentCollateralConfig } from "../../src/interfaces/ICoreProxy.sol";
+import { IPassivePerpProxy } from "../../src/interfaces/IPassivePerpProxy.sol";
+import { NodeDefinition } from "../../src/interfaces/IOracleManagerProxy.sol";
 
 /**
  * @title ReyaForkTest (Devnet)
@@ -183,20 +186,32 @@ contract ReyaForkTest is BaseReyaForkTest {
         // would revert StalePriceDetected. Same prank-bump pattern the cronos
         // fixture uses. Constant and pool nodes need no bump (they report
         // block.timestamp).
-        bytes32[6] memory stalenessBumped = [
-            sec.ethUsdStorkNodeId,
-            sec.usdcUsdStorkNodeId,
-            sec.ethUsdcStorkNodeId,
-            sec.ethUsdStorkMarkNodeId,
-            sec.ethUsdcStorkMarkNodeId,
-            // sRUSD margin oracle (SRUSDRUSD_RR) — in every collateral walk
-            // since the mainnet-parity re-point; time-warping tests go stale
-            // without this, same as the pairs above.
-            sec.srusdRusd_RRStorkNodeId
-        ];
-        for (uint256 i = 0; i < stalenessBumped.length; i++) {
-            vm.prank(sec.multisig);
-            IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(stalenessBumped[i], 30 days);
+        // Derived, not enumerated. The mainnet market mirror registers 75
+        // markets and 9 supporting collaterals, and Core walks every one of
+        // them on every margin computation -- so a hardcoded list goes stale
+        // the moment a market or collateral is added, which is exactly how
+        // this suite broke: 50 tests failed StalePriceDetected on market 2's
+        // BTCUSDMARK reducer and on the deUSD collateral reducer, neither of
+        // which existed when the list was written.
+        //
+        // Bump every node the suite can actually reach: each supporting
+        // collateral's parent oracle, each market's oracle node, and their
+        // direct parents (a DIV_REDUCER is checked for staleness at every
+        // level, so bumping only the root is not enough).
+        bumpStaleness(sec.ethUsdStorkNodeId);
+        bumpStaleness(sec.usdcUsdStorkNodeId);
+
+        address quoteToken = IPassivePoolProxy(sec.pool).getPoolQuoteToken(sec.passivePoolId);
+        uint128 poolId = ICoreProxy(sec.core).getCollateralPoolIdOfAccount(sec.passivePoolAccountId);
+        address[] memory supporting = ICoreProxy(sec.core).getSupportingCollaterals(poolId, quoteToken);
+        for (uint256 i = 0; i < supporting.length; i++) {
+            (, ParentCollateralConfig memory parent,) = ICoreProxy(sec.core).getCollateralConfig(poolId, supporting[i]);
+            bumpStaleness(parent.oracleNodeId);
+        }
+
+        uint128 lastMarket = ICoreProxy(sec.core).getLastCreatedMarketId();
+        for (uint128 marketId = 1; marketId <= lastMarket; marketId++) {
+            bumpStaleness(IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).oracleNodeId);
         }
 
         (address publisher, uint256 publisherPK) = makeAddrAndKey("devnetSeedPublisher");
@@ -227,5 +242,26 @@ contract ReyaForkTest is BaseReyaForkTest {
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(
             abi.encode(StorkSignedPayload({ oraclePubKey: publisher, pricePayload: pricePayload, r: r, s: s, v: v }))
         );
+    }
+
+    /// Relax staleness on a node AND its direct parents for the test run.
+    ///
+    /// Several suites warp hours-to-days and re-stamp prices via vm.mockCall,
+    /// but any UNMOCKED process() of a stork node after a warp reverts
+    /// StalePriceDetected. Constant and pool nodes need no bump (they report
+    /// block.timestamp) but bumping them is harmless, so no type check here.
+    /// Parents matter: a DIV_REDUCER processes each parent, and the staleness
+    /// check fires at whichever level is stale first.
+    function bumpStaleness(bytes32 nodeId) internal {
+        if (nodeId == bytes32(0)) return;
+
+        NodeDefinition.Data memory node = IOracleManagerProxy(sec.oracleManager).getNode(nodeId);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(nodeId, 30 days);
+
+        for (uint256 i = 0; i < node.parents.length; i++) {
+            vm.prank(sec.multisig);
+            IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(node.parents[i], 30 days);
+        }
     }
 }

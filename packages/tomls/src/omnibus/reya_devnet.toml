@@ -383,7 +383,8 @@ market1Eth_velocityMultiplierUnscaled = "0"
 #
 # All 75 mainnet markets are registered on-chain so devnet1's contract state
 # matches production and id -> symbol resolves the same in both environments.
-# ACTIVATED OFF-CHAIN: market ids 1-30. Ids 31-75 carry
+# ACTIVATED OFF-CHAIN: 19 markets. Ids 1-30 minus the 10 mainnet already
+# holds reduce-only, minus 30 FTM (no mark feed). Everything else carries
 # maxOpenBaseUnscaled = "0" -- the contract's reduce-only state -- so they
 # exist and they price, but cannot take on exposure.
 #
@@ -1195,7 +1196,12 @@ market29Near_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_30ftm]
 market30Ftm_riskMatrixIndex = "0"
-market30Ftm_maxOpenBaseUnscaled = "19000"
+# NOT in the activated 19. Mainnet still allows exposure here (19000), but
+# FTM has NO Stork mark feed on either leg -- the ticker was retired when
+# Fantom became Sonic, and devnet carries 74 mark pairs, not 75. The ME's
+# validation would ACCEPT a book for it and run with no oracle input at all,
+# so it is held reduce-only here deliberately, diverging from mainnet.
+market30Ftm_maxOpenBaseUnscaled = "0"
 market30Ftm_oracleNodeId = "<%= settings.ftmUsdcNodeIdClosing %>"
 market30Ftm_dutchConfig_lambdaUnscaled = "1"
 market30Ftm_dutchConfig_minBaseUnscaled = "0.11"

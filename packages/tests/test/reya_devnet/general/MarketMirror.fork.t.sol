@@ -31,14 +31,19 @@ contract MarketMirrorForkTest is ReyaForkTest {
     /// Every mainnet perp market is registered on devnet, in mainnet id order.
     uint128 internal constant MAINNET_MARKET_COUNT = 75;
 
-    /// The activated set is derived, not hand-picked: every mainnet market
-    /// that can still take exposure (maxOpenBase > 0 there), minus the two
-    /// priced off a frozen constant node (30 FTM, 59 LAYER). 43 of mainnet's
-    /// 75 markets are already reduce-only in production, which is why this
-    /// lands on exactly 30 without an arbitrary cut.
+    /// Market ids 1-30, minus two exclusions that are forced rather than
+    /// chosen:
+    ///   - the 10 ids mainnet already holds reduce-only (7, 9, 10, 14, 15,
+    ///     17, 19, 21, 22, 25). The mirror keeps mainnet's maxOpenBase, so a
+    ///     book for them would be a market the ME accepts orders on and Core
+    ///     rejects every fill on -- ME looser than Core.
+    ///   - 30 FTM, which has no Stork mark feed on either leg (ticker retired
+    ///     when Fantom became Sonic). The ME would boot a book for it with no
+    ///     oracle input rather than failing.
+    /// Leaving 19.
     function activatedMarketIds() internal pure returns (uint128[] memory ids) {
-        ids = new uint128[](30);
-        uint128[30] memory raw = [
+        ids = new uint128[](19);
+        uint128[19] memory raw = [
             uint128(1), // ETH
             2, // BTC
             3, // SOL
@@ -57,18 +62,7 @@ contract MarketMirrorForkTest is ReyaForkTest {
             26, // ADA
             27, // LDO
             28, // POL
-            29, // NEAR
-            31, // ENA
-            33, // PENDLE
-            35, // GRASS
-            37, // DOT
-            38, // LTC
-            43, // HYPE
-            50, // WLD
-            62, // ME
-            66, // AERO
-            70, // PAXG
-            74 // LINEA
+            29 // NEAR
         ];
         for (uint256 i = 0; i < raw.length; i++) {
             ids[i] = raw[i];
@@ -147,6 +141,6 @@ contract MarketMirrorForkTest is ReyaForkTest {
             }
         }
 
-        require(activatedSeen == 30, "market mirror: activated market count != 30");
+        require(activatedSeen == 19, "market mirror: activated market count != 19");
     }
 }
