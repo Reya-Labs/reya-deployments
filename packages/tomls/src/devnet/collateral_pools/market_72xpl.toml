@@ -7,11 +7,11 @@
 #####################################
 [invoke.create_market_72xpl]
 target = ["PassivePerpProxy"]
-abi = "<%= JSON.stringify(contracts.PassivePerpProxy.abi.concat({'type':'event','name':'MarketDataUpdated','inputs':[{'name':'eventSequenceNumber','type':'uint128','indexed':true,'internalType':'uint128'},{'name':'marketData','type':'tuple','indexed':false,'internalType':'struct Market.Data','components':[{'name':'id','type':'uint128','internalType':'uint128'},{'name':'passivePoolId_DEPRECATED','type':'uint128','internalType':'uint128'},{'name':'poolAccountId_DEPRECATED','type':'uint128','internalType':'uint128'},{'name':'quoteToken','type':'address','internalType':'address'},{'name':'quoteTokenDecimals','type':'uint8','internalType':'uint8'},{'name':'lastFundingVelocity_DEPRECATED','type':'int256','internalType':'SD59x18'},{'name':'lastFundingRate_DEPRECATED','type':'int256','internalType':'SD59x18'},{'name':'lastFundingTimestamp','type':'uint256','internalType':'uint256'},{'name':'lastMTM_DEPRECATED','type':'tuple','internalType':'struct PriceData','components':[{'name':'price','type':'uint256','internalType':'UD60x18'},{'name':'timestamp','type':'uint256','internalType':'uint256'}]},{'name':'longTrackers','type':'tuple','internalType':'struct FundingAndADLTrackers','components':[{'name':'fundingValue','type':'int256','internalType':'SD59x18'},{'name':'baseMultiplier','type':'uint256','internalType':'UD60x18'},{'name':'adlUnwindPrice','type':'uint256','internalType':'UD60x18'}]},{'name':'shortTrackers','type':'tuple','internalType':'struct FundingAndADLTrackers','components':[{'name':'fundingValue','type':'int256','internalType':'SD59x18'},{'name':'baseMultiplier','type':'uint256','internalType':'UD60x18'},{'name':'adlUnwindPrice','type':'uint256','internalType':'UD60x18'}]},{'name':'openInterest','type':'uint256','internalType':'UD60x18'},{'name':'logPriceMultiplier_DEPRECATED','type':'int256','internalType':'SD59x18'},{'name':'depthFactor_DEPRECATED','type':'uint256','internalType':'UD60x18'},{'name':'priceSpread_DEPRECATED','type':'uint256','internalType':'UD60x18'},{'name':'velocityMultiplier_DEPRECATED','type':'uint256','internalType':'UD60x18'},{'name':'markPrice','type':'uint256','internalType':'UD60x18'},{'name':'markPriceTimestamp','type':'uint256','internalType':'uint256'},{'name':'fundingRate','type':'int256','internalType':'SD59x18'},{'name':'fundingRateTimestamp','type':'uint256','internalType':'uint256'}]},{'name':'blockTimestamp','type':'uint256','indexed':false,'internalType':'uint256'}],'anonymous':false})) %>"
+abi = "<%= JSON.stringify(contracts.PassivePerpProxy.abi.concat({'type': 'event', 'name': 'MarketDataUpdatedV2', 'anonymous': false, 'inputs': [{'name': 'eventSequenceNumber', 'type': 'uint128', 'indexed': true, 'internalType': 'uint128'}, {'name': 'marketId', 'type': 'uint128', 'indexed': true, 'internalType': 'uint128'}, {'name': 'marketData', 'type': 'tuple', 'indexed': false, 'internalType': 'struct Market.Data', 'components': [{'name': 'id', 'type': 'uint128', 'internalType': 'uint128'}, {'name': 'passivePoolId_DEPRECATED', 'type': 'uint128', 'internalType': 'uint128'}, {'name': 'poolAccountId_DEPRECATED', 'type': 'uint128', 'internalType': 'uint128'}, {'name': 'quoteToken', 'type': 'address', 'internalType': 'address'}, {'name': 'quoteTokenDecimals', 'type': 'uint8', 'internalType': 'uint8'}, {'name': 'lastFundingVelocity_DEPRECATED', 'type': 'int256', 'internalType': 'SD59x18'}, {'name': 'lastFundingRate_DEPRECATED', 'type': 'int256', 'internalType': 'SD59x18'}, {'name': 'lastFundingTimestamp', 'type': 'uint256', 'internalType': 'uint256'}, {'name': 'lastMTM_DEPRECATED', 'type': 'tuple', 'internalType': 'struct PriceData', 'components': [{'name': 'price', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'timestamp', 'type': 'uint256', 'internalType': 'uint256'}]}, {'name': 'longTrackers', 'type': 'tuple', 'internalType': 'struct FundingAndADLTrackers', 'components': [{'name': 'fundingValue', 'type': 'int256', 'internalType': 'SD59x18'}, {'name': 'baseMultiplier', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'adlUnwindPrice', 'type': 'uint256', 'internalType': 'UD60x18'}]}, {'name': 'shortTrackers', 'type': 'tuple', 'internalType': 'struct FundingAndADLTrackers', 'components': [{'name': 'fundingValue', 'type': 'int256', 'internalType': 'SD59x18'}, {'name': 'baseMultiplier', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'adlUnwindPrice', 'type': 'uint256', 'internalType': 'UD60x18'}]}, {'name': 'openInterest', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'logPriceMultiplier_DEPRECATED', 'type': 'int256', 'internalType': 'SD59x18'}, {'name': 'depthFactor_DEPRECATED', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'priceSpread_DEPRECATED', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'velocityMultiplier_DEPRECATED', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'markPrice', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'markPriceTimestamp', 'type': 'uint256', 'internalType': 'uint256'}, {'name': 'fundingRate', 'type': 'int256', 'internalType': 'SD59x18'}, {'name': 'fundingRateTimestamp', 'type': 'uint256', 'internalType': 'uint256'}, {'name': 'lockedClosePrice', 'type': 'uint256', 'internalType': 'UD60x18'}]}, {'name': 'blockTimestamp', 'type': 'uint256', 'indexed': false, 'internalType': 'uint256'}]})) %>"
 fromCall.func = "owner"
 func = "createMarket"
 args = ["Market XPL", "<%= settings.rusdProxyAddress %>"]
-var.market_72xpl.event = "MarketDataUpdated"
+var.market_72xpl.event = "MarketDataUpdatedV2"
 var.market_72xpl.arg = 1
 depends = [
     "invoke.core_register_instrument_passive_perp",
@@ -21,7 +21,7 @@ depends = [
 ]
 
 [var.market_72xpl_vars]
-market72XplId = "<%= (String(settings.market_72xpl.id) === '72') ? settings.market_72xpl.id : parseUnits('0', 'assert market_72xpl_vars failed') %>"
+market72XplId = "<%= (String(settings.market_72xpl) === '72') ? settings.market_72xpl : parseUnits('0', 'assert market_72xpl_vars failed') %>"
 depends = ["invoke.create_market_72xpl"]
 
 ##################################################
@@ -125,6 +125,36 @@ args = [
 depends = ["invoke.create_market_72xpl"]
 
 ##################################################
+# Market's Collateral Pool Insurance Fund
+#
+# Required BEFORE the merge: CollateralPool.merge transfers the child's
+# insurance fund into the parent's, and getInsuranceFundAccount is
+# Account.exists(insuranceFundConfig().accountId) -- an unconfigured child
+# reverts AccountNotFound("0"). (The reserved account needs no step: Core sets
+# reservedAccountId when the pool is created.)
+#
+# This is MAINNET'S STANDARD PATTERN, not a devnet workaround: 70 of mainnet's
+# 75 market tomls carry this exact step, reusing CP1's insurance-fund account
+# with the same "reusing params from CP 1 since this CP will get merged" note.
+# The 5 without it are markets 2-6, the earliest ones, where it was commented
+# out. market_2btc was the template these files were first generated from,
+# which is why the first fork run reverted AccountNotFound on all 74.
+##################################################
+[invoke.market_72xpl_insurance_fund_config]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market72XplId %>"]
+func = "configureCollateralPoolInsuranceFund"
+args = [
+    "<%= settings.market72XplId %>",
+    { accountId = "<%= settings.cp1Rusd_insuranceFundAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_insuranceFund_liquidationFeeUnscaled) %>" },
+]
+depends = [
+    "invoke.cp_1rusd_create_insurance_fund_account",
+    "invoke.create_market_72xpl",
+]
+
+##################################################
 # Merge Market's Collateral Pool into CP1
 ##################################################
 [invoke.market_72xpl_merge_collateral_pool]
@@ -139,4 +169,5 @@ depends = [
     "invoke.market_72xpl_set_pausers_market",
     "invoke.market_72xpl_set_market_config",
     "invoke.market_72xpl_set_cp_limits",
+    "invoke.market_72xpl_insurance_fund_config",
 ]

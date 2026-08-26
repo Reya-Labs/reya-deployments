@@ -13,6 +13,7 @@ import {
     BackstopLPConfig
 } from "../../../src/interfaces/ICoreProxy.sol";
 import { IPassivePerpProxyV2, FeeTierParameters } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
+import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import { IOrdersGatewayProxy } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
 import { IPeripheryProxy, GlobalConfiguration } from "../../../src/interfaces/IPeripheryProxy.sol";
 
@@ -78,6 +79,32 @@ contract DevnetConfigForkTest is ReyaForkTest, PerpFillForkCheck {
                 string.concat(names[i], ": pending ownership nomination")
             );
         }
+    }
+
+    /// `configureRiskBlock` must be granted to the system owner, by ALLOWLIST.
+    ///
+    /// PassivePerp.setRiskBlockId is gated on this flag, and the gate is
+    /// checked BEFORE ownership -- so with allowAll=false and an empty
+    /// allowlist (the state devnet and mainnet were both in) the call reverts
+    /// FeatureUnavailable for every caller including the owner, and risk
+    /// blocks silently never get assigned. Market 1 hid this for months
+    /// because its risk-block step is cached in the deployment baseline and
+    /// never re-runs; the mainnet market mirror surfaced it by adding 74 more.
+    ///
+    /// allowAll is asserted false for the usual reason: with it set, the
+    /// membership check below passes for the owner AND for everyone else, so
+    /// this test would go green while the permission was wide open.
+    function test_Devnet_RiskBlockConfiguratorAccess() public view {
+        bytes32 flag = keccak256(bytes("configureRiskBlock"));
+
+        require(
+            !IPassivePerpProxy(sec.perp).getFeatureFlagAllowAll(flag),
+            "configureRiskBlock: allowAll must stay false, or the allowlist below means nothing"
+        );
+
+        address[] memory allowed = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flag);
+        require(allowed.length == 1, "configureRiskBlock: allowlist should hold exactly the system owner");
+        require(allowed[0] == sec.multisig, "configureRiskBlock: allowlist member != system owner");
     }
 
     // ------------------------------------------------------------------

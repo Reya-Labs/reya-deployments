@@ -379,6 +379,33 @@ market1Eth_velocityMultiplierUnscaled = "0"
 ###############################################################################
 
 ###############################################################################
+# MAINNET MARKET MIRROR (markets 2-75)
+#
+# All 75 mainnet markets are registered on-chain so devnet1's contract state
+# matches production and id -> symbol resolves the same in both environments.
+# ACTIVATED OFF-CHAIN: market ids 1-30. Ids 31-75 carry
+# maxOpenBaseUnscaled = "0" -- the contract's reduce-only state -- so they
+# exist and they price, but cannot take on exposure.
+#
+# KNOWN DIVERGENCE, recorded deliberately: 10 of the activated 30 are
+# ALREADY reduce-only on mainnet, so mirroring mainnet's value gives them a 0
+# cap here too and they will reject every fill despite being "activated":
+#   7mkr 9aave 10crv 14sei 15zro 17wif 19popcat 21kshib 22kbonk 25jto
+# The effective tradeable set is therefore 20 of 30. Market 30 FTM is
+# activated with real capacity but prices off a FROZEN constant closing node,
+# so it trades against a static mark -- fine for load, not for price realism. Giving them real
+# capacity would mean inventing risk numbers mainnet does not have, so the
+# mirror is kept faithful and the gap is documented instead. If the stress
+# campaign needs all 30 live, that is a deliberate follow-up decision.
+#
+# Of the 45 non-activated: 33 inherit 0 from mainnet, 12 are set to 0
+# on devnet only (their mainnet value is recorded in each comment).
+#
+# To activate one of ids 31-75: restore its maxOpenBaseUnscaled to the mainnet
+# value in its comment, and add it to the off-chain lists in reya-devops.
+###############################################################################
+
+###############################################################################
 # Market 2 BTC Configuration -- mirrored from mainnet market2Btc_*
 # Deprecated AMM fields set to 0; perpOB fields active (same shape as market 1)
 ###############################################################################
@@ -524,11 +551,6 @@ market6Avax_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_7mkr]
 market7Mkr_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market7Mkr_maxOpenBaseUnscaled = "0"
 market7Mkr_oracleNodeId = "<%= settings.mkrUsdcNodeIdClosing %>"
 market7Mkr_dutchConfig_lambdaUnscaled = "1"
@@ -585,11 +607,6 @@ market8Link_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_9aave]
 market9Aave_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market9Aave_maxOpenBaseUnscaled = "0"
 market9Aave_oracleNodeId = "<%= settings.aaveUsdcMarkNodeIdStork %>"
 market9Aave_dutchConfig_lambdaUnscaled = "1"
@@ -618,11 +635,6 @@ market9Aave_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_10crv]
 market10Crv_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market10Crv_maxOpenBaseUnscaled = "0"
 market10Crv_oracleNodeId = "<%= settings.crvUsdcMarkNodeIdStork %>"
 market10Crv_dutchConfig_lambdaUnscaled = "1"
@@ -735,11 +747,6 @@ market13Tia_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_14sei]
 market14Sei_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market14Sei_maxOpenBaseUnscaled = "0"
 market14Sei_oracleNodeId = "<%= settings.seiUsdcMarkNodeIdStork %>"
 market14Sei_dutchConfig_lambdaUnscaled = "1"
@@ -768,11 +775,6 @@ market14Sei_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_15zro]
 market15Zro_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market15Zro_maxOpenBaseUnscaled = "0"
 market15Zro_oracleNodeId = "<%= settings.zroUsdcMarkNodeIdStork %>"
 market15Zro_dutchConfig_lambdaUnscaled = "1"
@@ -829,11 +831,6 @@ market16Xrp_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_17wif]
 market17Wif_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market17Wif_maxOpenBaseUnscaled = "0"
 market17Wif_oracleNodeId = "<%= settings.wifUsdcMarkNodeIdStork %>"
 market17Wif_dutchConfig_lambdaUnscaled = "1"
@@ -890,11 +887,6 @@ market18Pepe1k_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_19popcat]
 market19Popcat_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market19Popcat_maxOpenBaseUnscaled = "0"
 market19Popcat_oracleNodeId = "<%= settings.popcatUsdcMarkNodeIdStork %>"
 market19Popcat_dutchConfig_lambdaUnscaled = "1"
@@ -951,11 +943,6 @@ market20Doge_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_21kshib]
 market21KShib_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market21KShib_maxOpenBaseUnscaled = "0"
 market21KShib_oracleNodeId = "<%= settings.kshibUsdcMarkNodeIdStork %>"
 market21KShib_dutchConfig_lambdaUnscaled = "1"
@@ -984,11 +971,6 @@ market21KShib_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_22kbonk]
 market22KBonk_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market22KBonk_maxOpenBaseUnscaled = "0"
 market22KBonk_oracleNodeId = "<%= settings.kbonkUsdcMarkNodeIdStork %>"
 market22KBonk_dutchConfig_lambdaUnscaled = "1"
@@ -1073,11 +1055,6 @@ market24Bnb_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_25jto]
 market25Jto_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market25Jto_maxOpenBaseUnscaled = "0"
 market25Jto_oracleNodeId = "<%= settings.jtoUsdcMarkNodeIdStork %>"
 market25Jto_dutchConfig_lambdaUnscaled = "1"
@@ -1218,12 +1195,7 @@ market29Near_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_30ftm]
 market30Ftm_riskMatrixIndex = "0"
-# NOT in the activated 30: held in reduce-only from birth on devnet even
-# though mainnet allows exposure (mainnet value "19000"). Its mark
-# price is a frozen constant node, so it must not take exposure here.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
-market30Ftm_maxOpenBaseUnscaled = "0"
+market30Ftm_maxOpenBaseUnscaled = "19000"
 market30Ftm_oracleNodeId = "<%= settings.ftmUsdcNodeIdClosing %>"
 market30Ftm_dutchConfig_lambdaUnscaled = "1"
 market30Ftm_dutchConfig_minBaseUnscaled = "0.11"
@@ -1251,7 +1223,7 @@ market30Ftm_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_31ena]
 market31Ena_riskMatrixIndex = "0"
-market31Ena_maxOpenBaseUnscaled = "1069465"
+market31Ena_maxOpenBaseUnscaled = "0"
 market31Ena_oracleNodeId = "<%= settings.enaUsdcMarkNodeIdStork %>"
 market31Ena_dutchConfig_lambdaUnscaled = "1"
 market31Ena_dutchConfig_minBaseUnscaled = "0.11"
@@ -1279,11 +1251,6 @@ market31Ena_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_32eigen]
 market32Eigen_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market32Eigen_maxOpenBaseUnscaled = "0"
 market32Eigen_oracleNodeId = "<%= settings.eigenUsdcMarkNodeIdStork %>"
 market32Eigen_dutchConfig_lambdaUnscaled = "1"
@@ -1312,7 +1279,7 @@ market32Eigen_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_33pendle]
 market33Pendle_riskMatrixIndex = "0"
-market33Pendle_maxOpenBaseUnscaled = "86908"
+market33Pendle_maxOpenBaseUnscaled = "0"
 market33Pendle_oracleNodeId = "<%= settings.pendleUsdcMarkNodeIdStork %>"
 market33Pendle_dutchConfig_lambdaUnscaled = "1"
 market33Pendle_dutchConfig_minBaseUnscaled = "0.11"
@@ -1340,11 +1307,6 @@ market33Pendle_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_34goat]
 market34Goat_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market34Goat_maxOpenBaseUnscaled = "0"
 market34Goat_oracleNodeId = "<%= settings.goatUsdcMarkNodeIdStork %>"
 market34Goat_dutchConfig_lambdaUnscaled = "1"
@@ -1373,7 +1335,7 @@ market34Goat_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_35grass]
 market35Grass_riskMatrixIndex = "0"
-market35Grass_maxOpenBaseUnscaled = "307591"
+market35Grass_maxOpenBaseUnscaled = "0"
 market35Grass_oracleNodeId = "<%= settings.grassUsdcMarkNodeIdStork %>"
 market35Grass_dutchConfig_lambdaUnscaled = "1"
 market35Grass_dutchConfig_minBaseUnscaled = "0.11"
@@ -1401,11 +1363,6 @@ market35Grass_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_36kneiro]
 market36KNeiro_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market36KNeiro_maxOpenBaseUnscaled = "0"
 market36KNeiro_oracleNodeId = "<%= settings.kneiroUsdcMarkNodeIdStork %>"
 market36KNeiro_dutchConfig_lambdaUnscaled = "1"
@@ -1434,7 +1391,7 @@ market36KNeiro_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_37dot]
 market37Dot_riskMatrixIndex = "0"
-market37Dot_maxOpenBaseUnscaled = "72104"
+market37Dot_maxOpenBaseUnscaled = "0"
 market37Dot_oracleNodeId = "<%= settings.dotUsdcMarkNodeIdStork %>"
 market37Dot_dutchConfig_lambdaUnscaled = "1"
 market37Dot_dutchConfig_minBaseUnscaled = "0.11"
@@ -1462,7 +1419,7 @@ market37Dot_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_38ltc]
 market38Ltc_riskMatrixIndex = "0"
-market38Ltc_maxOpenBaseUnscaled = "2041"
+market38Ltc_maxOpenBaseUnscaled = "0"
 market38Ltc_oracleNodeId = "<%= settings.ltcUsdcMarkNodeIdStork %>"
 market38Ltc_dutchConfig_lambdaUnscaled = "1"
 market38Ltc_dutchConfig_minBaseUnscaled = "0.11"
@@ -1490,11 +1447,6 @@ market38Ltc_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_39pyth]
 market39Pyth_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market39Pyth_maxOpenBaseUnscaled = "0"
 market39Pyth_oracleNodeId = "<%= settings.pythUsdcMarkNodeIdStork %>"
 market39Pyth_dutchConfig_lambdaUnscaled = "1"
@@ -1523,11 +1475,6 @@ market39Pyth_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_40jup]
 market40Jup_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market40Jup_maxOpenBaseUnscaled = "0"
 market40Jup_oracleNodeId = "<%= settings.jupUsdcMarkNodeIdStork %>"
 market40Jup_dutchConfig_lambdaUnscaled = "1"
@@ -1556,11 +1503,6 @@ market40Jup_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_41pengu]
 market41Pengu_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market41Pengu_maxOpenBaseUnscaled = "0"
 market41Pengu_oracleNodeId = "<%= settings.penguUsdcMarkNodeIdStork %>"
 market41Pengu_dutchConfig_lambdaUnscaled = "1"
@@ -1589,11 +1531,6 @@ market41Pengu_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_42trump]
 market42Trump_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market42Trump_maxOpenBaseUnscaled = "0"
 market42Trump_oracleNodeId = "<%= settings.trumpUsdcMarkNodeIdStork %>"
 market42Trump_dutchConfig_lambdaUnscaled = "1"
@@ -1622,7 +1559,7 @@ market42Trump_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_43hype]
 market43Hype_riskMatrixIndex = "0"
-market43Hype_maxOpenBaseUnscaled = "21148"
+market43Hype_maxOpenBaseUnscaled = "0"
 market43Hype_oracleNodeId = "<%= settings.hypeUsdcMarkNodeIdStork %>"
 market43Hype_dutchConfig_lambdaUnscaled = "1"
 market43Hype_dutchConfig_minBaseUnscaled = "0.11"
@@ -1650,11 +1587,6 @@ market43Hype_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_44virtual]
 market44Virtual_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market44Virtual_maxOpenBaseUnscaled = "0"
 market44Virtual_oracleNodeId = "<%= settings.virtualUsdcMarkNodeIdStork %>"
 market44Virtual_dutchConfig_lambdaUnscaled = "1"
@@ -1683,11 +1615,6 @@ market44Virtual_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_45ai16z]
 market45Ai16z_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market45Ai16z_maxOpenBaseUnscaled = "0"
 market45Ai16z_oracleNodeId = "<%= settings.ai16zUsdcMarkNodeIdStork %>"
 market45Ai16z_dutchConfig_lambdaUnscaled = "1"
@@ -1716,11 +1643,6 @@ market45Ai16z_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_46aixbt]
 market46Aixbt_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market46Aixbt_maxOpenBaseUnscaled = "0"
 market46Aixbt_oracleNodeId = "<%= settings.aixbtUsdcMarkNodeIdStork %>"
 market46Aixbt_dutchConfig_lambdaUnscaled = "1"
@@ -1749,11 +1671,6 @@ market46Aixbt_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_47sonic]
 market47Sonic_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market47Sonic_maxOpenBaseUnscaled = "0"
 market47Sonic_oracleNodeId = "<%= settings.sonicUsdcMarkNodeIdStork %>"
 market47Sonic_dutchConfig_lambdaUnscaled = "1"
@@ -1782,11 +1699,6 @@ market47Sonic_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_48fartcoin]
 market48Fartcoin_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market48Fartcoin_maxOpenBaseUnscaled = "0"
 market48Fartcoin_oracleNodeId = "<%= settings.fartcoinUsdcMarkNodeIdStork %>"
 market48Fartcoin_dutchConfig_lambdaUnscaled = "1"
@@ -1815,11 +1727,6 @@ market48Fartcoin_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_49griffain]
 market49Griffain_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market49Griffain_maxOpenBaseUnscaled = "0"
 market49Griffain_oracleNodeId = "<%= settings.griffainUsdcMarkNodeIdStork %>"
 market49Griffain_dutchConfig_lambdaUnscaled = "1"
@@ -1848,7 +1755,7 @@ market49Griffain_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_50wld]
 market50Wld_riskMatrixIndex = "0"
-market50Wld_maxOpenBaseUnscaled = "309104"
+market50Wld_maxOpenBaseUnscaled = "0"
 market50Wld_oracleNodeId = "<%= settings.wldUsdcMarkNodeIdStork %>"
 market50Wld_dutchConfig_lambdaUnscaled = "1"
 market50Wld_dutchConfig_minBaseUnscaled = "0.11"
@@ -1876,11 +1783,6 @@ market50Wld_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_51atom]
 market51Atom_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market51Atom_maxOpenBaseUnscaled = "0"
 market51Atom_oracleNodeId = "<%= settings.atomUsdcMarkNodeIdStork %>"
 market51Atom_dutchConfig_lambdaUnscaled = "1"
@@ -1909,11 +1811,6 @@ market51Atom_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_52ape]
 market52Ape_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market52Ape_maxOpenBaseUnscaled = "0"
 market52Ape_oracleNodeId = "<%= settings.apeUsdcMarkNodeIdStork %>"
 market52Ape_dutchConfig_lambdaUnscaled = "1"
@@ -1942,11 +1839,6 @@ market52Ape_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_53ton]
 market53Ton_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market53Ton_maxOpenBaseUnscaled = "0"
 market53Ton_oracleNodeId = "<%= settings.tonUsdcMarkNodeIdStork %>"
 market53Ton_dutchConfig_lambdaUnscaled = "1"
@@ -1975,11 +1867,6 @@ market53Ton_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_54ondo]
 market54Ondo_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market54Ondo_maxOpenBaseUnscaled = "0"
 market54Ondo_oracleNodeId = "<%= settings.ondoUsdcMarkNodeIdStork %>"
 market54Ondo_dutchConfig_lambdaUnscaled = "1"
@@ -2008,11 +1895,6 @@ market54Ondo_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_55trx]
 market55Trx_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market55Trx_maxOpenBaseUnscaled = "0"
 market55Trx_oracleNodeId = "<%= settings.trxUsdcMarkNodeIdStork %>"
 market55Trx_dutchConfig_lambdaUnscaled = "1"
@@ -2041,11 +1923,6 @@ market55Trx_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_56inj]
 market56Inj_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market56Inj_maxOpenBaseUnscaled = "0"
 market56Inj_oracleNodeId = "<%= settings.injUsdcMarkNodeIdStork %>"
 market56Inj_dutchConfig_lambdaUnscaled = "1"
@@ -2074,11 +1951,6 @@ market56Inj_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_57move]
 market57Move_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market57Move_maxOpenBaseUnscaled = "0"
 market57Move_oracleNodeId = "<%= settings.moveUsdcMarkNodeIdStork %>"
 market57Move_dutchConfig_lambdaUnscaled = "1"
@@ -2107,11 +1979,6 @@ market57Move_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_58bera]
 market58Bera_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market58Bera_maxOpenBaseUnscaled = "0"
 market58Bera_oracleNodeId = "<%= settings.beraUsdcMarkNodeIdStork %>"
 market58Bera_dutchConfig_lambdaUnscaled = "1"
@@ -2140,11 +2007,6 @@ market58Bera_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_59layer]
 market59Layer_riskMatrixIndex = "0"
-# NOT in the activated 30: held in reduce-only from birth on devnet even
-# though mainnet allows exposure (mainnet value "7000"). Its mark
-# price is a frozen constant node, so it must not take exposure here.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market59Layer_maxOpenBaseUnscaled = "0"
 market59Layer_oracleNodeId = "<%= settings.layerUsdcNodeIdClosing %>"
 market59Layer_dutchConfig_lambdaUnscaled = "1"
@@ -2173,11 +2035,6 @@ market59Layer_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_60tao]
 market60Tao_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market60Tao_maxOpenBaseUnscaled = "0"
 market60Tao_oracleNodeId = "<%= settings.taoUsdcMarkNodeIdStork %>"
 market60Tao_dutchConfig_lambdaUnscaled = "1"
@@ -2206,11 +2063,6 @@ market60Tao_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_61ip]
 market61Ip_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market61Ip_maxOpenBaseUnscaled = "0"
 market61Ip_oracleNodeId = "<%= settings.ipUsdcMarkNodeIdStork %>"
 market61Ip_dutchConfig_lambdaUnscaled = "1"
@@ -2239,7 +2091,7 @@ market61Ip_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_62me]
 market62Me_riskMatrixIndex = "0"
-market62Me_maxOpenBaseUnscaled = "974696"
+market62Me_maxOpenBaseUnscaled = "0"
 market62Me_oracleNodeId = "<%= settings.meUsdcMarkNodeIdStork %>"
 market62Me_dutchConfig_lambdaUnscaled = "1"
 market62Me_dutchConfig_minBaseUnscaled = "0.11"
@@ -2267,11 +2119,6 @@ market62Me_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_63pump]
 market63Pump_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market63Pump_maxOpenBaseUnscaled = "0"
 market63Pump_oracleNodeId = "<%= settings.pumpUsdcMarkNodeIdStork %>"
 market63Pump_dutchConfig_lambdaUnscaled = "1"
@@ -2300,11 +2147,6 @@ market63Pump_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_64morpho]
 market64Morpho_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market64Morpho_maxOpenBaseUnscaled = "0"
 market64Morpho_oracleNodeId = "<%= settings.morphoUsdcMarkNodeIdStork %>"
 market64Morpho_dutchConfig_lambdaUnscaled = "1"
@@ -2333,11 +2175,6 @@ market64Morpho_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_65syrup]
 market65Syrup_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market65Syrup_maxOpenBaseUnscaled = "0"
 market65Syrup_oracleNodeId = "<%= settings.syrupUsdcMarkNodeIdStork %>"
 market65Syrup_dutchConfig_lambdaUnscaled = "1"
@@ -2366,7 +2203,7 @@ market65Syrup_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_66aero]
 market66Aero_riskMatrixIndex = "0"
-market66Aero_maxOpenBaseUnscaled = "326393"
+market66Aero_maxOpenBaseUnscaled = "0"
 market66Aero_oracleNodeId = "<%= settings.aeroUsdcMarkNodeIdStork %>"
 market66Aero_dutchConfig_lambdaUnscaled = "1"
 market66Aero_dutchConfig_minBaseUnscaled = "0.11"
@@ -2394,11 +2231,6 @@ market66Aero_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_67kaito]
 market67Kaito_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market67Kaito_maxOpenBaseUnscaled = "0"
 market67Kaito_oracleNodeId = "<%= settings.kaitoUsdcMarkNodeIdStork %>"
 market67Kaito_dutchConfig_lambdaUnscaled = "1"
@@ -2427,11 +2259,6 @@ market67Kaito_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_68zora]
 market68Zora_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market68Zora_maxOpenBaseUnscaled = "0"
 market68Zora_oracleNodeId = "<%= settings.zoraUsdcMarkNodeIdStork %>"
 market68Zora_dutchConfig_lambdaUnscaled = "1"
@@ -2460,11 +2287,6 @@ market68Zora_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_69prove]
 market69Prove_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market69Prove_maxOpenBaseUnscaled = "0"
 market69Prove_oracleNodeId = "<%= settings.proveUsdcMarkNodeIdStork %>"
 market69Prove_dutchConfig_lambdaUnscaled = "1"
@@ -2493,7 +2315,7 @@ market69Prove_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_70paxg]
 market70Paxg_riskMatrixIndex = "0"
-market70Paxg_maxOpenBaseUnscaled = "144"
+market70Paxg_maxOpenBaseUnscaled = "0"
 market70Paxg_oracleNodeId = "<%= settings.paxgUsdcMarkNodeIdStork %>"
 market70Paxg_dutchConfig_lambdaUnscaled = "1"
 market70Paxg_dutchConfig_minBaseUnscaled = "0.11"
@@ -2521,11 +2343,6 @@ market70Paxg_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_71yzy]
 market71Yzy_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market71Yzy_maxOpenBaseUnscaled = "0"
 market71Yzy_oracleNodeId = "<%= settings.yzyUsdcMarkNodeIdStork %>"
 market71Yzy_dutchConfig_lambdaUnscaled = "1"
@@ -2554,11 +2371,6 @@ market71Yzy_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_72xpl]
 market72Xpl_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market72Xpl_maxOpenBaseUnscaled = "0"
 market72Xpl_oracleNodeId = "<%= settings.xplUsdcMarkNodeIdStork %>"
 market72Xpl_dutchConfig_lambdaUnscaled = "1"
@@ -2587,11 +2399,6 @@ market72Xpl_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_73wlfi]
 market73Wlfi_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market73Wlfi_maxOpenBaseUnscaled = "0"
 market73Wlfi_oracleNodeId = "<%= settings.wlfiUsdcMarkNodeIdStork %>"
 market73Wlfi_dutchConfig_lambdaUnscaled = "1"
@@ -2620,7 +2427,7 @@ market73Wlfi_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_74linea]
 market74Linea_riskMatrixIndex = "0"
-market74Linea_maxOpenBaseUnscaled = "34482759"
+market74Linea_maxOpenBaseUnscaled = "0"
 market74Linea_oracleNodeId = "<%= settings.lineaUsdcMarkNodeIdStork %>"
 market74Linea_dutchConfig_lambdaUnscaled = "1"
 market74Linea_dutchConfig_minBaseUnscaled = "0.11"
@@ -2648,11 +2455,6 @@ market74Linea_velocityMultiplierUnscaled = "0"
 ###############################################################################
 [var.market_75mega]
 market75Mega_riskMatrixIndex = "0"
-# NOT in the activated 30. Mainnet already holds this market in reduce-only
-# (maxOpenBase 0), so the mirrored value is 0 by inheritance -- and that is
-# also what we want on devnet.
-# maxOpenBase == 0 IS the contract's reduce-only state: MarketCloseModule
-# requires it, and Market.sol reverts once openInterest exceeds it.
 market75Mega_maxOpenBaseUnscaled = "0"
 market75Mega_oracleNodeId = "<%= settings.megaUsdcMarkNodeIdStork %>"
 market75Mega_dutchConfig_lambdaUnscaled = "1"

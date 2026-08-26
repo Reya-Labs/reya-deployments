@@ -27,7 +27,10 @@ args = [
     "<%= settings.cp1RusdMarket1EthRiskBlockId %>",
     "0",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_1eth_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_1eth_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_2btc_devnet]
 target = ["CoreProxy"]
@@ -56,7 +59,10 @@ args = [
     "<%= settings.cp1RusdMarket2BtcRiskBlockId %>",
     "<%= settings.market2Btc_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_2btc_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_2btc_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_3sol_devnet]
 target = ["CoreProxy"]
@@ -85,7 +91,10 @@ args = [
     "<%= settings.cp1RusdMarket3SolRiskBlockId %>",
     "<%= settings.market3Sol_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_3sol_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_3sol_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_4arb_devnet]
 target = ["CoreProxy"]
@@ -114,7 +123,10 @@ args = [
     "<%= settings.cp1RusdMarket4ArbRiskBlockId %>",
     "<%= settings.market4Arb_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_4arb_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_4arb_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_5op_devnet]
 target = ["CoreProxy"]
@@ -143,7 +155,10 @@ args = [
     "<%= settings.cp1RusdMarket5OpRiskBlockId %>",
     "<%= settings.market5Op_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_5op_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_5op_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_6avax_devnet]
 target = ["CoreProxy"]
@@ -172,7 +187,10 @@ args = [
     "<%= settings.cp1RusdMarket6AvaxRiskBlockId %>",
     "<%= settings.market6Avax_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_6avax_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_6avax_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_7mkr_devnet]
 target = ["CoreProxy"]
@@ -201,7 +219,10 @@ args = [
     "<%= settings.cp1RusdMarket7MkrRiskBlockId %>",
     "<%= settings.market7Mkr_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_7mkr_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_7mkr_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_8link_devnet]
 target = ["CoreProxy"]
@@ -230,7 +251,10 @@ args = [
     "<%= settings.cp1RusdMarket8LinkRiskBlockId %>",
     "<%= settings.market8Link_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_8link_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_8link_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_9aave_devnet]
 target = ["CoreProxy"]
@@ -259,7 +283,10 @@ args = [
     "<%= settings.cp1RusdMarket9AaveRiskBlockId %>",
     "<%= settings.market9Aave_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_9aave_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_9aave_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_10crv_devnet]
 target = ["CoreProxy"]
@@ -288,7 +315,10 @@ args = [
     "<%= settings.cp1RusdMarket10CrvRiskBlockId %>",
     "<%= settings.market10Crv_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_10crv_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_10crv_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_11uni_devnet]
 target = ["CoreProxy"]
@@ -317,7 +347,10 @@ args = [
     "<%= settings.cp1RusdMarket11UniRiskBlockId %>",
     "<%= settings.market11Uni_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_11uni_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_11uni_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_12sui_devnet]
 target = ["CoreProxy"]
@@ -346,7 +379,10 @@ args = [
     "<%= settings.cp1RusdMarket12SuiRiskBlockId %>",
     "<%= settings.market12Sui_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_12sui_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_12sui_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_13tia_devnet]
 target = ["CoreProxy"]
@@ -375,7 +411,10 @@ args = [
     "<%= settings.cp1RusdMarket13TiaRiskBlockId %>",
     "<%= settings.market13Tia_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_13tia_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_13tia_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_14sei_devnet]
 target = ["CoreProxy"]
@@ -404,7 +443,10 @@ args = [
     "<%= settings.cp1RusdMarket14SeiRiskBlockId %>",
     "<%= settings.market14Sei_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_14sei_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_14sei_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_15zro_devnet]
 target = ["CoreProxy"]
@@ -433,7 +475,10 @@ args = [
     "<%= settings.cp1RusdMarket15ZroRiskBlockId %>",
     "<%= settings.market15Zro_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_15zro_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_15zro_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_16xrp_devnet]
 target = ["CoreProxy"]
@@ -462,7 +507,10 @@ args = [
     "<%= settings.cp1RusdMarket16XrpRiskBlockId %>",
     "<%= settings.market16Xrp_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_16xrp_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_16xrp_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_17wif_devnet]
 target = ["CoreProxy"]
@@ -491,7 +539,10 @@ args = [
     "<%= settings.cp1RusdMarket17WifRiskBlockId %>",
     "<%= settings.market17Wif_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_17wif_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_17wif_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_18pepe1k_devnet]
 target = ["CoreProxy"]
@@ -520,7 +571,10 @@ args = [
     "<%= settings.cp1RusdMarket18Pepe1kRiskBlockId %>",
     "<%= settings.market18Pepe1k_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_18pepe1k_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_18pepe1k_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_19popcat_devnet]
 target = ["CoreProxy"]
@@ -549,7 +603,10 @@ args = [
     "<%= settings.cp1RusdMarket19PopcatRiskBlockId %>",
     "<%= settings.market19Popcat_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_19popcat_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_19popcat_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_20doge_devnet]
 target = ["CoreProxy"]
@@ -578,7 +635,10 @@ args = [
     "<%= settings.cp1RusdMarket20DogeRiskBlockId %>",
     "<%= settings.market20Doge_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_20doge_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_20doge_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_21kshib_devnet]
 target = ["CoreProxy"]
@@ -607,7 +667,10 @@ args = [
     "<%= settings.cp1RusdMarket21KShibRiskBlockId %>",
     "<%= settings.market21KShib_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_21kshib_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_21kshib_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_22kbonk_devnet]
 target = ["CoreProxy"]
@@ -636,7 +699,10 @@ args = [
     "<%= settings.cp1RusdMarket22KBonkRiskBlockId %>",
     "<%= settings.market22KBonk_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_22kbonk_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_22kbonk_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_23apt_devnet]
 target = ["CoreProxy"]
@@ -665,7 +731,10 @@ args = [
     "<%= settings.cp1RusdMarket23AptRiskBlockId %>",
     "<%= settings.market23Apt_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_23apt_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_23apt_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_24bnb_devnet]
 target = ["CoreProxy"]
@@ -694,7 +763,10 @@ args = [
     "<%= settings.cp1RusdMarket24BnbRiskBlockId %>",
     "<%= settings.market24Bnb_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_24bnb_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_24bnb_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_25jto_devnet]
 target = ["CoreProxy"]
@@ -723,7 +795,10 @@ args = [
     "<%= settings.cp1RusdMarket25JtoRiskBlockId %>",
     "<%= settings.market25Jto_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_25jto_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_25jto_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_26ada_devnet]
 target = ["CoreProxy"]
@@ -752,7 +827,10 @@ args = [
     "<%= settings.cp1RusdMarket26AdaRiskBlockId %>",
     "<%= settings.market26Ada_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_26ada_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_26ada_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_27ldo_devnet]
 target = ["CoreProxy"]
@@ -781,7 +859,10 @@ args = [
     "<%= settings.cp1RusdMarket27LdoRiskBlockId %>",
     "<%= settings.market27Ldo_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_27ldo_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_27ldo_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_28pol_devnet]
 target = ["CoreProxy"]
@@ -810,7 +891,10 @@ args = [
     "<%= settings.cp1RusdMarket28PolRiskBlockId %>",
     "<%= settings.market28Pol_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_28pol_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_28pol_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_29near_devnet]
 target = ["CoreProxy"]
@@ -839,7 +923,10 @@ args = [
     "<%= settings.cp1RusdMarket29NearRiskBlockId %>",
     "<%= settings.market29Near_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_29near_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_29near_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_30ftm_devnet]
 target = ["CoreProxy"]
@@ -868,7 +955,10 @@ args = [
     "<%= settings.cp1RusdMarket30FtmRiskBlockId %>",
     "<%= settings.market30Ftm_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_30ftm_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_30ftm_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_31ena_devnet]
 target = ["CoreProxy"]
@@ -897,7 +987,10 @@ args = [
     "<%= settings.cp1RusdMarket31EnaRiskBlockId %>",
     "<%= settings.market31Ena_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_31ena_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_31ena_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_32eigen_devnet]
 target = ["CoreProxy"]
@@ -926,7 +1019,10 @@ args = [
     "<%= settings.cp1RusdMarket32EigenRiskBlockId %>",
     "<%= settings.market32Eigen_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_32eigen_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_32eigen_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_33pendle_devnet]
 target = ["CoreProxy"]
@@ -955,7 +1051,10 @@ args = [
     "<%= settings.cp1RusdMarket33PendleRiskBlockId %>",
     "<%= settings.market33Pendle_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_33pendle_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_33pendle_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_34goat_devnet]
 target = ["CoreProxy"]
@@ -984,7 +1083,10 @@ args = [
     "<%= settings.cp1RusdMarket34GoatRiskBlockId %>",
     "<%= settings.market34Goat_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_34goat_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_34goat_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_35grass_devnet]
 target = ["CoreProxy"]
@@ -1013,7 +1115,10 @@ args = [
     "<%= settings.cp1RusdMarket35GrassRiskBlockId %>",
     "<%= settings.market35Grass_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_35grass_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_35grass_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_36kneiro_devnet]
 target = ["CoreProxy"]
@@ -1042,7 +1147,10 @@ args = [
     "<%= settings.cp1RusdMarket36KNeiroRiskBlockId %>",
     "<%= settings.market36KNeiro_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_36kneiro_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_36kneiro_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_37dot_devnet]
 target = ["CoreProxy"]
@@ -1071,7 +1179,10 @@ args = [
     "<%= settings.cp1RusdMarket37DotRiskBlockId %>",
     "<%= settings.market37Dot_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_37dot_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_37dot_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_38ltc_devnet]
 target = ["CoreProxy"]
@@ -1100,7 +1211,10 @@ args = [
     "<%= settings.cp1RusdMarket38LtcRiskBlockId %>",
     "<%= settings.market38Ltc_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_38ltc_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_38ltc_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_39pyth_devnet]
 target = ["CoreProxy"]
@@ -1129,7 +1243,10 @@ args = [
     "<%= settings.cp1RusdMarket39PythRiskBlockId %>",
     "<%= settings.market39Pyth_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_39pyth_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_39pyth_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_40jup_devnet]
 target = ["CoreProxy"]
@@ -1158,7 +1275,10 @@ args = [
     "<%= settings.cp1RusdMarket40JupRiskBlockId %>",
     "<%= settings.market40Jup_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_40jup_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_40jup_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_41pengu_devnet]
 target = ["CoreProxy"]
@@ -1187,7 +1307,10 @@ args = [
     "<%= settings.cp1RusdMarket41PenguRiskBlockId %>",
     "<%= settings.market41Pengu_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_41pengu_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_41pengu_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_42trump_devnet]
 target = ["CoreProxy"]
@@ -1216,7 +1339,10 @@ args = [
     "<%= settings.cp1RusdMarket42TrumpRiskBlockId %>",
     "<%= settings.market42Trump_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_42trump_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_42trump_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_43hype_devnet]
 target = ["CoreProxy"]
@@ -1245,7 +1371,10 @@ args = [
     "<%= settings.cp1RusdMarket43HypeRiskBlockId %>",
     "<%= settings.market43Hype_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_43hype_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_43hype_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_44virtual_devnet]
 target = ["CoreProxy"]
@@ -1274,7 +1403,10 @@ args = [
     "<%= settings.cp1RusdMarket44VirtualRiskBlockId %>",
     "<%= settings.market44Virtual_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_44virtual_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_44virtual_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_45ai16z_devnet]
 target = ["CoreProxy"]
@@ -1303,7 +1435,10 @@ args = [
     "<%= settings.cp1RusdMarket45Ai16zRiskBlockId %>",
     "<%= settings.market45Ai16z_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_45ai16z_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_45ai16z_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_46aixbt_devnet]
 target = ["CoreProxy"]
@@ -1332,7 +1467,10 @@ args = [
     "<%= settings.cp1RusdMarket46AixbtRiskBlockId %>",
     "<%= settings.market46Aixbt_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_46aixbt_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_46aixbt_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_47sonic_devnet]
 target = ["CoreProxy"]
@@ -1361,7 +1499,10 @@ args = [
     "<%= settings.cp1RusdMarket47SonicRiskBlockId %>",
     "<%= settings.market47Sonic_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_47sonic_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_47sonic_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_48fartcoin_devnet]
 target = ["CoreProxy"]
@@ -1393,7 +1534,10 @@ args = [
     "<%= settings.cp1RusdMarket48FartcoinRiskBlockId %>",
     "<%= settings.market48Fartcoin_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_48fartcoin_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_48fartcoin_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_49griffain_devnet]
 target = ["CoreProxy"]
@@ -1425,7 +1569,10 @@ args = [
     "<%= settings.cp1RusdMarket49GriffainRiskBlockId %>",
     "<%= settings.market49Griffain_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_49griffain_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_49griffain_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_50wld_devnet]
 target = ["CoreProxy"]
@@ -1454,7 +1601,10 @@ args = [
     "<%= settings.cp1RusdMarket50WldRiskBlockId %>",
     "<%= settings.market50Wld_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_50wld_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_50wld_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_51atom_devnet]
 target = ["CoreProxy"]
@@ -1483,7 +1633,10 @@ args = [
     "<%= settings.cp1RusdMarket51AtomRiskBlockId %>",
     "<%= settings.market51Atom_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_51atom_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_51atom_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_52ape_devnet]
 target = ["CoreProxy"]
@@ -1512,7 +1665,10 @@ args = [
     "<%= settings.cp1RusdMarket52ApeRiskBlockId %>",
     "<%= settings.market52Ape_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_52ape_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_52ape_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_53ton_devnet]
 target = ["CoreProxy"]
@@ -1541,7 +1697,10 @@ args = [
     "<%= settings.cp1RusdMarket53TonRiskBlockId %>",
     "<%= settings.market53Ton_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_53ton_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_53ton_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_54ondo_devnet]
 target = ["CoreProxy"]
@@ -1570,7 +1729,10 @@ args = [
     "<%= settings.cp1RusdMarket54OndoRiskBlockId %>",
     "<%= settings.market54Ondo_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_54ondo_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_54ondo_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_55trx_devnet]
 target = ["CoreProxy"]
@@ -1599,7 +1761,10 @@ args = [
     "<%= settings.cp1RusdMarket55TrxRiskBlockId %>",
     "<%= settings.market55Trx_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_55trx_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_55trx_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_56inj_devnet]
 target = ["CoreProxy"]
@@ -1628,7 +1793,10 @@ args = [
     "<%= settings.cp1RusdMarket56InjRiskBlockId %>",
     "<%= settings.market56Inj_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_56inj_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_56inj_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_57move_devnet]
 target = ["CoreProxy"]
@@ -1657,7 +1825,10 @@ args = [
     "<%= settings.cp1RusdMarket57MoveRiskBlockId %>",
     "<%= settings.market57Move_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_57move_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_57move_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_58bera_devnet]
 target = ["CoreProxy"]
@@ -1686,7 +1857,10 @@ args = [
     "<%= settings.cp1RusdMarket58BeraRiskBlockId %>",
     "<%= settings.market58Bera_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_58bera_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_58bera_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_59layer_devnet]
 target = ["CoreProxy"]
@@ -1715,7 +1889,10 @@ args = [
     "<%= settings.cp1RusdMarket59LayerRiskBlockId %>",
     "<%= settings.market59Layer_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_59layer_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_59layer_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_60tao_devnet]
 target = ["CoreProxy"]
@@ -1744,7 +1921,10 @@ args = [
     "<%= settings.cp1RusdMarket60TaoRiskBlockId %>",
     "<%= settings.market60Tao_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_60tao_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_60tao_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_61ip_devnet]
 target = ["CoreProxy"]
@@ -1773,7 +1953,10 @@ args = [
     "<%= settings.cp1RusdMarket61IpRiskBlockId %>",
     "<%= settings.market61Ip_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_61ip_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_61ip_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_62me_devnet]
 target = ["CoreProxy"]
@@ -1802,7 +1985,10 @@ args = [
     "<%= settings.cp1RusdMarket62MeRiskBlockId %>",
     "<%= settings.market62Me_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_62me_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_62me_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_63pump_devnet]
 target = ["CoreProxy"]
@@ -1831,7 +2017,10 @@ args = [
     "<%= settings.cp1RusdMarket63PumpRiskBlockId %>",
     "<%= settings.market63Pump_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_63pump_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_63pump_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_64morpho_devnet]
 target = ["CoreProxy"]
@@ -1860,7 +2049,10 @@ args = [
     "<%= settings.cp1RusdMarket64MorphoRiskBlockId %>",
     "<%= settings.market64Morpho_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_64morpho_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_64morpho_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_65syrup_devnet]
 target = ["CoreProxy"]
@@ -1889,7 +2081,10 @@ args = [
     "<%= settings.cp1RusdMarket65SyrupRiskBlockId %>",
     "<%= settings.market65Syrup_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_65syrup_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_65syrup_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_66aero_devnet]
 target = ["CoreProxy"]
@@ -1918,7 +2113,10 @@ args = [
     "<%= settings.cp1RusdMarket66AeroRiskBlockId %>",
     "<%= settings.market66Aero_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_66aero_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_66aero_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_67kaito_devnet]
 target = ["CoreProxy"]
@@ -1947,7 +2145,10 @@ args = [
     "<%= settings.cp1RusdMarket67KaitoRiskBlockId %>",
     "<%= settings.market67Kaito_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_67kaito_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_67kaito_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_68zora_devnet]
 target = ["CoreProxy"]
@@ -1976,7 +2177,10 @@ args = [
     "<%= settings.cp1RusdMarket68ZoraRiskBlockId %>",
     "<%= settings.market68Zora_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_68zora_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_68zora_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_69prove_devnet]
 target = ["CoreProxy"]
@@ -2005,7 +2209,10 @@ args = [
     "<%= settings.cp1RusdMarket69ProveRiskBlockId %>",
     "<%= settings.market69Prove_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_69prove_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_69prove_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_70paxg_devnet]
 target = ["CoreProxy"]
@@ -2034,7 +2241,10 @@ args = [
     "<%= settings.cp1RusdMarket70PaxgRiskBlockId %>",
     "<%= settings.market70Paxg_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_70paxg_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_70paxg_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_71yzy_devnet]
 target = ["CoreProxy"]
@@ -2063,7 +2273,10 @@ args = [
     "<%= settings.cp1RusdMarket71YzyRiskBlockId %>",
     "<%= settings.market71Yzy_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_71yzy_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_71yzy_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_72xpl_devnet]
 target = ["CoreProxy"]
@@ -2092,7 +2305,10 @@ args = [
     "<%= settings.cp1RusdMarket72XplRiskBlockId %>",
     "<%= settings.market72Xpl_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_72xpl_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_72xpl_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_73wlfi_devnet]
 target = ["CoreProxy"]
@@ -2121,7 +2337,10 @@ args = [
     "<%= settings.cp1RusdMarket73WlfiRiskBlockId %>",
     "<%= settings.market73Wlfi_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_73wlfi_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_73wlfi_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_74linea_devnet]
 target = ["CoreProxy"]
@@ -2150,7 +2369,10 @@ args = [
     "<%= settings.cp1RusdMarket74LineaRiskBlockId %>",
     "<%= settings.market74Linea_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_74linea_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_74linea_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]
 
 [invoke.cp_1rusd_create_risk_matrix_market_75mega_devnet]
 target = ["CoreProxy"]
@@ -2179,4 +2401,7 @@ args = [
     "<%= settings.cp1RusdMarket75MegaRiskBlockId %>",
     "<%= settings.market75Mega_riskMatrixIndex %>",
 ]
-depends = ["invoke.cp_1rusd_create_risk_matrix_market_75mega_devnet"]
+depends = [
+    "invoke.cp_1rusd_create_risk_matrix_market_75mega_devnet",
+    "invoke.passive_perp_risk_block_config_system_owner",
+]

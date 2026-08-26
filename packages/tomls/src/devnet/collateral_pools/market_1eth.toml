@@ -1,4 +1,24 @@
 # Devnet market 1 ETH (perpOB): createMarket takes quoteToken address, not pool ID
+#
+# KNOWN-STALE EVENT ABI -- do NOT "fix" it in place. The declaration below
+# names `MarketDataUpdated` but carries V2's `eventSequenceNumber` param and
+# only 20 of Market.Data's 21 fields (no `lockedClosePrice`), so its topic0
+# matches NEITHER deployed event. It is inert only because this step is cached
+# in the deployment baseline and never re-runs.
+#
+# Correcting it was attempted on 2026-08-26 and REVERTED: changing the `abi`
+# field changes the step hash, so cannon re-executes `createMarket` against the
+# live deployment and mints a SECOND ETH market. Verified on a fork -- the run
+# logged `Setting: market_1eth = 2`, the `market_1eth_vars` id assertion fired,
+# and 270 downstream steps cascaded. (Changing `depends` is safe by contrast:
+# it is ordering metadata and does not affect the hash.)
+#
+# So this blob stays wrong until devnet is rebuilt from scratch, at which point
+# it MUST be corrected -- a from-scratch build dies here with "Event specified
+# in cannonfile ... doesn't exist or match", which is exactly how the mainnet
+# market mirror surfaced it. Markets 2-75 already use the correct shape
+# (MarketDataUpdatedV2, 21 fields, arg 1 = indexed marketId); copy from any of
+# them. Tracked with the PRO-998 rebuild.
 #####################################
 # Create Market
 #####################################
