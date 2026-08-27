@@ -190,9 +190,14 @@ jobs:
       # different artifacts, treats the deployment as stale and replays all ~2700
       # steps, so one-time genesis steps revert (PoolAlreadyTokenized) and the
       # suite reads as though the change under test broke devnet. Run
-      # 33027437158 burned 1h15m that way, on a change that was fine, after a
-      # single transient IPFS miss. A skip says "we did not test this"; a replay
-      # says "your PR is broken", and only one of those is true.
+      # 33027437158 burned 1h15m that way, on a change that was fine. A skip
+      # says "we did not test this"; a replay says "your PR is broken", and
+      # only one of those is true.
+      #
+      # NOTE the cause there was NOT "a single transient IPFS miss", as this
+      # comment used to claim. The prime loop was truncating after its first
+      # ref and never attempting the other eleven -- see the fd-3 note in
+      # prime-cannon-clone-sources.sh.
       - name: Reya Devnet Cannon Test
         id: reya_devnet_test
         if: >-
