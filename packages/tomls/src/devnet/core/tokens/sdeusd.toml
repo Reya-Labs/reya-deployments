@@ -1,0 +1,26 @@
+# Devnet sdeUSD global collateral config -- mirrors mainnet sdeusd*.
+# No spot market: only wETH has one on devnet.
+[invoke.sdeusd_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= settings.sdeusdProxyAddress %>",
+    { collateralAdapter_DEPRECATED = "<%= settings.sdeusdCollateralAdapter %>", withdrawalWindowSize = "<%= settings.sdeusdWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.sdeusdWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = ['invoke.upgrade_core_proxy', 'var.global_collateral_configs']
+
+# allowAll rather than an allowlist, deliberately, and matching mainnet: the
+# autoExchange flag gates WHICH COLLATERAL may be auto-exchanged, not who may
+# trigger it. Restricting it per-caller would break auto-exchange for ordinary
+# accounts. Every other collateral on both devnet and mainnet uses the same
+# posture; sdeUSD is not an exception.
+[invoke.sdeusd_auto_exchange_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), settings.sdeusdProxyAddress])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy"]

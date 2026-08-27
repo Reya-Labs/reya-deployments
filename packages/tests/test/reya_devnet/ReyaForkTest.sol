@@ -10,6 +10,9 @@ import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
 import {
     IOracleAdaptersProxy, StorkSignedPayload, StorkPricePayload
 } from "../../src/interfaces/IOracleAdaptersProxy.sol";
+import { ICoreProxy, ParentCollateralConfig } from "../../src/interfaces/ICoreProxy.sol";
+import { IPassivePerpProxy } from "../../src/interfaces/IPassivePerpProxy.sol";
+import { NodeDefinition } from "../../src/interfaces/IOracleManagerProxy.sol";
 
 /**
  * @title ReyaForkTest (Devnet)
@@ -57,6 +60,19 @@ contract ReyaForkTest is BaseReyaForkTest {
         // represents claims on exactly one pool, so it could not stay shared
         // once devnet stopped borrowing the Cronos pool.
         sec.srusd = 0x8A04495Ed90DE2cC1e0e620F01210c6A6fE63bdb; // devnet's own (CREATE2, srusd-devnet3)
+
+        // Mainnet collateral mirror: the existing Cronos deployments of the
+        // tokens mainnet accepts as collateral. Symbol and decimals verified
+        // on-chain -- wBTC is 8 decimals, the rest 18, and the omnibus scales
+        // every cap through parseUnits(.., <token>TokenDecimals) accordingly.
+        // The three LM tokens (rSelini/rAmber/rHedge) are deliberately absent:
+        // their REYALM# nodes do not resolve here. See CollateralMirror.
+        sec.wbtc = 0x459374F3f3E92728bCa838DfA8C95E706FE67E8a;
+        sec.wsteth = 0xDF52410A19298FE168c900513e762adaD00C42b1;
+        sec.usde = 0xDca6971c26fDEE0536Fdff076D063643f7810621;
+        sec.susde = 0x08A766935478A1632FA776DCEbD3E75Ce88A1034;
+        sec.deusd = 0x3b9D28dC180813a106d26778135Ac2A674F89957;
+        sec.sdeusd = 0xbEB316680B6fcd2dC3aF1fC933B3A27a2513d89D;
 
         // Reya variables
         sec.passivePoolId = 1;
@@ -170,20 +186,32 @@ contract ReyaForkTest is BaseReyaForkTest {
         // would revert StalePriceDetected. Same prank-bump pattern the cronos
         // fixture uses. Constant and pool nodes need no bump (they report
         // block.timestamp).
-        bytes32[6] memory stalenessBumped = [
-            sec.ethUsdStorkNodeId,
-            sec.usdcUsdStorkNodeId,
-            sec.ethUsdcStorkNodeId,
-            sec.ethUsdStorkMarkNodeId,
-            sec.ethUsdcStorkMarkNodeId,
-            // sRUSD margin oracle (SRUSDRUSD_RR) — in every collateral walk
-            // since the mainnet-parity re-point; time-warping tests go stale
-            // without this, same as the pairs above.
-            sec.srusdRusd_RRStorkNodeId
-        ];
-        for (uint256 i = 0; i < stalenessBumped.length; i++) {
-            vm.prank(sec.multisig);
-            IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(stalenessBumped[i], 30 days);
+        // Derived, not enumerated. The mainnet market mirror registers 75
+        // markets and 9 supporting collaterals, and Core walks every one of
+        // them on every margin computation -- so a hardcoded list goes stale
+        // the moment a market or collateral is added, which is exactly how
+        // this suite broke: 50 tests failed StalePriceDetected on market 2's
+        // BTCUSDMARK reducer and on the deUSD collateral reducer, neither of
+        // which existed when the list was written.
+        //
+        // Bump every node the suite can actually reach: each supporting
+        // collateral's parent oracle, each market's oracle node, and their
+        // direct parents (a DIV_REDUCER is checked for staleness at every
+        // level, so bumping only the root is not enough).
+        bumpStaleness(sec.ethUsdStorkNodeId);
+        bumpStaleness(sec.usdcUsdStorkNodeId);
+
+        address quoteToken = IPassivePoolProxy(sec.pool).getPoolQuoteToken(sec.passivePoolId);
+        uint128 poolId = ICoreProxy(sec.core).getCollateralPoolIdOfAccount(sec.passivePoolAccountId);
+        address[] memory supporting = ICoreProxy(sec.core).getSupportingCollaterals(poolId, quoteToken);
+        for (uint256 i = 0; i < supporting.length; i++) {
+            (, ParentCollateralConfig memory parent,) = ICoreProxy(sec.core).getCollateralConfig(poolId, supporting[i]);
+            bumpStaleness(parent.oracleNodeId);
+        }
+
+        uint128 lastMarket = ICoreProxy(sec.core).getLastCreatedMarketId();
+        for (uint128 marketId = 1; marketId <= lastMarket; marketId++) {
+            bumpStaleness(IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId).oracleNodeId);
         }
 
         (address publisher, uint256 publisherPK) = makeAddrAndKey("devnetSeedPublisher");
@@ -214,5 +242,26 @@ contract ReyaForkTest is BaseReyaForkTest {
         IOracleAdaptersProxy(sec.oracleAdaptersProxy).fulfillOracleQuery(
             abi.encode(StorkSignedPayload({ oraclePubKey: publisher, pricePayload: pricePayload, r: r, s: s, v: v }))
         );
+    }
+
+    /// Relax staleness on a node AND its direct parents for the test run.
+    ///
+    /// Several suites warp hours-to-days and re-stamp prices via vm.mockCall,
+    /// but any UNMOCKED process() of a stork node after a warp reverts
+    /// StalePriceDetected. Constant and pool nodes need no bump (they report
+    /// block.timestamp) but bumping them is harmless, so no type check here.
+    /// Parents matter: a DIV_REDUCER processes each parent, and the staleness
+    /// check fires at whichever level is stale first.
+    function bumpStaleness(bytes32 nodeId) internal {
+        if (nodeId == bytes32(0)) return;
+
+        NodeDefinition.Data memory node = IOracleManagerProxy(sec.oracleManager).getNode(nodeId);
+        vm.prank(sec.multisig);
+        IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(nodeId, 30 days);
+
+        for (uint256 i = 0; i < node.parents.length; i++) {
+            vm.prank(sec.multisig);
+            IOracleManagerProxy(sec.oracleManager).setMaxStaleDuration(node.parents[i], 30 days);
+        }
     }
 }

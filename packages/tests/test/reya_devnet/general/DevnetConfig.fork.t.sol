@@ -13,6 +13,7 @@ import {
     BackstopLPConfig
 } from "../../../src/interfaces/ICoreProxy.sol";
 import { IPassivePerpProxyV2, FeeTierParameters } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
+import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import { IOrdersGatewayProxy } from "../../../src/interfaces/IOrdersGatewayProxy.sol";
 import { IPeripheryProxy, GlobalConfiguration } from "../../../src/interfaces/IPeripheryProxy.sol";
 
@@ -78,6 +79,41 @@ contract DevnetConfigForkTest is ReyaForkTest, PerpFillForkCheck {
                 string.concat(names[i], ": pending ownership nomination")
             );
         }
+    }
+
+    /// `configureRiskBlock` must be granted to the system owner, by ALLOWLIST.
+    ///
+    /// PassivePerp.setRiskBlockId is gated on this flag, and the gate is
+    /// checked BEFORE ownership -- so with allowAll=false and an empty
+    /// allowlist (the state devnet and mainnet were both in) the call reverts
+    /// FeatureUnavailable for every caller including the owner, and risk
+    /// blocks silently never get assigned. Market 1 hid this for months
+    /// because its risk-block step is cached in the deployment baseline and
+    /// never re-runs; the mainnet market mirror surfaced it by adding 74 more.
+    ///
+    /// allowAll is asserted false for the usual reason: with it set, the
+    /// membership check below passes for the owner AND for everyone else, so
+    /// this test would go green while the permission was wide open.
+    function test_Devnet_RiskBlockConfiguratorAccess() public view {
+        bytes32 flag = keccak256(bytes("configureRiskBlock"));
+
+        require(
+            !IPassivePerpProxy(sec.perp).getFeatureFlagAllowAll(flag),
+            "configureRiskBlock: allowAll must stay false, or the allowlist below means nothing"
+        );
+
+        // denyAll is the opposite failure and is NOT implied by the allowlist:
+        // set, it blocks the feature for every account including the owner, so
+        // the membership check below would pass while setRiskBlockId reverted
+        // for everyone -- the exact silent-config-gap this test exists to catch.
+        require(
+            !IPassivePerpProxy(sec.perp).getFeatureFlagDenyAll(flag),
+            "configureRiskBlock: denyAll blocks every caller, allowlist or not"
+        );
+
+        address[] memory allowed = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flag);
+        require(allowed.length == 1, "configureRiskBlock: allowlist should hold exactly the system owner");
+        require(allowed[0] == sec.multisig, "configureRiskBlock: allowlist member != system owner");
     }
 
     // ------------------------------------------------------------------
@@ -147,7 +183,11 @@ contract DevnetConfigForkTest is ReyaForkTest, PerpFillForkCheck {
 
     function test_Devnet_CollateralPoolLimits() public view {
         LimitConfig memory limits = ICoreProxy(sec.core).getCollateralPoolLimits(1);
-        require(limits.maxMarkets == 1, "cp1: maxMarkets != 1");
+        // 75 mirrors mainnet: the full mainnet market list is registered
+        // on-chain. Was 1 (ETH only) -- every market past the first reverts
+        // CollateralLimitBreached at the old cap. Which of those 75 may
+        // actually take exposure is pinned by MarketMirror, not here.
+        require(limits.maxMarkets == 75, "cp1: maxMarkets != 75");
         // 12 (bumped from 2) is what makes sRUSD onboarding possible at all —
         // the old cap reverted CollateralLimitBreached on the third token.
         require(limits.maxCollaterals == 12, "cp1: maxCollaterals != 12");

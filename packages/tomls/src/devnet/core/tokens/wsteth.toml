@@ -1,0 +1,21 @@
+# Devnet WSTETH global collateral config -- mirrors mainnet wsteth*.
+# No spot market: only wETH has one on devnet.
+[invoke.wsteth_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= settings.wstethProxyAddress %>",
+    { collateralAdapter_DEPRECATED = "<%= settings.wstethCollateralAdapter %>", withdrawalWindowSize = "<%= settings.wstethWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.wstethWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = ['invoke.upgrade_core_proxy', 'var.global_collateral_configs']
+
+[invoke.wsteth_auto_exchange_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), settings.wstethProxyAddress])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy"]

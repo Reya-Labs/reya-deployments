@@ -36,6 +36,26 @@ func = "addToFeatureFlagAllowlist"
 args = ["<%= keccak256(hexlify('configureMarket')) %>", "<%= settings.owner %>"]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
+# PassivePerp.setRiskBlockId is gated on `configureRiskBlock`, which is
+# allowAll=false with an EMPTY allowlist on devnet AND on mainnet -- so the
+# call reverts FeatureUnavailable for EVERY caller, owner included: the flag
+# is checked before ownership. Market 1's risk-block step is cached in the
+# deployment baseline and never re-runs, so nothing surfaced this until the
+# mainnet market mirror added 74 more risk blocks and all 74 reverted.
+#
+# Same allowlist shape as the configureFees / configureMarket grants above.
+# Deliberately NOT setFeatureFlagAllowAll: allowAll makes every allowlist
+# assertion vacuously green, so the fork-suite pin would stop meaning anything.
+[invoke.passive_perp_risk_block_config_system_owner]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('configureRiskBlock')) %>",
+    "<%= settings.owner %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
 # PerpOB oracle push permissions
 # - oraclePushers: msg.sender of pushOracleData (two relay bots)
 # - oraclePublishers: EIP-712 signer (single = matching engine publisher)

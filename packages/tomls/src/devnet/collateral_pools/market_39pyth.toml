@@ -1,0 +1,173 @@
+# Devnet market 39 PYTH (perpOB): createMarket takes the quoteToken
+# address, not a pool ID. registerMarket still opens a fresh collateral pool per
+# market, so the CP flags/limits below configure that pool and the final step
+# merges it into CP1 -- the same shape mainnet uses.
+#####################################
+# Create Market
+#####################################
+[invoke.create_market_39pyth]
+target = ["PassivePerpProxy"]
+abi = "<%= JSON.stringify(contracts.PassivePerpProxy.abi.concat({'type': 'event', 'name': 'MarketDataUpdatedV2', 'anonymous': false, 'inputs': [{'name': 'eventSequenceNumber', 'type': 'uint128', 'indexed': true, 'internalType': 'uint128'}, {'name': 'marketId', 'type': 'uint128', 'indexed': true, 'internalType': 'uint128'}, {'name': 'marketData', 'type': 'tuple', 'indexed': false, 'internalType': 'struct Market.Data', 'components': [{'name': 'id', 'type': 'uint128', 'internalType': 'uint128'}, {'name': 'passivePoolId_DEPRECATED', 'type': 'uint128', 'internalType': 'uint128'}, {'name': 'poolAccountId_DEPRECATED', 'type': 'uint128', 'internalType': 'uint128'}, {'name': 'quoteToken', 'type': 'address', 'internalType': 'address'}, {'name': 'quoteTokenDecimals', 'type': 'uint8', 'internalType': 'uint8'}, {'name': 'lastFundingVelocity_DEPRECATED', 'type': 'int256', 'internalType': 'SD59x18'}, {'name': 'lastFundingRate_DEPRECATED', 'type': 'int256', 'internalType': 'SD59x18'}, {'name': 'lastFundingTimestamp', 'type': 'uint256', 'internalType': 'uint256'}, {'name': 'lastMTM_DEPRECATED', 'type': 'tuple', 'internalType': 'struct PriceData', 'components': [{'name': 'price', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'timestamp', 'type': 'uint256', 'internalType': 'uint256'}]}, {'name': 'longTrackers', 'type': 'tuple', 'internalType': 'struct FundingAndADLTrackers', 'components': [{'name': 'fundingValue', 'type': 'int256', 'internalType': 'SD59x18'}, {'name': 'baseMultiplier', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'adlUnwindPrice', 'type': 'uint256', 'internalType': 'UD60x18'}]}, {'name': 'shortTrackers', 'type': 'tuple', 'internalType': 'struct FundingAndADLTrackers', 'components': [{'name': 'fundingValue', 'type': 'int256', 'internalType': 'SD59x18'}, {'name': 'baseMultiplier', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'adlUnwindPrice', 'type': 'uint256', 'internalType': 'UD60x18'}]}, {'name': 'openInterest', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'logPriceMultiplier_DEPRECATED', 'type': 'int256', 'internalType': 'SD59x18'}, {'name': 'depthFactor_DEPRECATED', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'priceSpread_DEPRECATED', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'velocityMultiplier_DEPRECATED', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'markPrice', 'type': 'uint256', 'internalType': 'UD60x18'}, {'name': 'markPriceTimestamp', 'type': 'uint256', 'internalType': 'uint256'}, {'name': 'fundingRate', 'type': 'int256', 'internalType': 'SD59x18'}, {'name': 'fundingRateTimestamp', 'type': 'uint256', 'internalType': 'uint256'}, {'name': 'lockedClosePrice', 'type': 'uint256', 'internalType': 'UD60x18'}]}, {'name': 'blockTimestamp', 'type': 'uint256', 'indexed': false, 'internalType': 'uint256'}]})) %>"
+fromCall.func = "owner"
+func = "createMarket"
+args = ["Market PYTH", "<%= settings.rusdProxyAddress %>"]
+var.market_39pyth.event = "MarketDataUpdatedV2"
+var.market_39pyth.arg = 1
+depends = [
+    "invoke.core_register_instrument_passive_perp",
+    "invoke.core_unpause",
+    "invoke.passive_perp_global_config",
+    "invoke.create_market_38ltc",
+]
+
+[var.market_39pyth_vars]
+market39PythId = "<%= (String(settings.market_39pyth) === '39') ? settings.market_39pyth : parseUnits('0', 'assert market_39pyth_vars failed') %>"
+depends = ["invoke.create_market_39pyth"]
+
+##################################################
+# Market's Collateral Pool Feature Flags
+##################################################
+[invoke.market_39pyth_unpause_cp]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market39PythId %>"]
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market39PythId])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy", "var.market_39pyth_vars"]
+
+[invoke.market_39pyth_set_pausers_cp]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market39PythId %>"]
+func = "setDeniers"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('collateralPoolEnabled')),settings.market39PythId])) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_core_proxy", "var.market_39pyth_vars"]
+
+##################################################
+# Market Feature Flags
+##################################################
+[invoke.market_39pyth_unpause_market]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market39PythId])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy", "var.market_39pyth_vars"]
+
+[invoke.market_39pyth_set_pausers_market]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketEnabled')),settings.market39PythId])) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_core_proxy", "var.market_39pyth_vars"]
+
+[invoke.market_39pyth_enabled_zero_fee_option]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setAdmins"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','uint128'],[keccak256(hexlify('marketZeroFees')),settings.market39PythId])) %>",
+    [
+        "<%= settings.setMarketZeroFeeBot %>",
+    ],
+]
+depends = ["invoke.upgrade_passive_perp_proxy", "var.market_39pyth_vars"]
+
+#####################################
+# Market Configuration
+#####################################
+[invoke.market_39pyth_set_market_config]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setMarketConfiguration"
+args = [
+    "<%= settings.market39PythId %>",
+    { riskMatrixIndex = "<%= settings.market39Pyth_riskMatrixIndex %>", maxOpenBase = "<%= parseEther(settings.market39Pyth_maxOpenBaseUnscaled) %>", velocityMultiplier_DEPRECATED = "<%= parseEther(settings.market39Pyth_velocityMultiplierUnscaled) %>", oracleNodeId = "<%= settings.market39Pyth_oracleNodeId %>", mtmWindow_DEPRECATED = "<%= settings.market39Pyth_mtmWindow %>", dutchConfig = { lambda = "<%= parseEther(settings.market39Pyth_dutchConfig_lambdaUnscaled) %>", minBase = "<%= parseEther(settings.market39Pyth_dutchConfig_minBaseUnscaled) %>" }, slippageParams = { phi = "<%= parseEther(settings.market39Pyth_slippageParams_phiUnscaled) %>", beta = "<%= parseEther(settings.market39Pyth_slippageParams_betaUnscaled) %>" }, minimumOrderBase = "<%= parseEther(settings.market39Pyth_minimumOrderBaseUnscaled) %>", baseSpacing = "<%= parseEther(settings.market39Pyth_baseSpacingUnscaled) %>", priceSpacing = "<%= parseEther(settings.market39Pyth_priceSpacingUnscaled) %>", depthFactor_DEPRECATED = "<%= parseEther(settings.market39Pyth_depthFactorUnscaled) %>", maxExposureFactor_DEPRECATED = "<%= parseEther(settings.market39Pyth_maxExposureFactorUnscaled) %>", maxPSlippage_DEPRECATED = "<%= parseEther(settings.market39Pyth_maxPSlippageUnscaled) %>", markPriceMaxStaleDuration = "<%= settings.market39Pyth_markPriceMaxStaleDuration %>", priceSpread_DEPRECATED = "<%= parseEther(settings.market39Pyth_priceSpreadUnscaled) %>", volatilityIndexMultiplier_DEPRECATED = "<%= parseEther(settings.market39Pyth_volatilityIndexMultiplierUnscaled) %>", fundingRateMaxStaleDuration = "<%= settings.market39Pyth_fundingRateMaxStaleDuration %>", markPriceMaxDeviation = "<%= parseEther(settings.market39Pyth_markPriceMaxDeviationUnscaled) %>", fillPriceMaxDeviation = "<%= parseEther(settings.market39Pyth_fillPriceMaxDeviationUnscaled) %>", minFundingInterval = "<%= settings.market39Pyth_minFundingInterval %>" },
+]
+depends = [
+    "invoke.create_market_39pyth",
+    "invoke.passive_perp_market_config_system_owner",
+]
+
+#####################################
+# Market's Collateral Pool Limits
+#####################################
+[invoke.market_39pyth_set_cp_limits]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market39PythId %>"]
+func = "setCollateralPoolLimits"
+args = [
+    "<%= settings.market39PythId %>",
+    { maxMarkets = "1", maxCollaterals = "1" },
+]
+depends = ["invoke.create_market_39pyth"]
+
+##################################################
+# Market's Collateral Pool Insurance Fund
+#
+# Required BEFORE the merge: CollateralPool.merge transfers the child's
+# insurance fund into the parent's, and getInsuranceFundAccount is
+# Account.exists(insuranceFundConfig().accountId) -- an unconfigured child
+# reverts AccountNotFound("0"). (The reserved account needs no step: Core sets
+# reservedAccountId when the pool is created.)
+#
+# This is MAINNET'S STANDARD PATTERN, not a devnet workaround: 70 of mainnet's
+# 75 market tomls carry this exact step, reusing CP1's insurance-fund account
+# with the same "reusing params from CP 1 since this CP will get merged" note.
+# The 5 without it are markets 2-6, the earliest ones, where it was commented
+# out. market_2btc was the template these files were first generated from,
+# which is why the first fork run reverted AccountNotFound on all 74.
+##################################################
+[invoke.market_39pyth_insurance_fund_config]
+target = ["CoreProxy"]
+fromCall.func = "getCollateralPoolOwner"
+fromCall.args = ["<%= settings.market39PythId %>"]
+func = "configureCollateralPoolInsuranceFund"
+args = [
+    "<%= settings.market39PythId %>",
+    { accountId = "<%= settings.cp1Rusd_insuranceFundAccountId %>", liquidationFee = "<%= parseEther(settings.cp1Rusd_insuranceFund_liquidationFeeUnscaled) %>" },
+]
+depends = [
+    "invoke.cp_1rusd_create_insurance_fund_account",
+    "invoke.create_market_39pyth",
+]
+
+##################################################
+# Merge Market's Collateral Pool into CP1
+##################################################
+[invoke.market_39pyth_merge_collateral_pool]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "mergeCollateralPools"
+args = ["<%= settings.market1EthId %>", "<%= settings.market39PythId %>"]
+depends = [
+    "invoke.market_39pyth_unpause_cp",
+    "invoke.market_39pyth_set_pausers_cp",
+    "invoke.market_39pyth_unpause_market",
+    "invoke.market_39pyth_set_pausers_market",
+    "invoke.market_39pyth_set_market_config",
+    "invoke.market_39pyth_set_cp_limits",
+    "invoke.market_39pyth_insurance_fund_config",
+]

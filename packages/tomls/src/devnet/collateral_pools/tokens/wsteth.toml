@@ -1,0 +1,21 @@
+# Devnet CP1 WSTETH collateral config -- mirrors mainnet cp1Rusd_wsteth_*.
+#
+# Reuses the existing Cronos WSTETH deployment. Like wETH, the parent oracle
+# resolves on devnet's OWN manager, so this runs AFTER core_configure_protocol:
+# registering it earlier would put an unresolvable node in the collateral set,
+# and Core walks that set on EVERY margin computation.
+[invoke.cp_1rusd_set_wsteth_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setCollateralConfig"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= settings.wstethProxyAddress %>",
+    { depositingEnabled = true, cap = "<%= parseUnits(settings.cp1Rusd_wsteth_capUnscaled, parseInt(settings.wstethTokenDecimals)) %>", withdrawalWindowSize_DEPRECATED = "0", withdrawalTvlPercentageLimit_DEPRECATED = "0", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_wsteth_autoExchangeThresholdUnscaled, parseInt(settings.wstethTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_wsteth_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_wsteth_autoExchangeDustThresholdUnscaled, parseInt(settings.wstethTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_wsteth_bidSubmissionFeeUnscaled, parseInt(settings.wstethTokenDecimals)) %>" },
+    { collateralAddress = "<%= settings.cp1Rusd_wstethParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_wstethParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_wstethParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.cp1Rusd_wstethParentConfig_oracleNodeId %>" },
+]
+depends = [
+    "var.cp_1rusd_vars",
+    "invoke.cp_1rusd_set_rusd_config",
+    "invoke.core_configure_protocol",
+]
