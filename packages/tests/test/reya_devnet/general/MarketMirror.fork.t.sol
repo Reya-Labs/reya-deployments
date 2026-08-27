@@ -113,6 +113,34 @@ contract MarketMirrorForkTest is ReyaForkTest {
         }
     }
 
+    /// No market may carry a zero Dutch liquidation floor.
+    ///
+    /// The perpOB router rejects it at config time (InvalidMarketConfiguration
+    /// "DMINB"), but the reason is a liquidation property, not a config nit:
+    /// the Dutch cap is max(|netBase|/lambda, minBase), so with no floor and
+    /// lambda > 1 every bite is strictly smaller than the position it is taken
+    /// from -- the position converges on a sub-baseSpacing residual that base
+    /// alignment makes unclosable on that path entirely.
+    ///
+    /// Asserted across ALL mirrored markets, not just the activated ones: a
+    /// reduce-only market still liquidates. Mainnet carries 0 for ids 1 and 2
+    /// (its two oldest markets) and its router has no such validation, so this
+    /// is exactly the value most likely to be copied in again by a future
+    /// mirror.
+    function test_Devnet_MarketMirror_NoZeroDutchFloor() public view {
+        for (uint128 marketId = 1; marketId <= MAINNET_MARKET_COUNT; marketId++) {
+            MarketConfigurationData memory cfg = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+            require(
+                cfg.dutchConfig.minBase > 0,
+                string.concat(
+                    "market mirror: market ",
+                    vm.toString(uint256(marketId)),
+                    " has a zero Dutch minBase -- small positions become unclosable"
+                )
+            );
+        }
+    }
+
     /// THE invariant: exactly the activated 30 can take exposure, and every
     /// other mirrored market is in reduce-only.
     ///

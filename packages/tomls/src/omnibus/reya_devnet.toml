@@ -330,7 +330,16 @@ market1Eth_riskMatrixIndex = "0"
 market1Eth_maxOpenBaseUnscaled = "4950"
 market1Eth_oracleNodeId = "<%= settings.ethUsdcMarkNodeIdStork %>"
 market1Eth_dutchConfig_lambdaUnscaled = "1"
-market1Eth_dutchConfig_minBaseUnscaled = "0"
+# Dutch liquidation floor. Mainnet carries 0 for this market, which the
+# perpOB router REJECTS: ConfigValidation reverts InvalidMarketConfiguration
+# ..."DMINB" on a zero minBase, because the Dutch cap is
+# max(|netBase|/lambda, minBase) -- with no floor and lambda > 1 every bite is
+# strictly smaller than the position, so it converges on a sub-baseSpacing
+# residual that base alignment then makes unclosable.
+# Set to this market's minimumOrderBase (0.010): above baseSpacing, so the
+# residual is closable, and itself a valid order size. The other 73 mirrored
+# markets carry mainnet's flat 0.11; only ids 1 and 2 are zero on mainnet.
+market1Eth_dutchConfig_minBaseUnscaled = "0.010"
 market1Eth_slippageParams_phiUnscaled = "0"
 market1Eth_slippageParams_betaUnscaled = "0"
 market1Eth_minimumOrderBaseUnscaled = "0.010"
@@ -401,7 +410,16 @@ market2Btc_riskMatrixIndex = "0"
 market2Btc_maxOpenBaseUnscaled = "145"
 market2Btc_oracleNodeId = "<%= settings.btcUsdcMarkNodeIdStork %>"
 market2Btc_dutchConfig_lambdaUnscaled = "1"
-market2Btc_dutchConfig_minBaseUnscaled = "0"
+# Dutch liquidation floor. Mainnet carries 0 for this market, which the
+# perpOB router REJECTS: ConfigValidation reverts InvalidMarketConfiguration
+# ..."DMINB" on a zero minBase, because the Dutch cap is
+# max(|netBase|/lambda, minBase) -- with no floor and lambda > 1 every bite is
+# strictly smaller than the position, so it converges on a sub-baseSpacing
+# residual that base alignment then makes unclosable.
+# Set to this market's minimumOrderBase (0.001): above baseSpacing, so the
+# residual is closable, and itself a valid order size. The other 73 mirrored
+# markets carry mainnet's flat 0.11; only ids 1 and 2 are zero on mainnet.
+market2Btc_dutchConfig_minBaseUnscaled = "0.001"
 market2Btc_slippageParams_phiUnscaled = "0"
 market2Btc_slippageParams_betaUnscaled = "0"
 market2Btc_minimumOrderBaseUnscaled = "0.001"
