@@ -128,6 +128,7 @@ jobs:
       # CANNON_WRITE_IPFS_URL is required: fetch defaults to the decommissioned
       # region-derived repo hosts and dies with an SSL handshake failure.
       - name: Prime the local cannon registry with the published devnet package
+        id: reya_devnet_package_prime
         continue-on-error: true
         env:
           # `cannon fetch` reads publishIpfsUrl (CANNON_PUBLISH_IPFS_URL) for its
@@ -150,8 +151,47 @@ jobs:
           echo "package url: $URL"
           node node_modules/@usecannon/cli-devnet/bin/cannon.js fetch "$URL" "$REF" --chain-id 89346162
 
+      # The step above primes the omnibus package; this one primes the packages
+      # the omnibus CLONES. They are separate problems: the omnibus prime
+      # satisfies cli-devnet's "already published" guard, while this one fixes
+      # WHICH BYTES the clone steps resolve. For 12 of the 17 devnet clone
+      # sources the registry now serves artifacts rebuilt on a newer cannon
+      # toolchain, and since cannon clones proxies via CREATE2, different
+      # artifact bytes give a different proxy address -- e.g. PassivePool
+      # resolves to 0xE93414D5...8652 here instead of the deployed
+      # 0x9fDba948...abA2, so every devnet fork assertion reads a nonexistent
+      # contract. Pins live in packages/tomls/src/omnibus/reya_devnet.lock.json.
+      #
+      # NOTE the chain id inside the script is 13370, NOT 89346162: cannon
+      # resolves clone sources at CANNON_CHAIN_ID (the portable variant), so
+      # priming them under the devnet chain id writes tags nothing reads.
+      #
+      # continue-on-error matches the devnet lane: the devnet suite is
+      # advisory (reported via the separate "Testnet Suites" check run), so a
+      # priming failure must not redden the merge gate.
+      - name: Prime the local cannon registry with devnet's clone sources
+        id: reya_devnet_prime
+        continue-on-error: true
+        env:
+          # Same trap as the step above: `cannon fetch` reads
+          # CANNON_PUBLISH_IPFS_URL for its download loader, not CANNON_IPFS_URL.
+          CANNON_PUBLISH_IPFS_URL: https+ipfs://repo.usecannon.com
+          CANNON_WRITE_IPFS_URL: https+ipfs://repo.usecannon.com
+        run: "yarn reya_devnet:prime"
+
+      # Skipped rather than run when priming failed. An unprimed cache does not
+      # produce a smaller failure, it produces a MISLEADING one: cannon resolves
+      # different artifacts, treats the deployment as stale and replays all ~2700
+      # steps, so one-time genesis steps revert (PoolAlreadyTokenized) and the
+      # suite reads as though the change under test broke devnet. Run
+      # 33027437158 burned 1h15m that way, on a change that was fine, after a
+      # single transient IPFS miss. A skip says "we did not test this"; a replay
+      # says "your PR is broken", and only one of those is true.
       - name: Reya Devnet Cannon Test
         id: reya_devnet_test
+        if: >-
+          steps.reya_devnet_package_prime.outcome == 'success' &&
+          steps.reya_devnet_prime.outcome == 'success'
         continue-on-error: true
         env:
           RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
@@ -181,10 +221,24 @@ jobs:
             summary="${summary}- Reya Devnet fork tests failed"$'\n'
           fi
 
-          if [ -n "$summary" ]; then
+          # A skipped devnet suite is NOT a pass. It means priming failed, so the
+          # suite never ran -- reporting that as "All testnet suites passed"
+          # would assert something we did not test.
+          skipped=""
+          if [ "$DEVNET_TEST" = "skipped" ]; then
+            skipped="- Reya Devnet fork tests did NOT run (cannon priming failed; see the prime steps)"$'\n'
+          fi
+
+          if [ -n "$summary" ] || [ -n "$skipped" ]; then
             conclusion="neutral"
-            title="Testnet suites reported failures (non-blocking)"
-            summary="${summary}"$'\n'"Mainnet tests passed, so this does not block the merge. Check the job log before merging."
+            if [ -n "$summary" ] && [ -n "$skipped" ]; then
+              title="Testnet suites reported failures, and devnet did not run (non-blocking)"
+            elif [ -n "$summary" ]; then
+              title="Testnet suites reported failures (non-blocking)"
+            else
+              title="Devnet suite did not run (non-blocking)"
+            fi
+            summary="${summary}${skipped}"$'\n'"Mainnet tests passed, so this does not block the merge. Check the job log before merging."
           else
             conclusion="success"
             title="All testnet suites passed"
