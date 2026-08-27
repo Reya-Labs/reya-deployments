@@ -1,0 +1,11 @@
+Checking for existing package...
+Building the chain (ID 89346162) via https://rpc-reya-cronos.t.conduit.xyz/***...
+
+  Executing [clone.core]...
+  ⚠️  Skipping [clone.core] (Error: could not download cannon package data from "QmZY6uS9zQ1Nn6tPqvXmT4kR3wFbHc8dLpAe2gYvJxKm7B": Error: socket hang up)
+  ⚠️  Skipping [invoke.configure_markets] (Error: dependency operation not completed: clone.core)
+  ⚠️  Skipping [invoke.enable_market_eth] (Error: dependency operation not completed: clone.core)
+  ⚠️  Skipping [invoke.set_oracle_manager] (Error: dependency operation not completed: clone.core)
+  ⚠️  Skipping [invoke.tokenize_pool] (Error: dependency operation not completed: invoke.configure_markets)
+
+Successfully built package reya-devnet-omnibus:1.1.1@main

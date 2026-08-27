@@ -1,0 +1,4 @@
+Checking for existing package...
+  ⚠️  Skipping [clone.core] (Error: could not download cannon package data from "QmZY6uS9zQ1Nn6tPqvXmT4kR3wFbHc8dLpAe2gYvJxKm7B": AxiosError: Request failed with status code 429)
+  ⚠️  Skipping [clone.perp] (Error: Too Many Requests)
+  ⚠️  Skipping [invoke.configure_markets] (Error: dependency operation not completed: clone.core)

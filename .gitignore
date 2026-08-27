@@ -26,6 +26,9 @@ yarn-error.log
 .vscode
 .idea
 *.log
+# ...but the recorded cannon output the retry-wrapper tests classify are
+# fixtures, not run logs, and must be committed.
+!packages/tests/scripts/testdata/*.log
 
 /tmp
 

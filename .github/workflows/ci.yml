@@ -96,6 +96,12 @@ jobs:
           EOF
       - name: Lint Check
         run: "yarn lint:check"
+      # Unit tests for the cannon-retry wrapper's failure classifier. Pure
+      # shell, no deps, ~1s. Deliberately NOT continue-on-error: the wrapper
+      # decides whether a red devnet run gets retried or reported, so it
+      # breaking silently is exactly the failure mode it exists to prevent.
+      - name: Cannon Retry Wrapper Tests
+        run: ./packages/tests/scripts/cannon-retry.test.sh
       - name: Build
         run: "yarn build"
       - name: Reya Network Cannon Test
