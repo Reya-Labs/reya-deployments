@@ -122,6 +122,7 @@ jobs:
       # CANNON_WRITE_IPFS_URL is required: fetch defaults to the decommissioned
       # region-derived repo hosts and dies with an SSL handshake failure.
       - name: Prime the local cannon registry with the published devnet package
+        id: reya_devnet_package_prime
         continue-on-error: true
         env:
           # `cannon fetch` reads publishIpfsUrl (CANNON_PUBLISH_IPFS_URL) for its
@@ -182,7 +183,9 @@ jobs:
       # says "your PR is broken", and only one of those is true.
       - name: Reya Devnet Cannon Test
         id: reya_devnet_test
-        if: steps.reya_devnet_prime.outcome == 'success'
+        if: >-
+          steps.reya_devnet_package_prime.outcome == 'success' &&
+          steps.reya_devnet_prime.outcome == 'success'
         continue-on-error: true
         env:
           RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}
@@ -212,10 +215,24 @@ jobs:
             summary="${summary}- Reya Devnet fork tests failed"$'\n'
           fi
 
-          if [ -n "$summary" ]; then
+          # A skipped devnet suite is NOT a pass. It means priming failed, so the
+          # suite never ran -- reporting that as "All testnet suites passed"
+          # would assert something we did not test.
+          skipped=""
+          if [ "$DEVNET_TEST" = "skipped" ]; then
+            skipped="- Reya Devnet fork tests did NOT run (cannon priming failed; see the prime steps)"$'\n'
+          fi
+
+          if [ -n "$summary" ] || [ -n "$skipped" ]; then
             conclusion="neutral"
-            title="Testnet suites reported failures (non-blocking)"
-            summary="${summary}"$'\n'"Mainnet tests passed, so this does not block the merge. Check the job log before merging."
+            if [ -n "$summary" ] && [ -n "$skipped" ]; then
+              title="Testnet suites reported failures, and devnet did not run (non-blocking)"
+            elif [ -n "$summary" ]; then
+              title="Testnet suites reported failures (non-blocking)"
+            else
+              title="Devnet suite did not run (non-blocking)"
+            fi
+            summary="${summary}${skipped}"$'\n'"Mainnet tests passed, so this does not block the merge. Check the job log before merging."
           else
             conclusion="success"
             title="All testnet suites passed"
