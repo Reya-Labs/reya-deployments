@@ -140,5 +140,40 @@ else
 fi
 
 echo
+echo "== chain id is read uncoloured =="
+
+# The CI failure. `node -p` renders through util.inspect, which COLOURS numbers
+# when stdout is a TTY -- and CI runs this script under `lerna run` (nx), which
+# gives tasks a PTY. So CHAIN_ID arrived as ESC[33m13370ESC[39m, cannon got a
+# non-numeric --chain-id, fell through to its interactive chain-id prompt, and
+# exited 0 without writing a tag. Running the script directly gets a pipe and
+# clean digits, which is why it only ever failed in CI.
+#
+# FORCE_COLOR=1 reproduces the PTY's colouring exactly, without needing a PTY.
+OUT3="$WORK/run3.log"
+CANNON_DIRECTORY="$WORK/cannon3" \
+CANNON_PRIME_CANNON_BIN="$WORK/fake-cannon.js" \
+CANNON_PRIME_SKIP_MISC_CHECK=1 \
+FORCE_COLOR=1 \
+  bash "$SCRIPT" >"$OUT3" 2>&1
+STATUS3=$?
+
+GOT_OK3="$(grep -c '^    ok      ' "$OUT3" | tr -d ' ')"
+if [ "$GOT_OK3" = "$EXPECTED_REFS" ] && [ "$STATUS3" -eq 0 ]; then
+  ok "primes all $EXPECTED_REFS refs when node colourises its output (FORCE_COLOR=1)"
+else
+  bad "primes all $EXPECTED_REFS refs when node colourises its output (FORCE_COLOR=1)" \
+      "exit $STATUS3, $GOT_OK3 ref(s) primed; chain id likely carries ANSI codes"
+fi
+
+# And the tag path must not carry escape codes, which is the second way a
+# coloured chain id breaks things: the read-back can never match.
+if grep -q '\[33m' "$OUT3"; then
+  bad "chain id is free of ANSI escape codes" "found ESC[33m in output"
+else
+  ok "chain id is free of ANSI escape codes"
+fi
+
+echo
 echo "== $PASS passed, $FAIL failed =="
 [ "$FAIL" -eq 0 ]

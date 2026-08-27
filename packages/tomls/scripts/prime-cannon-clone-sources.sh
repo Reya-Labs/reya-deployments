@@ -53,9 +53,41 @@ FETCH_BACKOFF="${CANNON_PRIME_FETCH_BACKOFF:-3}"
 FETCH_LOG="$(mktemp "${TMPDIR:-/tmp}/cannon-prime-fetch.XXXXXX")"
 trap 'rm -f "${FETCH_LOG}"' EXIT
 
-CHAIN_ID="$(node -p "require('./${LOCKFILE}').chainId")"
+# NOT `node -p`. chainId is a NUMBER, and `node -p` renders its result through
+# util.inspect, which COLOURS numbers when stdout is a TTY -- so this read
+# returns the literal bytes ESC[33m13370ESC[39m rather than 13370. CI runs this
+# script through `lerna run` (nx), which allocates a PTY for task output; a
+# developer running the script directly gets a pipe and clean digits. That one
+# difference is the entire local-passes-CI-fails story:
+#
+#   * `--chain-id $CHAIN_ID` reaches cannon as a non-numeric string, so
+#     Number() gives NaN, cannon falls through to its interactive
+#     _promptChainId(), finds no answer on stdin, and EXITS 0 HAVING WRITTEN
+#     NOTHING -- which is exactly the "wrote no usable tag" with exit 0 the
+#     diagnostics caught;
+#   * and $TAG embeds the escape codes too, so the read-back could never match
+#     even if the fetch had succeeded.
+#
+# `node -e` + process.stdout.write bypasses util.inspect entirely and is
+# TTY-independent. String-valued reads below are unaffected (node prints
+# top-level strings raw, uncoloured), which is why the ref list always parsed
+# fine while this one value was quietly poisoned.
+CHAIN_ID="$(node -e "process.stdout.write(String(require('./${LOCKFILE}').chainId))")"
 CANNON_DIR="${CANNON_DIRECTORY:-$HOME/.local/share/cannon}"
 VERIFY_ONLY="${1:-}"
+
+# Fail loudly rather than passing junk to cannon and reading a junk tag path.
+# Without this the failure surfaces four layers away as an interactive prompt.
+case "${CHAIN_ID}" in
+  '' | *[!0-9]*)
+    echo "!!! chain id read from ${LOCKFILE} is not numeric:"
+    printf '%s\n' "${CHAIN_ID}" | cat -v | sed 's/^/      /'
+    echo "!!! something is decorating this value (a TTY-coloured node -p is the"
+    echo "!!! usual culprit). Refusing to run: cannon would prompt for a chain id"
+    echo "!!! and silently write no tags."
+    exit 1
+    ;;
+esac
 
 # ---------------------------------------------------------------------------
 # Failure diagnostics.
