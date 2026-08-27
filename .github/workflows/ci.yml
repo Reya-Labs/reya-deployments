@@ -163,6 +163,7 @@ jobs:
       # advisory (reported via the separate "Testnet Suites" check run), so a
       # priming failure must not redden the merge gate.
       - name: Prime the local cannon registry with devnet's clone sources
+        id: reya_devnet_prime
         continue-on-error: true
         env:
           # Same trap as the step above: `cannon fetch` reads
@@ -171,8 +172,17 @@ jobs:
           CANNON_WRITE_IPFS_URL: https+ipfs://repo.usecannon.com
         run: "yarn reya_devnet:prime"
 
+      # Skipped rather than run when priming failed. An unprimed cache does not
+      # produce a smaller failure, it produces a MISLEADING one: cannon resolves
+      # different artifacts, treats the deployment as stale and replays all ~2700
+      # steps, so one-time genesis steps revert (PoolAlreadyTokenized) and the
+      # suite reads as though the change under test broke devnet. Run
+      # 33027437158 burned 1h15m that way, on a change that was fine, after a
+      # single transient IPFS miss. A skip says "we did not test this"; a replay
+      # says "your PR is broken", and only one of those is true.
       - name: Reya Devnet Cannon Test
         id: reya_devnet_test
+        if: steps.reya_devnet_prime.outcome == 'success'
         continue-on-error: true
         env:
           RPC_KEY: ${{ secrets.CONDUIT_RPC_KEY }}

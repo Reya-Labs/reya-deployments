@@ -41,6 +41,11 @@ cd "$(dirname "$0")/.."
 LOCKFILE="src/omnibus/reya_devnet.lock.json"
 OMNIBUS="src/omnibus/reya_devnet.toml"
 CANNON="../../node_modules/@usecannon/cli-devnet/bin/cannon.js"
+# Retry budget for each `cannon fetch`. Overridable so CI can be more patient
+# than a local run without editing the script.
+FETCH_ATTEMPTS="${CANNON_PRIME_FETCH_ATTEMPTS:-4}"
+FETCH_BACKOFF="${CANNON_PRIME_FETCH_BACKOFF:-3}"
+
 CHAIN_ID="$(node -p "require('./${LOCKFILE}').chainId")"
 CANNON_DIR="${CANNON_DIRECTORY:-$HOME/.local/share/cannon}"
 VERIFY_ONLY="${1:-}"
@@ -94,8 +99,33 @@ while IFS=$'\t' read -r REF DEPLOY_CID MISC_CID; do
   NAME="${REF%%:*}"; REST="${REF#*:}"; VERSION="${REST%%@*}"; PRESET="${REST#*@}"
   TAG="${CANNON_DIR}/tags/${NAME}_${VERSION}_${CHAIN_ID}-${PRESET}.txt"
 
+  # Retry the fetch. repo.usecannon.com flakes often enough that a single
+  # attempt is a coin toss across twelve refs, and a flaked prime is worse than
+  # a loud failure: the build then runs against an unprimed cache, resolves
+  # different artifacts, decides the whole deployment is stale and replays it,
+  # so the genesis steps revert (PoolAlreadyTokenized) and the run reads as a
+  # config breakage. That is exactly how CI run 33027437158 failed -- one
+  # transient miss on reya-core:1.0.0@proxy, and both blobs fetched fine
+  # seconds later.
+  #
+  # Verify by reading the tag back rather than trusting the exit code: cannon
+  # fetch has been observed to exit 0 while writing nothing.
   if [ "${VERIFY_ONLY}" != "--verify-only" ]; then
-    node "${CANNON}" fetch "ipfs://${DEPLOY_CID}" "${REF}" --chain-id "${CHAIN_ID}" >/dev/null 2>&1
+    ATTEMPT=1
+    while [ "${ATTEMPT}" -le "${FETCH_ATTEMPTS}" ]; do
+      node "${CANNON}" fetch "ipfs://${DEPLOY_CID}" "${REF}" --chain-id "${CHAIN_ID}" >/dev/null 2>&1
+
+      if [ "$(cat "${TAG}" 2>/dev/null)" = "ipfs://${DEPLOY_CID}" ]; then
+        [ "${ATTEMPT}" -gt 1 ] && echo "    (recovered on attempt ${ATTEMPT})  ${REF}"
+        break
+      fi
+
+      if [ "${ATTEMPT}" -lt "${FETCH_ATTEMPTS}" ]; then
+        echo "    retrying ${REF} (attempt ${ATTEMPT}/${FETCH_ATTEMPTS} wrote no usable tag)"
+        sleep $((ATTEMPT * FETCH_BACKOFF))
+      fi
+      ATTEMPT=$((ATTEMPT + 1))
+    done
   fi
 
   ACTUAL="$(cat "${TAG}" 2>/dev/null)"
