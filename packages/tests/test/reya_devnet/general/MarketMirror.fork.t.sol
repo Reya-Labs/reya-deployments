@@ -42,8 +42,8 @@ contract MarketMirrorForkTest is ReyaForkTest {
     ///     oracle input rather than failing.
     /// Leaving 19.
     function activatedMarketIds() internal pure returns (uint128[] memory ids) {
-        ids = new uint128[](19);
-        uint128[19] memory raw = [
+        ids = new uint128[](30);
+        uint128[30] memory raw = [
             uint128(1), // ETH
             2, // BTC
             3, // SOL
@@ -62,7 +62,18 @@ contract MarketMirrorForkTest is ReyaForkTest {
             26, // ADA
             27, // LDO
             28, // POL
-            29 // NEAR
+            29, // NEAR
+            31, // ENA
+            33, // PENDLE
+            35, // GRASS
+            37, // DOT
+            38, // LTC
+            43, // HYPE
+            50, // WLD
+            62, // ME
+            66, // AERO
+            70, // PAXG
+            74 // LINEA
         ];
         for (uint256 i = 0; i < raw.length; i++) {
             ids[i] = raw[i];
@@ -98,6 +109,34 @@ contract MarketMirrorForkTest is ReyaForkTest {
             require(
                 cfg.oracleNodeId != bytes32(0),
                 string.concat("market mirror: zero oracle node for market ", vm.toString(uint256(marketId)))
+            );
+        }
+    }
+
+    /// No market may carry a zero Dutch liquidation floor.
+    ///
+    /// The perpOB router rejects it at config time (InvalidMarketConfiguration
+    /// "DMINB"), but the reason is a liquidation property, not a config nit:
+    /// the Dutch cap is max(|netBase|/lambda, minBase), so with no floor and
+    /// lambda > 1 every bite is strictly smaller than the position it is taken
+    /// from -- the position converges on a sub-baseSpacing residual that base
+    /// alignment makes unclosable on that path entirely.
+    ///
+    /// Asserted across ALL mirrored markets, not just the activated ones: a
+    /// reduce-only market still liquidates. Mainnet carries 0 for ids 1 and 2
+    /// (its two oldest markets) and its router has no such validation, so this
+    /// is exactly the value most likely to be copied in again by a future
+    /// mirror.
+    function test_Devnet_MarketMirror_NoZeroDutchFloor() public view {
+        for (uint128 marketId = 1; marketId <= MAINNET_MARKET_COUNT; marketId++) {
+            MarketConfigurationData memory cfg = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
+            require(
+                cfg.dutchConfig.minBase > 0,
+                string.concat(
+                    "market mirror: market ",
+                    vm.toString(uint256(marketId)),
+                    " has a zero Dutch minBase -- small positions become unclosable"
+                )
             );
         }
     }
@@ -141,6 +180,6 @@ contract MarketMirrorForkTest is ReyaForkTest {
             }
         }
 
-        require(activatedSeen == 19, "market mirror: activated market count != 19");
+        require(activatedSeen == 30, "market mirror: activated market count != 30");
     }
 }
