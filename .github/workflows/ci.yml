@@ -102,6 +102,12 @@ jobs:
       # breaking silently is exactly the failure mode it exists to prevent.
       - name: Cannon Retry Wrapper Tests
         run: ./packages/tests/scripts/cannon-retry.test.sh
+      # Unit tests for the clone-source prime loop. Same reasoning as above, and
+      # the same lesson learned the hard way: the loop silently primed 1 of 12
+      # refs in CI while reporting "all 12 primed and verified". Uses a fake
+      # cannon, so no network and ~1s.
+      - name: Cannon Prime Loop Tests
+        run: ./packages/tests/scripts/prime-cannon-clone-sources.test.sh
       - name: Build
         run: "yarn build"
       - name: Reya Network Cannon Test
