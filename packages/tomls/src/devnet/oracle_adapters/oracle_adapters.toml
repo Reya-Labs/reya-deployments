@@ -13,4 +13,8 @@ include = [
     "set_executors.toml",
     "../../oracle_adapters/configs/allow_all_executors.toml",
     "../../oracle_adapters/configs/init_lm_token_prices.toml",
+    # Devnet-only SELINI/AMBER price seeds. The shared file above sets the
+    # bounds for all three REYALM# pairs but seeds only HEDGE -- its SELINI and
+    # AMBER seeds are commented out because mainnet includes that same file.
+    "seed_lm_token_prices.toml",
 ]

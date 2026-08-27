@@ -188,9 +188,12 @@ contract DevnetConfigForkTest is ReyaForkTest, PerpFillForkCheck {
         // CollateralLimitBreached at the old cap. Which of those 75 may
         // actually take exposure is pinned by MarketMirror, not here.
         require(limits.maxMarkets == 75, "cp1: maxMarkets != 75");
-        // 12 (bumped from 2) is what makes sRUSD onboarding possible at all —
-        // the old cap reverted CollateralLimitBreached on the third token.
-        require(limits.maxCollaterals == 12, "cp1: maxCollaterals != 12");
+        // 13, not mainnet's 12: devnet registers mainnet's full 12-token set
+        // AND still carries the legacy Cronos sRUSD entry, which Core has no
+        // path to deregister. The limit counts the rUSD quote collateral, so
+        // 12 supporting + rUSD = 13. (Was 2, then 12 — each bump unblocked the
+        // next token; the old cap reverted CollateralLimitBreached.)
+        require(limits.maxCollaterals == 13, "cp1: maxCollaterals != 13");
     }
 
     function test_Devnet_InsuranceFundConfig() public view {

@@ -1,0 +1,68 @@
+# Devnet-only seed for the rSelini / rAmber LM price feeds.
+#
+# WHY THIS FILE EXISTS SEPARATELY. The shared
+# ../../oracle_adapters/configs/init_lm_token_prices.toml (which devnet already
+# includes) sets the price BOUNDS for all three REYALM# pairs and seeds only
+# HEDGE; the SELINI and AMBER `updateLmTokenPrice` steps in it are commented
+# out, and must stay that way -- mainnet includes that same file, and running
+# them there would overwrite the live rSelini/rAmber NAV with 1.0. So devnet's
+# seeds live here, in a file only the devnet omnibus includes.
+#
+# WHAT IT UNBLOCKS. On devnet these pairs are unpriced: verified on-chain
+# 2026-08-26, OracleAdapters 0x689D0195 returns the uninitialised payload
+# ("", 0, 0) for both, so OracleManager 0xEA0F138f `process()` reverts
+# StalePriceDetected against their 180s maxStaleDuration. That is what kept
+# rSelini/rAmber/rHedge out of the collateral mirror. The bounds ARE already
+# set (0.9 - 2.0 for both, read back on-chain), so only the price is missing.
+#
+# NOT A PUSHER PROBLEM. reya-off-chain filters REYA* out of the Stork
+# subscription chain-wide (`getAllStorkPriceFeeds` in
+# packages/api/src/tasks/oracle-updates/constants.ts), so no environment ever
+# pushes these. The adapters serve them from their own storage instead:
+# StorkPriceInformationModule.getLatestPricePayload -> isReyaLmPriceFeed ->
+# LmTokenPrice.getLatestPricePayload. Mainnet's rebalancer calls
+# updateLmTokenPrice on every NAV move; devnet has no rebalancer, so one
+# static seed is the whole feed.
+#
+# WHY A STATIC SEED NEVER GOES STALE. LmTokenPrice.getLatestPricePayload
+# returns `timestamp: block.timestamp` -- the read time, not the write time --
+# so once initialised the pair is permanently fresh with zero feed
+# infrastructure. This is the same mechanism that already makes devnet's HEDGE
+# seed read a flat 1.0 indefinitely, and the same reason REYAPOOL# needs no
+# pusher here (see devnet/oracle_manager/oracle_manager.toml).
+#
+# WHY 1.0 AND NOT MAINNET'S NAV. 1.0 is what the shared file seeds HEDGE with
+# on devnet, it sits mid-band in [0.9, 2.0], and it cannot drift out of bounds
+# later. Mainnet's live NAVs (1.109 / 1.166 on 2026-08-26) are a moving target
+# and pinning a snapshot of them here would buy no realism: the ME's devnet1
+# collateral table zero-credits all three LM tokens, so their price never
+# reaches a margin number. What matters is that the node RESOLVES.
+#
+# vestingPeriodInSeconds = 0 both skips LmTokenPriceModule's
+# ActiveLmTokenPriceVesting guard and makes isAssetPairVesting() false forever,
+# so getLatestPricePayload returns newestPrice verbatim with no interpolation.
+#
+# HEDGE is deliberately absent: the shared file's
+# `oracle_adapters_reya_lm_hedge_init_price` already seeded it at 1.0 here, and
+# re-seeding would be a redundant step against a pair that already resolves.
+
+[invoke.devnet_oracle_adapters_reya_lm_selini_init_price]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "updateLmTokenPrice"
+args = [
+    { assetPairId = "<%= settings.reyaLmAssetPairIdSELINI %>", price = "<%= parseEther('1') %>", vestingPeriodInSeconds = "0" },
+]
+# Bounds must exist first: updateLmTokenPrice calls ensurePriceInBounds, and an
+# unset config is (0, 0), against which any non-zero price reverts
+# LmTokenPriceOutOfBounds.
+depends = ["invoke.oracle_adapters_reya_lm_selini_init_price_range"]
+
+[invoke.devnet_oracle_adapters_reya_lm_amber_init_price]
+target = ["OracleAdaptersProxy"]
+fromCall.func = "owner"
+func = "updateLmTokenPrice"
+args = [
+    { assetPairId = "<%= settings.reyaLmAssetPairIdAMBER %>", price = "<%= parseEther('1') %>", vestingPeriodInSeconds = "0" },
+]
+depends = ["invoke.oracle_adapters_reya_lm_amber_init_price_range"]

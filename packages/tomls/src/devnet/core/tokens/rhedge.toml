@@ -1,0 +1,31 @@
+# Devnet rHedge global collateral config -- mirrors mainnet rhedge*.
+#
+# Reuses the existing Cronos rHedge deployment (devnet does not deploy the LM
+# share tokens; see the omnibus's existing_cronos_contracts block). Required
+# before the CP1 entry: Core's setCollateralConfig calls
+# GlobalCollateralConfiguration.getCollateralDecimals, which reverts
+# GlobalCollateralNotFound until this step has cached the token's decimals.
+#
+# No spot market: only wETH has one on devnet. Mainnet additionally creates a
+# rHedge/rUSD spot market with every parameter zero and no orderbook
+# allowlisting, which exists purely to seed reference-data metadata -- devnet
+# has no such consumer, so it is left out.
+[invoke.rhedge_global_collateral_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setGlobalCollateralConfig"
+args = [
+    "<%= settings.rhedgeProxyAddress %>",
+    { collateralAdapter_DEPRECATED = "<%= settings.rhedgeCollateralAdapter %>", withdrawalWindowSize = "<%= settings.rhedgeWithdrawalWindowSize %>", withdrawalTvlPercentageLimit = "<%= parseEther(settings.rhedgeWithdrawalTvlPercentageLimitUnscaled)  %>" },
+]
+depends = ['invoke.upgrade_core_proxy', 'var.global_collateral_configs']
+
+[invoke.rhedge_auto_exchange_access]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = [
+    "<%= keccak256(defaultAbiCoder.encode(['bytes32','address'],[keccak256(hexlify('autoExchange')), settings.rhedgeProxyAddress])) %>",
+    true,
+]
+depends = ["invoke.upgrade_core_proxy"]

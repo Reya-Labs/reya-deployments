@@ -5,6 +5,24 @@ import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol
 import { ReyaForkTest } from "../ReyaForkTest.sol";
 
 contract PermissionsForkTest is ReyaForkTest {
+    /// perpOB cutover prerequisite, same grant and same reasoning as mainnet's
+    /// test_perp_configure_risk_block_permissions -- the shared
+    /// passive_perp/configs/feature_flags.toml is included here too, via
+    /// passive_perp/testnet.toml. Cronos's deployed router still authorizes
+    /// setRiskBlockId with per-collateral-pool RBAC and never reads this flag,
+    /// so the grant is inert until cronos moves to the 1.1.x router; this test
+    /// is the only thing that says it landed at all.
+    function test_perp_configure_risk_block_permissions() public view {
+        bytes32 flagId = keccak256(bytes("configureRiskBlock"));
+        address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flagId);
+
+        address[] memory expectedAllowlist = new address[](1);
+        expectedAllowlist[0] = 0xaE173a960084903b1d278Ff9E3A81DeD82275556;
+
+        assertEq(allowlist, expectedAllowlist);
+        assertFalse(IPassivePerpProxy(sec.perp).getFeatureFlagAllowAll(flagId));
+    }
+
     function test_perp_configure_spread_permissions() public view {
         bytes32 flagId = keccak256(bytes("configureSpread"));
         address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flagId);

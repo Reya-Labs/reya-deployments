@@ -1,0 +1,38 @@
+# Devnet CP1 rAmber collateral config -- mirrors mainnet cp1Rusd_ramber_*.
+#
+# Reuses the existing Cronos rAmber deployment. Prices off the
+# REYALM#AMBERUSDC node on devnet's OWN oracle manager, which resolves only
+# because devnet/oracle_adapters/seed_lm_token_prices.toml has written a
+# price into the adapters' LmTokenPrice storage.
+#
+# Nothing pushes REYALM# on any chain -- reya-off-chain filters REYA* out of
+# the Stork subscription -- so that seed IS the feed.
+#
+# Ordering is load-bearing in both directions. Core walks the ENTIRE
+# supporting-collateral set on EVERY margin computation, so this entry must
+# not exist before the seed: an unresolvable node here reverts every fill,
+# liquidation and funding update, exactly as the legacy Cronos sRUSD node once
+# did. Proven on a fork of the devnet chain -- registering an LM token before
+# seeding its pair makes getUsdNodeMarginInfo revert StalePriceDetected, and
+# after seeding it returns cleanly.
+#
+# Like the other reused-Cronos collaterals this also runs AFTER
+# core_configure_protocol, and needs the global collateral config from
+# devnet/core/tokens/ramber.toml for its decimals.
+[invoke.cp_1rusd_set_ramber_config]
+target = ["CoreProxy"]
+fromCall.func = "owner"
+func = "setCollateralConfig"
+args = [
+    "<%= settings.cp1RusdId %>",
+    "<%= settings.ramberProxyAddress %>",
+    { depositingEnabled = true, cap = "<%= parseUnits(settings.cp1Rusd_ramber_capUnscaled, parseInt(settings.ramberTokenDecimals)) %>", withdrawalWindowSize_DEPRECATED = "0", withdrawalTvlPercentageLimit_DEPRECATED = "0", autoExchangeThreshold = "<%= parseUnits(settings.cp1Rusd_ramber_autoExchangeThresholdUnscaled, parseInt(settings.ramberTokenDecimals)) %>", autoExchangeInsuranceFee = "<%= parseEther(settings.cp1Rusd_ramber_autoExchangeInsuranceFeeUnscaled) %>", autoExchangeDustThreshold = "<%= parseUnits(settings.cp1Rusd_ramber_autoExchangeDustThresholdUnscaled, parseInt(settings.ramberTokenDecimals)) %>", bidSubmissionFee = "<%= parseUnits(settings.cp1Rusd_ramber_bidSubmissionFeeUnscaled, parseInt(settings.ramberTokenDecimals)) %>" },
+    { collateralAddress = "<%= settings.cp1Rusd_ramberParentConfig_collateralAddress %>", priceHaircut = "<%= parseEther(settings.cp1Rusd_ramberParentConfig_priceHaircutUnscaled) %>", autoExchangeDiscount = "<%= parseEther(settings.cp1Rusd_ramberParentConfig_autoExchangeDiscountUnscaled) %>", oracleNodeId = "<%= settings.cp1Rusd_ramberParentConfig_oracleNodeId %>" },
+]
+depends = [
+    "var.cp_1rusd_vars",
+    "invoke.cp_1rusd_set_rusd_config",
+    "invoke.core_configure_protocol",
+    "invoke.ramber_global_collateral_config",
+    "invoke.devnet_oracle_adapters_reya_lm_amber_init_price",
+]

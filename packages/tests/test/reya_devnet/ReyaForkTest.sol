@@ -65,8 +65,11 @@ contract ReyaForkTest is BaseReyaForkTest {
         // tokens mainnet accepts as collateral. Symbol and decimals verified
         // on-chain -- wBTC is 8 decimals, the rest 18, and the omnibus scales
         // every cap through parseUnits(.., <token>TokenDecimals) accordingly.
-        // The three LM tokens (rSelini/rAmber/rHedge) are deliberately absent:
-        // their REYALM# nodes do not resolve here. See CollateralMirror.
+        // The three LM tokens (rSelini/rAmber/rHedge) ARE registered as
+        // collateral now (see CollateralMirror), but sec.rselini/ramber/rhedge
+        // stay unset on purpose: those slots drive the shared LM mint/redeem
+        // and deposit helpers, and devnet configures no custodian, subscriber
+        // or redeemer for them. No devnet suite deposits an LM token.
         sec.wbtc = 0x459374F3f3E92728bCa838DfA8C95E706FE67E8a;
         sec.wsteth = 0xDF52410A19298FE168c900513e762adaD00C42b1;
         sec.usde = 0xDca6971c26fDEE0536Fdff076D063643f7810621;
@@ -187,7 +190,7 @@ contract ReyaForkTest is BaseReyaForkTest {
         // fixture uses. Constant and pool nodes need no bump (they report
         // block.timestamp).
         // Derived, not enumerated. The mainnet market mirror registers 75
-        // markets and 9 supporting collaterals, and Core walks every one of
+        // markets and 12 supporting collaterals, and Core walks every one of
         // them on every margin computation -- so a hardcoded list goes stale
         // the moment a market or collateral is added, which is exactly how
         // this suite broke: 50 tests failed StalePriceDetected on market 2's

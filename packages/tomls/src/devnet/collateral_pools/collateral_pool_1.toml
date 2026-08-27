@@ -1,19 +1,35 @@
 # Devnet collateral pool config: full mainnet market mirror (75 markets),
-# 10 registered collaterals.
+# 13 registered collaterals.
 #
-# Collateral set = mainnet's 12-token set MINUS the three LM tokens
-# (rSelini, rAmber, rHedge), PLUS the legacy Cronos sRUSD that devnet still
-# carries. The LM tokens are held back deliberately: their REYALM# parent
-# nodes do not resolve on devnet (process() reverts for SELINI and AMBER,
-# and HEDGE returns a flat 1.0 with no feed behind it), and Core walks the
-# whole supporting-collateral set on EVERY margin computation -- so
-# registering them would revert every fill, liquidation and funding update,
-# exactly as the legacy sRUSD node once did. They also carry zero margin
-# credit in the ME's devnet1 table, so excluding them costs no cross-margin
-# realism. Re-add them once REYALM# is pushed on devnet, or behind a
-# deliberate constant node; note that takes the set to 13 and needs
-# cp1Rusd_maxCollaterals raised from 12.. Markets are created in mainnet id order so
-# devnet ids match production; each asserts its own id.
+# Collateral set = mainnet's full 12-token set, PLUS the legacy Cronos sRUSD
+# that devnet still carries -- hence 13, and hence cp1Rusd_maxCollaterals = 13
+# in the omnibus (Core counts the rUSD quote collateral in that limit, so 12
+# supporting + rUSD = 13; leaving it at 12 reverts CollateralLimitBreached).
+#
+# The three LM tokens (rSelini, rAmber, rHedge) were held back until now
+# because their REYALM# parent nodes did not resolve here: nothing pushes
+# REYALM# on ANY chain -- reya-off-chain filters REYA* out of the Stork
+# subscription chain-wide -- and devnet's own OracleAdapters had never had a
+# price written into its LmTokenPrice storage for SELINI or AMBER, so
+# process() reverted StalePriceDetected. Core walks the whole
+# supporting-collateral set on EVERY margin computation, so that would have
+# reverted every fill, liquidation and funding update, exactly as the legacy
+# sRUSD node once did.
+#
+# They now resolve because devnet/oracle_adapters/seed_lm_token_prices.toml
+# seeds SELINI and AMBER (HEDGE was already seeded by the shared file), which
+# is precisely what mainnet does -- mainnet's rebalancer writes the same
+# storage on every NAV move. A seeded LM pair never goes stale, because
+# LmTokenPrice.getLatestPricePayload stamps the payload with block.timestamp
+# at READ time, so devnet needs no pusher. Their entries below therefore
+# depend on the seeding steps; do not reorder.
+#
+# Note the LM tokens carry zero margin credit in the ME's devnet1 collateral
+# table (reya-chain v4.2.10, DisabledZero), so this is on-chain parity rather
+# than a change in cross-margin behaviour.
+#
+# Markets are created in mainnet id order so devnet ids match production; each
+# asserts its own id.
 include = [
     "market_1eth.toml",
     "market_2btc.toml",
@@ -103,9 +119,20 @@ include = [
     "tokens/susde.toml",
     "tokens/deusd.toml",
     "tokens/sdeusd.toml",
+    "tokens/rselini.toml",
+    "tokens/ramber.toml",
+    "tokens/rhedge.toml",
 ]
 
-# Collateral pool anchor - only depends on market 1 ETH
+# Collateral pool anchor. Every CP1 collateral entry above depends on this,
+# which is why the maxCollaterals bump is pinned here rather than per token:
+# with the set now sized EXACTLY at the limit (12 supporting + rUSD = 13),
+# whichever registration cannon happens to order last reverts
+# CollateralLimitBreached if `market_1eth_set_cp_limits` has not run yet --
+# and cannon SKIPS a failing step with a warning while the build still
+# "succeeds", so that would land as a silently-missing collateral rather than
+# a red build. Nothing in the limits step's own dependency chain reaches back
+# here, so this edge is safe.
 [var.cp_1rusd_vars]
 cp1RusdId = "<%= settings.market1EthId %>"
-depends = ["var.market_1eth_vars"]
+depends = ["var.market_1eth_vars", "invoke.market_1eth_set_cp_limits"]
