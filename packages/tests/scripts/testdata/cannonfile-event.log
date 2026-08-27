@@ -1,0 +1,7 @@
+  Executing [invoke.create_account]...
+  ⚠️  Skipping [invoke.create_account] (Error: Event specified in cannonfile:
+
+ AccountCreated 
+
+doesn't exist or match an event emitted by the invoked function of the contract.)
+  ⚠️  Skipping [invoke.deposit_margin] (Error: dependency operation not completed: invoke.create_account)
