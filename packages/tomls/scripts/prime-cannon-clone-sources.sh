@@ -72,7 +72,7 @@ VERIFY_ONLY="${1:-}"
 # there.
 # ---------------------------------------------------------------------------
 dump_fetch_failure() {
-  ref="$1"; tag="$2"; status="$3"
+  local ref="$1" tag="$2" status="$3"
   echo
   echo "    ---- diagnostics for ${ref} ----"
   echo "    cannon exit code  : ${status}"
@@ -253,22 +253,31 @@ fi
 
 EXPECTED="$(echo "${LOCK_REFS}" | wc -l | tr -d ' ')"
 
-if [ "${FAILED}" -ne 0 ]; then
-  echo
-  echo "==> ${FAILED} of ${PROCESSED} attempted clone source(s) failed to prime"
-  exit 1
-fi
-
 # The loop must have SEEN every pinned ref. Anything less means it terminated
 # early, and the refs it never reached are unprimed -- which a per-ref failure
 # count cannot detect, because a ref that was never attempted never failed.
+#
+# Reported BEFORE, and independently of, the per-ref failures. In the CI
+# breakage both were true at once -- the loop truncated AND the single ref it
+# reached failed -- and exiting on the failure alone is precisely what kept the
+# truncation invisible while three people read the log as "one flaky ref".
+TRUNCATED=0
 if [ "${PROCESSED}" -ne "${EXPECTED}" ]; then
+  TRUNCATED=1
   echo
   echo "==> prime loop processed ${PROCESSED} of ${EXPECTED} clone sources"
   echo "!!! the loop terminated early. The refs it never reached are NOT primed,"
   echo "!!! so a build on this cache silently resolves them from the registry and"
   echo "!!! clones them at different addresses. This is a bug in this script, not"
   echo "!!! a bad pin -- check that nothing in the loop body consumes the work list."
+fi
+
+if [ "${FAILED}" -ne 0 ]; then
+  echo
+  echo "==> ${FAILED} of ${PROCESSED} attempted clone source(s) failed to prime"
+fi
+
+if [ "${FAILED}" -ne 0 ] || [ "${TRUNCATED}" -ne 0 ]; then
   exit 1
 fi
 
