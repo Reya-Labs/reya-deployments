@@ -31,16 +31,16 @@ contract MarketMirrorForkTest is ReyaForkTest {
     /// Every mainnet perp market is registered on devnet, in mainnet id order.
     uint128 internal constant MAINNET_MARKET_COUNT = 75;
 
-    /// Market ids 1-30, minus two exclusions that are forced rather than
-    /// chosen:
-    ///   - the 10 ids mainnet already holds reduce-only (7, 9, 10, 14, 15,
-    ///     17, 19, 21, 22, 25). The mirror keeps mainnet's maxOpenBase, so a
-    ///     book for them would be a market the ME accepts orders on and Core
-    ///     rejects every fill on -- ME looser than Core.
-    ///   - 30 FTM, which has no Stork mark feed on either leg (ticker retired
-    ///     when Fantom became Sonic). The ME would boot a book for it with no
-    ///     oracle input rather than failing.
-    /// Leaving 19.
+    /// Derived, not a window. The rule: every mainnet market that can still
+    /// take exposure (maxOpenBase > 0 there), minus the two priced off a
+    /// frozen constant node (30 FTM, 59 LAYER). 43 of mainnet's 75 markets are
+    /// already reduce-only in production, so only 32 can take exposure at all
+    /// -- which is why this lands on exactly 30 with no arbitrary cut.
+    ///
+    /// The ids therefore run past 30 (31 ENA through 74 LINEA); an "ids 1-30"
+    /// window would silently drop eleven markets that CAN trade purely because
+    /// of where their id sits. The ten mainnet already holds reduce-only
+    /// (7, 9, 10, 14, 15, 17, 19, 21, 22, 25) are excluded by the rule itself.
     function activatedMarketIds() internal pure returns (uint128[] memory ids) {
         ids = new uint128[](30);
         uint128[30] memory raw = [

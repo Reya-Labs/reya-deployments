@@ -102,6 +102,15 @@ contract DevnetConfigForkTest is ReyaForkTest, PerpFillForkCheck {
             "configureRiskBlock: allowAll must stay false, or the allowlist below means nothing"
         );
 
+        // denyAll is the opposite failure and is NOT implied by the allowlist:
+        // set, it blocks the feature for every account including the owner, so
+        // the membership check below would pass while setRiskBlockId reverted
+        // for everyone -- the exact silent-config-gap this test exists to catch.
+        require(
+            !IPassivePerpProxy(sec.perp).getFeatureFlagDenyAll(flag),
+            "configureRiskBlock: denyAll blocks every caller, allowlist or not"
+        );
+
         address[] memory allowed = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(flag);
         require(allowed.length == 1, "configureRiskBlock: allowlist should hold exactly the system owner");
         require(allowed[0] == sec.multisig, "configureRiskBlock: allowlist member != system owner");

@@ -10,6 +10,11 @@ args = [
 ]
 depends = ['invoke.upgrade_core_proxy', 'var.global_collateral_configs']
 
+# allowAll rather than an allowlist, deliberately, and matching mainnet: the
+# autoExchange flag gates WHICH COLLATERAL may be auto-exchanged, not who may
+# trigger it. Restricting it per-caller would break auto-exchange for ordinary
+# accounts. Every other collateral on both devnet and mainnet uses the same
+# posture; sdeUSD is not an exception.
 [invoke.sdeusd_auto_exchange_access]
 target = ["CoreProxy"]
 fromCall.func = "owner"
