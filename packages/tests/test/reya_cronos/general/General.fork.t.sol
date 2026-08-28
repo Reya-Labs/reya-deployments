@@ -48,7 +48,7 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
     }
 
     function test_MarketsMaxOiAndOi() public view {
-        uint128[] memory reduceOnlyMarkets = new uint128[](41);
+        uint128[] memory reduceOnlyMarkets = new uint128[](53);
         reduceOnlyMarkets[0] = 45; // AI16Z
         reduceOnlyMarkets[1] = 58; // BERA
         reduceOnlyMarkets[2] = 25; // JTO
@@ -94,6 +94,19 @@ contract GeneralForkTest is ReyaForkTest, GeneralForkCheck {
         reduceOnlyMarkets[38] = 56; // INJ
         reduceOnlyMarkets[39] = 60; // TAO
         reduceOnlyMarkets[40] = 67; // KAITO
+        // W2 batch (24 Aug 2026)
+        reduceOnlyMarkets[41] = 5; // OP
+        reduceOnlyMarkets[42] = 23; // APT
+        reduceOnlyMarkets[43] = 26; // ADA
+        reduceOnlyMarkets[44] = 28; // POL
+        reduceOnlyMarkets[45] = 30; // FTM
+        reduceOnlyMarkets[46] = 33; // PENDLE
+        reduceOnlyMarkets[47] = 35; // GRASS
+        reduceOnlyMarkets[48] = 37; // DOT
+        reduceOnlyMarkets[49] = 50; // WLD
+        reduceOnlyMarkets[50] = 59; // LAYER
+        reduceOnlyMarkets[51] = 62; // ME
+        reduceOnlyMarkets[52] = 74; // LINEA
         // kBONK (22) is Group A too, but it is already fully inactive on cronos — it stays in `inactiveMarkets`.
         uint128[] memory inactiveMarkets = new uint128[](1);
         inactiveMarkets[0] = 22; // kBONK
