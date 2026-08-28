@@ -104,7 +104,7 @@ jobs:
         run: ./packages/tests/scripts/cannon-retry.test.sh
       - name: Build
         run: "yarn build"
-      - name: Reya Network Cannon Test
+      - name: Reya Network Full PerpOB Fork Test
         id: reya_network_test
         env:
           RPC_KEY: ${{ secrets.RPC_KEY }}

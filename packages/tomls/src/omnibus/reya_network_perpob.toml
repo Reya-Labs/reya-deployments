@@ -13,6 +13,7 @@ include = [
     "../passive_perp/utils/perpob_upgrade_proxy.toml",
     "../passive_perp/configs/perpob/feature_flags.toml",
     "../passive_perp/configs/perpob/global_config.toml",
+    "../passive_perp/configs/perpob/mainnet_active_markets.toml",
     "../passive_perp/configs/perpob/fees.toml",
     "../periphery/utils/perpob_upgrade_proxy.toml",
     "../orders_gateway/utils/perpob_upgrade_proxy.toml",

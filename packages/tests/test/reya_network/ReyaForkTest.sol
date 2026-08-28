@@ -3,6 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import "forge-std/Test.sol";
 
 import { BaseReyaForkTest } from "../reya_common/BaseReyaForkTest.sol";
+import { FundingRatePerpOBForkCheck } from "../reya_common/trade/FundingRatePerpOB.fork.c.sol";
 import "../reya_common/DataTypes.sol";
 
 import { ICoreProxy, ParentCollateralConfig } from "../../src/interfaces/ICoreProxy.sol";
@@ -12,7 +13,7 @@ import { IPassivePoolProxy } from "../../src/interfaces/IPassivePoolProxy.sol";
 import { IPeripheryProxy } from "../../src/interfaces/IPeripheryProxy.sol";
 import { ITokenProxy } from "../../src/interfaces/ITokenProxy.sol";
 
-contract ReyaForkTest is BaseReyaForkTest {
+contract ReyaForkTest is FundingRatePerpOBForkCheck {
     constructor() {
         string memory rpcKey = vm.envString("RPC_KEY");
         // network
@@ -777,15 +778,13 @@ contract ReyaForkTest is BaseReyaForkTest {
 
             for (uint256 i = 0; i < nonwithdrawableTokens.length; i++) {
                 address token = nonwithdrawableTokens[i];
-                uint256 staticWithdrawFee = IPeripheryProxy(sec.periphery).getTokenStaticWithdrawFee(
-                    token, dec.socketConnector[token][sec.destinationChainId]
-                );
+                uint256 staticWithdrawFee = IPeripheryProxy(sec.periphery)
+                    .getTokenStaticWithdrawFee(token, dec.socketConnector[token][sec.destinationChainId]);
 
                 assertEq(staticWithdrawFee, 0);
 
-                IPeripheryProxy(sec.periphery).setTokenStaticWithdrawFee(
-                    token, dec.socketConnector[token][sec.destinationChainId], 1
-                );
+                IPeripheryProxy(sec.periphery)
+                    .setTokenStaticWithdrawFee(token, dec.socketConnector[token][sec.destinationChainId], 1);
             }
         }
 
@@ -835,6 +834,26 @@ contract ReyaForkTest is BaseReyaForkTest {
         }
 
         vm.stopPrank();
+    }
+
+    /// @dev Retained mainnet fork checks execute margin-sensitive Core and
+    ///      Periphery paths. The PerpOB upgrade appends push-based oracle
+    ///      state, so each isolated Forge test must first reproduce the first
+    ///      carried-market mark/funding pushes that precede reopening.
+    ///      Migration/readback tests override this hook to observe the exact
+    ///      post-upgrade state before those runtime pushes.
+    function setUp() public virtual {
+        if (!vm.envOr("REYA_USE_ACTIVE_FORK", false)) {
+            return;
+        }
+
+        setupPerpTestActors();
+        mockFreshPrices();
+
+        pushMarkPriceWithinCollar(1, 2500e18);
+        pushFundingRate(1, 0);
+        pushMarkPriceWithinCollar(2, 100_000e18);
+        pushFundingRate(2, 0);
     }
 
     /// @notice Replay a Gnosis Safe multiSend calldata verbatim on the fork, as if the mainnet Safe had

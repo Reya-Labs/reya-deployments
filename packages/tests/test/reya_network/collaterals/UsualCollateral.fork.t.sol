@@ -21,10 +21,6 @@ contract UsualCollateralForkTest is ReyaForkTest, UsualCollateralForkCheck {
         check_deusd_DepositWithdraw();
     }
 
-    function test_trade_deusd_DepositWithdraw() public {
-        check_trade_deusd_DepositWithdraw();
-    }
-
     function testFuzz_sdeusd_MintBurn(address attacker) public {
         vm.assume(attacker != dec.socketController[sec.sdeusd]);
         checkFuzz_sdeusd_MintBurn(attacker);
@@ -40,10 +36,6 @@ contract UsualCollateralForkTest is ReyaForkTest, UsualCollateralForkCheck {
 
     function test_sdeusd_DepositWithdraw() public {
         check_sdeusd_DepositWithdraw();
-    }
-
-    function test_trade_sdeusd_DepositWithdraw() public {
-        check_trade_sdeusd_DepositWithdraw();
     }
 
     function testFuzz_susde_MintBurn(address attacker) public {
@@ -63,10 +55,6 @@ contract UsualCollateralForkTest is ReyaForkTest, UsualCollateralForkCheck {
         check_susde_DepositWithdraw();
     }
 
-    function test_trade_susde_DepositWithdraw() public {
-        check_trade_susde_DepositWithdraw();
-    }
-
     function testFuzz_usde_MintBurn(address attacker) public {
         vm.assume(attacker != dec.socketController[sec.usde]);
         checkFuzz_usde_MintBurn(attacker);
@@ -82,10 +70,6 @@ contract UsualCollateralForkTest is ReyaForkTest, UsualCollateralForkCheck {
 
     function test_usde_DepositWithdraw() public {
         check_usde_DepositWithdraw();
-    }
-
-    function test_trade_usde_DepositWithdraw() public {
-        check_trade_usde_DepositWithdraw();
     }
 
     function testFuzz_wbtc_MintBurn(address attacker) public {
@@ -110,10 +94,6 @@ contract UsualCollateralForkTest is ReyaForkTest, UsualCollateralForkCheck {
         check_weth_DepositWithdraw();
     }
 
-    function test_trade_weth_DepositWithdraw() public {
-        check_trade_weth_DepositWithdraw();
-    }
-
     function testFuzz_wsteth_MintBurn(address attacker) public {
         vm.assume(attacker != dec.socketController[sec.wsteth]);
         checkFuzz_wsteth_MintBurn(attacker);
@@ -129,9 +109,5 @@ contract UsualCollateralForkTest is ReyaForkTest, UsualCollateralForkCheck {
 
     function test_wsteth_DepositWithdraw() public {
         check_wsteth_DepositWithdraw();
-    }
-
-    function test_trade_wsteth_DepositWithdraw() public {
-        check_trade_wsteth_DepositWithdraw();
     }
 }

@@ -66,9 +66,8 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
         // Grant matching engine publisher access on Orders Gateway
         vm.prank(sec.multisig);
-        IOrdersGatewayProxy(sec.ordersGateway).addToFeatureFlagAllowlist(
-            MATCHING_ENGINE_PUBLISHER_FLAG, perpMatchingEngine
-        );
+        IOrdersGatewayProxy(sec.ordersGateway)
+            .addToFeatureFlagAllowlist(MATCHING_ENGINE_PUBLISHER_FLAG, perpMatchingEngine);
 
         // Grant oracle pusher access on PassivePerp (checks msg.sender)
         vm.prank(sec.multisig);
@@ -359,6 +358,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         // Push mark price before trade
         uint256 markPrice = 3000e18;
         pushMarkPriceWithinCollar(marketId, markPrice);
+        pushFundingRate(marketId, 0);
 
         // Create margin accounts with collateral
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
@@ -397,6 +397,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         setupPerpTestActors();
         mockFreshPrices();
         pushMarkPriceWithinCollar(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
         uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
@@ -458,6 +459,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
         // Push mark price
         pushMarkPriceWithinCollar(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
 
         // Create accounts
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
@@ -497,6 +499,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         setupPerpTestActors();
         mockFreshPrices();
         pushMarkPriceWithinCollar(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
 
         // Create accounts with sufficient collateral
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 50_000e6);
@@ -665,7 +668,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
             buyerNonce: 1, // same nonce
             sellerNonce: 1, // same nonce
             meNonce: 1 // same nonce
-         }) {
+        }) {
             revert("Expected SignerNonceAlreadyUsed revert");
         } catch (bytes memory revertData) {
             assertEq(
@@ -1290,9 +1293,10 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         // Configure a 4bps taker fee and deliberately non-zero deprecated maker fields.
         FeeTierParameters memory originalTier0 = IPassivePerpProxyV2(sec.perp).getFeeTierParameters(0);
         vm.prank(sec.multisig);
-        IPassivePerpProxyV2(sec.perp).setFeeTierParameters(
-            0, FeeTierParameters({ takerFee: 4e14, makerFee_DEPRECATED: 4e14, makerRebate_DEPRECATED: 5e17 })
-        );
+        IPassivePerpProxyV2(sec.perp)
+            .setFeeTierParameters(
+                0, FeeTierParameters({ takerFee: 4e14, makerFee_DEPRECATED: 4e14, makerRebate_DEPRECATED: 5e17 })
+            );
 
         FeeTierParameters memory configuredTier0 = IPassivePerpProxyV2(sec.perp).getFeeTierParameters(0);
         assertEq(configuredTier0.makerFee_DEPRECATED, 4e14, "Deprecated maker fee slot should round-trip");
@@ -1337,9 +1341,10 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
         vm.prank(sec.multisig);
         vm.expectRevert(IPassivePerpProxyV2.TakerFeeParameterTooLarge.selector);
-        IPassivePerpProxyV2(sec.perp).setFeeTierParameters(
-            0, FeeTierParameters({ takerFee: 1e18 + 1, makerFee_DEPRECATED: 4e14, makerRebate_DEPRECATED: 2e14 })
-        );
+        IPassivePerpProxyV2(sec.perp)
+            .setFeeTierParameters(
+                0, FeeTierParameters({ takerFee: 1e18 + 1, makerFee_DEPRECATED: 4e14, makerRebate_DEPRECATED: 2e14 })
+            );
 
         // Nothing should have changed.
         FeeTierParameters memory after_ = IPassivePerpProxyV2(sec.perp).getFeeTierParameters(0);

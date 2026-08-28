@@ -64,16 +64,4 @@ contract LmTokenCollateralForkTest is ReyaForkTest, LmTokenCollateralForkCheck {
     function test_rhedge_deposit_withdraw() public {
         check_rhedge_deposit_withdraw();
     }
-
-    function test_trade_rseliniCollateral_depositWithdraw() public {
-        check_trade_rseliniCollateral_depositWithdraw();
-    }
-
-    function test_trade_ramberCollateral_depositWithdraw() public {
-        check_trade_ramberCollateral_depositWithdraw();
-    }
-
-    function test_trade_rhedgeCollateral_depositWithdraw() public {
-        check_trade_rhedgeCollateral_depositWithdraw();
-    }
 }

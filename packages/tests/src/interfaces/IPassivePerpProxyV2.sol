@@ -60,7 +60,14 @@ interface IPassivePerpProxyV2 {
         view
         returns (MarketConfigurationDataV2 memory config);
 
+    function getGlobalConfiguration()
+        external
+        view
+        returns (GlobalConfigurationDataV2 memory config);
+
     function setMarketConfiguration(uint128 marketId, MarketConfigurationDataV2 memory config) external;
+
+    function initializeLastFundingTimestamp(uint128 marketId) external;
 
     // ─── Fee Configuration (perpOB) ─────────────────────────────────────
 
@@ -94,6 +101,8 @@ interface IPassivePerpProxyV2 {
     error UnauthorizedOraclePusher(address pusher);
     error PriceDeviationTooLarge(uint128 marketId, uint256 price, uint256 referencePrice, uint256 maxDeviation);
     error TakerFeeParameterTooLarge();
+    error LastFundingTimestampNotInitialized(uint128 marketId);
+    error LastFundingTimestampAlreadyInitialized(uint128 marketId);
 }
 
 // ─── Fee Structs (perpOB) ────────────────────────────────────────────────
@@ -114,6 +123,14 @@ struct GlobalFeeParametersV2 {
     /* UD60x18 */ uint256 spreadDiscount_DEPRECATED;
     /* UD60x18 */ uint256 poolRebate;
     uint128 poolAccountId;
+}
+
+struct GlobalConfigurationDataV2 {
+    address coreProxy;
+    address exchangeProxy_DEPRECATED;
+    address oracleManagerAddress;
+    /* UD60x18 */ uint256 maxAbsFundingRate;
+    uint128 dustAccountId_DEPRECATED;
 }
 
 // ─── perpOB Enums ────────────────────────────────────────────────────────

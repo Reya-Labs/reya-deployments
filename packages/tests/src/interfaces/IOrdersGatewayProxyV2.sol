@@ -55,6 +55,13 @@ struct ExecuteFillInputV2 {
     bytes metadata;
 }
 
+struct OrdersGatewayConfigurationV2 {
+    address coreProxy;
+    address passivePerpProxy;
+    address oracleAdaptersProxy_DEPRECATED;
+    uint128 dustAccountId;
+}
+
 interface IOrdersGatewayProxyV2 {
     // ── FillExecutionModule ──────────────────────────────────────────────
     function executeFill(ExecuteFillInputV2 calldata input) external;
@@ -63,7 +70,12 @@ interface IOrdersGatewayProxyV2 {
     // ── BatchExecutionModule ─────────────────────────────────────────────
     function batchExecuteFill(ExecuteFillInputV2[] calldata inputs) external;
 
+    // ── Dust Settlement Module ──────────────────────────────────────────
+    function settleDust(uint128 accountId, uint128 marketId) external;
+
     // ── ConfigurationModule ──────────────────────────────────────────────
+    function getConfiguration() external view returns (OrdersGatewayConfigurationV2 memory);
+    function setConfiguration(OrdersGatewayConfigurationV2 calldata config) external;
     function managePermissionBySig(
         address owner,
         address target,
@@ -78,6 +90,13 @@ interface IOrdersGatewayProxyV2 {
     function getLatestNumericNonceUpdatedSequenceNumber() external view returns (uint128);
     function getLatestGatewayPermissionUpdatedSequenceNumber() external view returns (uint128);
 
+    // ── Feature Flag Module ──────────────────────────────────────────────
+    function addToFeatureFlagAllowlist(bytes32 feature, address account) external;
+    function removeFromFeatureFlagAllowlist(bytes32 feature, address account) external;
+    function getFeatureFlagAllowlist(bytes32 feature) external view returns (address[] memory);
+    function getFeatureFlagAllowAll(bytes32 feature) external view returns (bool);
+    function isFeatureAllowed(bytes32 feature, address account) external view returns (bool);
+
     // ── Events ───────────────────────────────────────────────────────────
     event ReduceOnlyPermissionUpdated(address indexed owner, address indexed target, bool granted);
 
@@ -86,4 +105,8 @@ interface IOrdersGatewayProxyV2 {
     error OrderExpired(uint256 expiresAfter);
     error InvalidTimeInForce(uint8 timeInForce);
     error NonZeroTriggerPriceForLimitOrder(uint256 triggerPrice);
+    error FeatureUnavailable(bytes32 which);
+    error DustAccountNotConfigured();
+    error CannotSettleDustAccount(uint128 dustAccountId);
+    error DustAccountNetShort(uint128 dustAccountId, uint128 marketId);
 }

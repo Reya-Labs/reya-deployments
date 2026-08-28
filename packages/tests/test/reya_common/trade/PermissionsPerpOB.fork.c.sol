@@ -3,7 +3,8 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 
 import {
-    IPassivePerpProxy, EIP712Signature as PerpEIP712Signature
+    IPassivePerpProxy,
+    EIP712Signature as PerpEIP712Signature
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import {
     IPassivePerpProxyV2,
@@ -37,9 +38,10 @@ import { FillHashingV2 } from "../../../src/utils/FillHashingV2.sol";
  *      - Orders Gateway permission management works correctly
  */
 contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
-    bytes32 internal constant ORACLE_PUSHERS_FLAG = keccak256(bytes("oraclePushers"));
-    bytes32 internal constant ORACLE_PUBLISHERS_FLAG = keccak256(bytes("oraclePublishers"));
-    bytes32 internal constant MATCHING_ENGINE_PUBLISHER_FLAG = keccak256(bytes("matching_engine_publisher"));
+    bytes32 internal constant PERMISSIONS_ORACLE_PUSHERS_FLAG = keccak256(bytes("oraclePushers"));
+    bytes32 internal constant PERMISSIONS_ORACLE_PUBLISHERS_FLAG = keccak256(bytes("oraclePublishers"));
+    bytes32 internal constant PERMISSIONS_MATCHING_ENGINE_PUBLISHER_FLAG =
+        keccak256(bytes("matching_engine_publisher"));
     bytes32 internal constant MULTICALL_FLAG = keccak256(bytes("multicall"));
     bytes32 internal constant CONDITIONAL_ORDERS_FLAG = keccak256(bytes("conditional_orders"));
 
@@ -55,9 +57,9 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
         mockFreshPrice(marketConfig.oracleNodeId, price);
 
         vm.prank(sec.multisig);
-        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUSHERS_FLAG, publisher);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(PERMISSIONS_ORACLE_PUSHERS_FLAG, publisher);
         vm.prank(sec.multisig);
-        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUBLISHERS_FLAG, publisher);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(PERMISSIONS_ORACLE_PUBLISHERS_FLAG, publisher);
 
         OracleDataPayload memory payload = OracleDataPayload({
             marketId: marketId,
@@ -113,11 +115,11 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
 
         // Grant pusher access (checks msg.sender)
         vm.prank(sec.multisig);
-        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUSHERS_FLAG, publisher);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(PERMISSIONS_ORACLE_PUSHERS_FLAG, publisher);
 
         // Grant publisher access (checks payload.publisher signature)
         vm.prank(sec.multisig);
-        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUBLISHERS_FLAG, publisher);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(PERMISSIONS_ORACLE_PUBLISHERS_FLAG, publisher);
 
         OracleDataPayload memory payload = OracleDataPayload({
             marketId: marketId,
@@ -233,8 +235,7 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
             );
 
             fillInput.mePayload = SignedMatchingEnginePayload({
-                fillDetails: fillDetails,
-                signature: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })
+                fillDetails: fillDetails, signature: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })
             });
         }
 
@@ -251,7 +252,8 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
      * @dev ensureOraclePusherAccess checks this flag against msg.sender inside pushOracleData.
      */
     function check_OraclePushersFeatureFlagState() internal view {
-        address[] memory allowlist = IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(ORACLE_PUSHERS_FLAG);
+        address[] memory allowlist =
+            IPassivePerpProxy(sec.perp).getFeatureFlagAllowlist(PERMISSIONS_ORACLE_PUSHERS_FLAG);
 
         bool pusher1Found = false;
         bool pusher2Found = false;
@@ -292,11 +294,11 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
 
         // Grant both flags, then revoke the pusher flag
         vm.prank(sec.multisig);
-        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUSHERS_FLAG, publisher);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(PERMISSIONS_ORACLE_PUSHERS_FLAG, publisher);
         vm.prank(sec.multisig);
-        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(ORACLE_PUBLISHERS_FLAG, publisher);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(PERMISSIONS_ORACLE_PUBLISHERS_FLAG, publisher);
         vm.prank(sec.multisig);
-        IPassivePerpProxy(sec.perp).removeFromFeatureFlagAllowlist(ORACLE_PUSHERS_FLAG, publisher);
+        IPassivePerpProxy(sec.perp).removeFromFeatureFlagAllowlist(PERMISSIONS_ORACLE_PUSHERS_FLAG, publisher);
 
         // Attempt push should fail
         OracleDataPayload memory payload = OracleDataPayload({

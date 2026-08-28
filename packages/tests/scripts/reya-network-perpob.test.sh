@@ -6,9 +6,11 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 PACKAGE_DIR=$(cd "$SCRIPT_DIR/.." && pwd)
 REPO_ROOT=$(cd "$PACKAGE_DIR/../.." && pwd)
 TOMLS_DIR="$REPO_ROOT/packages/tomls"
-FORK_BLOCK=218500000
+FORK_BLOCK="${REYA_PERPOB_FORK_BLOCK:-218500000}"
 CANNON_PORT="${REYA_PERPOB_CANNON_PORT:-18547}"
 LOCAL_RPC="http://127.0.0.1:${CANNON_PORT}"
+EVIDENCE_DIR="${REYA_PERPOB_EVIDENCE_DIR:-}"
+MATCH_PATH="${REYA_PERPOB_MATCH_PATH:-test/reya_network/**/*.sol}"
 
 export CANNON_DIRECTORY="${CANNON_DIRECTORY:-${XDG_CACHE_HOME:-$HOME/.cache}/reya-perpob-cannon}"
 export CANNON_REGISTRY_ADDRESS="${CANNON_REGISTRY_ADDRESS:-0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba}"
@@ -28,11 +30,16 @@ fi
 RUN_DIR=$(mktemp -d "${TMPDIR:-/tmp}/reya-perpob-cannon.XXXXXX")
 CANNON_LOG="$RUN_DIR/cannon.log"
 CANNON_PID=""
+touch "$CANNON_LOG"
 
 cleanup() {
     if [ -n "$CANNON_PID" ] && kill -0 "$CANNON_PID" >/dev/null 2>&1; then
         kill "$CANNON_PID" >/dev/null 2>&1 || true
         wait "$CANNON_PID" >/dev/null 2>&1 || true
+    fi
+    if [ -n "$EVIDENCE_DIR" ]; then
+        mkdir -p "$EVIDENCE_DIR"
+        cp "$CANNON_LOG" "$EVIDENCE_DIR/cannon.log"
     fi
     rm -rf "$RUN_DIR"
 }
@@ -80,8 +87,22 @@ fi
 
 echo "Running PerpOB fork tests at upgraded block ${LATEST_BLOCK}."
 cd "$PACKAGE_DIR"
-REYA_USE_ACTIVE_FORK=true RPC_KEY="${RPC_KEY:-}" forge test \
-    --fork-url "$LOCAL_RPC" \
-    --match-path "test/reya_network/perpob/**/*.sol" \
-    --threads 1 \
-    "$@"
+if [ -n "$EVIDENCE_DIR" ]; then
+    mkdir -p "$EVIDENCE_DIR"
+    {
+        echo "fork_block=${FORK_BLOCK}"
+        echo "upgraded_block=${LATEST_BLOCK}"
+        echo "terminal_gate=${REYA_REQUIRE_TERMINAL_MARKETS:-false}"
+    } > "$EVIDENCE_DIR/run.env"
+    REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" RPC_KEY="${RPC_KEY:-}" forge test \
+        --fork-url "$LOCAL_RPC" \
+        --match-path "$MATCH_PATH" \
+        --threads 1 \
+        "$@" 2>&1 | tee "$EVIDENCE_DIR/forge-test.log"
+else
+    REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" RPC_KEY="${RPC_KEY:-}" forge test \
+        --fork-url "$LOCAL_RPC" \
+        --match-path "$MATCH_PATH" \
+        --threads 1 \
+        "$@"
+fi

@@ -1,0 +1,29 @@
+# Retain the legacy ETH/BTC risk and sizing fields while explicitly initializing
+# the PerpOB-only freshness and deviation controls. These values are provisional
+# until the immutable release manifest is supplied by PRO-958.
+
+[invoke.passive_perp_set_market_1_eth]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setMarketConfiguration"
+args = [
+    "1",
+    { riskMatrixIndex = "0", maxOpenBase = "4950000000000000000000", velocityMultiplier_DEPRECATED = "35000000000000000000", oracleNodeId = "0x40439e329b13b4833aa09aa740bc44550b3c76f5c06bd46adc6e9647866c5709", mtmWindow_DEPRECATED = "15768000000", dutchConfig = { lambda = "1000000000000000000", minBase = "0" }, slippageParams = { phi = "0", beta = "0" }, minimumOrderBase = "10000000000000000", baseSpacing = "1000000000000000", priceSpacing = "1000000000000000", depthFactor_DEPRECATED = "35000000000000000000", maxExposureFactor_DEPRECATED = "999000000000000000", maxPSlippage_DEPRECATED = "100000000000000000", markPriceMaxStaleDuration = "60", priceSpread_DEPRECATED = "35000000000000", volatilityIndexMultiplier_DEPRECATED = "0", fundingRateMaxStaleDuration = "600", markPriceMaxDeviation = "50000000000000000", fillPriceMaxDeviation = "50000000000000000", minFundingInterval = "0" },
+]
+depends = [
+    "invoke.upgrade_passive_perp_proxy",
+    "invoke.passive_perp_market_config_system_owner",
+]
+
+[invoke.passive_perp_set_market_2_btc]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setMarketConfiguration"
+args = [
+    "2",
+    { riskMatrixIndex = "0", maxOpenBase = "145000000000000000000", velocityMultiplier_DEPRECATED = "35000000000000000000", oracleNodeId = "0x0e29c9f656c1f2d92fb02d44fa9fcfc10601f19221cd988621560cdd88b3d151", mtmWindow_DEPRECATED = "15768000000", dutchConfig = { lambda = "1000000000000000000", minBase = "0" }, slippageParams = { phi = "0", beta = "0" }, minimumOrderBase = "1000000000000000", baseSpacing = "100000000000000", priceSpacing = "1000000000000000", depthFactor_DEPRECATED = "35000000000000000000", maxExposureFactor_DEPRECATED = "999000000000000000", maxPSlippage_DEPRECATED = "100000000000000000", markPriceMaxStaleDuration = "60", priceSpread_DEPRECATED = "52500000000000", volatilityIndexMultiplier_DEPRECATED = "0", fundingRateMaxStaleDuration = "600", markPriceMaxDeviation = "50000000000000000", fillPriceMaxDeviation = "50000000000000000", minFundingInterval = "0" },
+]
+depends = [
+    "invoke.upgrade_passive_perp_proxy",
+    "invoke.passive_perp_market_config_system_owner",
+]

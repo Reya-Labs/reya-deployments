@@ -3,7 +3,9 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
 import {
-    IPassivePerpProxy, FundingAndADLTrackers, MarketDataResponse
+    IPassivePerpProxy,
+    FundingAndADLTrackers,
+    MarketDataResponse
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import { IPassivePerpProxyV2, MarketDataResponseV2 } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import { ICoreProxy } from "../../../src/interfaces/ICoreProxy.sol";
@@ -30,26 +32,34 @@ contract MigrationStateForkTest is ReyaForkTest {
 
     struct PreservedState {
         address accountOwner;
+        bytes32 rusdBalanceSlot;
         bytes32[7] ethPositionSlots;
         bytes32[7] btcPositionSlots;
         PreservedMarketState ethMarket;
         PreservedMarketState btcMarket;
     }
 
+    function setUp() public override { }
+
     function test_MainnetPerpOB_PreservesRepresentativeState() public {
         uint256 upgradedFork = vm.activeFork();
+        address postUpgradeImplementation = IPassivePerpProxy(sec.perp).getImplementation();
 
-        uint256 preUpgradeFork = vm.createFork(sec.REYA_RPC, MAINNET_FORK_BLOCK);
+        uint256 preUpgradeFork = vm.createFork(sec.REYA_RPC, _forkBlock());
         vm.selectFork(preUpgradeFork);
+        address preUpgradeImplementation = IPassivePerpProxy(sec.perp).getImplementation();
         PreservedState memory preUpgrade = _readPreUpgradeState();
         vm.selectFork(upgradedFork);
         PreservedState memory postUpgrade = _readPostUpgradeState();
 
+        assertNotEq(postUpgradeImplementation, preUpgradeImplementation, "PassivePerp implementation did not change");
         assertEq(preUpgrade.accountOwner, STATE_ACCOUNT_OWNER, "unexpected state-anchor owner at pinned block");
         assertTrue(preUpgrade.ethPositionSlots[0] != bytes32(0), "state-anchor ETH position is empty");
         assertTrue(preUpgrade.btcPositionSlots[0] != bytes32(0), "state-anchor BTC position is empty");
 
         assertEq(postUpgrade.accountOwner, preUpgrade.accountOwner, "account owner changed during upgrade");
+        assertTrue(preUpgrade.rusdBalanceSlot != bytes32(0), "state-anchor rUSD balance is empty");
+        assertEq(postUpgrade.rusdBalanceSlot, preUpgrade.rusdBalanceSlot, "rUSD balance storage changed");
         _assertPositionStorageEq("ETH", postUpgrade.ethPositionSlots, preUpgrade.ethPositionSlots);
         _assertPositionStorageEq("BTC", postUpgrade.btcPositionSlots, preUpgrade.btcPositionSlots);
         _assertMarketEq("ETH", postUpgrade.ethMarket, preUpgrade.ethMarket);
@@ -68,7 +78,7 @@ contract MigrationStateForkTest is ReyaForkTest {
             postUpgradeActive[marketId - 1] = isMarketActive(marketId);
         }
 
-        uint256 preUpgradeFork = vm.createFork(sec.REYA_RPC, MAINNET_FORK_BLOCK);
+        uint256 preUpgradeFork = vm.createFork(sec.REYA_RPC, _forkBlock());
         vm.selectFork(preUpgradeFork);
         assertEq(lastMarketId(), LAST_MAINNET_MARKET_ID, "pre-upgrade mainnet market count changed");
         for (uint128 marketId = ETH_MARKET_ID; marketId <= LAST_MAINNET_MARKET_ID; marketId++) {
@@ -92,7 +102,7 @@ contract MigrationStateForkTest is ReyaForkTest {
             postUpgradeOpenInterest[marketId - 1] = data.marketData.openInterest;
         }
 
-        uint256 preUpgradeFork = vm.createFork(sec.REYA_RPC, MAINNET_FORK_BLOCK);
+        uint256 preUpgradeFork = vm.createFork(sec.REYA_RPC, _forkBlock());
         vm.selectFork(preUpgradeFork);
         for (uint128 marketId = ETH_MARKET_ID; marketId <= LAST_MAINNET_MARKET_ID; marketId++) {
             MarketDataResponse memory data = IPassivePerpProxy(sec.perp).getMarketData(marketId);
@@ -114,8 +124,69 @@ contract MigrationStateForkTest is ReyaForkTest {
         vm.selectFork(upgradedFork);
     }
 
+    function test_MainnetPerpOB_NonZeroFundingTimestampIsPreservedAndInitializerFailsClosed() public {
+        _allowFundingTimestampMigration();
+
+        for (uint128 marketId = ETH_MARKET_ID; marketId <= BTC_MARKET_ID; marketId++) {
+            uint256 timestampBefore =
+                IPassivePerpProxyV2(sec.perp).getMarketData(marketId).marketData.lastFundingTimestamp;
+            assertTrue(timestampBefore != 0, "pinned market timestamp unexpectedly zero");
+
+            vm.expectRevert(
+                abi.encodeWithSelector(IPassivePerpProxyV2.LastFundingTimestampAlreadyInitialized.selector, marketId)
+            );
+            IPassivePerpProxyV2(sec.perp).initializeLastFundingTimestamp(marketId);
+
+            assertEq(
+                IPassivePerpProxyV2(sec.perp).getMarketData(marketId).marketData.lastFundingTimestamp,
+                timestampBefore,
+                "failed initializer changed an existing timestamp"
+            );
+        }
+    }
+
+    function test_MainnetPerpOB_ZeroFundingTimestampInitializesOnceThenRejectsReplay() public {
+        _allowFundingTimestampMigration();
+
+        for (uint128 marketId = ETH_MARKET_ID; marketId <= BTC_MARKET_ID; marketId++) {
+            vm.store(sec.perp, _marketStorageSlot(marketId, 5), bytes32(0));
+            assertEq(
+                IPassivePerpProxyV2(sec.perp).getMarketData(marketId).marketData.lastFundingTimestamp,
+                0,
+                "test precondition did not produce a zero timestamp"
+            );
+
+            IPassivePerpProxyV2(sec.perp).initializeLastFundingTimestamp(marketId);
+            assertEq(
+                IPassivePerpProxyV2(sec.perp).getMarketData(marketId).marketData.lastFundingTimestamp,
+                block.timestamp,
+                "zero timestamp was not initialized"
+            );
+
+            vm.expectRevert(
+                abi.encodeWithSelector(IPassivePerpProxyV2.LastFundingTimestampAlreadyInitialized.selector, marketId)
+            );
+            IPassivePerpProxyV2(sec.perp).initializeLastFundingTimestamp(marketId);
+        }
+    }
+
+    function _forkBlock() internal view returns (uint256) {
+        return vm.envOr("REYA_PERPOB_FORK_BLOCK", MAINNET_FORK_BLOCK);
+    }
+
+    function _allowFundingTimestampMigration() internal {
+        vm.prank(sec.multisig);
+        IPassivePerpProxy(sec.perp).addToFeatureFlagAllowlist(keccak256(bytes("migration1")), address(this));
+    }
+
+    function _marketStorageSlot(uint128 marketId, uint256 offset) internal pure returns (bytes32) {
+        bytes32 marketSlot = keccak256(abi.encodePacked(keccak256(bytes("xyz.reya.Market")), marketId));
+        return bytes32(uint256(marketSlot) + offset);
+    }
+
     function _readPreUpgradeState() internal view returns (PreservedState memory state) {
         state.accountOwner = ICoreProxy(sec.core).getAccountOwner(STATE_ACCOUNT_ID);
+        state.rusdBalanceSlot = _readCollateralBalanceSlot(STATE_ACCOUNT_ID, sec.rusd);
         state.ethPositionSlots = _readLegacyPositionSlots(ETH_MARKET_ID, STATE_ACCOUNT_ID);
         state.btcPositionSlots = _readLegacyPositionSlots(BTC_MARKET_ID, STATE_ACCOUNT_ID);
         state.ethMarket = _readLegacyMarket(ETH_MARKET_ID);
@@ -124,6 +195,7 @@ contract MigrationStateForkTest is ReyaForkTest {
 
     function _readPostUpgradeState() internal view returns (PreservedState memory state) {
         state.accountOwner = ICoreProxy(sec.core).getAccountOwner(STATE_ACCOUNT_ID);
+        state.rusdBalanceSlot = _readCollateralBalanceSlot(STATE_ACCOUNT_ID, sec.rusd);
         state.ethPositionSlots = _readLegacyPositionSlots(ETH_MARKET_ID, STATE_ACCOUNT_ID);
         state.btcPositionSlots = _readLegacyPositionSlots(BTC_MARKET_ID, STATE_ACCOUNT_ID);
         state.ethMarket = _readPerpOBMarket(ETH_MARKET_ID);
@@ -167,6 +239,12 @@ contract MigrationStateForkTest is ReyaForkTest {
         for (uint256 offset = 0; offset < slots.length; offset++) {
             slots[offset] = vm.load(sec.perp, bytes32(uint256(positionSlot) + offset));
         }
+    }
+
+    function _readCollateralBalanceSlot(uint128 accountId, address collateral) internal view returns (bytes32) {
+        bytes32 accountCollateralSlot =
+            keccak256(abi.encodePacked(keccak256(bytes("xyz.reya.AccountCollateral")), accountId));
+        return vm.load(sec.core, keccak256(abi.encode(collateral, accountCollateralSlot)));
     }
 
     function _assertPositionStorageEq(
