@@ -3,22 +3,22 @@ include = [
     "utils/constants.toml",
     "../token/mainnet_reya_network.toml",
     "../rusd/mainnet.toml",
-    "../core/mainnet.toml",
+    "../core/perpob_mainnet.toml",
     "../passive_pool/mainnet.toml",
-    "../passive_perp/mainnet.toml",
-    "../periphery/mainnet.toml",
+    "../passive_perp/perpob_mainnet.toml",
+    "../periphery/perpob_mainnet.toml",
     "../oracle_manager/mainnet.toml",
     "../exchange_pass_nft/mainnet_reya_network.toml",
     "../ranks/mainnet.toml",
     "../collateral_pools/collateral_pool_1/mainnet.toml",
-    "../orders_gateway/mainnet.toml",
+    "../orders_gateway/perpob_mainnet.toml",
     "../oracle_adapters/mainnet.toml",
     "../share_token/mainnet.toml",
     "../sbt/mainnet.toml",
     "../rotations/mainnet.toml",
 ]
 
-version = "1.0.162"
+version = "1.0.163"
 
 [var.chain_ids]
 ethereumChainId = "1"

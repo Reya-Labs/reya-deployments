@@ -1,0 +1,73 @@
+###############################################################################
+# Mainnet-state PerpOB fork overlay
+#
+# This package deliberately contains only the four PerpOB router upgrades and
+# the new PassivePerp configuration. Building the full mainnet omnibus from its
+# published package currently replays unrelated clone steps, replacing mainnet
+# token artifacts with fresh local deployments. A standalone overlay keeps the
+# fork's accounts, markets, collaterals and integrations intact.
+###############################################################################
+
+include = [
+    "../core/utils/perpob_upgrade_proxy.toml",
+    "../passive_perp/utils/perpob_upgrade_proxy.toml",
+    "../passive_perp/configs/perpob/feature_flags.toml",
+    "../passive_perp/configs/perpob/global_config.toml",
+    "../passive_perp/configs/perpob/fees.toml",
+    "../periphery/utils/perpob_upgrade_proxy.toml",
+    "../orders_gateway/utils/perpob_upgrade_proxy.toml",
+]
+
+name = "reya-mainnet-perpob-fork"
+preset = "main"
+version = "0.1.0"
+description = "PerpOB upgrades over a pinned Reya mainnet fork"
+privateSourceCode = true
+
+[var.wallet_addresses]
+owner = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9"
+
+[var.upgrade_proxy_vars]
+coreProxy = "0xA763B6a5E09378434406C003daE6487FbbDc1a80"
+passivePerpProxy = "0x27E5cb712334e101B3c232eB0Be198baaa595F5F"
+peripheryProxy = "0xCd2869d1eb1BC8991Bc55de9E9B779e912faF736"
+ordersGatewayProxy = "0xfc8c96bE87Da63CeCddBf54abFA7B13ee8044739"
+oracleManagerProxy = "0xC67316Ed17E0C793041CFE12F674af250a294aab"
+
+[var.pausers]
+pauser1 = "0x140d001689979ee77C2FB4c8d4B5F3E209135776"
+pauser2 = "0xA73d7b822Bfad43500a26aC38956dfEaBD3E066d"
+pauser3 = "0xf94e5Cdf41247E268d4847C30A0DC2893B33e85d"
+pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
+
+[var.matching_engine_publishers]
+matching_engine_publisher1 = "0x47b3df006f9856c8a8d1B7c558e273B4C1562296"
+
+[var.fee_tiers]
+takerFeeTier0Unscaled = "0.00030"
+makerFeeTier0Unscaled = "0.00030"
+takerFeeTier1Unscaled = "0.00028"
+makerFeeTier1Unscaled = "0.00028"
+takerFeeTier2Unscaled = "0.00026"
+makerFeeTier2Unscaled = "0.00026"
+takerFeeTier3Unscaled = "0.00024"
+makerFeeTier3Unscaled = "0.00024"
+takerFeeTier4Unscaled = "0.00022"
+makerFeeTier4Unscaled = "0.00022"
+takerFeeTier5Unscaled = "0.00021"
+makerFeeTier5Unscaled = "0.00021"
+takerFeeTier6Unscaled = "0.00020"
+makerFeeTier6Unscaled = "0.00020"
+takerFeeTier100Unscaled = "0.00010"
+makerFeeTier100Unscaled = "0.00010"
+takerFeeTier101Unscaled = "0.00010"
+makerFeeTier101Unscaled = "0.00010"
+
+[var.fee_configuration]
+ogDiscountUnscaled = "0.3"
+refereeDiscountUnscaled = "0.1"
+referrerRebateUnscaled = "0.1"
+affiliateReferrerRebateUnscaled = "0.15"
+vltzDiscountUnscaled = "0.1"
+spreadDiscountUnscaled = "1.0"
+pool1RusdRebateUnscaled = "0.2"

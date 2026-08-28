@@ -1,0 +1,15 @@
+[clone.reyaCoreRouter]
+# Provisional audited-build substitute; replace with the release package.
+source = "reya-core:1.1.2@router"
+target = "reya-core:1.1.2@router"
+
+[invoke.upgrade_core_proxy]
+target = ["<%= settings.coreProxy %>"]
+abi = "<%= JSON.stringify(imports.reyaCoreRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaCoreRouter.contracts.CoreRouter.address %>"]
+factory.CoreProxy.abiOf = ["reyaCoreRouter.CoreRouter"]
+factory.CoreProxy.event = "Upgraded"
+factory.CoreProxy.arg = 0
+depends = ["var.upgrade_proxy_vars", "clone.reyaCoreRouter"]

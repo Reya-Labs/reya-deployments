@@ -173,9 +173,9 @@ struct MarketConfigurationDataV2 {
     uint256 minFundingInterval;
 }
 
-/// @dev 20-field struct matching the perpOB on-chain MarketData.
+/// @dev 21-field struct matching the perpOB on-chain MarketData.
 ///      The first 16 positional fields match the AMM MarketRuntimeData;
-///      4 new fields are appended for pushed mark price & funding rate.
+///      5 new fields are appended for pushed oracle data and close state.
 struct MarketRuntimeDataV2 {
     uint128 id;
     uint128 passivePoolId_DEPRECATED;
@@ -198,6 +198,7 @@ struct MarketRuntimeDataV2 {
     uint256 markPriceTimestamp;
     /* SD59x18 */ int256 fundingRate;
     uint256 fundingRateTimestamp;
+    /* UD60x18 */ uint256 lockedClosePrice;
 }
 
 struct MarketDataResponseV2 {

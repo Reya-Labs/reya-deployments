@@ -71,6 +71,8 @@ contract ReyaForkTest is BaseReyaForkTest {
         // Reya bots
         sec.coExecutionBot = 0x0d171dFaab3440c0C88F3a07d8F3e9ffE56C609a;
         sec.poolRebalancer = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
+        sec.oraclePusher1 = 0x61548af5B40Ee331a30aBecA9Ff2237D6C753462;
+        sec.oraclePusher2 = 0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3;
         sec.rseliniCustodian = 0x75cfe7F41953cDfeA30C9F6A0BceC6BAA3dA71B0;
         sec.rseliniSubscriber = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
         sec.rseliniRedeemer = 0xf39e89D97B3EEffbF110Dea3110e1DAF74B9C0Ed;
@@ -737,10 +739,13 @@ contract ReyaForkTest is BaseReyaForkTest {
         dec.socketExecutionHelper[sec.wsteth] = 0x8d422bb223EDe166A6Ca821Fb472e07B446a243b;
         dec.socketConnector[sec.wsteth][ethereumChainId] = 0x880997ed94Dd2098395D2b3ECDb1c93026894106;
 
-        // create fork
-        try vm.activeFork() { }
-        catch {
-            vm.createSelectFork(sec.REYA_RPC);
+        // The PerpOB test runner supplies an already-upgraded fork via
+        // --fork-url. Creating another fork here would discard those upgrades.
+        if (!vm.envOr("REYA_USE_ACTIVE_FORK", false)) {
+            try vm.activeFork() { }
+            catch {
+                vm.createSelectFork(sec.REYA_RPC);
+            }
         }
 
         // setup

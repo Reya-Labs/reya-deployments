@@ -1,0 +1,19 @@
+[clone.reyaOrdersGatewayRouter]
+# Provisional audited-build substitute; replace with the release package.
+source = "reya-orders-gateway:1.1.2@router"
+target = "reya-orders-gateway:1.1.2@router"
+
+[invoke.upgrade_orders_gateway_proxy]
+target = ["<%= settings.ordersGatewayProxy %>"]
+abi = "<%= JSON.stringify(imports.reyaOrdersGatewayRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = [
+    "<%= imports.reyaOrdersGatewayRouter.contracts.OrdersGatewayRouter.address %>",
+]
+factory.OrdersGatewayProxy.abiOf = [
+    "reyaOrdersGatewayRouter.OrdersGatewayRouter",
+]
+factory.OrdersGatewayProxy.event = "Upgraded"
+factory.OrdersGatewayProxy.arg = 0
+depends = ["var.upgrade_proxy_vars", "clone.reyaOrdersGatewayRouter"]

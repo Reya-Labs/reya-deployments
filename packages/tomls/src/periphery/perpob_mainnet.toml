@@ -1,0 +1,14 @@
+include = [
+    "utils/perpob_upgrade_proxy.toml",
+    "configs/feature_flags.toml",
+    "configs/global_config.toml",
+    "configs/tokens/usdc.toml",
+    "configs/tokens/weth.toml",
+    "configs/tokens/wbtc.toml",
+    "configs/tokens/usde.toml",
+    "configs/tokens/susde.toml",
+    "configs/tokens/deusd.toml",
+    "configs/tokens/sdeusd.toml",
+    "configs/tokens/wsteth.toml",
+    "configs/tokens/reya.toml",
+]
