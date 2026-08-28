@@ -63,8 +63,9 @@ contract SpotPerpOBForkCheck is BaseReyaForkTest {
         (spotMatchingEngine, spotMatchingEnginePk) = makeAddrAndKey("spotMatchingEngine");
 
         vm.prank(sec.multisig);
-        IOrdersGatewayProxy(sec.ordersGateway)
-            .addToFeatureFlagAllowlist(SPOT_MATCHING_ENGINE_PUBLISHER_FLAG, spotMatchingEngine);
+        IOrdersGatewayProxy(sec.ordersGateway).addToFeatureFlagAllowlist(
+            SPOT_MATCHING_ENGINE_PUBLISHER_FLAG, spotMatchingEngine
+        );
     }
 
     function createLimitOrderSpot(
@@ -129,7 +130,8 @@ contract SpotPerpOBForkCheck is BaseReyaForkTest {
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(spotMatchingEnginePk, digest);
 
         return SignedMatchingEnginePayload({
-            fillDetails: fillDetails, signature: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })
+            fillDetails: fillDetails,
+            signature: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })
         });
     }
 

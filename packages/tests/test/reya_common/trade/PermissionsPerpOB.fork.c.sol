@@ -3,8 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import { BaseReyaForkTest } from "../BaseReyaForkTest.sol";
 
 import {
-    IPassivePerpProxy,
-    EIP712Signature as PerpEIP712Signature
+    IPassivePerpProxy, EIP712Signature as PerpEIP712Signature
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import {
     IPassivePerpProxyV2,
@@ -40,8 +39,7 @@ import { FillHashingV2 } from "../../../src/utils/FillHashingV2.sol";
 contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
     bytes32 internal constant PERMISSIONS_ORACLE_PUSHERS_FLAG = keccak256(bytes("oraclePushers"));
     bytes32 internal constant PERMISSIONS_ORACLE_PUBLISHERS_FLAG = keccak256(bytes("oraclePublishers"));
-    bytes32 internal constant PERMISSIONS_MATCHING_ENGINE_PUBLISHER_FLAG =
-        keccak256(bytes("matching_engine_publisher"));
+    bytes32 internal constant PERMISSIONS_MATCHING_ENGINE_PUBLISHER_FLAG = keccak256(bytes("matching_engine_publisher"));
     bytes32 internal constant MULTICALL_FLAG = keccak256(bytes("multicall"));
     bytes32 internal constant CONDITIONAL_ORDERS_FLAG = keccak256(bytes("conditional_orders"));
 
@@ -235,7 +233,8 @@ contract PermissionsPerpOBForkCheck is BaseReyaForkTest {
             );
 
             fillInput.mePayload = SignedMatchingEnginePayload({
-                fillDetails: fillDetails, signature: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })
+                fillDetails: fillDetails,
+                signature: EIP712Signature({ v: v, r: r, s: s, deadline: deadline })
             });
         }
 

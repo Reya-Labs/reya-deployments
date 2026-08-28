@@ -75,14 +75,14 @@ contract PermissionsForkTest is ReyaForkTest {
 
     function test_AccountPermissionsSurviveUpgrade() public view {
         assertTrue(
-            ICoreProxy(sec.core)
-                .hasAccountPermission(109_372, keccak256(bytes("ADMIN")), 0x8836cf32426cb26353698B105ab89fb87f52Fc34)
+            ICoreProxy(sec.core).hasAccountPermission(
+                109_372, keccak256(bytes("ADMIN")), 0x8836cf32426cb26353698B105ab89fb87f52Fc34
+            )
         );
         assertTrue(
-            ICoreProxy(sec.core)
-                .hasAccountPermission(
-                    109_371, keccak256(bytes("DUTCH_LIQUIDATION")), 0x84d17e2E153FE902Ac5b5d9c877F18DF3b9C6E56
-                )
+            ICoreProxy(sec.core).hasAccountPermission(
+                109_371, keccak256(bytes("DUTCH_LIQUIDATION")), 0x84d17e2E153FE902Ac5b5d9c877F18DF3b9C6E56
+            )
         );
     }
 

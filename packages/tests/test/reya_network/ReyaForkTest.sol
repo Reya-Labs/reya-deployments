@@ -778,13 +778,15 @@ contract ReyaForkTest is FundingRatePerpOBForkCheck {
 
             for (uint256 i = 0; i < nonwithdrawableTokens.length; i++) {
                 address token = nonwithdrawableTokens[i];
-                uint256 staticWithdrawFee = IPeripheryProxy(sec.periphery)
-                    .getTokenStaticWithdrawFee(token, dec.socketConnector[token][sec.destinationChainId]);
+                uint256 staticWithdrawFee = IPeripheryProxy(sec.periphery).getTokenStaticWithdrawFee(
+                    token, dec.socketConnector[token][sec.destinationChainId]
+                );
 
                 assertEq(staticWithdrawFee, 0);
 
-                IPeripheryProxy(sec.periphery)
-                    .setTokenStaticWithdrawFee(token, dec.socketConnector[token][sec.destinationChainId], 1);
+                IPeripheryProxy(sec.periphery).setTokenStaticWithdrawFee(
+                    token, dec.socketConnector[token][sec.destinationChainId], 1
+                );
             }
         }
 

@@ -3,9 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
 import {
-    IPassivePerpProxy,
-    FundingAndADLTrackers,
-    MarketDataResponse
+    IPassivePerpProxy, FundingAndADLTrackers, MarketDataResponse
 } from "../../../src/interfaces/IPassivePerpProxy.sol";
 import { IPassivePerpProxyV2, MarketDataResponseV2 } from "../../../src/interfaces/IPassivePerpProxyV2.sol";
 import { ICoreProxy } from "../../../src/interfaces/ICoreProxy.sol";
