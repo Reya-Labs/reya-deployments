@@ -28,13 +28,12 @@ args = ["<%= keccak256(hexlify('configureMarket')) %>", "<%= settings.owner %>"]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
 [invoke.passive_perp_set_oracle_pusher1]
-# Provisional local-rehearsal relays; replace with the release addresses.
 target = ["PassivePerpProxy"]
 fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('oraclePushers')) %>",
-    "0x61548af5B40Ee331a30aBecA9Ff2237D6C753462",
+    "<%= settings.oraclePusher1 %>",
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -44,7 +43,7 @@ fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('oraclePushers')) %>",
-    "0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3",
+    "<%= settings.oraclePusher2 %>",
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -64,7 +63,7 @@ fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('multicall')) %>",
-    "0x61548af5B40Ee331a30aBecA9Ff2237D6C753462",
+    "<%= settings.oraclePusher1 %>",
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 
@@ -74,7 +73,7 @@ fromCall.func = "owner"
 func = "addToFeatureFlagAllowlist"
 args = [
     "<%= keccak256(hexlify('multicall')) %>",
-    "0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3",
+    "<%= settings.oraclePusher2 %>",
 ]
 depends = ["invoke.upgrade_passive_perp_proxy"]
 

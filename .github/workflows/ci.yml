@@ -26,7 +26,7 @@ jobs:
   reya-deployments-check:
     name: Reya Deployments Check
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 100
     env:
       # Cannon's default hosted IPFS read endpoint is chosen by timezone
       # (getCannonRepoRegistryUrl -> https+ipfs://<region>.repo.usecannon.com;
@@ -104,11 +104,16 @@ jobs:
         run: ./packages/tests/scripts/cannon-retry.test.sh
       - name: Build
         run: "yarn build"
-      - name: Reya Network Full PerpOB Fork Test
+      - name: Reya Network Production Cannon Test
         id: reya_network_test
         env:
           RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_network:test"
+      - name: Reya Network Full PerpOB Fork Test
+        id: reya_network_perpob_test
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
+        run: "yarn reya_network:perpob:test"
       - name: Reya Cronos Cannon Test
         id: reya_cronos_test
         continue-on-error: true

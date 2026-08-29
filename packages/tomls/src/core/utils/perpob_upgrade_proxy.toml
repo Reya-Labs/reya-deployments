@@ -12,4 +12,8 @@ args = ["<%= imports.reyaCoreRouter.contracts.CoreRouter.address %>"]
 factory.CoreProxy.abiOf = ["reyaCoreRouter.CoreRouter"]
 factory.CoreProxy.event = "Upgraded"
 factory.CoreProxy.arg = 0
-depends = ["var.upgrade_proxy_vars", "clone.reyaCoreRouter"]
+depends = [
+    "var.upgrade_proxy_vars",
+    "clone.reyaCoreRouter",
+    "invoke.passive_perp_pause_rehearsal",
+]

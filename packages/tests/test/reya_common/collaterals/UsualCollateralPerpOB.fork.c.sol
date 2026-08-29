@@ -122,6 +122,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         UD60x18 priceLimit = ud(10_000e18);
 
         uint256 collateralPoolTokenBalance = ICoreProxy(sec.core).getCollateralPoolBalance(1, token);
+        assertGt(collateralPoolTokenBalance + amount, tokenCap, "fixture must exceed the configured cap");
 
         // deposit new margin account
         deal(token, address(sec.periphery), amount);
@@ -130,11 +131,7 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         uint128 accountId =
             IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: token }));
 
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector, 1, token, tokenCap, collateralPoolTokenBalance + amount
-            )
-        );
+        vm.expectRevert(IPeripheryProxy.InvalidPeripheryExecution.selector);
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
     }
 

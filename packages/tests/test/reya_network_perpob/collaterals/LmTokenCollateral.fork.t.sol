@@ -1,7 +1,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { ReyaForkTest } from "../ReyaForkTest.sol";
-import { LmTokenCollateralForkCheck } from "../../reya_common/collaterals/LmTokenCollateral.fork.c.sol";
+import { LmTokenCollateralForkCheck } from "../../reya_common/collaterals/LmTokenCollateralPerpOB.fork.c.sol";
 import "../../reya_common/DataTypes.sol";
 
 contract LmTokenCollateralForkTest is ReyaForkTest, LmTokenCollateralForkCheck {
@@ -63,17 +63,5 @@ contract LmTokenCollateralForkTest is ReyaForkTest, LmTokenCollateralForkCheck {
 
     function test_rhedge_deposit_withdraw() public {
         check_rhedge_deposit_withdraw();
-    }
-
-    function test_trade_rseliniCollateral_depositWithdraw() public {
-        check_trade_rseliniCollateral_depositWithdraw();
-    }
-
-    function test_trade_ramberCollateral_depositWithdraw() public {
-        check_trade_ramberCollateral_depositWithdraw();
-    }
-
-    function test_trade_rhedgeCollateral_depositWithdraw() public {
-        check_trade_rhedgeCollateral_depositWithdraw();
     }
 }

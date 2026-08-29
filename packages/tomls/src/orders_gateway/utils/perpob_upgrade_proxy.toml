@@ -16,4 +16,8 @@ factory.OrdersGatewayProxy.abiOf = [
 ]
 factory.OrdersGatewayProxy.event = "Upgraded"
 factory.OrdersGatewayProxy.arg = 0
-depends = ["var.upgrade_proxy_vars", "clone.reyaOrdersGatewayRouter"]
+depends = [
+    "var.upgrade_proxy_vars",
+    "clone.reyaOrdersGatewayRouter",
+    "invoke.passive_perp_pause_rehearsal",
+]

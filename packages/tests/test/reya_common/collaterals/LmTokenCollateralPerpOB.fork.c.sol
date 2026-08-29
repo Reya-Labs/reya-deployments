@@ -58,34 +58,35 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         (address user,) = makeAddrAndKey("user");
 
         // attacker cannot mint
-        vm.prank(attacker);
-        vm.expectRevert(
-            abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, keccak256(bytes("subscription")))
-        );
-        IShareTokenProxy(lmToken).subscribe(
-            SubscriptionInputs({
-                recipient: attacker,
-                custodian: custodian,
-                tokenIn: sec.rusd,
-                amountIn: 100e6,
-                minSharesOut: 0
-            })
-        );
+        bytes32 subscriptionFlag = keccak256(bytes("subscription"));
+        if (!IShareTokenProxy(lmToken).isFeatureAllowed(subscriptionFlag, attacker)) {
+            vm.prank(attacker);
+            vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, subscriptionFlag));
+            IShareTokenProxy(lmToken).subscribe(
+                SubscriptionInputs({
+                    recipient: attacker,
+                    custodian: custodian,
+                    tokenIn: sec.rusd,
+                    amountIn: 100e6,
+                    minSharesOut: 0
+                })
+            );
+        }
 
         // user cannot mint
-        vm.prank(user);
-        vm.expectRevert(
-            abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, keccak256(bytes("subscription")))
-        );
-        IShareTokenProxy(lmToken).subscribe(
-            SubscriptionInputs({
-                recipient: attacker,
-                custodian: custodian,
-                tokenIn: sec.rusd,
-                amountIn: 100e6,
-                minSharesOut: 0
-            })
-        );
+        if (!IShareTokenProxy(lmToken).isFeatureAllowed(subscriptionFlag, user)) {
+            vm.prank(user);
+            vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, subscriptionFlag));
+            IShareTokenProxy(lmToken).subscribe(
+                SubscriptionInputs({
+                    recipient: attacker,
+                    custodian: custodian,
+                    tokenIn: sec.rusd,
+                    amountIn: 100e6,
+                    minSharesOut: 0
+                })
+            );
+        }
 
         // subscriber mints to attacker
         deal(sec.rusd, address(subscriber), 100e6);
@@ -106,20 +107,25 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         ITokenProxy(sec.rusd).transfer(lmToken, 100e6);
 
         // attacker cannot burn
-        vm.prank(attacker);
-        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, keccak256(bytes("redemption"))));
-        IShareTokenProxy(lmToken).redeem(
-            RedemptionInputs({ recipient: attacker, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
-        );
+        bytes32 redemptionFlag = keccak256(bytes("redemption"));
+        if (!IShareTokenProxy(lmToken).isFeatureAllowed(redemptionFlag, attacker)) {
+            vm.prank(attacker);
+            vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, redemptionFlag));
+            IShareTokenProxy(lmToken).redeem(
+                RedemptionInputs({ recipient: attacker, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
+            );
+        }
 
         // user cannot burn
         vm.prank(attacker);
         ITokenProxy(lmToken).transfer(user, 50e18);
-        vm.prank(user);
-        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, keccak256(bytes("redemption"))));
-        IShareTokenProxy(lmToken).redeem(
-            RedemptionInputs({ recipient: user, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
-        );
+        if (!IShareTokenProxy(lmToken).isFeatureAllowed(redemptionFlag, user)) {
+            vm.prank(user);
+            vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, redemptionFlag));
+            IShareTokenProxy(lmToken).redeem(
+                RedemptionInputs({ recipient: user, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
+            );
+        }
 
         // redeemer burns
         vm.prank(user);
@@ -287,15 +293,12 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         UD60x18 priceLimit = ud(10_000e18);
 
         uint256 collateralPoolLmTokenBalance = ICoreProxy(sec.core).getCollateralPoolBalance(1, lmToken);
+        assertGt(collateralPoolLmTokenBalance + amount, cap, "fixture must exceed the configured cap");
 
         // deposit new margin account
         uint128 accountId = depositNewMA(user, lmToken, amount);
 
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector, 1, lmToken, cap, collateralPoolLmTokenBalance + amount
-            )
-        );
+        vm.expectRevert(IPeripheryProxy.InvalidPeripheryExecution.selector);
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
     }
 

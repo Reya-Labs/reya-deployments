@@ -14,11 +14,11 @@ criteria, not the earlier 12-test PR smoke scope.
 | --- | --- | --- | --- |
 | 1 | Mainnet omnibus builds from an immutable release manifest. | **Blocked** | [PR #522](https://github.com/Reya-Labs/reya-deployments/pull/522) builds the isolated [`reya_network_perpob.toml`](../packages/tomls/src/omnibus/reya_network_perpob.toml) overlay with provisional `1.1.2` packages. PRO-958 must supply the immutable, audited release manifest; further audit fixes will produce newer releases. |
 | 2 | Generated upgrade/config transaction ordering matches the migration design and is proven on a fork. | **Partial** | The ordered payload below was executed successfully on the fork and its readbacks/tests pass. It omits release-blocked timestamp, terminal-market and dust-production inputs and therefore is not the final payload. |
-| 3 | Rendered mainnet ME configuration passes fail-closed schema validation with no unknown/deprecated keys. | **Satisfied** | [reya-chain PR #236](https://github.com/Reya-Labs/reya-chain/pull/236) rejects unknown `MATCHING_ENGINE__*` variables recursively. The rendered [reya-devops PR #1035](https://github.com/Reya-Labs/reya-devops/pull/1035) environment has 24 keys and a zero-key schema difference. |
-| 4 | Mainnet ME uses current reactor persistence and no obsolete broadcast configuration. | **Satisfied** | PR #1035 replaces all five `MATCHING_ENGINE__PERSISTENCE__*` keys with `MATCHING_ENGINE__REACTOR_PERSISTENCE__*`; repository-wide search finds no `MATCHING_ENGINE__BROADCAST__ENABLED`. It also replaces `MATCHING_ENGINE__MATCHING_ENGINE__NETWORK` and removes three keys rejected by the current schema. |
-| 5 | Mainnet fork checks pass at a recorded recent block and cover the full multi-market shape. | **Partial** | The full retained/replacement `test/reya_network/**/*.sol` suite is the CI boundary, and state checks iterate all 75 markets. Block `218500000` is recorded, but it is not the final post-RET-21 block and the terminal test is honestly skipped. See test output and terminal limitation below. |
-| 6 | PRO-637 state-survival requirements are satisfied or incorporated. | **Satisfied provisionally** | [`MigrationState.fork.t.sol`](../packages/tests/test/reya_network/perpob/MigrationState.fork.t.sol) compares pre/post implementations and preserves the live account owner, rUSD balance, raw ETH/BTC position storage, trackers, market identity, funding timestamps and OI; activation/timestamp/OI are checked for all 75 markets. Must be rerun with final packages/block. |
-| 7 | No retained check depends on removed PerpOB behavior. | **Satisfied** | [`pro-656-reya-network-fork-test-inventory.md`](./pro-656-reya-network-fork-test-inventory.md) classifies every pre-existing fork-test file as retain/adapt/replace/remove and ties each disposition to PerpOB behavior. The CI runner no longer selects only 12 tests. |
+| 3 | Rendered mainnet ME configuration passes fail-closed schema validation with no unknown/deprecated keys. | **Partial / in review** | [reya-chain PR #236](https://github.com/Reya-Labs/reya-chain/pull/236) rejects unknown `MATCHING_ENGINE__*` variables recursively. The rendered [reya-devops PR #1035](https://github.com/Reya-Labs/reya-devops/pull/1035) environment has 24 keys and a zero-key schema difference. Both PRs are open and cannot be treated as landed release evidence. |
+| 4 | Mainnet ME uses current reactor persistence and no obsolete broadcast configuration. | **Partial / in review** | PR #1035 replaces all five `MATCHING_ENGINE__PERSISTENCE__*` keys with `MATCHING_ENGINE__REACTOR_PERSISTENCE__*`; repository-wide search finds no `MATCHING_ENGINE__BROADCAST__ENABLED`. It also replaces `MATCHING_ENGINE__MATCHING_ENGINE__NETWORK` and removes three keys rejected by the current schema. The change remains open. |
+| 5 | Mainnet fork checks pass at a recorded recent block and cover the full multi-market shape. | **Partial** | The retained production suite remains at `test/reya_network/**/*.sol`; the complete classified PerpOB suite runs independently from `test/reya_network_perpob/**/*.sol`, and state checks iterate all 75 markets. Block `218500000` is recorded, but it is not the final post-RET-21 block and the terminal test is honestly skipped. |
+| 6 | PRO-637 state-survival requirements are satisfied or incorporated. | **Satisfied provisionally** | [`MigrationState.fork.t.sol`](../packages/tests/test/reya_network_perpob/perpob/MigrationState.fork.t.sol) compares pre/post implementations and preserves the live account owner, rUSD balance, raw ETH/BTC position storage, trackers, market identity, funding timestamps and OI; activation/timestamp/OI are checked for all 75 markets. Must be rerun with final packages/block. |
+| 7 | No retained check depends on removed PerpOB behavior. | **Satisfied provisionally** | [`pro-656-reya-network-fork-test-inventory.md`](./pro-656-reya-network-fork-test-inventory.md) classifies every pre-existing fork-test file as retain/adapt/replace/remove and ties each PerpOB disposition to intended behavior. The legacy production suite is preserved unchanged and remains a separate CI gate until cutover. |
 | 8 | Post-upgrade state proves ETH/BTC preservation, all other markets closed, timestamp policy, permissions/config, freshness and dust behavior. | **Partial** | ETH/BTC survival, conditional timestamp behavior, readbacks, permissions, signed fills and real fresh/stale paths are covered. Dust happy/negative/permission paths use an isolated provisional sink/keeper and expose the `1.1.2` price-zero/collar incompatibility. Fifty non-ETH/BTC markets still have OI at this block, so terminal closure is not claimed. |
 | 9 | Commands, SHAs/packages, fork block, payload summary and output are attached. | **Satisfied for this provisional rehearsal** | This document records them below. Final release evidence must replace the provisional inputs and rerun the same commands. |
 | 10 | PRO-261 gate links are present and the migration has required review. | **Missing** | [PRO-261](https://linear.app/reya-labs/issue/PRO-261) gate/review sign-off has not been supplied. This cannot be inferred from a green local run. |
@@ -33,13 +33,13 @@ criteria, not the earlier 12-test PR smoke scope.
 | `reya-python-sdk` | `f989de09460531ac238b2209aa258e8455763056` (`origin/feat/perpOB`) | Bounded audit only: 610 passed, 18 skipped, 1 warning; no SDK source changes and no further PRO-656 scope. |
 
 - Source fork block: `218500000`
-- Post-Cannon block: `218500086`
+- Post-Cannon block: `218500087`
 - Package references: `reya-core:1.1.2@router`,
   `reya-orders-gateway:1.1.2@router`,
   `reya-instrument-passive-perp:1.1.2@router`, and
   `reya-periphery:1.1.2@router`
 - Cannon package: `reya-mainnet-perpob-fork:0.1.0@main`
-- Cannon dry-run estimate: `123,181,930` gas
+- Cannon dry-run estimate: `123,238,508` gas
 - Transaction signer for every invoke: mainnet proxy owner/multisig
   `0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9`
 
@@ -49,24 +49,34 @@ criteria, not the earlier 12-test PR smoke scope.
 
 ```sh
 cd packages/tests
-REYA_PERPOB_CANNON_PORT=18551 \
-REYA_PERPOB_EVIDENCE_DIR=/tmp/pro656-production-neutral-evidence \
+REYA_PERPOB_CANNON_PORT=18552 \
+REYA_PERPOB_EVIDENCE_DIR=/tmp/pro656-split-suite-evidence \
 ./scripts/reya-network-perpob.test.sh
 ```
 
 This runs Cannon over the pinned mainnet state, verifies that upgrade
-transactions advanced the block, then runs the complete
-`test/reya_network/**/*.sol` tree with `--threads 1`. The separate PerpOB
-runner's previous 12-test match boundary is not used.
+transactions advanced the block, then runs the complete classified
+`test/reya_network_perpob/**/*.sol` tree with `--threads 1`. The previous
+12-test match boundary is not used. The original `test/reya_network/**/*.sol`
+tree remains unchanged, and `reya_network:test` remains the production-omnibus
+fork gate; CI runs both suites independently. The production command now pins
+its fork to block `218500000` and runs Forge with one thread: running the
+unchanged gas assertions at the live tip made the gate depend on later mainnet
+activity rather than this PR's code, while parallel lazy-state reads can
+overload the fork RPC and fail with transport timeouts.
+The production omnibus and production test tree remain byte-identical to
+`origin/main`.
 
 The distinction is material: the previous [PR CI
 run](https://github.com/Reya-Labs/reya-deployments/actions/runs/33177455575/job/98869670021)
-reported 114 passes and 165 failures across 279 legacy-mainnet tests, while the
-separate 12-test PerpOB smoke command was green. This change makes the
-classified PerpOB suite itself the `reya_network:test`/CI boundary.
+reported 114 passes and 165 failures when the legacy-production assertions were
+run against the upgraded PerpOB fork; it was not a red run against the current
+production deployment. The separate 12-test smoke was green but insufficient.
+The classified PerpOB suite is therefore a new `reya_network:perpob:test` CI
+gate rather than a replacement for `reya_network:test`.
 
 ```text
-Ran 24 test suites in 706.52s (706.46s CPU time):
+Ran 24 test suites in 674.20s (674.15s CPU time):
 138 tests passed, 0 failed, 1 skipped (139 total tests)
 ```
 
@@ -117,27 +127,28 @@ comparison.
 ## Executed Cannon payload
 
 All mutating steps below executed successfully and were mined between blocks
-`218500001` and `218500086`. The proxy `owner()` supplies the sender for every
+`218500001` and `218500087`. The proxy `owner()` supplies the sender for every
 call. Clone/deploy steps produce new router implementations and do not mutate
 existing mainnet account/market storage; the invokes below are the fork-state
 mutations.
 
-Cannon executed four top-level clone steps and 26 invoke steps; its log contains
+Cannon executed four top-level clone steps and 27 invoke steps; its log contains
 zero skipped steps. The release-blocked operations listed after the table are
 absent from the TOML rather than silently skipped by Cannon.
 
 | Order | Target | Function / ordered calldata summary | Dependency | Expected/read-back post-state |
 | --- | --- | --- | --- | --- |
-| 1 | Core `0xA763B6a5E09378434406C003daE6487FbbDc1a80` | `upgradeTo(CoreRouter 1.1.2)` | Core package clone | Implementation changes; account/collateral/position state survives. |
-| 2 | OrdersGateway `0xfc8c96bE87Da63CeCddBf54abFA7B13ee8044739` | `upgradeTo(OrdersGatewayRouter 1.1.2)` | OrdersGateway package clone | Signed/batch fills and dust entry point installed. |
-| 3 | PassivePerp `0x27E5cb712334e101B3c232eB0Be198baaa595F5F` | `upgradeTo(PassivePerpRouter 1.1.2)` | PassivePerp package clone | V2 config/readbacks installed; legacy position/market storage survives. |
-| 4 | Periphery `0xCd2869d1eb1BC8991Bc55de9E9B779e912faF736` | `upgradeTo(PeripheryRouter 1.1.2)` | Periphery package clone | Current collateral periphery calls remain available. |
-| 5 | PassivePerp | Allow owner for `configureFees`; set global config `{coreProxy, exchangeProxy_DEPRECATED, oracleManagerAddress, maxAbsFundingRate=0.1e18, dustAccountId_DEPRECATED=0}`; allow owner for `configureMarket` | PassivePerp upgrade | Exact fields read back; provisional funding cap recorded. |
-| 6 | PassivePerp | Set global fee parameters and tiers `0..6,100,101` | PassivePerp upgrade | Taker/maker-compatible fields and global rebates match TOML. |
-| 7 | PassivePerp | Allow relays `0x6154...3462`, `0xa91C...09Fd3` for `oraclePushers` and `multicall`; allow ME publisher `0x47b3...2296` for `oraclePublishers` | PassivePerp upgrade | Authorized actors can push; unauthorized actors fail. Addresses are provisional. |
-| 8 | PassivePerp | Set four global deniers | PassivePerp upgrade | Deniers read back. |
-| 9 | PassivePerp | `setMarketConfiguration(1, ETH config)` and `(2, BTC config)` | `configureMarket` owner permission | Legacy risk/sizing retained; mark freshness `60s`, funding freshness `600s`, mark/fill deviation `5%`, provisional `minFundingInterval=0`; values read back. |
-| 10 | PassivePerp | Rehearsal-only `setFeatureFlagAllowAll(global, true)` | All four upgrades and every configuration, fee, market and permission invoke above | Global execution is enabled only after the disposable fork is fully configured. This step is not a production reopen instruction. |
+| 1 | PassivePerp `0x27E5cb712334e101B3c232eB0Be198baaa595F5F` | Rehearsal-only `setFeatureFlagAllowAll(global, false)` | PassivePerp package clone (ABI only) | Existing global execution is paused before any proxy implementation changes. |
+| 2 | Core `0xA763B6a5E09378434406C003daE6487FbbDc1a80` | `upgradeTo(CoreRouter 1.1.2)` | Core package clone and pause | Implementation changes; account/collateral/position state survives. |
+| 3 | OrdersGateway `0xfc8c96bE87Da63CeCddBf54abFA7B13ee8044739` | `upgradeTo(OrdersGatewayRouter 1.1.2)` | OrdersGateway package clone and pause | Signed/batch fills and dust entry point installed. |
+| 4 | PassivePerp | `upgradeTo(PassivePerpRouter 1.1.2)` | PassivePerp package clone and pause | V2 config/readbacks installed; legacy position/market storage survives. |
+| 5 | Periphery `0xCd2869d1eb1BC8991Bc55de9E9B779e912faF736` | `upgradeTo(PeripheryRouter 1.1.2)` | Periphery package clone and pause | Current collateral periphery calls remain available. |
+| 6 | PassivePerp | Allow owner for `configureFees`; set global config `{coreProxy, exchangeProxy_DEPRECATED, oracleManagerAddress, maxAbsFundingRate=0.1e18, dustAccountId_DEPRECATED=0}`; allow owner for `configureMarket` | PassivePerp upgrade | Exact fields read back; provisional funding cap recorded. |
+| 7 | PassivePerp | Set global fee parameters and tiers `0..6,100,101` | PassivePerp upgrade | Taker/maker-compatible fields and global rebates match TOML. |
+| 8 | PassivePerp | Allow configured relays for `oraclePushers` and `multicall`; allow ME publisher `0x47b3...2296` for `oraclePublishers` | PassivePerp upgrade | Authorized actors can push; unauthorized actors fail. Identities remain provisional overlay variables. |
+| 9 | PassivePerp | Set four global deniers | PassivePerp upgrade | Deniers read back. |
+| 10 | PassivePerp | `setMarketConfiguration(1, ETH config)` and `(2, BTC config)` | `configureMarket` owner permission | Legacy risk/sizing retained; mark freshness `60s`, funding freshness `600s`, mark/fill deviation `5%`, provisional `minFundingInterval=0`; values read back. |
+| 11 | PassivePerp | Rehearsal-only `setFeatureFlagAllowAll(global, true)` | All four upgrades and every configuration, fee, market and permission invoke above | Global execution is enabled only after the disposable fork is fully configured. This step is not a production reopen instruction. |
 
 The exact structs, hashes, addresses and dependency edges are source-controlled
 in the included TOMLs referenced by
@@ -149,11 +160,12 @@ transaction hash and gas for every row.
 
 | Step | Why it is absent | Final requirement |
 | --- | --- | --- |
-| Production omnibus mutation and reopen | `reya_network.toml` is unchanged from `main`; provisional configuration is reachable only from the private fork overlay. | A separate final-cutover change must consume the approved manifest and leave reopening to the PRO-682/PRO-242 operator gates. |
+| Production omnibus mutation and reopen | `reya_network.toml` is unchanged from `main`; provisional configuration is reachable only from the private fork overlay. The overlay pauses before any upgrade and re-enables last solely to prove dependency ordering. | A separate final-cutover change must consume the approved manifest and leave reopening authorization to the PRO-682/PRO-242 operator gates. |
 | Immutable release selection | PRO-958 has not supplied final audited package references. | Replace all provisional `1.1.2` sources and record immutable identifiers. |
 | Funding timestamp initializer | Both active market timestamps are already non-zero at this block; policy is blocked by PRO-393. | Generate calls only for zero timestamps; reject replay/non-zero values. The fork test proves both branches synthetically without pretending the provisional payload includes a call. |
 | Non-ETH/BTC terminal closure | RET-21 has not produced the final post-close block. PRO-394 is complete, but its tooling does not make the current block terminal. | Re-run with `REYA_REQUIRE_TERMINAL_MARKETS=true` and the final block; require inactive and zero OI for IDs 3–75. |
-| Production dust sink/keeper configuration | PRO-956/PRO-654 inputs are unresolved. | Configure real sink/keeper and prove price-zero settlement under the final audited package/configuration. |
+| Production dust sink/keeper and collar sequence | PRO-956/PRO-654 inputs are unresolved. Package `1.1.2` rejects the price-zero happy path while the 5% fill collar remains enabled. | Configure the real sink/keeper and include the PRO-661 atomic collar-disable / settle / collar-restore batch, or ship a targeted audited exception; prove the final sequence without leaving the collar disabled. |
+| Margin-account transfer capability | The provisional Core `1.1.2` router does not expose the `TransferBetweenMarginAccounts` selector used by the production test. | PRO-954/PRO-958 must confirm intentional removal or provide a release package retaining the capability; a green PerpOB suite is not evidence that this regression is accepted. |
 
 ## Fork gates and observed post-state
 
@@ -179,13 +191,13 @@ transaction hash and gas for every row.
 
 ## Terminal-market limitation
 
-At post-Cannon block `218500086`, **50** markets in IDs `3..75` retain non-zero
+At post-Cannon block `218500087`, **50** markets in IDs `3..75` retain non-zero
 OI. Examples include market 3 (`8571799630673111279469` wei), 11
 (`2528250000000000000000`), 22 (`501000000000000000000000`) and 75
 (`63600000000000000000`). Therefore this run cannot prove terminal closure and
 does not claim it.
 
-[`MarketClose.fork.t.sol`](../packages/tests/test/reya_network/trade/MarketClose.fork.t.sol)
+[`MarketClose.fork.t.sol`](../packages/tests/test/reya_network_perpob/trade/MarketClose.fork.t.sol)
 is reusable: its gate skips by default at this known-invalid block and becomes
 strict with:
 

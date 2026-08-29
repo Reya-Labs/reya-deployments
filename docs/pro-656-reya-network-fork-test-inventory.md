@@ -4,6 +4,9 @@ Classification is against the test tree that existed at PR #522 commit `805b396`
 Every callable test in a row inherits that row's disposition unless a narrower
 exception is stated. “Retain” means the behavior is independent of the retired
 AMM execution path; “adapt/replace/remove” is tied to the PerpOB runtime model.
+These dispositions apply only to the isolated `test/reya_network_perpob` tree.
+The original `test/reya_network` production suite remains intact and continues
+to run against the current production omnibus until the actual cutover.
 
 | Original fork-test file | Classification | PerpOB reason and resulting coverage |
 | --- | --- | --- |
@@ -34,10 +37,13 @@ AMM execution path; “adapt/replace/remove” is tied to the PerpOB runtime mod
 | `perpob/MigrationState.fork.t.sol` | Adapt | Expand representative storage checks into explicit old-implementation to new-implementation survival, all-market activation/OI/timestamps, conditional timestamp initialization and replay rejection. |
 | `perpob/Runtime.fork.t.sol` | Adapt | Expand the initial 12-test smoke into configuration/fee readbacks, permissions, signed fills and freshness behavior; it is no longer the CI match-path boundary. |
 
-New acceptance-only coverage lives in `perpob/DustSettlement.fork.t.sol` and
-the reusable terminal gate. The dust suite provisions an isolated test sink and
-keeper because the production sink/keeper inputs are externally blocked; it is
-not evidence that release configuration exists.
+New acceptance-only coverage lives in
+`test/reya_network_perpob/perpob/DustSettlement.fork.t.sol` and the reusable
+terminal gate. The dust suite provisions an isolated test sink and keeper
+because the production sink/keeper inputs are externally blocked; it is not
+evidence that release configuration exists. Its price-zero happy path also
+requires the fill-deviation collar to be disabled, so the final atomic
+disable/settle/restore sequence remains release-blocked.
 
 The classified suite result at fork block `218500000` is 138 passed, 0 failed
 and 1 explicitly skipped across 24 suites (139 total). The skip is only the

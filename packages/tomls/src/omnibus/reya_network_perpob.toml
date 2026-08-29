@@ -48,6 +48,11 @@ pauser4 = "0xC68ed61DCe11Ba16586bCa350139cFDFc65D1Ca6"
 [var.matching_engine_publishers]
 matching_engine_publisher1 = "0x47b3df006f9856c8a8d1B7c558e273B4C1562296"
 
+[var.oracle_pushers]
+# Provisional local-rehearsal relays; replace with the release addresses.
+oraclePusher1 = "0x61548af5B40Ee331a30aBecA9Ff2237D6C753462"
+oraclePusher2 = "0xa91Cc8B9109B5A1DBBb453CaaE63630BDCa09Fd3"
+
 [var.fee_tiers]
 takerFeeTier0Unscaled = "0.00030"
 makerFeeTier0Unscaled = "0.00030"
