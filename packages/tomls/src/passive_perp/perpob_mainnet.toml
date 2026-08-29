@@ -1,8 +1,0 @@
-# Mainnet-state PerpOB rehearsal. Keep this separate from mainnet.toml because
-# passive_perp/testnet.toml includes the legacy mainnet configuration.
-include = [
-    "utils/perpob_upgrade_proxy.toml",
-    "configs/perpob/feature_flags.toml",
-    "configs/perpob/global_config.toml",
-    "configs/perpob/fees.toml",
-]

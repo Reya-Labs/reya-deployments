@@ -49,8 +49,8 @@ criteria, not the earlier 12-test PR smoke scope.
 
 ```sh
 cd packages/tests
-REYA_PERPOB_CANNON_PORT=18549 \
-REYA_PERPOB_EVIDENCE_DIR=/tmp/pro656-full-evidence-2 \
+REYA_PERPOB_CANNON_PORT=18551 \
+REYA_PERPOB_EVIDENCE_DIR=/tmp/pro656-production-neutral-evidence \
 ./scripts/reya-network-perpob.test.sh
 ```
 
@@ -66,7 +66,7 @@ separate 12-test PerpOB smoke command was green. This change makes the
 classified PerpOB suite itself the `reya_network:test`/CI boundary.
 
 ```text
-Ran 24 test suites in 658.70s (658.64s CPU time):
+Ran 24 test suites in 706.52s (706.46s CPU time):
 138 tests passed, 0 failed, 1 skipped (139 total tests)
 ```
 
@@ -135,8 +135,9 @@ absent from the TOML rather than silently skipped by Cannon.
 | 5 | PassivePerp | Allow owner for `configureFees`; set global config `{coreProxy, exchangeProxy_DEPRECATED, oracleManagerAddress, maxAbsFundingRate=0.1e18, dustAccountId_DEPRECATED=0}`; allow owner for `configureMarket` | PassivePerp upgrade | Exact fields read back; provisional funding cap recorded. |
 | 6 | PassivePerp | Set global fee parameters and tiers `0..6,100,101` | PassivePerp upgrade | Taker/maker-compatible fields and global rebates match TOML. |
 | 7 | PassivePerp | Allow relays `0x6154...3462`, `0xa91C...09Fd3` for `oraclePushers` and `multicall`; allow ME publisher `0x47b3...2296` for `oraclePublishers` | PassivePerp upgrade | Authorized actors can push; unauthorized actors fail. Addresses are provisional. |
-| 8 | PassivePerp | Set four global deniers and `global` allow-all | PassivePerp upgrade | Deniers read back; global execution enabled. |
+| 8 | PassivePerp | Set four global deniers | PassivePerp upgrade | Deniers read back. |
 | 9 | PassivePerp | `setMarketConfiguration(1, ETH config)` and `(2, BTC config)` | `configureMarket` owner permission | Legacy risk/sizing retained; mark freshness `60s`, funding freshness `600s`, mark/fill deviation `5%`, provisional `minFundingInterval=0`; values read back. |
+| 10 | PassivePerp | Rehearsal-only `setFeatureFlagAllowAll(global, true)` | All four upgrades and every configuration, fee, market and permission invoke above | Global execution is enabled only after the disposable fork is fully configured. This step is not a production reopen instruction. |
 
 The exact structs, hashes, addresses and dependency edges are source-controlled
 in the included TOMLs referenced by
@@ -148,9 +149,10 @@ transaction hash and gas for every row.
 
 | Step | Why it is absent | Final requirement |
 | --- | --- | --- |
+| Production omnibus mutation and reopen | `reya_network.toml` is unchanged from `main`; provisional configuration is reachable only from the private fork overlay. | A separate final-cutover change must consume the approved manifest and leave reopening to the PRO-682/PRO-242 operator gates. |
 | Immutable release selection | PRO-958 has not supplied final audited package references. | Replace all provisional `1.1.2` sources and record immutable identifiers. |
 | Funding timestamp initializer | Both active market timestamps are already non-zero at this block; policy is blocked by PRO-393. | Generate calls only for zero timestamps; reject replay/non-zero values. The fork test proves both branches synthetically without pretending the provisional payload includes a call. |
-| Non-ETH/BTC terminal closure | RET-21/PRO-394 has not produced the final post-close block. | Re-run with `REYA_REQUIRE_TERMINAL_MARKETS=true` and the final block; require inactive and zero OI for IDs 3–75. |
+| Non-ETH/BTC terminal closure | RET-21 has not produced the final post-close block. PRO-394 is complete, but its tooling does not make the current block terminal. | Re-run with `REYA_REQUIRE_TERMINAL_MARKETS=true` and the final block; require inactive and zero OI for IDs 3–75. |
 | Production dust sink/keeper configuration | PRO-956/PRO-654 inputs are unresolved. | Configure real sink/keeper and prove price-zero settlement under the final audited package/configuration. |
 
 ## Fork gates and observed post-state
@@ -205,9 +207,9 @@ skip is not a terminal-closure pass.
 - [PRO-956](https://linear.app/reya-labs/issue/PRO-956) and
   [PRO-654](https://linear.app/reya-labs/issue/PRO-654): production dust
   settlement configuration and audited behavior.
-- [RET-21](https://linear.app/reya-labs/issue/RET-21) and
-  [PRO-394](https://linear.app/reya-labs/issue/PRO-394): terminal markets and the
-  final reusable fork block.
+- [RET-21](https://linear.app/reya-labs/issue/RET-21): terminal markets and the
+  final reusable fork block. [PRO-394](https://linear.app/reya-labs/issue/PRO-394)
+  is complete; its tooling remains an input to the final run.
 
 None of these criteria is marked complete from a synthetic storage edit,
 provisional address, provisional package, disabled collar, or skipped test.

@@ -1,11 +1,15 @@
 ###############################################################################
-# Mainnet-state PerpOB fork overlay
+# Mainnet-state PerpOB fork rehearsal overlay
 #
 # This package deliberately contains only the four PerpOB router upgrades and
 # the new PassivePerp configuration. Building the full mainnet omnibus from its
 # published package currently replays unrelated clone steps, replacing mainnet
 # token artifacts with fresh local deployments. A standalone overlay keeps the
 # fork's accounts, markets, collaterals and integrations intact.
+#
+# This file is not a production deployment entrypoint and must not be included
+# by reya_network.toml. It contains provisional packages and identities solely
+# for a disposable fork rehearsal.
 ###############################################################################
 
 include = [

@@ -1,6 +1,0 @@
-include = [
-    "utils/deploy_proxy.toml",
-    "utils/perpob_upgrade_proxy.toml",
-    "configs/feature_flags.toml",
-    "configs/global_config.toml",
-]
