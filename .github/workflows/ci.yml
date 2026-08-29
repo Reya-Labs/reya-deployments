@@ -109,11 +109,6 @@ jobs:
         env:
           RPC_KEY: ${{ secrets.RPC_KEY }}
         run: "yarn reya_network:test"
-      - name: Reya Network Full PerpOB Fork Test
-        id: reya_network_perpob_test
-        env:
-          RPC_KEY: ${{ secrets.RPC_KEY }}
-        run: "yarn reya_network:perpob:test"
       - name: Reya Cronos Cannon Test
         id: reya_cronos_test
         continue-on-error: true
@@ -257,3 +252,64 @@ jobs:
             -f conclusion="$conclusion" \
             -f "output[title]=$title" \
             -f "output[summary]=$summary"
+
+  # This is migration evidence, not a production deployment gate. Keep it in
+  # a dedicated lane so its expensive historical-fork replay cannot change or
+  # time out the required `Reya Deployments Check`. The lane is intentionally
+  # advisory until the final migration block and release artifacts are known.
+  reya-network-perpob-fork-check:
+    name: PerpOB Mainnet Fork Check (advisory)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    continue-on-error: true
+    env:
+      CANNON_IPFS_URL: https+ipfs://repo.usecannon.com
+      CANNON_IPFS_RETRIES: "10"
+      CANNON_IPFS_TIMEOUT: "300000"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: "Install Foundry"
+        uses: "foundry-rs/foundry-toolchain@v1"
+        with:
+          version: v1.2.3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+      - name: "Install the Node.js dependencies"
+        run: "yarn"
+      - name: Configure cannon registries
+        env:
+          INFURA_KEY: ${{ secrets.INFURA_KEY }}
+        run: |
+          mkdir -p ~/.local/share/cannon
+          cat > ~/.local/share/cannon/settings.json <<EOF
+          {
+            "registries": [
+              {
+                "name": "OP Mainnet",
+                "chainId": 10,
+                "rpcUrl": ["https://optimism-mainnet.infura.io/v3/${INFURA_KEY}", "https://optimism-rpc.publicnode.com"],
+                "address": "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
+              },
+              {
+                "name": "Ethereum Mainnet",
+                "chainId": 1,
+                "rpcUrl": ["https://mainnet.infura.io/v3/${INFURA_KEY}", "https://ethereum-rpc.publicnode.com"],
+                "address": "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba"
+              }
+            ]
+          }
+          EOF
+      - name: Build
+        run: "yarn build"
+      - name: Reya Network Full PerpOB Fork Test
+        env:
+          RPC_KEY: ${{ secrets.RPC_KEY }}
+        run: "yarn reya_network:perpob:test"
