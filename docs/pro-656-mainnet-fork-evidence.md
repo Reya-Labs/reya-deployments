@@ -18,7 +18,7 @@ criteria, not the earlier 12-test PR smoke scope.
 | 4 | Mainnet ME uses current reactor persistence and no obsolete broadcast configuration. | **Partial / in review** | PR #1035 replaces all five `MATCHING_ENGINE__PERSISTENCE__*` keys with `MATCHING_ENGINE__REACTOR_PERSISTENCE__*`; repository-wide search finds no `MATCHING_ENGINE__BROADCAST__ENABLED`. It also replaces `MATCHING_ENGINE__MATCHING_ENGINE__NETWORK` and removes three keys rejected by the current schema. The change remains open. |
 | 5 | Mainnet fork checks pass at a recorded recent block and cover the full multi-market shape. | **Partial** | The retained production suite remains at `test/reya_network/**/*.sol`; the complete classified PerpOB suite runs independently from `test/reya_network_perpob/**/*.sol`, and state checks iterate all 75 markets. Block `218500000` is recorded, but it is not the final post-RET-21 block and the terminal test is honestly skipped. |
 | 6 | PRO-637 state-survival requirements are satisfied or incorporated. | **Satisfied provisionally** | [`MigrationState.fork.t.sol`](../packages/tests/test/reya_network_perpob/perpob/MigrationState.fork.t.sol) compares pre/post implementations and preserves the live account owner, rUSD balance, raw ETH/BTC position storage, trackers, market identity, funding timestamps and OI; activation/timestamp/OI are checked for all 75 markets. Must be rerun with final packages/block. |
-| 7 | No retained check depends on removed PerpOB behavior. | **Satisfied provisionally** | [`pro-656-reya-network-fork-test-inventory.md`](./pro-656-reya-network-fork-test-inventory.md) classifies every pre-existing fork-test file as retain/adapt/replace/remove and ties each PerpOB disposition to intended behavior. The legacy production suite is preserved unchanged and remains a separate CI gate until cutover. |
+| 7 | No retained check depends on removed PerpOB behavior. | **Satisfied provisionally** | [`pro-656-reya-network-fork-test-inventory.md`](./pro-656-reya-network-fork-test-inventory.md) classifies every pre-existing fork-test file as retain/adapt/replace/remove and ties each PerpOB disposition to intended behavior. The production suite remains a separate CI gate until cutover; two test-only drift fixes keep it valid at the live tip. |
 | 8 | Post-upgrade state proves ETH/BTC preservation, all other markets closed, timestamp policy, permissions/config, freshness and dust behavior. | **Partial** | ETH/BTC survival, conditional timestamp behavior, readbacks, permissions, signed fills and real fresh/stale paths are covered. Dust happy/negative/permission paths use an isolated provisional sink/keeper and expose the `1.1.2` price-zero/collar incompatibility. Fifty non-ETH/BTC markets still have OI at this block, so terminal closure is not claimed. |
 | 9 | Commands, SHAs/packages, fork block, payload summary and output are attached. | **Satisfied for this provisional rehearsal** | This document records them below. Final release evidence must replace the provisional inputs and rerun the same commands. |
 | 10 | PRO-261 gate links are present and the migration has required review. | **Missing** | [PRO-261](https://linear.app/reya-labs/issue/PRO-261) gate/review sign-off has not been supplied. This cannot be inferred from a green local run. |
@@ -57,15 +57,14 @@ REYA_PERPOB_EVIDENCE_DIR=/tmp/pro656-split-suite-evidence \
 This runs Cannon over the pinned mainnet state, verifies that upgrade
 transactions advanced the block, then runs the complete classified
 `test/reya_network_perpob/**/*.sol` tree with `--threads 1`. The previous
-12-test match boundary is not used. The original `test/reya_network/**/*.sol`
-tree remains unchanged, and `reya_network:test` remains the production-omnibus
-fork gate; CI runs both suites independently. The production command now pins
-its fork to block `218500000` and runs Forge with one thread: running the
-unchanged gas assertions at the live tip made the gate depend on later mainnet
-activity rather than this PR's code, while parallel lazy-state reads can
-overload the fork RPC and fail with transport timeouts.
-The production omnibus and production test tree remain byte-identical to
-`origin/main`.
+12-test match boundary is not used. `reya_network:test` remains the
+production-omnibus fork gate and CI runs both suites independently. The
+production gate stays at the live tip and runs Forge with one thread. Its only
+test changes are production-state drift fixes: fuzzed attackers must not
+already be feature-allowlisted, and the observed ETH gas ceiling is raised from
+11.5M to 14M after measuring 13,124,907 gas at block 219341392. The production
+omnibus remains byte-identical to `origin/main`; no production package or
+configuration changes are reachable from this gate.
 
 The distinction is material: the previous [PR CI
 run](https://github.com/Reya-Labs/reya-deployments/actions/runs/33177455575/job/98869670021)

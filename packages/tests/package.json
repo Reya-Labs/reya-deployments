@@ -10,7 +10,7 @@
     "lint:sol:check": "forge fmt --check && yarn solhint \"{src,test}/**/*.sol\"",
     "lint:sol:write": "forge fmt && yarn solhint --fix \"{src,test}/**/*.sol\"",
     "test:cannon-retry": "./scripts/cannon-retry.test.sh",
-    "reya_network:test": "node ../../node_modules/@usecannon/cli/bin/cannon.js test --rpc-url https://rpc.reya.network/${RPC_KEY} ../tomls/src/omnibus/reya_network.toml --upgrade-from reya-omnibus:latest@main --anvil.fork-block-number 218500000 --forge.match-path \"test/reya_network/**/*.sol\" --forge.threads 1",
+    "reya_network:test": "node ../../node_modules/@usecannon/cli/bin/cannon.js test --rpc-url https://rpc.reya.network/${RPC_KEY} ../tomls/src/omnibus/reya_network.toml --upgrade-from reya-omnibus:latest@main --forge.match-path \"test/reya_network/**/*.sol\" --forge.threads 1",
     "reya_network:perpob:test": "./scripts/reya-network-perpob.test.sh",
     "reya_cronos:test": "node ../../node_modules/@usecannon/cli/bin/cannon.js test --rpc-url https://rpc-reya-cronos.t.conduit.xyz/${RPC_KEY} ../tomls/src/omnibus/reya_cronos.toml --upgrade-from reya-omnibus:latest@main --forge.match-path \"test/reya_cronos/**/*.sol\"",
     "reya_devnet:test": "./scripts/cannon-retry.sh node ../../node_modules/@usecannon/cli-devnet/bin/cannon.js test --rpc-url https://rpc-reya-cronos.t.conduit.xyz/${RPC_KEY} ../tomls/src/omnibus/reya_devnet.toml --upgrade-from reya-devnet-omnibus:latest@main --forge.match-path \"test/reya_devnet/**/*.sol\" --forge.threads 1"
