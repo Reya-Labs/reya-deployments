@@ -14,8 +14,8 @@ criteria, not the earlier 12-test PR smoke scope.
 | --- | --- | --- | --- |
 | 1 | Mainnet omnibus builds from an immutable release manifest. | **Blocked** | [PR #522](https://github.com/Reya-Labs/reya-deployments/pull/522) builds the isolated [`reya_network_perpob.toml`](../packages/tomls/src/omnibus/reya_network_perpob.toml) overlay with provisional `1.1.2` packages. PRO-958 must supply the immutable, audited release manifest; further audit fixes will produce newer releases. |
 | 2 | Generated upgrade/config transaction ordering matches the migration design and is proven on a fork. | **Partial** | The ordered payload below was executed successfully on the fork and its readbacks/tests pass. It omits release-blocked timestamp, terminal-market and dust-production inputs and therefore is not the final payload. |
-| 3 | Rendered mainnet ME configuration passes fail-closed schema validation with no unknown/deprecated keys. | **Partial / in review** | [reya-chain PR #236](https://github.com/Reya-Labs/reya-chain/pull/236) rejects unknown `MATCHING_ENGINE__*` variables recursively. The rendered [reya-devops PR #1035](https://github.com/Reya-Labs/reya-devops/pull/1035) environment has 24 keys and a zero-key schema difference. Both PRs are open and cannot be treated as landed release evidence. |
-| 4 | Mainnet ME uses current reactor persistence and no obsolete broadcast configuration. | **Partial / in review** | PR #1035 replaces all five `MATCHING_ENGINE__PERSISTENCE__*` keys with `MATCHING_ENGINE__REACTOR_PERSISTENCE__*`; repository-wide search finds no `MATCHING_ENGINE__BROADCAST__ENABLED`. It also replaces `MATCHING_ENGINE__MATCHING_ENGINE__NETWORK` and removes three keys rejected by the current schema. The change remains open. |
+| 3 | Rendered mainnet ME configuration passes fail-closed schema validation with no unknown/deprecated keys. | **Partial / deployment change missing** | [reya-chain PR #236](https://github.com/Reya-Labs/reya-chain/pull/236) merged at `a90e3f750241bbf8f9778a38b44d27bcc74c57a0` and rejects unknown `MATCHING_ENGINE__*` variables recursively. The deployment half did not land: [reya-devops PR #1035](https://github.com/Reya-Labs/reya-devops/pull/1035) was closed unmerged on 30 August. At devops `main` revision `7ee2657ec24261125e194c63bad638233760f78f`, the rendered source still contains the five retired persistence keys, so the current mainnet environment does not pass the merged schema. |
+| 4 | Mainnet ME uses current reactor persistence and no obsolete broadcast configuration. | **Partial / deployment change missing** | Repository-wide search at devops `7ee2657ec24261125e194c63bad638233760f78f` finds no `MATCHING_ENGINE__BROADCAST__ENABLED`, but all five `MATCHING_ENGINE__PERSISTENCE__*` keys remain and have not been replaced by `MATCHING_ENGINE__REACTOR_PERSISTENCE__*`. Closed PR #1035 demonstrated a schema-clean replacement, but closed/unmerged evidence cannot satisfy this mainnet criterion. |
 | 5 | Mainnet fork checks pass at a recorded recent block and cover the full multi-market shape. | **Partial** | The retained production suite remains at `test/reya_network/**/*.sol`; the complete classified PerpOB suite runs independently from `test/reya_network_perpob/**/*.sol`, and state checks iterate all 75 markets. Block `218500000` is recorded, but it is not the final post-RET-21 block and the terminal test is honestly skipped. |
 | 6 | PRO-637 state-survival requirements are satisfied or incorporated. | **Satisfied provisionally** | [`MigrationState.fork.t.sol`](../packages/tests/test/reya_network_perpob/perpob/MigrationState.fork.t.sol) compares pre/post implementations and preserves the live account owner, rUSD balance, raw ETH/BTC position storage, trackers, market identity, funding timestamps and OI; activation/timestamp/OI are checked for all 75 markets. Must be rerun with final packages/block. |
 | 7 | No retained check depends on removed PerpOB behavior. | **Satisfied provisionally** | [`pro-656-reya-network-fork-test-inventory.md`](./pro-656-reya-network-fork-test-inventory.md) classifies every pre-existing fork-test file as retain/adapt/replace/remove and ties each PerpOB disposition to intended behavior. The production suite remains a separate CI gate until cutover; two test-only drift fixes keep it valid at the live tip. |
@@ -28,8 +28,8 @@ criteria, not the earlier 12-test PR smoke scope.
 | Repository | Revision / PR | Purpose |
 | --- | --- | --- |
 | `reya-deployments` | PR [#522](https://github.com/Reya-Labs/reya-deployments/pull/522), based on `2c5c5ba73f817cd1267f84a8dc9313b5747f3044` | Fork payload, full-suite runner, fork gates, inventory and this evidence. |
-| `reya-chain` | `057bd7517a1c03f1a6d74e3a896dbf33453992cf`, PR [#236](https://github.com/Reya-Labs/reya-chain/pull/236) | Fail-closed ME environment schema and tests. |
-| `reya-devops` | `6a29b8c8c69f89a838b5ff24b25f41ed1439e67b`, PR [#1035](https://github.com/Reya-Labs/reya-devops/pull/1035) | Mainnet ME key migration and stale-key removal. |
+| `reya-chain` | merge `a90e3f750241bbf8f9778a38b44d27bcc74c57a0`, PR [#236](https://github.com/Reya-Labs/reya-chain/pull/236) | Merged fail-closed ME environment schema and tests. |
+| `reya-devops` | `main` `7ee2657ec24261125e194c63bad638233760f78f`; closed PR [#1035](https://github.com/Reya-Labs/reya-devops/pull/1035) | Current mainnet still has five stale persistence keys. #1035 is useful proof of a clean replacement, not a landed change. |
 | `reya-python-sdk` | `f989de09460531ac238b2209aa258e8455763056` (`origin/feat/perpOB`) | Bounded audit only: 610 passed, 18 skipped, 1 warning; no SDK source changes and no further PRO-656 scope. |
 
 - Source fork block: `218500000`
@@ -211,6 +211,9 @@ skip is not a terminal-closure pass.
 
 ## External blockers retained by PRO-656
 
+- Mainnet ME deployment schema: reya-devops still needs an owned replacement
+  for closed PR #1035 before the merged fail-closed loader can accept the
+  rendered environment.
 - [PRO-958](https://linear.app/reya-labs/issue/PRO-958): immutable audited
   release/package manifest.
 - [PRO-393](https://linear.app/reya-labs/issue/PRO-393): final funding-timestamp
