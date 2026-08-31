@@ -8,9 +8,11 @@ REPO_ROOT=$(cd "$PACKAGE_DIR/../.." && pwd)
 TOMLS_DIR="$REPO_ROOT/packages/tomls"
 FORK_BLOCK="${REYA_PERPOB_FORK_BLOCK:-218500000}"
 CANNON_PORT="${REYA_PERPOB_CANNON_PORT:-18547}"
+VALIDATION_PORT="${REYA_PERPOB_CANNON_VALIDATION_PORT:-$((CANNON_PORT + 1))}"
 LOCAL_RPC="http://127.0.0.1:${CANNON_PORT}"
 EVIDENCE_DIR="${REYA_PERPOB_EVIDENCE_DIR:-}"
 MATCH_PATH="${REYA_PERPOB_MATCH_PATH:-test/reya_network_perpob/**/*.sol}"
+MIGRATION_STATE_TEST="$PACKAGE_DIR/test/reya_network_perpob/perpob/MigrationState.fork.t.sol"
 
 export CANNON_DIRECTORY="${CANNON_DIRECTORY:-${XDG_CACHE_HOME:-$HOME/.cache}/reya-perpob-cannon}"
 export CANNON_REGISTRY_ADDRESS="${CANNON_REGISTRY_ADDRESS:-0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba}"
@@ -27,8 +29,17 @@ if cast chain-id --rpc-url "$LOCAL_RPC" >/dev/null 2>&1; then
     exit 1
 fi
 
+VALIDATION_RPC="http://127.0.0.1:${VALIDATION_PORT}"
+if cast chain-id --rpc-url "$VALIDATION_RPC" >/dev/null 2>&1; then
+    echo "Port ${VALIDATION_PORT} is already serving an RPC node; set REYA_PERPOB_CANNON_VALIDATION_PORT to another port." >&2
+    exit 1
+fi
+
 RUN_DIR=$(mktemp -d "${TMPDIR:-/tmp}/reya-perpob-cannon.XXXXXX")
 CANNON_LOG="$RUN_DIR/cannon.log"
+CANNON_VALIDATION_LOG="$RUN_DIR/cannon-validation.log"
+FORGE_LOG="$RUN_DIR/forge-test.log"
+DISCOVERY_JSON="$RUN_DIR/forge-test-list.json"
 CANNON_PID=""
 touch "$CANNON_LOG"
 
@@ -39,12 +50,55 @@ cleanup() {
     fi
     if [ -n "$EVIDENCE_DIR" ]; then
         mkdir -p "$EVIDENCE_DIR"
-        cp "$CANNON_LOG" "$EVIDENCE_DIR/cannon.log"
+        [ ! -f "$CANNON_LOG" ] || cp "$CANNON_LOG" "$EVIDENCE_DIR/cannon.log"
+        [ ! -f "$CANNON_VALIDATION_LOG" ] || cp "$CANNON_VALIDATION_LOG" "$EVIDENCE_DIR/cannon-validation.log"
+        [ ! -f "$FORGE_LOG" ] || cp "$FORGE_LOG" "$EVIDENCE_DIR/forge-test.log"
+        [ ! -f "$DISCOVERY_JSON" ] || cp "$DISCOVERY_JSON" "$EVIDENCE_DIR/forge-test-list.json"
     fi
     rm -rf "$RUN_DIR"
 }
 trap cleanup EXIT
 trap 'exit 130' INT TERM
+
+if [ "$VALIDATION_PORT" = "$CANNON_PORT" ]; then
+    echo "Cannon validation and retained-node ports must differ." >&2
+    exit 1
+fi
+
+SOLIDITY_FORK_BLOCK=$(sed -nE \
+    's/^[[:space:]]*uint256 internal constant MAINNET_FORK_BLOCK = ([0-9_]+);/\1/p' \
+    "$MIGRATION_STATE_TEST" | tr -d '_')
+if [ -z "$SOLIDITY_FORK_BLOCK" ] || ! [[ "$SOLIDITY_FORK_BLOCK" =~ ^[0-9]+$ ]]; then
+    echo "Could not read one MAINNET_FORK_BLOCK constant from ${MIGRATION_STATE_TEST}." >&2
+    exit 1
+fi
+if [ "$FORK_BLOCK" != "$SOLIDITY_FORK_BLOCK" ]; then
+    echo "REYA_PERPOB_FORK_BLOCK=${FORK_BLOCK} disagrees with Solidity MAINNET_FORK_BLOCK=${SOLIDITY_FORK_BLOCK}." >&2
+    exit 1
+fi
+
+# Cannon sets process.exitCode=90/91 for partial/failed builds before entering
+# keep-alive, so the retained process cannot expose that status until it is
+# stopped. Execute the identical build once without keep-alive and capture the
+# CLI's real status before allowing tests to use a second retained node.
+set +e
+(
+    cd "$TOMLS_DIR"
+    node "$REPO_ROOT/node_modules/@usecannon/cli/bin/cannon.js" build \
+        src/omnibus/reya_network_perpob.toml \
+        --rpc-url "${REYA_RPC_URL:-https://rpc.reya.network/${RPC_KEY:-}}" \
+        --chain-id 1729 \
+        --dry-run \
+        --impersonate-all \
+        --anvil.fork-block-number "$FORK_BLOCK" \
+        --port "$VALIDATION_PORT"
+) 2>&1 | tee "$CANNON_VALIDATION_LOG"
+CANNON_VALIDATION_STATUS=${PIPESTATUS[0]}
+set -e
+if [ "$CANNON_VALIDATION_STATUS" -ne 0 ]; then
+    echo "Cannon validation build failed with exit ${CANNON_VALIDATION_STATUS}." >&2
+    exit "$CANNON_VALIDATION_STATUS"
+fi
 
 (
     cd "$TOMLS_DIR"
@@ -62,6 +116,10 @@ CANNON_PID=$!
 
 READY=false
 for _ in $(seq 1 900); do
+    if grep -Eq "deployment was not fully completed|partial deployment" "$CANNON_LOG"; then
+        echo "Cannon retained-node build reported a partial deployment." >&2
+        exit 90
+    fi
     if grep -q "The local node will continue running" "$CANNON_LOG"; then
         READY=true
         break
@@ -87,22 +145,46 @@ fi
 
 echo "Running PerpOB fork tests at upgraded block ${LATEST_BLOCK}."
 cd "$PACKAGE_DIR"
+REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" RPC_KEY="${RPC_KEY:-}" forge test \
+    --fork-url "$LOCAL_RPC" \
+    --match-path "$MATCH_PATH" \
+    --threads 1 \
+    --list \
+    --json \
+    "$@" > "$DISCOVERY_JSON"
+DISCOVERED_TEST_COUNT=$(jq -er '[.[][][]] | length' "$DISCOVERY_JSON")
+if [ "$DISCOVERED_TEST_COUNT" -le 0 ]; then
+    echo "Forge discovered zero tests for --match-path ${MATCH_PATH}." >&2
+    exit 1
+fi
+
+set +e
+REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" RPC_KEY="${RPC_KEY:-}" forge test \
+    --fork-url "$LOCAL_RPC" \
+    --match-path "$MATCH_PATH" \
+    --threads 1 \
+    "$@" 2>&1 | tee "$FORGE_LOG"
+FORGE_STATUS=${PIPESTATUS[0]}
+set -e
+if [ "$FORGE_STATUS" -ne 0 ]; then
+    exit "$FORGE_STATUS"
+fi
+
+EXECUTED_TEST_COUNT=$(sed -nE 's/.*\(([0-9]+) total tests\).*/\1/p' "$FORGE_LOG" | tail -n 1)
+if [ -z "$EXECUTED_TEST_COUNT" ] || [ "$EXECUTED_TEST_COUNT" -ne "$DISCOVERED_TEST_COUNT" ]; then
+    echo "Forge executed-test count ${EXECUTED_TEST_COUNT:-missing} does not match discovered count ${DISCOVERED_TEST_COUNT}." >&2
+    exit 1
+fi
+
 if [ -n "$EVIDENCE_DIR" ]; then
     mkdir -p "$EVIDENCE_DIR"
     {
         echo "fork_block=${FORK_BLOCK}"
+        echo "solidity_fork_block=${SOLIDITY_FORK_BLOCK}"
         echo "upgraded_block=${LATEST_BLOCK}"
+        echo "cannon_validation_exit=${CANNON_VALIDATION_STATUS}"
+        echo "discovered_test_count=${DISCOVERED_TEST_COUNT}"
+        echo "executed_test_count=${EXECUTED_TEST_COUNT}"
         echo "terminal_gate=${REYA_REQUIRE_TERMINAL_MARKETS:-false}"
     } > "$EVIDENCE_DIR/run.env"
-    REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" RPC_KEY="${RPC_KEY:-}" forge test \
-        --fork-url "$LOCAL_RPC" \
-        --match-path "$MATCH_PATH" \
-        --threads 1 \
-        "$@" 2>&1 | tee "$EVIDENCE_DIR/forge-test.log"
-else
-    REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" RPC_KEY="${RPC_KEY:-}" forge test \
-        --fork-url "$LOCAL_RPC" \
-        --match-path "$MATCH_PATH" \
-        --threads 1 \
-        "$@"
 fi
