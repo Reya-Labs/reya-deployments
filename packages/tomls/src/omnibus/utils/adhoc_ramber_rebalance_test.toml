@@ -1,0 +1,76 @@
+# -----------------------------------------------------------------------------
+# AD-HOC fork-test transactions.
+#
+# Replicates a multisig batch (sender = settings.owner / multisig) that we want
+# to dry-run on the forked network before the tests execute. Because cannon
+# orders operations by `depends` (NOT by include order), these are chained
+# tx1 -> tx2 -> tx3 -> tx4 -> tx5 and anchored on the late-stage RAMBER / USDC
+# config invokes so they run after the rest of the deployment is applied.
+#
+# Sender note: tx2 (deposit) requires the multisig to hold >= 250k USDC on the
+# fork; on a mainnet fork at latest this is the case for the planned batch.
+#
+# Each invoke targets the literal mainnet address + an inline minimal ABI so it
+# is faithful to the raw tx data and independent of cannon's tracked ABIs.
+# Addresses: USDC 0x3B86, RUSD 0xa9F3, PassivePool 0xB4B7, Core 0xA763,
+#            RAMBER 0x63FC, receiver/owner 0x1Fe5 (multisig).
+# -----------------------------------------------------------------------------
+
+# Tx 1 — approve(USDC -> RUSD, 250_000e6)
+[invoke.adhoc_approve_usdc_to_rusd]
+target = ["0x3B860c0b53f2e8bd5264AA7c3451d41263C933F2"]
+abi = '[{"inputs":[{"name":"spender","type":"address"},{"name":"amount","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}]'
+from = "<%= settings.owner %>"
+func = "approve"
+args = ["0xa9F32a851B1800742e47725DA54a09A7Ef2556A3", "250000000000"]
+depends = [
+    "invoke.usdc_authorized_holders_allow_all",
+    "invoke.ramber_rusd_configure_spot_market",
+]
+
+# Tx 2 — deposit(RUSD, 250_000e6)  (wrap USDC -> rUSD)
+[invoke.adhoc_deposit_rusd]
+target = ["0xa9F32a851B1800742e47725DA54a09A7Ef2556A3"]
+abi = '[{"inputs":[{"name":"amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"}]'
+from = "<%= settings.owner %>"
+func = "deposit"
+args = ["250000000000"]
+depends = ["invoke.adhoc_approve_usdc_to_rusd"]
+
+# Tx 3 — approve(RUSD -> PassivePool, 250_000e6)
+[invoke.adhoc_approve_rusd_to_pool]
+target = ["0xa9F32a851B1800742e47725DA54a09A7Ef2556A3"]
+abi = '[{"inputs":[{"name":"spender","type":"address"},{"name":"amount","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}]'
+from = "<%= settings.owner %>"
+func = "approve"
+args = ["0xB4B77d6180cc14472A9a7BDFF01cc2459368D413", "250000000000"]
+depends = ["invoke.adhoc_deposit_rusd"]
+
+# Tx 4 — setGlobalCollateralConfig(RAMBER, [0x0, 0, 1e18]) on Core
+# Overrides the deployment's ramber_global_collateral_config, hence the depends
+# on it so this runs afterwards.
+[invoke.adhoc_set_ramber_global_collateral_config]
+target = ["0xA763B6a5E09378434406C003daE6487FbbDc1a80"]
+abi = '[{"inputs":[{"name":"collateralAddress","type":"address"},{"components":[{"name":"collateralAdapter_DEPRECATED","type":"address"},{"name":"withdrawalWindowSize","type":"uint32"},{"name":"withdrawalTvlPercentageLimit","type":"uint256"}],"name":"config","type":"tuple"}],"name":"setGlobalCollateralConfig","outputs":[],"stateMutability":"nonpayable","type":"function"}]'
+from = "<%= settings.owner %>"
+func = "setGlobalCollateralConfig"
+args = [
+    "0x63FC3F743eE2e70e670864079978a1deB9c18b76",
+    { collateralAdapter_DEPRECATED = "0x0000000000000000000000000000000000000000", withdrawalWindowSize = "0", withdrawalTvlPercentageLimit = "1000000000000000000" },
+]
+depends = [
+    "invoke.adhoc_approve_rusd_to_pool",
+    "invoke.ramber_global_collateral_config",
+]
+
+# Tx 5 — triggerAutoRebalance(poolId=1, [RUSD, 250_000e6, RAMBER, minPrice=0, multisig])
+[invoke.adhoc_trigger_auto_rebalance]
+target = ["0xB4B77d6180cc14472A9a7BDFF01cc2459368D413"]
+abi = '[{"inputs":[{"name":"poolId","type":"uint128"},{"components":[{"name":"tokenIn","type":"address"},{"name":"amountIn","type":"uint256"},{"name":"tokenOut","type":"address"},{"name":"minPrice","type":"uint256"},{"name":"receiverAddress","type":"address"}],"name":"input","type":"tuple"}],"name":"triggerAutoRebalance","outputs":[{"components":[{"name":"amountIn","type":"uint256"},{"name":"amountOut","type":"uint256"},{"name":"priceInToOut","type":"uint256"}],"name":"amounts","type":"tuple"}],"stateMutability":"nonpayable","type":"function"}]'
+from = "<%= settings.owner %>"
+func = "triggerAutoRebalance"
+args = [
+    "1",
+    { tokenIn = "0xa9F32a851B1800742e47725DA54a09A7Ef2556A3", amountIn = "250000000000", tokenOut = "0x63FC3F743eE2e70e670864079978a1deB9c18b76", minPrice = "0", receiverAddress = "0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9" },
+]
+depends = ["invoke.adhoc_set_ramber_global_collateral_config"]
