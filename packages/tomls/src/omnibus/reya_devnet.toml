@@ -352,19 +352,12 @@ cp1Rusd_adlExecutionKeeperFeeUnscaled = "0"
 cp1Rusd_dDutchMinUnscaled = "0.01"
 cp1Rusd_dMaxUnscaled = "0.4"
 
-# Backstop-LP config. The backstop account is a standalone margin account
-# (hardcoded id below) that was created + funded (1M rUSD) + market-activated
-# out-of-band, rather than the pool account used on cronos/mainnet. Economics
-# mirror cronos/mainnet (15% liquidation fee).
-#
-# NB the original reason for this — "devnet has no PassivePool account linked to
-# Core" — no longer holds: devnet now runs its own pool, which creates a Core
-# account on createPool. Switching the backstop over to it would align devnet
-# with cronos/mainnet, but it moves real liquidation economics and the
-# standalone account is already funded and activated, so it is left alone here
-# deliberately rather than by omission. Wired via setBackstopLPConfig in
-# devnet/collateral_pools/liquidations.toml.
-cp1Rusd_backstopLpAccountId = "23"
+# Backstop-LP config. Account 372 is the Keyrock-owned standalone margin account
+# used for both Dutch warehouse and backstop inventory on devnet. It must be
+# funded and market-activated in collateral pool 1 before this configuration is
+# applied. Economics mirror cronos/mainnet (15% liquidation fee). Wired via
+# setBackstopLPConfig in devnet/collateral_pools/liquidations.toml.
+cp1Rusd_backstopLpAccountId = "372"
 cp1Rusd_backstopLp_liquidationFeeUnscaled = "0.15"
 cp1Rusd_backstopLp_minFreeCollateralThresholdInUSDUnscaled = "0"
 
