@@ -15,7 +15,9 @@ import {
 } from "../../../src/interfaces/ICoreProxy.sol";
 
 import {
-    IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
+    IPeripheryProxy,
+    DepositNewMAInputs,
+    DepositExistingMAInputs
 } from "../../../src/interfaces/IPeripheryProxy.sol";
 
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
@@ -51,89 +53,104 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         private
     {
         vm.assume(attacker != subscriber);
+        vm.assume(attacker != redeemer);
         vm.assume(attacker != address(0));
+
+        bytes32 subscriptionFlag = keccak256(bytes("subscription"));
+        bytes32 redemptionFlag = keccak256(bytes("redemption"));
+        // The carried mainnet configuration has allowAll=false. Assert that
+        // state directly so an upgrade that opens either flag cannot turn the
+        // negative fuzz cases into vacuous assumptions. The allowlists contain
+        // more than the current subscriber/redeemer, so fuzz only addresses
+        // that are genuinely unauthorized under the pinned pre-upgrade state.
+        assertFalse(
+            IShareTokenProxy(lmToken).getFeatureFlagAllowAll(subscriptionFlag),
+            "subscription allowAll unexpectedly enabled"
+        );
+        assertFalse(
+            IShareTokenProxy(lmToken).getFeatureFlagAllowAll(redemptionFlag),
+            "redemption allowAll unexpectedly enabled"
+        );
+        vm.assume(!IShareTokenProxy(lmToken).isFeatureAllowed(subscriptionFlag, attacker));
+        vm.assume(!IShareTokenProxy(lmToken).isFeatureAllowed(redemptionFlag, attacker));
 
         uint256 totalSupplyBefore = ITokenProxy(lmToken).totalSupply();
 
         (address user,) = makeAddrAndKey("user");
 
         // attacker cannot mint
-        bytes32 subscriptionFlag = keccak256(bytes("subscription"));
-        if (!IShareTokenProxy(lmToken).isFeatureAllowed(subscriptionFlag, attacker)) {
-            vm.prank(attacker);
-            vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, subscriptionFlag));
-            IShareTokenProxy(lmToken).subscribe(
+        assertFalse(
+            IShareTokenProxy(lmToken).isFeatureAllowed(subscriptionFlag, attacker),
+            "unauthorized attacker unexpectedly has subscription permission"
+        );
+        vm.prank(attacker);
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, subscriptionFlag));
+        IShareTokenProxy(lmToken)
+            .subscribe(
                 SubscriptionInputs({
-                    recipient: attacker,
-                    custodian: custodian,
-                    tokenIn: sec.rusd,
-                    amountIn: 100e6,
-                    minSharesOut: 0
+                    recipient: attacker, custodian: custodian, tokenIn: sec.rusd, amountIn: 100e6, minSharesOut: 0
                 })
             );
-        }
 
         // user cannot mint
-        if (!IShareTokenProxy(lmToken).isFeatureAllowed(subscriptionFlag, user)) {
-            vm.prank(user);
-            vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, subscriptionFlag));
-            IShareTokenProxy(lmToken).subscribe(
+        assertFalse(
+            IShareTokenProxy(lmToken).isFeatureAllowed(subscriptionFlag, user),
+            "unauthorized user unexpectedly has subscription permission"
+        );
+        vm.prank(user);
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, subscriptionFlag));
+        IShareTokenProxy(lmToken)
+            .subscribe(
                 SubscriptionInputs({
-                    recipient: attacker,
-                    custodian: custodian,
-                    tokenIn: sec.rusd,
-                    amountIn: 100e6,
-                    minSharesOut: 0
+                    recipient: attacker, custodian: custodian, tokenIn: sec.rusd, amountIn: 100e6, minSharesOut: 0
                 })
             );
-        }
 
         // subscriber mints to attacker
         deal(sec.rusd, address(subscriber), 100e6);
         vm.prank(subscriber);
         ITokenProxy(sec.rusd).approve(lmToken, 100e6);
         vm.prank(subscriber);
-        uint256 sharesOut = IShareTokenProxy(lmToken).subscribe(
-            SubscriptionInputs({
-                recipient: attacker,
-                custodian: custodian,
-                tokenIn: sec.rusd,
-                amountIn: 100e6,
-                minSharesOut: 0
-            })
-        );
+        uint256 sharesOut = IShareTokenProxy(lmToken)
+            .subscribe(
+                SubscriptionInputs({
+                    recipient: attacker, custodian: custodian, tokenIn: sec.rusd, amountIn: 100e6, minSharesOut: 0
+                })
+            );
 
         vm.prank(custodian);
         ITokenProxy(sec.rusd).transfer(lmToken, 100e6);
 
         // attacker cannot burn
-        bytes32 redemptionFlag = keccak256(bytes("redemption"));
-        if (!IShareTokenProxy(lmToken).isFeatureAllowed(redemptionFlag, attacker)) {
-            vm.prank(attacker);
-            vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, redemptionFlag));
-            IShareTokenProxy(lmToken).redeem(
+        assertFalse(
+            IShareTokenProxy(lmToken).isFeatureAllowed(redemptionFlag, attacker),
+            "unauthorized attacker unexpectedly has redemption permission"
+        );
+        vm.prank(attacker);
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, redemptionFlag));
+        IShareTokenProxy(lmToken)
+            .redeem(
                 RedemptionInputs({ recipient: attacker, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
             );
-        }
 
         // user cannot burn
         vm.prank(attacker);
         ITokenProxy(lmToken).transfer(user, 50e18);
-        if (!IShareTokenProxy(lmToken).isFeatureAllowed(redemptionFlag, user)) {
-            vm.prank(user);
-            vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, redemptionFlag));
-            IShareTokenProxy(lmToken).redeem(
-                RedemptionInputs({ recipient: user, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
-            );
-        }
+        assertFalse(
+            IShareTokenProxy(lmToken).isFeatureAllowed(redemptionFlag, user),
+            "unauthorized user unexpectedly has redemption permission"
+        );
+        vm.prank(user);
+        vm.expectRevert(abi.encodeWithSelector(ICoreProxy.FeatureUnavailable.selector, redemptionFlag));
+        IShareTokenProxy(lmToken)
+            .redeem(RedemptionInputs({ recipient: user, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 }));
 
         // redeemer burns
         vm.prank(user);
         ITokenProxy(lmToken).transfer(redeemer, 50e18);
         vm.prank(redeemer);
-        IShareTokenProxy(lmToken).redeem(
-            RedemptionInputs({ recipient: user, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
-        );
+        IShareTokenProxy(lmToken)
+            .redeem(RedemptionInputs({ recipient: user, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 }));
 
         uint256 totalSupplyAfter = ITokenProxy(lmToken).totalSupply();
         assertEq(totalSupplyAfter, totalSupplyBefore + sharesOut - 50e18);
@@ -166,15 +183,12 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         // subscriber subscribes 100 rusd to lm token and sends shares to custom recipient
         vm.prank(subscriber);
-        uint256 sharesOut = IShareTokenProxy(lmToken).subscribe(
-            SubscriptionInputs({
-                recipient: recipient1,
-                custodian: custodian,
-                tokenIn: sec.rusd,
-                amountIn: 100e6,
-                minSharesOut: 0
-            })
-        );
+        uint256 sharesOut = IShareTokenProxy(lmToken)
+            .subscribe(
+                SubscriptionInputs({
+                    recipient: recipient1, custodian: custodian, tokenIn: sec.rusd, amountIn: 100e6, minSharesOut: 0
+                })
+            );
 
         uint256 lmTokenPrice = IOracleManagerProxy(sec.oracleManager).process(lmTokenOracleNodeId).price;
         assertApproxEqAbsDecimal(sharesOut, 100e18 * 1e18 / lmTokenPrice, 1e18, 18);
@@ -212,9 +226,10 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
 
         // redeemer redeems 50 shares from LM token
         vm.prank(redeemer);
-        uint256 tokenOut = IShareTokenProxy(lmToken).redeem(
-            RedemptionInputs({ recipient: recipient2, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
-        );
+        uint256 tokenOut = IShareTokenProxy(lmToken)
+            .redeem(
+                RedemptionInputs({ recipient: recipient2, tokenOut: sec.rusd, sharesToRedeem: 50e18, minTokensOut: 0 })
+            );
 
         assertApproxEqAbsDecimal(tokenOut, 50e6 * lmTokenPrice / 1e18, 1e6, 6);
 
@@ -254,9 +269,9 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         NodeOutput.Data memory lmTokenUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(lmTokenUsdcNodeId);
 
         (, ParentCollateralConfig memory parentCollateralConfig,) = ICoreProxy(sec.core).getCollateralConfig(1, lmToken);
-        SD59x18 lmTokenAmountInUSD = sd(int256(lmTokenAmount)).mul(sd(int256(lmTokenUsdcNodeOutput.price))).mul(
-            UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut)))
-        );
+        SD59x18 lmTokenAmountInUSD = sd(int256(lmTokenAmount))
+            .mul(sd(int256(lmTokenUsdcNodeOutput.price)))
+            .mul(UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut))));
 
         MarginInfo memory accountUsdNodeMarginInfo = ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId);
         assertApproxEqAbsDecimal(accountUsdNodeMarginInfo.marginBalance, lmTokenAmountInUSD.unwrap(), 0.000001e18, 18);
@@ -270,9 +285,8 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         deal(sec.usdc, address(sec.periphery), usdcAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], usdcAmount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        IPeripheryProxy(sec.periphery).depositExistingMA(
-            DepositExistingMAInputs({ accountId: accountId, token: sec.usdc })
-        );
+        IPeripheryProxy(sec.periphery)
+            .depositExistingMA(DepositExistingMAInputs({ accountId: accountId, token: sec.usdc }));
 
         accountUsdNodeMarginInfo = ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId);
         assertApproxEqAbsDecimal(
@@ -347,9 +361,8 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
         deal(sec.usdc, address(sec.periphery), usdcAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], usdcAmount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        IPeripheryProxy(sec.periphery).depositExistingMA(
-            DepositExistingMAInputs({ accountId: accountId, token: sec.usdc })
-        );
+        IPeripheryProxy(sec.periphery)
+            .depositExistingMA(DepositExistingMAInputs({ accountId: accountId, token: sec.usdc }));
 
         amount = 100e18;
         withdrawMA(accountId, lmToken, amount);

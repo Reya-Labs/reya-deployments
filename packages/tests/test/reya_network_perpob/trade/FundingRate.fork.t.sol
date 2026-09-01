@@ -17,11 +17,23 @@ contract FundingRateForkTest is ReyaForkTest {
         check_FundingRateStaleness(1);
     }
 
+    function test_RejectsStaleFundingPayload_BTC() public {
+        check_FundingRateStaleness(2);
+    }
+
     function test_StaleFundingBlocksTrade_ETH() public {
         check_FundingRateStalenessForTrade(1);
     }
 
+    function test_StaleFundingBlocksTrade_BTC() public {
+        check_FundingRateStalenessForTrade(2);
+    }
+
     function test_FundingAccrual_ETH() public {
         check_FundingRateAccrual(1);
+    }
+
+    function test_FundingAccrual_BTC() public {
+        check_FundingRateAccrual(2);
     }
 }

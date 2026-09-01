@@ -21,4 +21,20 @@ contract LiquidationForkTest is ReyaForkTest, LiquidationPerpOBForkCheck {
     function test_BackstopLiquidationRejectsAccountAboveAdl_ETH() public {
         check_BackstopLiquidation_RevertAboveAdl_PerpOB(1);
     }
+
+    function test_DutchLiquidation_BTC() public {
+        check_DutchLiquidation_PerpOB(2);
+    }
+
+    function test_BackstopLiquidation_BTC() public {
+        check_BackstopLiquidation_PerpOB(2);
+    }
+
+    function test_DutchLiquidationRejectsHealthyAccount_BTC() public {
+        check_DutchLiquidation_RevertWhenHealthy_PerpOB(2);
+    }
+
+    function test_BackstopLiquidationRejectsAccountAboveAdl_BTC() public {
+        check_BackstopLiquidation_RevertAboveAdl_PerpOB(2);
+    }
 }

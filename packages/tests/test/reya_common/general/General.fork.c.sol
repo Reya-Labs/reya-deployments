@@ -1456,13 +1456,7 @@ contract GeneralForkCheck is BaseReyaForkTest {
         vm.assertEq(bytes(mismatches).length, 0, mismatches);
     }
 
-    function check_marketsMaxOiAndOi(
-        uint128[] memory reduceOnlyMarkets,
-        uint128[] memory inactiveMarkets
-    )
-        public
-        view
-    {
+    function check_marketsMaxOiAndOi(uint128[] memory reduceOnlyMarkets, uint128[] memory inactiveMarkets) public view {
         for (uint256 i = 0; i < reduceOnlyMarkets.length; i++) {
             uint128 marketId = reduceOnlyMarkets[i];
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);
@@ -1532,13 +1526,22 @@ contract GeneralForkCheck is BaseReyaForkTest {
     }
 
     function check_sdeusd_deusd_price() public {
+        uint256 reyaFork = vm.activeFork();
         NodeOutput.Data memory sdeusdDeusdOutput =
             IOracleManagerProxy(sec.oracleManager).process(sec.sdeusdDeusdStorkNodeId);
 
-        vm.createSelectFork(sec.MAINNET_RPC);
+        // Last Ethereum block before the pinned Reya fork timestamp
+        // (1787911187 versus Reya's 1787911194).
+        vm.createSelectFork(sec.MAINNET_RPC, 25_852_999);
         uint256 originalSdeusdDeusdPrice = IElixirSdeusd(sec.elixirSdeusd).convertToAssets(1e18);
+        vm.selectFork(reyaFork);
 
-        assertLe(sdeusdDeusdOutput.price, originalSdeusdDeusdPrice);
+        assertApproxEqAbs(
+            sdeusdDeusdOutput.price,
+            originalSdeusdDeusdPrice,
+            1e12,
+            "sdeUSD/deUSD oracle diverges from pinned convertToAssets"
+        );
     }
 
     function check_periphery_srusd_balance() public view {

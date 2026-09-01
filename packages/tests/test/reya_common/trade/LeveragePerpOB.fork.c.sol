@@ -11,7 +11,11 @@ import {
     CachedCollateralConfig
 } from "../../../src/interfaces/ICoreProxy.sol";
 
-import { IPassivePerpProxy, MarketConfigurationData, PerpPosition } from "../../../src/interfaces/IPassivePerpProxy.sol";
+import {
+    IPassivePerpProxy,
+    MarketConfigurationData,
+    PerpPosition
+} from "../../../src/interfaces/IPassivePerpProxy.sol";
 
 import { IOracleManagerProxy } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
@@ -104,11 +108,6 @@ contract LeveragePerpOBForkCheck is PerpFillForkCheck {
         UD60x18 price = ud(markPrice);
         UD60x18 leverage = price.div(imr); // base=1, so exposure = price
 
-        // TODO: ±2x tolerance inherited from legacy Leverage.fork.c.sol — investigate
-        // whether this can be tightened. In a fork environment oracle prices are
-        // deterministic, so the gap likely comes from the difference between the
-        // theoretical max leverage (from risk params) and the computed value here
-        // (which includes IM multiplier scaling on top of LMR).
-        assertApproxEqAbsDecimal(leverage.unwrap(), expectedLev, 2e18, 18, "Leverage should match expected");
+        assertApproxEqAbsDecimal(leverage.unwrap(), expectedLev, 0.25e18, 18, "Leverage should match expected");
     }
 }

@@ -13,6 +13,15 @@ LOCAL_RPC="http://127.0.0.1:${CANNON_PORT}"
 EVIDENCE_DIR="${REYA_PERPOB_EVIDENCE_DIR:-}"
 MATCH_PATH="${REYA_PERPOB_MATCH_PATH:-test/reya_network_perpob/**/*.sol}"
 MIGRATION_STATE_TEST="$PACKAGE_DIR/test/reya_network_perpob/perpob/MigrationState.fork.t.sol"
+FORGE_LINKING_ARGS=()
+
+# Foundry 1.8 enables dynamic test linking by default, which can run only the
+# source-affected subset even though `--list` reports the whole match path. CI
+# currently pins 1.2.3, where the flag does not exist and all tests run by
+# default, so feature-detect it rather than breaking the older toolchain.
+if forge test --help | grep -q -- "--no-dynamic-test-linking"; then
+    FORGE_LINKING_ARGS+=(--no-dynamic-test-linking)
+fi
 
 export CANNON_DIRECTORY="${CANNON_DIRECTORY:-${XDG_CACHE_HOME:-$HOME/.cache}/reya-perpob-cannon}"
 export CANNON_REGISTRY_ADDRESS="${CANNON_REGISTRY_ADDRESS:-0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba}"
@@ -145,9 +154,10 @@ fi
 
 echo "Running PerpOB fork tests at upgraded block ${LATEST_BLOCK}."
 cd "$PACKAGE_DIR"
-REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" RPC_KEY="${RPC_KEY:-}" forge test \
+REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" REYA_PERPOB_LOCAL_RPC="$LOCAL_RPC" RPC_KEY="${RPC_KEY:-}" forge test \
     --fork-url "$LOCAL_RPC" \
     --match-path "$MATCH_PATH" \
+    "${FORGE_LINKING_ARGS[@]}" \
     --threads 1 \
     --list \
     --json \
@@ -159,9 +169,10 @@ if [ "$DISCOVERED_TEST_COUNT" -le 0 ]; then
 fi
 
 set +e
-REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" RPC_KEY="${RPC_KEY:-}" forge test \
+REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" REYA_PERPOB_LOCAL_RPC="$LOCAL_RPC" RPC_KEY="${RPC_KEY:-}" forge test \
     --fork-url "$LOCAL_RPC" \
     --match-path "$MATCH_PATH" \
+    "${FORGE_LINKING_ARGS[@]}" \
     --threads 1 \
     "$@" 2>&1 | tee "$FORGE_LOG"
 FORGE_STATUS=${PIPESTATUS[0]}

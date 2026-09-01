@@ -14,12 +14,12 @@ criteria, not the earlier 12-test PR smoke scope.
 | --- | --- | --- | --- |
 | 1 | Mainnet omnibus builds from an immutable release manifest. | **Blocked** | [PR #522](https://github.com/Reya-Labs/reya-deployments/pull/522) builds the isolated [`reya_network_perpob.toml`](../packages/tomls/src/omnibus/reya_network_perpob.toml) overlay with provisional `1.1.2` packages. PRO-958 must supply the immutable, audited release manifest; further audit fixes will produce newer releases. |
 | 2 | Generated upgrade/config transaction ordering matches the migration design and is proven on a fork. | **Partial** | The ordered payload below was executed successfully on the fork and its readbacks/tests pass. It omits release-blocked timestamp, terminal-market and dust-production inputs and therefore is not the final payload. |
-| 3 | Rendered mainnet ME configuration passes fail-closed schema validation with no unknown/deprecated keys. | **Partial / deployment change missing** | [reya-chain PR #236](https://github.com/Reya-Labs/reya-chain/pull/236) merged at `a90e3f750241bbf8f9778a38b44d27bcc74c57a0` and rejects unknown `MATCHING_ENGINE__*` variables recursively. The deployment half did not land: [reya-devops PR #1035](https://github.com/Reya-Labs/reya-devops/pull/1035) was closed unmerged on 30 August. At devops `main` revision `7ee2657ec24261125e194c63bad638233760f78f`, the rendered source still contains the five retired persistence keys, so the current mainnet environment does not pass the merged schema. |
-| 4 | Mainnet ME uses current reactor persistence and no obsolete broadcast configuration. | **Partial / deployment change missing** | Repository-wide search at devops `7ee2657ec24261125e194c63bad638233760f78f` finds no `MATCHING_ENGINE__BROADCAST__ENABLED`, but all five `MATCHING_ENGINE__PERSISTENCE__*` keys remain and have not been replaced by `MATCHING_ENGINE__REACTOR_PERSISTENCE__*`. Closed PR #1035 demonstrated a schema-clean replacement, but closed/unmerged evidence cannot satisfy this mainnet criterion. |
-| 5 | Mainnet fork checks pass at a recorded recent block and cover the full multi-market shape. | **Partial** | The retained production suite remains at `test/reya_network/**/*.sol`; the complete classified PerpOB suite runs independently from `test/reya_network_perpob/**/*.sol`, and state checks iterate all 75 markets. Block `218500000` is recorded, but it is not the final post-RET-21 block and the terminal test is honestly skipped. |
-| 6 | PRO-637 state-survival requirements are satisfied or incorporated. | **Satisfied provisionally** | [`MigrationState.fork.t.sol`](../packages/tests/test/reya_network_perpob/perpob/MigrationState.fork.t.sol) compares pre/post implementations and preserves the live account owner, rUSD balance, raw ETH/BTC position storage, trackers, market identity, funding timestamps and OI; activation/timestamp/OI are checked for all 75 markets. Must be rerun with final packages/block. |
+| 3 | Rendered mainnet ME configuration passes fail-closed schema validation with no unknown/deprecated keys. | **Partial — implementation green, merge pending** | [reya-chain PR #236](https://github.com/Reya-Labs/reya-chain/pull/236) merged the recursive fail-closed schema at `a90e3f750241bbf8f9778a38b44d27bcc74c57a0`. Replacement [reya-devops PR #1043](https://github.com/Reya-Labs/reya-devops/pull/1043) at `dc1a8aec9da51e156d21ce4a5e4a598c7db06d4d` Helm-renders mainnet and validates every ME variable against that schema in CI; all checks pass. The criterion remains partial until #1043 merges. |
+| 4 | Mainnet ME uses current reactor persistence and no obsolete broadcast configuration. | **Partial — implementation green, merge pending** | [reya-devops PR #1043](https://github.com/Reya-Labs/reya-devops/pull/1043) replaces all five retired `MATCHING_ENGINE__PERSISTENCE__*` names with `MATCHING_ENGINE__REACTOR_PERSISTENCE__*`, and its repository/render checks find no `MATCHING_ENGINE__BROADCAST__ENABLED`. The branch is schema-clean and green but not yet merged to the deployed mainnet values. |
+| 5 | Mainnet fork checks pass at a recorded recent block and cover the full multi-market shape. | **Partial** | The retained production suite remains at `test/reya_network/**/*.sol`; the complete classified PerpOB suite runs independently from `test/reya_network_perpob/**/*.sol`. The guarded run discovered and executed all 164 tests across 26 suites (163 pass, 0 fail, 1 explicit terminal skip), and state checks iterate all 75 markets. Block `218500000` is recorded, but it is not the final post-RET-21 block. |
+| 6 | PRO-637 state-survival requirements are satisfied or incorporated. | **Satisfied provisionally** | [`MigrationState.fork.t.sol`](../packages/tests/test/reya_network_perpob/perpob/MigrationState.fork.t.sol) compares old/new implementations across 10 real accounts: bounded top-notional accounts plus WETH/WBTC/sUSDe/all-three-LM-token/recent-liquidation anchors. It hashes all permissions and compares raw ETH/BTC position slots per account, all 13 protocol collateral-pool balances, all three public collateral-state fields for a real positionless account, and custodied rUSD. Public position/PnL/funding views for a pre-cutover ETH+BTC account hold time, mark and funding observations constant and enforce a 10-bps total-PnL continuity bound across the intended AMM→PerpOB computed-model change. Activation/timestamp/OI are checked for all 75 markets. Must be rerun with final packages/block. |
 | 7 | No retained check depends on removed PerpOB behavior. | **Satisfied provisionally** | [`pro-656-reya-network-fork-test-inventory.md`](./pro-656-reya-network-fork-test-inventory.md) classifies every pre-existing fork-test file as retain/adapt/replace/remove and ties each PerpOB disposition to intended behavior. The production suite remains a separate CI gate until cutover; two test-only drift fixes keep it valid at the live tip. |
-| 8 | Post-upgrade state proves ETH/BTC preservation, all other markets closed, timestamp policy, permissions/config, freshness and dust behavior. | **Partial** | ETH/BTC survival, conditional timestamp behavior, readbacks, permissions, signed fills and real fresh/stale paths are covered. Dust happy/negative/permission paths use an isolated provisional sink/keeper and expose the `1.1.2` price-zero/collar incompatibility. Fifty non-ETH/BTC markets still have OI at this block, so terminal closure is not claimed. |
+| 8 | Post-upgrade state proves ETH/BTC preservation, all other markets closed, timestamp policy, permissions/config, freshness and dust behavior. | **Partial** | ETH/BTC storage and economic-view survival, conditional timestamp behavior, readbacks, permissions, signed fills and real fresh/stale paths are covered. Passive-pool share supply survives exactly; share valuation fails closed on stale retired-market marks at this block and is reusable in strict terminal mode. Dust happy/negative/permission paths use an isolated provisional sink/keeper and expose the `1.1.2` price-zero/collar incompatibility. Fifty non-ETH/BTC markets still have OI, so terminal closure is not claimed. |
 | 9 | Commands, SHAs/packages, fork block, payload summary and output are attached. | **Satisfied for this provisional rehearsal** | This document records them below. Final release evidence must replace the provisional inputs and rerun the same commands. |
 | 10 | PRO-261 gate links are present and the migration has required review. | **Missing** | [PRO-261](https://linear.app/reya-labs/issue/PRO-261) gate/review sign-off has not been supplied. This cannot be inferred from a green local run. |
 
@@ -29,7 +29,7 @@ criteria, not the earlier 12-test PR smoke scope.
 | --- | --- | --- |
 | `reya-deployments` | PR [#522](https://github.com/Reya-Labs/reya-deployments/pull/522), based on `2c5c5ba73f817cd1267f84a8dc9313b5747f3044` | Fork payload, full-suite runner, fork gates, inventory and this evidence. |
 | `reya-chain` | merge `a90e3f750241bbf8f9778a38b44d27bcc74c57a0`, PR [#236](https://github.com/Reya-Labs/reya-chain/pull/236) | Merged fail-closed ME environment schema and tests. |
-| `reya-devops` | `main` `7ee2657ec24261125e194c63bad638233760f78f`; closed PR [#1035](https://github.com/Reya-Labs/reya-devops/pull/1035) | Current mainnet still has five stale persistence keys. #1035 is useful proof of a clean replacement, not a landed change. |
+| `reya-devops` | PR [#1043](https://github.com/Reya-Labs/reya-devops/pull/1043), `dc1a8aec9da51e156d21ce4a5e4a598c7db06d4d` | Replaces all five stale persistence keys and adds fail-closed Helm/schema CI; all checks pass, merge pending. |
 | `reya-python-sdk` | `f989de09460531ac238b2209aa258e8455763056` (`origin/feat/perpOB`) | Bounded audit only: 610 passed, 18 skipped, 1 warning; no SDK source changes and no further PRO-656 scope. |
 
 - Source fork block: `218500000`
@@ -50,14 +50,20 @@ criteria, not the earlier 12-test PR smoke scope.
 ```sh
 cd packages/tests
 REYA_PERPOB_CANNON_PORT=18552 \
-REYA_PERPOB_EVIDENCE_DIR=/tmp/pro656-split-suite-evidence \
+REYA_PERPOB_CANNON_VALIDATION_PORT=18553 \
+REYA_PERPOB_EVIDENCE_DIR=/path/to/pro656-deployments-full \
 ./scripts/reya-network-perpob.test.sh
 ```
 
-This runs Cannon over the pinned mainnet state, verifies that upgrade
-transactions advanced the block, then runs the complete classified
-`test/reya_network_perpob/**/*.sol` tree with `--threads 1`. The previous
-12-test match boundary is not used. `reya_network:test` remains the
+This runs Cannon twice over the pinned mainnet state: a non-retained validation
+build whose exit code proves Cannon did not partially build, then the retained
+node used by Forge. It verifies that upgrade transactions advanced the block,
+then runs the complete classified `test/reya_network_perpob/**/*.sol` tree with
+`--threads 1`. The runner feature-detects and disables Foundry 1.8 dynamic test
+linking, which otherwise executed only 107 source-affected tests while `--list`
+found 164; older CI Foundry versions retain their all-tests default. It also
+fails unless the discovered and executed counts are identical.
+The previous 12-test match boundary is not used. `reya_network:test` remains the
 production-omnibus fork gate and CI runs both suites independently. The
 production gate stays at the live tip and runs Forge with one thread. Its only
 test changes are production-state drift fixes: fuzzed attackers must not
@@ -75,15 +81,28 @@ The classified PerpOB suite is therefore a new `reya_network:perpob:test` CI
 gate rather than a replacement for `reya_network:test`.
 
 ```text
-Ran 24 test suites in 674.20s (674.15s CPU time):
-138 tests passed, 0 failed, 1 skipped (139 total tests)
+Ran 26 test suites in 948.76s (948.69s CPU time):
+163 tests passed, 0 failed, 1 skipped (164 total tests)
 ```
 
 The sole skip is
 `test_TerminalMarketsAreClosedAtApprovedForkBlock`; it is the explicit
 RET-21/PRO-394 gate described below. All other retained, adapted and replacement
 tests are green. The evidence directory contains `cannon.log`, `forge-test.log`
-and `run.env` for this run.
+and `run.env` for this run. The definitive artifact is
+`/workspace/daniel_reya_xyz/dev/.evidence/pro656-deployments-full/20260901T014500Z`:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| `cannon-validation.log` | `c2a8a5829a76f0feaef766213331893f69de2ab2d0ed37f7635a55ec005cb68d` |
+| `cannon.log` | `f58543299bfe90799c89217a61c9e12d67719857860c79c2a5958ed3131356ee` |
+| `forge-test-list.json` | `4eaa70df922c57674c5bdd925defd0a77014efe3f8a47ab4e54d6e7f6ed2460b` |
+| `forge-test.log` | `1fb093a1d6b6cb5c024c3bab25402c7e977af454b51aa49343c4369033f0b63d` |
+| `run.env` | `828a7622c0a1710cadd970b86c0f53d5a077e622a11bee8c54e8ae009b0e8608` |
+
+`run.env` records `cannon_validation_exit=0`,
+`discovered_test_count=164`, `executed_test_count=164` and
+`terminal_gate=false`.
 
 Additional build check:
 
@@ -164,13 +183,30 @@ transaction hash and gas for every row.
 | Funding timestamp initializer | Both active market timestamps are already non-zero at this block; policy is blocked by PRO-393. | Generate calls only for zero timestamps; reject replay/non-zero values. The fork test proves both branches synthetically without pretending the provisional payload includes a call. |
 | Non-ETH/BTC terminal closure | RET-21 has not produced the final post-close block. PRO-394 is complete, but its tooling does not make the current block terminal. | Re-run with `REYA_REQUIRE_TERMINAL_MARKETS=true` and the final block; require inactive and zero OI for IDs 3–75. |
 | Production dust sink/keeper and collar sequence | PRO-956/PRO-654 inputs are unresolved. Package `1.1.2` rejects the price-zero happy path while the 5% fill collar remains enabled. | Configure the real sink/keeper and include the PRO-661 atomic collar-disable / settle / collar-restore batch, or ship a targeted audited exception; prove the final sequence without leaving the collar disabled. |
-| Margin-account transfer capability | The provisional Core `1.1.2` router does not expose the `TransferBetweenMarginAccounts` selector used by the production test. | PRO-954/PRO-958 must confirm intentional removal or provide a release package retaining the capability; a green PerpOB suite is not evidence that this regression is accepted. |
+| Owner-main-account lookup | The provisional Core `1.1.2` router does not expose `getOwnerMainAccountId(address)` (`0x17a35133`). The fork gate avoids depending on that legacy lookup by creating two same-owner accounts, then proves `TransferBetweenMarginAccounts` succeeds through `execute(...)` with exact source/destination balances. | PRO-954/PRO-958 must confirm the lookup removal is intentional or provide a release package retaining it; the transfer capability itself is green. |
 
 ## Fork gates and observed post-state
 
-- Explicit old-to-new survival: implementation address changes while the live
-  account `125718`, its rUSD collateral, raw ETH/BTC position slots, market
-  identity, long/short funding/ADL trackers, timestamps and OI remain equal.
+- Explicit old-to-new survival: implementation address changes while 10 real
+  accounts preserve owners, all permission arrays and raw ETH/BTC position
+  slots. All 13 protocol collateral-pool balances and custodied rUSD remain
+  exact; all three public collateral fields for all 13 assets are also compared
+  on a real positionless account so the read is independent of the known stale
+  retired-market marks. The account sample includes bounded top-notional
+  accounts, WETH/WBTC/sUSDe/LM-token holders and a recent liquidation anchor.
+- Migration reads use a fresh fork of the upgraded Cannon node, not the shared
+  runtime fixture fork. This prevents the constructor's deliberate 1-rAMBER
+  passive-pool deposit and oracle-staleness overrides from contaminating the
+  old-versus-new comparison.
+- Funding/PnL continuity: real account `125718` has non-zero pre-cutover ETH and
+  BTC positions. Raw tracker/position storage compares byte-exactly. With
+  observation time, mark price and funding rate held fixed, the public total-PnL
+  view remains within 10 bps across the intentional legacy-AMM to PerpOB
+  computed-model transition.
+- Passive-pool continuity: share supply survives exactly. At the current block,
+  share-price valuation rejects the stale marks of nonterminal retired markets;
+  the same test becomes an exact pre/post share-price assertion under the final
+  `REYA_REQUIRE_TERMINAL_MARKETS=true` run.
 - Full shape: activation, funding timestamp and OI comparisons iterate market
   IDs `1..75`, not only ETH/BTC.
 - Funding timestamp: existing non-zero timestamps are unchanged and initializer
@@ -211,9 +247,9 @@ skip is not a terminal-closure pass.
 
 ## External blockers retained by PRO-656
 
-- Mainnet ME deployment schema: reya-devops still needs an owned replacement
-  for closed PR #1035 before the merged fail-closed loader can accept the
-  rendered environment.
+- Mainnet ME deployment schema: reya-devops PR #1043 is green and supplies the
+  owned replacement plus render/schema CI, but must merge before criteria 3–4
+  can close against mainnet values.
 - [PRO-958](https://linear.app/reya-labs/issue/PRO-958): immutable audited
   release/package manifest.
 - [PRO-393](https://linear.app/reya-labs/issue/PRO-393): final funding-timestamp

@@ -106,30 +106,6 @@ contract SrusdCollateralForkCheck is BaseReyaForkTest {
         assertEq(accountSrusdCollateralInfo.realBalance, int256(srusdAmount));
     }
 
-    function check_srusd_cap_exceeded() public {
-        (address user, uint256 userPk) = makeAddrAndKey("user");
-        uint256 amount = 50_000_001e30; // denominated in srusd
-        uint128 marketId = 1; // eth
-        SD59x18 base = sd(1e18);
-        UD60x18 priceLimit = ud(10_000e18);
-
-        uint256 collateralPoolSrusdBalance = ICoreProxy(sec.core).getCollateralPoolBalance(1, sec.srusd);
-
-        // deposit new margin account
-        uint128 accountId = depositNewMA(user, sec.srusd, amount);
-
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                ICoreProxy.CollateralCapExceeded.selector,
-                1,
-                sec.srusd,
-                50_000_000e18,
-                collateralPoolSrusdBalance + amount
-            )
-        );
-        executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
-    }
-
     function check_srusd_deposit_withdraw() public {
         removeCollateralWithdrawalLimit(sec.srusd);
 

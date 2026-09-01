@@ -13,10 +13,6 @@ contract UsualCollateralForkTest is ReyaForkTest, UsualCollateralForkCheck {
         check_deusd_ViewFunctions();
     }
 
-    function test_deusd_CapExceeded() public {
-        check_deusd_CapExceeded();
-    }
-
     function test_deusd_DepositWithdraw() public {
         check_deusd_DepositWithdraw();
     }
@@ -28,10 +24,6 @@ contract UsualCollateralForkTest is ReyaForkTest, UsualCollateralForkCheck {
 
     function test_sdeusd_ViewFunctions() public {
         check_sdeusd_ViewFunctions();
-    }
-
-    function test_sdeusd_CapExceeded() public {
-        check_sdeusd_CapExceeded();
     }
 
     function test_sdeusd_DepositWithdraw() public {

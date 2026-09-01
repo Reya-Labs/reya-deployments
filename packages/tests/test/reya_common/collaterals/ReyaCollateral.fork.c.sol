@@ -23,8 +23,8 @@ contract ReyaCollateralForkCheck is BaseReyaForkTest {
         (GlobalCollateralConfig memory globalConfig,) = ICoreProxy(sec.core).getGlobalCollateralConfig(sec.reya);
 
         assertEq(globalConfig.collateralAdapter, address(0), "REYA collateralAdapter should be zero address");
-        assertGt(globalConfig.withdrawalWindowSize, 0, "REYA withdrawalWindowSize should be > 0");
-        assertGt(globalConfig.withdrawalTvlPercentageLimit, 0, "REYA withdrawalTvlPercentageLimit should be > 0");
+        assertEq(globalConfig.withdrawalWindowSize, 1, "REYA withdrawalWindowSize mismatch");
+        assertEq(globalConfig.withdrawalTvlPercentageLimit, 1e18, "REYA withdrawalTvlPercentageLimit mismatch");
     }
 
     function check_reya_spot_market_config(ReyaSpotMarketConfigExpectations memory expected) internal view {

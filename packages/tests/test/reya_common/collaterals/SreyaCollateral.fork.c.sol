@@ -23,8 +23,8 @@ contract SreyaCollateralForkCheck is BaseReyaForkTest {
         (GlobalCollateralConfig memory globalConfig,) = ICoreProxy(sec.core).getGlobalCollateralConfig(sec.sreya);
 
         assertEq(globalConfig.collateralAdapter, address(0), "sREYA collateralAdapter should be zero address");
-        assertGt(globalConfig.withdrawalWindowSize, 0, "sREYA withdrawalWindowSize should be > 0");
-        assertGt(globalConfig.withdrawalTvlPercentageLimit, 0, "sREYA withdrawalTvlPercentageLimit should be > 0");
+        assertEq(globalConfig.withdrawalWindowSize, 1, "sREYA withdrawalWindowSize mismatch");
+        assertEq(globalConfig.withdrawalTvlPercentageLimit, 1e18, "sREYA withdrawalTvlPercentageLimit mismatch");
     }
 
     function check_sreya_spot_market_config(SreyaSpotMarketConfigExpectations memory expected) internal view {

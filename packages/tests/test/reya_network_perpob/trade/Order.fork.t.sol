@@ -48,4 +48,46 @@ contract OrderForkTest is ReyaForkTest {
     function test_SignedFillMarkImpactsMargin_ETH() public {
         check_PerpMarkPriceImpactsMargin(1);
     }
+
+    function test_SignedFillMarginImpact_ETH() public {
+        check_PerpFillMarginImpact(1);
+    }
+
+    function test_SignedFillReduceOnlyRevert_ETH() public {
+        check_PerpFillReduceOnlyRevert(1);
+    }
+
+    function test_WithdrawWithOpenPosition_ETH() public {
+        check_WithdrawWithOpenPosition(1);
+    }
+
+    function test_DeprecatedMarketZeroFeesFlagIsInert_ETH() public {
+        // The legacy bot is not authorized on the PerpOB router. Use the owner so this
+        // test reaches and proves the deprecated field is economically inert.
+        check_PerpFillDeprecatedMarketZeroFeesFlag(1, sec.multisig);
+    }
+
+    function test_DeprecatedExchangeZeroFeesFlagIsInert_ETH() public {
+        check_PerpFillDeprecatedExchangeZeroFeesFlag(1);
+    }
+
+    function test_DeprecatedMakerParametersAreInert_ETH() public {
+        check_PerpFillDeprecatedMakerParametersIgnored(1);
+    }
+
+    function test_TakerRebate_OG_ETH() public {
+        check_PerpFillTakerRebates(1, true, false);
+    }
+
+    function test_TakerRebate_VLTZ_ETH() public {
+        check_PerpFillTakerRebates(1, false, true);
+    }
+
+    function test_TakerRebate_OGAndVLTZ_ETH() public {
+        check_PerpFillTakerRebates(1, true, true);
+    }
+
+    function test_TakerFeeParameterUpperBound() public {
+        check_TakerFeeParameterUpperBound();
+    }
 }

@@ -6,7 +6,9 @@ import "../DataTypes.sol";
 import { ICoreProxy, ParentCollateralConfig, MarginInfo, CollateralInfo } from "../../../src/interfaces/ICoreProxy.sol";
 
 import {
-    IPeripheryProxy, DepositNewMAInputs, DepositExistingMAInputs
+    IPeripheryProxy,
+    DepositNewMAInputs,
+    DepositExistingMAInputs
 } from "../../../src/interfaces/IPeripheryProxy.sol";
 
 import { IPassivePerpProxy } from "../../../src/interfaces/IPassivePerpProxy.sol";
@@ -83,9 +85,9 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         NodeOutput.Data memory tokenUsdcNodeOutput = IOracleManagerProxy(sec.oracleManager).process(tokenStorkNodeId);
 
         (, ParentCollateralConfig memory parentCollateralConfig,) = ICoreProxy(sec.core).getCollateralConfig(1, token);
-        SD59x18 tokenAmountInUSD = sd(int256(tokenAmount)).mul(sd(int256(tokenUsdcNodeOutput.price))).mul(
-            UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut)))
-        );
+        SD59x18 tokenAmountInUSD = sd(int256(tokenAmount))
+            .mul(sd(int256(tokenUsdcNodeOutput.price)))
+            .mul(UNIT_sd.sub(sd(int256(parentCollateralConfig.priceHaircut))));
 
         MarginInfo memory accountUsdNodeMarginInfo = ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId);
         assertApproxEqAbsDecimal(accountUsdNodeMarginInfo.marginBalance, tokenAmountInUSD.unwrap(), 0.000001e18, 18);
@@ -99,9 +101,8 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         deal(sec.usdc, address(sec.periphery), usdcAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], usdcAmount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        IPeripheryProxy(sec.periphery).depositExistingMA(
-            DepositExistingMAInputs({ accountId: accountId, token: sec.usdc })
-        );
+        IPeripheryProxy(sec.periphery)
+            .depositExistingMA(DepositExistingMAInputs({ accountId: accountId, token: sec.usdc }));
 
         accountUsdNodeMarginInfo = ICoreProxy(sec.core).getUsdNodeMarginInfo(accountId);
         assertApproxEqAbsDecimal(
@@ -131,6 +132,8 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         uint128 accountId =
             IPeripheryProxy(sec.periphery).depositNewMA(DepositNewMAInputs({ accountOwner: user, token: token }));
 
+        // The periphery deliberately wraps the Core's CollateralCapExceeded error.
+        // The exact precondition above proves this is the cap path, not an unrelated failure.
         vm.expectRevert(IPeripheryProxy.InvalidPeripheryExecution.selector);
         executePeripheryMatchOrder(userPk, 1, marketId, base, priceLimit, accountId);
     }
@@ -158,9 +161,8 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         s.coreTokenBalance1 = ITokenProxy(token).balanceOf(sec.core);
         s.peripheryTokenBalance1 = ITokenProxy(token).balanceOf(sec.periphery);
         s.multisigTokenBalance1 = ITokenProxy(token).balanceOf(sec.multisig);
-        uint256 withdrawStaticFees = IPeripheryProxy(sec.periphery).getTokenStaticWithdrawFee(
-            token, dec.socketConnector[token][sec.destinationChainId]
-        );
+        uint256 withdrawStaticFees = IPeripheryProxy(sec.periphery)
+            .getTokenStaticWithdrawFee(token, dec.socketConnector[token][sec.destinationChainId]);
 
         assertEq(s.coreTokenBalance0 - s.coreTokenBalance1, amount);
         assertEq(s.multisigTokenBalance1 - s.multisigTokenBalance0, withdrawStaticFees);
@@ -194,9 +196,8 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
         deal(sec.usdc, address(sec.periphery), usdcAmount);
         mockBridgedAmount(dec.socketExecutionHelper[sec.usdc], usdcAmount);
         vm.prank(dec.socketExecutionHelper[sec.usdc]);
-        IPeripheryProxy(sec.periphery).depositExistingMA(
-            DepositExistingMAInputs({ accountId: accountId, token: sec.usdc })
-        );
+        IPeripheryProxy(sec.periphery)
+            .depositExistingMA(DepositExistingMAInputs({ accountId: accountId, token: sec.usdc }));
 
         amount = 100e18;
         executePeripheryWithdrawMA(user, userPk, 2, accountId, token, amount, sec.destinationChainId);
@@ -210,11 +211,6 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
 
     function check_deusd_ViewFunctions() public {
         check_UsualCollateral_ViewFunctions(sec.deusd, sec.deusdUsdcStorkNodeId);
-    }
-
-    function check_deusd_CapExceeded() public {
-        // note: this test is not relevant as cap is not set for this token
-        // check_UsualCollateral_CapExceeded(sec.deusd);
     }
 
     function check_deusd_DepositWithdraw() public {
@@ -231,11 +227,6 @@ contract UsualCollateralForkCheck is BaseReyaForkTest {
 
     function check_sdeusd_ViewFunctions() public {
         check_UsualCollateral_ViewFunctions(sec.sdeusd, sec.sdeusdUsdcStorkNodeId);
-    }
-
-    function check_sdeusd_CapExceeded() public {
-        // note: this test is not relevant as cap is not set for this token
-        // check_UsualCollateral_CapExceeded(sec.sdeusd);
     }
 
     function check_sdeusd_DepositWithdraw() public {
