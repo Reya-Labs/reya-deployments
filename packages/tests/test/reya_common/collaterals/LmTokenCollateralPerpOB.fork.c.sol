@@ -68,8 +68,7 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
             "subscription allowAll unexpectedly enabled"
         );
         assertFalse(
-            IShareTokenProxy(lmToken).getFeatureFlagAllowAll(redemptionFlag),
-            "redemption allowAll unexpectedly enabled"
+            IShareTokenProxy(lmToken).getFeatureFlagAllowAll(redemptionFlag), "redemption allowAll unexpectedly enabled"
         );
         vm.assume(!IShareTokenProxy(lmToken).isFeatureAllowed(subscriptionFlag, attacker));
         vm.assume(!IShareTokenProxy(lmToken).isFeatureAllowed(redemptionFlag, attacker));

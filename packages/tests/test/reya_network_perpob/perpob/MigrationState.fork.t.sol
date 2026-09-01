@@ -387,9 +387,7 @@ contract MigrationStateForkTest is ReyaForkTest {
             ICoreProxy(sec.core).getCollateralInfo(positionlessAccountId, sec.susde).netDeposits != 0,
             "sUSDe diversity anchor is empty"
         );
-        assertTrue(
-            ICoreProxy(sec.core).getCollateralPoolBalance(1, sec.rselini) != 0, "rSELINI pool anchor is empty"
-        );
+        assertTrue(ICoreProxy(sec.core).getCollateralPoolBalance(1, sec.rselini) != 0, "rSELINI pool anchor is empty");
         assertTrue(ICoreProxy(sec.core).getCollateralPoolBalance(1, sec.ramber) != 0, "rAMBER pool anchor is empty");
         assertTrue(ICoreProxy(sec.core).getCollateralPoolBalance(1, sec.rhedge) != 0, "rHEDGE pool anchor is empty");
     }
