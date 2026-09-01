@@ -13,7 +13,12 @@ contract DustSettlementForkTest is ReyaForkTest {
     function setUp() public override { }
 
     function test_MainnetPerpOB_DustSettlementHappyPath() public {
-        _disableFillPriceDeviationForPriceZeroDust();
+        MarketConfigurationDataV2 memory originalConfig =
+            IPassivePerpProxyV2(sec.perp).getMarketConfiguration(ETH_MARKET_ID);
+        uint256 originalFillPriceMaxDeviation = originalConfig.fillPriceMaxDeviation;
+        assertTrue(originalFillPriceMaxDeviation != 0, "collar precondition is already disabled");
+
+        _setFillPriceMaxDeviation(0);
         (uint128 buyerAccountId,) = _openSignedPosition();
         address dustOwner = makeAddr("dustOwner");
         uint128 dustAccountId = depositNewMA(dustOwner, sec.rusd, 10_000e6);
@@ -32,6 +37,19 @@ contract DustSettlementForkTest is ReyaForkTest {
             IPassivePerpProxy(sec.perp).getUpdatedPositionInfo(ETH_MARKET_ID, dustAccountId);
         assertEq(buyerPosition.base, 0.5e18, "long was not rounded toward zero");
         assertEq(dustPosition.base, 0.0005e18, "dust sink did not receive the residual long");
+
+        // The keeper gate remains fail-closed while the temporary collar override is active.
+        vm.expectRevert(abi.encodeWithSelector(IOrdersGatewayProxyV2.FeatureUnavailable.selector, SETTLE_DUST_FLAG));
+        vm.prank(makeAddr("unauthorizedDuringCollarOverride"));
+        IOrdersGatewayProxyV2(sec.ordersGateway).settleDust(buyerAccountId, ETH_MARKET_ID);
+
+        // PRO-661-shaped atomic collar restoration: restore the exact value read before the sequence, not a constant.
+        _setFillPriceMaxDeviation(originalFillPriceMaxDeviation);
+        assertEq(
+            IPassivePerpProxyV2(sec.perp).getMarketConfiguration(ETH_MARKET_ID).fillPriceMaxDeviation,
+            originalFillPriceMaxDeviation,
+            "fill-price collar was not restored exactly"
+        );
     }
 
     function test_MainnetPerpOB_DustSettlementRejectsPriceZeroWithFillCollarEnabled() public {
@@ -127,9 +145,9 @@ contract DustSettlementForkTest is ReyaForkTest {
         IOrdersGatewayProxyV2(sec.ordersGateway).addToFeatureFlagAllowlist(SETTLE_DUST_FLAG, keeper);
     }
 
-    function _disableFillPriceDeviationForPriceZeroDust() internal {
+    function _setFillPriceMaxDeviation(uint256 fillPriceMaxDeviation) internal {
         MarketConfigurationDataV2 memory config = IPassivePerpProxyV2(sec.perp).getMarketConfiguration(ETH_MARKET_ID);
-        config.fillPriceMaxDeviation = 0;
+        config.fillPriceMaxDeviation = fillPriceMaxDeviation;
         vm.prank(sec.multisig);
         IPassivePerpProxyV2(sec.perp).setMarketConfiguration(ETH_MARKET_ID, config);
     }

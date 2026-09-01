@@ -173,7 +173,11 @@ contract MigrationStateForkTest is ReyaForkTest {
     }
 
     function test_MainnetPerpOB_PreservesPassivePoolSharePrice() public {
-        uint256 upgradedFork = _selectPristineUpgradedFork();
+        // The synthetic terminal lane intentionally mutates OI and activation after the pristine upgrade block.
+        // Exercise pool valuation on that terminal state while every migration-survival assertion continues to read
+        // the pre-terminal upgraded block via _selectPristineUpgradedFork().
+        uint256 upgradedFork =
+            vm.envOr("REYA_REQUIRE_TERMINAL_MARKETS", false) ? vm.activeFork() : _selectPristineUpgradedFork();
 
         uint256 preUpgradeFork = vm.createFork(sec.REYA_RPC, _forkBlock());
         vm.selectFork(preUpgradeFork);
@@ -208,7 +212,18 @@ contract MigrationStateForkTest is ReyaForkTest {
         pushMarkPriceWithinCollar(BTC_MARKET_ID, btcPrice);
         pushFundingRate(BTC_MARKET_ID, 0);
         uint256 postUpgradeSharePrice = IPassivePoolProxy(sec.pool).getSharePrice(sec.passivePoolId);
-        assertEq(postUpgradeSharePrice, preUpgradeSharePrice, "passive pool share price changed during upgrade");
+        if (vm.envOr("REYA_SYNTHETIC_TERMINAL_REHEARSAL", false)) {
+            // Closing 50 live markets realizes their residual dust/PnL, so a tiny pool-value movement is expected.
+            // This tolerance is rehearsal-only: the acceptance/final-block path below remains byte exact.
+            assertApproxEqRel(
+                postUpgradeSharePrice,
+                preUpgradeSharePrice,
+                1e14, // 1 bp
+                "synthetic terminal closure moved passive pool share price by more than 1 bp"
+            );
+        } else {
+            assertEq(postUpgradeSharePrice, preUpgradeSharePrice, "passive pool share price changed during upgrade");
+        }
     }
 
     function test_MainnetPerpOB_PreservesPassivePoolShareSupply() public {
@@ -281,26 +296,46 @@ contract MigrationStateForkTest is ReyaForkTest {
     function test_MainnetPerpOB_ZeroFundingTimestampInitializesOnceThenRejectsReplay() public {
         _allowFundingTimestampMigration();
 
-        for (uint128 marketId = ETH_MARKET_ID; marketId <= BTC_MARKET_ID; marketId++) {
-            vm.store(sec.perp, _marketStorageSlot(marketId, 5), bytes32(0));
-            assertEq(
-                IPassivePerpProxyV2(sec.perp).getMarketData(marketId).marketData.lastFundingTimestamp,
-                0,
-                "test precondition did not produce a zero timestamp"
-            );
+        uint256 btcTimestampBefore =
+            IPassivePerpProxyV2(sec.perp).getMarketData(BTC_MARKET_ID).marketData.lastFundingTimestamp;
+        vm.store(sec.perp, _marketStorageSlot(ETH_MARKET_ID, 5), bytes32(0));
+        assertEq(
+            IPassivePerpProxyV2(sec.perp).getMarketData(ETH_MARKET_ID).marketData.lastFundingTimestamp,
+            0,
+            "test precondition did not produce a zero timestamp"
+        );
 
-            IPassivePerpProxyV2(sec.perp).initializeLastFundingTimestamp(marketId);
-            assertEq(
-                IPassivePerpProxyV2(sec.perp).getMarketData(marketId).marketData.lastFundingTimestamp,
-                block.timestamp,
-                "zero timestamp was not initialized"
-            );
-
-            vm.expectRevert(
-                abi.encodeWithSelector(IPassivePerpProxyV2.LastFundingTimestampAlreadyInitialized.selector, marketId)
-            );
-            IPassivePerpProxyV2(sec.perp).initializeLastFundingTimestamp(marketId);
+        // This is the provisional conditional payload-generator shape: scan the carried markets and emit an
+        // initializer only for a zero slot. Execute the generated calldata rather than bypassing the generator.
+        bytes[] memory payload = _generateFundingTimestampInitializerPayload();
+        assertEq(payload.length, 1, "generator did not select exactly the zero-timestamp market");
+        assertEq(
+            keccak256(payload[0]),
+            keccak256(abi.encodeCall(IPassivePerpProxyV2.initializeLastFundingTimestamp, (ETH_MARKET_ID))),
+            "generator selected the wrong initializer"
+        );
+        (bool initialized, bytes memory result) = sec.perp.call(payload[0]);
+        if (!initialized) {
+            assembly {
+                revert(add(result, 32), mload(result))
+            }
         }
+        assertEq(
+            IPassivePerpProxyV2(sec.perp).getMarketData(ETH_MARKET_ID).marketData.lastFundingTimestamp,
+            block.timestamp,
+            "zero timestamp was not initialized"
+        );
+        assertEq(
+            IPassivePerpProxyV2(sec.perp).getMarketData(BTC_MARKET_ID).marketData.lastFundingTimestamp,
+            btcTimestampBefore,
+            "generator touched a carried non-zero timestamp"
+        );
+        assertEq(_generateFundingTimestampInitializerPayload().length, 0, "generator emitted a replay");
+
+        vm.expectRevert(
+            abi.encodeWithSelector(IPassivePerpProxyV2.LastFundingTimestampAlreadyInitialized.selector, ETH_MARKET_ID)
+        );
+        IPassivePerpProxyV2(sec.perp).initializeLastFundingTimestamp(ETH_MARKET_ID);
     }
 
     function _forkBlock() internal view returns (uint256) {
@@ -310,7 +345,8 @@ contract MigrationStateForkTest is ReyaForkTest {
     function _selectPristineUpgradedFork() internal returns (uint256 upgradedFork) {
         string memory localRpc = vm.envOr("REYA_PERPOB_LOCAL_RPC", string(""));
         if (bytes(localRpc).length == 0) return vm.activeFork();
-        upgradedFork = vm.createFork(localRpc);
+        uint256 pristineBlock = vm.envOr("REYA_PERPOB_PRISTINE_UPGRADED_BLOCK", uint256(0));
+        upgradedFork = pristineBlock == 0 ? vm.createFork(localRpc) : vm.createFork(localRpc, pristineBlock);
         vm.selectFork(upgradedFork);
     }
 
@@ -449,6 +485,20 @@ contract MigrationStateForkTest is ReyaForkTest {
     function _marketStorageSlot(uint128 marketId, uint256 offset) internal pure returns (bytes32) {
         bytes32 marketSlot = keccak256(abi.encodePacked(keccak256(bytes("xyz.reya.Market")), marketId));
         return bytes32(uint256(marketSlot) + offset);
+    }
+
+    function _generateFundingTimestampInitializerPayload() internal view returns (bytes[] memory payload) {
+        uint256 count;
+        for (uint128 marketId = ETH_MARKET_ID; marketId <= BTC_MARKET_ID; marketId++) {
+            if (IPassivePerpProxyV2(sec.perp).getMarketData(marketId).marketData.lastFundingTimestamp == 0) count++;
+        }
+        payload = new bytes[](count);
+        uint256 index;
+        for (uint128 marketId = ETH_MARKET_ID; marketId <= BTC_MARKET_ID; marketId++) {
+            if (IPassivePerpProxyV2(sec.perp).getMarketData(marketId).marketData.lastFundingTimestamp == 0) {
+                payload[index++] = abi.encodeCall(IPassivePerpProxyV2.initializeLastFundingTimestamp, (marketId));
+            }
+        }
     }
 
     function _readPreUpgradeState() internal view returns (PreservedState memory state) {

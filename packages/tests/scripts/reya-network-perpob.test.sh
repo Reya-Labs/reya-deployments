@@ -48,6 +48,11 @@ RUN_DIR=$(mktemp -d "${TMPDIR:-/tmp}/reya-perpob-cannon.XXXXXX")
 CANNON_LOG="$RUN_DIR/cannon.log"
 CANNON_VALIDATION_LOG="$RUN_DIR/cannon-validation.log"
 FORGE_LOG="$RUN_DIR/forge-test.log"
+SYNTHETIC_TERMINAL_LOG="$RUN_DIR/synthetic-terminal.log"
+SYNTHETIC_READINESS_TSV="$RUN_DIR/synthetic-terminal-readiness.tsv"
+SAFE_PAYLOAD_JSON="$RUN_DIR/provisional-safe-payload.json"
+SAFE_REHEARSAL_JSON="$RUN_DIR/provisional-safe-halt-resume.json"
+SAFE_REHEARSAL_LOG="$RUN_DIR/provisional-safe-halt-resume.log"
 DISCOVERY_JSON="$RUN_DIR/forge-test-list.json"
 CANNON_PID=""
 touch "$CANNON_LOG"
@@ -62,6 +67,11 @@ cleanup() {
         [ ! -f "$CANNON_LOG" ] || cp "$CANNON_LOG" "$EVIDENCE_DIR/cannon.log"
         [ ! -f "$CANNON_VALIDATION_LOG" ] || cp "$CANNON_VALIDATION_LOG" "$EVIDENCE_DIR/cannon-validation.log"
         [ ! -f "$FORGE_LOG" ] || cp "$FORGE_LOG" "$EVIDENCE_DIR/forge-test.log"
+        [ ! -f "$SYNTHETIC_TERMINAL_LOG" ] || cp "$SYNTHETIC_TERMINAL_LOG" "$EVIDENCE_DIR/synthetic-terminal.log"
+        [ ! -f "$SYNTHETIC_READINESS_TSV" ] || cp "$SYNTHETIC_READINESS_TSV" "$EVIDENCE_DIR/synthetic-terminal-readiness.tsv"
+        [ ! -f "$SAFE_PAYLOAD_JSON" ] || cp "$SAFE_PAYLOAD_JSON" "$EVIDENCE_DIR/provisional-safe-payload.json"
+        [ ! -f "$SAFE_REHEARSAL_JSON" ] || cp "$SAFE_REHEARSAL_JSON" "$EVIDENCE_DIR/provisional-safe-halt-resume.json"
+        [ ! -f "$SAFE_REHEARSAL_LOG" ] || cp "$SAFE_REHEARSAL_LOG" "$EVIDENCE_DIR/provisional-safe-halt-resume.log"
         [ ! -f "$DISCOVERY_JSON" ] || cp "$DISCOVERY_JSON" "$EVIDENCE_DIR/forge-test-list.json"
     fi
     rm -rf "$RUN_DIR"
@@ -151,10 +161,71 @@ if [ "$LATEST_BLOCK" -le "$FORK_BLOCK" ]; then
     echo "Cannon fork did not retain its upgrade transactions (latest block: ${LATEST_BLOCK})." >&2
     exit 1
 fi
+PRISTINE_UPGRADED_BLOCK=$LATEST_BLOCK
+
+if [ "${REYA_SYNTHETIC_TERMINAL_REHEARSAL:-false}" = true ]; then
+    if [ "${REYA_REQUIRE_TERMINAL_MARKETS:-false}" != true ]; then
+        echo "Synthetic terminal rehearsal requires REYA_REQUIRE_TERMINAL_MARKETS=true." >&2
+        exit 1
+    fi
+    echo "SYNTHETIC REHEARSAL — NOT PRO-656 ACCEPTANCE EVIDENCE"
+    "$SCRIPT_DIR/pro656-safe-payload.sh" "$CANNON_LOG" "$LOCAL_RPC" "$SAFE_PAYLOAD_JSON"
+    "$SCRIPT_DIR/pro656-safe-halt-resume.sh" \
+        "$LOCAL_RPC" \
+        "${REYA_RPC_URL:-https://rpc.reya.network/${RPC_KEY:-}}" \
+        "$SAFE_PAYLOAD_JSON" \
+        "$SAFE_REHEARSAL_JSON" \
+        "${REYA_PERPOB_SAFE_REPLAY_PORT:-$((VALIDATION_PORT + 1))}" 2>&1 | tee "$SAFE_REHEARSAL_LOG"
+    echo "Terminalizing the disposable fork with impersonated governance."
+    cast rpc --rpc-url "$LOCAL_RPC" anvil_impersonateAccount 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9 >/dev/null
+    cd "$PACKAGE_DIR"
+    set +e
+    forge script script/SyntheticTerminalState.s.sol:SyntheticTerminalState \
+        --rpc-url "$LOCAL_RPC" \
+        --broadcast \
+        --unlocked \
+        --sender 0x1Fe50318e5E3165742eDC9c4a15d997bDB935Eb9 \
+        -vvv 2>&1 | tee "$SYNTHETIC_TERMINAL_LOG"
+    SYNTHETIC_TERMINAL_STATUS=${PIPESTATUS[0]}
+    set -e
+    if [ "$SYNTHETIC_TERMINAL_STATUS" -ne 0 ]; then
+        echo "Synthetic terminalization failed with exit ${SYNTHETIC_TERMINAL_STATUS}." >&2
+        exit "$SYNTHETIC_TERMINAL_STATUS"
+    fi
+    if ! grep -q "SYNTHETIC_REHEARSAL_CLOSED_MARKETS 50" "$SYNTHETIC_TERMINAL_LOG"; then
+        echo "Synthetic terminalization did not prove all 50 target markets closed." >&2
+        exit 1
+    fi
+    if ! grep -q "SYNTHETIC_REHEARSAL_FAILED_MARKETS 0" "$SYNTHETIC_TERMINAL_LOG"; then
+        echo "Synthetic terminalization reported at least one readiness, closure, or readback failure." >&2
+        exit 1
+    fi
+    awk '
+        BEGIN {
+            OFS="\t"
+            print "market_id", "accounts", "open_interest", "exact_max_residual", "base_spacing", "below_lmr", "below_imr_diagnostic", "zero_base_fixture_rows"
+        }
+        /SYNTHETIC_REHEARSAL_READINESS_MARKET/ { market=$NF }
+        /^  accounts / { accounts=$NF }
+        /^  openInterest / { oi=$NF }
+        /^  exactMaxResidual / { residual=$NF }
+        /^  baseSpacing / { spacing=$NF }
+        /^  belowLmrCount / { lmr=$NF }
+        /^  belowImrCountDiagnosticOnly / { imr=$NF }
+        /^  zeroBaseFixtureCount / {
+            print market, accounts, oi, residual, spacing, lmr, imr, $NF
+        }
+    ' "$SYNTHETIC_TERMINAL_LOG" > "$SYNTHETIC_READINESS_TSV"
+    if [ "$(($(wc -l < "$SYNTHETIC_READINESS_TSV") - 1))" -ne 50 ]; then
+        echo "Synthetic readiness artifact does not contain exactly 50 market rows." >&2
+        exit 1
+    fi
+    LATEST_BLOCK=$(cast block-number --rpc-url "$LOCAL_RPC")
+fi
 
 echo "Running PerpOB fork tests at upgraded block ${LATEST_BLOCK}."
 cd "$PACKAGE_DIR"
-REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" REYA_PERPOB_LOCAL_RPC="$LOCAL_RPC" RPC_KEY="${RPC_KEY:-}" forge test \
+REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" REYA_PERPOB_LOCAL_RPC="$LOCAL_RPC" REYA_PERPOB_PRISTINE_UPGRADED_BLOCK="$PRISTINE_UPGRADED_BLOCK" RPC_KEY="${RPC_KEY:-}" forge test \
     --fork-url "$LOCAL_RPC" \
     --match-path "$MATCH_PATH" \
     "${FORGE_LINKING_ARGS[@]}" \
@@ -169,7 +240,7 @@ if [ "$DISCOVERED_TEST_COUNT" -le 0 ]; then
 fi
 
 set +e
-REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" REYA_PERPOB_LOCAL_RPC="$LOCAL_RPC" RPC_KEY="${RPC_KEY:-}" forge test \
+REYA_USE_ACTIVE_FORK=true REYA_PERPOB_FORK_BLOCK="$FORK_BLOCK" REYA_PERPOB_LOCAL_RPC="$LOCAL_RPC" REYA_PERPOB_PRISTINE_UPGRADED_BLOCK="$PRISTINE_UPGRADED_BLOCK" RPC_KEY="${RPC_KEY:-}" forge test \
     --fork-url "$LOCAL_RPC" \
     --match-path "$MATCH_PATH" \
     "${FORGE_LINKING_ARGS[@]}" \
@@ -192,10 +263,15 @@ if [ -n "$EVIDENCE_DIR" ]; then
     {
         echo "fork_block=${FORK_BLOCK}"
         echo "solidity_fork_block=${SOLIDITY_FORK_BLOCK}"
-        echo "upgraded_block=${LATEST_BLOCK}"
+        echo "upgraded_block=${PRISTINE_UPGRADED_BLOCK}"
+        echo "test_state_block=${LATEST_BLOCK}"
         echo "cannon_validation_exit=${CANNON_VALIDATION_STATUS}"
         echo "discovered_test_count=${DISCOVERED_TEST_COUNT}"
         echo "executed_test_count=${EXECUTED_TEST_COUNT}"
         echo "terminal_gate=${REYA_REQUIRE_TERMINAL_MARKETS:-false}"
+        echo "synthetic_rehearsal=${REYA_SYNTHETIC_TERMINAL_REHEARSAL:-false}"
+        if [ "${REYA_SYNTHETIC_TERMINAL_REHEARSAL:-false}" = true ]; then
+            echo "evidence_class=SYNTHETIC REHEARSAL - NOT PRO-656 ACCEPTANCE EVIDENCE"
+        fi
     } > "$EVIDENCE_DIR/run.env"
 fi

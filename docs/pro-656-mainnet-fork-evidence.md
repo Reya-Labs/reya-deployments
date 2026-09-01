@@ -23,6 +23,21 @@ criteria, not the earlier 12-test PR smoke scope.
 | 9 | Commands, SHAs/packages, fork block, payload summary and output are attached. | **Satisfied for this provisional rehearsal** | This document records them below. Final release evidence must replace the provisional inputs and rerun the same commands. |
 | 10 | PRO-261 gate links are present and the migration has required review. | **Missing** | [PRO-261](https://linear.app/reya-labs/issue/PRO-261) gate/review sign-off has not been supplied. This cannot be inferred from a green local run. |
 
+### SYNTHETIC REHEARSAL gate table — not acceptance evidence
+
+The following rows use impersonated governance and synthesized blocked inputs.
+They execute otherwise blocked paths now, but **do not satisfy or change any
+PRO-656 acceptance-criterion status above**.
+
+| Synthetic rehearsal surface | Result | Why it remains non-acceptance |
+| --- | --- | --- |
+| Terminal-market readiness and closure | **Rehearsal green:** 50/50 OI markets passed LMR and exact-dust gates; 50/50 were force-closed; IDs 3–75 read back inactive with zero OI. | The terminal state was synthesized at block `218500000` with impersonated governance, not supplied by RET-21. |
+| Strict fork suite | **Rehearsal green:** 164/164 pass, 0 fail, 0 skip across 26 suites. | Uses the synthetic terminal state and provisional `1.1.2` packages. |
+| Passive-pool and PoolStake economics | **Rehearsal green:** health, deposit, withdrawal, rebalance, share-price, move-liquidity and stake/unstake paths execute with fresh carried-market marks. | Fifty closures realize historical residual PnL; final state/block remains external. |
+| Dust collar sequence | **Rehearsal green:** exact collar read, disable, happy settlement, unauthorized negative, exact restore/readback; all six dust tests pass. | Sink/keeper are provisional placeholders pending PRO-956/PRO-654. |
+| Funding-timestamp generator | **Rehearsal green:** synthetic zero ETH slot emits exactly one initializer, executes/read-backs, leaves non-zero BTC untouched, emits no replay, and direct replay rejects. | Policy and final payload remain blocked by PRO-393. |
+| Provisional Safe payload | **Rehearsal green:** 27 ordered invokes; failure injected at each of four upgrade boundaries halted without mutation and resumed to final implementation parity. | Payload inputs are provisional pending PRO-958 and final migration inputs. |
+
 ## Revisions and inputs
 
 | Repository | Revision / PR | Purpose |
@@ -244,6 +259,126 @@ REYA_REQUIRE_TERMINAL_MARKETS=true \
 
 In strict mode, every market ID `3..75` must be inactive and have zero OI. A
 skip is not a terminal-closure pass.
+
+## SYNTHETIC REHEARSAL — NOT ACCEPTANCE EVIDENCE
+
+This section is deliberately separate from the acceptance matrix. It records a
+disposable-fork exercise with impersonated governance and provisional inputs;
+it does not close RET-21/PRO-394, PRO-958, PRO-393, or PRO-956/PRO-654 and must
+not be cited as satisfying a PRO-656 criterion.
+
+### Command and immutable run facts
+
+```sh
+REYA_PERPOB_CANNON_PORT=18547 \
+REYA_PERPOB_CANNON_VALIDATION_PORT=18548 \
+REYA_PERPOB_SAFE_REPLAY_PORT=18549 \
+REYA_PERPOB_EVIDENCE_DIR="$PWD/.evidence/pro656-synthetic-terminal/20260901T155218Z" \
+./packages/tests/scripts/reya-network-perpob-terminal.test.sh
+```
+
+- Source fork: `218500000`; pristine upgraded block: `218500087`; synthetic
+  terminal test-state block: `218500572`.
+- Evidence class in `run.env`: `SYNTHETIC REHEARSAL - NOT PRO-656 ACCEPTANCE
+  EVIDENCE`.
+- Cannon validation exited `0`; Forge discovered and executed the same 164
+  tests. Final result: `164 passed, 0 failed, 0 skipped` across 26 suites in
+  `688.19s`.
+- The rehearsal uses the same provisional package references listed above. No
+  production RPC or database was mutated, and all three disposable RPC nodes
+  were stopped by the runner.
+
+### Terminal-state rehearsal and RET-21 inputs
+
+[`SyntheticTerminalState.s.sol`](../packages/tests/script/SyntheticTerminalState.s.sol)
+ports PRO-394's readiness shape into a parameterized all-market script. The
+read-only orders reconstruction supplied the candidate account lists, then the
+fork required every listed base to be non-zero and checked both long/short sums
+against on-chain OI before any closure. The committed
+[`fixture`](../packages/tests/script/data/pro656-synthetic-terminal-218500000.json)
+contains 50 markets, 177 unique accounts and 382 market/account references.
+
+The 50 OI markets were IDs `3,4,5,6,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24,26,27,28,29,30,31,32,33,35,38,39,40,41,42,43,44,47,48,50,51,54,55,60,62,63,64,66,70,74,75`.
+For every market, `liquidationDelta >= 0`, both position-sum residuals were
+computed, `exactMaxResidual = max(|long-short|, |long-OI|)`, and the exact bound
+was below `baseSpacing`. The largest exact bound was `2,326,790` wei for market
+74 versus `1e17` spacing. All 50 calls to `forceCloseMarket` succeeded, every
+listed position read back zero, and all markets 3–75 read back zero OI and
+inactive. The complete per-market numbers are in
+[`pro-656-synthetic-terminal-readiness.tsv`](./pro-656-synthetic-terminal-readiness.tsv).
+
+Findings to route to RET-21/Costin/Ioana:
+
+- Account `4879` on market `70` passes the requested LMR gate with
+  `liquidationDelta=+2483699000000000000`, but has
+  `initialDelta=-1794104000000000000`. PRO-394's current script checks the
+  stricter IMR delta, so it would reject this account although the requested
+  LMR rehearsal passes. Production owners must settle which gate is intended;
+  this rehearsal does not make that decision.
+- Two reconstructed historical rows were stale at the pinned block: account
+  `39303`/market `8` and account `51`/market `30` both had on-chain base zero.
+  They are retained under `excludedStaleRows` in the fixture rather than hidden.
+- Pushing all 52 marks and then broadcasting hundreds of individual rehearsal
+  transactions exceeded the configured 11-second mark window. The synthetic
+  script therefore raises mark/oracle staleness to two hours on the disposable
+  fork and restores the exact ETH/BTC market configurations afterward; the
+  configuration readback suite proves their `60s` value was restored. The
+  production Safe should batch its push/freeze/close calls atomically or refresh
+  marks per batch, not copy this two-hour rehearsal override.
+
+Closing historical residuals changed passive-pool share price from
+`1075066470527187545` to `1074965830916537111`, a decrease of
+`100639610650434` (approximately `0.936125` bp). Only the explicit synthetic
+flag permits a 1-bp bound. The acceptance/final-block assertion remains exact.
+The terminal lane then executes pool health, deposit/withdrawal, rebalance and
+share-price invariants, plus both PoolStake happy paths, after ReyaForkTest has
+pushed fresh ETH/BTC marks.
+
+### Dust, funding initializer and Safe ordering
+
+The dust happy path reads the current non-zero `fillPriceMaxDeviation`, sets it
+to zero, opens and settles the provisional dust position, proves an
+unauthorized caller still fails while the override is active, restores the
+exact captured value, and reads it back. The other five tests retain the
+enabled-collar, unconfigured sink, sink-self, unauthorized and net-short
+negative paths. This is the PRO-661 transaction shape with placeholder
+sink/keeper only.
+
+The funding test uses `vm.store` to zero ETH's carried
+`lastFundingTimestamp`, runs the provisional conditional generator over ETH and
+BTC, proves it emits only ETH calldata, executes that generated call, reads
+back `block.timestamp`, proves BTC is unchanged, proves regeneration emits no
+replay, and proves a direct replay reverts. It exercises generator, execution
+and fail-closed behavior without adopting a PRO-393 policy.
+
+[`pro656-safe-payload.sh`](../packages/tests/scripts/pro656-safe-payload.sh)
+generated 27 ordered Safe subtransactions to MultiSendCallOnly. The ordered
+payload hash is
+`0x951402960f5b40c6eb770e3350066b330b567d7807a7425bfdb87ec48ac3e758`;
+the canonical `{operation,to,value,data}` SHA-256 is
+`6a0c7fd1f249a2fd81d04f6c1818be132223ad399348944ca5a2b79f6225cb71`.
+[`pro656-safe-halt-resume.sh`](../packages/tests/scripts/pro656-safe-halt-resume.sh)
+replayed 60 prerequisite deployment transactions on a fresh fork and injected
+a reverting zero-address `upgradeTo` at Core order 2, OrdersGateway order 3,
+PassivePerp order 4 and Periphery order 5. Each failure returned status `0`,
+left that proxy's implementation byte-exactly unchanged, halted later sends,
+then resumed the original transaction and remaining payload to final
+implementation parity.
+
+The definitive local artifact is
+`/workspace/daniel_reya_xyz/dev/.codex-worktrees/reya-deployments-pro-656-mainnet-perpob-fork/.evidence/pro656-synthetic-terminal/20260901T155218Z`:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| `cannon-validation.log` | `76467e922841bc6e64a0449f043d74934c01c7b42b724c76e4c78ab69792695e` |
+| `cannon.log` | `3f9515f85b5d4e8df0c86d64dc823fa7557381d8d6bd2e63cc6f856e0f87a6df` |
+| `forge-test-list.json` | `4eaa70df922c57674c5bdd925defd0a77014efe3f8a47ab4e54d6e7f6ed2460b` |
+| `forge-test.log` | `0572085251260f3b875f20842b1ee7e4031e983569512df4609ce01a361e94db` |
+| `synthetic-terminal.log` | `e1daf2cab9fb190d0a257ef9b1eccde8a7113fc70e6529d7334256e024f043fd` |
+| `synthetic-terminal-readiness.tsv` | `832bcbe85687740f35751ca16f9c27dbdaf8291af6b787898325f6fdc07c03a6` |
+| `provisional-safe-payload.json` | `261aa7ba1337373a77790c4f035c170c077fd3e35303873c660d7431dd3a2024` |
+| `provisional-safe-halt-resume.json` | `30496e3d3f6b3226aa554e5fa07eedc438adcbf42a6d9c0d84146699b743e667` |
+| `run.env` | `8d87a98d5b1e4c1bc720193ed3cb4b6f7c1fbfdd2ab44e8a1e03d1bf5454a45e` |
 
 ## External blockers retained by PRO-656
 
