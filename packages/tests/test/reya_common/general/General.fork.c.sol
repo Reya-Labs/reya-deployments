@@ -1456,7 +1456,13 @@ contract GeneralForkCheck is BaseReyaForkTest {
         vm.assertEq(bytes(mismatches).length, 0, mismatches);
     }
 
-    function check_marketsMaxOiAndOi(uint128[] memory reduceOnlyMarkets, uint128[] memory inactiveMarkets) public view {
+    function check_marketsMaxOiAndOi(
+        uint128[] memory reduceOnlyMarkets,
+        uint128[] memory inactiveMarkets
+    )
+        public
+        view
+    {
         for (uint256 i = 0; i < reduceOnlyMarkets.length; i++) {
             uint128 marketId = reduceOnlyMarkets[i];
             MarketConfigurationData memory marketConfig = IPassivePerpProxy(sec.perp).getMarketConfiguration(marketId);

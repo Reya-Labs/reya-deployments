@@ -11,11 +11,7 @@ import {
     CachedCollateralConfig
 } from "../../../src/interfaces/ICoreProxy.sol";
 
-import {
-    IPassivePerpProxy,
-    MarketConfigurationData,
-    PerpPosition
-} from "../../../src/interfaces/IPassivePerpProxy.sol";
+import { IPassivePerpProxy, MarketConfigurationData, PerpPosition } from "../../../src/interfaces/IPassivePerpProxy.sol";
 
 import { IOracleManagerProxy } from "../../../src/interfaces/IOracleManagerProxy.sol";
 
