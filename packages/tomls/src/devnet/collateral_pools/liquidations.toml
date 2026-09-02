@@ -1,10 +1,9 @@
 # Devnet liquidations: skips pool_account_activate_market (not needed in perpOB).
 #
-# Backstop LP: devnet has no PassivePool account linked to its Core, so the
-# backstop account is a standalone margin account (settings.cp1Rusd_backstopLpAccountId,
-# hardcoded in omnibus/reya_devnet.toml) created + funded + market-activated
-# out-of-band, then wired here by calling setBackstopLPConfig directly on
-# CoreProxy (NOT via PassivePoolProxy.sendCallToCore). Config mirrors
+# Backstop LP: the Keyrock-owned standalone margin account configured by
+# settings.cp1Rusd_backstopLpAccountId must be funded and market-activated in
+# collateral pool 1 out-of-band. It is wired here by calling setBackstopLPConfig
+# directly on CoreProxy (NOT via PassivePoolProxy.sendCallToCore). Config mirrors
 # cronos/mainnet (15% liquidation fee, zero thresholds).
 [invoke.cp_1rusd_set_backstop_lp_config]
 target = ["CoreProxy"]
