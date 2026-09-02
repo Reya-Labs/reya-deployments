@@ -1,0 +1,78 @@
+name: Publish public mirror
+
+# Type A: on every push to main, publish the allowlisted CURRENT tree to the
+# public mirror as a single orphan commit — no source history, no commit
+# messages, no author info, no branches/tags.
+#
+# Auth: pushes to the public repo with a token secret (MIRROR_TOKEN). Set it to a
+# fine-grained PAT scoped to Contents: Read & write on Reya-Labs/reya-deployments-public.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-public-mirror
+  cancel-in-progress: false
+
+env:
+  PUBLIC_REPO: Reya-Labs/reya-deployments-public
+  PUBLIC_BRANCH: main
+  COMMIT_MESSAGE: Publish
+  BOT_NAME: reya-bot
+  BOT_EMAIL: bot@reya.xyz
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source (current tree only, no history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Stage allowlisted tree (tracked files only)
+        run: |
+          set -euo pipefail
+          test -f public-mirror.allow || { echo "::error::public-mirror.allow missing"; exit 1; }
+          mkdir -p /tmp/pub
+          # Export exactly the allowlisted paths at HEAD. git archive recurses
+          # directories correctly and includes ONLY tracked files, so nothing
+          # untracked/ignored can leak.
+          mapfile -t PATHS < <(grep -vE '^[[:space:]]*(#|$)' public-mirror.allow)
+          [ "${#PATHS[@]}" -gt 0 ] || { echo "::error::allowlist is empty"; exit 1; }
+          git archive --format=tar HEAD -- "${PATHS[@]}" | tar -x -C /tmp/pub
+          if [ -z "$(find /tmp/pub -type f -print -quit)" ]; then
+            echo "::error::staged tree is empty — check public-mirror.allow"; exit 1
+          fi
+          echo "Staged $(find /tmp/pub -type f | wc -l) files."
+
+      - name: Secret scan (fail on any finding)
+        run: |
+          docker run --rm \
+            -v /tmp/pub:/scan \
+            -v "${GITHUB_WORKSPACE}/.gitleaks.toml:/gitleaks.toml:ro" \
+            ghcr.io/gitleaks/gitleaks:v8.30.1 \
+            detect --source=/scan --no-git --redact --exit-code=1 --config=/gitleaks.toml
+
+      - name: Publish scrubbed single-commit snapshot
+        working-directory: /tmp/pub
+        env:
+          MIRROR_TOKEN: ${{ secrets.MIRROR_TOKEN }}
+          GIT_AUTHOR_NAME: ${{ env.BOT_NAME }}
+          GIT_AUTHOR_EMAIL: ${{ env.BOT_EMAIL }}
+          GIT_COMMITTER_NAME: ${{ env.BOT_NAME }}
+          GIT_COMMITTER_EMAIL: ${{ env.BOT_EMAIL }}
+        run: |
+          set -euo pipefail
+          git init -q
+          git checkout -q --orphan "${PUBLIC_BRANCH}"
+          git add -A
+          git commit -q -m "${COMMIT_MESSAGE}"
+          git remote add origin "https://x-access-token:${MIRROR_TOKEN}@github.com/${PUBLIC_REPO}.git"
+          git push -f origin "HEAD:${PUBLIC_BRANCH}"

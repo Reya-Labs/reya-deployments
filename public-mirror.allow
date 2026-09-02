@@ -1,0 +1,19 @@
+# Public mirror allowlist for reya-deployments (Type A snapshot).
+#
+# One path (file or directory) per line. Anything NOT listed here is NEVER
+# published to the public mirror. `.github/` is intentionally excluded so this
+# workflow and any internal CI never leak.
+#
+# TODO(PRO-696): confirm this list is exactly what should be public before
+# enabling the workflow. Add/remove as needed.
+
+README.md
+package.json
+lerna.json
+yarn.lock
+.yarnrc.yml
+.yarn/
+.gitignore
+.prettierrc
+.solhint.json
+packages/
