@@ -32,7 +32,7 @@ import { sd } from "@prb/math/SD59x18.sol";
 import { ud } from "@prb/math/UD60x18.sol";
 
 contract PassivePoolForkCheck is BaseReyaForkTest {
-    function setUp() public {
+    function setUp() public virtual {
         removeCollateralCap(sec.rselini);
         removeCollateralCap(sec.ramber);
         removeCollateralCap(sec.rhedge);

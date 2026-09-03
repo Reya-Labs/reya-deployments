@@ -52,6 +52,8 @@ contract LmTokenCollateralForkCheck is BaseReyaForkTest {
     {
         vm.assume(attacker != subscriber);
         vm.assume(attacker != address(0));
+        vm.assume(!IShareTokenProxy(lmToken).isFeatureAllowed(keccak256(bytes("subscription")), attacker));
+        vm.assume(!IShareTokenProxy(lmToken).isFeatureAllowed(keccak256(bytes("redemption")), attacker));
 
         uint256 totalSupplyBefore = ITokenProxy(lmToken).totalSupply();
 

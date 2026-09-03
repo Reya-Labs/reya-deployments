@@ -34,7 +34,7 @@ contract SpotPerpOBForkCheck is BaseReyaForkTest {
     address internal spotMatchingEngine;
     uint256 internal spotMatchingEnginePk;
 
-    bytes32 internal constant MATCHING_ENGINE_PUBLISHER_FLAG = keccak256(bytes("matching_engine_publisher"));
+    bytes32 internal constant SPOT_MATCHING_ENGINE_PUBLISHER_FLAG = keccak256(bytes("matching_engine_publisher"));
 
     // Orders gateway encodes spot markets in the signed OrderDetails.marketId using a namespace offset.
     // See orders-gateway/src/libraries/MarketIdCodec.sol :: SPOT_MARKET_ID_OFFSET.
@@ -64,7 +64,7 @@ contract SpotPerpOBForkCheck is BaseReyaForkTest {
 
         vm.prank(sec.multisig);
         IOrdersGatewayProxy(sec.ordersGateway).addToFeatureFlagAllowlist(
-            MATCHING_ENGINE_PUBLISHER_FLAG, spotMatchingEngine
+            SPOT_MATCHING_ENGINE_PUBLISHER_FLAG, spotMatchingEngine
         );
     }
 

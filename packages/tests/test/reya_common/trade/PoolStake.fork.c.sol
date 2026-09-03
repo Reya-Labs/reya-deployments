@@ -14,7 +14,7 @@ contract PoolStakeForkCheck is BaseReyaForkTest {
     address user;
     uint256 userPrivateKey;
 
-    function setUp() public {
+    function setUp() public virtual {
         (user, userPrivateKey) = makeAddrAndKey("user-pool-stake");
     }
 

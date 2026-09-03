@@ -359,6 +359,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         // Push mark price before trade
         uint256 markPrice = 3000e18;
         pushMarkPriceWithinCollar(marketId, markPrice);
+        pushFundingRate(marketId, 0);
 
         // Create margin accounts with collateral
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
@@ -397,6 +398,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         setupPerpTestActors();
         mockFreshPrices();
         pushMarkPriceWithinCollar(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
 
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
         uint128 sellerAccountId = depositNewMA(perpSeller, sec.rusd, 10_000e6);
@@ -458,6 +460,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
 
         // Push mark price
         pushMarkPriceWithinCollar(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
 
         // Create accounts
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 10_000e6);
@@ -497,6 +500,7 @@ contract PerpFillForkCheck is BaseReyaForkTest {
         setupPerpTestActors();
         mockFreshPrices();
         pushMarkPriceWithinCollar(marketId, 3000e18);
+        pushFundingRate(marketId, 0);
 
         // Create accounts with sufficient collateral
         uint128 buyerAccountId = depositNewMA(perpBuyer, sec.rusd, 50_000e6);

@@ -1,0 +1,100 @@
+# Fee model V3 charges only takers. The maker fields are storage-compatible
+# tombstones; retain their current values and initialize the appended field to 0.
+[invoke.passive_perp_set_tier0_parameters]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeeTierParameters"
+args = [
+    "0",
+    { takerFee = "<%= parseEther(settings.takerFeeTier0Unscaled) %>", makerFee_DEPRECATED = "<%= parseEther(settings.makerFeeTier0Unscaled) %>", makerRebate_DEPRECATED = "0" },
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_tier1_parameters]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeeTierParameters"
+args = [
+    "1",
+    { takerFee = "<%= parseEther(settings.takerFeeTier1Unscaled) %>", makerFee_DEPRECATED = "<%= parseEther(settings.makerFeeTier1Unscaled) %>", makerRebate_DEPRECATED = "0" },
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_tier2_parameters]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeeTierParameters"
+args = [
+    "2",
+    { takerFee = "<%= parseEther(settings.takerFeeTier2Unscaled) %>", makerFee_DEPRECATED = "<%= parseEther(settings.makerFeeTier2Unscaled) %>", makerRebate_DEPRECATED = "0" },
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_tier3_parameters]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeeTierParameters"
+args = [
+    "3",
+    { takerFee = "<%= parseEther(settings.takerFeeTier3Unscaled) %>", makerFee_DEPRECATED = "<%= parseEther(settings.makerFeeTier3Unscaled) %>", makerRebate_DEPRECATED = "0" },
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_tier4_parameters]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeeTierParameters"
+args = [
+    "4",
+    { takerFee = "<%= parseEther(settings.takerFeeTier4Unscaled) %>", makerFee_DEPRECATED = "<%= parseEther(settings.makerFeeTier4Unscaled) %>", makerRebate_DEPRECATED = "0" },
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_tier5_parameters]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeeTierParameters"
+args = [
+    "5",
+    { takerFee = "<%= parseEther(settings.takerFeeTier5Unscaled) %>", makerFee_DEPRECATED = "<%= parseEther(settings.makerFeeTier5Unscaled) %>", makerRebate_DEPRECATED = "0" },
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_tier6_parameters]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeeTierParameters"
+args = [
+    "6",
+    { takerFee = "<%= parseEther(settings.takerFeeTier6Unscaled) %>", makerFee_DEPRECATED = "<%= parseEther(settings.makerFeeTier6Unscaled) %>", makerRebate_DEPRECATED = "0" },
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_tier100_parameters]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeeTierParameters"
+args = [
+    "100",
+    { takerFee = "<%= parseEther(settings.takerFeeTier100Unscaled) %>", makerFee_DEPRECATED = "<%= parseEther(settings.makerFeeTier100Unscaled) %>", makerRebate_DEPRECATED = "0" },
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_tier101_parameters]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeeTierParameters"
+args = [
+    "101",
+    { takerFee = "<%= parseEther(settings.takerFeeTier101Unscaled) %>", makerFee_DEPRECATED = "<%= parseEther(settings.makerFeeTier101Unscaled) %>", makerRebate_DEPRECATED = "0" },
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_global_fee_parameters]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setGlobalFeeParameters"
+args = [
+    { ogRebateRate = "<%= parseEther(settings.ogDiscountUnscaled) %>", refereeRebateRate = "<%= parseEther(settings.refereeDiscountUnscaled) %>", referrerRebate = "<%= parseEther(settings.referrerRebateUnscaled) %>", affiliateReferrerRebate_DEPRECATED = "<%= parseEther(settings.affiliateReferrerRebateUnscaled) %>", vltzRebateRate = "<%= parseEther(settings.vltzDiscountUnscaled) %>", spreadDiscount_DEPRECATED = "<%= parseEther(settings.spreadDiscountUnscaled) %>", poolRebate = "<%= parseEther(settings.pool1RusdRebateUnscaled) %>", poolAccountId = "2" },
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]

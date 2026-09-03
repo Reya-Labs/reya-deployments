@@ -1,0 +1,113 @@
+[invoke.passive_perp_set_pausers]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setDeniers"
+args = [
+    "<%= keccak256(hexlify('global')) %>",
+    [
+        "<%= settings.pauser1 %>",
+        "<%= settings.pauser2 %>",
+        "<%= settings.pauser3 %>",
+        "<%= settings.pauser4 %>",
+    ],
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_fee_config_system_owner]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('configureFees')) %>", "<%= settings.owner %>"]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_market_config_system_owner]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = ["<%= keccak256(hexlify('configureMarket')) %>", "<%= settings.owner %>"]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_oracle_pusher1]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('oraclePushers')) %>",
+    "<%= settings.oraclePusher1 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_oracle_pusher2]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('oraclePushers')) %>",
+    "<%= settings.oraclePusher2 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_oracle_publisher_me]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('oraclePublishers')) %>",
+    "<%= settings.matching_engine_publisher1 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_multicall_oracle_pusher1]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.oraclePusher1 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+[invoke.passive_perp_set_multicall_oracle_pusher2]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "addToFeatureFlagAllowlist"
+args = [
+    "<%= keccak256(hexlify('multicall')) %>",
+    "<%= settings.oraclePusher2 %>",
+]
+depends = ["invoke.upgrade_passive_perp_proxy"]
+
+# Rehearsal-only final enablement. Production reopening is owned by the cutover
+# runbook and must not be inferred from this disposable-fork step.
+[invoke.passive_perp_enable_rehearsal]
+target = ["PassivePerpProxy"]
+fromCall.func = "owner"
+func = "setFeatureFlagAllowAll"
+args = ["<%= keccak256(hexlify('global')) %>", true]
+depends = [
+    "invoke.upgrade_core_proxy",
+    "invoke.upgrade_orders_gateway_proxy",
+    "invoke.upgrade_passive_perp_proxy",
+    "invoke.upgrade_periphery_proxy",
+    "invoke.passive_perp_global_config",
+    "invoke.passive_perp_set_pausers",
+    "invoke.passive_perp_fee_config_system_owner",
+    "invoke.passive_perp_market_config_system_owner",
+    "invoke.passive_perp_set_oracle_pusher1",
+    "invoke.passive_perp_set_oracle_pusher2",
+    "invoke.passive_perp_set_oracle_publisher_me",
+    "invoke.passive_perp_set_multicall_oracle_pusher1",
+    "invoke.passive_perp_set_multicall_oracle_pusher2",
+    "invoke.passive_perp_set_tier0_parameters",
+    "invoke.passive_perp_set_tier1_parameters",
+    "invoke.passive_perp_set_tier2_parameters",
+    "invoke.passive_perp_set_tier3_parameters",
+    "invoke.passive_perp_set_tier4_parameters",
+    "invoke.passive_perp_set_tier5_parameters",
+    "invoke.passive_perp_set_tier6_parameters",
+    "invoke.passive_perp_set_tier100_parameters",
+    "invoke.passive_perp_set_tier101_parameters",
+    "invoke.passive_perp_set_global_fee_parameters",
+    "invoke.passive_perp_set_market_1_eth",
+    "invoke.passive_perp_set_market_2_btc",
+]

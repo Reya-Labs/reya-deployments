@@ -1,0 +1,19 @@
+[clone.reyaPeripheryRouter]
+# Provisional audited-build substitute; replace with the release package.
+source = "reya-periphery:1.1.2@router"
+target = "reya-periphery:1.1.2@router"
+
+[invoke.upgrade_periphery_proxy]
+target = ["<%= settings.peripheryProxy %>"]
+abi = "<%= JSON.stringify(imports.reyaPeripheryRouter.contracts.OwnerUpgradeModule.abi) %>"
+fromCall.func = "owner"
+func = "upgradeTo"
+args = ["<%= imports.reyaPeripheryRouter.contracts.PeripheryRouter.address %>"]
+factory.PeripheryProxy.abiOf = ["reyaPeripheryRouter.PeripheryRouter"]
+factory.PeripheryProxy.event = "Upgraded"
+factory.PeripheryProxy.arg = 0
+depends = [
+    "var.upgrade_proxy_vars",
+    "clone.reyaPeripheryRouter",
+    "invoke.passive_perp_pause_rehearsal",
+]

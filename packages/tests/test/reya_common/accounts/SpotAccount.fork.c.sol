@@ -83,8 +83,13 @@ contract SpotAccountForkCheck is BaseReyaForkTest {
     function check_SpotAccount_CollateralLimits() public {
         (address user,) = makeAddrAndKey("user");
         uint128 spotAccountId = ICoreProxy(sec.core).createOrGetSpotAccount(user);
+        uint256 amount = 100_000_000e18;
 
-        depositMA(spotAccountId, sec.weth, 100_000_000e18);
+        depositMA(spotAccountId, sec.weth, amount);
+
+        CollateralInfo memory collateralInfo = ICoreProxy(sec.core).getCollateralInfo(spotAccountId, sec.weth);
+        assertEq(collateralInfo.netDeposits, int256(amount), "spot account deposit was capped or truncated");
+        assertEq(collateralInfo.realBalance, int256(amount), "spot account real balance did not retain the deposit");
     }
 
     function check_PerpTradingOnSpotAccount() public {
